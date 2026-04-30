@@ -28,7 +28,7 @@ export default function Cart() {
   }
 
   const subtotal = cartTotal();
-  const shipping = subtotal > 5000 ? 0 : 150;
+  const shipping = 0;
   const total = subtotal + shipping;
 
   return (
@@ -40,8 +40,8 @@ export default function Cart() {
         <div className="lg:col-span-2 space-y-8">
           {cart.map((item) => (
             <div key={`${item.id}-${item.size}`} className="flex flex-col sm:flex-row gap-8 pb-8 border-b border-black/5">
-              <div className="sm:w-32 aspect-[9/16] flex-shrink-0 bg-transparent relative">
-                <img src={item.image} alt={item.name} className="w-full h-full object-contain mix-blend-multiply" />
+              <div className="w-24 sm:w-32 aspect-[9/16] flex-shrink-0 bg-transparent relative">
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div className="flex-grow flex flex-col justify-between pt-2">
                 <div>
@@ -93,16 +93,12 @@ export default function Cart() {
             
             <div className="space-y-4 mb-8 text-[13px] text-primary-950/80 border-b border-black/5 pb-8 font-light">
               <div className="flex justify-between">
-                <span>Subtotal ({cart.length} items)</span>
+                <span>Subtotal ({cart.reduce((total, item) => total + item.quantity, 0)} items)</span>
                 <span className="text-primary-950">{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                {shipping === 0 ? (
-                  <span className="text-gold-500">Free</span>
-                ) : (
-                  <span className="text-primary-950">{formatPrice(shipping)}</span>
-                )}
+                <span className="text-green-600 font-medium">Free</span>
               </div>
               <div className="flex justify-between text-gold-500 opacity-80">
                 <span>Discount</span>

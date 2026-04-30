@@ -4,7 +4,7 @@ import { X, Heart, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Product, useStore } from './store';
 import { formatPrice } from './utils';
-import ReactMarkdown from 'react-markdown';
+import { ProductDescription } from './components/ProductDescription';
 
 interface QuickViewModalProps {
   product: Product | null;
@@ -90,7 +90,8 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                 <img 
                   src={productImages[activeImageIndex]} 
                   alt={product.name} 
-                  className="w-full h-full object-contain mix-blend-multiply object-center"
+                  className="w-full h-full object-cover object-center"
+                  referrerPolicy="no-referrer"
                 />
                 
                 {/* Image selection bullets if more than one */}
@@ -113,28 +114,34 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
               <div className="mb-6">
                 <div className="text-[10px] tracking-[2px] uppercase text-gold-500 mb-2 font-medium">{product.category}</div>
                 <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-3 leading-tight">{product.name}</h2>
+                {product.sku && (
+                  <p className="text-[10px] tracking-[1px] uppercase text-primary-950/40 mb-3">SKU: {product.sku}</p>
+                )}
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-3">
                     <span className="text-xl font-bold text-primary-950">{formatPrice(product.price)}</span>
                     {product.originalPrice && (
                       <>
                         <span className="text-sm text-primary-950/40 line-through mb-0.5">{formatPrice(product.originalPrice)}</span>
-                        <span className="text-[10px] tracking-[1px] font-bold text-[#E53935] bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">55% OFF</span>
+                        <span className="text-[10px] tracking-[1px] font-bold text-[#E53935] bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF</span>
                       </>
                     )}
                   </div>
-                  {product.originalPrice && (
+                  {product.originalPrice && product.category === 'Co-Ord Sets' && (
                     <div className="mt-1">
                       <span className="text-[9px] uppercase tracking-[1px] font-semibold text-primary-950/70 bg-primary-50 px-2 py-0.5 rounded border border-black/5">Extra ₹100 OFF on prepaid</span>
+                    </div>
+                  )}
+                  {product.originalPrice && product.category === 'Sarees' && (
+                    <div className="mt-1">
+                      <span className="text-[9px] uppercase tracking-[1px] font-semibold text-primary-950/70 bg-primary-50 px-2 py-0.5 rounded border border-black/5">Flat 50% OFF - Extra ₹100 OFF with coupon FIRST100</span>
                     </div>
                   )}
                 </div>
               </div>
 
               <div className="mb-8">
-                <div className="markdown-content text-[13px] text-primary-950/70 leading-relaxed font-light mb-4">
-                  <ReactMarkdown>{product.description}</ReactMarkdown>
-                </div>
+                <ProductDescription description={product.description} className="text-[13px] mb-4" />
                 <div className="flex gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] uppercase tracking-[1px] text-primary-950/40">Color:</span>

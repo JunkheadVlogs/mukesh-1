@@ -15,6 +15,7 @@ import { useState, useEffect, useRef } from "react";
 import type { FormEvent } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { products } from "./mockData";
+import { CONFIG } from "./config";
 
 export default function Layout() {
   const { cart } = useStore();
@@ -167,7 +168,8 @@ export default function Layout() {
                               <img
                                 src={product.image}
                                 alt={product.name}
-                                className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                referrerPolicy="no-referrer"
                               />
                             </div>
                             <div className="flex-grow">
@@ -265,6 +267,7 @@ export default function Layout() {
                   src="https://drive.google.com/thumbnail?id=1_PdNfAScYuOrr_cA0e6TZQdAlSCvzZ8M&sz=w600"
                   alt="Special Offer"
                   className="w-full h-full object-cover opacity-80"
+                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 to-transparent flex items-end p-6">
                   <h3 className="text-white text-2xl font-serif leading-tight">
@@ -406,12 +409,6 @@ export default function Layout() {
                 <Heart size={18} strokeWidth={1.5} />
               </Link>
               <Link
-                to="/account"
-                className={`${textColor} hover:text-gold-500 transition-colors hidden sm:block`}
-              >
-                <User size={18} strokeWidth={1.5} />
-              </Link>
-              <Link
                 to="/cart"
                 className={`${textColor} hover:text-gold-500 transition-colors relative flex items-center`}
               >
@@ -467,13 +464,6 @@ export default function Layout() {
               Our Legacy
             </Link>
             <div className="border-t border-black/5 pt-4 mt-2 flex flex-col space-y-4">
-              <Link
-                to="/account"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 text-[12px] tracking-[2px] uppercase font-medium text-primary-950"
-              >
-                <User size={16} strokeWidth={1.5} /> Account
-              </Link>
               <Link
                 to="/wishlist"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -594,37 +584,31 @@ export default function Layout() {
               </h4>
               <ul className="space-y-3 text-sm text-primary-950/70">
                 <li className="leading-relaxed">
-                  Mukesh Saree Centre
+                  {CONFIG.STORE_NAME}
                   <br />
-                  Jaganth Road, Gandibagh
-                  <br />
-                  Nagpur 440002
+                  {CONFIG.STORE_ADDRESS}
                 </li>
                 <li className="pt-2">Contact Person: Mohit</li>
                 <li>
                   WhatsApp / Call: <br />
-                  +91 7020664641
+                  {CONFIG.STORE_PHONE}
                 </li>
               </ul>
             </div>
             <div className="bg-primary-950 p-6 rounded-sm text-white flex flex-col justify-center">
               <h4 className="text-sm tracking-[1px] mb-1">Exclusive Offers</h4>
               <p className="text-[10px] opacity-70 mb-4">
-                Join our club for updates and early access.
+                Message us on WhatsApp to join our exclusive club for updates and early access.
               </p>
-              <form className="flex" onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="bg-transparent border-b border-white/30 text-white px-2 py-2 flex-grow focus:outline-none focus:border-gold-500 text-sm w-full placeholder-white/50"
-                />
-                <button
-                  type="submit"
-                  className="text-[10px] uppercase tracking-[1px] text-gold-500 hover:text-white px-3 py-2 transition-colors"
-                >
-                  Join
-                </button>
-              </form>
+              <a 
+                href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, '')}?text=Hi!%20I%20want%20to%20join%20the%20exclusive%20club.`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gold-500 text-primary-950 py-2 px-4 text-[10px] uppercase tracking-[1px] font-bold inline-blocktext-center hover:bg-white transition-colors"
+                style={{ textAlign: 'center' }}
+              >
+                Join via WhatsApp
+              </a>
             </div>
           </div>
           <div className="text-center text-[10px] uppercase tracking-[1px] text-primary-950/50 pt-4">
@@ -636,7 +620,7 @@ export default function Layout() {
 
       {/* WhatsApp Sticky Button */}
       <a
-        href="https://wa.me/917020664641?text=Hi!%20I%20Need%20Help."
+        href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, '')}?text=Hi!%20I%20Need%20Help.`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl hover:bg-[#128C7E] hover:-translate-y-1 hover:scale-110 transition-all z-50 flex items-center justify-center group"

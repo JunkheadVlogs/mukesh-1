@@ -72,7 +72,12 @@ export default function Shop() {
         result.sort((a, b) => b.price - a.price);
         break;
       case 'new':
-        result.sort((a, b) => (a.isNew === b.isNew ? 0 : a.isNew ? -1 : 1));
+        result.sort((a, b) => {
+          if (a.isNew !== b.isNew) return a.isNew ? -1 : 1;
+          const aIndex = products.findIndex(p => p.id === a.id);
+          const bIndex = products.findIndex(p => p.id === b.id);
+          return bIndex - aIndex;
+        });
         break;
       case 'trending':
         result.sort((a, b) => (a.isTrending === b.isTrending ? 0 : a.isTrending ? -1 : 1));
@@ -346,7 +351,8 @@ export default function Shop() {
                         src={product.image} 
                         alt={product.name} 
                         loading="lazy"
-                        className="w-full h-full object-contain mix-blend-multiply object-center group-hover:scale-110 transition-transform duration-1000 ease-out"
+                        className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-1000 ease-out"
+                        referrerPolicy="no-referrer"
                       />
                     </Link>
                     
@@ -391,7 +397,7 @@ export default function Shop() {
                         {product.originalPrice && (
                            <>
                              <span className="text-[12px] text-primary-950/40 line-through">{formatPrice(product.originalPrice)}</span>
-                             <span className="text-[10px] tracking-[1px] font-bold text-[#E53935] bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">55% OFF</span>
+                             <span className="text-[10px] tracking-[1px] font-bold text-[#E53935] bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF</span>
                            </>
                         )}
                       </div>

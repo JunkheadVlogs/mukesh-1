@@ -1,4 +1,5 @@
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { CONFIG } from './config';
 
 export default function Contact() {
   return (
@@ -21,9 +22,8 @@ export default function Contact() {
               <div>
                 <h3 className="text-[11px] tracking-[1px] uppercase text-primary-950 mb-2">Visit Our Store</h3>
                 <p className="text-primary-950/70 text-[14px] font-light leading-relaxed">
-                  Mukesh Saree Centre,<br />
-                  Jaganth Road, Gandibagh,<br />
-                  Nagpur 440002
+                  {CONFIG.STORE_NAME},<br />
+                  {CONFIG.STORE_ADDRESS}
                 </p>
                 <a 
                   href="https://share.google/n9O7GlYck8DrF7u2J" 
@@ -40,7 +40,7 @@ export default function Contact() {
               <Phone className="text-gold-500 mt-0.5 mr-5 flex-shrink-0" size={20} strokeWidth={1.5} />
               <div>
                 <h3 className="text-[11px] tracking-[1px] uppercase text-primary-950 mb-2">Call / WhatsApp</h3>
-                <p className="text-primary-950/70 text-[14px] font-light mt-1">Contact Person: Mohit<br />+91 7020664641</p>
+                <p className="text-primary-950/70 text-[14px] font-light mt-1">Contact Person: Mohit<br />{CONFIG.STORE_PHONE}</p>
               </div>
             </div>
             
@@ -48,7 +48,7 @@ export default function Contact() {
               <Mail className="text-gold-500 mt-0.5 mr-5 flex-shrink-0" size={20} strokeWidth={1.5} />
               <div>
                 <h3 className="text-[11px] tracking-[1px] uppercase text-primary-950 mb-2">Email</h3>
-                <p className="text-primary-950/70 text-[14px] font-light mt-1">Info.mukeshsareecentre@gmail.com</p>
+                <p className="text-primary-950/70 text-[14px] font-light mt-1">{CONFIG.STORE_EMAIL}</p>
               </div>
             </div>
 
@@ -62,25 +62,20 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="bg-primary-50 p-10 lg:p-12 border border-black/5 flex flex-col justify-center">
-          <h2 className="text-[13px] tracking-[2px] uppercase text-primary-950 mb-8 border-b border-black/5 pb-4">Send us a Message</h2>
-          <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert('Message sent successfully!'); }}>
-            <div>
-              <label className="block text-[10px] tracking-[1px] uppercase text-primary-950/50 mb-2">Name</label>
-              <input required type="text" className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors" />
-            </div>
-            <div>
-              <label className="block text-[10px] tracking-[1px] uppercase text-primary-950/50 mb-2">Email or Phone</label>
-              <input required type="text" className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors" />
-            </div>
-            <div>
-              <label className="block text-[10px] tracking-[1px] uppercase text-primary-950/50 mb-2">Message</label>
-              <textarea required rows={4} className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors resize-none"></textarea>
-            </div>
-            <button type="submit" className="w-full bg-primary-950 text-white hover:bg-gold-500 py-4 text-[11px] tracking-[2px] uppercase transition-colors mt-4">
-              Send Message
-            </button>
-          </form>
+        <div className="bg-primary-50 p-10 lg:p-12 border border-black/5 flex flex-col justify-center relative overflow-hidden min-h-[400px]">
+          <h2 className="text-[13px] tracking-[2px] uppercase text-primary-950 mb-8 border-b border-black/5 pb-4">Visit Our Store</h2>
+          <div className="flex-grow flex items-center justify-center bg-black/5 rounded overflow-hidden">
+             {/* Map Placeholder or image */}
+             <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.0858547285694!2d79.09703647600021!3d21.148962683642146!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4c0f1659929a5%3A0xc34586c95c2ec428!2sMukesh%20Saree%20Centre!5e0!3m2!1sen!2sin!4v1709669528001!5m2!1sen!2sin" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0, minHeight: '100%' }} 
+                allowFullScreen={true} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+             ></iframe>
+          </div>
         </div>
       </div>
     </div>

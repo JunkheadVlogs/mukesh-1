@@ -189,7 +189,7 @@ export default function Wishlist() {
                       <img 
                         src={product.image} 
                         alt={product.name}
-                        className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-1000"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                       />
                       <div className="absolute inset-0 bg-primary-950/0 group-hover:bg-primary-950/10 transition-colors duration-500" />
                       

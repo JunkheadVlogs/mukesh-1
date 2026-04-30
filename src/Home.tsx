@@ -21,9 +21,9 @@ import { formatPrice } from "./utils";
 export default function Home() {
   const trendingProducts = products.filter((p) => p.isTrending).slice(0, 2);
   const trendingIds = new Set(trendingProducts.map((p) => p.id));
-  const newArrivalsProductsList = products.filter(
-    (p) => p.isNew && !trendingIds.has(p.id),
-  );
+  const newArrivalsProductsList = [...products]
+    .reverse()
+    .filter((p) => p.isNew && !trendingIds.has(p.id));
   // If there are less than 2 new arrivals, fill with other non-trending products to make sure we show 2
   const newArrivals =
     newArrivalsProductsList.length >= 2
@@ -80,7 +80,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative w-full h-[90vh] min-h-[700px] bg-primary-50 flex items-center overflow-hidden">
+      <section className="relative w-full h-[85vh] md:h-[90vh] min-h-[600px] md:min-h-[750px] bg-primary-50 flex items-center overflow-hidden">
         {/* Background Image - Adjusted for clarity and positioning */}
         <motion.div
           className="absolute inset-0 w-full h-full z-0 overflow-hidden"
@@ -89,7 +89,7 @@ export default function Home() {
           <img
             src="https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me"
             alt="Luxury Indian Fashion"
-            className="w-full h-full object-cover object-center md:object-[center_30%]"
+            className="w-full h-full object-cover object-center lg:object-[center_20%]"
             referrerPolicy="no-referrer"
           />
         </motion.div>
@@ -245,13 +245,14 @@ export default function Home() {
             {/* Co-Ord Sets - Main Focus */}
             <Link
               to="/shop?category=Co-Ord Sets"
-              className="lg:col-span-7 xl:col-span-8 relative h-[450px] md:h-[550px] overflow-hidden group rounded-sm"
+              className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-sm"
             >
               <div className="absolute inset-0">
                 <img
                   src="https://drive.google.com/thumbnail?id=1_PdNfAScYuOrr_cA0e6TZQdAlSCvzZ8M&sz=w1200"
                   alt="Co-Ord Sets"
-                  className="w-full h-full object-cover object-top sm:object-center group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-950/30 to-transparent"></div>
@@ -280,6 +281,7 @@ export default function Home() {
                   src="https://drive.google.com/thumbnail?id=1u0O4RqmNHGbiS3cksJDjixD4wzwkYpfw&sz=w1200"
                   alt="Sarees"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-950/20 to-transparent"></div>
@@ -534,7 +536,8 @@ function ProductCard({ product }: { product: Product; key?: string }) {
           src={product.image}
           alt={product.name}
           loading="lazy"
-          className="w-full h-full object-contain mix-blend-multiply object-center group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+          referrerPolicy="no-referrer"
         />
         {product.isNew && (
           <span className="absolute top-3 left-3 bg-white border border-black/5 text-primary-950 text-[9px] px-2 py-1 tracking-[2px] uppercase rounded-sm font-medium">
@@ -560,7 +563,12 @@ function ProductCard({ product }: { product: Product; key?: string }) {
                   {formatPrice(product.originalPrice)}
                 </span>
                 <span className="text-[10px] tracking-[1px] font-bold text-[#E53935] bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">
-                  55% OFF
+                  {Math.round(
+                    ((product.originalPrice - product.price) /
+                      product.originalPrice) *
+                      100,
+                  )}
+                  % OFF
                 </span>
               </>
             )}

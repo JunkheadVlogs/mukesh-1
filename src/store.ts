@@ -20,6 +20,7 @@ export interface Product {
   originalPrice?: number;
   image: string;
   images?: string[];
+  videoUrl?: string;
   category: 'Sarees' | 'Co-Ord Sets';
   fabric: string;
   color: string;
@@ -29,7 +30,6 @@ export interface Product {
   slug: string;
   description: string;
   rating: number;
-  reviews?: Review[];
   availableSizes?: string[];
 }
 
@@ -41,17 +41,11 @@ interface CartItem extends Product {
 interface AppState {
   cart: CartItem[];
   wishlist: string[];
-  reviews: Review[];
-  user: null | { name: string; email: string };
   addToCart: (product: Product, size?: string, quantity?: number) => void;
   removeFromCart: (productId: string, size?: string) => void;
   updateQuantity: (productId: string, size: string | undefined, qty: number) => void;
   clearCart: () => void;
   toggleWishlist: (productId: string) => void;
-  addReview: (review: Omit<Review, 'id' | 'date' | 'helpful' | 'notHelpful'>) => void;
-  voteReview: (reviewId: string, type: 'helpful' | 'notHelpful') => void;
-  login: (name: string, email: string) => void;
-  logout: () => void;
   cartTotal: () => number;
 }
 
@@ -60,29 +54,6 @@ export const useStore = create<AppState>()(
     (set, get) => ({
       cart: [],
       wishlist: [],
-      reviews: [
-        {
-          id: 'rev1',
-          productId: 'p4',
-          userName: 'Anjali Sharma',
-          rating: 5,
-          comment: 'The cotton co-ord set is of exceptional quality. The embroidery is even more beautiful in person. Worth every rupee!',
-          date: '2024-03-15T10:30:00Z',
-          helpful: 12,
-          notHelpful: 0
-        },
-        {
-          id: 'rev2',
-          productId: 'p4',
-          userName: 'Priya Verma',
-          rating: 4,
-          comment: 'Beautiful co-ord set, very lightweight and comfortable. The fit is perfect.',
-          date: '2024-03-20T14:45:00Z',
-          helpful: 8,
-          notHelpful: 1
-        }
-      ],
-      user: null,
       addToCart: (product, size, quantity = 1) => {
         set((state) => {
           const existingItem = state.cart.find(
@@ -122,31 +93,6 @@ export const useStore = create<AppState>()(
             : [...state.wishlist, productId],
         }));
       },
-      addReview: (review) => {
-        set((state) => ({
-          reviews: [
-            ...state.reviews,
-            {
-              ...review,
-              id: Math.random().toString(36).substr(2, 9),
-              date: new Date().toISOString(),
-              helpful: 0,
-              notHelpful: 0,
-            },
-          ],
-        }));
-      },
-      voteReview: (reviewId, type) => {
-        set((state) => ({
-          reviews: state.reviews.map((r) =>
-            r.id === reviewId
-              ? { ...r, [type]: r[type] + 1 }
-              : r
-          ),
-        }));
-      },
-      login: (name, email) => set({ user: { name, email } }),
-      logout: () => set({ user: null }),
       cartTotal: () => {
         return get().cart.reduce((total, item) => total + item.price * item.quantity, 0);
       },

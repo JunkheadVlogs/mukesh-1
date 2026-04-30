@@ -1,6 +1,6 @@
 {
   "name": "Mukesh Saree Centre",
   "description": "Premium ecommerce website for Mukesh Saree Centre, specializing in luxury sarees and co-ord sets.",
-  "requestFramePermissions": ["geolocation"],
+  "requestFramePermissions": [],
   "majorCapabilities": []
 }

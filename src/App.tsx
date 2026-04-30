@@ -13,7 +13,6 @@ import Cart from './Cart';
 import Checkout from './Checkout';
 import About from './About';
 import Contact from './Contact';
-import Account from './Account';
 import Privacy from './Privacy';
 import Terms from './Terms';
 
@@ -31,7 +30,6 @@ export default function App() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="account" element={<Account />} />
           <Route path="privacy" element={<Privacy />} />
           <Route path="terms" element={<Terms />} />
         </Route>
