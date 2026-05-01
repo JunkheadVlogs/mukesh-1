@@ -36,12 +36,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
 
   const isCoOrd = product.category === 'Co-Ord Sets';
   const sizes = product.availableSizes || ['M', 'L', 'XL', 'XXL', 'XXXL'];
-  const extraImages = [
-    "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=1000",
-    "https://images.unsplash.com/photo-1628151015968-3a4429e9ef04?auto=format&fit=crop&q=80&w=1000",
-    "https://images.unsplash.com/photo-1616077168079-7e09a6a3b2b5?auto=format&fit=crop&q=80&w=1000"
-  ];
-  const productImages = product.images && product.images.length > 0 ? [...product.images, ...extraImages] : [product.image, ...extraImages];
+  const productImages = product.images && product.images.length > 0 ? [...product.images] : [product.image];
   const isWishlisted = wishlist.includes(product.id);
   const hasDiscount = !!product.originalPrice && product.originalPrice > product.price;
   const finalPrice = product.price;
@@ -234,7 +229,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                         : 'bg-primary-950 border-primary-950 text-white hover:bg-gold-500 hover:border-gold-500'
                     }`}
                   >
-                    <span className="leading-tight">{isAdded ? 'Success!' : `👉 Order Now - Only ${formatPrice(finalPrice)} (Limited Stock)`}</span>
+                    <span className="leading-tight">{isAdded ? 'Success!' : `Order Now - Only ${formatPrice(finalPrice)} (Limited Stock)`}</span>
                   </button>
                   <button
                     onClick={() => toggleWishlist(product.id)}

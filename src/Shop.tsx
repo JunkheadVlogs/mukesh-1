@@ -380,7 +380,7 @@ export default function Shop() {
                         onClick={(e) => handleQuickAdd(e, product)}
                         className="w-full flex items-center justify-center gap-2 bg-primary-50 text-primary-950 py-3 text-[11px] uppercase tracking-[1px] font-medium shadow-lg pointer-events-auto hover:bg-gold-500 hover:text-white transition-colors flex-col"
                       >
-                        {`👉 Buy Now @ ${formatPrice(product.price)}`}
+                        {`Order Now - Only ${formatPrice(product.price)} (Limited Stock)`}
                       </button>
                     </div>
                   </div>

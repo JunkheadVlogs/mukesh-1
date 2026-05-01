@@ -78,16 +78,10 @@ export default function ProductPage() {
   const hasDiscount = product.category === "Co-Ord Sets" || (product.originalPrice && product.category === "Sarees");
   const finalPrice = hasDiscount ? product.price - 100 : product.price;
 
-  const extraImages = [
-    "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=1000", // Close-up fabric
-    "https://images.unsplash.com/photo-1628151015968-3a4429e9ef04?auto=format&fit=crop&q=80&w=1000", // Zoomed detail
-    "https://images.unsplash.com/photo-1616077168079-7e09a6a3b2b5?auto=format&fit=crop&q=80&w=1000" // Lifestyle image
-  ];
-
   const productImages =
     product.images && product.images.length > 0
-      ? [...product.images, ...extraImages]
-      : [product.image, ...extraImages];
+      ? [...product.images]
+      : [product.image];
   const hasVideo = !!product.videoUrl;
   const totalMediaLength = productImages.length + (hasVideo ? 1 : 0);
 
@@ -341,20 +335,28 @@ export default function ProductPage() {
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 100, opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="relative max-w-5xl w-full h-full flex flex-col items-center justify-center cursor-grab active:cursor-grabbing"
+                className="relative max-w-5xl w-full h-[80vh] flex flex-col items-center justify-center cursor-grab active:cursor-grabbing"
                 onClick={(e) => e.stopPropagation()}
               >
                 {activeImageIndex < productImages.length ? (
-                  <img
-                    src={optimizeImage(productImages[activeImageIndex], 1200)}
-                    alt={product.name}
-                    loading="lazy"
-                    className="max-w-full max-h-full object-contain shadow-2xl pointer-events-none"
-                  />
+                  <div 
+                    className="relative w-full h-full flex items-center justify-center overflow-hidden cursor-zoom-in"
+                    onMouseMove={handleMouseMove}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <img
+                      src={optimizeImage(productImages[activeImageIndex], 1200)}
+                      alt={product.name}
+                      loading="lazy"
+                      className="max-w-full max-h-full object-contain shadow-2xl transition-transform duration-300 pointer-events-none"
+                      style={isZoomed ? zoomStyle : {}}
+                    />
+                  </div>
                 ) : (
                   <iframe
                     src={product.videoUrl}
-                    className="w-full h-[80vh] border-none shadow-2xl bg-black"
+                    className="w-full h-full border-none shadow-2xl bg-black"
                   ></iframe>
                 )}
 
@@ -656,7 +658,7 @@ export default function ProductPage() {
                       : "bg-primary-950 border-primary-950 text-white hover:bg-gold-600 hover:border-gold-600"
                   }`}
                 >
-                  <span className="leading-tight">{isAdded ? "Added to Cart" : `👉 Order Now - Only ${formatPrice(finalPrice)} (Limited Stock)`}</span>
+                  <span className="leading-tight">{isAdded ? "Added to Cart" : `Order Now - Only ${formatPrice(finalPrice)} (Limited Stock)`}</span>
                 </button>
                 <button
                   onClick={() => toggleWishlist(product.id)}
@@ -813,7 +815,7 @@ export default function ProductPage() {
           }}
           className="w-full bg-primary-950 text-white py-2.5 px-8 shadow-sm hover:bg-gold-600 transition-colors flex flex-col items-center justify-center tracking-wide leading-tight rounded"
         >
-          <span className="text-[12px] font-medium">👉 Order Now - Only {formatPrice(finalPrice)} (Limited Stock)</span>
+          <span className="text-[12px] font-medium">Order Now - Only {formatPrice(finalPrice)} (Limited Stock)</span>
         </button>
       </div>
     </div>

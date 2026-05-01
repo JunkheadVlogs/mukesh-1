@@ -10,6 +10,7 @@ import {
   ChevronRight,
   ArrowRight,
   ArrowUp,
+  ChevronDown,
 } from "lucide-react";
 import { useStore } from "./store";
 import { useState, useEffect, useRef } from "react";
@@ -21,6 +22,7 @@ import { CONFIG } from "./config";
 export default function Layout() {
   const { cart } = useStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileShopOpen, setIsMobileShopOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -378,28 +380,47 @@ export default function Layout() {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex flex-1 justify-center space-x-8">
+            <nav className="hidden md:flex flex-1 justify-center space-x-8 items-center h-full">
               <Link
-                to="/shop"
-                className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors`}
+                 to="/"
+                 className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
-                Shop
+                Home
               </Link>
-              <Link
-                to="/shop?category=Sarees"
-                className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors`}
-              >
-                Sarees
-              </Link>
-              <Link
-                to="/shop?category=Co-Ord Sets"
-                className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors`}
-              >
-                Co-Ords
-              </Link>
+              <div className="relative group h-full flex items-center">
+                <Link
+                  to="/shop"
+                  className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} group-hover:text-gold-500 transition-colors py-4 flex items-center pr-2`}
+                >
+                  Shop <ChevronDown size={14} className="ml-1 opacity-70 group-hover:rotate-180 transition-transform duration-300" />
+                </Link>
+                {/* Dropdown Menu */}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-48 bg-white border border-black/5 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-50">
+                  <div className="py-2 flex flex-col">
+                    <Link
+                      to="/shop"
+                      className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
+                    >
+                      All Products
+                    </Link>
+                    <Link
+                      to="/shop?category=Sarees"
+                      className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
+                    >
+                      Sarees
+                    </Link>
+                    <Link
+                      to="/shop?category=Co-Ord Sets"
+                      className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
+                    >
+                      Co-Ord Sets
+                    </Link>
+                  </div>
+                </div>
+              </div>
               <Link
                 to="/about"
-                className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors`}
+                className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
                 Legacy
               </Link>
@@ -436,60 +457,81 @@ export default function Layout() {
 
         {/* Mobile Navigation */}
         <div
-          className={`md:hidden bg-primary-50 overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-96 border-t border-black/5" : "max-h-0"}`}
+          className={`md:hidden bg-primary-50 overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-[500px] border-t border-black/5" : "max-h-0"}`}
         >
-          <div className="px-4 py-4 flex flex-col space-y-4">
+          <div className="px-5 py-6 flex flex-col space-y-5">
             <Link
               to="/"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-[12px] tracking-[2px] uppercase font-medium text-primary-950"
+              className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between"
             >
               Home
             </Link>
-            <Link
-              to="/shop"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-[12px] tracking-[2px] uppercase font-medium text-primary-950"
-            >
-              Shop All
-            </Link>
-            <Link
-              to="/shop?category=Sarees"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-[12px] tracking-[2px] uppercase font-medium text-primary-950"
-            >
-              Sarees
-            </Link>
-            <Link
-              to="/shop?category=Co-Ord Sets"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-[12px] tracking-[2px] uppercase font-medium text-primary-950"
-            >
-              Co-Ord Sets
-            </Link>
+            
+            <div className="flex flex-col space-y-4">
+              <div 
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() => setIsMobileShopOpen(!isMobileShopOpen)}
+              >
+                <span className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950">
+                  Shop
+                </span>
+                <ChevronDown 
+                  size={16} 
+                  className={`text-primary-950/70 transition-transform duration-300 ${isMobileShopOpen ? "rotate-180" : ""}`}
+                />
+              </div>
+              
+              <div 
+                className={`flex flex-col space-y-4 pl-4 border-l border-gold-500/30 overflow-hidden transition-all duration-300 ${isMobileShopOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0 bg-transparent"}`}
+              >
+                <Link
+                  to="/shop"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                >
+                  All Products
+                </Link>
+                <Link
+                  to="/shop?category=Sarees"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                >
+                  Sarees
+                </Link>
+                <Link
+                  to="/shop?category=Co-Ord Sets"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                >
+                  Co-Ord Sets
+                </Link>
+              </div>
+            </div>
+
             <Link
               to="/about"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-[12px] tracking-[2px] uppercase font-medium text-primary-950"
+              className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between"
             >
               Our Legacy
             </Link>
-            <div className="border-t border-black/5 pt-4 mt-2 flex flex-col space-y-4">
+            <div className="border-t border-black/5 pt-5 mt-2 flex flex-col space-y-5">
               <Link
                 to="/wishlist"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 text-[12px] tracking-[2px] uppercase font-medium text-primary-950"
+                className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950"
               >
-                <Heart size={16} strokeWidth={1.5} /> Wishlist
+                <Heart size={18} strokeWidth={1.5} /> Wishlist
               </Link>
               <button
                 onClick={() => {
                   setIsMobileMenuOpen(false);
                   setIsSearchOpen(true);
                 }}
-                className="flex items-center gap-3 text-[12px] tracking-[2px] uppercase font-medium text-primary-950 text-left"
+                className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 text-left"
               >
-                <Search size={16} strokeWidth={1.5} /> Search
+                <Search size={18} strokeWidth={1.5} /> Search
               </button>
             </div>
           </div>
