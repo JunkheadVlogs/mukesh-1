@@ -26,3 +26,20 @@ export function parseMarkdownDescription(markdown: string) {
   }
   return sections;
 }
+
+export function optimizeImage(url: string, width: number = 800) {
+  if (!url) return url;
+  if (url.includes('drive.google.com/thumbnail')) {
+    return url.replace(/sz=w\d+/, `sz=w${width}-rw`);
+  }
+  if (url.includes('images.unsplash.com')) {
+    // Add format and compression to unsplash images if not present
+    let optimizedUrl = url;
+    if (!optimizedUrl.includes('auto=format')) optimizedUrl += '&auto=format';
+    if (!optimizedUrl.includes('fit=crop')) optimizedUrl += '&fit=crop';
+    if (!optimizedUrl.includes('q=')) optimizedUrl += '&q=80';
+    optimizedUrl = optimizedUrl.replace(/w=\d+/, `w=${width}`);
+    return optimizedUrl;
+  }
+  return url;
+}

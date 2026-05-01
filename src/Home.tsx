@@ -110,7 +110,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-[40px] md:text-[56px] lg:text-[72px] font-serif text-white mb-6 leading-[1.05] font-normal drop-shadow-lg"
+              className="text-[28px] md:text-[38px] lg:text-[62px] font-serif text-white mb-6 leading-[1.1] font-normal drop-shadow-lg"
             >
               Effortless Elegance,
               <br />
@@ -144,7 +144,7 @@ export default function Home() {
               </Link>
               <Link
                 to="/shop"
-                className="border border-white/40 text-white bg-white/10 backdrop-blur-md text-[10px] tracking-[2px] uppercase px-10 py-4 text-center rounded-sm transition-all hover:bg-white hover:text-primary-950 font-medium"
+                className="border border-white/40 text-white bg-white/10 backdrop-blur-md text-[10px] tracking-[2px] uppercase px-10 py-4 text-center rounded-sm transition-all hover:bg-primary-50 hover:text-primary-950 font-medium"
               >
                 View All
               </Link>
@@ -191,7 +191,7 @@ export default function Home() {
       {/* Trust Badge Strip */}
       <section
         id="next-section"
-        className="bg-white py-8 border-b border-black/5"
+        className="bg-primary-50 py-8 border-b border-black/5"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 text-center">
@@ -227,9 +227,9 @@ export default function Home() {
       </section>
 
       {/* Shop by Category */}
-      <section className="py-16 md:py-24 bg-white border-b border-black/5">
+      <section className="py-24 md:py-32 bg-primary-50 border-b border-black/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-baseline mb-8">
+          <div className="flex justify-between items-baseline mb-12">
             <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-normal">
               Shop by Category
             </h2>
@@ -241,7 +241,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Co-Ord Sets - Main Focus */}
             <Link
               to="/shop?category=Co-Ord Sets"
@@ -257,14 +257,14 @@ export default function Home() {
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-950/30 to-transparent"></div>
               <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-                <div className="text-3xl md:text-5xl font-serif mb-3 text-white drop-shadow-md">
+                <div className="text-2xl md:text-3xl font-serif mb-3 text-white drop-shadow-md">
                   Co-Ord Sets
                 </div>
                 <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-6 drop-shadow-md">
                   Effortless Modern Style
                 </div>
                 <div>
-                  <span className="inline-block border border-white/80 text-white px-8 py-3 text-[11px] tracking-[2px] uppercase backdrop-blur-sm hover:bg-white hover:text-primary-950 transition-colors rounded-sm font-medium shadow-sm">
+                  <span className="inline-block border border-white/80 text-white px-8 py-3 text-[11px] tracking-[2px] uppercase backdrop-blur-sm hover:bg-primary-50 hover:text-primary-950 transition-colors rounded-sm font-medium shadow-sm">
                     Explore
                   </span>
                 </div>
@@ -286,14 +286,14 @@ export default function Home() {
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-950/20 to-transparent"></div>
               <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-                <div className="text-3xl md:text-4xl font-serif mb-3 text-white">
+                <div className="text-2xl md:text-3xl font-serif mb-3 text-white">
                   Sarees
                 </div>
                 <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-6 drop-shadow-sm">
                   Timeless Elegance
                 </div>
                 <div>
-                  <span className="inline-block border border-white/80 text-white px-8 py-3 text-[11px] tracking-[2px] uppercase backdrop-blur-sm hover:bg-white hover:text-primary-950 transition-colors rounded-sm font-medium">
+                  <span className="inline-block border border-white/80 text-white px-8 py-3 text-[11px] tracking-[2px] uppercase backdrop-blur-sm hover:bg-primary-50 hover:text-primary-950 transition-colors rounded-sm font-medium">
                     Explore
                   </span>
                 </div>
@@ -304,9 +304,9 @@ export default function Home() {
       </section>
 
       {/* Trending Section */}
-      <section className="py-16 md:py-24 bg-primary-50">
+      <section className="py-24 md:py-32 bg-primary-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-baseline mb-8">
+          <div className="flex justify-between items-baseline mb-12">
             <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-normal">
               Trending Now
             </h2>
@@ -318,7 +318,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 md:gap-16 max-w-3xl mx-auto">
             {trendingProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -327,9 +327,9 @@ export default function Home() {
       </section>
 
       {/* New Arrivals Section */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-24 md:py-32 bg-primary-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-baseline mb-8">
+          <div className="flex justify-between items-baseline mb-12">
             <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-normal">
               Fresh Styles Just Dropped
             </h2>
@@ -341,7 +341,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 md:gap-16 max-w-3xl mx-auto">
             {newArrivals.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -350,13 +350,13 @@ export default function Home() {
       </section>
 
       {/* Experience Our Store Section */}
-      <section className="py-16 md:py-24 bg-white overflow-hidden">
+      <section className="py-24 md:py-32 bg-primary-50 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="text-[10px] tracking-[3px] uppercase text-gold-500 mb-4 font-medium italic">
               Visit Us
             </div>
-            <h2 className="text-3xl md:text-5xl font-serif text-primary-950 mb-6 font-normal">
+            <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-normal">
               Experience Luxury In-Person
             </h2>
             <p className="text-[14px] text-primary-950/60 max-w-xl mx-auto font-light leading-relaxed">
@@ -414,7 +414,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-all duration-300 flex flex-col justify-end p-10 transform translate-y-4 group-hover/item:translate-y-0">
-                    <p className="text-gold-400 text-[10px] uppercase tracking-[3px] font-bold mb-2">
+                    <p className="text-gold-400 text-[10px] uppercase tracking-[3px] font-medium mb-2">
                       Exclusive Preview
                     </p>
                     <h3 className="text-white text-2xl font-serif mb-1 font-normal">
@@ -507,7 +507,7 @@ export default function Home() {
           <div className="text-[10px] tracking-[3px] uppercase text-gold-500 mb-4 font-medium">
             Limited Time
           </div>
-          <h2 className="text-3xl md:text-5xl font-serif text-primary-950 mb-6 font-normal">
+          <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-normal">
             Exclusive Collections
           </h2>
           <p className="text-sm opacity-80 mb-8 font-light max-w-lg mx-auto text-primary-700">
@@ -531,16 +531,16 @@ export default function Home() {
 function ProductCard({ product }: { product: Product; key?: string }) {
   return (
     <Link to={`/product/${product.slug}`} className="group block">
-      <div className="relative aspect-[9/16] overflow-hidden bg-transparent mb-4 flex items-center justify-center rounded-sm">
+      <div className="relative aspect-[2/3] overflow-hidden bg-transparent mb-4 flex items-center justify-center rounded-sm">
         <img
           src={product.image}
           alt={product.name}
           loading="lazy"
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000"
           referrerPolicy="no-referrer"
         />
         {product.isNew && (
-          <span className="absolute top-3 left-3 bg-white border border-black/5 text-primary-950 text-[9px] px-2 py-1 tracking-[2px] uppercase rounded-sm font-medium">
+          <span className="absolute top-3 left-3 bg-primary-50 border border-black/5 text-primary-950 text-[9px] px-2 py-1 tracking-[2px] uppercase rounded-sm font-medium">
             New
           </span>
         )}
@@ -554,7 +554,7 @@ function ProductCard({ product }: { product: Product; key?: string }) {
         </h3>
         <div className="flex flex-col items-center justify-center mt-2">
           <div className="flex items-center space-x-2 text-[14px]">
-            <span className="font-bold text-primary-950">
+            <span className="font-medium text-primary-950">
               {formatPrice(product.price)}
             </span>
             {product.originalPrice && (
@@ -562,7 +562,7 @@ function ProductCard({ product }: { product: Product; key?: string }) {
                 <span className="text-[12px] text-primary-950/40 line-through">
                   {formatPrice(product.originalPrice)}
                 </span>
-                <span className="text-[10px] tracking-[1px] font-bold text-[#E53935] bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">
+                <span className="text-[10px] tracking-[1px] font-medium text-primary-700 bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">
                   {Math.round(
                     ((product.originalPrice - product.price) /
                       product.originalPrice) *
@@ -573,13 +573,6 @@ function ProductCard({ product }: { product: Product; key?: string }) {
               </>
             )}
           </div>
-          {product.originalPrice && (
-            <div className="mt-1.5">
-              <span className="text-[9px] uppercase tracking-[1px] font-semibold text-primary-950/70 bg-primary-50 px-2 py-0.5 rounded border border-black/5">
-                Extra ₹100 OFF on prepaid
-              </span>
-            </div>
-          )}
         </div>
       </div>
     </Link>

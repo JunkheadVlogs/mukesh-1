@@ -2,7 +2,7 @@ export default function About() {
   return (
     <div>
       <div className="bg-transparent py-24 text-center border-b border-black/5">
-        <h1 className="text-4xl md:text-[56px] font-serif mb-6 text-primary-950 font-normal leading-tight">Our Legacy</h1>
+        <h1 className="text-2xl md:text-[44px] font-serif mb-6 text-primary-950 font-normal leading-tight">Our Legacy</h1>
         <p className="text-primary-950/70 max-w-2xl mx-auto px-4 font-light text-lg">Since 1976, we have been crafting elegance and upholding the tradition of fine Indian wear.</p>
       </div>
       

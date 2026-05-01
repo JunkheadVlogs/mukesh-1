@@ -5,7 +5,7 @@ export default function Contact() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div className="text-center mb-20">
-        <h1 className="text-4xl md:text-[56px] font-serif text-primary-950 mb-6 font-normal">Contact Us</h1>
+        <h1 className="text-2xl md:text-[44px] font-serif text-primary-950 mb-6 font-normal">Contact Us</h1>
         <div className="w-16 h-[1px] bg-primary-950/20 mx-auto"></div>
       </div>
 

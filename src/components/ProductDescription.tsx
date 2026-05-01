@@ -34,7 +34,7 @@ export function ProductDescription({
         return (
           <div key={section.title} className="mb-4">
             {titleLower !== "short description" && (
-              <h3 className="text-[11px] tracking-[2px] text-primary-950/50 mb-3 uppercase font-semibold">
+              <h3 className="text-[11px] tracking-[2px] text-primary-950/50 mb-3 uppercase font-medium">
                 {section.title.replace(/^\d+\.\s*/, "")}
               </h3>
             )}

@@ -7,33 +7,38 @@ import { CheckCircle2, Loader2 } from 'lucide-react';
 import { CONFIG, submitToGoogleSheets } from './config';
 
 export default function Checkout() {
-  const { cart, cartTotal, clearCart } = useStore();
+  const { cart, cartTotal, clearCart, appliedCoupon, applyCoupon } = useStore();
   const navigate = useNavigate();
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cod');
-  const [couponInput, setCouponInput] = useState('');
-  const [isCouponApplied, setIsCouponApplied] = useState(false);
+  const [couponInput, setCouponInput] = useState(appliedCoupon || '');
   const [couponError, setCouponError] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    if (appliedCoupon) {
+      setCouponInput(appliedCoupon);
+    }
+  }, [appliedCoupon]);
+
   const subtotal = cartTotal();
   const shipping = 0;
   
   // Calculate discount
-  const discount = isCouponApplied ? 100 : 0;
-  const total = subtotal + shipping - discount;
+  const discount = appliedCoupon === 'FIRST100' ? 100 : 0;
+  const total = Math.max(0, subtotal + shipping - discount);
 
   const handleApplyCoupon = () => {
     if (couponInput.toUpperCase() === 'FIRST100') {
-      setIsCouponApplied(true);
+      applyCoupon('FIRST100');
       setCouponError('');
     } else {
-      setIsCouponApplied(false);
+      applyCoupon(null);
       setCouponError('Invalid coupon code');
     }
   };
@@ -201,13 +206,13 @@ export default function Checkout() {
     return (
       <div className="max-w-3xl mx-auto px-4 py-24 min-h-[60vh] flex flex-col items-center justify-center text-center">
         <CheckCircle2 size={48} className="text-gold-500 mb-8" strokeWidth={1.5} />
-        <h1 className="text-3xl md:text-5xl font-serif text-primary-950 mb-6 font-normal">Order Received</h1>
+        <h1 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-normal">Order Received</h1>
         <p className="text-lg text-primary-950/80 mb-2 font-light">Thank you for shopping with Mukesh Saree Centre.</p>
         <div className="max-w-md mx-auto bg-primary-50 p-6 my-8 border border-black/5 rounded-sm">
           <p className="text-sm text-primary-950 line-clamp-1 font-medium mb-2">Order ID: #{orderId}</p>
           {paymentMethod === 'online' ? (
             <p className="text-[13px] text-primary-950/70">
-              Your payment of <span className="font-bold text-primary-950">{formatPrice(total)}</span> was successful. Your order is being processed and will be shipped shortly.
+              Your payment of <span className="font-medium text-primary-950">{formatPrice(total)}</span> was successful. Your order is being processed and will be shipped shortly.
             </p>
           ) : (
             <p className="text-[13px] text-primary-950/70">
@@ -227,23 +232,23 @@ export default function Checkout() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h1 className="text-3xl md:text-[40px] font-serif text-primary-950 mb-10 pb-6 border-b border-black/5 font-normal">Checkout</h1>
+      <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-10 pb-6 border-b border-black/5 font-normal">Checkout</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
         {/* Mobile Order Summary (Hidden on Desktop) */}
         <div className="lg:hidden bg-primary-50 p-6 border border-black/5 rounded-sm mb-4">
-          <div className="mb-4 bg-green-50/50 text-green-700 text-[11px] px-3 py-2 border border-green-200/50 rounded-sm flex items-center justify-center font-medium tracking-wide uppercase">
+          <div className="mb-4 bg-primary-100/50 text-gold-600 text-[11px] px-3 py-2 border border-gold-200/50 rounded-sm flex items-center justify-center font-medium tracking-wide uppercase">
             ✨ Free shipping on your order
           </div>
           
           {/* Mobile Item List Summary */}
           <div className="mb-6 space-y-4">
-            <p className="text-[10px] uppercase tracking-[1px] font-bold text-primary-950 mb-3">Your Items</p>
+            <p className="text-[10px] uppercase tracking-[1px] font-medium text-primary-950 mb-3">Your Items</p>
             {cart.map((item) => (
-              <div key={`${item.id}-${item.size}`} className="flex gap-4 bg-white p-3 border border-black/5 rounded-sm">
+              <div key={`${item.id}-${item.size}`} className="flex gap-4 bg-primary-50 p-3 border border-black/5 rounded-sm">
                 <div className="w-16 aspect-[9/16] bg-transparent relative flex-shrink-0 mt-2">
                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                  <span className="absolute -top-2 -right-2 bg-gold-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full shadow-lg border border-white z-20 font-bold">{item.quantity}</span>
+                  <span className="absolute -top-2 -right-2 bg-gold-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full shadow-lg border border-white z-20 font-medium">{item.quantity}</span>
                 </div>
                 <div className="flex-grow flex flex-col justify-center">
                   <p className="text-[13px] font-serif text-primary-950 line-clamp-1">{item.name}</p>
@@ -255,8 +260,8 @@ export default function Checkout() {
           </div>
           
           {/* Mobile Coupon Section */}
-          <div className="mb-6 bg-white p-4 border border-gold-500/20 rounded-md">
-            <p className="text-[10px] uppercase tracking-[1px] font-bold text-primary-950 mb-3">Apply Coupon</p>
+          <div className="mb-6 bg-primary-50 p-4 border border-gold-500/20 rounded-md">
+            <p className="text-[10px] uppercase tracking-[1px] font-medium text-primary-950 mb-3">Apply Coupon</p>
             <div className="flex gap-2">
               <input 
                 type="text" 
@@ -266,20 +271,20 @@ export default function Checkout() {
                   setCouponError('');
                 }}
                 placeholder="FIRST100" 
-                className="flex-1 bg-white border border-black/10 px-3 py-2 text-xs focus:border-gold-500 outline-none uppercase font-bold"
+                className="flex-1 bg-primary-50 border border-black/10 px-3 py-2 text-xs focus:border-gold-500 outline-none uppercase font-medium"
               />
               <button 
                 type="button" 
                 onClick={handleApplyCoupon}
-                className="bg-primary-950 text-white px-4 py-2 text-[10px] uppercase tracking-[1px] hover:bg-gold-500 transition-colors font-bold"
+                className="bg-primary-950 text-white px-4 py-2 text-[10px] uppercase tracking-[1px] hover:bg-gold-500 transition-colors font-medium"
               >
                 Apply
               </button>
             </div>
-            {couponError && <p className="text-[10px] text-red-500 mt-1">{couponError}</p>}
-            {isCouponApplied && couponInput === 'FIRST100' && (
-              <p className="text-[10px] text-green-600 mt-2 font-medium">
-                ✔️ ₹100 discount applied!
+            {couponError && <p className="text-[10px] text-primary-600 mt-1">{couponError}</p>}
+            {appliedCoupon === 'FIRST100' && (
+              <p className="text-[10px] text-gold-600 mt-2 font-medium">
+                ✔️ ₹100 OFF Applied Successfully
               </p>
             )}
           </div>
@@ -290,14 +295,14 @@ export default function Checkout() {
               <span>{formatPrice(subtotal)}</span>
             </div>
             {discount > 0 && (
-              <div className="flex justify-between text-[13px] text-green-600">
+              <div className="flex justify-between text-[13px] text-gold-600">
                 <span>Discount (FIRST100)</span>
                 <span>-{formatPrice(discount)}</span>
               </div>
             )}
           </div>
           
-          <p className="text-[14px] font-bold uppercase tracking-[1px] text-primary-950 flex justify-between items-center">
+          <p className="text-[14px] font-medium uppercase tracking-[1px] text-primary-950 flex justify-between items-center">
             <span>Total to Pay</span>
             <span className="text-2xl font-serif">{formatPrice(total)}</span>
           </p>
@@ -367,7 +372,7 @@ export default function Checkout() {
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full text-white py-4 text-[13px] font-bold tracking-[2px] uppercase transition-colors rounded-sm flex flex-col items-center justify-center gap-1 ${isSubmitting ? 'bg-primary-950/50 cursor-not-allowed' : (paymentMethod === 'online' ? 'bg-[#00B967] hover:bg-[#00B967]/90' : 'bg-primary-950 hover:bg-gold-500')}`}
+                className={`w-full text-white py-4 text-[13px] font-medium tracking-[2px] uppercase transition-colors rounded-sm flex flex-col items-center justify-center gap-1 ${isSubmitting ? 'bg-primary-950/50 cursor-not-allowed' : (paymentMethod === 'online' ? 'bg-[#00B967] hover:bg-[#00B967]/90' : 'bg-primary-950 hover:bg-gold-500')}`}
               >
                 {isSubmitting ? (
                   <div className="flex items-center gap-2">
@@ -389,7 +394,7 @@ export default function Checkout() {
 
         {/* Order Summary Checkout view */}
         <div className="lg:pl-16 border-l border-black/5 hidden lg:block">
-           <div className="mb-4 bg-green-50/50 text-green-700 text-[11px] px-3 py-2 border border-green-200/50 rounded-sm flex items-center justify-center font-medium tracking-wide uppercase">
+           <div className="mb-4 bg-primary-100/50 text-gold-600 text-[11px] px-3 py-2 border border-gold-200/50 rounded-sm flex items-center justify-center font-medium tracking-wide uppercase">
              ✨ Limited Time Offer: Free shipping on all orders
            </div>
            <h2 className="text-[13px] tracking-[2px] uppercase text-primary-950 mb-8 border-b border-black/5 pb-4">In Your Cart</h2>
@@ -398,7 +403,7 @@ export default function Checkout() {
                 <div key={`${item.id}-${item.size}`} className="flex gap-6">
                   <div className="w-20 aspect-[9/16] bg-transparent relative flex-shrink-0 mt-2">
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover shadow-sm" referrerPolicy="no-referrer" />
-                    <span className="absolute -top-2 -right-2 bg-gold-500 text-white text-[11px] font-bold w-6 h-6 flex items-center justify-center rounded-full shadow-lg border-2 border-white z-20">{item.quantity}</span>
+                    <span className="absolute -top-2 -right-2 bg-gold-500 text-white text-[11px] font-medium w-6 h-6 flex items-center justify-center rounded-full shadow-lg border-2 border-white z-20">{item.quantity}</span>
                   </div>
                   <div className="flex-grow flex flex-col justify-center">
                     <p className="text-[15px] font-serif text-primary-950 line-clamp-1">{item.name}</p>
@@ -410,10 +415,9 @@ export default function Checkout() {
            </div>
            
            <div className="border-t border-black/5 pt-8 space-y-4 text-[13px] text-primary-950/80 border-b pb-8 font-light">
-              
               {/* Coupon Section */}
               <div className="mb-6 bg-primary-50 p-4 border border-gold-500/20 rounded-md">
-                <p className="text-[11px] uppercase tracking-[1px] font-bold text-primary-950 mb-3">Discount Code</p>
+                <p className="text-[11px] uppercase tracking-[1px] font-medium text-primary-950 mb-3">Discount Code</p>
                 <div className="flex gap-2">
                   <input 
                     type="text" 
@@ -423,20 +427,20 @@ export default function Checkout() {
                       setCouponError('');
                     }}
                     placeholder="Enter code" 
-                    className="flex-1 bg-white border border-black/10 px-3 py-2 text-sm focus:border-gold-500 outline-none uppercase font-bold"
+                    className="flex-1 bg-primary-50 border border-black/10 px-3 py-2 text-sm focus:border-gold-500 outline-none uppercase font-medium"
                   />
                   <button 
                     type="button" 
                     onClick={handleApplyCoupon}
-                    className="bg-primary-950 text-white px-4 py-2 text-[10px] uppercase tracking-[1px] hover:bg-gold-500 transition-colors font-bold"
+                    className="bg-primary-950 text-white px-4 py-2 text-[10px] uppercase tracking-[1px] hover:bg-gold-500 transition-colors font-medium"
                   >
                     Apply
                   </button>
                 </div>
-                {couponError && <p className="text-[11px] text-red-500 mt-1">{couponError}</p>}
-                {isCouponApplied && couponInput === 'FIRST100' ? (
-                  <p className="text-[11px] text-green-600 mt-2 font-medium">
-                    ✔️ ₹100 discount applied!
+                {couponError && <p className="text-[11px] text-primary-600 mt-1">{couponError}</p>}
+                {appliedCoupon === 'FIRST100' ? (
+                  <p className="text-[11px] text-gold-600 mt-2 font-medium">
+                    ✔️ ₹100 OFF Applied Successfully
                   </p>
                 ) : (
                   <p className="text-[11px] text-primary-950/60 mt-2 italic">Apply FIRST100 to save ₹100</p>
@@ -449,10 +453,10 @@ export default function Checkout() {
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span className="text-green-600 font-medium">Free (Offer Applied)</span>
+                <span className="text-gold-600 font-medium">Free (Offer Applied)</span>
               </div>
               {discount > 0 && (
-                <div className="flex justify-between text-green-600 font-medium">
+                <div className="flex justify-between text-gold-600 font-medium">
                   <span>Discount (FIRST100)</span>
                   <span>-{formatPrice(discount)}</span>
                 </div>
@@ -460,8 +464,8 @@ export default function Checkout() {
            </div>
            
            <div className="flex justify-between items-end mt-8">
-              <span className="text-[14px] font-bold uppercase tracking-[1px] text-primary-950">Final Price</span>
-              <span className="text-3xl font-serif font-bold text-primary-950">{formatPrice(total)}</span>
+              <span className="text-[14px] font-medium uppercase tracking-[1px] text-primary-950">Final Price</span>
+              <span className="text-2xl font-serif font-medium text-primary-950">{formatPrice(total)}</span>
             </div>
         </div>
       </div>

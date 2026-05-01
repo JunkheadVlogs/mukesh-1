@@ -4,7 +4,7 @@ import { formatPrice } from './utils';
 import { Trash2, Plus, Minus, ArrowRight, Shield } from 'lucide-react';
 
 export default function Cart() {
-  const { cart, removeFromCart, updateQuantity, cartTotal } = useStore();
+  const { cart, removeFromCart, updateQuantity, cartTotal, appliedCoupon } = useStore();
   const navigate = useNavigate();
 
   const handleQuantityChange = (id: string, size: string | undefined, qty: number) => {
@@ -14,8 +14,8 @@ export default function Cart() {
 
   if (cart.length === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-[60vh] flex flex-col items-center justify-center text-center">
-        <h2 className="text-3xl md:text-5xl font-serif text-primary-950 mb-6 font-normal">Your cart is empty</h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 min-h-[70vh] flex flex-col items-center justify-center text-center">
+        <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-normal">Your cart is empty</h2>
         <p className="text-primary-950/70 mb-10 font-light">Looks like you haven't added anything to your cart yet.</p>
         <Link 
           to="/shop" 
@@ -29,17 +29,18 @@ export default function Cart() {
 
   const subtotal = cartTotal();
   const shipping = 0;
-  const total = subtotal + shipping;
+  const discount = appliedCoupon === 'FIRST100' ? 100 : 0;
+  const total = Math.max(0, subtotal + shipping - discount);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h1 className="text-3xl md:text-[40px] font-serif text-primary-950 mb-10 pb-6 border-b border-black/5 font-normal">Shopping Cart</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-12 pb-8 border-b border-black/5 font-normal">Shopping Cart</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-8">
           {cart.map((item) => (
-            <div key={`${item.id}-${item.size}`} className="flex flex-col sm:flex-row gap-8 pb-8 border-b border-black/5">
+            <div key={`${item.id}-${item.size}`} className="flex flex-col sm:flex-row gap-12 pb-12 border-b border-black/5">
               <div className="w-24 sm:w-32 aspect-[9/16] flex-shrink-0 bg-transparent relative">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
@@ -98,12 +99,19 @@ export default function Cart() {
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span className="text-green-600 font-medium">Free</span>
+                <span className="text-gold-600 font-medium">Free</span>
               </div>
-              <div className="flex justify-between text-gold-500 opacity-80">
-                <span>Discount</span>
-                <span>Apply in checkout</span>
-              </div>
+              {discount > 0 ? (
+                <div className="flex justify-between text-gold-600 font-medium">
+                  <span>Discount (FIRST100)</span>
+                  <span>-{formatPrice(discount)}</span>
+                </div>
+              ) : (
+                <div className="flex justify-between text-gold-500 opacity-80">
+                  <span>Discount</span>
+                  <span>Apply in checkout</span>
+                </div>
+              )}
             </div>
             
             <div className="flex justify-between items-end mb-8">
@@ -118,7 +126,7 @@ export default function Cart() {
               Proceed to Checkout <ArrowRight size={14} className="ml-2" />
             </button>
             <div className="mt-6 flex items-center justify-center gap-2 border-t border-black/5 pt-4">
-               <Shield size={16} className="text-green-600"/>
+               <Shield size={16} className="text-gold-600"/>
                <span className="text-xs text-primary-600">Secure Checkout Guarantee</span>
             </div>
           </div>

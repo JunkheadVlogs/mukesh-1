@@ -9,6 +9,7 @@ import {
   MessageCircle,
   ChevronRight,
   ArrowRight,
+  ArrowUp,
 } from "lucide-react";
 import { useStore } from "./store";
 import { useState, useEffect, useRef } from "react";
@@ -34,6 +35,12 @@ export default function Layout() {
   const [isHidden, setIsHidden] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    // Scroll to top on pathname OR search change
+    // This ensures that even params changes like ?category=Sarees from footer trigger top scroll
+    window.scrollTo(0, 0);
+  }, [location.pathname, new URLSearchParams(location.search).get('category')]);
 
   useEffect(() => {
     // Show popup after 3 seconds for demo purposes
@@ -79,6 +86,10 @@ export default function Layout() {
     setSearchQuery("");
   }, [location.pathname]);
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const filteredProducts = searchQuery.trim()
     ? products
         .filter(
@@ -101,7 +112,7 @@ export default function Layout() {
   const isTransparent = isHomePage && !isScrolled;
   const headerBg = isTransparent
     ? "bg-transparent"
-    : "bg-white/90 backdrop-blur-md shadow-sm";
+    : "bg-white/95 backdrop-blur-md shadow-lg";
   const textColor = "text-primary-950";
   const logoColor = "text-primary-950";
   const borderColor = isTransparent ? "border-transparent" : "border-black/5";
@@ -115,7 +126,7 @@ export default function Layout() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-white flex flex-col text-primary-950"
+            className="fixed inset-0 z-[100] bg-primary-50 flex flex-col text-primary-950"
           >
             <div className="max-w-7xl mx-auto w-full px-4 sm:px-10">
               <div className="h-20 flex items-center justify-between border-b border-black/5">
@@ -141,7 +152,7 @@ export default function Layout() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search for sarees, co-ords, fabrics..."
-                    className="w-full text-2xl md:text-4xl font-serif text-primary-950 border-b border-black/10 pb-4 focus:outline-none focus:border-gold-500 placeholder-primary-950/20"
+                    className="w-full text-2xl md:text-3xl font-serif text-primary-950 border-b border-black/10 pb-4 focus:outline-none focus:border-gold-500 placeholder-primary-950/20"
                   />
                   <button
                     type="submit"
@@ -192,7 +203,7 @@ export default function Layout() {
                       </div>
                       <button
                         onClick={handleSearchSubmit}
-                        className="flex items-center gap-2 text-[11px] tracking-[2px] uppercase font-bold text-primary-950 hover:text-gold-500 transition-colors pt-4 border-t border-black/5 w-full justify-between"
+                        className="flex items-center gap-2 text-[11px] tracking-[2px] uppercase font-medium text-primary-950 hover:text-gold-500 transition-colors pt-4 border-t border-black/5 w-full justify-between"
                       >
                         View all results <ArrowRight size={16} />
                       </button>
@@ -252,7 +263,7 @@ export default function Layout() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-white max-w-md w-full relative overflow-hidden flex flex-col"
+              className="bg-primary-50 max-w-md w-full relative overflow-hidden flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -279,15 +290,15 @@ export default function Layout() {
                 </div>
               </div>
 
-              <div className="p-8 text-center bg-[#FAF9F6]">
+              <div className="p-8 text-center bg-primary-50">
                 <p className="text-sm text-primary-950/80 mb-6 font-medium">
-                  Flat 55% OFF + Extra ₹100 OFF on prepaid orders
+                  Flat 55% OFF + Extra ₹100 OFF on FIRST Order
                 </p>
-                <div className="bg-white border border-dashed border-gold-500 p-4 mb-6 relative">
+                <div className="bg-primary-50 border border-dashed border-gold-500 p-4 mb-6 relative">
                   <div className="text-[10px] uppercase tracking-[2px] text-primary-950/50 mb-1">
                     Use Code
                   </div>
-                  <div className="text-2xl font-bold tracking-[2px] text-primary-950">
+                  <div className="text-2xl font-medium tracking-[2px] text-primary-950">
                     FIRST100
                   </div>
                 </div>
@@ -296,7 +307,7 @@ export default function Layout() {
                     setShowPopup(false);
                     navigate("/shop?category=Co-Ord Sets");
                   }}
-                  className="w-full bg-primary-950 text-white hover:bg-gold-500 py-4 text-[11px] tracking-[2px] uppercase transition-colors font-bold shadow-lg"
+                  className="w-full bg-primary-950 text-white hover:bg-gold-500 py-4 text-[11px] tracking-[2px] uppercase transition-colors font-medium shadow-lg"
                 >
                   Unlock Offer
                 </button>
@@ -308,15 +319,15 @@ export default function Layout() {
 
       {/* Navigation */}
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-500 border-b flex flex-col ${headerBg} ${borderColor} ${
+        className={`fixed top-0 w-full z-50 transition-all duration-500 flex flex-col ${headerBg} ${
           isHidden ? "-translate-y-full" : "translate-y-0"
-        }`}
+        } ${isScrolled ? "border-b border-black/5" : "border-b-0"}`}
       >
         {/* Top Bar */}
         <div className="bg-primary-950 text-white text-center py-2.5 px-4 w-full text-[11px] sm:text-[12px] font-medium tracking-[1px] md:tracking-[2px] uppercase flex items-center justify-center gap-2 relative z-[60]">
           <span>
-            🎉 55% OFF + Extra ₹100 OFF on Prepaid Orders | Use{" "}
-            <span className="text-gold-400 font-bold">FIRST100</span>
+            🎉 55% OFF + Extra ₹100 OFF on FIRST Order | Use{" "}
+            <span className="text-gold-400 font-medium">FIRST100</span>
           </span>
         </div>
 
@@ -345,7 +356,7 @@ export default function Layout() {
                 className="flex flex-col items-center group transition-all duration-500 transform"
               >
                 <span
-                  className={`text-[18px] md:text-3xl font-serif font-bold ${logoColor} tracking-[4px] md:tracking-[10px] uppercase text-center leading-none transition-all group-hover:text-gold-500`}
+                  className={`text-[18px] md:text-2xl font-serif font-medium ${logoColor} tracking-[4px] md:tracking-[10px] uppercase text-center leading-none transition-all group-hover:text-gold-500`}
                 >
                   MUKESH
                 </span>
@@ -425,7 +436,7 @@ export default function Layout() {
 
         {/* Mobile Navigation */}
         <div
-          className={`md:hidden bg-white overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-96 border-t border-black/5" : "max-h-0"}`}
+          className={`md:hidden bg-primary-50 overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-96 border-t border-black/5" : "max-h-0"}`}
         >
           <div className="px-4 py-4 flex flex-col space-y-4">
             <Link
@@ -493,7 +504,7 @@ export default function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-black/5 py-8 mt-auto">
+      <footer className="bg-primary-50 border-t border-black/5 py-8 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Trust Bar Section */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-10 pb-10 border-b border-black/5 gap-6 text-center md:text-left">
@@ -604,7 +615,7 @@ export default function Layout() {
                 href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, '')}?text=Hi!%20I%20want%20to%20join%20the%20exclusive%20club.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gold-500 text-primary-950 py-2 px-4 text-[10px] uppercase tracking-[1px] font-bold inline-blocktext-center hover:bg-white transition-colors"
+                className="bg-gold-500 text-primary-950 py-2 px-4 text-[10px] uppercase tracking-[1px] font-medium inline-blocktext-center hover:bg-primary-50 transition-colors"
                 style={{ textAlign: 'center' }}
               >
                 Join via WhatsApp
@@ -626,11 +637,27 @@ export default function Layout() {
         className="fixed bottom-6 right-6 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl hover:bg-[#128C7E] hover:-translate-y-1 hover:scale-110 transition-all z-50 flex items-center justify-center group"
         aria-label="Contact us on WhatsApp"
       >
-        <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 ease-in-out pl-0 group-hover:pl-2 group-hover:pr-3 text-xs tracking-wider uppercase font-semibold">
+        <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 ease-in-out pl-0 group-hover:pl-2 group-hover:pr-3 text-xs tracking-wider uppercase font-medium">
           Support
         </span>
         <MessageCircle size={24} fill="currentColor" strokeWidth={1} />
       </a>
+
+      {/* Scroll to Top Button */}
+      <AnimatePresence>
+        {isScrolled && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.5, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 20 }}
+            onClick={scrollToTop}
+            className="fixed bottom-24 right-6 bg-gold-500 text-white p-2.5 rounded-full shadow-lg hover:bg-gold-600 transition-all z-40 flex items-center justify-center group"
+            aria-label="Scroll to top"
+          >
+            <ArrowUp size={18} strokeWidth={2} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

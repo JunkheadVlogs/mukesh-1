@@ -177,10 +177,10 @@ export default function Shop() {
   const uniqueColors = Array.from(new Set(products.map(p => p.color)));
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       {/* Header */}
       <div className="text-center mb-16 mt-8">
-        <h1 className="text-4xl md:text-5xl font-serif text-primary-950 mb-4 font-normal">
+        <h1 className="text-2xl md:text-3xl font-serif text-primary-950 mb-4 font-normal">
           {searchQuery ? `Results for "${searchQuery}"` : (categoryFilter || 'All Collection')}
         </h1>
         {searchQuery ? (
@@ -235,7 +235,7 @@ export default function Shop() {
               {(categoryFilter || fabricFilter.length > 0 || colorFilter.length > 0) && (
                 <button 
                   onClick={clearAllFilters}
-                  className="text-[9px] tracking-[1px] uppercase text-gold-500 hover:underline font-bold"
+                  className="text-[9px] tracking-[1px] uppercase text-gold-500 hover:underline font-medium"
                 >
                   Clear All
                 </button>
@@ -282,7 +282,7 @@ export default function Shop() {
                       className="flex items-center group w-full text-left"
                     >
                       <div className={`w-3.5 h-3.5 border mr-3 rounded-sm flex items-center justify-center transition-colors ${fabricFilter.includes(fabric) ? 'bg-primary-950 border-primary-950' : 'border-black/20 group-hover:border-gold-500'}`}>
-                        {fabricFilter.includes(fabric) && <div className="w-1.5 h-1.5 bg-white rounded-full"></div>}
+                        {fabricFilter.includes(fabric) && <div className="w-1.5 h-1.5 bg-primary-50 rounded-full"></div>}
                       </div>
                       <span className={`text-[13px] tracking-[1px] transition-colors ${fabricFilter.includes(fabric) ? 'text-primary-950 font-medium' : 'text-primary-950/60 hover:text-gold-500'}`}>
                         {fabric}
@@ -342,16 +342,16 @@ export default function Shop() {
           </div>
 
           {filteredAndSortedProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 sm:gap-x-10 sm:gap-y-16 lg:gap-x-12 lg:gap-y-20">
               {filteredAndSortedProducts.map((product) => (
                 <div key={product.id} className="group flex flex-col h-full">
-                  <div className="relative aspect-[9/16] overflow-hidden bg-transparent mb-4 flex items-center justify-center rounded-sm">
+                  <div className="relative aspect-[2/3] overflow-hidden bg-transparent mb-4 flex items-center justify-center rounded-sm">
                     <Link to={`/product/${product.slug}`} className="block h-full w-full">
                       <img 
                         src={product.image} 
                         alt={product.name} 
                         loading="lazy"
-                        className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-1000 ease-out"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
                         referrerPolicy="no-referrer"
                       />
                     </Link>
@@ -363,24 +363,24 @@ export default function Shop() {
                           e.preventDefault();
                           setQuickViewProduct(product);
                         }}
-                        className="bg-white text-primary-950 h-12 w-12 flex items-center justify-center rounded-full shadow-2xl transition-all duration-500 transform translate-y-8 group-hover:translate-y-0 pointer-events-auto hover:bg-gold-500 hover:text-white"
+                        className="bg-white/90 backdrop-blur-sm text-primary-950 h-10 w-10 flex items-center justify-center rounded-full shadow-2xl transition-all duration-500 transform translate-y-8 group-hover:translate-y-0 pointer-events-auto hover:bg-gold-500 hover:text-white"
                         title="Quick View"
                       >
-                        <Eye size={20} strokeWidth={1.5} />
+                        <Eye size={18} strokeWidth={1} />
                       </button>
                     </div>
 
                     {product.isNew && (
-                      <span className="absolute top-3 left-3 bg-white border border-black/5 text-primary-950 text-[9px] px-2 py-1 tracking-[2px] uppercase shadow-sm rounded-sm font-medium">New</span>
+                      <span className="absolute top-3 left-3 bg-primary-50 border border-black/5 text-primary-950 text-[9px] px-2 py-1 tracking-[2px] uppercase shadow-sm rounded-sm font-medium">New</span>
                     )}
 
                     {/* Quick Add Button sliding up */}
                     <div className="absolute bottom-0 w-full p-4 pointer-events-none opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                       <button
                         onClick={(e) => handleQuickAdd(e, product)}
-                        className="w-full bg-white text-primary-950 py-3 text-[11px] uppercase tracking-[2px] font-bold shadow-lg pointer-events-auto hover:bg-gold-500 hover:text-white transition-colors"
+                        className="w-full flex items-center justify-center gap-2 bg-primary-50 text-primary-950 py-3 text-[11px] uppercase tracking-[1px] font-medium shadow-lg pointer-events-auto hover:bg-gold-500 hover:text-white transition-colors flex-col"
                       >
-                        Quick Add to Cart
+                        {`👉 Buy Now @ ${formatPrice(product.price)}`}
                       </button>
                     </div>
                   </div>
@@ -393,19 +393,14 @@ export default function Shop() {
                     </h3>
                     <div className="flex flex-col items-center justify-center mt-auto pt-2">
                       <div className="flex items-center space-x-2 text-[14px]">
-                        <span className="font-bold text-primary-950">{formatPrice(product.price)}</span>
+                        <span className="font-medium text-primary-950">{formatPrice(product.price)}</span>
                         {product.originalPrice && (
                            <>
                              <span className="text-[12px] text-primary-950/40 line-through">{formatPrice(product.originalPrice)}</span>
-                             <span className="text-[10px] tracking-[1px] font-bold text-[#E53935] bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF</span>
+                             <span className="text-[10px] tracking-[1px] font-medium text-primary-700 bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF</span>
                            </>
                         )}
                       </div>
-                      {product.originalPrice && (
-                        <div className="mt-1.5 pb-2">
-                          <span className="text-[9px] uppercase tracking-[1px] font-semibold text-primary-950/70 bg-primary-50 px-2 py-0.5 rounded border border-black/5">Extra ₹100 OFF on prepaid</span>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -432,7 +427,7 @@ export default function Shop() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-primary-950 text-white px-6 py-4 rounded-sm shadow-2xl z-50 text-[11px] uppercase tracking-[2px] font-bold flex items-center"
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-primary-950 text-white px-6 py-4 rounded-sm shadow-2xl z-50 text-[11px] uppercase tracking-[2px] font-medium flex items-center"
           >
             {toastMessage}
           </motion.div>

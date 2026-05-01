@@ -4,7 +4,8 @@ export const products: Product[] = [
   {
     id: "p4",
     sku: "COORD-COCOA-001",
-    name: "Premium Pure Cotton Co-Ord Set",
+    name: "Cocoa Brown Cotton Co-Ord Set 🤎",
+    tagline: "Soft & Elegant",
     slug: "premium-pure-cotton-coord-set",
     price: 995,
     originalPrice: 1990,
@@ -21,38 +22,31 @@ export const products: Product[] = [
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "Cocoa Brown",
-    isNew: false,
+    isNew: true,
     isTrending: true,
-    description: `**1. Product Title**
-Premium Pure Cotton Co-Ord Set
+    description: `**Why You’ll Love It:**
+- 🌸 Premium 100% Cotton Fabric
+- ☁️ Soft, breathable & summer-friendly
+- 👗 Elegant cocoa brown design
+- 💃 Comfortable for daily & office wear
+- 🚚 COD Available
 
-**2. Short Description**
-Upgrade your everyday style with this elegant Cocoa Brown Co-Ord Set, designed for comfort and an effortless look. Crafted for daily wear, it provides a minimal and elegant look.
+**Description**
+Stay comfortable and stylish all day with this premium cocoa brown cotton co-ord set.
+Designed for modern women who love effortless fashion.
+Perfect for daily wear, office, and casual outings.
 
-**3. Bullet Points**
-• Fabric: 100% Pure Cotton
-• Color: Cocoa Brown
-• Fit: Relaxed and comfortable fit for all body types
-• Style: Solid color with embroidery
-• Comfort: Soft, breathable, and skin-friendly
+Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
 
-**4. Design Details**
-Beautiful self-color embroidery adds a subtle premium touch without being heavy. The straight kurta with matching pants gives a coordinated and effortless vibe.
-
-**5. Why You’ll Love It**
-Lightweight and airy feel that causes no irritation. It is super comfortable for all-day wear while keeping you stylishly minimal. Perfect for daily wear, office, casual outings, or travel.
-
-**6. Care Instructions**
-Machine wash or hand wash in cold water with mild detergent. Do not bleach. Dry in the shade to maintain fabric color.
-
-**7. Note**
-COD Available. Please refer to the size chart before placing an order.`,
+**Care Instructions**
+Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
     rating: 4.8,
   },
   {
     id: "p6",
     sku: "SET-WHTPNK-001",
-    name: "Elegant White & Pink Embroidered Pure Cotton Kurta Pant Set for Women",
+    name: "White & Pink Cotton Floral Co-Ord Set 🌸",
+    tagline: "Lightweight & Elegant",
     slug: "elegant-white-pink-embroidered-pure-cotton-kurta-pant-set",
     price: 995,
     originalPrice: 1990,
@@ -69,41 +63,35 @@ COD Available. Please refer to the size chart before placing an order.`,
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "White/Pink",
+    isNew: true,
     isTrending: true,
-    description: `**1. Product Title**
-Elegant White & Pink Embroidered Pure Cotton Kurta Pant Set for Women
+    description: `**Why You’ll Love It:**
+- 🌸 Premium 100% Cotton Fabric
+- ☁️ Soft, breathable & summer-friendly
+- 👗 Elegant white & pink floral design
+- 💃 Comfortable for daily & office wear
+- 🚚 COD Available
 
-**2. Short Description**
-Elegant White & Pink Embroidered Pure Cotton Kurta Pant Set designed for elegance and comfort. Experience premium quality fabric for everyday wear.
+**Description**
+Stay comfortable and stylish all day with this elegant white and pink floral cotton co-ord set.
+Designed for modern women who love effortless fashion.
+Perfect for daily wear, office, and casual outings.
 
-**3. Bullet Points**
-• Fabric: 100% Pure Cotton
-• Color: White and Pink
-• Fit: Stylish yet relaxed fit
-• Work: Delicate floral pink embroidery
-• Comfort: Soft, breathable, and lightweight
+Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
 
-**4. Design Details**
-Features delicate floral pink embroidery detailing on both the kurta and the pants, offering a classy, feminine, and premium minimal design.
-
-**5. Why You’ll Love It**
-The lightweight and airy feel keeps you cool throughout the day. The durable fabric is easy to wash and maintain, perfect for office, home, or casual outings.
-
-**6. Care Instructions**
-Gentle machine wash or hand wash in cold water. Wash light colors separately. Dry in the shade.
-
-**7. Note**
-COD Available. Color may vary slightly due to screen settings.`,
+**Care Instructions**
+Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
     rating: 4.8,
   },
   {
     id: "p7",
     sku: "COORD-FLORAL-002",
-    name: "Pure Beige Cotton Floral Co-Ord Set",
+    name: "Beige Cotton Floral Co-Ord Set 🌸",
+    tagline: "🌸 Perfect Summer Daily Wear\nLight, Elegant & Super Comfortable",
     slug: "pure-beige-cotton-floral-coord-set",
     price: 995,
     originalPrice: 1990,
-    availableSizes: ["S", "M", "L", "XXL"],
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1ZSy1eQVSYFjEycvOwGeYq8d9REgMYaa3&sz=w1000",
     images: [
@@ -115,39 +103,32 @@ COD Available. Color may vary slightly due to screen settings.`,
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
-    color: "Floral Print",
+    color: "Beige",
     isNew: true,
     isTrending: true,
-    description: `**1. Product Title**
-Pure Beige Cotton Floral Co-Ord Set
+    description: `**Why You’ll Love It:**
+- 🌸 Premium 100% Cotton Fabric
+- ☁️ Soft, breathable & summer-friendly
+- 👗 Elegant beige floral design
+- 💃 Comfortable for daily & office wear
+- 🚚 COD Available
 
-**2. Short Description**
-Premium quality Pure Beige Cotton Floral Co-Ord Set designed for everyday elegance. Experience supreme comfort with this beautifully crafted coordinated outfit.
+**Description**
+Stay comfortable and stylish all day with this premium beige floral cotton co-ord set.
+Designed for modern women who love effortless fashion.
+Perfect for daily wear, office, and casual outings.
 
-**3. Bullet Points**
-• Fabric: 100% Pure Cotton
-• Pattern: Floral Print
-• Fit: Relaxed and comfortable fit
-• Comfort: Soft, breathable, and skin-friendly
-• Usage: Daily wear and office
+Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
 
-**4. Design Details**
-Beautiful floral embroidery work on beige cotton base adds an elegant touch for a classy look. The set pairing offers effortless style with a pastel tone finish.
-
-**5. Why You’ll Love It**
-Provides a lightweight and airy feel with absolutely no irritation. It ensures all-day comfort while maintaining a put-together, elegant appearance.
-
-**6. Care Instructions**
-Machine wash in cold water with similar colors. Do not bleach. Line dry in the shade to maintain fabric longevity.
-
-**7. Note**
-COD Available. Accessories shown in images are not included.`,
+**Care Instructions**
+Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
     rating: 4.9,
   },
   {
     id: "p8",
     sku: "COORD-FLORAL-003",
-    name: "Pure Cotton Floral Co-Ord Set",
+    name: "White Cotton Floral Co-Ord Set 🌼",
+    tagline: "Airy & Gentle",
     slug: "pure-cotton-floral-coord-set-white",
     price: 995,
     originalPrice: 1990,
@@ -166,36 +147,29 @@ COD Available. Accessories shown in images are not included.`,
     color: "White",
     isNew: true,
     isTrending: true,
-    description: `**1. Product Title**
-Pure Cotton Floral Co-Ord Set
+    description: `**Why You’ll Love It:**
+- 🌸 Premium 100% Cotton Fabric
+- ☁️ Soft, breathable & summer-friendly
+- 👗 Elegant white floral design
+- 💃 Comfortable for daily & office wear
+- 🚚 COD Available
 
-**2. Short Description**
-Premium quality Pure Cotton Co-Ord Set in a fresh white floral design. Crafted for ease and a minimal appearance for everyday elegance.
+**Description**
+Stay comfortable and stylish all day with this premium pure white floral cotton co-ord set.
+Designed for modern women who love effortless fashion.
+Perfect for daily wear, office, and casual outings.
 
-**3. Bullet Points**
-• Fabric: 100% Pure Cotton
-• Color: White with Floral Prints
-• Fit: Relaxed and easy fit for all body types
-• Detail: Beautiful floral embroidery work
-• Quality: Soft, breathable, and skin-friendly
+Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
 
-**4. Design Details**
-This pure white set is beautifully detailed with elegant floral embroidery that elevates this simple silhouette into a classy and premium looking outfit.
-
-**5. Why You’ll Love It**
-It is incredibly soft against the skin, offering a lightweight, airy feel. Super comfortable for all-day wear during travel, office work, or casual outings.
-
-**6. Care Instructions**
-Gentle machine wash or hand wash. Since it is white, wash with light colors only. Do not bleach. Dry in the shade.
-
-**7. Note**
-COD Available. Refer to the standard size chart for the best fit.`,
+**Care Instructions**
+Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
     rating: 4.9,
   },
   {
     id: "p9",
     sku: "COORD-PREM-004",
-    name: "Premium Pure Cotton Co-Ord Set",
+    name: "Grey Cotton Embroidered Co-Ord Set 🩶",
+    tagline: "Comfortable & Minimal",
     slug: "premium-pure-cotton-coord-set-grey",
     price: 995,
     originalPrice: 1990,
@@ -211,31 +185,23 @@ COD Available. Refer to the standard size chart for the best fit.`,
     fabric: "100% Pure Cotton",
     color: "Grey",
     isNew: true,
-    isTrending: false,
-    description: `**1. Product Title**
-Premium Pure Cotton Co-Ord Set
+    isTrending: true,
+    description: `**Why You’ll Love It:**
+- 🌸 Premium 100% Cotton Fabric
+- ☁️ Soft, breathable & summer-friendly
+- 👗 Elegant grey embroidered design
+- 💃 Comfortable for daily & office wear
+- 🚚 COD Available
 
-**2. Short Description**
-Upgrade your everyday style with this elegant Grey Co-Ord Set, designed for comfort and an effortless look. The subtle premium finish is ideal for sophisticated daily wear.
+**Description**
+Stay comfortable and stylish all day with this elegant grey embroidered cotton co-ord set.
+Designed for modern women who love effortless fashion.
+Perfect for daily wear, office, and casual outings.
 
-**3. Bullet Points**
-• Fabric: 100% Pure Cotton
-• Color: Grey
-• Fit: Relaxed and comfortable fit
-• Comfort: Soft, breathable, and skin-friendly
-• Pattern: Self-color embroidery
+Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
 
-**4. Design Details**
-Beautiful self-color grey embroidery adds a subtle premium touch. The straight cutting and perfectly tailored pants make it an effortless daily style staple.
-
-**5. Why You’ll Love It**
-Enjoy a lightweight and airy feel with an elegant minimal look. Best suited for anyone who wants a polished appearance without sacrificing comfort.
-
-**6. Care Instructions**
-Machine wash in normal water. Do not expose to direct sunlight for long durations to prevent color fading. Warm iron if required.
-
-**7. Note**
-COD Available. Slight variations in color may occur due to photographic lighting sources.`,
+**Care Instructions**
+Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
     rating: 4.9,
   },
   {
@@ -284,7 +250,7 @@ The graceful fluid drape enhances the body silhouette beautifully, making it per
 Dry clean only to maintain the delicate sipli cutwork and handcrafted floral print.
 
 **7. Note**
-COD Available. Color may slightly vary due to lighting.`,
+COD Available. Color may slightly vary due to lighting. Apply coupon FIRST100 to get Extra ₹100 OFF.`,
     rating: 4.9,
   },
   {
@@ -333,5 +299,411 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
 **7. Note**
 COD Available. Saree Length: 5.50 meters, Blouse Length: 0.80 meters (Unstitched). Apply coupon FIRST100 to get Extra ₹100 OFF.`,
     rating: 4.8,
+  },
+  {
+    id: "p12",
+    sku: "COORD-GREEN-005",
+    name: "Elegant Forest Green Cotton Co-Ord Set ✨",
+    tagline: "Effortless Elegance & All-Day Comfort",
+    slug: "elegant-forest-green-cotton-coord-set",
+    price: 995,
+    originalPrice: 1990,
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    image: "https://drive.google.com/thumbnail?id=1r0D-1RA8fSbXkhKrhvkNz91Ny9yRE_DI&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1r0D-1RA8fSbXkhKrhvkNz91Ny9yRE_DI&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1qfQZvzJQPab0QlcINbsjgCh6kQeutAJY&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1HlM_u0slGVfZWdpgFLcMg0WFVmjSUh29&sz=w1000",
+      "https://drive.google.com/thumbnail?id=18srERYjKuIELFTTzCXit35IaKIsfs2dA&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1T08ow0naChxmcmaHWF0obgrTWxoOxJ4p&sz=w1000",
+    ],
+    category: "Co-Ord Sets",
+    fabric: "100% Pure Cotton",
+    color: "Forest Green",
+    isNew: true,
+    isTrending: true,
+    description: `**1. Product Title**
+Elegant Forest Green Cotton Co-Ord Set
+
+**2. Short Description**
+Upgrade your everyday style with this sophisticated forest green co-ord set, designed for effortless elegance and all-day comfort.
+
+**3. Fabric & Color**
+🌿 Fabric: 100% Pure Cotton
+✔ Soft, breathable & skin-friendly
+✔ Perfect for daily wear, office, or casual outings
+
+🎨 Color:
+Rich deep forest green base with subtle off-white floral embroidery, giving it a classy and refined look.
+
+**4. Design Details**
+🧵 Design Details:
+✔ Beautiful minimal floral embroidery spread across the kurta
+✔ Smart front placket with contrast striped collar
+✔ 3/4th sleeves for a modern, versatile appeal
+✔ Straight-fit pants for a clean, structured silhouette
+
+**5. Fit & Style**
+👗 Fit & Style:
+✔ Comfortable relaxed fit
+✔ Easy to carry from day to evening wear
+✔ Ideal for a polished yet effortless look
+
+**6. Why You'll Love It**
+💫 Why You'll Love It:
+Lightweight, breathable, and stylish — this co-ord set blends comfort with understated luxury, making it a must-have in your wardrobe.
+
+**7. Note**
+COD Available. Apply coupon FIRST100 to get Extra ₹100 OFF.`,
+    rating: 4.9,
+  },
+  {
+    id: "p13",
+    sku: "COORD-PLUM-006",
+    name: "Royal Plum Cotton Co-Ord Set with Embroidery ✨",
+    tagline: "Subtle Luxury with Everyday Wearability",
+    slug: "royal-plum-cotton-coord-set-embroidery",
+    price: 995,
+    originalPrice: 1990,
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    image: "https://drive.google.com/thumbnail?id=13_77OK4eis1LANGCSD9izpuliMSJ2vYn&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=13_77OK4eis1LANGCSD9izpuliMSJ2vYn&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1T30aeMCN2CKJk7sOszn2zaap__mDXp9p&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1JpHRTktD6rVlh_KXyHiCxeT_3E0jnsFO&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1qESm_8sI7Sg3EITr6J95CNema5rBGgjp&sz=w1000",
+    ],
+    category: "Co-Ord Sets",
+    fabric: "100% Pure Cotton",
+    color: "Royal Plum",
+    isNew: true,
+    isTrending: true,
+    description: `**1. Product Title**
+Royal Plum Cotton Co-Ord Set with Embroidery
+
+**2. Short Description**
+Step into effortless elegance with this stunning royal plum co-ord set, designed to give you a rich and graceful look while keeping comfort at its core.
+
+**3. Fabric & Color**
+🌿 Fabric: 100% Pure Cotton
+✔ Soft, breathable & lightweight
+✔ Gentle on skin, perfect for all-day wear
+
+🎨 Color:
+Deep royal plum (wine/purple tone) base enhanced with delicate beige-gold floral embroidery, creating a luxurious and eye-catching contrast.
+
+**4. Design Details**
+🧵 Design Details:
+✔ Intricate floral embroidery on the front panel, sleeves & pants
+✔ Smart collared neckline with a clean front placket
+✔ Full sleeves with embroidered cuffs for a refined touch
+✔ Straight-fit pants with coordinated embroidery
+
+**5. Fit & Style**
+👗 Fit & Style:
+✔ Tailored yet comfortable silhouette
+✔ Perfect for festive wear, office chic, or casual outings
+✔ Elegant fusion of traditional embroidery with modern co-ord styling
+
+**6. Why You'll Love It**
+💫 Why You'll Love It:
+This outfit blends rich color, fine craftsmanship, and breathable comfort, making it an ideal pick for those who love subtle luxury with everyday wearability.
+
+**7. Note**
+COD Available. Apply coupon FIRST100 to get Extra ₹100 OFF.`,
+    rating: 4.9,
+  },
+  {
+    id: "p14",
+    sku: "COORD-TEAL-007",
+    name: "Elegant Teal Green Cotton Co-Ord Set with Floral Embroidery ✨",
+    tagline: "Effortless Charm & Graceful Style",
+    slug: "elegant-teal-green-cotton-coord-set-floral-embroidery",
+    price: 995,
+    originalPrice: 1990,
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    image: "https://drive.google.com/thumbnail?id=1OklbiWw6fH97r8mCWsw3VxdkvwAqvxFe&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1OklbiWw6fH97r8mCWsw3VxdkvwAqvxFe&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1bAiYGBel9puchLJB6IVQcqu3UWgwdR7K&sz=w1000",
+      "https://drive.google.com/thumbnail?id=12LyH1wKEcDzPTOCQBp1V65_HUMVaW--R&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1hL1D0BS0VnDjpY89dKvggC4y6RDjgwTT&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Pr4m0BgmiMkeXTGEaDCMvTpmHKO8rbL7&sz=w1000",
+    ],
+    category: "Co-Ord Sets",
+    fabric: "100% Pure Cotton",
+    color: "Teal Green",
+    isNew: true,
+    isTrending: true,
+    description: `**1. Product Title**
+Elegant Teal Green Cotton Co-Ord Set with Floral Embroidery
+
+**2. Short Description**
+Add a touch of effortless charm to your wardrobe with this beautifully crafted teal green co-ord set, designed for comfort and graceful everyday style.
+
+**3. Fabric & Color**
+🌿 Fabric: 100% Pure Cotton
+✔ Soft, breathable & lightweight
+✔ Skin-friendly and ideal for all-day wear
+
+🎨 Color:
+Rich deep teal green base enhanced with vibrant multicolor floral embroidery in shades of mustard yellow, deep red, and subtle grey, creating a fresh and elegant contrast.
+
+**4. Design Details**
+🧵 Design Details:
+✔ Delicate embroidery on neckline for a refined look
+✔ Artistic floral embroidery along the hemline and sleeve cuffs
+✔ Stylish V-neck with minimal detailing for a modern touch
+✔ 3/4th sleeves for versatile wear
+✔ Straight-fit pants for a clean and structured finish
+
+**5. Fit & Style**
+👗 Fit & Style:
+✔ Comfortable relaxed silhouette
+✔ Perfect for daily wear, office, or casual gatherings
+✔ Blends traditional embroidery with contemporary co-ord styling
+
+**6. Why You'll Love It**
+💫 Why You'll Love It:
+This co-ord set offers the perfect mix of comfort, color, and craftsmanship, making it an ideal choice for women who love subtle elegance with a pop of floral freshness.
+
+**7. Note**
+COD Available. Apply coupon FIRST100 to get Extra ₹100 OFF.`,
+    rating: 4.9,
+  },
+  {
+    id: "p15",
+    sku: "COORD-WINE-008",
+    name: "Wine Berry Cotton Co-Ord Set with Elegant Embroidery ✨",
+    tagline: "Effortless Sophistication & Refined Style",
+    slug: "wine-berry-cotton-coord-set-elegant-embroidery",
+    price: 995,
+    originalPrice: 1990,
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    image: "https://drive.google.com/thumbnail?id=1yqH8sha_dRXlYAOzvSP5Cu-ucdvMM-7x&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1yqH8sha_dRXlYAOzvSP5Cu-ucdvMM-7x&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1FSrFlQRKkMoNBoc1bex-gEiINpQeXOeg&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1iTaGXvaQDcVSrAN3vo59DLS3hvV4xH6k&sz=w1000",
+      "https://drive.google.com/thumbnail?id=11-lRwsgIsQyIj1asOuiQn8_HAPqGCCpE&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Xhi1D_HKGUX1N5HjC_rkiGRgVX7FgaFQ&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1HAqjqXlLucAT8tyiTKZGMK0S9w0EZ-qZ&sz=w1000",
+    ],
+    category: "Co-Ord Sets",
+    fabric: "100% Pure Cotton",
+    color: "Wine Berry",
+    isNew: true,
+    isTrending: true,
+    description: `**1. Product Title**
+Wine Berry Cotton Co-Ord Set with Elegant Embroidery
+
+**2. Short Description**
+Bring effortless sophistication to your wardrobe with this beautifully designed wine berry co-ord set, perfect for both comfort and refined style.
+
+**3. Fabric & Color**
+🌿 Fabric: 100% Pure Cotton
+✔ Soft, breathable & lightweight
+✔ Gentle on skin, ideal for all-day wear
+
+🎨 Color:
+Rich wine berry (deep magenta/plum tone) base enhanced with subtle beige thread embroidery, creating a graceful and classy contrast.
+
+**4. Design Details**
+🧵 Design Details:
+✔ Elegant floral embroidery on the front panel and hemline
+✔ Minimal embroidered detailing on sleeves and pants
+✔ Smart collared neckline with a clean front placket
+✔ 3/4th sleeves for a versatile, modern look
+✔ Straight-fit pants with coordinated embroidery accents
+
+**5. Fit & Style**
+👗 Fit & Style:
+✔ Relaxed yet structured silhouette
+✔ Perfect for daily wear, office, or casual gatherings
+✔ A balanced blend of traditional embroidery and contemporary styling
+
+**6. Why You'll Love It**
+💫 Why You'll Love It:
+This co-ord set offers a perfect mix of rich color, fine craftsmanship, and breathable comfort, making it a must-have for women who appreciate understated elegance.
+
+**7. Note**
+COD Available. Apply coupon FIRST100 to get Extra ₹100 OFF.`,
+    rating: 4.8,
+  },
+  {
+    id: "p16",
+    sku: "COORD-PINK-009",
+    name: "Soft Blush Pink Cotton Co-Ord Set with Delicate Embroidery ✨",
+    tagline: "Subtle Elegance & Everyday Comfort",
+    slug: "soft-blush-pink-cotton-coord-set-delicate-embroidery",
+    price: 995,
+    originalPrice: 1990,
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    image: "https://drive.google.com/thumbnail?id=1GQSTuioaQUwqW5dZ44_S5yLjk6ysO-IP&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1GQSTuioaQUwqW5dZ44_S5yLjk6ysO-IP&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1pKDVbgrW8qwVsrWTrkXYtyDy9fcatLOe&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1x9GqdyVPVUYcVzIJFutVpkGhqhECMnnm&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1AWh2w1Mtg8FEykbe2P0dIDHkpg7CCRT1&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1YIf3riaIkjfwATNYslM59hxwRJKFb7Kh&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1fvlwRdE0d8l0AmLteYgWcgyjBnKXaStO&sz=w1000",
+    ],
+    category: "Co-Ord Sets",
+    fabric: "100% Pure Cotton",
+    color: "Blush Pink",
+    isNew: true,
+    isTrending: true,
+    description: `**1. Product Title**
+Soft Blush Pink Cotton Co-Ord Set with Delicate Embroidery
+
+**2. Short Description**
+Add a touch of elegance and freshness to your wardrobe with this beautifully crafted blush pink co-ord set, designed for comfort and graceful everyday wear.
+
+**3. Fabric & Color**
+🌿 Fabric: 100% Pure Cotton
+✔ Soft, breathable & lightweight
+✔ Skin-friendly for all-day comfort
+
+🎨 Color:
+Soothing blush pink base adorned with elegant off-white floral embroidery, giving it a soft, feminine and premium look.
+
+**4. Design Details**
+🧵 Design Details:
+✔ Intricate embroidery on the front panel for a refined appeal
+✔ Coordinated embroidery on sleeves and pant hems
+✔ Smart collared neckline with a neat front placket
+✔ 3/4th sleeves for a modern, versatile style
+✔ Straight-fit pants for a clean and polished silhouette
+
+**5. Fit & Style**
+👗 Fit & Style:
+✔ Relaxed yet structured fit
+✔ Perfect for daily wear, office, or casual outings
+✔ A beautiful blend of traditional embroidery with contemporary co-ord styling
+
+**6. Why You'll Love It**
+💫 Why You'll Love It:
+Lightweight, breathable, and effortlessly stylish — this co-ord set offers subtle elegance with everyday comfort, making it a must-have in your collection.
+
+**7. Note**
+COD Available. Apply coupon FIRST100 to get Extra ₹100 OFF.`,
+    rating: 4.9,
+  },
+  {
+    id: "p17",
+    sku: "COORD-PINK-010",
+    name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ✨",
+    tagline: "Vibrant Charm & Everyday Comfort",
+    slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery",
+    price: 995,
+    originalPrice: 1990,
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    image: "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1_qowkT1LDbp8B_97--PYFuMXBCkXGUfA&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1OLERymsyf9vBPk1_8I4P5MIOCTTJuPfu&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Y6ogWifxnKHHcc3VDT8gucHVFZMwhiEu&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1ks6iOw6adzw-t1-tS2FjIgPJvPI42FJy&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1qW0cyad3kR8kchqnu6oGHBWIPtt8w19g&sz=w1000",
+    ],
+    category: "Co-Ord Sets",
+    fabric: "100% Pure Cotton",
+    color: "Blush Pink",
+    isNew: true,
+    isTrending: true,
+    description: `**1. Product Title**
+Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery
+
+**2. Short Description**
+Add a touch of elegance and freshness to your wardrobe with this beautifully crafted blush pink co-ord set, designed for comfort and graceful everyday wear.
+
+**3. Fabric & Color**
+🌿 Fabric: 100% Pure Cotton
+✔ Soft, breathable & lightweight
+✔ Skin-friendly for all-day comfort
+
+🎨 Color:
+Soothing blush pink base adorned with elegant multicolor floral embroidery, adding a vibrant yet subtle charm for a premium look.
+
+**4. Design Details**
+🧵 Design Details:
+✔ Intricate multicolor embroidery on the front panel for a refined appeal
+✔ Coordinated embroidery on sleeves and pant hems
+✔ Smart collared neckline with a neat front placket
+✔ 3/4th sleeves for a modern, versatile style
+✔ Straight-fit pants for a clean and polished silhouette
+
+**5. Fit & Style**
+👗 Fit & Style:
+✔ Relaxed yet structured fit
+✔ Perfect for daily wear, office, or casual outings
+✔ A beautiful blend of traditional embroidery with contemporary co-ord styling
+
+**6. Why You'll Love It**
+💫 Why You'll Love It:
+Lightweight, breathable, and effortlessly stylish — this co-ord set offers subtle elegance with a touch of vibrant detailing, making it a must-have in your collection.
+
+**7. Note**
+COD Available. Apply coupon FIRST100 to get Extra ₹100 OFF.`,
+    rating: 4.9,
+  },
+  {
+    id: "p18",
+    sku: "COORD-PINK-011",
+    name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ✨",
+    tagline: "Vibrant Detailing & Premium Comfort",
+    slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2",
+    price: 995,
+    originalPrice: 1990,
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    image: "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w1000",
+      "https://drive.google.com/thumbnail?id=17I-fL14z52Az0uoF1_SrXp3PTIGV0-76&sz=w1000",
+      "https://drive.google.com/thumbnail?id=161BmZUR6cer27ZbVv-ZA9L2IY8DhKb6w&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Nj9fpBem6iQ3epd4JwIWtegGMlYkIwpQ&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1QqBnN4hxj0Jzb93PfWqhmKbuXDtVtCsY&sz=w1000",
+    ],
+    category: "Co-Ord Sets",
+    fabric: "100% Pure Cotton",
+    color: "Blush Pink",
+    isNew: true,
+    isTrending: true,
+    description: `**1. Product Title**
+Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery
+
+**2. Short Description**
+Add a touch of elegance and freshness to your wardrobe with this beautifully crafted blush pink co-ord set, designed for comfort and graceful everyday wear.
+
+**3. Fabric & Color**
+🌿 Fabric: 100% Pure Cotton
+✔ Soft, breathable & lightweight
+✔ Skin-friendly for all-day comfort
+
+🎨 Color:
+Soothing blush pink base adorned with elegant multicolor floral embroidery, adding a vibrant yet subtle charm for a premium look.
+
+**4. Design Details**
+🧵 Design Details:
+✔ Intricate multicolor embroidery on the front panel for a refined appeal
+✔ Coordinated embroidery on sleeves and pant hems
+✔ Smart collared neckline with a neat front placket
+✔ 3/4th sleeves for a modern, versatile style
+✔ Straight-fit pants for a clean and polished silhouette
+
+**5. Fit & Style**
+👗 Fit & Style:
+✔ Relaxed yet structured fit
+✔ Perfect for daily wear, office, or casual outings
+✔ A beautiful blend of traditional embroidery with contemporary co-ord styling
+
+**6. Why You'll Love It**
+💫 Why You'll Love It:
+Lightweight, breathable, and effortlessly stylish — this co-ord set offers subtle elegance with a touch of vibrant detailing, making it a must-have in your collection.
+
+**7. Note**
+COD Available. Apply coupon FIRST100 to get Extra ₹100 OFF.`,
+    rating: 4.9,
   },
 ];

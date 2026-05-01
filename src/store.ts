@@ -16,6 +16,7 @@ export interface Product {
   id: string;
   sku?: string;
   name: string;
+  tagline?: string;
   price: number;
   originalPrice?: number;
   image: string;
@@ -41,12 +42,14 @@ interface CartItem extends Product {
 interface AppState {
   cart: CartItem[];
   wishlist: string[];
+  appliedCoupon: string | null;
   addToCart: (product: Product, size?: string, quantity?: number) => void;
   removeFromCart: (productId: string, size?: string) => void;
   updateQuantity: (productId: string, size: string | undefined, qty: number) => void;
   clearCart: () => void;
   toggleWishlist: (productId: string) => void;
   cartTotal: () => number;
+  applyCoupon: (code: string | null) => void;
 }
 
 export const useStore = create<AppState>()(
@@ -54,21 +57,24 @@ export const useStore = create<AppState>()(
     (set, get) => ({
       cart: [],
       wishlist: [],
+      appliedCoupon: null,
       addToCart: (product, size, quantity = 1) => {
         set((state) => {
+          const newState = { appliedCoupon: 'FIRST100', cart: state.cart };
+          
           const existingItem = state.cart.find(
             (item) => item.id === product.id && item.size === size
           );
           if (existingItem) {
-            return {
-              cart: state.cart.map((item) =>
+             newState.cart = state.cart.map((item) =>
                 item.id === product.id && item.size === size
                   ? { ...item, quantity: item.quantity + quantity }
                   : item
-              ),
-            };
+              );
+          } else {
+             newState.cart = [...state.cart, { ...product, quantity, size }];
           }
-          return { cart: [...state.cart, { ...product, quantity, size }] };
+          return newState;
         });
       },
       removeFromCart: (productId, size) => {
@@ -85,7 +91,7 @@ export const useStore = create<AppState>()(
           ),
         }));
       },
-      clearCart: () => set({ cart: [] }),
+      clearCart: () => set({ cart: [], appliedCoupon: null }),
       toggleWishlist: (productId) => {
         set((state) => ({
           wishlist: state.wishlist.includes(productId)
@@ -96,6 +102,7 @@ export const useStore = create<AppState>()(
       cartTotal: () => {
         return get().cart.reduce((total, item) => total + item.price * item.quantity, 0);
       },
+      applyCoupon: (code) => set({ appliedCoupon: code }),
     }),
     {
       name: 'mukesh-saree-storage',

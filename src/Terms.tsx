@@ -2,7 +2,7 @@ export default function Terms() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-20">
       <div className="text-center mb-16">
-        <h1 className="text-3xl md:text-[40px] font-serif text-primary-950 mb-6 font-normal">Terms & Conditions</h1>
+        <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-6 font-normal">Terms & Conditions</h1>
         <div className="w-16 h-[1px] bg-primary-950/20 mx-auto"></div>
       </div>
       <div className="prose prose-lg text-primary-950/80 font-light max-w-none border-t border-black/5 pt-8">
