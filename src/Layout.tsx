@@ -111,12 +111,12 @@ export default function Layout() {
     }
   };
 
-  const isTransparent = isHomePage && !isScrolled;
+  const isTransparent = isHomePage && !isScrolled && !isMobileMenuOpen;
   const headerBg = isTransparent
     ? "bg-transparent"
     : "bg-white/95 backdrop-blur-md shadow-lg";
-  const textColor = "text-primary-950";
-  const logoColor = "text-primary-950";
+  const textColor = isTransparent ? "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" : "text-primary-950";
+  const logoColor = isTransparent ? "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" : "text-primary-950";
   const borderColor = isTransparent ? "border-transparent" : "border-black/5";
 
   return (
@@ -355,6 +355,7 @@ export default function Layout() {
             <div className="flex-shrink-0 flex flex-col items-center justify-center flex-1 md:flex-none">
               <Link
                 to="/"
+                onClick={scrollToTop}
                 className="flex flex-col items-center group transition-all duration-500 transform"
               >
                 <span
@@ -364,15 +365,15 @@ export default function Layout() {
                 </span>
                 <div className="flex items-center gap-3 w-full mt-1.5 px-1">
                   <div
-                    className={`h-[1px] flex-1 bg-primary-950/10 group-hover:bg-gold-500/20 transition-colors`}
+                    className={`h-[1px] flex-1 ${isTransparent ? 'bg-white/30' : 'bg-primary-950/10'} group-hover:bg-gold-500/20 transition-colors`}
                   ></div>
                   <span
-                    className={`text-[7px] md:text-[9px] font-sans font-medium tracking-[4px] md:tracking-[6px] uppercase text-primary-950/60 transition-colors group-hover:text-gold-600 whitespace-nowrap`}
+                    className={`text-[7px] md:text-[9px] font-sans font-medium tracking-[4px] md:tracking-[6px] uppercase ${isTransparent ? 'text-white/80 drop-shadow-md' : 'text-primary-950/60'} transition-colors group-hover:text-gold-600 whitespace-nowrap`}
                   >
                     Saree Centre
                   </span>
                   <div
-                    className={`h-[1px] flex-1 bg-primary-950/10 group-hover:bg-gold-500/20 transition-colors`}
+                    className={`h-[1px] flex-1 ${isTransparent ? 'bg-white/30' : 'bg-primary-950/10'} group-hover:bg-gold-500/20 transition-colors`}
                   ></div>
                 </div>
                 <div className="h-[2px] w-0 bg-gold-400/30 group-hover:w-1/2 transition-all duration-700 mt-0.5"></div>
@@ -383,6 +384,7 @@ export default function Layout() {
             <nav className="hidden md:flex flex-1 justify-center space-x-8 items-center h-full">
               <Link
                  to="/"
+                 onClick={scrollToTop}
                  className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
                 Home
@@ -456,86 +458,104 @@ export default function Layout() {
         </div>
 
         {/* Mobile Navigation */}
-        <div
-          className={`md:hidden bg-primary-50 overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-[500px] border-t border-black/5" : "max-h-0"}`}
-        >
-          <div className="px-5 py-6 flex flex-col space-y-5">
-            <Link
-              to="/"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between"
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="md:hidden bg-primary-50 overflow-hidden border-t border-black/5"
             >
-              Home
-            </Link>
-            
-            <div className="flex flex-col space-y-4">
-              <div 
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() => setIsMobileShopOpen(!isMobileShopOpen)}
-              >
-                <span className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950">
-                  Shop
-                </span>
-                <ChevronDown 
-                  size={16} 
-                  className={`text-primary-950/70 transition-transform duration-300 ${isMobileShopOpen ? "rotate-180" : ""}`}
-                />
-              </div>
-              
-              <div 
-                className={`flex flex-col space-y-4 pl-4 border-l border-gold-500/30 overflow-hidden transition-all duration-300 ${isMobileShopOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0 bg-transparent"}`}
-              >
+              <div className="px-5 py-6 flex flex-col space-y-5">
                 <Link
-                  to="/shop"
+                  to="/"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                  className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-1"
                 >
-                  All Products
+                  Home
                 </Link>
-                <Link
-                  to="/shop?category=Sarees"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
-                >
-                  Sarees
-                </Link>
-                <Link
-                  to="/shop?category=Co-Ord Sets"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
-                >
-                  Co-Ord Sets
-                </Link>
-              </div>
-            </div>
+                
+                <div className="flex flex-col">
+                  <div 
+                    className="flex items-center justify-between cursor-pointer py-1"
+                    onClick={() => setIsMobileShopOpen(!isMobileShopOpen)}
+                  >
+                    <span className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950">
+                      Shop
+                    </span>
+                    <ChevronDown 
+                      size={16} 
+                      className={`text-primary-950/70 transition-transform duration-300 ${isMobileShopOpen ? "rotate-180" : ""}`}
+                    />
+                  </div>
+                  
+                  <AnimatePresence>
+                    {isMobileShopOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="flex flex-col pl-4 mt-4 border-l border-gold-500/30 overflow-hidden"
+                      >
+                        <div className="flex flex-col space-y-5 py-2">
+                          <Link
+                            to="/shop"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                          >
+                            All Products
+                          </Link>
+                          <Link
+                            to="/shop?category=Sarees"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                          >
+                            Sarees
+                          </Link>
+                          <Link
+                            to="/shop?category=Co-Ord Sets"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                          >
+                            Co-Ord Sets
+                          </Link>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
-            <Link
-              to="/about"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between"
-            >
-              Our Legacy
-            </Link>
-            <div className="border-t border-black/5 pt-5 mt-2 flex flex-col space-y-5">
-              <Link
-                to="/wishlist"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950"
-              >
-                <Heart size={18} strokeWidth={1.5} /> Wishlist
-              </Link>
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  setIsSearchOpen(true);
-                }}
-                className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 text-left"
-              >
-                <Search size={18} strokeWidth={1.5} /> Search
-              </button>
-            </div>
-          </div>
-        </div>
+                <Link
+                  to="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-1"
+                >
+                  Our Legacy
+                </Link>
+                <div className="border-t border-black/5 pt-5 mt-2 flex flex-col space-y-5">
+                  <Link
+                    to="/wishlist"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 py-1"
+                  >
+                    <Heart size={18} strokeWidth={1.5} /> Wishlist
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsSearchOpen(true);
+                    }}
+                    className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 text-left py-1"
+                  >
+                    <Search size={18} strokeWidth={1.5} /> Search
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* Main Content */}
@@ -558,8 +578,6 @@ export default function Layout() {
               <span>COD AVAILABLE</span>
               <span className="w-1 h-1 bg-gold-500 rounded-full mx-1"></span>
               <span>Affordable Luxury</span>
-              <span className="w-1 h-1 bg-gold-500 rounded-full mx-1"></span>
-              <span>Trusted by 30,000+</span>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-[10px] uppercase tracking-[1px] opacity-50">

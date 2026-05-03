@@ -52,6 +52,11 @@ export default function Cart() {
                     </h3>
                     <p className="font-medium text-primary-950 ml-4">{formatPrice(item.price * item.quantity)}</p>
                   </div>
+                  {item.sku && (
+                    <p className="text-[10px] text-primary-950/50 mb-2 font-mono uppercase tracking-wider">
+                      SKU: {item.sku}
+                    </p>
+                  )}
                   <div className="text-[11px] tracking-[1px] uppercase text-primary-950/50 space-y-1">
                     <p>Fabric: {item.fabric}</p>
                     {item.size && <p>Size: <span className="font-medium text-primary-950">{item.size}</span></p>}

@@ -15,13 +15,15 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { products } from "./mockData";
-import { type Product } from "./store";
-import { formatPrice } from "./utils";
+import { type Product, useStore } from "./store";
+import { formatPrice, optimizeImage } from "./utils";
+import { trackAddToCart } from "./tracking";
 
 export default function Home() {
-  const trendingProducts = products.filter((p) => p.isTrending).slice(0, 2);
+  const mainProducts = products.filter(p => !p.isVariant);
+  const trendingProducts = mainProducts.filter((p) => p.isTrending).slice(0, 2);
   const trendingIds = new Set(trendingProducts.map((p) => p.id));
-  const newArrivalsProductsList = [...products]
+  const newArrivalsProductsList = [...mainProducts]
     .reverse()
     .filter((p) => p.isNew && !trendingIds.has(p.id));
   // If there are less than 2 new arrivals, fill with other non-trending products to make sure we show 2
@@ -30,7 +32,7 @@ export default function Home() {
       ? newArrivalsProductsList.slice(0, 2)
       : [
           ...newArrivalsProductsList,
-          ...products.filter(
+          ...mainProducts.filter(
             (p) =>
               !trendingIds.has(p.id) &&
               !newArrivalsProductsList.find((n) => n.id === p.id),
@@ -89,6 +91,8 @@ export default function Home() {
           <img
             src="https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me"
             alt="Luxury Indian Fashion"
+            fetchPriority="high"
+            loading="eager"
             className="w-full h-full object-cover object-center lg:object-[center_20%]"
             referrerPolicy="no-referrer"
           />
@@ -110,13 +114,10 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-[28px] md:text-[38px] lg:text-[62px] font-serif text-white mb-6 leading-[1.1] font-normal drop-shadow-lg"
+              className="text-[32px] md:text-[42px] lg:text-[56px] font-serif text-white mb-4 leading-[1.2] font-normal drop-shadow-lg"
             >
-              Effortless Elegance,
-              <br />
-              <span className="text-gold-500 italic drop-shadow-none">
-                Every Day
-              </span>
+              Luxury Co-ord Sets <br className="hidden md:block" />& Sarees at{" "}
+              <span className="text-gold-500 font-bold drop-shadow-none">50% OFF</span>
             </motion.h1>
 
             {/* Subheading - More compact */}
@@ -124,9 +125,9 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-[15px] sm:text-[17px] leading-relaxed text-white/95 mb-10 max-w-sm font-sans font-medium drop-shadow-md"
+              className="text-[16px] sm:text-[18px] leading-relaxed text-white/95 mb-8 max-w-sm font-sans font-medium drop-shadow-md"
             >
-              Co-ord Sets & Sarees Designed for Modern You
+              Premium quality. Trusted since 1976. Limited time deal.
             </motion.p>
 
             {/* Buttons - Elegant styling */}
@@ -137,16 +138,10 @@ export default function Home() {
               className="flex flex-col sm:flex-row gap-4"
             >
               <Link
-                to="/shop?category=Co-Ord Sets"
-                className="bg-gold-500 text-white text-[10px] tracking-[2px] uppercase px-10 py-4 text-center rounded-sm transition-all hover:bg-gold-600 font-medium shadow-xl shadow-black/10"
+                to="/shop"
+                className="bg-gold-500 text-white text-[12px] tracking-[2px] uppercase px-10 py-4 text-center rounded-sm transition-all hover:bg-gold-600 font-bold shadow-xl shadow-gold-500/30"
               >
                 Shop Collection
-              </Link>
-              <Link
-                to="/shop"
-                className="border border-white/40 text-white bg-white/10 backdrop-blur-md text-[10px] tracking-[2px] uppercase px-10 py-4 text-center rounded-sm transition-all hover:bg-primary-50 hover:text-primary-950 font-medium"
-              >
-                View All
               </Link>
             </motion.div>
           </div>
@@ -208,18 +203,17 @@ export default function Home() {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Heart className="w-4 h-4 text-gold-500" strokeWidth={1.5} />
-              <span className="text-[10px] uppercase tracking-[1px] text-primary-950/70 font-medium">
-                Trusted by 30,000+
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
               <ShieldCheck
                 className="w-4 h-4 text-gold-500"
                 strokeWidth={1.5}
               />
               <span className="text-[10px] uppercase tracking-[1px] text-primary-950/70 font-medium">
                 COD Available
+              </span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-1.5">
+              <span className="text-[11px] uppercase tracking-[1px] text-primary-950/70 font-medium">
+                Legacy Since 1976
               </span>
             </div>
           </div>
@@ -249,8 +243,9 @@ export default function Home() {
             >
               <div className="absolute inset-0">
                 <img
-                  src="https://drive.google.com/thumbnail?id=1_PdNfAScYuOrr_cA0e6TZQdAlSCvzZ8M&sz=w1200"
+                  src="https://drive.google.com/thumbnail?id=1_PdNfAScYuOrr_cA0e6TZQdAlSCvzZ8M&sz=w800"
                   alt="Co-Ord Sets"
+                  loading="lazy"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
@@ -260,12 +255,15 @@ export default function Home() {
                 <div className="text-2xl md:text-3xl font-serif mb-3 text-white drop-shadow-md">
                   Co-Ord Sets
                 </div>
-                <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-6 drop-shadow-md">
-                  Effortless Modern Style
+                <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-2 drop-shadow-md">
+                  Best Sellers ✨ Flat 50% OFF
+                </div>
+                <div className="text-[14px] font-sans font-bold text-gold-400 mb-6 drop-shadow-md">
+                  Starting at ₹995
                 </div>
                 <div>
-                  <span className="inline-block border border-white/80 text-white px-8 py-3 text-[11px] tracking-[2px] uppercase backdrop-blur-sm hover:bg-primary-50 hover:text-primary-950 transition-colors rounded-sm font-medium shadow-sm">
-                    Explore
+                  <span className="inline-block bg-gold-500 text-white px-8 py-3 text-[11px] tracking-[2px] uppercase hover:bg-gold-600 transition-colors rounded-sm font-bold shadow-md shadow-gold-500/20">
+                    Shop Now
                   </span>
                 </div>
               </div>
@@ -278,8 +276,9 @@ export default function Home() {
             >
               <div className="absolute inset-0">
                 <img
-                  src="https://drive.google.com/thumbnail?id=1u0O4RqmNHGbiS3cksJDjixD4wzwkYpfw&sz=w1200"
+                  src="https://drive.google.com/thumbnail?id=1u0O4RqmNHGbiS3cksJDjixD4wzwkYpfw&sz=w800"
                   alt="Sarees"
+                  loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
@@ -289,12 +288,15 @@ export default function Home() {
                 <div className="text-2xl md:text-3xl font-serif mb-3 text-white">
                   Sarees
                 </div>
-                <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-6 drop-shadow-sm">
-                  Timeless Elegance
+                <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-2 drop-shadow-sm">
+                  Premium Quality ✨ Flat 50% OFF
+                </div>
+                <div className="text-[14px] font-sans font-bold text-gold-400 mb-6 drop-shadow-sm">
+                  Starting at ₹649
                 </div>
                 <div>
-                  <span className="inline-block border border-white/80 text-white px-8 py-3 text-[11px] tracking-[2px] uppercase backdrop-blur-sm hover:bg-primary-50 hover:text-primary-950 transition-colors rounded-sm font-medium">
-                    Explore
+                  <span className="inline-block bg-gold-500 text-white px-8 py-3 text-[11px] tracking-[2px] uppercase hover:bg-gold-600 transition-colors rounded-sm font-bold shadow-md shadow-gold-500/20">
+                    Shop Now
                   </span>
                 </div>
               </div>
@@ -304,15 +306,18 @@ export default function Home() {
       </section>
 
       {/* Trending Section */}
-      <section className="py-24 md:py-32 bg-primary-50">
+      <section className="py-16 md:py-24 bg-primary-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-baseline mb-12">
-            <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-normal">
-              Trending Now
-            </h2>
+          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-10">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-normal flex items-center justify-center md:justify-start gap-2">
+                Trending Now
+                <span className="text-[12px] bg-gold-500/10 text-gold-600 px-2 py-0.5 rounded-sm font-semibold tracking-wide uppercase font-sans">Selling Fast</span>
+              </h2>
+            </div>
             <Link
               to="/shop?sort=trending"
-              className="text-[11px] uppercase border-b border-gold-500 text-gold-500 tracking-[1px] hover:text-gold-600 transition-colors pb-0.5"
+              className="hidden md:block text-[11px] uppercase border-b border-gold-500 text-gold-500 tracking-[1px] hover:text-gold-600 transition-colors pb-0.5 mt-4 md:mt-0"
             >
               View Collection
             </Link>
@@ -323,19 +328,30 @@ export default function Home() {
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+          <div className="mt-12 text-center">
+            <Link
+              to="/shop?sort=trending"
+              className="inline-block bg-gold-500 text-white rounded-sm shadow-md shadow-gold-500/20 hover:bg-gold-600 hover:shadow-lg hover:shadow-gold-500/30 px-10 py-3.5 text-[11px] tracking-[2px] uppercase transition-all font-bold"
+            >
+              Shop Top Sellers
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* New Arrivals Section */}
-      <section className="py-24 md:py-32 bg-primary-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-baseline mb-12">
+      <section className="py-16 md:py-24 bg-primary-50 border-t border-black/5 relative">
+        <div className="absolute top-0 left-0 right-0 bg-primary-700 text-white text-[10px] md:text-[11px] uppercase tracking-[2px] text-center py-2 font-bold shadow-sm">
+          🔥 Limited Time deal — Stock is running out fast
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 md:mt-12">
+          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-10">
             <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-normal">
               Fresh Styles Just Dropped
             </h2>
             <Link
               to="/shop?sort=new"
-              className="text-[11px] uppercase border-b border-gold-500 text-gold-500 tracking-[1px] hover:text-gold-600 transition-colors pb-0.5"
+              className="hidden md:block text-[11px] uppercase border-b border-gold-500 text-gold-500 tracking-[1px] hover:text-gold-600 transition-colors pb-0.5 mt-4 md:mt-0"
             >
               Shop New Arrivals
             </Link>
@@ -346,6 +362,45 @@ export default function Home() {
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+          <div className="mt-12 text-center">
+            <Link
+              to="/shop?sort=new"
+              className="inline-block border border-gold-500 text-gold-600 rounded-sm hover:bg-gold-50 px-10 py-3.5 text-[11px] tracking-[2px] uppercase transition-all font-bold"
+            >
+              Shop New Arrivals
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Offer Banner */}
+      <section className="py-20 bg-primary-100 text-primary-950 text-center border-t border-black/5 relative overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1583391733958-d25e07fac04f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            alt="Fabric Texture"
+            loading="lazy"
+            className="w-full h-full object-cover opacity-20 mix-blend-luminosity"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary-50/90 to-primary-100/90"></div>
+        </div>
+        <div className="max-w-3xl mx-auto px-4 relative z-10">
+          <div className="text-[10px] tracking-[3px] uppercase text-gold-600 mb-4 font-bold">
+            Limited Time Deal
+          </div>
+          <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-normal">
+            Luxury Styles at Flat 50% OFF
+          </h2>
+          <p className="text-sm opacity-80 mb-8 font-medium max-w-lg mx-auto text-primary-700">
+            Discover our curated selection of premium fabrics and silhouettes
+            crafted for elegance. Don't miss out on our biggest sale of the season.
+          </p>
+          <Link
+            to="/shop"
+            className="inline-block bg-gold-500 text-white rounded-sm shadow-md shadow-gold-500/20 hover:bg-gold-600 hover:shadow-lg hover:shadow-gold-500/30 px-10 py-3.5 text-[11px] tracking-[2px] uppercase transition-all font-bold"
+          >
+            Shop Collection
+          </Link>
         </div>
       </section>
 
@@ -404,6 +459,7 @@ export default function Home() {
                   <img
                     src={image.url}
                     alt={image.label}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-1000"
                     referrerPolicy="no-referrer"
                   />
@@ -492,88 +548,138 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Offer Banner */}
-      <section className="py-20 bg-primary-100 text-primary-950 text-center border-t border-black/5 relative overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1583391733958-d25e07fac04f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-            alt="Fabric Texture"
-            className="w-full h-full object-cover opacity-20 mix-blend-luminosity"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary-50/90 to-primary-100/90"></div>
-        </div>
-        <div className="max-w-3xl mx-auto px-4 relative z-10">
-          <div className="text-[10px] tracking-[3px] uppercase text-gold-500 mb-4 font-medium">
-            Limited Time
-          </div>
-          <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-normal">
-            Exclusive Collections
-          </h2>
-          <p className="text-sm opacity-80 mb-8 font-light max-w-lg mx-auto text-primary-700">
-            Discover our curated selection of premium fabrics and silhouettes
-            crafted for elegance. Handloom traditions combined with modern
-            aesthetics.
-          </p>
-          <Link
-            to="/shop"
-            className="inline-block bg-gold-500 text-white rounded-md shadow-md shadow-gold-500/20 hover:bg-gold-600 hover:shadow-lg hover:shadow-gold-500/30 px-8 py-3 text-[11px] tracking-[2px] uppercase transition-all font-medium"
-          >
-            Explore Now
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }
 
 // Simple Product Card Component for Home Page
 function ProductCard({ product }: { product: Product; key?: string }) {
+  const { addToCart } = useStore();
+  const [isAdded, setIsAdded] = useState(false);
+
+  const handleQuickAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addToCart(product, product.category === 'Co-Ord Sets' ? 'M' : undefined, 1);
+    
+    trackAddToCart(product);
+
+    setIsAdded(true);
+    setTimeout(() => {
+      setIsAdded(false);
+    }, 3000);
+  };
+
+  // Generate random stats for social proof based on product id
+  const idHash = product.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const rating = 4.5 + (idHash % 5) * 0.1;
+  const soldCount = 50 + (idHash % 100);
+  const stockLeft = 2 + (idHash % 8);
+
   return (
-    <Link to={`/product/${product.slug}`} className="group block">
-      <div className="relative aspect-[2/3] overflow-hidden bg-transparent mb-4 flex items-center justify-center rounded-sm">
+    <Link 
+      to={`/product/${product.slug}`} 
+      className="group flex flex-col h-full"
+      onMouseEnter={() => {
+        const img = new Image();
+        img.src = optimizeImage(product.image, 800);
+      }}
+    >
+      <div className="relative aspect-[2/3] overflow-hidden bg-transparent mb-3 flex items-center justify-center rounded-sm">
         <img
-          src={product.image}
+          src={optimizeImage(product.image, 600)}
+          srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w, ${optimizeImage(product.image, 900)} 900w`}
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt={product.name}
           loading="lazy"
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000"
           referrerPolicy="no-referrer"
         />
-        {product.isNew && (
-          <span className="absolute top-3 left-3 bg-primary-50 border border-black/5 text-primary-950 text-[9px] px-2 py-1 tracking-[2px] uppercase rounded-sm font-medium">
-            New
-          </span>
-        )}
-      </div>
-      <div className="text-center">
-        <div className="text-[10px] uppercase tracking-[1px] text-gold-500 mb-1.5 font-medium">
-          {product.fabric || product.category}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+          {product.isTrending && (
+            <span className="bg-gold-500 text-white text-[9px] px-2 py-1 tracking-[1px] uppercase rounded-sm font-bold shadow-sm">
+              Bestseller
+            </span>
+          )}
+          {product.isNew && !product.isTrending && (
+            <span className="bg-primary-50 border border-black/5 text-primary-950 text-[9px] px-2 py-1 tracking-[2px] uppercase rounded-sm font-bold shadow-sm">
+              New Arrival
+            </span>
+          )}
         </div>
-        <h3 className="font-serif text-[15px] text-primary-950 mb-1.5 truncate font-normal tracking-wide group-hover:text-gold-500 transition-colors">
+        <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-10 w-[90%] md:w-auto justify-center pointer-events-none">
+           <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full whitespace-nowrap flex items-center shadow-md">
+             <span className="text-[10px] font-bold text-primary-700 uppercase tracking-[0.5px]">🔥 Only {stockLeft} left - Selling Fast</span>
+           </div>
+        </div>
+        
+        <AnimatePresence>
+          {isAdded && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="absolute bottom-20 left-4 right-4 bg-primary-950 text-white text-[10px] text-center py-2.5 rounded-sm uppercase tracking-wider shadow-xl z-20 pointer-events-none font-medium"
+            >
+              Added to cart
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Quick Add Button removed from overlay */}
+      </div>
+      <div className="text-center px-1 flex-grow flex flex-col mt-2">
+        <h3 className="font-serif text-[15px] sm:text-[16px] text-primary-950 mb-1 line-clamp-1 font-medium tracking-wide group-hover:text-gold-500 transition-colors">
           {product.name}
         </h3>
-        <div className="flex flex-col items-center justify-center mt-2">
-          <div className="flex items-center space-x-2 text-[14px]">
-            <span className="font-medium text-primary-950">
+        {product.sku && (
+          <p className="text-[10px] text-primary-950/50 mb-2 font-mono uppercase tracking-wider">
+            SKU: {product.sku}
+          </p>
+        )}
+        
+        <div className="flex flex-col items-center justify-center mt-auto gap-1.5">
+          <div className="flex items-center justify-center space-x-2">
+            <span className="font-bold text-[18px] text-primary-950 leading-none">
               {formatPrice(product.price)}
             </span>
             {product.originalPrice && (
-              <>
-                <span className="text-[12px] text-primary-950/40 line-through">
-                  {formatPrice(product.originalPrice)}
-                </span>
-                <span className="text-[10px] tracking-[1px] font-medium text-primary-700 bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">
-                  {Math.round(
-                    ((product.originalPrice - product.price) /
-                      product.originalPrice) *
-                      100,
-                  )}
-                  % OFF
-                </span>
-              </>
+              <span className="text-[13px] text-primary-950/40 line-through leading-none decoration-primary-950/30">
+                {formatPrice(product.originalPrice)}
+              </span>
             )}
           </div>
+          {product.originalPrice && (
+             <div className="inline-flex items-center text-[11px] tracking-[1px] font-bold text-gold-600 bg-gold-600/5 border border-gold-600/20 px-2 py-0.5 rounded-sm uppercase">
+               FLAT {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+             </div>
+          )}
+          
+          {product.colorVariants && product.colorVariants.length > 0 && (
+            <div className="flex justify-center gap-1.5 mt-2">
+              {product.colorVariants.map((variant) => (
+                <div 
+                  key={variant.slug} 
+                  title={variant.color}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = `/product/${variant.slug}`;
+                  }}
+                  className={`w-4 h-4 rounded-full overflow-hidden border transition-colors hover:scale-110 ${variant.slug === product.slug ? 'border-primary-950' : 'border-black/20 hover:border-gold-500'}`}
+                >
+                  <img src={optimizeImage(variant.image, 50)} alt={variant.color} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+        <button
+          onClick={handleQuickAdd}
+          className={`w-full mt-3 py-2 text-[11px] uppercase tracking-[1px] font-bold transition-colors border rounded-sm ${
+            isAdded ? 'bg-primary-950 text-white border-primary-950' : 'bg-transparent text-primary-950 border-primary-900/20 hover:bg-gold-500 hover:text-white hover:border-gold-500'
+          }`}
+        >
+          {isAdded ? 'Added ✓' : 'Add to Bag'}
+        </button>
       </div>
     </Link>
   );

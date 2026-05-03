@@ -12,6 +12,12 @@ export interface Review {
   notHelpful: number;
 }
 
+export interface ColorVariant {
+  color: string;
+  image: string;
+  slug: string;
+}
+
 export interface Product {
   id: string;
   sku?: string;
@@ -25,9 +31,11 @@ export interface Product {
   category: 'Sarees' | 'Co-Ord Sets';
   fabric: string;
   color: string;
+  colorVariants?: ColorVariant[];
   isNew?: boolean;
   isTrending?: boolean;
   isBestSelling?: boolean;
+  isVariant?: boolean;
   slug: string;
   description: string;
   rating: number;

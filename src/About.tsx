@@ -14,7 +14,7 @@ export default function About() {
           </p>
           
           <div className="my-16 aspect-video overflow-hidden bg-primary-50 border border-black/5 p-4">
-             <img src="https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Vintage textile" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+             <img src="https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Vintage textile" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
           </div>
 
           <h2 className="text-2xl md:text-3xl mt-12">The Physical Experience</h2>
@@ -32,7 +32,7 @@ export default function About() {
                 <p className="text-center text-[11px] uppercase tracking-[1px] mt-3 text-primary-950/60">Indoor Collection</p>
              </div>
              <div className="sm:col-span-2 aspect-video overflow-hidden bg-primary-50 border border-black/5 p-2 shadow-sm relative group cursor-pointer mt-4">
-                <img src="https://images.unsplash.com/photo-1555529771-835f59fc5efe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Shop Video Tour" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img src="https://images.unsplash.com/photo-1555529771-835f59fc5efe?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Shop Video Tour" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
                   <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center pl-1 shadow-lg">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-950"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>

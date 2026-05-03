@@ -20,6 +20,7 @@ import { ProductDescription } from "./components/ProductDescription";
 import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
+import { trackViewContent, trackAddToCart } from "./tracking";
 import { formatPrice, optimizeImage } from "./utils";
 import { CONFIG } from "./config";
 
@@ -35,12 +36,21 @@ export default function ProductPage() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
-
-  // Zoom State
-  const [zoomStyle, setZoomStyle] = useState<React.CSSProperties>({});
   const [isZoomed, setIsZoomed] = useState(false);
-
+  const [zoomStyle, setZoomStyle] = useState<React.CSSProperties>({});
   const [sizeError, setSizeError] = useState(false);
+  
+  // Synchronous state reset on navigation to prevent old state flashing
+  const [currentSlug, setCurrentSlug] = useState(slug);
+  if (slug !== currentSlug) {
+    setCurrentSlug(slug);
+    setActiveImageIndex(0);
+    setSizeError(false);
+    setIsLightboxOpen(false);
+    setIsZoomed(false);
+    setSelectedSize("");
+  }
+
   const sizeSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,9 +65,11 @@ export default function ProductPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setActiveImageIndex(0);
-    setSizeError(false);
-  }, [slug]);
+    
+    if (product) {
+      trackViewContent(product);
+    }
+  }, [slug, product]);
 
   if (!product) {
     return (
@@ -86,7 +98,7 @@ export default function ProductPage() {
   const totalMediaLength = productImages.length + (hasVideo ? 1 : 0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (window.innerWidth < 768) return;
+    if (window.innerWidth < 768 || !isZoomed) return;
     const { left, top, width, height } =
       e.currentTarget.getBoundingClientRect();
     const x = ((e.pageX - left - window.scrollX) / width) * 100;
@@ -98,10 +110,26 @@ export default function ProductPage() {
     });
   };
 
-  const handleMouseEnter = () => !isZoomed && setIsZoomed(true);
+  const handleToggleZoom = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.innerWidth < 768) return;
+    if (isZoomed) {
+      setIsZoomed(false);
+      setZoomStyle({ transform: "scale(1)" });
+    } else {
+      setIsZoomed(true);
+      const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+      const x = ((e.pageX - left - window.scrollX) / width) * 100;
+      const y = ((e.pageY - top - window.scrollY) / height) * 100;
+      setZoomStyle({
+        transformOrigin: `${x}% ${y}%`,
+        transform: "scale(2.5)",
+      });
+    }
+  };
+
   const handleMouseLeave = () => {
     setIsZoomed(false);
-    setZoomStyle({});
+    setZoomStyle({ transform: "scale(1)" });
   };
 
   const nextImage = () => {
@@ -123,6 +151,7 @@ export default function ProductPage() {
 
     setSizeError(false);
     addToCart(product, isCoOrd ? selectedSize : undefined, quantity);
+    trackAddToCart(product);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
     return true;
@@ -172,44 +201,53 @@ export default function ProductPage() {
         {/* Product Images Carousel */}
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-6 h-fit">
+            
+            {/* Preload all gallery images for instant switching */}
+            <div style={{ display: 'none' }}>
+              {productImages.map((img, idx) => (
+                <img key={`gallery-preload-${idx}`} src={optimizeImage(img, 800)} alt="preload" />
+              ))}
+            </div>
+
             {/* Main Image Carousel */}
             <div
-              className="flex-1 aspect-[2/3] bg-transparent overflow-hidden relative rounded-sm group select-none cursor-zoom-in"
+              className={`flex-1 aspect-[2/3] bg-transparent overflow-hidden relative rounded-sm group select-none ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
               onMouseMove={handleMouseMove}
-              onMouseEnter={handleMouseEnter}
+              onClick={handleToggleZoom}
               onMouseLeave={handleMouseLeave}
-              onClick={() => setIsLightboxOpen(true)}
             >
-              <AnimatePresence mode="wait">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsLightboxOpen(true);
+                }}
+                className="absolute top-4 right-4 z-20 bg-white/80 p-2 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+                aria-label="Open fullscreen"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+              <div className="w-full h-full relative bg-primary-50">
                 {activeImageIndex < productImages.length ? (
-                  <motion.img
-                    key={activeImageIndex}
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.5, ease: "circOut" }}
+                  <img
                     src={optimizeImage(productImages[activeImageIndex], 800)}
                     srcSet={`${optimizeImage(productImages[activeImageIndex], 400)} 400w, ${optimizeImage(productImages[activeImageIndex], 800)} 800w, ${optimizeImage(productImages[activeImageIndex], 1200)} 1200w`}
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    fetchpriority="high"
+                    fetchPriority="high"
+                    loading="eager"
                     alt={product.name}
-                    className={`w-full h-full object-cover object-center transition-transform duration-300 ease-out`}
+                    className="w-full h-full object-cover object-center"
                     style={isZoomed ? zoomStyle : {}}
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <motion.iframe
-                    key="video"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
+                  <iframe
+                    key={`video-${product.id}`}
                     src={product.videoUrl}
                     className="w-full h-full border-none object-cover"
                     allow="autoplay"
                   />
                 )}
-              </AnimatePresence>
+              </div>
 
               {/* Navigation Arrows */}
               {totalMediaLength > 1 && (
@@ -340,9 +378,9 @@ export default function ProductPage() {
               >
                 {activeImageIndex < productImages.length ? (
                   <div 
-                    className="relative w-full h-full flex items-center justify-center overflow-hidden cursor-zoom-in"
+                    className={`relative w-full h-full flex items-center justify-center overflow-hidden ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
                     onMouseMove={handleMouseMove}
-                    onMouseEnter={handleMouseEnter}
+                    onClick={handleToggleZoom}
                     onMouseLeave={handleMouseLeave}
                   >
                     <img
@@ -362,7 +400,7 @@ export default function ProductPage() {
 
                 <div className="absolute bottom-0 text-center w-full pb-8 pointer-events-none">
                   <h3 className="text-white text-xl font-serif mb-4 drop-shadow-md">
-                    {product.name}
+                    {product.name.replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim()}
                   </h3>
                   <div className="flex justify-center gap-2">
                     {Array.from({ length: totalMediaLength }).map((_, idx) => (
@@ -523,17 +561,25 @@ export default function ProductPage() {
         {/* Product Details */}
         <div className="flex flex-col pt-4">
           <div className="mb-6">
+            <div className="text-[10px] md:text-[11px] uppercase tracking-[3px] text-gold-500 mb-2 font-bold bg-gold-50 inline-block px-2 py-1.5 rounded-sm border border-gold-100">
+               {product.category === 'Co-Ord Sets' ? 'Signature Collection' : 'Premium Handpicked'}
+            </div>
+
             {/* 1. Title */}
-            <h1 className="text-[24px] md:text-[28px] font-medium text-primary-950 mb-1.5 leading-tight">
-              {product.name}
+            <h1 className="text-[28px] md:text-[36px] font-serif text-primary-950 mt-1 mb-2 leading-[1.15] tracking-wide font-normal">
+              {product.name.replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim()}
             </h1>
-            
-            {/* 2. Stars */}
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex text-gold-500 text-[14px]">
-                ⭐⭐⭐⭐⭐
-              </div>
-              <span className="text-[13px] font-medium text-primary-950">3000+ customers</span>
+
+            {product.sku && (
+              <p className="text-[12px] text-primary-950/50 mb-3 font-mono uppercase tracking-wider">
+                SKU: {product.sku}
+              </p>
+            )}
+
+            <div className="text-[12px] uppercase tracking-[2px] text-primary-950/60 font-bold mb-4 flex items-center gap-2">
+               <span>{product.fabric || "Premium Fabric"}</span>
+               <span className="w-1 h-1 rounded-full bg-gold-400"></span>
+               <span>{product.color || "Exclusive Hue"}</span>
             </div>
             
             {product.tagline && (
@@ -543,12 +589,8 @@ export default function ProductPage() {
             {/* 3. Price & COD */}
             <div className="flex flex-col gap-2 mb-6">
               <div className="flex items-center flex-wrap gap-2 text-primary-900">
-                {hasDiscount ? (
-                  <span className="text-[10px] font-medium text-primary-700 bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm tracking-[1px] uppercase">
-                    ₹100 OFF
-                  </span>
-                ) : product.originalPrice ? (
-                  <span className="text-[10px] font-medium text-primary-700 bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm tracking-[1px] uppercase">
+                {product.originalPrice && (
+                  <span className="text-[10px] font-medium text-gold-600 bg-gold-600/10 px-1.5 py-0.5 rounded-sm tracking-[1px] uppercase">
                     {Math.round(
                       ((product.originalPrice - product.price) /
                         product.originalPrice) *
@@ -556,23 +598,37 @@ export default function ProductPage() {
                     )}
                     % OFF
                   </span>
-                ) : null}
-
+                )}
+                
+                {hasDiscount && (
+                  <span className="text-[10px] font-medium text-gold-600 bg-gold-600/10 px-1.5 py-0.5 rounded-sm tracking-[1px] uppercase">
+                    EXTRA ₹100 OFF ON PREPAID
+                  </span>
+                )}
+                
                 {(hasDiscount || product.originalPrice) && (
                   <span className="text-[15px] font-medium text-primary-950/40 mx-1">→</span>
                 )}
                 
-                {hasDiscount ? (
-                  <>
-                    <span className="text-[15px] text-primary-950/40 line-through">
-                      {formatPrice(product.price)}
-                    </span>
-                    <span className="text-[15px] font-medium text-primary-950/40 mx-1">→</span>
-                  </>
-                ) : product.originalPrice ? (
+                {product.originalPrice ? (
                   <>
                     <span className="text-[15px] text-primary-950/40 line-through">
                       {formatPrice(product.originalPrice)}
+                    </span>
+                    <span className="text-[15px] font-medium text-primary-950/40 mx-1">→</span>
+                    {hasDiscount && (
+                      <>
+                        <span className="text-[15px] text-primary-950/40 line-through">
+                          {formatPrice(product.price)}
+                        </span>
+                        <span className="text-[15px] font-medium text-primary-950/40 mx-1">→</span>
+                      </>
+                    )}
+                  </>
+                ) : hasDiscount ? (
+                  <>
+                    <span className="text-[15px] text-primary-950/40 line-through">
+                      {formatPrice(product.price)}
                     </span>
                     <span className="text-[15px] font-medium text-primary-950/40 mx-1">→</span>
                   </>
@@ -584,6 +640,46 @@ export default function ProductPage() {
               </div>
               <span className="text-[13px] font-medium text-gold-600">✓ COD Available</span>
             </div>
+
+            {/* Color Variations */}
+            {product.colorVariants && product.colorVariants.length > 0 && (
+              <div className="mb-8">
+                {/* Preload variant images silently in background for instant navigation */}
+                <div style={{ display: 'none' }}>
+                  {product.colorVariants.map((variant) => (
+                    <img key={`preload-${variant.slug}`} src={optimizeImage(variant.image, 800)} alt="preload" />
+                  ))}
+                </div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[13px] font-bold tracking-[0.5px] text-primary-950 uppercase">
+                    Color: <span className="text-primary-950/50 font-medium ml-1">{(product.color || "Variant").split(' ')[0]}</span>
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2.5">
+                  {product.colorVariants.map((variant) => (
+                    <Link
+                      key={variant.slug}
+                      to={`/product/${variant.slug}`}
+                      className={`group flex rounded-md p-0.5 border transition-all duration-300 ${
+                        variant.slug === slug
+                          ? "border-primary-950 bg-white shadow-sm"
+                          : "border-transparent hover:border-black/20"
+                      }`}
+                      title={variant.color}
+                    >
+                      <div className="w-10 h-14 sm:w-12 sm:h-16 overflow-hidden rounded-sm bg-primary-50 border border-black/5">
+                        <img
+                          src={optimizeImage(variant.image, 100)}
+                          alt={variant.color}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* 4. Size Selection */}
             {isCoOrd && (
@@ -685,32 +781,8 @@ export default function ProductPage() {
                 <span className="text-base leading-none mr-2">👉</span> Auto discount applied at checkout
               </div>
             )}
-
-            {/* 8. Social Proof (Reviews text) */}
-            <div className="mb-6 space-y-4">
-              <div className="bg-primary-50 px-4 py-3 rounded-sm border border-black/5">
-                <div className="flex items-center gap-0.5 mb-1 text-gold-500 text-[12px]">
-                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                </div>
-                <p className="text-[13px] text-primary-950/80 italic mb-2">"Very comfortable for office wear, fabric is really soft. Happy with the purchase!"</p>
-                <div className="flex items-center gap-2 text-[11px]">
-                   <span className="font-medium text-primary-950">Neha, Delhi</span>
-                   <span className="text-gold-600 font-medium ml-auto flex items-center gap-1" title="Verified Buyer">✔ Verified</span>
-                </div>
-              </div>
-              <div className="bg-primary-50 px-4 py-3 rounded-sm border border-black/5">
-                <div className="flex items-center gap-0.5 mb-1 text-gold-500 text-[12px]">
-                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                </div>
-                <p className="text-[13px] text-primary-950/80 italic mb-2">"Looks incredibly premium and the fit is just perfect. Will definitely buy again."</p>
-                <div className="flex items-center gap-2 text-[11px]">
-                   <span className="font-medium text-primary-950">Anjali, Mumbai</span>
-                   <span className="text-gold-600 font-medium ml-auto flex items-center gap-1" title="Verified Buyer">✔ Verified</span>
-                </div>
-              </div>
-            </div>
           </div>
-              
+
           {/* Trust Elements */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-5 text-[13px] text-primary-950 font-normal">
             <span className="flex items-center gap-1.5">✅ 7 Days Easy Returns</span>
@@ -751,6 +823,7 @@ export default function ProductPage() {
           {products
             .filter(
               (p) =>
+                !p.isVariant &&
                 p.id !== product.id &&
                 (p.category === product.category ||
                   p.fabric === product.fabric),
@@ -768,6 +841,8 @@ export default function ProductPage() {
                   <div className="aspect-[2/3] bg-transparent overflow-hidden mb-4 rounded-sm">
                     <img
                       src={optimizeImage(relatedProduct.image, 400)}
+                      srcSet={`${optimizeImage(relatedProduct.image, 300)} 300w, ${optimizeImage(relatedProduct.image, 600)} 600w, ${optimizeImage(relatedProduct.image, 900)} 900w`}
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       alt={relatedProduct.name}
                       loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
@@ -786,7 +861,7 @@ export default function ProductPage() {
                           <span className="text-[11px] text-primary-950/40 line-through">
                             {formatPrice(relatedProduct.originalPrice)}
                           </span>
-                          <span className="text-[9px] font-medium text-primary-700 bg-[#E53935]/10 px-1 py-0.5 rounded-sm">
+                          <span className="text-[9px] font-medium text-gold-600 bg-gold-600/10 px-1 py-0.5 rounded-sm">
                             {Math.round(
                               ((relatedProduct.originalPrice -
                                 relatedProduct.price) /

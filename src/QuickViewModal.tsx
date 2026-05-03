@@ -120,13 +120,6 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                 <div className="text-[10px] tracking-[2px] uppercase text-gold-500 mb-2 font-medium">{product.category}</div>
                 <h2 className="text-xl md:text-2xl font-medium text-primary-950 mb-1.5 leading-tight">{product.name}</h2>
                 
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="flex text-gold-500 text-[12px]">
-                    ⭐⭐⭐⭐⭐
-                  </div>
-                  <span className="text-[12px] font-medium text-primary-950">3000+ customers</span>
-                </div>
-                
                 {product.tagline && (
                   <p className="text-[14px] text-primary-950/70 mb-3 whitespace-pre-line">{product.tagline}</p>
                 )}
@@ -135,14 +128,14 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                   <p className="text-[10px] tracking-[1px] uppercase text-primary-950/40 mb-3">SKU: {product.sku}</p>
                 )}
 
-                <div className="flex flex-col gap-1 mb-5">
+              <div className="flex flex-col gap-1 mb-5">
                   <div className="flex items-center flex-wrap gap-2 text-primary-950 mb-2">
                     {hasDiscount ? (
-                      <span className="text-[10px] font-medium text-primary-700 bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm tracking-[0.5px] uppercase">
+                      <span className="text-[10px] font-medium text-gold-600 bg-gold-600/10 px-1.5 py-0.5 rounded-sm tracking-[0.5px] uppercase">
                         ₹100 OFF
                       </span>
                     ) : product.originalPrice ? (
-                      <span className="text-[10px] font-medium text-primary-700 bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm tracking-[0.5px] uppercase">
+                      <span className="text-[10px] font-medium text-gold-600 bg-gold-600/10 px-1.5 py-0.5 rounded-sm tracking-[0.5px] uppercase">
                         {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
                       </span>
                     ) : null}
@@ -173,6 +166,42 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                   </div>
                   <span className="text-[12px] font-medium text-gold-600">✓ COD Available</span>
                 </div>
+
+                {/* Color Variations */}
+                {product.colorVariants && product.colorVariants.length > 0 && (
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-[11px] font-bold tracking-[0.5px] text-primary-950 uppercase">
+                        Color: <span className="text-primary-950/50 font-medium ml-1">{(product.color || "Variant").split(' ')[0]}</span>
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2.5">
+                      {product.colorVariants.map((variant) => (
+                        <Link
+                          key={variant.slug}
+                          to={`/product/${variant.slug}`}
+                          onClick={onClose}
+                          className={`group flex rounded-md p-0.5 border transition-all duration-300 ${
+                            variant.slug === product.slug
+                              ? "border-primary-950 bg-white shadow-sm"
+                              : "border-transparent hover:border-black/20"
+                          }`}
+                          title={variant.color}
+                        >
+                          <div className="w-9 h-12 sm:w-11 sm:h-14 overflow-hidden rounded-sm bg-primary-50 border border-black/5">
+                            <img
+                              src={variant.image}
+                              alt={variant.color}
+                              loading="lazy"
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                              referrerPolicy="no-referrer"
+                            />
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {isCoOrd && (
@@ -213,14 +242,23 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                 </motion.div>
               )}
 
-              <div className="flex flex-col gap-2 mb-6">
+              <div className="flex flex-col gap-2 mb-6 relative">
+                <AnimatePresence>
+                  {isAdded && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute -top-10 left-0 right-0 bg-primary-950 text-white text-[10px] text-center py-2.5 rounded-sm uppercase tracking-wider shadow-xl z-20 pointer-events-none font-medium mx-auto max-w-[200px]"
+                    >
+                      Added to cart
+                    </motion.div>
+                  )}
+                </AnimatePresence>
                 <div className="flex gap-3">
                   <button
                     onClick={() => {
-                      if (handleAddToCart()) {
-                        navigate("/checkout");
-                        onClose();
-                      }
+                      handleAddToCart();
                     }}
                     disabled={isAdded}
                     className={`flex-1 py-2.5 px-8 text-[12px] uppercase transition-all duration-300 border shadow-sm font-medium flex flex-col items-center justify-center rounded ${
@@ -229,7 +267,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                         : 'bg-primary-950 border-primary-950 text-white hover:bg-gold-500 hover:border-gold-500'
                     }`}
                   >
-                    <span className="leading-tight">{isAdded ? 'Success!' : `Order Now - Only ${formatPrice(finalPrice)} (Limited Stock)`}</span>
+                    <span className="leading-tight">{isAdded ? 'Success!' : `Add to Cart - ${formatPrice(finalPrice)}`}</span>
                   </button>
                   <button
                     onClick={() => toggleWishlist(product.id)}
@@ -251,30 +289,6 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                 </div>
               )}
 
-              {/* Social Proof Text Only */}
-              <div className="mb-5 space-y-3">
-                <div className="bg-primary-50 px-3 py-2.5 rounded-sm border border-black/5">
-                  <div className="flex items-center gap-0.5 mb-1 text-gold-500 text-[10px]">
-                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                  </div>
-                  <p className="text-[12px] text-primary-950/80 italic mb-1.5">"Very comfortable for office wear, fabric is really soft."</p>
-                  <div className="flex items-center gap-2 text-[10px]">
-                     <span className="font-medium text-primary-950">Neha, Delhi</span>
-                     <span className="text-gold-600 font-medium ml-auto flex items-center gap-1" title="Verified Buyer">✔ Verified</span>
-                  </div>
-                </div>
-                <div className="bg-primary-50 px-3 py-2.5 rounded-sm border border-black/5">
-                  <div className="flex items-center gap-0.5 mb-1 text-gold-500 text-[10px]">
-                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                  </div>
-                  <p className="text-[12px] text-primary-950/80 italic mb-1.5">"Looks incredibly premium and the fit is perfect."</p>
-                  <div className="flex items-center gap-2 text-[10px]">
-                     <span className="font-medium text-primary-950">Anjali, Mumbai</span>
-                     <span className="text-gold-600 font-medium ml-auto flex items-center gap-1" title="Verified Buyer">✔ Verified</span>
-                  </div>
-                </div>
-              </div>
-                  
               {/* Trust Elements */}
               <div className="flex flex-col gap-2 mt-4 bg-primary-50/30 border border-black/5 rounded-sm p-3.5 text-[12px] text-primary-950 font-medium">
                 <div className="flex items-center gap-2">

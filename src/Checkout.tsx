@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useStore } from './store';
 import { formatPrice } from './utils';
-import { CheckCircle2, Loader2 } from 'lucide-react';
+import { CheckCircle2, Loader2, ArrowLeft } from 'lucide-react';
 import { CONFIG, submitToGoogleSheets } from './config';
+import { trackInitiateCheckout, trackPurchase } from './tracking';
 
 export default function Checkout() {
   const { cart, cartTotal, clearCart, appliedCoupon, applyCoupon } = useStore();
@@ -18,6 +19,9 @@ export default function Checkout() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (cart.length > 0) {
+      trackInitiateCheckout(cartTotal(), cart);
+    }
   }, []);
 
   useEffect(() => {
@@ -117,6 +121,9 @@ export default function Checkout() {
           await submitToGoogleSheets(googleSheetsData);
           
           console.log('Order processed successfully');
+          
+          // Track purchase
+          trackPurchase(total, cart, newOrderId);
 
           setIsSuccess(true);
           clearCart();
@@ -407,6 +414,9 @@ export default function Checkout() {
                   </div>
                   <div className="flex-grow flex flex-col justify-center">
                     <p className="text-[15px] font-serif text-primary-950 line-clamp-1">{item.name}</p>
+                    {item.sku && (
+                      <p className="text-[10px] tracking-[1px] uppercase text-primary-950/40 mt-1 font-mono">SKU: {item.sku}</p>
+                    )}
                     {item.size && <p className="text-[11px] uppercase tracking-[1px] text-primary-950/50 mt-1">Size: {item.size}</p>}
                     <p className="text-[14px] text-primary-950 mt-2">{formatPrice(item.price)}</p>
                   </div>

@@ -13,7 +13,8 @@ export default function Wishlist() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [sortBy, setSortBy] = useState('default'); // 'default', 'price-low', 'price-high', 'name-az', 'name-za'
-  
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   // Shared items can come from URL path or query params
   const sharedItemsRaw = searchParams.get('items') || (shareId && shareId !== 'shared' ? shareId : null);
   const sharedItemIds = sharedItemsRaw ? sharedItemsRaw.split(',') : [];
@@ -22,6 +23,16 @@ export default function Wishlist() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const handleAddToCart = (product: any) => {
+    addToCart(product);
+    showToast(`${product.name} added to cart`);
+  };
 
   const displayProducts = useMemo(() => {
     const baseItems = isSharedView 
@@ -57,6 +68,7 @@ export default function Wishlist() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareUrl);
     setCopied(true);
+    showToast('Share link copied to clipboard!');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -67,11 +79,18 @@ export default function Wishlist() {
   };
 
   const addSharedToMyWishlist = () => {
+    let addedCount = 0;
     sharedItemIds.forEach(id => {
       if (!wishlist.includes(id)) {
         toggleWishlist(id);
+        addedCount++;
       }
     });
+    if (addedCount > 0) {
+      showToast(`Added ${addedCount} item${addedCount > 1 ? 's' : ''} to your wishlist!`);
+    } else {
+      showToast('Items are already in your wishlist!');
+    }
   };
 
   return (
@@ -167,9 +186,9 @@ export default function Wishlist() {
               {!isSharedView && (
                 <button 
                   onClick={() => setIsShareModalOpen(true)}
-                  className="flex items-center gap-3 bg-primary-50 px-6 py-3 border border-black/5 rounded-full text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:text-gold-500 hover:border-gold-500/20 transition-all shadow-sm group"
+                  className="flex items-center gap-3 bg-primary-950 text-white px-6 py-3 rounded-sm text-[11px] tracking-[1.5px] uppercase font-medium hover:bg-gold-500 transition-all shadow-md group"
                 >
-                  <Share2 size={16} className="text-gold-500 group-hover:scale-110 transition-transform" /> Share My Collection
+                  <Share2 size={16} className="text-gold-300 group-hover:text-white transition-colors" /> Share My Collection
                 </button>
               )}
             </div>
@@ -189,6 +208,7 @@ export default function Wishlist() {
                       <img 
                         src={product.image} 
                         alt={product.name}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                       />
                       <div className="absolute inset-0 bg-primary-950/0 group-hover:bg-primary-950/10 transition-colors duration-500" />
@@ -214,8 +234,14 @@ export default function Wishlist() {
                       </div>
                       
                       <Link to={`/product/${product.slug}`}>
-                        <h3 className="text-xl font-serif text-primary-950 mb-3 group-hover:text-gold-500 transition-colors leading-tight">{product.name}</h3>
+                        <h3 className="text-xl font-serif text-primary-950 mb-1 group-hover:text-gold-500 transition-colors leading-tight">{product.name}</h3>
                       </Link>
+                      
+                      {product.sku && (
+                        <p className="text-[10px] text-primary-950/50 mb-3 font-mono uppercase tracking-wider">
+                          SKU: {product.sku}
+                        </p>
+                      )}
                       
                       <div className="text-[12px] text-primary-950/50 mb-8 font-light line-clamp-2">
                         Elegant {product.color} {product.category.toLowerCase()} that defines sophistication.
@@ -223,7 +249,7 @@ export default function Wishlist() {
                       
                       <div className="mt-auto">
                         <button 
-                          onClick={() => addToCart(product)}
+                          onClick={() => handleAddToCart(product)}
                           className="w-full flex items-center justify-center gap-3 bg-primary-950 text-white py-4 text-[11px] tracking-[2px] uppercase hover:bg-gold-500 transition-all rounded-sm font-medium shadow-lg shadow-primary-950/5"
                         >
                           <ShoppingBag size={14} /> Add to Bag
@@ -237,6 +263,14 @@ export default function Wishlist() {
           </>
         )}
       </div>
+
+      {toastMessage && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[150]">
+          <div className="bg-primary-950 text-white px-6 py-3 rounded-full text-sm font-medium flex items-center shadow-2xl">
+            {toastMessage}
+          </div>
+        </div>
+      )}
 
       {/* Share Modal */}
       <AnimatePresence>

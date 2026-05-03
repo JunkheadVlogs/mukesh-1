@@ -4,9 +4,10 @@ import { useSearchParams, Link } from 'react-router';
 import { Filter, ChevronDown, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { products } from './mockData';
-import { formatPrice } from './utils';
+import { formatPrice, optimizeImage } from './utils';
 import QuickViewModal from './QuickViewModal';
 import { Product, useStore } from './store';
+import { trackAddToCart } from './tracking';
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,22 +20,22 @@ export default function Shop() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const { addToCart } = useStore();
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
 
   const handleQuickAdd = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
-    if (product.category === 'Co-Ord Sets') {
-      window.location.href = `/product/${product.slug}`;
-      return;
-    }
     
-    addToCart(product, undefined, 1);
-    setToastMessage(`${product.name} added to cart`);
-    setTimeout(() => setToastMessage(null), 3000);
+    addToCart(product, product.category === 'Co-Ord Sets' ? 'M' : undefined, 1);
+    trackAddToCart(product);
+    
+    setAddedItems(prev => ({ ...prev, [product.id]: true }));
+    setTimeout(() => {
+      setAddedItems(prev => ({ ...prev, [product.id]: false }));
+    }, 3000);
   };
 
   const filteredAndSortedProducts = useMemo(() => {
-    let result = [...products];
+    let result = products.filter(p => !p.isVariant);
 
     // Search
     if (searchQuery) {
@@ -343,14 +344,25 @@ export default function Shop() {
 
           {filteredAndSortedProducts.length > 0 ? (
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 sm:gap-x-10 sm:gap-y-16 lg:gap-x-12 lg:gap-y-20">
-              {filteredAndSortedProducts.map((product) => (
+              {filteredAndSortedProducts.map((product, idx) => (
                 <div key={product.id} className="group flex flex-col h-full">
                   <div className="relative aspect-[2/3] overflow-hidden bg-transparent mb-4 flex items-center justify-center rounded-sm">
-                    <Link to={`/product/${product.slug}`} className="block h-full w-full">
+                    <Link 
+                      to={`/product/${product.slug}`} 
+                      className="block h-full w-full"
+                      onMouseEnter={() => {
+                        // Preload the product main image
+                        const img = new Image();
+                        img.src = optimizeImage(product.image, 800);
+                      }}
+                    >
                       <img 
-                        src={product.image} 
+                        src={optimizeImage(product.image, idx < 4 ? 600 : 400)} 
+                        srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w, ${optimizeImage(product.image, 900)} 900w`}
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         alt={product.name} 
-                        loading="lazy"
+                        loading={idx < 4 ? "eager" : "lazy"}
+                        fetchPriority={idx < 4 ? "high" : "auto"}
                         className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
                         referrerPolicy="no-referrer"
                       />
@@ -374,15 +386,20 @@ export default function Shop() {
                       <span className="absolute top-3 left-3 bg-primary-50 border border-black/5 text-primary-950 text-[9px] px-2 py-1 tracking-[2px] uppercase shadow-sm rounded-sm font-medium">New</span>
                     )}
 
-                    {/* Quick Add Button sliding up */}
-                    <div className="absolute bottom-0 w-full p-4 pointer-events-none opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                      <button
-                        onClick={(e) => handleQuickAdd(e, product)}
-                        className="w-full flex items-center justify-center gap-2 bg-primary-50 text-primary-950 py-3 text-[11px] uppercase tracking-[1px] font-medium shadow-lg pointer-events-auto hover:bg-gold-500 hover:text-white transition-colors flex-col"
-                      >
-                        {`Order Now - Only ${formatPrice(product.price)} (Limited Stock)`}
-                      </button>
-                    </div>
+                    <AnimatePresence>
+                      {addedItems[product.id] && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          className="absolute inset-0 bg-primary-950/20 backdrop-blur-sm flex items-center justify-center z-20 pointer-events-none"
+                        >
+                           <span className="bg-primary-950 text-white px-4 py-2 text-[11px] font-bold tracking-[1px] uppercase rounded-sm shadow-xl">
+                             Added To Cart
+                           </span>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                   <div className="text-center flex-grow flex flex-col mt-2">
                     <div className="text-[10px] uppercase tracking-[1px] text-gold-500 mb-1.5 font-medium">{product.fabric || product.category}</div>
@@ -391,17 +408,45 @@ export default function Shop() {
                         {product.name}
                       </Link>
                     </h3>
+                    {product.sku && (
+                      <p className="text-[10px] text-primary-950/50 mb-1 font-mono uppercase tracking-wider">
+                        SKU: {product.sku}
+                      </p>
+                    )}
                     <div className="flex flex-col items-center justify-center mt-auto pt-2">
                       <div className="flex items-center space-x-2 text-[14px]">
                         <span className="font-medium text-primary-950">{formatPrice(product.price)}</span>
                         {product.originalPrice && (
                            <>
                              <span className="text-[12px] text-primary-950/40 line-through">{formatPrice(product.originalPrice)}</span>
-                             <span className="text-[10px] tracking-[1px] font-medium text-primary-700 bg-[#E53935]/10 px-1.5 py-0.5 rounded-sm">{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF</span>
+                             <span className="text-[10px] tracking-[1px] font-medium text-gold-600 bg-gold-600/10 px-1.5 py-0.5 rounded-sm">{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF</span>
                            </>
                         )}
                       </div>
+                      
+                      {product.colorVariants && product.colorVariants.length > 0 && (
+                        <div className="flex justify-center gap-1.5 mt-3">
+                          {product.colorVariants.map((variant) => (
+                            <Link 
+                              key={variant.slug} 
+                              to={`/product/${variant.slug}`}
+                              title={variant.color}
+                              className={`w-4 h-4 rounded-full overflow-hidden border transition-colors hover:scale-110 ${variant.slug === product.slug ? 'border-primary-950' : 'border-black/20 hover:border-gold-500'}`}
+                            >
+                              <img src={optimizeImage(variant.image, 50)} alt={variant.color} className="w-full h-full object-cover" />
+                            </Link>
+                          ))}
+                        </div>
+                      )}
                     </div>
+                    <button
+                      onClick={(e) => handleQuickAdd(e, product)}
+                      className={`w-full mt-4 py-2 px-4 text-[11px] uppercase tracking-[1px] font-bold rounded-sm border transition-colors ${
+                        addedItems[product.id] ? 'bg-primary-950 text-white border-primary-950' : 'bg-transparent text-primary-950 border-primary-900/20 hover:bg-gold-500 hover:text-white hover:border-gold-500'
+                      }`}
+                    >
+                      {addedItems[product.id] ? 'Added ✓' : 'Add to Bag'}
+                    </button>
                   </div>
                 </div>
               ))}
@@ -420,19 +465,6 @@ export default function Shop() {
         product={quickViewProduct} 
         onClose={() => setQuickViewProduct(null)} 
       />
-
-      <AnimatePresence>
-        {toastMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-primary-950 text-white px-6 py-4 rounded-sm shadow-2xl z-50 text-[11px] uppercase tracking-[2px] font-medium flex items-center"
-          >
-            {toastMessage}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
