@@ -3,8 +3,9 @@ import { useNavigate, Link } from 'react-router';
 import { X, Heart, ArrowRight, Info, RotateCcw, Truck, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Product, useStore } from './store';
-import { formatPrice } from './utils';
+import { formatPrice, optimizeImage } from './utils';
 import { ProductDescription } from './components/ProductDescription';
+import { OptimizedImage } from './components/OptimizedImage';
 
 interface QuickViewModalProps {
   product: Product | null;
@@ -92,11 +93,11 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
             {/* Left: Images */}
             <div className="w-full md:w-1/2 bg-transparent relative aspect-[2/3] md:aspect-auto overflow-hidden">
               <div className="w-full h-full relative">
-                <img 
+                <OptimizedImage 
                   src={productImages[activeImageIndex]} 
+                  width={800}
                   alt={product.name} 
                   className="w-full h-full object-cover object-center"
-                  referrerPolicy="no-referrer"
                 />
                 
                 {/* Image selection bullets if more than one */}
@@ -185,12 +186,12 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                           title={variant.color}
                         >
                           <div className="w-9 h-12 sm:w-11 sm:h-14 overflow-hidden rounded-sm bg-primary-50 border border-black/5">
-                            <img
+                            <OptimizedImage
                               src={variant.image}
+                              width={100}
                               alt={variant.color}
                               loading="lazy"
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                              referrerPolicy="no-referrer"
                             />
                           </div>
                         </Link>

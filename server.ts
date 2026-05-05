@@ -6,7 +6,7 @@ import Razorpay from "razorpay";
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3000;
 
   app.use(express.json());
 
@@ -67,6 +67,40 @@ async function startServer() {
       console.error("Signature Verification Error:", error);
       res.status(500).json({ success: false, error: "Internal Server Error" });
     }
+  });
+
+  // robots.txt
+  app.get('/robots.txt', (req, res) => {
+    res.type('text/plain');
+    res.send(`User-agent: *
+Disallow: /api/
+Allow: /
+
+Sitemap: https://mukeshsareecentre.com/sitemap.xml`);
+  });
+
+  // sitemap.xml (static base, could be made dynamic if you want to import mockData)
+  app.get('/sitemap.xml', (req, res) => {
+    res.type('application/xml');
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://mukeshsareecentre.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsareecentre.com/shop</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsareecentre.com/about</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>`;
+    res.send(xml);
   });
 
   // Vite middleware for development

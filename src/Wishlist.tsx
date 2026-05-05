@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { ChevronRight, Copy, Heart, Mail, MessageCircle, Plus, Share2, ShoppingBag, Trash2, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
@@ -95,6 +96,13 @@ export default function Wishlist() {
 
   return (
     <div className="bg-primary-50 min-h-screen pt-24 pb-32">
+      <Helmet>
+        <title>{isSharedView ? "Shared Wishlist" : "My Wishlist"} | Mukesh Saree Centre</title>
+        <meta name="description" content={isSharedView 
+          ? "Discover a collection of curated favorites from Mukesh Saree Centre shared with you. Shop these elegant sarees and co-ord sets directly from this wishlist."
+          : "View and manage your favorite picks from Mukesh Saree Centre. Curate your dream collection of elegant sarees and designer co-ord sets for every occasion."
+        } />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
           <motion.div

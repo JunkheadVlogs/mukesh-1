@@ -1,6 +1,12 @@
+import { Helmet } from 'react-helmet-async';
+
 export default function Terms() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-20">
+      <Helmet>
+        <title>Terms & Conditions | Mukesh Saree Centre</title>
+        <meta name="description" content="Review the terms of service for Mukesh Saree Centre. Understanding our guidelines ensures a transparent and smooth shopping experience for all our patrons." />
+      </Helmet>
       <div className="text-center mb-16">
         <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-6 font-normal">Terms & Conditions</h1>
         <div className="w-16 h-[1px] bg-primary-950/20 mx-auto"></div>

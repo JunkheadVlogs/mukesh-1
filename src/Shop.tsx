@@ -1,5 +1,6 @@
+import { Helmet } from 'react-helmet-async';
 import type { ChangeEvent } from 'react';
-import { useState, useMemo, lazy, Suspense } from 'react';
+import { useState, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router';
 import { Filter, ChevronDown, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -7,14 +8,14 @@ import { products } from './mockData';
 import { formatPrice, optimizeImage } from './utils';
 import { ProductCard } from './components/ProductCard';
 import { Product, useStore } from './store';
-
-const QuickViewModal = lazy(() => import('./QuickViewModal'));
+import QuickViewModal from './QuickViewModal';
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryFilter = searchParams.get('category');
   const fabricFilter = searchParams.get('fabric')?.split(',') || [];
   const colorFilter = searchParams.get('color')?.split(',') || [];
+  const priceRangeFilter = searchParams.get('priceRange');
   const sortParam = searchParams.get('sort');
   const searchQuery = searchParams.get('search');
 
@@ -50,6 +51,15 @@ export default function Shop() {
       result = result.filter(p => 
         colorFilter.some(c => p.color.toLowerCase() === c.toLowerCase())
       );
+    }
+
+    if (priceRangeFilter) {
+      const parts = priceRangeFilter.split('-');
+      if (parts.length === 2) {
+        const minVal = parseInt(parts[0], 10) || 0;
+        const maxVal = parts[1] ? parseInt(parts[1], 10) : Infinity;
+        result = result.filter(p => p.price >= minVal && p.price <= maxVal);
+      }
     }
 
     // Sort
@@ -151,6 +161,16 @@ export default function Shop() {
     setSearchParams(newParams);
   };
 
+  const handlePriceRangeChange = (range: string | null) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (range) {
+      newParams.set('priceRange', range);
+    } else {
+      newParams.delete('priceRange');
+    }
+    setSearchParams(newParams);
+  };
+
   const handleFilterChange = (key: string, value: string | null) => {
     const newParams = new URLSearchParams(searchParams);
     if (value) {
@@ -164,11 +184,27 @@ export default function Shop() {
   const uniqueFabrics = Array.from(new Set(products.map(p => p.fabric.split(' ').pop()))); // Simplistic extractor
   const baseFabrics = ['Silk', 'Organza', 'Crepe', 'Satin', 'Cotton'];
   const uniqueColors = Array.from(new Set(products.map(p => p.color)));
+  const priceRanges = [
+    { label: "Under ₹1,000", value: "0-999" },
+    { label: "₹1,000 - ₹1,500", value: "1000-1499" },
+    { label: "₹1,500 - ₹2,000", value: "1500-1999" },
+    { label: "Over ₹2,000", value: "2000-" },
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
+    <div className="mobile-container sm:max-w-7xl mx-auto sm:px-6 lg:px-8 py-6 md:py-12">
+      <Helmet>
+        <title>{searchQuery ? `Search results for ${searchQuery}` : (categoryFilter ? `${categoryFilter} Collection` : 'Shop Our Collection')} | Mukesh Saree Centre</title>
+        <meta name="description" content={
+          categoryFilter === 'Sarees' 
+            ? "Discover an exquisite collection of premium sarees at Mukesh Saree Centre. From traditional silk to designer patterns, find the perfect drape for any occasion."
+            : categoryFilter === 'Co-Ord Sets'
+            ? "Shop designer co-ord sets at Mukesh Saree Centre. Explore modern silhouettes, floral patterns, and comfortable fabrics in our latest premium ethnic collection."
+            : "Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre. From traditional silk to modern cotton co-ords, find your perfect outfit today."
+        } />
+      </Helmet>
       {/* Header */}
-      <div className="text-center mb-10 mt-2">
+      <div className="text-center mb-10 mt-2 px-4 sm:px-0">
         <h1 className="text-2xl md:text-3xl font-serif text-primary-950 mb-4 font-normal">
           {searchQuery ? `Results for "${searchQuery}"` : (categoryFilter || 'All Collection')}
         </h1>
@@ -190,9 +226,9 @@ export default function Shop() {
         )}
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-12">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
         {/* Mobile Filter Toggle */}
-        <div className="lg:hidden flex justify-between items-center bg-transparent border-y border-black/5 py-4 mb-6">
+        <div className="lg:hidden flex justify-between items-center bg-transparent border-y border-black/5 py-4 mb-2 px-4 sm:px-0">
           <button 
             onClick={() => setIsFilterOpen(!isFilterOpen)}
             className="flex items-center text-[11px] tracking-[2px] uppercase text-primary-950 hover:text-gold-500 transition-colors"
@@ -221,7 +257,7 @@ export default function Shop() {
           <div className="sticky top-28 space-y-10">
             <div className="flex items-center justify-between pb-2 border-b border-black/5">
               <h3 className="text-[10px] tracking-[2px] uppercase text-primary-950/40">Filters</h3>
-              {(categoryFilter || fabricFilter.length > 0 || colorFilter.length > 0) && (
+              {(categoryFilter || fabricFilter.length > 0 || colorFilter.length > 0 || priceRangeFilter) && (
                 <button 
                   onClick={clearAllFilters}
                   className="text-[9px] tracking-[1px] uppercase text-gold-500 hover:underline font-medium"
@@ -258,6 +294,43 @@ export default function Shop() {
                     Co-Ord Sets
                   </button>
                 </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-[10px] tracking-[2px] uppercase mb-6 text-primary-950/50 pb-2 border-b border-black/5">Price</h3>
+              <ul className="space-y-3">
+                <li>
+                  <label className="flex items-center group w-full text-left cursor-pointer">
+                    <input 
+                      type="radio"
+                      name="priceRange"
+                      checked={!priceRangeFilter}
+                      onChange={() => handlePriceRangeChange(null)}
+                      className="text-gold-500 focus:ring-gold-500 h-3.5 w-3.5 border-black/20 mr-3"
+                    />
+                    <span className={`text-[13px] tracking-[1px] transition-colors ${!priceRangeFilter ? 'text-primary-950 font-medium' : 'text-primary-950/60 group-hover:text-gold-500'}`}>
+                      Any Price
+                    </span>
+                  </label>
+                </li>
+                {priceRanges.map(range => (
+                  <li key={range.value}>
+                    <label className="flex items-center group w-full text-left cursor-pointer">
+                      <input 
+                        type="radio"
+                        name="priceRange"
+                        value={range.value}
+                        checked={priceRangeFilter === range.value}
+                        onChange={() => handlePriceRangeChange(range.value)}
+                        className="text-gold-500 focus:ring-gold-500 h-3.5 w-3.5 border-black/20 mr-3"
+                      />
+                      <span className={`text-[13px] tracking-[1px] transition-colors ${priceRangeFilter === range.value ? 'text-primary-950 font-medium' : 'text-primary-950/60 group-hover:text-gold-500'}`}>
+                        {range.label}
+                      </span>
+                    </label>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -303,8 +376,8 @@ export default function Shop() {
         </div>
 
         {/* Product Grid */}
-        <div className="lg:w-4/5">
-          <div className="hidden lg:flex justify-between items-center mb-8 pb-4">
+        <div className="lg:w-4/5 pt-2 lg:pt-0">
+          <div className="hidden lg:flex justify-between items-center mb-8 pb-4 px-4 sm:px-0">
             <span className="text-[12px] tracking-[1px] uppercase text-primary-950/50">{filteredAndSortedProducts.length} Results</span>
             <div className="flex items-center">
               <span className="mr-3 text-[10px] uppercase tracking-[2px] text-primary-950/50">Sort by:</span>
@@ -331,7 +404,7 @@ export default function Shop() {
           </div>
 
           {filteredAndSortedProducts.length > 0 ? (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 sm:gap-x-10 sm:gap-y-16 lg:gap-x-12 lg:gap-y-20">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-6 md:gap-8 w-full">
               {filteredAndSortedProducts.map((product, idx) => (
                 <ProductCard 
                   key={product.id} 
@@ -351,12 +424,10 @@ export default function Shop() {
       </div>
 
 
-      <Suspense fallback={null}>
-        <QuickViewModal 
-          product={quickViewProduct} 
-          onClose={() => setQuickViewProduct(null)} 
-        />
-      </Suspense>
+      <QuickViewModal 
+        product={quickViewProduct} 
+        onClose={() => setQuickViewProduct(null)} 
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { Product, useStore } from '../store';
 import { formatPrice, optimizeImage } from '../utils';
 import { trackAddToCart } from '../tracking';
 import { Skeleton } from './Skeleton';
+import { OptimizedImage } from './OptimizedImage';
 
 interface ProductCardProps {
   product: Product;
@@ -58,8 +59,8 @@ export function ProductCard({ product, idx, onQuickView }: ProductCardProps) {
   };
 
   return (
-    <div className="group flex flex-col h-full">
-      <div className="relative aspect-[2/3] overflow-hidden bg-transparent mb-4 flex items-center justify-center rounded-sm text-primary-950/10">
+    <div className="product-card group flex flex-col h-full w-full">
+      <div className={`relative w-full overflow-hidden bg-transparent mb-2 flex items-center justify-center rounded-sm text-primary-950/10 ${!isLoaded ? 'aspect-[3/4]' : ''}`}>
         {!isLoaded && (
           <Skeleton className="absolute inset-0 z-10" />
         )}
@@ -72,21 +73,20 @@ export function ProductCard({ product, idx, onQuickView }: ProductCardProps) {
           }}
         >
           {isInView && (
-            <img 
-              ref={imageRef}
-              src={optimizeImage(product.image, idx < 4 ? 600 : 400)} 
+            <OptimizedImage 
+              src={product.image}
+              width={idx < 4 ? 600 : 400}
               srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w, ${optimizeImage(product.image, 900)} 900w`}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               alt={product.name} 
               loading={idx < 4 ? "eager" : "lazy"}
               fetchPriority={idx < 4 ? "high" : "auto"}
               onLoad={() => setIsLoaded(true)}
-              className={`w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-1000 ease-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-              referrerPolicy="no-referrer"
+              className={`w-full h-auto group-hover:scale-105 transition-all duration-1000 ease-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
             />
           )}
           {!isInView && (
-            <img ref={imageRef} className="w-full h-full object-cover opacity-0" alt="placeholder" />
+            <img ref={imageRef} className="w-full h-auto opacity-0" alt="placeholder" />
           )}
         </Link>
         
@@ -122,14 +122,14 @@ export function ProductCard({ product, idx, onQuickView }: ProductCardProps) {
           )}
         </AnimatePresence>
       </div>
-      <div className="text-center flex-grow flex flex-col mt-2">
-        <div className="text-[10px] uppercase tracking-[1px] text-gold-500 mb-1.5 font-medium">{product.fabric || product.category}</div>
-        <h3 className="font-serif text-[15px] text-primary-950 mb-1.5 truncate font-normal tracking-wide">
+      <div className="text-center flex-grow flex flex-col mt-1">
+        <div className="text-[10px] uppercase tracking-[1px] text-gold-500 mb-1 font-medium">{product.fabric || product.category}</div>
+        <h3 className="font-serif text-[14px] sm:text-[15px] text-primary-950 mb-1 truncate font-normal tracking-wide">
           <Link to={`/product/${product.slug}`} className="hover:text-gold-500 transition-colors">
             {product.name}
           </Link>
         </h3>
-        <div className="flex flex-col items-center justify-center mt-auto pt-2">
+        <div className="flex flex-col items-center justify-center mt-auto pt-1">
           <div className="flex items-center space-x-2 text-[14px]">
             <span className="font-medium text-primary-950">{formatPrice(product.price)}</span>
             {product.originalPrice && (
@@ -149,7 +149,7 @@ export function ProductCard({ product, idx, onQuickView }: ProductCardProps) {
                   title={variant.color}
                   className={`w-4 h-4 rounded-full overflow-hidden border transition-colors hover:scale-110 ${variant.slug === product.slug ? 'border-primary-950' : 'border-black/20 hover:border-gold-500'}`}
                 >
-                  <img src={optimizeImage(variant.image, 50)} alt={variant.color} className="w-full h-full object-cover" />
+                  <OptimizedImage src={variant.image} width={50} alt={variant.color} className="w-full h-full object-cover" />
                 </Link>
               ))}
             </div>
@@ -157,7 +157,7 @@ export function ProductCard({ product, idx, onQuickView }: ProductCardProps) {
         </div>
         <button
           onClick={handleQuickAdd}
-          className={`w-full mt-4 py-2 px-4 text-[11px] uppercase tracking-[1px] font-bold rounded-sm border transition-colors ${
+          className={`w-full mt-3 py-2 px-4 text-[11px] uppercase tracking-[1px] font-bold rounded-sm border transition-colors ${
             isAdded ? 'bg-gold-600 text-white border-gold-600' : 'bg-gold-600 text-white border-gold-600 hover:bg-gold-500 hover:border-gold-500 shadow-sm shadow-gold-600/20'
           }`}
         >

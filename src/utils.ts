@@ -27,28 +27,30 @@ export function parseMarkdownDescription(markdown: string) {
   return sections;
 }
 
-export function optimizeImage(url: string, width: number = 800) {
+export function optimizeImage(url: string, width: number = 800, format: 'webp' | 'jpg' | 'png' = 'webp') {
   if (!url) return url;
   
   if (url.includes('drive.google.com/thumbnail')) {
     // Get a high-res version from Drive then optimize via wsrv.nl (Cloudflare) for webp caching
     const targetUrl = url.replace(/sz=w\d+/, 'sz=w2000');
-    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=${width}&output=webp&q=80&we`;
+    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=${width}&output=${format}&q=80&we`;
   }
   
   if (url.includes('images.unsplash.com')) {
     const urlObj = new URL(url);
     urlObj.searchParams.set('w', width.toString());
     urlObj.searchParams.set('q', '80');
-    if (!urlObj.searchParams.has('auto')) {
-      urlObj.searchParams.set('auto', 'format,compress'); // delivers webp/avif automatically
+    if (format === 'webp') {
+      urlObj.searchParams.set('fm', 'webp');
+    } else {
+      urlObj.searchParams.set('fm', format);
     }
     urlObj.searchParams.set('fit', 'crop');
     return urlObj.toString();
   }
   
   if (url.startsWith('http')) {
-     return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=webp&q=80&we`;
+     return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=${format}&q=80&we`;
   }
   
   return url;

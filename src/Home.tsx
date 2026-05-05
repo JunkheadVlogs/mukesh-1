@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useState, useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import {
   ArrowRight,
@@ -17,18 +18,19 @@ import {
 import { products } from "./mockData";
 import { type Product } from "./store";
 import { formatPrice, optimizeImage } from "./utils";
+import { OptimizedImage } from "./components/OptimizedImage";
 
 export default function Home() {
   const mainProducts = products.filter(p => !p.isVariant);
-  const trendingProducts = mainProducts.filter((p) => p.isTrending).slice(0, 2);
+  const trendingProducts = mainProducts.filter((p) => p.isTrending).slice(0, 4);
   const trendingIds = new Set(trendingProducts.map((p) => p.id));
   const newArrivalsProductsList = [...mainProducts]
     .reverse()
     .filter((p) => p.isNew && !trendingIds.has(p.id));
-  // If there are less than 2 new arrivals, fill with other non-trending products to make sure we show 2
+  // If there are less than 4 new arrivals, fill with other non-trending products to make sure we show 4
   const newArrivals =
-    newArrivalsProductsList.length >= 2
-      ? newArrivalsProductsList.slice(0, 2)
+    newArrivalsProductsList.length >= 4
+      ? newArrivalsProductsList.slice(0, 4)
       : [
           ...newArrivalsProductsList,
           ...mainProducts.filter(
@@ -36,7 +38,7 @@ export default function Home() {
               !trendingIds.has(p.id) &&
               !newArrivalsProductsList.find((n) => n.id === p.id),
           ),
-        ].slice(0, 2);
+        ].slice(0, 4);
 
   const [selectedShopImage, setSelectedShopImage] = useState<string | null>(
     null,
@@ -80,20 +82,25 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Helmet>
+        <title>Mukesh Saree Centre – Premium Silk Sarees Since 1976</title>
+        <meta name="description" content="Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1976. Hurry, limited-time offers on premium collections!" />
+        <meta property="og:title" content="Mukesh Saree Centre – Premium Silk Sarees Since 1976" />
+        <meta property="og:description" content="Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1976. Hurry, limited-time offers on premium collections!" />
+      </Helmet>
       {/* Hero Section */}
-      <section className="relative w-full h-[85vh] md:h-[90vh] min-h-[600px] md:min-h-[750px] bg-primary-50 flex items-center overflow-hidden">
+      <section className="relative w-full h-[70vh] md:h-[75vh] min-h-[500px] md:min-h-[600px] bg-primary-50 flex items-center overflow-hidden">
         {/* Background Image - Adjusted for clarity and positioning */}
         <motion.div
           className="absolute inset-0 w-full h-full z-0 overflow-hidden"
           style={{ y: heroImageY }}
         >
-          <img
+          <OptimizedImage
             src="https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me"
-            alt="Luxury Indian Fashion"
-            fetchPriority="high"
-            loading="eager"
+            width={1600}
+            alt="Elegant woman wearing luxury red saree from Mukesh Saree Centre collection"
+            priority={true}
             className="w-full h-full object-cover object-center lg:object-[center_20%]"
-            referrerPolicy="no-referrer"
           />
         </motion.div>
 
@@ -104,7 +111,7 @@ export default function Home() {
 
         {/* Content - Repositioned to cover less of the image */}
         <motion.div
-          className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-end md:justify-center h-full pb-32 md:pb-0"
+          className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-end md:justify-center h-full pb-20 md:pb-0"
           style={{ opacity: heroTextOpacity, y: heroTextY }}
         >
           <div className="max-w-lg md:max-w-xl">
@@ -124,7 +131,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-[16px] sm:text-[18px] leading-relaxed text-white/95 mb-8 max-w-sm font-sans font-medium drop-shadow-md"
+              className="text-[16px] sm:text-[18px] leading-relaxed text-white/95 mb-6 max-w-sm font-sans font-medium drop-shadow-md"
             >
               Premium quality. Trusted since 1976. Limited time deal.
             </motion.p>
@@ -138,7 +145,7 @@ export default function Home() {
             >
               <Link
                 to="/shop"
-                className="bg-gold-500 text-white text-[12px] tracking-[2px] uppercase px-10 py-4 text-center rounded-sm transition-all hover:bg-gold-600 font-bold shadow-xl shadow-gold-500/30"
+                className="bg-gold-500 text-white text-[12px] tracking-[2px] uppercase px-8 py-3.5 text-center rounded-sm transition-all hover:bg-gold-600 font-bold shadow-xl shadow-gold-500/30 w-fit"
               >
                 Shop Collection
               </Link>
@@ -148,7 +155,7 @@ export default function Home() {
 
         {/* Scroll Indicator */}
         <motion.div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20"
           style={{ opacity: heroTextOpacity }}
           onClick={() => {
             const nextSection = document.getElementById("next-section");
@@ -220,9 +227,9 @@ export default function Home() {
       </section>
 
       {/* Shop by Category */}
-      <section className="py-24 md:py-32 bg-primary-50 border-b border-black/5">
+      <section className="py-12 md:py-16 bg-primary-50 border-b border-black/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-baseline mb-12">
+          <div className="flex justify-between items-baseline mb-6 md:mb-8">
             <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-normal">
               Shop by Category
             </h2>
@@ -241,12 +248,12 @@ export default function Home() {
               className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-sm"
             >
               <div className="absolute inset-0">
-                <img
+                <OptimizedImage
                   src="https://drive.google.com/thumbnail?id=1_PdNfAScYuOrr_cA0e6TZQdAlSCvzZ8M&sz=w800"
-                  alt="Co-Ord Sets"
+                  width={800}
+                  alt="Designer Co-Ord sets collection featuring floral patterns and modern silhouettes"
                   loading="lazy"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-950/30 to-transparent"></div>
@@ -274,12 +281,12 @@ export default function Home() {
               className="lg:col-span-5 xl:col-span-4 relative h-[450px] md:h-[550px] overflow-hidden group rounded-sm"
             >
               <div className="absolute inset-0">
-                <img
+                <OptimizedImage
                   src="https://drive.google.com/thumbnail?id=1u0O4RqmNHGbiS3cksJDjixD4wzwkYpfw&sz=w800"
-                  alt="Sarees"
+                  width={800}
+                  alt="Premium traditional handpicked sarees with intricate gold embroidery"
                   loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-950/20 to-transparent"></div>
@@ -305,9 +312,9 @@ export default function Home() {
       </section>
 
       {/* Trending Section */}
-      <section className="py-16 md:py-24 bg-primary-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-10">
+      <section className="py-12 md:py-16 bg-primary-50">
+        <div className="mobile-container sm:max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-6 md:mb-8 px-4 sm:px-0">
             <div>
               <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-normal flex items-center justify-center md:justify-start gap-2">
                 Trending Now
@@ -321,13 +328,12 @@ export default function Home() {
               View Collection
             </Link>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 md:gap-16 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-6 md:gap-8 w-full mx-auto">
             {trendingProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-          <div className="mt-12 text-center">
+          <div className="mt-8 md:mt-10 text-center">
             <Link
               to="/shop?sort=trending"
               className="inline-block bg-gold-500 text-white rounded-sm shadow-md shadow-gold-500/20 hover:bg-gold-600 hover:shadow-lg hover:shadow-gold-500/30 px-10 py-3.5 text-[11px] tracking-[2px] uppercase transition-all font-bold"
@@ -339,12 +345,12 @@ export default function Home() {
       </section>
 
       {/* New Arrivals Section */}
-      <section className="py-16 md:py-24 bg-primary-50 border-t border-black/5 relative">
+      <section className="py-12 md:py-16 bg-primary-50 border-t border-black/5 relative">
         <div className="absolute top-0 left-0 right-0 bg-primary-700 text-white text-[10px] md:text-[11px] uppercase tracking-[2px] text-center py-2 font-bold shadow-sm">
           🔥 Limited Time deal — Stock is running out fast
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 md:mt-12">
-          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-10">
+        <div className="mobile-container sm:max-w-7xl mx-auto sm:px-6 lg:px-8 mt-8 md:mt-12">
+          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-6 md:mb-8 px-4 sm:px-0">
             <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-normal">
               Fresh Styles Just Dropped
             </h2>
@@ -356,12 +362,12 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 md:gap-16 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-6 md:gap-8 w-full mx-auto">
             {newArrivals.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-          <div className="mt-12 text-center">
+          <div className="mt-8 md:mt-10 text-center">
             <Link
               to="/shop?sort=new"
               className="inline-block border border-gold-500 text-gold-600 rounded-sm hover:bg-gold-50 px-10 py-3.5 text-[11px] tracking-[2px] uppercase transition-all font-bold"
@@ -373,11 +379,12 @@ export default function Home() {
       </section>
 
       {/* Offer Banner */}
-      <section className="py-20 bg-primary-100 text-primary-950 text-center border-t border-black/5 relative overflow-hidden">
+      <section className="py-12 md:py-16 bg-primary-100 text-primary-950 text-center border-t border-black/5 relative overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img
+          <OptimizedImage
             src="https://images.unsplash.com/photo-1583391733958-d25e07fac04f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-            alt="Fabric Texture"
+            width={1200}
+            alt="Detailed close-up of premium silk fabric texture and embroidery"
             loading="lazy"
             className="w-full h-full object-cover opacity-20 mix-blend-luminosity"
           />
@@ -404,9 +411,9 @@ export default function Home() {
       </section>
 
       {/* Experience Our Store Section */}
-      <section className="py-24 md:py-32 bg-primary-50 overflow-hidden">
+      <section className="py-12 md:py-16 bg-primary-50 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <div className="text-[10px] tracking-[3px] uppercase text-gold-500 mb-4 font-medium italic">
               Visit Us
             </div>
@@ -455,12 +462,12 @@ export default function Home() {
                   className="flex-none w-[80%] md:w-[650px] h-full relative overflow-hidden group/item rounded-sm shadow-xl cursor-zoom-in snap-center"
                   onClick={() => setSelectedShopImage(image.url)}
                 >
-                  <img
+                  <OptimizedImage
                     src={image.url}
+                    width={800}
                     alt={image.label}
                     loading="lazy"
                     className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-1000"
-                    referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/item:opacity-100 transition-opacity flex items-center justify-center">
                     <Maximize2
@@ -537,11 +544,11 @@ export default function Home() {
               className="relative max-w-full max-h-full aspect-auto shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
+              <OptimizedImage
                 src={selectedShopImage}
-                alt="Store Full View"
+                width={1600}
+                alt="Main entrance and interior view of Mukesh Saree Centre flagship store"
                 className="max-w-full max-h-[85vh] object-contain rounded-sm"
-                referrerPolicy="no-referrer"
               />
             </motion.div>
           </motion.div>
@@ -561,21 +568,21 @@ function ProductCard({ product }: { product: Product; key?: string }) {
   return (
     <Link 
       to={`/product/${product.slug}`} 
-      className="group flex flex-col h-full"
+      className="product-card group flex flex-col h-full w-full"
       onMouseEnter={() => {
         const img = new Image();
         img.src = optimizeImage(product.image, 800);
       }}
     >
-      <div className="relative aspect-[2/3] overflow-hidden bg-transparent mb-3 flex items-center justify-center rounded-sm">
-        <img
-          src={optimizeImage(product.image, 600)}
+      <div className="relative w-full overflow-hidden bg-transparent mb-3 flex items-center justify-center rounded-sm">
+        <OptimizedImage
+          src={product.image}
+          width={600}
           srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w, ${optimizeImage(product.image, 900)} 900w`}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt={product.name}
           loading="lazy"
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000"
-          referrerPolicy="no-referrer"
+          className="w-full h-auto group-hover:scale-105 transition-transform duration-1000"
         />
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           {product.isTrending && (
@@ -626,7 +633,7 @@ function ProductCard({ product }: { product: Product; key?: string }) {
                   }}
                   className={`w-4 h-4 rounded-full overflow-hidden border transition-colors hover:scale-110 ${variant.slug === product.slug ? 'border-primary-950' : 'border-black/20 hover:border-gold-500'}`}
                 >
-                  <img src={optimizeImage(variant.image, 50)} alt={variant.color} className="w-full h-full object-cover" />
+                  <OptimizedImage src={variant.image} width={50} alt={variant.color} className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>

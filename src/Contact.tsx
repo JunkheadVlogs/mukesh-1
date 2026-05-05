@@ -1,9 +1,14 @@
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { CONFIG } from './config';
 
 export default function Contact() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <Helmet>
+        <title>Contact Us | Mukesh Saree Centre</title>
+        <meta name="description" content="Need assistance? Reach out to Mukesh Saree Centre. Our team is here to help with your orders, product inquiries, or general feedback. Get in touch now." />
+      </Helmet>
       <div className="text-center mb-20">
         <h1 className="text-2xl md:text-[44px] font-serif text-primary-950 mb-6 font-normal">Contact Us</h1>
         <div className="w-16 h-[1px] bg-primary-950/20 mx-auto"></div>

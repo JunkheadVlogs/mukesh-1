@@ -1,8 +1,10 @@
 import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router';
 import { useStore } from './store';
-import { formatPrice } from './utils';
+import { formatPrice, optimizeImage } from './utils';
+import { OptimizedImage } from './components/OptimizedImage';
 import { CheckCircle2, Loader2, ArrowLeft, Truck } from 'lucide-react';
 import { CONFIG, submitToGoogleSheets } from './config';
 import { trackInitiateCheckout, trackPurchase } from './tracking';
@@ -27,6 +29,7 @@ export default function Checkout() {
   const [couponInput, setCouponInput] = useState(appliedCoupon || '');
   const [couponError, setCouponError] = useState('');
   const [pinCode, setPinCode] = useState('');
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const getDeliveryEstimate = () => {
     if (pinCode && pinCode.length >= 6) {
@@ -82,6 +85,31 @@ export default function Checkout() {
     try {
       const formData = new FormData(e.currentTarget);
       const fullName = formData.get('firstName')?.toString() || '';
+      const mobileNumber = formData.get('mobileNumber')?.toString() || '';
+      const address = formData.get('address')?.toString() || '';
+      const pinCodeValue = formData.get('pinCode')?.toString() || '';
+      
+      const errors: Record<string, string> = {};
+      if (!fullName.trim()) {
+        errors.firstName = 'Name is required';
+      }
+      if (!/^\d{10}$/.test(mobileNumber.trim())) {
+        errors.mobileNumber = 'Please enter a valid 10-digit phone number';
+      }
+      if (!address.trim()) {
+        errors.address = 'Address is required';
+      }
+      if (!/^\d{6}$/.test(pinCodeValue.trim())) {
+        errors.pinCode = 'Please enter a valid 6-digit PIN code';
+      }
+
+      if (Object.keys(errors).length > 0) {
+        setFormErrors(errors);
+        setIsSubmitting(false);
+        return;
+      }
+      setFormErrors({});
+
       const nameParts = fullName.trim().split(' ');
       const parsedFirstName = nameParts[0] || '';
       const parsedLastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ' '; // Space if empty, just in case Google Sheets expects it
@@ -180,7 +208,19 @@ export default function Checkout() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: total, receipt: newOrderId })
           });
-          const data = await res.json();
+          
+          if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`Server returned ${res.status}: ${text.substring(0, 50)}...`);
+          }
+          
+          const text = await res.text();
+          let data;
+          try {
+            data = JSON.parse(text);
+          } catch (e) {
+            throw new Error(`Invalid response from server. Are you running the backend Node.js server? Received: ${text.substring(0, 50)}...`);
+          }
           
           if (!data.success) {
             throw new Error(data.error || 'Could not initiate Razorpay order');
@@ -204,7 +244,14 @@ export default function Checkout() {
                     razorpay_signature: response.razorpay_signature
                   })
                 });
-                const verifyData = await verifyRes.json();
+                
+                let verifyData;
+                const verifyText = await verifyRes.text();
+                try {
+                  verifyData = JSON.parse(verifyText);
+                } catch (e) {
+                  throw new Error(`Invalid response during verification. Is backend running?`);
+                }
                 
                 if (verifyData.success) {
                   orderDetails.payment_method = 'Online (Razorpay)';
@@ -283,6 +330,10 @@ export default function Checkout() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
+      <Helmet>
+        <title>Secure Checkout | Mukesh Saree Centre</title>
+        <meta name="description" content="Complete your purchase at Mukesh Saree Centre. Enter your shipping details and choose from safe payment options for your premium sarees and co-ords today." />
+      </Helmet>
       <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-8 pb-4 border-b border-black/5 font-normal">Checkout</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -298,7 +349,12 @@ export default function Checkout() {
             {cart.map((item) => (
               <div key={`${item.id}-${item.size}`} className="flex gap-4 bg-primary-50 p-3 border border-black/5 rounded-sm">
                 <div className="w-16 aspect-[9/16] bg-transparent relative flex-shrink-0 mt-2">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  <OptimizedImage
+                    src={item.image}
+                    width={150}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
                   <span className="absolute -top-2 -right-2 bg-gold-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full shadow-lg border border-white z-20 font-medium">{item.quantity}</span>
                 </div>
                 <div className="flex-grow flex flex-col justify-center">
@@ -362,7 +418,7 @@ export default function Checkout() {
 
         {/* Checkout Form */}
         <div>
-          <form id="checkout-form" onSubmit={handleSubmit} className="space-y-12">
+          <form id="checkout-form" onSubmit={handleSubmit} noValidate className="space-y-12">
             {/* Contact Info */}
             <section>
               <h2 className="text-[13px] tracking-[2px] uppercase text-primary-950 mb-6 border-b border-black/5 pb-4">Contact Information</h2>
@@ -379,24 +435,28 @@ export default function Checkout() {
               <h2 className="text-[13px] tracking-[2px] uppercase text-primary-950 mb-6 border-b border-black/5 pb-4">Shipping Address</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">Full Name</label>
-                  <input required name="firstName" type="text" className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors" />
+                  <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">Full Name <span className="text-red-500">*</span></label>
+                  <input required name="firstName" type="text" onChange={() => setFormErrors({...formErrors, firstName: ''})} className={`w-full bg-transparent border ${formErrors.firstName ? 'border-red-500' : 'border-black/10'} px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors`} />
+                  {formErrors.firstName && <p className="text-red-500 text-xs mt-1">{formErrors.firstName}</p>}
                 </div>
                 <div>
-                  <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">Mobile Number</label>
-                  <input required name="mobileNumber" type="tel" placeholder="10-digit mobile number" className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors" />
+                  <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">Mobile Number <span className="text-red-500">*</span></label>
+                  <input required name="mobileNumber" type="tel" placeholder="10-digit mobile number" onChange={() => setFormErrors({...formErrors, mobileNumber: ''})} className={`w-full bg-transparent border ${formErrors.mobileNumber ? 'border-red-500' : 'border-black/10'} px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors`} />
+                  {formErrors.mobileNumber && <p className="text-red-500 text-xs mt-1">{formErrors.mobileNumber}</p>}
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">Street Address</label>
-                  <input required name="address" type="text" className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors" />
+                  <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">Street Address <span className="text-red-500">*</span></label>
+                  <input required name="address" type="text" onChange={() => setFormErrors({...formErrors, address: ''})} className={`w-full bg-transparent border ${formErrors.address ? 'border-red-500' : 'border-black/10'} px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors`} />
+                  {formErrors.address && <p className="text-red-500 text-xs mt-1">{formErrors.address}</p>}
                 </div>
                 <div>
                   <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">City</label>
                   <input required name="city" type="text" className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">PIN Code</label>
-                  <input required name="pinCode" value={pinCode} onChange={(e) => setPinCode(e.target.value)} type="text" className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors" />
+                  <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">PIN Code <span className="text-red-500">*</span></label>
+                  <input required name="pinCode" value={pinCode} onChange={(e) => { setPinCode(e.target.value); setFormErrors({...formErrors, pinCode: ''}); }} type="text" className={`w-full bg-transparent border ${formErrors.pinCode ? 'border-red-500' : 'border-black/10'} px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors`} />
+                  {formErrors.pinCode && <p className="text-red-500 text-xs mt-1">{formErrors.pinCode}</p>}
                 </div>
               </div>
               
@@ -453,7 +513,12 @@ export default function Checkout() {
              {cart.map((item) => (
                 <div key={`${item.id}-${item.size}`} className="flex gap-6">
                   <div className="w-20 aspect-[9/16] bg-transparent relative flex-shrink-0 mt-2">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover shadow-sm" referrerPolicy="no-referrer" />
+                    <OptimizedImage
+                      src={item.image}
+                      width={160}
+                      alt={item.name}
+                      className="w-full h-full object-cover shadow-sm"
+                    />
                     <span className="absolute -top-2 -right-2 bg-gold-500 text-white text-[11px] font-medium w-6 h-6 flex items-center justify-center rounded-full shadow-lg border-2 border-white z-20">{item.quantity}</span>
                   </div>
                   <div className="flex-grow flex flex-col justify-center">

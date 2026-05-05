@@ -37,6 +37,8 @@ export default function Layout() {
   const [isHidden, setIsHidden] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [openFooterAccordion, setOpenFooterAccordion] = useState<string | null>(null);
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [subscribeMessage, setSubscribeMessage] = useState('');
   const lastScrollY = useRef(0);
 
   const toggleFooterAccordion = (section: string) => {
@@ -130,6 +132,10 @@ export default function Layout() {
       <AnimatePresence>
         {isSearchOpen && (
           <motion.div
+            id="search-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search Shop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -137,12 +143,13 @@ export default function Layout() {
           >
             <div className="max-w-7xl mx-auto w-full px-4 sm:px-10">
               <div className="h-20 flex items-center justify-between border-b border-black/5">
-                <div className="text-[12px] uppercase tracking-[2px] font-medium">
+                <div className="text-[12px] uppercase tracking-[2px] font-medium" id="search-title">
                   Search
                 </div>
                 <button
                   onClick={() => setIsSearchOpen(false)}
                   className="text-primary-950 hover:text-gold-500 transition-colors p-2"
+                  aria-label="Close search"
                 >
                   <X size={24} strokeWidth={1} />
                 </button>
@@ -152,6 +159,8 @@ export default function Layout() {
                 <form
                   onSubmit={handleSearchSubmit}
                   className="relative max-w-3xl mx-auto"
+                  role="search"
+                  aria-labelledby="search-title"
                 >
                   <input
                     ref={searchInputRef}
@@ -159,10 +168,12 @@ export default function Layout() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search for sarees, co-ords, fabrics..."
+                    aria-label="Search for products"
                     className="w-full text-2xl md:text-3xl font-serif text-primary-950 border-b border-black/10 pb-4 focus:outline-none focus:border-gold-500 placeholder-primary-950/20"
                   />
                   <button
                     type="submit"
+                    aria-label="Submit search"
                     className="absolute right-0 bottom-6 text-primary-950 hover:text-gold-500 transition-colors"
                   >
                     <Search size={28} strokeWidth={1} />
@@ -283,7 +294,7 @@ export default function Layout() {
               <div className="relative h-48 bg-primary-50 overflow-hidden flex items-center justify-center">
                 <img
                   src="https://drive.google.com/thumbnail?id=1_PdNfAScYuOrr_cA0e6TZQdAlSCvzZ8M&sz=w600"
-                  alt="Special Offer"
+                  alt="Special discount offer on Mukesh Saree Centre collection"
                   className="w-full h-full object-cover opacity-80"
                   referrerPolicy="no-referrer"
                 />
@@ -347,6 +358,9 @@ export default function Layout() {
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className={`${textColor} focus:outline-none transition-colors`}
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="mobile-menu"
+                aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               >
                 {isMobileMenuOpen ? (
                   <X size={24} strokeWidth={1.5} />
@@ -386,7 +400,7 @@ export default function Layout() {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex flex-1 justify-center space-x-8 items-center h-full">
+            <nav className="hidden md:flex flex-1 justify-center space-x-8 items-center h-full" aria-label="Desktop Navigation">
               <Link
                  to="/"
                  onClick={scrollToTop}
@@ -438,18 +452,23 @@ export default function Layout() {
               <button
                 onClick={() => setIsSearchOpen(true)}
                 className={`${textColor} hover:text-gold-500 transition-colors block`}
+                aria-expanded={isSearchOpen}
+                aria-controls="search-overlay"
+                aria-label="Open search"
               >
                 <Search size={18} strokeWidth={1.5} />
               </button>
               <Link
                 to="/wishlist"
                 className={`${textColor} hover:text-gold-500 transition-colors hidden sm:block`}
+                aria-label="Wishlist"
               >
                 <Heart size={18} strokeWidth={1.5} />
               </Link>
               <Link
                 to="/cart"
                 className={`${textColor} hover:text-gold-500 transition-colors relative flex items-center`}
+                aria-label={`Shopping cart with ${cartItemCount} items`}
               >
                 <ShoppingBag size={18} strokeWidth={1.5} />
                 {cartItemCount > 0 && (
@@ -466,6 +485,10 @@ export default function Layout() {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
+              id="mobile-menu"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Mobile Navigation"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -674,20 +697,59 @@ export default function Layout() {
               </div>
             </div>
             
-            <div className="bg-primary-950 p-4 rounded-sm text-white flex flex-col justify-center mt-2 md:mt-0">
-              <h4 className="text-sm tracking-[1px] mb-1">Exclusive Offers</h4>
-              <p className="text-[10px] opacity-70 mb-3">
-                Message us on WhatsApp to join our exclusive club for updates and early access.
+            <div className="bg-primary-950 p-5 rounded-sm text-white flex flex-col justify-center mt-2 md:mt-0 xl:p-6 shadow-md shadow-primary-950/20">
+              <h4 className="text-sm font-serif tracking-[1px] mb-2 uppercase text-gold-500">Exclusive Newsletter</h4>
+              <p className="text-[11px] opacity-80 mb-4 leading-relaxed font-light">
+                Subscribe for early access to new collections, secret sales, and styling tips.
               </p>
-              <a 
-                href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, '')}?text=Hi!%20I%20want%20to%20join%20the%20exclusive%20club.`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-gold-500 text-primary-950 py-2 px-4 text-[10px] uppercase tracking-[1px] font-medium inline-blocktext-center hover:bg-primary-50 transition-colors"
-                style={{ textAlign: 'center' }}
-              >
-                Join via WhatsApp
-              </a>
+              {subscribeStatus === 'success' ? (
+                <div className="bg-primary-50/10 text-white p-3 rounded text-[11px] font-medium animate-pulse text-center tracking-[1px]">
+                  {subscribeMessage}
+                </div>
+              ) : (
+                <form 
+                  className="flex flex-col gap-3 relative z-10"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const form = e.target as HTMLFormElement;
+                    const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+                    const email = emailInput.value;
+                    
+                    if (!email || !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+                      setSubscribeStatus('error');
+                      setSubscribeMessage('Please enter a valid email.');
+                      return;
+                    }
+                    
+                    setSubscribeStatus('success');
+                    setSubscribeMessage('Thank you for subscribing!');
+                    form.reset();
+                  }}
+                >
+                  <div className="relative">
+                    <input 
+                      type="email" 
+                      name="email"
+                      placeholder="Enter your email address" 
+                      required
+                      className={`w-full bg-transparent text-white placeholder-white/40 text-[12px] px-4 py-3 border ${subscribeStatus === 'error' ? 'border-red-400' : 'border-white/20'} outline-none focus:border-gold-500 transition-colors rounded-sm shadow-inner shadow-black/20`}
+                      onChange={() => setSubscribeStatus('idle')}
+                      aria-label="Email Address for Newsletter"
+                    />
+                    {subscribeStatus === 'error' && (
+                      <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4 left-0">
+                        {subscribeMessage}
+                      </p>
+                    )}
+                  </div>
+                  <button 
+                    type="submit"
+                    className="w-full bg-gold-500 text-primary-950 py-3 px-4 text-[11px] uppercase tracking-[2px] font-bold mt-1 hover:bg-white hover:text-primary-950 transition-all duration-300 shadow-md transform hover:-translate-y-0.5 active:translate-y-0 active:shadow-none"
+                  >
+                    Subscribe Now
+                  </button>
+                </form>
+              )}
             </div>
           </div>
           <div className="text-center text-[10px] uppercase tracking-[1px] text-primary-950/50 pt-4">
@@ -702,10 +764,10 @@ export default function Layout() {
         href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, '')}?text=Hi!%20I%20Need%20Help.`}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 bg-[#25D366] text-white p-3 md:p-3.5 rounded-full shadow-2xl hover:bg-[#128C7E] hover:-translate-y-1 hover:scale-110 transition-all z-50 flex items-center justify-center group"
+        className="fixed bottom-[80px] md:bottom-8 right-3 md:right-6 bg-[#25D366] text-white p-2.5 md:p-3.5 rounded-full shadow-2xl hover:bg-[#128C7E] hover:-translate-y-1 hover:scale-110 transition-all z-50 flex items-center justify-center group"
         aria-label="Contact us on WhatsApp"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 md:w-7 md:h-7" fill="currentColor" viewBox="0 0 16 16">
           <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
         </svg>
       </a>
@@ -718,10 +780,10 @@ export default function Layout() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.5, y: 20 }}
             onClick={scrollToTop}
-            className="fixed bottom-24 right-6 bg-gold-500 text-white p-2.5 rounded-full shadow-lg hover:bg-gold-600 transition-all z-40 flex items-center justify-center group"
+            className="fixed bottom-[136px] md:bottom-[92px] right-3 md:right-6 bg-gold-500 text-white p-2 md:p-2.5 rounded-full shadow-lg hover:bg-gold-600 transition-all z-40 flex items-center justify-center group"
             aria-label="Scroll to top"
           >
-            <ArrowUp size={18} strokeWidth={2} />
+            <ArrowUp className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} />
           </motion.button>
         )}
       </AnimatePresence>

@@ -23,8 +23,10 @@ import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
 import { trackViewContent, trackAddToCart } from "./tracking";
+import { Helmet } from "react-helmet-async";
 import { formatPrice, optimizeImage } from "./utils";
 import { CONFIG } from "./config";
+import { OptimizedImage } from "./components/OptimizedImage";
 
 export default function ProductPage() {
   const { slug } = useParams();
@@ -41,6 +43,7 @@ export default function ProductPage() {
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomStyle, setZoomStyle] = useState<React.CSSProperties>({});
   const [sizeError, setSizeError] = useState(false);
+  const [stockError, setStockError] = useState(false);
   
   // Synchronous state reset on navigation to prevent old state flashing
   const [currentSlug, setCurrentSlug] = useState(slug);
@@ -48,9 +51,11 @@ export default function ProductPage() {
     setCurrentSlug(slug);
     setActiveImageIndex(0);
     setSizeError(false);
+    setStockError(false);
     setIsLightboxOpen(false);
     setIsZoomed(false);
     setSelectedSize("");
+    setQuantity(1);
   }
 
   const sizeSectionRef = useRef<HTMLDivElement>(null);
@@ -149,8 +154,41 @@ export default function ProductPage() {
 
   const isWishlisted = wishlist.includes(product.id);
 
+  const isOutOfStock = product.stock === 0;
+  const maxStock = product.stock !== undefined ? product.stock : Infinity;
+  const showLowStock = product.stock !== undefined && product.stock > 0 && product.stock < 5;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12 pb-16 md:pb-20">
+      <Helmet>
+        <title>{product.name} | Mukesh Saree Centre</title>
+        <meta name="description" content={`Buy ${product.name} online at Mukesh Saree Centre. ${product.description.replace(/<[^>]*>?/gm, '').substring(0, 100)}... Discover premium quality ethnic wear today.`} />
+        <meta property="og:title" content={`${product.name} | Mukesh Saree Centre`} />
+        <meta property="og:description" content={`Shop ${product.name} at Mukesh Saree Centre. Premium quality ${product.category.toLowerCase()} with elegant designs. Order online for nationwide delivery.`} />
+        <meta property="og:image" content={product.image} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": product.name,
+            "image": product.image,
+            "description": product.description.replace(/<[^>]*>?/gm, ''),
+            "sku": product.id,
+            "brand": {
+              "@type": "Brand",
+              "name": "Mukesh Saree Centre"
+            },
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "INR",
+              "price": product.price,
+              "itemCondition": "https://schema.org/NewCondition",
+              "availability": "https://schema.org/InStock",
+              "url": window.location.href
+            }
+          })}
+        </script>
+      </Helmet>
       {/* Breadcrumbs */}
       <nav
         className="flex text-[10px] tracking-[1px] uppercase text-primary-950/50 mb-4 md:mb-6"
@@ -195,7 +233,7 @@ export default function ProductPage() {
             {/* Preload all gallery images for instant switching */}
             <div style={{ display: 'none' }}>
               {productImages.map((img, idx) => (
-                <img key={`gallery-preload-${idx}`} src={optimizeImage(img, 800)} alt="preload" />
+                <img key={`gallery-preload-${idx}`} src={optimizeImage(img, 800)} alt={`Preloading ${product.name} image ${idx + 1}`} />
               ))}
             </div>
 
@@ -218,16 +256,15 @@ export default function ProductPage() {
               </button>
               <div className="w-full h-full relative bg-primary-50">
                 {activeImageIndex < productImages.length ? (
-                  <img
-                    src={optimizeImage(productImages[activeImageIndex], 800)}
+                  <OptimizedImage
+                    src={productImages[activeImageIndex]}
+                    width={800}
                     srcSet={`${optimizeImage(productImages[activeImageIndex], 400)} 400w, ${optimizeImage(productImages[activeImageIndex], 800)} 800w, ${optimizeImage(productImages[activeImageIndex], 1200)} 1200w`}
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    fetchPriority="high"
-                    loading="eager"
+                    priority={true}
                     alt={product.name}
                     className="w-full h-full object-cover object-center transition-transform duration-[400ms] ease-out pointer-events-none"
                     style={isZoomed ? zoomStyle : {}}
-                    referrerPolicy="no-referrer"
                   />
                 ) : (
                   <iframe
@@ -293,12 +330,12 @@ export default function ProductPage() {
                         : "border-black/5 opacity-60 hover:opacity-100 hover:border-black/20"
                     }`}
                   >
-                    <img
-                      src={optimizeImage(img, 200)}
+                    <OptimizedImage
+                      src={img}
+                      width={200}
                       alt={`${product.name} thumbnail ${idx + 1}`}
                       className="w-full h-full object-cover"
                       loading="lazy"
-                      referrerPolicy="no-referrer"
                     />
                     {activeImageIndex === idx && (
                       <div className="absolute inset-0 bg-gold-500/5" />
@@ -372,8 +409,9 @@ export default function ProductPage() {
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <img
-                      src={optimizeImage(productImages[activeImageIndex], 1200)}
+                    <OptimizedImage
+                      src={productImages[activeImageIndex]}
+                      width={1200}
                       alt={product.name}
                       loading="lazy"
                       className="max-w-full max-h-full object-contain shadow-2xl transition-transform duration-300 pointer-events-none"
@@ -636,7 +674,7 @@ export default function ProductPage() {
                 {/* Preload variant images silently in background for instant navigation */}
                 <div style={{ display: 'none' }}>
                   {product.colorVariants.map((variant) => (
-                    <img key={`preload-${variant.slug}`} src={optimizeImage(variant.image, 800)} alt="preload" />
+                    <img key={`preload-${variant.slug}`} src={optimizeImage(variant.image, 800)} alt={`Preloading ${product.name} in ${variant.color}`} />
                   ))}
                 </div>
                 <div className="flex items-center justify-between mb-2">
@@ -655,13 +693,14 @@ export default function ProductPage() {
                           : "border-transparent hover:border-black/20"
                       }`}
                       title={variant.color}
+                      aria-label={`Select color variant ${variant.color}`}
                     >
                       <div className="w-10 h-14 sm:w-12 sm:h-16 overflow-hidden rounded-sm bg-primary-50 border border-black/5">
-                        <img
-                          src={optimizeImage(variant.image, 100)}
-                          alt={variant.color}
+                        <OptimizedImage
+                          src={variant.image}
+                          width={100}
+                          alt={`View ${product.name} in ${variant.color} shade`}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          referrerPolicy="no-referrer"
                         />
                       </div>
                     </Link>
@@ -697,6 +736,8 @@ export default function ProductPage() {
                          setSelectedSize(size);
                          setSizeError(false);
                        }}
+                       aria-label={`Select size ${size}`}
+                       aria-pressed={selectedSize === size}
                        className={`min-w-[48px] px-4 py-2 border text-[12px] font-normal tracking-[0.5px] transition-colors duration-300
                          ${
                            selectedSize === size
@@ -713,50 +754,92 @@ export default function ProductPage() {
 
             {/* 5. CTA Button & Quantity */}
             <div className="flex flex-col gap-2 mb-4">
-              <div className="flex gap-3 h-12">
-                <div className="hidden sm:flex items-center border border-black/10 w-28 h-full bg-primary-50 rounded">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-8 h-full flex items-center justify-center text-primary-950 hover:text-gold-500 transition-colors"
-                  >
-                    -
-                  </button>
-                  <div className="flex-1 text-center text-[13px] font-medium text-primary-950">
-                    {quantity}
+              {showLowStock && (
+                <div className="text-[12px] font-medium text-red-600 tracking-[0.5px]">
+                  Only {product.stock} left in stock - order soon!
+                </div>
+              )}
+              {stockError && (
+                <div className="text-[12px] font-medium text-red-600 tracking-[0.5px] animate-pulse">
+                  Cannot add more than available stock limit.
+                </div>
+              )}
+              {isOutOfStock ? (
+                <div className="h-12 flex items-center justify-center bg-gray-200 text-gray-500 font-medium uppercase tracking-wide rounded text-[13px] border border-gray-300">
+                  Out of Stock
+                </div>
+              ) : (
+                <div className="flex gap-3 h-12">
+                  <div className="flex items-center border border-black/10 w-24 sm:w-28 h-full bg-primary-50 rounded flex-shrink-0">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-8 h-full flex items-center justify-center text-primary-950 hover:text-gold-500 transition-colors"
+                      aria-label="Decrease quantity"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      min="1"
+                      max={maxStock !== Infinity ? maxStock : undefined}
+                      value={quantity}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value) || 1;
+                        if (val > maxStock) {
+                          setQuantity(maxStock);
+                          setStockError(true);
+                          setTimeout(() => setStockError(false), 3000);
+                        } else {
+                          setQuantity(Math.max(1, val));
+                          setStockError(false);
+                        }
+                      }}
+                      className="flex-1 w-full text-center text-[13px] font-medium text-primary-950 border-none bg-transparent focus:ring-0 p-0 m-0 appearance-none"
+                      aria-label="Quantity"
+                    />
+                    <button
+                      onClick={() => {
+                        if (quantity < maxStock) {
+                          setQuantity(quantity + 1);
+                        } else {
+                          setStockError(true);
+                          setTimeout(() => setStockError(false), 3000);
+                        }
+                      }}
+                      className={`w-8 h-full flex items-center justify-center transition-colors ${quantity >= maxStock ? 'text-gray-300 cursor-not-allowed' : 'text-primary-950 hover:text-gold-500'}`}
+                      aria-label="Increase quantity"
+                      disabled={quantity >= maxStock}
+                    >
+                      +
+                    </button>
                   </div>
                   <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-8 h-full flex items-center justify-center text-primary-950 hover:text-gold-500 transition-colors"
+                    onClick={() => {
+                      if (handleAddToCart()) {
+                        navigate("/cart");
+                      }
+                    }}
+                    className={`flex-1 h-full px-8 text-[12px] uppercase transition-colors border shadow-sm font-medium flex flex-col items-center justify-center rounded ${
+                      isAdded
+                        ? "bg-transparent border-gold-600 text-gold-600"
+                        : "bg-gold-600 border-gold-600 text-white hover:bg-gold-500 hover:border-gold-500 shadow-sm shadow-gold-600/20"
+                    }`}
                   >
-                    +
+                    <span className="leading-tight">{isAdded ? "Added to Cart" : `Order Now – ${formatPrice(finalPrice)}`}</span>
+                  </button>
+                  <button
+                    onClick={() => toggleWishlist(product.id)}
+                    className="w-14 h-full border border-black/10 flex items-center justify-center text-primary-950 hover:border-gold-500 hover:text-gold-500 transition-colors bg-primary-50 rounded"
+                    title="Add to Wishlist"
+                  >
+                    <Heart
+                      size={18}
+                      strokeWidth={1.5}
+                      className={isWishlisted ? "fill-gold-500 text-gold-500" : ""}
+                    />
                   </button>
                 </div>
-                <button
-                  onClick={() => {
-                    if (handleAddToCart()) {
-                      navigate("/checkout");
-                    }
-                  }}
-                  className={`flex-1 h-full px-8 text-[12px] uppercase transition-colors border shadow-sm font-medium flex flex-col items-center justify-center rounded ${
-                    isAdded
-                      ? "bg-transparent border-gold-600 text-gold-600"
-                      : "bg-gold-600 border-gold-600 text-white hover:bg-gold-500 hover:border-gold-500 shadow-sm shadow-gold-600/20"
-                  }`}
-                >
-                  <span className="leading-tight">{isAdded ? "Added to Cart" : `Order Now – ${formatPrice(finalPrice)}`}</span>
-                </button>
-                <button
-                  onClick={() => toggleWishlist(product.id)}
-                  className="w-14 h-full border border-black/10 flex items-center justify-center text-primary-950 hover:border-gold-500 hover:text-gold-500 transition-colors bg-primary-50 rounded"
-                  title="Add to Wishlist"
-                >
-                  <Heart
-                    size={18}
-                    strokeWidth={1.5}
-                    className={isWishlisted ? "fill-gold-500 text-gold-500" : ""}
-                  />
-                </button>
-              </div>
+              )}
             </div>
 
           </div>
@@ -817,8 +900,9 @@ export default function ProductPage() {
               >
                 <Link to={`/product/${relatedProduct.slug}`} className="block">
                   <div className="aspect-[2/3] bg-transparent overflow-hidden mb-4 rounded-sm">
-                    <img
-                      src={optimizeImage(relatedProduct.image, 400)}
+                    <OptimizedImage
+                      src={relatedProduct.image}
+                      width={400}
                       srcSet={`${optimizeImage(relatedProduct.image, 300)} 300w, ${optimizeImage(relatedProduct.image, 600)} 600w, ${optimizeImage(relatedProduct.image, 900)} 900w`}
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       alt={relatedProduct.name}

@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router';
+import { Helmet } from 'react-helmet-async';
 import { useStore } from './store';
-import { formatPrice } from './utils';
+import { formatPrice, optimizeImage } from './utils';
+import { OptimizedImage } from './components/OptimizedImage';
 import { Trash2, Plus, Minus, ArrowRight, Shield, Truck } from 'lucide-react';
 
 export default function Cart() {
@@ -34,6 +36,10 @@ export default function Cart() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
+      <Helmet>
+        <title>Shopping Bag | Mukesh Saree Centre</title>
+        <meta name="description" content="Review your selection of premium ethnic wear at Mukesh Saree Centre. Securely manage your cart items and proceed to checkout for a seamless experience today." />
+      </Helmet>
       <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-8 pb-4 border-b border-black/5 font-normal">Shopping Cart</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
@@ -42,7 +48,12 @@ export default function Cart() {
           {cart.map((item) => (
             <div key={`${item.id}-${item.size}`} className="flex flex-col sm:flex-row gap-12 pb-12 border-b border-black/5">
               <div className="w-24 sm:w-32 aspect-[9/16] flex-shrink-0 bg-transparent relative">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                <OptimizedImage
+                  src={item.image}
+                  width={200}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex-grow flex flex-col justify-between pt-2">
                 <div>

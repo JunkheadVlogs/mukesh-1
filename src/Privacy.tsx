@@ -1,6 +1,12 @@
+import { Helmet } from 'react-helmet-async';
+
 export default function Privacy() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-20">
+      <Helmet>
+        <title>Privacy Policy | Mukesh Saree Centre</title>
+        <meta name="description" content="Your privacy is our priority. Read Mukesh Saree Centre's privacy policy to understand how we protect and manage your personal data and shopping information." />
+      </Helmet>
       <div className="text-center mb-16">
         <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-6 font-normal">Privacy Policy</h1>
         <div className="w-16 h-[1px] bg-primary-950/20 mx-auto"></div>
