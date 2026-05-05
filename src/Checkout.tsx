@@ -203,7 +203,8 @@ export default function Checkout() {
         }
 
         try {
-          const res = await fetch('/api/razorpay/order', {
+          const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+          const res = await fetch(`${API_BASE}/api/create-order`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: total, receipt: newOrderId })
@@ -235,7 +236,7 @@ export default function Checkout() {
             order_id: data.order.id,
             handler: async function (response: any) {
               try {
-                const verifyRes = await fetch('/api/razorpay/verify', {
+                const verifyRes = await fetch(`${API_BASE}/api/verify-payment`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({

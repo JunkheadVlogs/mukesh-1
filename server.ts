@@ -3,10 +3,18 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import crypto from "crypto";
 import Razorpay from "razorpay";
+import cors from "cors";
 
 async function startServer() {
   const app = express();
-  const PORT = process.env.PORT || 3000;
+  const PORT = 3000;
+
+  // Configure CORS to allow requests from the frontend domain
+  app.use(cors({
+    origin: process.env.FRONTEND_URL || "*", // Ideally specify your frontend URL here, e.g., 'https://mukeshsarees.com'
+    methods: ["GET", "POST"],
+    credentials: true
+  }));
 
   app.use(express.json());
 
@@ -25,10 +33,11 @@ async function startServer() {
   }
 
   // Create Razorpay Order
-  app.post("/api/razorpay/order", async (req, res) => {
-    if (!razorpayInstance) return res.status(500).json({ error: "Razorpay is not configured on the server." });
-    
+  app.post("/api/create-order", async (req, res) => {
     try {
+      if (!razorpayInstance) {
+        return res.status(500).json({ success: false, error: "Razorpay is not configured on the server." });
+      }
       const { amount, receipt } = req.body;
       console.log("Creating Razorpay order:", { amount, receipt });
       
@@ -50,7 +59,7 @@ async function startServer() {
   });
 
   // Verify Razorpay Payment Signature
-  app.post("/api/razorpay/verify", (req, res) => {
+  app.post("/api/verify-payment", (req, res) => {
     try {
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
       const sign = razorpay_order_id + "|" + razorpay_payment_id;
