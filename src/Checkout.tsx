@@ -3,9 +3,19 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useStore } from './store';
 import { formatPrice } from './utils';
-import { CheckCircle2, Loader2, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, Loader2, ArrowLeft, Truck } from 'lucide-react';
 import { CONFIG, submitToGoogleSheets } from './config';
 import { trackInitiateCheckout, trackPurchase } from './tracking';
+
+const loadRazorpay = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 
 export default function Checkout() {
   const { cart, cartTotal, clearCart, appliedCoupon, applyCoupon } = useStore();
@@ -13,9 +23,27 @@ export default function Checkout() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderId, setOrderId] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [paymentMethod, setPaymentMethod] = useState('online');
   const [couponInput, setCouponInput] = useState(appliedCoupon || '');
   const [couponError, setCouponError] = useState('');
+  const [pinCode, setPinCode] = useState('');
+
+  const getDeliveryEstimate = () => {
+    if (pinCode && pinCode.length >= 6) {
+      const firstDigit = pinCode.charAt(0);
+      if (['1', '2'].includes(firstDigit)) {
+        return "2-3 Business Days (North India)";
+      } else if (['3', '4'].includes(firstDigit)) {
+        return "3-5 Business Days (West/Central India)";
+      } else if (['5', '6'].includes(firstDigit)) {
+        return "4-6 Business Days (South India)";
+      } else if (['7', '8'].includes(firstDigit)) {
+        return "5-7 Business Days (East/North-East India)";
+      }
+      return "3-5 Business Days";
+    }
+    return "3-7 Business Days";
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -71,13 +99,13 @@ export default function Checkout() {
         address: formData.get('address')?.toString() || '',
         city: formData.get('city')?.toString() || '',
         pin_code: formData.get('pinCode')?.toString() || '',
-        payment_method: paymentMethod === 'online' ? 'Online (Razorpay)' : 'COD',
+        payment_method: 'COD',
         total_amount: total,
         items: cart.map(item => `${item.name} (${item.sku || 'N/A'}) (${item.size || 'N/A'}) x${item.quantity}`).join(', '),
         status: 'pending'
       };
 
-      const finalizeOrder = async (razorpayId: string | null = null) => {
+      const finalizeOrder = async () => {
         console.log('Starting finalizeOrder process...');
         try {
             const sizeStr = cart.map(item => item.size || 'N/A').join(', ');
@@ -139,59 +167,79 @@ export default function Checkout() {
       };
 
       if (paymentMethod === 'online') {
+        const isLoaded = await loadRazorpay();
+        if (!isLoaded) {
+          alert('Razorpay SDK failed to load. Are you online?');
+          setIsSubmitting(false);
+          return;
+        }
+
         try {
-          if (!(window as any).Razorpay) {
-            throw new Error('Razorpay SDK not loaded. Please check your internet connection.');
+          const res = await fetch('/api/razorpay/order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: total, receipt: newOrderId })
+          });
+          const data = await res.json();
+          
+          if (!data.success) {
+            throw new Error(data.error || 'Could not initiate Razorpay order');
           }
+
           const options = {
-            key: CONFIG.RAZORPAY_KEY,
-            amount: Math.round(total * 100),
-            currency: 'INR',
-            name: CONFIG.STORE_NAME,
-            description: `Order #${newOrderId}`,
-            image: 'https://images.unsplash.com/photo-1610030469983-98e330328688?q=80&w=200',
-            handler: function (response: any) {
-               console.log('Razorpay payment successful:', response.razorpay_payment_id);
-               finalizeOrder(response.razorpay_payment_id);
-            },
-            prefill: {
-              name: `${orderDetails.first_name} ${orderDetails.last_name}`,
-              contact: orderDetails.mobile_number,
-              email: orderDetails.email !== 'N/A' ? orderDetails.email : ''
-            },
-            theme: { color: '#1a1005' },
-            modal: {
-              handleback: true,
-              ondismiss: function() {
-                console.log('Razorpay modal closed by user');
+            key: data.keyId,
+            amount: data.order.amount,
+            currency: data.order.currency,
+            name: "Mukesh Saree Centre",
+            description: "Checkout Purchase",
+            order_id: data.order.id,
+            handler: async function (response: any) {
+              try {
+                const verifyRes = await fetch('/api/razorpay/verify', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature
+                  })
+                });
+                const verifyData = await verifyRes.json();
+                
+                if (verifyData.success) {
+                  orderDetails.payment_method = 'Online (Razorpay)';
+                  await finalizeOrder();
+                } else {
+                  alert("Payment Verification Failed. Please contact support.");
+                  setIsSubmitting(false);
+                }
+              } catch (e) {
+                console.error("Verification error", e);
+                alert("Payment Verification Failed.");
                 setIsSubmitting(false);
               }
+            },
+            prefill: {
+              name: fullName,
+              email: orderDetails.email !== 'N/A' ? orderDetails.email : '',
+              contact: orderDetails.mobile_number
+            },
+            theme: {
+              color: "#ca8a04"
             }
           };
-          
-          const rzp = new (window as any).Razorpay(options);
-          
-          // Safety fallback: If Razorpay gets stuck for 15 seconds without opening or failing, we reset state.
-          const fallbackTimeout = setTimeout(() => {
-            if (isSubmitting) {
-              console.warn('Razorpay timeout reset applied');
-              setIsSubmitting(false);
-              alert('Payment is taking too long to load in this preview window. Please open the app in a new tab or try Cash on Delivery.');
-            }
-          }, 15000);
 
-          rzp.on('payment.failed', function (response: any) {
-             clearTimeout(fallbackTimeout);
-             console.error('Razorpay payment failed:', response.error);
-             const errorDesc = response.error ? (response.error.description || response.error.reason) : 'Unknown error';
+          const paymentObject = new (window as any).Razorpay(options);
+          paymentObject.on('payment.failed', function (response: any) {
+             alert(response.error.description || "Payment Failed");
              setIsSubmitting(false);
-             alert('Payment failed: ' + errorDesc);
           });
-          rzp.open();
-        } catch (rzpErr: any) {
-          console.error('Razorpay init error:', rzpErr);
-          setIsSubmitting(false);
-          alert(rzpErr.message || 'Could not start payment. Please refresh.');
+          paymentObject.open();
+
+        } catch (err: any) {
+           console.error("Razorpay Error:", err);
+           alert(err.message || 'Payment initiation failed.');
+           setIsSubmitting(false);
         }
       } else {
         console.log('Processing COD order...');
@@ -211,21 +259,17 @@ export default function Checkout() {
 
   if (isSuccess) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-24 min-h-[60vh] flex flex-col items-center justify-center text-center">
+      <div className="max-w-3xl mx-auto px-4 py-12 md:py-16 min-h-[60vh] flex flex-col items-center justify-center text-center">
         <CheckCircle2 size={48} className="text-gold-500 mb-8" strokeWidth={1.5} />
         <h1 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-normal">Order Received</h1>
         <p className="text-lg text-primary-950/80 mb-2 font-light">Thank you for shopping with Mukesh Saree Centre.</p>
         <div className="max-w-md mx-auto bg-primary-50 p-6 my-8 border border-black/5 rounded-sm">
           <p className="text-sm text-primary-950 line-clamp-1 font-medium mb-2">Order ID: #{orderId}</p>
-          {paymentMethod === 'online' ? (
-            <p className="text-[13px] text-primary-950/70">
-              Your payment of <span className="font-medium text-primary-950">{formatPrice(total)}</span> was successful. Your order is being processed and will be shipped shortly.
-            </p>
-          ) : (
-            <p className="text-[13px] text-primary-950/70">
-              Your order has been placed successfully via Cash on Delivery. We will contact you soon for confirmation.
-            </p>
-          )}
+          <p className="text-[13px] text-primary-950/70">
+            {paymentMethod === 'online' 
+              ? 'Your payment was successful. We are processing your order and will ship it shortly.'
+              : 'Your order has been placed successfully via Cash on Delivery. We will contact you soon for confirmation.'}
+          </p>
         </div>
         <Link 
           to="/shop" 
@@ -238,14 +282,14 @@ export default function Checkout() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-10 pb-6 border-b border-black/5 font-normal">Checkout</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
+      <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-8 pb-4 border-b border-black/5 font-normal">Checkout</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
         {/* Mobile Order Summary (Hidden on Desktop) */}
         <div className="lg:hidden bg-primary-50 p-6 border border-black/5 rounded-sm mb-4">
           <div className="mb-4 bg-primary-100/50 text-gold-600 text-[11px] px-3 py-2 border border-gold-200/50 rounded-sm flex items-center justify-center font-medium tracking-wide uppercase">
-            ✨ Free shipping on your order
+            Free shipping on your order
           </div>
           
           {/* Mobile Item List Summary */}
@@ -352,8 +396,13 @@ export default function Checkout() {
                 </div>
                 <div>
                   <label className="block text-[10px] tracking-[1px] text-primary-950/50 uppercase mb-2">PIN Code</label>
-                  <input required name="pinCode" type="text" className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors" />
+                  <input required name="pinCode" value={pinCode} onChange={(e) => setPinCode(e.target.value)} type="text" className="w-full bg-transparent border border-black/10 px-4 py-3 text-sm focus:border-gold-500 outline-none transition-colors" />
                 </div>
+              </div>
+              
+              <div className="mt-6 flex items-center gap-2 text-primary-950/70 border border-gold-500/20 bg-primary-50 p-4 rounded-sm">
+                 <Truck size={16} className="text-gold-600 flex-shrink-0" />
+                 <span className="text-[13px] font-medium">Estimated Delivery: {getDeliveryEstimate()}</span>
               </div>
             </section>
 
@@ -368,8 +417,8 @@ export default function Checkout() {
                 <label className={`flex items-center p-4 border transition-colors cursor-pointer ${paymentMethod === 'online' ? 'border-primary-950 bg-primary-50' : 'border-black/10'}`}>
                   <input type="radio" name="payment" value="online" checked={paymentMethod === 'online'} onChange={() => setPaymentMethod('online')} className="text-gold-500 focus:ring-gold-500 h-4 w-4" />
                   <div className="ml-3 flex flex-col">
-                    <span className="text-[13px] text-primary-950 font-medium">Pay via UPI / Online (Razorpay)</span>
-                    <span className="text-[10px] text-primary-950/60 mt-0.5">Please test in a new tab if it gets stuck</span>
+                    <span className="text-[13px] text-primary-950 font-medium">Pay via UPI / Cards / NetBanking</span>
+                    <span className="text-[10px] text-primary-950/60 mt-0.5">Secure Razorpay Checkout</span>
                   </div>
                 </label>
               </div>
@@ -378,8 +427,8 @@ export default function Checkout() {
             <div className="pt-4">
               <button 
                 type="submit"
-                disabled={isSubmitting}
-                className={`w-full text-white py-4 text-[13px] font-medium tracking-[2px] uppercase transition-colors rounded-sm flex flex-col items-center justify-center gap-1 ${isSubmitting ? 'bg-primary-950/50 cursor-not-allowed' : (paymentMethod === 'online' ? 'bg-[#00B967] hover:bg-[#00B967]/90' : 'bg-primary-950 hover:bg-gold-500')}`}
+                disabled={isSubmitting || cart.length === 0}
+                className={`w-full text-white py-4 text-[13px] font-medium tracking-[2px] uppercase transition-colors rounded-sm flex flex-col items-center justify-center gap-1 ${isSubmitting || cart.length === 0 ? 'bg-primary-950/50 cursor-not-allowed' : 'bg-gold-600 hover:bg-gold-500 shadow-md shadow-gold-600/20'}`}
               >
                 {isSubmitting ? (
                   <div className="flex items-center gap-2">
@@ -387,14 +436,9 @@ export default function Checkout() {
                     <span>Processing...</span>
                   </div>
                 ) : (
-                  <span>{paymentMethod === 'online' ? 'Pay Securely via Razorpay' : 'Place Order via COD'}</span>
+                  <span>{paymentMethod === 'online' ? 'Pay Securely Online' : 'Place Order via COD'}</span>
                 )}
               </button>
-              {paymentMethod === 'online' && (
-                <p className="text-center text-[10px] text-primary-950/50 uppercase tracking-[1px] font-medium mt-3">
-                  Secure checkout powered by Razorpay
-                </p>
-              )}
             </div>
           </form>
         </div>
@@ -402,7 +446,7 @@ export default function Checkout() {
         {/* Order Summary Checkout view */}
         <div className="lg:pl-16 border-l border-black/5 hidden lg:block">
            <div className="mb-4 bg-primary-100/50 text-gold-600 text-[11px] px-3 py-2 border border-gold-200/50 rounded-sm flex items-center justify-center font-medium tracking-wide uppercase">
-             ✨ Limited Time Offer: Free shipping on all orders
+             Limited Time Offer: Free shipping on all orders
            </div>
            <h2 className="text-[13px] tracking-[2px] uppercase text-primary-950 mb-8 border-b border-black/5 pb-4">In Your Cart</h2>
            <div className="space-y-6 mb-8 pr-4 max-h-[40vh] overflow-y-auto">
@@ -414,9 +458,6 @@ export default function Checkout() {
                   </div>
                   <div className="flex-grow flex flex-col justify-center">
                     <p className="text-[15px] font-serif text-primary-950 line-clamp-1">{item.name}</p>
-                    {item.sku && (
-                      <p className="text-[10px] tracking-[1px] uppercase text-primary-950/40 mt-1 font-mono">SKU: {item.sku}</p>
-                    )}
                     {item.size && <p className="text-[11px] uppercase tracking-[1px] text-primary-950/50 mt-1">Size: {item.size}</p>}
                     <p className="text-[14px] text-primary-950 mt-2">{formatPrice(item.price)}</p>
                   </div>

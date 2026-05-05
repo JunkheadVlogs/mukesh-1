@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router';
 import { useStore } from './store';
 import { formatPrice } from './utils';
-import { Trash2, Plus, Minus, ArrowRight, Shield } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowRight, Shield, Truck } from 'lucide-react';
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, cartTotal, appliedCoupon } = useStore();
@@ -14,7 +14,7 @@ export default function Cart() {
 
   if (cart.length === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 min-h-[70vh] flex flex-col items-center justify-center text-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 min-h-[70vh] flex flex-col items-center justify-center text-center">
         <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-normal">Your cart is empty</h2>
         <p className="text-primary-950/70 mb-10 font-light">Looks like you haven't added anything to your cart yet.</p>
         <Link 
@@ -33,8 +33,8 @@ export default function Cart() {
   const total = Math.max(0, subtotal + shipping - discount);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-      <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-12 pb-8 border-b border-black/5 font-normal">Shopping Cart</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
+      <h1 className="text-2xl md:text-[32px] font-serif text-primary-950 mb-8 pb-4 border-b border-black/5 font-normal">Shopping Cart</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
         {/* Cart Items */}
@@ -52,11 +52,6 @@ export default function Cart() {
                     </h3>
                     <p className="font-medium text-primary-950 ml-4">{formatPrice(item.price * item.quantity)}</p>
                   </div>
-                  {item.sku && (
-                    <p className="text-[10px] text-primary-950/50 mb-2 font-mono uppercase tracking-wider">
-                      SKU: {item.sku}
-                    </p>
-                  )}
                   <div className="text-[11px] tracking-[1px] uppercase text-primary-950/50 space-y-1">
                     <p>Fabric: {item.fabric}</p>
                     {item.size && <p>Size: <span className="font-medium text-primary-950">{item.size}</span></p>}
@@ -126,13 +121,19 @@ export default function Cart() {
             
             <button 
               onClick={() => navigate('/checkout')}
-              className="w-full bg-primary-950 border border-primary-950 hover:bg-transparent hover:text-primary-950 text-white py-4 text-[11px] tracking-[2px] uppercase flex items-center justify-center transition-colors"
+              className="w-full bg-gold-600 border border-gold-600 hover:bg-gold-500 text-white py-4 text-[11px] tracking-[2px] uppercase flex items-center justify-center transition-colors rounded-sm shadow-md shadow-gold-600/20"
             >
               Proceed to Checkout <ArrowRight size={14} className="ml-2" />
             </button>
-            <div className="mt-6 flex items-center justify-center gap-2 border-t border-black/5 pt-4">
-               <Shield size={16} className="text-gold-600"/>
-               <span className="text-xs text-primary-600">Secure Checkout Guarantee</span>
+            <div className="mt-6 flex flex-col items-center justify-center gap-3 border-t border-black/5 pt-4">
+               <div className="flex items-center gap-2">
+                 <Shield size={16} className="text-gold-600"/>
+                 <span className="text-xs text-primary-600">Secure Checkout Guarantee</span>
+               </div>
+               <div className="flex items-center gap-2">
+                 <Truck size={16} className="text-gold-600" />
+                 <span className="text-xs text-primary-950/70">Estimated Delivery: 3-7 Business Days</span>
+               </div>
             </div>
           </div>
         </div>

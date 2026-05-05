@@ -36,7 +36,12 @@ export default function Layout() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [openFooterAccordion, setOpenFooterAccordion] = useState<string | null>(null);
   const lastScrollY = useRef(0);
+
+  const toggleFooterAccordion = (section: string) => {
+    setOpenFooterAccordion((prev) => (prev === section ? null : section));
+  };
 
   useEffect(() => {
     // Scroll to top on pathname OR search change
@@ -328,8 +333,8 @@ export default function Layout() {
         {/* Top Bar */}
         <div className="bg-primary-950 text-white text-center py-2.5 px-4 w-full text-[11px] sm:text-[12px] font-medium tracking-[1px] md:tracking-[2px] uppercase flex items-center justify-center gap-2 relative z-[60]">
           <span>
-            🎉 55% OFF + Extra ₹100 OFF on FIRST Order | Use{" "}
-            <span className="text-gold-400 font-medium">FIRST100</span>
+            <span>OFFER: </span> 55% OFF + Extra ₹100 OFF on FIRST Order | Use{" "}
+            <span className="text-gold-400 font-bold">FIRST100</span>
           </span>
         </div>
 
@@ -566,10 +571,10 @@ export default function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-primary-50 border-t border-black/5 py-8 mt-auto">
+      <footer className="bg-primary-50 border-t border-black/5 py-4 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Trust Bar Section */}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-10 pb-10 border-b border-black/5 gap-6 text-center md:text-left">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-6 pb-6 border-b border-black/5 gap-4 text-center md:text-left">
             <div className="text-[11px] uppercase tracking-[1px] text-primary-950/70 flex flex-wrap justify-center items-center gap-2">
               <span>Since 1976 Legacy</span>
               <span className="w-1 h-1 bg-gold-500 rounded-full mx-1"></span>
@@ -586,89 +591,92 @@ export default function Layout() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
-            <div>
-              <h4 className="text-[11px] uppercase tracking-[2px] font-medium mb-4 text-primary-950">
-                Quick Links
-              </h4>
-              <ul className="space-y-3 text-sm text-primary-950/70">
-                <li>
-                  <Link
-                    to="/shop"
-                    className="hover:text-gold-500 transition-colors"
-                  >
-                    Shop All
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/about"
-                    className="hover:text-gold-500 transition-colors"
-                  >
-                    Our Legacy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/terms"
-                    className="hover:text-gold-500 transition-colors"
-                  >
-                    Terms & Conditions
-                  </Link>
-                </li>
-              </ul>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6">
+            <div className="border-b border-black/5 md:border-none pb-2 md:pb-0">
+              <button 
+                onClick={() => toggleFooterAccordion('quickLinks')}
+                className="flex items-center justify-between w-full md:cursor-default"
+              >
+                <h4 className="text-[11px] uppercase tracking-[2px] font-medium text-primary-950 md:mb-3">
+                  Quick Links
+                </h4>
+                <ChevronDown size={16} className={`md:hidden transition-transform duration-300 ${openFooterAccordion === 'quickLinks' ? 'rotate-180' : ''}`} />
+              </button>
+              <div 
+                className={`overflow-hidden transition-all duration-300 md:!h-auto md:!opacity-100 ${openFooterAccordion === 'quickLinks' ? 'max-h-48 opacity-100 mt-4' : 'max-h-0 opacity-0 md:mt-4'}`}
+              >
+                <ul className="space-y-3 text-sm text-primary-950/70 pb-4 md:pb-0">
+                  <li>
+                    <Link to="/shop" className="hover:text-gold-500 transition-colors">Shop All</Link>
+                  </li>
+                  <li>
+                    <Link to="/about" className="hover:text-gold-500 transition-colors">Our Legacy</Link>
+                  </li>
+                  <li>
+                    <Link to="/terms" className="hover:text-gold-500 transition-colors">Terms & Conditions</Link>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div>
-              <h4 className="text-[11px] uppercase tracking-[2px] font-medium mb-4 text-primary-950">
-                Categories
-              </h4>
-              <ul className="space-y-3 text-sm text-primary-950/70">
-                <li>
-                  <Link
-                    to="/shop?category=Sarees"
-                    className="hover:text-gold-500 transition-colors"
-                  >
-                    Sarees
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/shop?category=Co-Ord Sets"
-                    className="hover:text-gold-500 transition-colors"
-                  >
-                    Co-Ord Sets
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/shop?sort=new"
-                    className="hover:text-gold-500 transition-colors"
-                  >
-                    New Arrivals
-                  </Link>
-                </li>
-              </ul>
+            
+            <div className="border-b border-black/5 md:border-none pb-2 md:pb-0">
+              <button 
+                onClick={() => toggleFooterAccordion('categories')}
+                className="flex items-center justify-between w-full md:cursor-default"
+              >
+                <h4 className="text-[11px] uppercase tracking-[2px] font-medium text-primary-950 md:mb-3">
+                  Categories
+                </h4>
+                <ChevronDown size={16} className={`md:hidden transition-transform duration-300 ${openFooterAccordion === 'categories' ? 'rotate-180' : ''}`} />
+              </button>
+              <div 
+                className={`overflow-hidden transition-all duration-300 md:!h-auto md:!opacity-100 ${openFooterAccordion === 'categories' ? 'max-h-48 opacity-100 mt-4' : 'max-h-0 opacity-0 md:mt-4'}`}
+              >
+                <ul className="space-y-3 text-sm text-primary-950/70 pb-4 md:pb-0">
+                  <li>
+                    <Link to="/shop?category=Sarees" className="hover:text-gold-500 transition-colors">Sarees</Link>
+                  </li>
+                  <li>
+                    <Link to="/shop?category=Co-Ord Sets" className="hover:text-gold-500 transition-colors">Co-Ord Sets</Link>
+                  </li>
+                  <li>
+                    <Link to="/shop?sort=new" className="hover:text-gold-500 transition-colors">New Arrivals</Link>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div>
-              <h4 className="text-[11px] uppercase tracking-[2px] font-medium mb-4 text-primary-950">
-                Contact Us
-              </h4>
-              <ul className="space-y-3 text-sm text-primary-950/70">
-                <li className="leading-relaxed">
-                  {CONFIG.STORE_NAME}
-                  <br />
-                  {CONFIG.STORE_ADDRESS}
-                </li>
-                <li className="pt-2">Contact Person: Mohit</li>
-                <li>
-                  WhatsApp / Call: <br />
-                  {CONFIG.STORE_PHONE}
-                </li>
-              </ul>
+            
+            <div className="border-b border-black/5 md:border-none pb-2 md:pb-0">
+              <button 
+                onClick={() => toggleFooterAccordion('contact')}
+                className="flex items-center justify-between w-full md:cursor-default"
+              >
+                <h4 className="text-[11px] uppercase tracking-[2px] font-medium text-primary-950 md:mb-3">
+                  Contact Us
+                </h4>
+                <ChevronDown size={16} className={`md:hidden transition-transform duration-300 ${openFooterAccordion === 'contact' ? 'rotate-180' : ''}`} />
+              </button>
+              <div 
+                className={`overflow-hidden transition-all duration-300 md:!h-auto md:!opacity-100 ${openFooterAccordion === 'contact' ? 'max-h-48 opacity-100 mt-4' : 'max-h-0 opacity-0 md:mt-4'}`}
+              >
+                <ul className="space-y-3 text-sm text-primary-950/70 pb-4 md:pb-0">
+                  <li className="leading-relaxed">
+                    {CONFIG.STORE_NAME}
+                    <br />
+                    {CONFIG.STORE_ADDRESS}
+                  </li>
+                  <li className="pt-2">Contact Person: Mohit</li>
+                  <li>
+                    WhatsApp / Call: <br />
+                    {CONFIG.STORE_PHONE}
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div className="bg-primary-950 p-6 rounded-sm text-white flex flex-col justify-center">
+            
+            <div className="bg-primary-950 p-4 rounded-sm text-white flex flex-col justify-center mt-2 md:mt-0">
               <h4 className="text-sm tracking-[1px] mb-1">Exclusive Offers</h4>
-              <p className="text-[10px] opacity-70 mb-4">
+              <p className="text-[10px] opacity-70 mb-3">
                 Message us on WhatsApp to join our exclusive club for updates and early access.
               </p>
               <a 
@@ -694,13 +702,12 @@ export default function Layout() {
         href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, '')}?text=Hi!%20I%20Need%20Help.`}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl hover:bg-[#128C7E] hover:-translate-y-1 hover:scale-110 transition-all z-50 flex items-center justify-center group"
+        className="fixed bottom-6 right-6 bg-[#25D366] text-white p-3 md:p-3.5 rounded-full shadow-2xl hover:bg-[#128C7E] hover:-translate-y-1 hover:scale-110 transition-all z-50 flex items-center justify-center group"
         aria-label="Contact us on WhatsApp"
       >
-        <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 ease-in-out pl-0 group-hover:pl-2 group-hover:pr-3 text-xs tracking-wider uppercase font-medium">
-          Support
-        </span>
-        <MessageCircle size={24} fill="currentColor" strokeWidth={1} />
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+        </svg>
       </a>
 
       {/* Scroll to Top Button */}

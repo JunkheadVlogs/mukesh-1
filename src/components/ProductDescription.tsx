@@ -22,7 +22,7 @@ export function ProductDescription({
   }
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`space-y-4 ${className}`}>
       {sections.map((section) => {
         const titleLower = section.title.toLowerCase();
         // Skip Product Title as it's already shown in the UI header
@@ -32,9 +32,9 @@ export function ProductDescription({
           titleLower.includes("bullet") || section.content.includes("•");
 
         return (
-          <div key={section.title} className="mb-4">
+          <div key={section.title} className="mb-2">
             {titleLower !== "short description" && (
-              <h3 className="text-[11px] tracking-[2px] text-primary-950/50 mb-3 uppercase font-medium">
+              <h3 className="text-[11px] tracking-[2px] text-primary-950/50 mb-2 uppercase font-medium">
                 {section.title.replace(/^\d+\.\s*/, "")}
               </h3>
             )}
@@ -48,14 +48,14 @@ export function ProductDescription({
                     line.trim().startsWith("-")
                   ) {
                     return (
-                      <div key={i} className="flex pl-1 mb-1.5">
+                      <div key={i} className="flex pl-1 mb-1">
                         <span className="mr-2 text-primary-950/40">•</span>
                         <span>{line.replace(/^[•-]\s*/, "").trim()}</span>
                       </div>
                     );
                   }
                   return (
-                    <p key={i} className="mb-2">
+                    <p key={i} className="mb-1.5">
                       {line}
                     </p>
                   );

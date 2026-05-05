@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router';
-import { X, Heart, ArrowRight, Info } from 'lucide-react';
+import { X, Heart, ArrowRight, Info, RotateCcw, Truck, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Product, useStore } from './store';
 import { formatPrice } from './utils';
@@ -124,10 +124,6 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                   <p className="text-[14px] text-primary-950/70 mb-3 whitespace-pre-line">{product.tagline}</p>
                 )}
 
-                {product.sku && (
-                  <p className="text-[10px] tracking-[1px] uppercase text-primary-950/40 mb-3">SKU: {product.sku}</p>
-                )}
-
               <div className="flex flex-col gap-1 mb-5">
                   <div className="flex items-center flex-wrap gap-2 text-primary-950 mb-2">
                     {hasDiscount ? (
@@ -172,7 +168,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-[11px] font-bold tracking-[0.5px] text-primary-950 uppercase">
-                        Color: <span className="text-primary-950/50 font-medium ml-1">{(product.color || "Variant").split(' ')[0]}</span>
+                        Color: <span className="text-primary-950/50 font-medium ml-1">{product.color || "Variant"}</span>
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2.5">
@@ -263,8 +259,8 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                     disabled={isAdded}
                     className={`flex-1 py-2.5 px-8 text-[12px] uppercase transition-all duration-300 border shadow-sm font-medium flex flex-col items-center justify-center rounded ${
                       isAdded 
-                        ? 'bg-transparent border-primary-950 text-primary-950' 
-                        : 'bg-primary-950 border-primary-950 text-white hover:bg-gold-500 hover:border-gold-500'
+                        ? 'bg-transparent border-gold-600 text-gold-600' 
+                        : 'bg-gold-600 border-gold-600 text-white hover:bg-gold-500 hover:border-gold-500 shadow-sm shadow-gold-600/20'
                     }`}
                   >
                     <span className="leading-tight">{isAdded ? 'Success!' : `Add to Cart - ${formatPrice(finalPrice)}`}</span>
@@ -276,29 +272,25 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                     <Heart size={18} strokeWidth={1.5} className={isWishlisted ? "fill-gold-500 text-gold-500" : ""} />
                   </button>
                 </div>
-
-                <div className="flex items-center text-primary-950 text-[12px] font-normal mb-1">
-                  <span className="text-sm leading-none mr-2">⏳</span> Only few pieces available today
-                </div>
               </div>
 
               {/* Offer Box */}
               {hasDiscount && (
-                <div className="mb-5 flex items-center text-primary-950 text-[12px] font-normal">
-                  <span className="text-sm leading-none mr-2">👉</span> Auto discount applied at checkout
+                <div className="mb-5 flex items-center text-primary-950 text-[12px] font-normal text-primary-800">
+                  <span className="font-bold mr-2 text-primary-950">OFFER</span> Auto discount applied at checkout
                 </div>
               )}
 
               {/* Trust Elements */}
-              <div className="flex flex-col gap-2 mt-4 bg-primary-50/30 border border-black/5 rounded-sm p-3.5 text-[12px] text-primary-950 font-medium">
+              <div className="flex flex-col gap-2 mt-4 bg-primary-50/30 border border-black/5 rounded-sm p-3.5 text-[12px] text-primary-950 font-medium uppercase tracking-wide">
                 <div className="flex items-center gap-2">
-                  <span className="text-[14px] leading-none">✅</span> 7 Days Easy Returns
+                  <RotateCcw size={14} className="text-primary-950" /> 7 Days Easy Returns
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[14px] leading-none">🚚</span> Cash on Delivery Available
+                  <Truck size={14} className="text-primary-950" /> Cash on Delivery Available
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[14px] leading-none">🔒</span> Secure Checkout
+                  <ShieldCheck size={14} className="text-primary-950" /> Secure Checkout
                 </div>
               </div>
 

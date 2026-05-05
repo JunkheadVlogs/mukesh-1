@@ -15,9 +15,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { products } from "./mockData";
-import { type Product, useStore } from "./store";
+import { type Product } from "./store";
 import { formatPrice, optimizeImage } from "./utils";
-import { trackAddToCart } from "./tracking";
 
 export default function Home() {
   const mainProducts = products.filter(p => !p.isVariant);
@@ -256,7 +255,7 @@ export default function Home() {
                   Co-Ord Sets
                 </div>
                 <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-2 drop-shadow-md">
-                  Best Sellers ✨ Flat 50% OFF
+                  Best Sellers | Flat 50% OFF
                 </div>
                 <div className="text-[14px] font-sans font-bold text-gold-400 mb-6 drop-shadow-md">
                   Starting at ₹995
@@ -289,7 +288,7 @@ export default function Home() {
                   Sarees
                 </div>
                 <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-2 drop-shadow-sm">
-                  Premium Quality ✨ Flat 50% OFF
+                  Premium Quality | Flat 50% OFF
                 </div>
                 <div className="text-[14px] font-sans font-bold text-gold-400 mb-6 drop-shadow-sm">
                   Starting at ₹649
@@ -554,26 +553,10 @@ export default function Home() {
 
 // Simple Product Card Component for Home Page
 function ProductCard({ product }: { product: Product; key?: string }) {
-  const { addToCart } = useStore();
-  const [isAdded, setIsAdded] = useState(false);
-
-  const handleQuickAdd = (e: React.MouseEvent) => {
-    e.preventDefault();
-    addToCart(product, product.category === 'Co-Ord Sets' ? 'M' : undefined, 1);
-    
-    trackAddToCart(product);
-
-    setIsAdded(true);
-    setTimeout(() => {
-      setIsAdded(false);
-    }, 3000);
-  };
-
   // Generate random stats for social proof based on product id
   const idHash = product.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const rating = 4.5 + (idHash % 5) * 0.1;
   const soldCount = 50 + (idHash % 100);
-  const stockLeft = 2 + (idHash % 8);
 
   return (
     <Link 
@@ -606,36 +589,13 @@ function ProductCard({ product }: { product: Product; key?: string }) {
             </span>
           )}
         </div>
-        <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-10 w-[90%] md:w-auto justify-center pointer-events-none">
-           <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full whitespace-nowrap flex items-center shadow-md">
-             <span className="text-[10px] font-bold text-primary-700 uppercase tracking-[0.5px]">🔥 Only {stockLeft} left - Selling Fast</span>
-           </div>
-        </div>
         
-        <AnimatePresence>
-          {isAdded && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="absolute bottom-20 left-4 right-4 bg-primary-950 text-white text-[10px] text-center py-2.5 rounded-sm uppercase tracking-wider shadow-xl z-20 pointer-events-none font-medium"
-            >
-              Added to cart
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {/* Quick Add Button removed from overlay */}
       </div>
       <div className="text-center px-1 flex-grow flex flex-col mt-2">
         <h3 className="font-serif text-[15px] sm:text-[16px] text-primary-950 mb-1 line-clamp-1 font-medium tracking-wide group-hover:text-gold-500 transition-colors">
           {product.name}
         </h3>
-        {product.sku && (
-          <p className="text-[10px] text-primary-950/50 mb-2 font-mono uppercase tracking-wider">
-            SKU: {product.sku}
-          </p>
-        )}
         
         <div className="flex flex-col items-center justify-center mt-auto gap-1.5">
           <div className="flex items-center justify-center space-x-2">
@@ -672,14 +632,6 @@ function ProductCard({ product }: { product: Product; key?: string }) {
             </div>
           )}
         </div>
-        <button
-          onClick={handleQuickAdd}
-          className={`w-full mt-3 py-2 text-[11px] uppercase tracking-[1px] font-bold transition-colors border rounded-sm ${
-            isAdded ? 'bg-primary-950 text-white border-primary-950' : 'bg-transparent text-primary-950 border-primary-900/20 hover:bg-gold-500 hover:text-white hover:border-gold-500'
-          }`}
-        >
-          {isAdded ? 'Added ✓' : 'Add to Bag'}
-        </button>
       </div>
     </Link>
   );

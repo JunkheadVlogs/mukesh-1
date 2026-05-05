@@ -10,6 +10,8 @@ import {
   ThumbsDown,
   ThumbsUp,
   Truck,
+  RotateCcw,
+  ShieldCheck,
   X,
   Maximize2,
   MessageCircle,
@@ -98,11 +100,16 @@ export default function ProductPage() {
   const totalMediaLength = productImages.length + (hasVideo ? 1 : 0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (window.innerWidth < 768 || !isZoomed) return;
-    const { left, top, width, height } =
-      e.currentTarget.getBoundingClientRect();
-    const x = ((e.pageX - left - window.scrollX) / width) * 100;
-    const y = ((e.pageY - top - window.scrollY) / height) * 100;
+    if (window.innerWidth < 768) {
+      if (isZoomed) setIsZoomed(false);
+      return;
+    }
+    
+    if (!isZoomed) setIsZoomed(true);
+
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
 
     setZoomStyle({
       transformOrigin: `${x}% ${y}%`,
@@ -110,26 +117,9 @@ export default function ProductPage() {
     });
   };
 
-  const handleToggleZoom = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (window.innerWidth < 768) return;
-    if (isZoomed) {
-      setIsZoomed(false);
-      setZoomStyle({ transform: "scale(1)" });
-    } else {
-      setIsZoomed(true);
-      const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-      const x = ((e.pageX - left - window.scrollX) / width) * 100;
-      const y = ((e.pageY - top - window.scrollY) / height) * 100;
-      setZoomStyle({
-        transformOrigin: `${x}% ${y}%`,
-        transform: "scale(2.5)",
-      });
-    }
-  };
-
   const handleMouseLeave = () => {
     setIsZoomed(false);
-    setZoomStyle({ transform: "scale(1)" });
+    setZoomStyle({ transform: "scale(1)", transformOrigin: "center center" });
   };
 
   const nextImage = () => {
@@ -160,10 +150,10 @@ export default function ProductPage() {
   const isWishlisted = wishlist.includes(product.id);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 pb-32 md:pb-24">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12 pb-16 md:pb-20">
       {/* Breadcrumbs */}
       <nav
-        className="flex text-[10px] tracking-[1px] uppercase text-primary-950/50 mb-10"
+        className="flex text-[10px] tracking-[1px] uppercase text-primary-950/50 mb-4 md:mb-6"
         aria-label="Breadcrumb"
       >
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -197,10 +187,10 @@ export default function ProductPage() {
         </ol>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 mb-32">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-6">
         {/* Product Images Carousel */}
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-6 h-fit">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3 h-fit">
             
             {/* Preload all gallery images for instant switching */}
             <div style={{ display: 'none' }}>
@@ -211,9 +201,9 @@ export default function ProductPage() {
 
             {/* Main Image Carousel */}
             <div
-              className={`flex-1 aspect-[2/3] bg-transparent overflow-hidden relative rounded-sm group select-none ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+              className={`flex-1 aspect-[2/3] bg-transparent overflow-hidden relative rounded-sm group select-none ${isZoomed ? "cursor-crosshair" : "cursor-zoom-in"}`}
               onMouseMove={handleMouseMove}
-              onClick={handleToggleZoom}
+              onClick={() => setIsLightboxOpen(true)}
               onMouseLeave={handleMouseLeave}
             >
               <button
@@ -235,7 +225,7 @@ export default function ProductPage() {
                     fetchPriority="high"
                     loading="eager"
                     alt={product.name}
-                    className="w-full h-full object-cover object-center"
+                    className="w-full h-full object-cover object-center transition-transform duration-[400ms] ease-out pointer-events-none"
                     style={isZoomed ? zoomStyle : {}}
                     referrerPolicy="no-referrer"
                   />
@@ -378,9 +368,8 @@ export default function ProductPage() {
               >
                 {activeImageIndex < productImages.length ? (
                   <div 
-                    className={`relative w-full h-full flex items-center justify-center overflow-hidden ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+                    className={`relative w-full h-full flex items-center justify-center overflow-hidden ${isZoomed ? "cursor-crosshair" : "cursor-crosshair"}`}
                     onMouseMove={handleMouseMove}
-                    onClick={handleToggleZoom}
                     onMouseLeave={handleMouseLeave}
                   >
                     <img
@@ -400,7 +389,7 @@ export default function ProductPage() {
 
                 <div className="absolute bottom-0 text-center w-full pb-8 pointer-events-none">
                   <h3 className="text-white text-xl font-serif mb-4 drop-shadow-md">
-                    {product.name.replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim()}
+                    {product.name}
                   </h3>
                   <div className="flex justify-center gap-2">
                     {Array.from({ length: totalMediaLength }).map((_, idx) => (
@@ -559,35 +548,35 @@ export default function ProductPage() {
         </AnimatePresence>
 
         {/* Product Details */}
-        <div className="flex flex-col pt-4">
-          <div className="mb-6">
+        <div className="flex flex-col pt-2 md:pt-0">
+          <div className="mb-4">
             <div className="text-[10px] md:text-[11px] uppercase tracking-[3px] text-gold-500 mb-2 font-bold bg-gold-50 inline-block px-2 py-1.5 rounded-sm border border-gold-100">
                {product.category === 'Co-Ord Sets' ? 'Signature Collection' : 'Premium Handpicked'}
             </div>
 
             {/* 1. Title */}
             <h1 className="text-[28px] md:text-[36px] font-serif text-primary-950 mt-1 mb-2 leading-[1.15] tracking-wide font-normal">
-              {product.name.replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim()}
+              {product.name}
             </h1>
 
             {product.sku && (
-              <p className="text-[12px] text-primary-950/50 mb-3 font-mono uppercase tracking-wider">
+              <p className="text-[12px] text-primary-950/50 mb-2 font-mono uppercase tracking-wider">
                 SKU: {product.sku}
               </p>
             )}
 
-            <div className="text-[12px] uppercase tracking-[2px] text-primary-950/60 font-bold mb-4 flex items-center gap-2">
+            <div className="text-[12px] uppercase tracking-[2px] text-primary-950/60 font-bold mb-3 flex items-center gap-2">
                <span>{product.fabric || "Premium Fabric"}</span>
                <span className="w-1 h-1 rounded-full bg-gold-400"></span>
                <span>{product.color || "Exclusive Hue"}</span>
             </div>
             
             {product.tagline && (
-              <p className="text-[15px] text-primary-950/70 mb-4 whitespace-pre-line">{product.tagline}</p>
+              <p className="text-[15px] text-primary-950/70 mb-3 whitespace-pre-line">{product.tagline}</p>
             )}
             
             {/* 3. Price & COD */}
-            <div className="flex flex-col gap-2 mb-6">
+            <div className="flex flex-col gap-2 mb-4">
               <div className="flex items-center flex-wrap gap-2 text-primary-900">
                 {product.originalPrice && (
                   <span className="text-[10px] font-medium text-gold-600 bg-gold-600/10 px-1.5 py-0.5 rounded-sm tracking-[1px] uppercase">
@@ -602,7 +591,7 @@ export default function ProductPage() {
                 
                 {hasDiscount && (
                   <span className="text-[10px] font-medium text-gold-600 bg-gold-600/10 px-1.5 py-0.5 rounded-sm tracking-[1px] uppercase">
-                    EXTRA ₹100 OFF ON PREPAID
+                    ₹100 OFF ON FIRST ORDER
                   </span>
                 )}
                 
@@ -643,19 +632,19 @@ export default function ProductPage() {
 
             {/* Color Variations */}
             {product.colorVariants && product.colorVariants.length > 0 && (
-              <div className="mb-8">
+              <div className="mb-4">
                 {/* Preload variant images silently in background for instant navigation */}
                 <div style={{ display: 'none' }}>
                   {product.colorVariants.map((variant) => (
                     <img key={`preload-${variant.slug}`} src={optimizeImage(variant.image, 800)} alt="preload" />
                   ))}
                 </div>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-2">
                   <span className="text-[13px] font-bold tracking-[0.5px] text-primary-950 uppercase">
-                    Color: <span className="text-primary-950/50 font-medium ml-1">{(product.color || "Variant").split(' ')[0]}</span>
+                    Color: <span className="text-primary-950/50 font-medium ml-1">{product.color || "Variant"}</span>
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2">
                   {product.colorVariants.map((variant) => (
                     <Link
                       key={variant.slug}
@@ -684,7 +673,7 @@ export default function ProductPage() {
             {/* 4. Size Selection */}
             {isCoOrd && (
               <motion.div 
-                className="mb-6 p-5 rounded-md transition-all duration-300 border border-black/5 bg-primary-50/30"
+                className="mb-4 p-4 rounded-md transition-all duration-300 border border-black/5 bg-primary-50/30"
                 ref={sizeSectionRef}
                 animate={sizeError ? { x: [-10, 10, -10, 10, 0] } : {}}
                 transition={{ duration: 0.4 }}
@@ -723,7 +712,7 @@ export default function ProductPage() {
             )}
 
             {/* 5. CTA Button & Quantity */}
-            <div className="flex flex-col gap-2 mb-8">
+            <div className="flex flex-col gap-2 mb-4">
               <div className="flex gap-3 h-12">
                 <div className="hidden sm:flex items-center border border-black/10 w-28 h-full bg-primary-50 rounded">
                   <button
@@ -750,11 +739,11 @@ export default function ProductPage() {
                   }}
                   className={`flex-1 h-full px-8 text-[12px] uppercase transition-colors border shadow-sm font-medium flex flex-col items-center justify-center rounded ${
                     isAdded
-                      ? "bg-transparent border-primary-950 text-primary-950"
-                      : "bg-primary-950 border-primary-950 text-white hover:bg-gold-600 hover:border-gold-600"
+                      ? "bg-transparent border-gold-600 text-gold-600"
+                      : "bg-gold-600 border-gold-600 text-white hover:bg-gold-500 hover:border-gold-500 shadow-sm shadow-gold-600/20"
                   }`}
                 >
-                  <span className="leading-tight">{isAdded ? "Added to Cart" : `Order Now - Only ${formatPrice(finalPrice)} (Limited Stock)`}</span>
+                  <span className="leading-tight">{isAdded ? "Added to Cart" : `Order Now – ${formatPrice(finalPrice)}`}</span>
                 </button>
                 <button
                   onClick={() => toggleWishlist(product.id)}
@@ -770,28 +759,17 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* 6. Urgency */}
-            <div className="mb-6 flex items-center text-primary-950 text-[13px] font-normal">
-              <span className="text-base leading-none mr-2">⏳</span> Only few pieces available today
-            </div>
-
-            {/* 7. Offer Box */}
-            {hasDiscount && (
-              <div className="mb-6 flex items-center text-primary-950 text-[13px] font-normal">
-                <span className="text-base leading-none mr-2">👉</span> Auto discount applied at checkout
-              </div>
-            )}
           </div>
 
           {/* Trust Elements */}
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-5 text-[13px] text-primary-950 font-normal">
-            <span className="flex items-center gap-1.5">✅ 7 Days Easy Returns</span>
-            <span className="flex items-center gap-1.5">🚚 Cash on Delivery Available</span>
-            <span className="flex items-center gap-1.5">🔒 Secure Checkout</span>
+          <div className="flex flex-col gap-1.5 mt-2 mb-4 text-[12px] uppercase tracking-wide font-medium text-primary-800 border-t border-black/5 pt-4">
+            <span className="flex items-center gap-2"><RotateCcw size={14} className="text-primary-950" /> 7 Days Easy Returns</span>
+            <span className="flex items-center gap-2"><Truck size={14} className="text-primary-950" /> Cash on Delivery Available</span>
+            <span className="flex items-center gap-2"><ShieldCheck size={14} className="text-primary-950" /> Secure Checkout</span>
           </div>
 
             {/* 9 & 10. Bullet Points & Description */}
-            <div className="pt-8 border-t border-black/5 mt-8">
+            <div className="pt-4 border-t border-black/5 mt-0">
               <ProductDescription
                 description={product.description}
                 className="text-[14px]"
@@ -801,10 +779,10 @@ export default function ProductPage() {
       </div>
 
       {/* Related Products Section */}
-      <section className="pt-24 border-t border-black/5">
-        <div className="flex justify-between items-end mb-12">
+      <section className="pt-4 border-t border-black/5">
+        <div className="flex justify-between items-end mb-4">
           <div>
-            <h2 className="text-[10px] tracking-[4px] uppercase text-gold-500 mb-3 font-medium">
+            <h2 className="text-[10px] tracking-[4px] uppercase text-gold-500 mb-2 font-medium">
               You may also like
             </h2>
             <h3 className="text-2xl md:text-3xl font-serif text-primary-950">
@@ -888,9 +866,9 @@ export default function ProductPage() {
               navigate("/checkout");
             }
           }}
-          className="w-full bg-primary-950 text-white py-2.5 px-8 shadow-sm hover:bg-gold-600 transition-colors flex flex-col items-center justify-center tracking-wide leading-tight rounded"
+          className="w-full bg-gold-600 text-white py-3.5 px-8 shadow-[0_4px_15px_-3px_rgba(202,138,4,0.3)] hover:bg-gold-500 transition-all flex flex-col items-center justify-center tracking-widest uppercase rounded"
         >
-          <span className="text-[12px] font-medium">Order Now - Only {formatPrice(finalPrice)} (Limited Stock)</span>
+          <span className="text-[12px] font-medium">Order Now – {formatPrice(finalPrice)}</span>
         </button>
       </div>
     </div>

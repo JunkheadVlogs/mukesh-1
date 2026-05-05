@@ -4,7 +4,7 @@ export const products: Product[] = [
   {
     id: "p4",
     sku: "COORD-COCOA-001",
-    name: "Cocoa Brown Cotton Co-Ord Set 🤎",
+    name: "Cocoa Brown Cotton Co-Ord Set ",
     tagline: "Soft & Elegant",
     slug: "premium-pure-cotton-coord-set",
     price: 995,
@@ -25,11 +25,11 @@ export const products: Product[] = [
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌸 Premium 100% Cotton Fabric
-- ☁️ Soft, breathable & summer-friendly
-- 👗 Elegant cocoa brown design
-- 💃 Comfortable for daily & office wear
-- 🚚 COD Available
+-  Premium 100% Cotton Fabric
+- ️ Soft, breathable & summer-friendly
+-  Elegant cocoa brown design
+-  Comfortable for daily & office wear
+-  COD Available
 
 **Description**
 Stay comfortable and stylish all day with this premium cocoa brown cotton co-ord set.
@@ -45,7 +45,7 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
   {
     id: "p6",
     sku: "COORD-WHTPNK-001",
-    name: "White & Pink Cotton Floral Co-Ord Set 🌸",
+    name: "White & Pink Cotton Floral Co-Ord Set ",
     tagline: "Lightweight & Elegant",
     slug: "elegant-white-pink-embroidered-pure-cotton-kurta-pant-set",
     price: 995,
@@ -66,11 +66,11 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌸 Premium 100% Cotton Fabric
-- ☁️ Soft, breathable & summer-friendly
-- 👗 Elegant white & pink floral design
-- 💃 Comfortable for daily & office wear
-- 🚚 COD Available
+-  Premium 100% Cotton Fabric
+- ️ Soft, breathable & summer-friendly
+-  Elegant white & pink floral design
+-  Comfortable for daily & office wear
+-  COD Available
 
 **Description**
 Stay comfortable and stylish all day with this elegant white and pink floral cotton co-ord set.
@@ -86,8 +86,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
   {
     id: "p7",
     sku: "COORD-BEIGE-001",
-    name: "Beige Cotton Floral Co-Ord Set 🌸",
-    tagline: "🌸 Perfect Summer Daily Wear\nLight, Elegant & Super Comfortable",
+    name: "Beige Cotton Floral Co-Ord Set ",
+    tagline: " Perfect Summer Daily Wear\nLight, Elegant & Super Comfortable",
     slug: "pure-beige-cotton-floral-coord-set",
     price: 995,
     originalPrice: 1990,
@@ -107,11 +107,11 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌸 Premium 100% Cotton Fabric
-- ☁️ Soft, breathable & summer-friendly
-- 👗 Elegant beige floral design
-- 💃 Comfortable for daily & office wear
-- 🚚 COD Available
+-  Premium 100% Cotton Fabric
+- ️ Soft, breathable & summer-friendly
+-  Elegant beige floral design
+-  Comfortable for daily & office wear
+-  COD Available
 
 **Description**
 Stay comfortable and stylish all day with this premium beige floral cotton co-ord set.
@@ -127,7 +127,7 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
   {
     id: "p8",
     sku: "COORD-WHITE-001",
-    name: "White Cotton Floral Co-Ord Set 🌼",
+    name: "White Cotton Floral Co-Ord Set ",
     tagline: "Airy & Gentle",
     slug: "pure-cotton-floral-coord-set-white",
     price: 995,
@@ -148,11 +148,11 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌸 Premium 100% Cotton Fabric
-- ☁️ Soft, breathable & summer-friendly
-- 👗 Elegant white floral design
-- 💃 Comfortable for daily & office wear
-- 🚚 COD Available
+-  Premium 100% Cotton Fabric
+- ️ Soft, breathable & summer-friendly
+-  Elegant white floral design
+-  Comfortable for daily & office wear
+-  COD Available
 
 **Description**
 Stay comfortable and stylish all day with this premium pure white floral cotton co-ord set.
@@ -187,11 +187,11 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌸 Premium 100% Cotton Fabric
-- ☁️ Soft, breathable & summer-friendly
-- 👗 Elegant grey embroidered design
-- 💃 Comfortable for daily & office wear
-- 🚚 COD Available
+-  Premium 100% Cotton Fabric
+- ️ Soft, breathable & summer-friendly
+-  Elegant grey embroidered design
+-  Comfortable for daily & office wear
+-  COD Available
 
 **Description**
 Stay comfortable and stylish all day with this elegant grey embroidered cotton co-ord set.
@@ -225,21 +225,17 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     color: "Sunshine Yellow",
     isNew: true,
     isTrending: true,
-    description: `**1. Product Title**
-Sunshine Yellow Chiffon Saree with Hand Brush Floral Print & Sipli Cutwork Border
-
-**2. Short Description**
+    description: `**Description**
 Step into elegance with this sunshine yellow chiffon saree, designed for effortless grace and modern sophistication.
 
-**3. Bullet Points**
-• Fabric: Premium Chiffon
-• Work: Hand brush-painted floral design
-• Finish: High-definition digital print
-• Border: Intricate handcrafted sipli cutwork
-• Blouse: Unstitched
-• Comfort: Ultra-lightweight and breathable
+**Product Details**
+- Fabric: Premium Chiffon
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
-**4. Design Details**
+**Design Details**
 Features beautiful brush-painted floral motifs with digital printing for long-lasting vibrancy, complete with a subtle shimmer from the cutwork border.
 
 **5. Why You’ll Love It**
@@ -277,13 +273,12 @@ Black Khadi Cotton Saree with Multicolor Striped Pallu & Tassel Detailing
 **2. Short Description**
 Elevate your everyday ethnic wardrobe with this black khadi cotton saree, designed for comfort and effortless elegance.
 
-**3. Bullet Points**
-• Fabric: Premium Khadi Cotton (Soft, breathable & skin-friendly)
-• Lightweight & Easy to Drape: Perfect for beginners and daily wear
-• Stylish Pallu Design: Statement multicolor pallu with artistic stripe pattern
-• Tassel Finish: Handcrafted tassels on pallu for a trendy look
-• Versatility: Timeless black base suitable for any occasion
-• Fit: Flowy structure enhances natural silhouette
+**3. Product Details**
+- Fabric: Khadi Cotton
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **4. Design Details**
 The saree features a beautiful multicolor striped pallu, blending vibrant hues like teal, mustard, maroon, and pink over a classic black base. The clean stripe pattern gives it a contemporary yet traditional appeal. Finished with playful tassels on the pallu, this saree adds a subtle stylish flair while maintaining its minimal elegance.
@@ -292,16 +287,13 @@ The saree features a beautiful multicolor striped pallu, blending vibrant hues l
 Crafted from soft, breathable khadi cotton, this saree ensures a lightweight feel, making it ideal for long wear. It's comfortable in summer and suitable for year-round styling. Whether you're heading to work, a casual outing, or a small gathering, this saree is a perfect go-to choice.
 
 **6. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.
-
-**7. Note**
-Saree Length: 5.50 meters, Blouse Length: 0.80 meters (Unstitched).`,
+Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
     rating: 4.8,
   },
   {
     id: "p12",
     sku: "COORD-GREEN-001",
-    name: "Elegant Forest Green Cotton Co-Ord Set ✨",
+    name: "Elegant Forest Green Cotton Co-Ord Set ",
     tagline: "Effortless Elegance & All-Day Comfort",
     slug: "elegant-forest-green-cotton-coord-set",
     price: 995,
@@ -327,28 +319,28 @@ Elegant Forest Green Cotton Co-Ord Set
 Upgrade your everyday style with this sophisticated forest green co-ord set, designed for effortless elegance and all-day comfort.
 
 **3. Fabric & Color**
-🌿 Fabric: 100% Pure Cotton
-✔ Soft, breathable & skin-friendly
-✔ Perfect for daily wear, office, or casual outings
+ Fabric: 100% Pure Cotton
+ Soft, breathable & skin-friendly
+ Perfect for daily wear, office, or casual outings
 
-🎨 Color:
+ Color:
 Rich deep forest green base with subtle off-white floral embroidery, giving it a classy and refined look.
 
 **4. Design Details**
-🧵 Design Details:
-✔ Beautiful minimal floral embroidery spread across the kurta
-✔ Smart front placket with contrast striped collar
-✔ 3/4th sleeves for a modern, versatile appeal
-✔ Straight-fit pants for a clean, structured silhouette
+ Design Details:
+ Beautiful minimal floral embroidery spread across the kurta
+ Smart front placket with contrast striped collar
+ 3/4th sleeves for a modern, versatile appeal
+ Straight-fit pants for a clean, structured silhouette
 
 **5. Fit & Style**
-👗 Fit & Style:
-✔ Comfortable relaxed fit
-✔ Easy to carry from day to evening wear
-✔ Ideal for a polished yet effortless look
+ Fit & Style:
+ Comfortable relaxed fit
+ Easy to carry from day to evening wear
+ Ideal for a polished yet effortless look
 
 **6. Why You'll Love It**
-💫 Why You'll Love It:
+ Why You'll Love It:
 Lightweight, breathable, and stylish — this co-ord set blends comfort with understated luxury, making it a must-have in your wardrobe.
 
 **7. Care Instructions**
@@ -358,16 +350,16 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
   {
     id: "p13",
     sku: "COORD-PLUM-001",
-    name: "Royal Plum Cotton Co-Ord Set with Embroidery ✨",
+    name: "Royal Plum Cotton Co-Ord Set with Embroidery ",
     tagline: "Subtle Luxury with Everyday Wearability",
     slug: "royal-plum-cotton-coord-set-embroidery",
     price: 995,
     originalPrice: 1990,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "https://drive.google.com/thumbnail?id=13_77OK4eis1LANGCSD9izpuliMSJ2vYn&sz=w500",
+    image: "https://drive.google.com/thumbnail?id=1T30aeMCN2CKJk7sOszn2zaap__mDXp9p&sz=w500",
     images: [
-      "https://drive.google.com/thumbnail?id=13_77OK4eis1LANGCSD9izpuliMSJ2vYn&sz=w500",
       "https://drive.google.com/thumbnail?id=1T30aeMCN2CKJk7sOszn2zaap__mDXp9p&sz=w500",
+      "https://drive.google.com/thumbnail?id=1JpHRTktD6rVlh_KXyHiCxeT_3E0jnsFO&sz=w500",
       "https://drive.google.com/thumbnail?id=1JpHRTktD6rVlh_KXyHiCxeT_3E0jnsFO&sz=w500",
       "https://drive.google.com/thumbnail?id=1qESm_8sI7Sg3EITr6J95CNema5rBGgjp&sz=w500",
     ],
@@ -383,28 +375,28 @@ Royal Plum Cotton Co-Ord Set with Embroidery
 Step into effortless elegance with this stunning royal plum co-ord set, designed to give you a rich and graceful look while keeping comfort at its core.
 
 **3. Fabric & Color**
-🌿 Fabric: 100% Pure Cotton
-✔ Soft, breathable & lightweight
-✔ Gentle on skin, perfect for all-day wear
+ Fabric: 100% Pure Cotton
+ Soft, breathable & lightweight
+ Gentle on skin, perfect for all-day wear
 
-🎨 Color:
+ Color:
 Deep royal plum (wine/purple tone) base enhanced with delicate beige-gold floral embroidery, creating a luxurious and eye-catching contrast.
 
 **4. Design Details**
-🧵 Design Details:
-✔ Intricate floral embroidery on the front panel, sleeves & pants
-✔ Smart collared neckline with a clean front placket
-✔ Full sleeves with embroidered cuffs for a refined touch
-✔ Straight-fit pants with coordinated embroidery
+ Design Details:
+ Intricate floral embroidery on the front panel, sleeves & pants
+ Smart collared neckline with a clean front placket
+ Full sleeves with embroidered cuffs for a refined touch
+ Straight-fit pants with coordinated embroidery
 
 **5. Fit & Style**
-👗 Fit & Style:
-✔ Tailored yet comfortable silhouette
-✔ Perfect for festive wear, office chic, or casual outings
-✔ Elegant fusion of traditional embroidery with modern co-ord styling
+ Fit & Style:
+ Tailored yet comfortable silhouette
+ Perfect for festive wear, office chic, or casual outings
+ Elegant fusion of traditional embroidery with modern co-ord styling
 
 **6. Why You'll Love It**
-💫 Why You'll Love It:
+ Why You'll Love It:
 This outfit blends rich color, fine craftsmanship, and breathable comfort, making it an ideal pick for those who love subtle luxury with everyday wearability.
 
 **7. Care Instructions**
@@ -414,7 +406,7 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
   {
     id: "p14",
     sku: "COORD-TEAL-001",
-    name: "Elegant Teal Green Cotton Co-Ord Set with Floral Embroidery ✨",
+    name: "Elegant Teal Green Cotton Co-Ord Set with Floral Embroidery ",
     tagline: "Effortless Charm & Graceful Style",
     slug: "elegant-teal-green-cotton-coord-set-floral-embroidery",
     price: 995,
@@ -440,29 +432,29 @@ Elegant Teal Green Cotton Co-Ord Set with Floral Embroidery
 Add a touch of effortless charm to your wardrobe with this beautifully crafted teal green co-ord set, designed for comfort and graceful everyday style.
 
 **3. Fabric & Color**
-🌿 Fabric: 100% Pure Cotton
-✔ Soft, breathable & lightweight
-✔ Skin-friendly and ideal for all-day wear
+ Fabric: 100% Pure Cotton
+ Soft, breathable & lightweight
+ Skin-friendly and ideal for all-day wear
 
-🎨 Color:
+ Color:
 Rich deep teal green base enhanced with vibrant multicolor floral embroidery in shades of mustard yellow, deep red, and subtle grey, creating a fresh and elegant contrast.
 
 **4. Design Details**
-🧵 Design Details:
-✔ Delicate embroidery on neckline for a refined look
-✔ Artistic floral embroidery along the hemline and sleeve cuffs
-✔ Stylish V-neck with minimal detailing for a modern touch
-✔ 3/4th sleeves for versatile wear
-✔ Straight-fit pants for a clean and structured finish
+ Design Details:
+ Delicate embroidery on neckline for a refined look
+ Artistic floral embroidery along the hemline and sleeve cuffs
+ Stylish V-neck with minimal detailing for a modern touch
+ 3/4th sleeves for versatile wear
+ Straight-fit pants for a clean and structured finish
 
 **5. Fit & Style**
-👗 Fit & Style:
-✔ Comfortable relaxed silhouette
-✔ Perfect for daily wear, office, or casual gatherings
-✔ Blends traditional embroidery with contemporary co-ord styling
+ Fit & Style:
+ Comfortable relaxed silhouette
+ Perfect for daily wear, office, or casual gatherings
+ Blends traditional embroidery with contemporary co-ord styling
 
 **6. Why You'll Love It**
-💫 Why You'll Love It:
+ Why You'll Love It:
 This co-ord set offers the perfect mix of comfort, color, and craftsmanship, making it an ideal choice for women who love subtle elegance with a pop of floral freshness.
 
 **7. Care Instructions**
@@ -472,7 +464,7 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
   {
     id: "p15",
     sku: "COORD-WINE-001",
-    name: "Wine Berry Cotton Co-Ord Set with Elegant Embroidery ✨",
+    name: "Wine Berry Cotton Co-Ord Set with Elegant Embroidery ",
     tagline: "Effortless Sophistication & Refined Style",
     slug: "wine-berry-cotton-coord-set-elegant-embroidery",
     price: 995,
@@ -499,29 +491,29 @@ Wine Berry Cotton Co-Ord Set with Elegant Embroidery
 Bring effortless sophistication to your wardrobe with this beautifully designed wine berry co-ord set, perfect for both comfort and refined style.
 
 **3. Fabric & Color**
-🌿 Fabric: 100% Pure Cotton
-✔ Soft, breathable & lightweight
-✔ Gentle on skin, ideal for all-day wear
+ Fabric: 100% Pure Cotton
+ Soft, breathable & lightweight
+ Gentle on skin, ideal for all-day wear
 
-🎨 Color:
+ Color:
 Rich wine berry (deep magenta/plum tone) base enhanced with subtle beige thread embroidery, creating a graceful and classy contrast.
 
 **4. Design Details**
-🧵 Design Details:
-✔ Elegant floral embroidery on the front panel and hemline
-✔ Minimal embroidered detailing on sleeves and pants
-✔ Smart collared neckline with a clean front placket
-✔ 3/4th sleeves for a versatile, modern look
-✔ Straight-fit pants with coordinated embroidery accents
+ Design Details:
+ Elegant floral embroidery on the front panel and hemline
+ Minimal embroidered detailing on sleeves and pants
+ Smart collared neckline with a clean front placket
+ 3/4th sleeves for a versatile, modern look
+ Straight-fit pants with coordinated embroidery accents
 
 **5. Fit & Style**
-👗 Fit & Style:
-✔ Relaxed yet structured silhouette
-✔ Perfect for daily wear, office, or casual gatherings
-✔ A balanced blend of traditional embroidery and contemporary styling
+ Fit & Style:
+ Relaxed yet structured silhouette
+ Perfect for daily wear, office, or casual gatherings
+ A balanced blend of traditional embroidery and contemporary styling
 
 **6. Why You'll Love It**
-💫 Why You'll Love It:
+ Why You'll Love It:
 This co-ord set offers a perfect mix of rich color, fine craftsmanship, and breathable comfort, making it a must-have for women who appreciate understated elegance.
 
 **7. Care Instructions**
@@ -531,7 +523,7 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
   {
     id: "p16",
     sku: "COORD-PINK-001",
-    name: "Soft Blush Pink Cotton Co-Ord Set with Delicate Embroidery ✨",
+    name: "Soft Blush Pink Cotton Co-Ord Set with Delicate Embroidery ",
     tagline: "Subtle Elegance & Everyday Comfort",
     slug: "soft-blush-pink-cotton-coord-set-delicate-embroidery",
     price: 995,
@@ -558,29 +550,29 @@ Soft Blush Pink Cotton Co-Ord Set with Delicate Embroidery
 Add a touch of elegance and freshness to your wardrobe with this beautifully crafted blush pink co-ord set, designed for comfort and graceful everyday wear.
 
 **3. Fabric & Color**
-🌿 Fabric: 100% Pure Cotton
-✔ Soft, breathable & lightweight
-✔ Skin-friendly for all-day comfort
+ Fabric: 100% Pure Cotton
+ Soft, breathable & lightweight
+ Skin-friendly for all-day comfort
 
-🎨 Color:
+ Color:
 Soothing blush pink base adorned with elegant off-white floral embroidery, giving it a soft, feminine and premium look.
 
 **4. Design Details**
-🧵 Design Details:
-✔ Intricate embroidery on the front panel for a refined appeal
-✔ Coordinated embroidery on sleeves and pant hems
-✔ Smart collared neckline with a neat front placket
-✔ 3/4th sleeves for a modern, versatile style
-✔ Straight-fit pants for a clean and polished silhouette
+ Design Details:
+ Intricate embroidery on the front panel for a refined appeal
+ Coordinated embroidery on sleeves and pant hems
+ Smart collared neckline with a neat front placket
+ 3/4th sleeves for a modern, versatile style
+ Straight-fit pants for a clean and polished silhouette
 
 **5. Fit & Style**
-👗 Fit & Style:
-✔ Relaxed yet structured fit
-✔ Perfect for daily wear, office, or casual outings
-✔ A beautiful blend of traditional embroidery with contemporary co-ord styling
+ Fit & Style:
+ Relaxed yet structured fit
+ Perfect for daily wear, office, or casual outings
+ A beautiful blend of traditional embroidery with contemporary co-ord styling
 
 **6. Why You'll Love It**
-💫 Why You'll Love It:
+ Why You'll Love It:
 Lightweight, breathable, and effortlessly stylish — this co-ord set offers subtle elegance with everyday comfort, making it a must-have in your collection.
 
 **7. Care Instructions**
@@ -590,7 +582,7 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
   {
     id: "p17",
     sku: "COORD-PINK-002",
-    name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ✨",
+    name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ",
     tagline: "Vibrant Charm & Everyday Comfort",
     slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery",
     price: 995,
@@ -608,18 +600,6 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "Blush Pink",
-    colorVariants: [
-      {
-        color: "Pattern A",
-        image: "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w500",
-        slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery"
-      },
-      {
-        color: "Pattern B",
-        image: "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w500",
-        slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2"
-      }
-    ],
     isNew: true,
     isTrending: true,
     description: `**1. Product Title**
@@ -629,29 +609,29 @@ Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery
 Add a touch of elegance and freshness to your wardrobe with this beautifully crafted blush pink co-ord set, designed for comfort and graceful everyday wear.
 
 **3. Fabric & Color**
-🌿 Fabric: 100% Pure Cotton
-✔ Soft, breathable & lightweight
-✔ Skin-friendly for all-day comfort
+ Fabric: 100% Pure Cotton
+ Soft, breathable & lightweight
+ Skin-friendly for all-day comfort
 
-🎨 Color:
+ Color:
 Soothing blush pink base adorned with elegant multicolor floral embroidery, adding a vibrant yet subtle charm for a premium look.
 
 **4. Design Details**
-🧵 Design Details:
-✔ Intricate multicolor embroidery on the front panel for a refined appeal
-✔ Coordinated embroidery on sleeves and pant hems
-✔ Smart collared neckline with a neat front placket
-✔ 3/4th sleeves for a modern, versatile style
-✔ Straight-fit pants for a clean and polished silhouette
+ Design Details:
+ Intricate multicolor embroidery on the front panel for a refined appeal
+ Coordinated embroidery on sleeves and pant hems
+ Smart collared neckline with a neat front placket
+ 3/4th sleeves for a modern, versatile style
+ Straight-fit pants for a clean and polished silhouette
 
 **5. Fit & Style**
-👗 Fit & Style:
-✔ Relaxed yet structured fit
-✔ Perfect for daily wear, office, or casual outings
-✔ A beautiful blend of traditional embroidery with contemporary co-ord styling
+ Fit & Style:
+ Relaxed yet structured fit
+ Perfect for daily wear, office, or casual outings
+ A beautiful blend of traditional embroidery with contemporary co-ord styling
 
 **6. Why You'll Love It**
-💫 Why You'll Love It:
+ Why You'll Love It:
 Lightweight, breathable, and effortlessly stylish — this co-ord set offers subtle elegance with a touch of vibrant detailing, making it a must-have in your collection.
 
 **7. Care Instructions**
@@ -661,7 +641,7 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
   {
     id: "p18",
     sku: "COORD-PINK-003",
-    name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ✨",
+    name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ",
     tagline: "Vibrant Detailing & Premium Comfort",
     slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2",
     price: 995,
@@ -678,18 +658,6 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "Blush Pink",
-    colorVariants: [
-      {
-        color: "Pattern A",
-        image: "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w500",
-        slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery"
-      },
-      {
-        color: "Pattern B",
-        image: "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w500",
-        slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2"
-      }
-    ],
     isNew: true,
     isTrending: true,
     isVariant: true,
@@ -700,29 +668,29 @@ Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery
 Add a touch of elegance and freshness to your wardrobe with this beautifully crafted blush pink co-ord set, designed for comfort and graceful everyday wear.
 
 **3. Fabric & Color**
-🌿 Fabric: 100% Pure Cotton
-✔ Soft, breathable & lightweight
-✔ Skin-friendly for all-day comfort
+ Fabric: 100% Pure Cotton
+ Soft, breathable & lightweight
+ Skin-friendly for all-day comfort
 
-🎨 Color:
+ Color:
 Soothing blush pink base adorned with elegant multicolor floral embroidery, adding a vibrant yet subtle charm for a premium look.
 
 **4. Design Details**
-🧵 Design Details:
-✔ Intricate multicolor embroidery on the front panel for a refined appeal
-✔ Coordinated embroidery on sleeves and pant hems
-✔ Smart collared neckline with a neat front placket
-✔ 3/4th sleeves for a modern, versatile style
-✔ Straight-fit pants for a clean and polished silhouette
+ Design Details:
+ Intricate multicolor embroidery on the front panel for a refined appeal
+ Coordinated embroidery on sleeves and pant hems
+ Smart collared neckline with a neat front placket
+ 3/4th sleeves for a modern, versatile style
+ Straight-fit pants for a clean and polished silhouette
 
 **5. Fit & Style**
-👗 Fit & Style:
-✔ Relaxed yet structured fit
-✔ Perfect for daily wear, office, or casual outings
-✔ A beautiful blend of traditional embroidery with contemporary co-ord styling
+ Fit & Style:
+ Relaxed yet structured fit
+ Perfect for daily wear, office, or casual outings
+ A beautiful blend of traditional embroidery with contemporary co-ord styling
 
 **6. Why You'll Love It**
-💫 Why You'll Love It:
+ Why You'll Love It:
 Lightweight, breathable, and effortlessly stylish — this co-ord set offers subtle elegance with a touch of vibrant detailing, making it a must-have in your collection.
 
 **7. Care Instructions**
@@ -764,12 +732,12 @@ Elegant Off-White Soft Linen Saree with Digital Floral Print & Cutwork Border
 **2. Short Description**
 Elevate your everyday elegance with this beautifully designed off-white soft linen saree, crafted for comfort and effortless style.
 
-**3. Bullet Points**
-• Fabric: Premium Soft Linen (Washable & durable)
-• Comfort: Lightweight & breathable, perfect for long wear
-• Print: High-quality Digital Floral Print
-• Border: Beautiful cutwork border for a refined finish
-• Occasion: Ideal for Office wear & Day functions
+**3. Product Details**
+- Fabric: Premium Soft Linen
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **4. Design Details**
 Featuring a finely detailed digital floral print in soothing blush pink and mustard yellow tones, this saree offers a modern yet graceful appeal with its delicate cutwork border.
@@ -817,12 +785,12 @@ Elegant Yellow Soft Linen Saree with Digital Floral Print & Cutwork Border
 **2. Short Description**
 Elevate your everyday elegance with this beautifully designed yellow soft linen saree, crafted for comfort and effortless style.
 
-**3. Bullet Points**
-• Fabric: Premium Soft Linen (Washable & durable)
-• Comfort: Lightweight & breathable, perfect for long wear
-• Print: High-quality Digital Floral Print
-• Border: Beautiful cutwork border for a refined finish
-• Occasion: Ideal for Office wear & Day functions
+**3. Product Details**
+- Fabric: Premium Soft Linen
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **4. Design Details**
 Featuring a finely detailed digital floral print, this vibrant yellow saree offers a modern yet graceful appeal with its delicate cutwork border.
@@ -879,12 +847,12 @@ Festive Yellow Georgette Saree with Digital Foil Print & Green Designer Border
 **2. Short Description**
 Brighten up your festive wardrobe with this stunning yellow georgette saree, designed to radiate elegance and tradition.
 
-**3. Bullet Points**
-• Fabric: Premium Georgette (Soft, lightweight & flowy)
-• Design: Digital Foil Print with traditional motifs
-• Border: Green woven-style border with golden accents
-• Occasion: Haldi functions, Festive wear, Traditional functions
-• Comfort: Lightweight and easy to drape
+**3. Product Details**
+- Fabric: Premium Georgette
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **4. Design Details**
 Adorned with intricate digital foil print, the saree features delicate traditional motifs that add a subtle shimmer. The vibrant yellow base is beautifully complemented by a rich green designer border with golden detailing.
@@ -941,12 +909,12 @@ Rich Green Georgette Saree with Digital Print & Heavy Zari Border
 **2. Short Description**
 Step into timeless elegance with this stunning green georgette saree, designed to blend tradition with modern style.
 
-**3. Bullet Points**
-• Fabric: Premium Georgette (Soft, lightweight & flowy)
-• Design: All-over geometric traditional pattern
-• Border: Heavy Zari woven border in red and gold tones
-• Occasion: Festive wear, Wedding functions, Traditional gatherings
-• Comfort: Elegant drape that enhances your silhouette
+**3. Product Details**
+- Fabric: Premium Georgette
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **4. Design Details**
 The saree features a finely detailed digital print pattern across the body. The highlight of this piece is its rich zari woven border in deep red and gold tones, adding a luxurious and festive touch.
@@ -1003,12 +971,12 @@ Festive Red Georgette Saree with Bandhani Print & Gold Jacquard Border
 **2. Short Description**
 Make a bold and elegant statement with this gorgeous red georgette saree, designed for women who love timeless ethnic style.
 
-**3. Bullet Points**
-• Fabric: Premium Georgette (Lightweight & breathable)
-• Design: Bandhani-style motifs
-• Border: Heavy Jacquard Woven Border with gold floral design
-• Occasion: Wedding wear, Festive celebrations
-• Comfort: Soft and flowy, offering a graceful drape
+**3. Product Details**
+- Fabric: Premium Georgette
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **4. Design Details**
 The saree features intricate digital printed traditional patterns, inspired by classic bandhani-style motifs. The highlight is its luxurious jacquard woven border in rich gold tone, adorned with detailed floral designs.
@@ -1065,12 +1033,12 @@ Green Georgette Saree with Foil Print & Contrast Pink Border
 **2. Short Description**
 Add a refreshing touch of elegance to your ethnic collection with this beautiful green georgette saree.
 
-**3. Bullet Points**
-• Fabric: Premium Georgette (Soft, lightweight & breathable)
-• Design: Foil Printed Pattern with traditional motifs
-• Border: Contrast Pink Border with golden detailing
-• Finishing: Stylish tassel detailing on the pallu
-• Occasion: Festive wear, Day & evening gatherings
+**3. Product Details**
+- Fabric: Premium Georgette
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **4. Design Details**
 The saree features a delicate foil print design, highlighted with traditional-inspired motifs that add a subtle shimmer. The rich green base is perfectly complemented by a striking contrast pink border.
@@ -1132,26 +1100,28 @@ Dry clean or gentle hand wash. Avoid hot iron directly on foil prints.`,
     ],
     isNew: true,
     isTrending: true,
-    description: `**Why You’ll Love It:**
-- 🌿 Premium Soft Linen Fabric
-- ☁️ Lightweight, breathable, washable & durable
-- 🎨 Elegant Lavender Base with White floral prints
-- 🎀 Designer Tassel Pallu for a stylish finish
-- 👗 Ideal for Office wear, day events & casual outings
-- 🚚 COD Available
+    description: `**Why You'll Love It:**
+- Premium Soft Linen Fabric
+- Lightweight, breathable, washable & durable
+- Elegant Lavender Base with White floral prints
+- Designer Tassel Pallu for a stylish finish
+- Easy to drape, making it perfect for beginners and daily wear
+- Comes with a White Blouse matching with Flower color
+- Ideal for Office wear, day events & casual outings
+- COD Available
 
 **Description**
-Upgrade your everyday ethnic style with this beautiful lavender floral linen saree, designed for women who love subtle elegance with comfort. Made from soft and breathable linen fabric, this saree ensures a lightweight feel, making it perfect for all-day wear. The soothing lavender shade paired with delicate white floral prints gives it a fresh, graceful, and modern appeal. Its easy-to-drape texture makes it ideal for beginners as well as daily wear.
+Upgrade your everyday ethnic style with this beautiful lavender floral linen saree, designed for women who love subtle elegance with comfort. Made from soft, breathable, and washable linen fabric, this saree ensures a lightweight feel, making it perfect for all-day wear. The soothing lavender shade paired with delicate white floral prints gives it a fresh, graceful, and modern appeal. Its easy-to-drape texture is a dream, and it comes with a White Blouse matching the flower color perfectly.
 
-**Key Features**
-- **Fabric:** Premium Soft Linen (Lightweight, breathable, washable & durable)
-- **Color:** Soft Lavender Base with White floral prints
-- **Comfort:** Smooth and flowy fabric makes it beginner-friendly
-- **Length:** 5.5 meters with matching blouse piece included
-- **Style Tip:** Pair it with silver jewelry or pearl drops for a classy, graceful look
+**Product Details**
+- Fabric: Premium Linen
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the colors.`,
+Washable and durable. Hand wash recommended.`,
     rating: 4.8,
   },
   {
@@ -1205,24 +1175,25 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the colo
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌿 Premium Soft Linen Fabric
-- ☁️ Lightweight, breathable, washable & durable
-- 🎨 Beautiful Pink Base with subtle floral prints
-- 👗 Ideal for Office wear, day functions & casual outings
-- 🚚 COD Available
+-  Premium Soft Linen Fabric
+- ️ Lightweight, breathable, washable & durable
+-  Beautiful Pink Base with subtle floral prints
+-  Easy to drape, making it perfect for beginners and daily wear
+-  Ideal for Office wear, day functions & casual outings
+-  COD Available
 
 **Description**
 Add effortless elegance to your wardrobe with this beautiful pink floral linen saree, crafted for comfort and style. Made from soft and breathable linen fabric, this saree feels light on the skin, making it perfect for long hours of wear. The delicate floral pattern on a soothing pink base enhances its charm, giving you a graceful and modern ethnic look. With its easy-to-drape texture, even beginners can carry it confidently.
 
-**Key Features**
-- **Fabric:** Premium Soft Linen (Lightweight, breathable, washable & durable)
-- **Color:** Soft Pink Base with subtle floral prints
-- **Comfort:** Smooth texture makes it beginner-friendly and hassle-free to wear
-- **Length:** 5.5 meters with matching blouse piece included
-- **Style Tip:** Pair it with minimal silver or oxidised jewelry for an elegant touch
+**Product Details**
+- Fabric: Premium Linen
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the colors.`,
+Washable and durable. Hand wash recommended.`,
     rating: 4.8,
   },
   {
@@ -1276,25 +1247,26 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the colo
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌿 Premium Soft Linen Fabric
-- ☁️ Lightweight, breathable, washable & durable
-- 🎨 Elegant Peach Base with White floral prints
-- 🎀 Stylish Tassel Pallu for a trendy finish
-- 👗 Ideal for Office wear, brunch & small gatherings
-- 🚚 COD Available
+-  Premium Soft Linen Fabric
+- ️ Lightweight, breathable, washable & durable
+-  Elegant Peach Base with White floral prints
+-  Easy to drape, making it perfect for beginners and daily wear
+-  Stylish Tassel Pallu for a trendy finish
+-  Ideal for Office wear, brunch & small gatherings
+-  COD Available
 
 **Description**
 Step into effortless elegance with this beautiful peach floral linen saree, designed to give you both comfort and style. Crafted from soft and breathable linen fabric, this saree is lightweight and perfect for all-day wear, especially in warm weather. The subtle peach tone combined with delicate white floral prints creates a refreshing and sophisticated look that suits both casual and semi-formal occasions. Its easy-to-drape fabric makes it ideal for beginners.
 
-**Key Features**
-- **Fabric:** Premium Soft Linen (Lightweight, breathable, washable & durable)
-- **Color:** Soft Peach Base with White floral prints
-- **Comfort:** Smooth and flowy fabric makes it perfect for daily wear
-- **Length:** 5.5 meters with matching blouse piece included
-- **Style Tip:** Pair it with delicate gold-plated jewelry for a fresh, sophisticated look
+**Product Details**
+- Fabric: Premium Linen
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the colors.`,
+Washable and durable. Hand wash recommended.`,
     rating: 4.8,
   },
   {
@@ -1350,25 +1322,26 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the colo
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌿 Premium Soft Linen Fabric
-- ☁️ Lightweight, breathable, washable & durable
-- 🎨 Vibrant Rani Pink Base with White floral prints
-- 🎀 Stylish Tassel Pallu for a festive touch
-- 👗 Ideal for Office, casual outings & festive day wear
-- 🚚 COD Available
+-  Premium Soft Linen Fabric
+- ️ Lightweight, breathable, washable & durable
+-  Vibrant Rani Pink Base with White floral prints
+-  Easy to drape, making it perfect for beginners and daily wear
+-  Stylish Tassel Pallu for a festive touch
+-  Ideal for Office, casual outings & festive day wear
+-  COD Available
 
 **Description**
 Make a bold and elegant statement with this beautiful Rani Pink floral linen saree, designed for women who love comfort with style. Crafted from soft and breathable linen fabric, this saree ensures you stay comfortable throughout the day, even in warm weather. The vibrant rani pink shade paired with subtle white floral prints creates a fresh and eye-catching look, perfect for both everyday wear and special casual occasions. The easy-to-drape fabric ensures a hassle-free styling experience.
 
-**Key Features**
-- **Fabric:** Premium Soft Linen (Lightweight, breathable, washable & durable)
-- **Color:** Bright Rani Pink Base with White floral prints
-- **Comfort:** Smooth flowy texture makes it perfect for beginners
-- **Length:** 5.5 meters with matching blouse piece included
-- **Style Tip:** Pair it with matching bangles and silver oxidised jhumkas for a standout look
+**Product Details**
+- Fabric: Premium Linen
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the colors.`,
+Washable and durable. Hand wash recommended.`,
     rating: 4.8,
   },
   {
@@ -1422,25 +1395,26 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the colo
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌿 Premium Soft Linen Fabric
-- ☁️ Lightweight, breathable, washable & durable
-- 🎨 Fresh Lime Green Base with White floral prints
-- 🎀 Elegant Pallu Finish for a modern touch
-- 👗 Ideal for Office, casual outings & summer wear
-- 🚚 COD Available
+-  Premium Soft Linen Fabric
+- ️ Lightweight, breathable, washable & durable
+-  Fresh Lime Green Base with White floral prints
+-  Easy to drape, making it perfect for beginners and daily wear
+-  Elegant Pallu Finish for a modern touch
+-  Ideal for Office, casual outings & summer wear
+-  COD Available
 
 **Description**
 Add a fresh and vibrant touch to your wardrobe with this beautiful lime green floral linen saree, designed for comfort and effortless style. Crafted from soft and breathable linen fabric, this saree keeps you cool and comfortable, making it perfect for warm weather and long wear. The bright lime green shade paired with subtle white floral prints creates a cheerful and elegant look, ideal for casual outings, office wear, and daytime events.
 
-**Key Features**
-- **Fabric:** Premium Soft Linen (Lightweight, breathable, washable & durable)
-- **Color:** Vibrant Lime Green Base with White floral prints
-- **Comfort:** Smooth flowy texture makes it perfect for everyday wear
-- **Length:** 5.5 meters with matching blouse piece included
-- **Style Tip:** Pair it with simple wooden or silver accessories for a fresh, earthy look
+**Product Details**
+- Fabric: Premium Linen
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the colors.`,
+Washable and durable. Hand wash recommended.`,
     rating: 4.8,
   },
   {
@@ -1494,25 +1468,26 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the colo
     isNew: true,
     isTrending: true,
     description: `**Why You’ll Love It:**
-- 🌿 Premium Soft Linen Fabric
-- ☁️ Lightweight, breathable, washable & durable
-- 🎨 Elegant Sky Blue Base with White floral prints
-- 🎀 Stylish Tassel Pallu for a chic look
-- 👗 Ideal for Office, vacations & summer occasions
-- 🚚 COD Available
+-  Premium Soft Linen Fabric
+- ️ Lightweight, breathable, washable & durable
+-  Elegant Sky Blue Base with White floral prints
+-  Easy to drape, making it perfect for beginners and daily wear
+-  Stylish Tassel Pallu for a chic look
+-  Ideal for Office, vacations & summer occasions
+-  COD Available
 
 **Description**
 Bring a touch of freshness and elegance to your wardrobe with this beautiful sky blue floral linen saree, crafted for comfort and effortless style. Made from soft and breathable linen fabric, this saree feels light on the skin and is perfect for long hours, especially in warm weather. The soothing sky blue shade combined with delicate white floral prints creates a serene and graceful look, making it ideal for daytime wear, casual outings, and vacations.
 
-**Key Features**
-- **Fabric:** Premium Soft Linen (Lightweight, breathable, washable & durable)
-- **Color:** Soft Sky Blue Base with White floral prints
-- **Comfort:** Smooth and flowy fabric makes it beginner-friendly
-- **Length:** 5.5 meters with matching blouse piece included
-- **Style Tip:** Pair it with delicate oxidized silver jewelry for a calming, elegant look
+**Product Details**
+- Fabric: Premium Linen
+- Saree Length: 5.50 meters
+- Blouse Piece Length: 1.00 meter (Unstitched)
+- Saree Width: 1.06 meters (approx. 42–44 inches)
+- Fit: Suitable for all body types, easy to drape
 
 **Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the colors.`,
+Washable and durable. Hand wash recommended.`,
     rating: 4.8,
   }
 ];

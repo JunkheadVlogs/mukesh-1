@@ -129,13 +129,13 @@ export default function Wishlist() {
             <div className="flex flex-wrap gap-4">
               <button 
                 onClick={addSharedToMyWishlist}
-                className="bg-primary-950 text-white px-6 py-3 text-[10px] tracking-[1px] uppercase hover:bg-gold-500 transition-all rounded-sm font-medium flex items-center gap-2"
+                className="bg-gold-600 text-white px-6 py-3 text-[10px] tracking-[1px] uppercase hover:bg-gold-500 transition-all rounded-sm font-medium flex items-center gap-2 shadow-sm"
               >
                 <Plus size={14} /> Add All to My Wishlist
               </button>
               <Link 
                 to="/wishlist" 
-                className="border border-primary-950 text-primary-950 px-6 py-3 text-[10px] tracking-[1px] uppercase hover:bg-primary-950 hover:text-white transition-all rounded-sm font-medium flex items-center gap-2"
+                className="border border-gold-600 text-gold-600 px-6 py-3 text-[10px] tracking-[1px] uppercase hover:bg-gold-600 hover:text-white transition-all rounded-sm font-medium flex items-center gap-2"
               >
                 Go to My Wishlist <ChevronRight size={14} />
               </Link>
@@ -186,9 +186,9 @@ export default function Wishlist() {
               {!isSharedView && (
                 <button 
                   onClick={() => setIsShareModalOpen(true)}
-                  className="flex items-center gap-3 bg-primary-950 text-white px-6 py-3 rounded-sm text-[11px] tracking-[1.5px] uppercase font-medium hover:bg-gold-500 transition-all shadow-md group"
+                  className="flex items-center gap-3 bg-gold-600 text-white px-6 py-3 rounded-sm text-[11px] tracking-[1.5px] uppercase font-medium hover:bg-gold-500 transition-all shadow-md shadow-gold-600/20 group"
                 >
-                  <Share2 size={16} className="text-gold-300 group-hover:text-white transition-colors" /> Share My Collection
+                  <Share2 size={16} className="text-white group-hover:scale-110 transition-transform" /> Share My Collection
                 </button>
               )}
             </div>
@@ -237,12 +237,6 @@ export default function Wishlist() {
                         <h3 className="text-xl font-serif text-primary-950 mb-1 group-hover:text-gold-500 transition-colors leading-tight">{product.name}</h3>
                       </Link>
                       
-                      {product.sku && (
-                        <p className="text-[10px] text-primary-950/50 mb-3 font-mono uppercase tracking-wider">
-                          SKU: {product.sku}
-                        </p>
-                      )}
-                      
                       <div className="text-[12px] text-primary-950/50 mb-8 font-light line-clamp-2">
                         Elegant {product.color} {product.category.toLowerCase()} that defines sophistication.
                       </div>
@@ -250,7 +244,7 @@ export default function Wishlist() {
                       <div className="mt-auto">
                         <button 
                           onClick={() => handleAddToCart(product)}
-                          className="w-full flex items-center justify-center gap-3 bg-primary-950 text-white py-4 text-[11px] tracking-[2px] uppercase hover:bg-gold-500 transition-all rounded-sm font-medium shadow-lg shadow-primary-950/5"
+                          className="w-full flex items-center justify-center gap-3 bg-gold-600 text-white py-4 text-[11px] tracking-[2px] uppercase hover:bg-gold-500 transition-all rounded-sm font-medium shadow-md shadow-gold-600/20"
                         >
                           <ShoppingBag size={14} /> Add to Bag
                         </button>
