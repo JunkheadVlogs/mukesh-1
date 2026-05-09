@@ -1,24 +1,37 @@
-import { Helmet } from 'react-helmet-async';
-import { ChevronRight, Copy, Heart, Mail, MessageCircle, Plus, Share2, ShoppingBag, Trash2, X } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router';
-import { products } from './mockData';
-import { useStore } from './store';
+import { SEO } from "./components/SEO";
+import {
+  ChevronRight,
+  Copy,
+  Heart,
+  Mail,
+  MessageCircle,
+  Plus,
+  Share2,
+  ShoppingBag,
+  Trash2,
+  X,
+} from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useParams, useSearchParams } from "react-router";
+import { products } from "./mockData";
+import { useStore } from "./store";
+import { formatPrice } from "./utils";
 
 export default function Wishlist() {
   const { wishlist, toggleWishlist, addToCart } = useStore();
   const { shareId } = useParams();
   const [searchParams] = useSearchParams();
-  
+
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [sortBy, setSortBy] = useState('default'); // 'default', 'price-low', 'price-high', 'name-az', 'name-za'
+  const [sortBy, setSortBy] = useState("default");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Shared items can come from URL path or query params
-  const sharedItemsRaw = searchParams.get('items') || (shareId && shareId !== 'shared' ? shareId : null);
-  const sharedItemIds = sharedItemsRaw ? sharedItemsRaw.split(',') : [];
+  const sharedItemsRaw =
+    searchParams.get("items") ||
+    (shareId && shareId !== "shared" ? shareId : null);
+  const sharedItemIds = sharedItemsRaw ? sharedItemsRaw.split(",") : [];
   const isSharedView = sharedItemIds.length > 0;
 
   useEffect(() => {
@@ -32,313 +45,280 @@ export default function Wishlist() {
 
   const handleAddToCart = (product: any) => {
     addToCart(product);
-    showToast(`${product.name} added to cart`);
+    showToast(`${product.name} added to bag successfully.`);
   };
 
   const displayProducts = useMemo(() => {
-    const baseItems = isSharedView 
+    const baseItems = isSharedView
       ? products.filter((p) => sharedItemIds.includes(p.id))
       : products.filter((p) => wishlist.includes(p.id));
 
-    // For 'default', we want to respect the order
     const sorted = [...baseItems];
-    
-    if (sortBy === 'default') {
+
+    if (sortBy === "default") {
       const idSource = isSharedView ? sharedItemIds : wishlist;
-      return sorted.sort((a, b) => idSource.indexOf(a.id) - idSource.indexOf(b.id));
+      return sorted.sort(
+        (a, b) => idSource.indexOf(a.id) - idSource.indexOf(b.id),
+      );
     }
 
     switch (sortBy) {
-      case 'price-low':
+      case "price-low":
         return sorted.sort((a, b) => a.price - b.price);
-      case 'price-high':
+      case "price-high":
         return sorted.sort((a, b) => b.price - a.price);
-      case 'name-az':
+      case "name-az":
         return sorted.sort((a, b) => a.name.localeCompare(b.name));
-      case 'name-za':
+      case "name-za":
         return sorted.sort((a, b) => b.name.localeCompare(a.name));
       default:
         return sorted;
     }
   }, [isSharedView, sharedItemIds, wishlist, sortBy]);
 
-  const shareUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/wishlist/${wishlist.join(',')}` 
-    : '';
+  const shareUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/wishlist/${wishlist.join(",")}`
+      : "";
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareUrl);
     setCopied(true);
-    showToast('Share link copied to clipboard!');
+    showToast("The link is now in your clipboard.");
     setTimeout(() => setCopied(false), 2000);
   };
 
   const shareViaEmail = () => {
-    const subject = encodeURIComponent('My Mukesh Saree Centre Wishlist');
-    const body = encodeURIComponent(`I've curated a collection of my favorites from Mukesh Saree Centre. Take a look: ${shareUrl}`);
+    const subject = encodeURIComponent("My Heritage Collection | Mukesh Saree Centre");
+    const body = encodeURIComponent(
+      `I've curated a collection of my favorites from Mukesh Saree Centre. Take a look: ${shareUrl}`,
+    );
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
   const addSharedToMyWishlist = () => {
     let addedCount = 0;
-    sharedItemIds.forEach(id => {
+    sharedItemIds.forEach((id) => {
       if (!wishlist.includes(id)) {
         toggleWishlist(id);
         addedCount++;
       }
     });
     if (addedCount > 0) {
-      showToast(`Added ${addedCount} item${addedCount > 1 ? 's' : ''} to your wishlist!`);
+      showToast(
+        `Added ${addedCount} masterpiece${addedCount > 1 ? "s" : ""} to your vault.`,
+      );
     } else {
-      showToast('Items are already in your wishlist!');
+      showToast("These pieces are already in your vault.");
     }
   };
 
   return (
-    <div className="bg-primary-50 min-h-screen pt-24 pb-32">
-      <Helmet>
-        <title>{isSharedView ? "Shared Wishlist" : "My Wishlist"} | Mukesh Saree Centre</title>
-        <meta name="description" content={isSharedView 
-          ? "Discover a collection of curated favorites from Mukesh Saree Centre shared with you. Shop these elegant sarees and co-ord sets directly from this wishlist."
-          : "View and manage your favorite picks from Mukesh Saree Centre. Curate your dream collection of elegant sarees and designer co-ord sets for every occasion."
-        } />
-      </Helmet>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="text-2xl md:text-3xl font-serif text-primary-950 mb-4">
-              {isSharedView ? "Shared Wishlist" : "My Wishlist"}
+    <div className="bg-ivory min-h-screen">
+      <SEO
+        title={`${isSharedView ? "Curated Collection" : "The Vanity Vault"} | Mukesh Saree Centre`}
+        description={
+          isSharedView
+            ? "Discover a collection of curated favorites from Mukesh Saree Centre shared with you. Shop these elegant sarees and co-ord sets directly from this wishlist."
+            : "View and manage your favorite picks from Mukesh Saree Centre. Curate your dream collection of elegant sarees and designer co-ord sets for every occasion."
+        }
+        url="/wishlist"
+      />
+      
+      <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 pt-32 md:pt-48 pb-32">
+        <header className="mb-24 flex flex-col md:flex-row justify-between items-end gap-12">
+          <div className="max-w-3xl">
+            <h4 className="text-gold-500 mb-6 drop-shadow-sm uppercase tracking-[4px] font-bold text-[11px]">
+              {isSharedView ? "Guest Curation" : "Private Collection"}
+            </h4>
+            <h1 className="text-5xl md:text-7xl font-serif leading-tight text-onyx">
+              {isSharedView ? "Shared Masterpieces" : "The Vanity Vault"}
             </h1>
-            <p className="text-primary-950/60 font-sans tracking-wide uppercase text-[11px]">
-              {isSharedView ? "A Curated Selection for You" : "Your Curated Collection"}
-            </p>
-          </motion.div>
-        </div>
+          </div>
+          
+          {!isSharedView && displayProducts.length > 0 && (
+            <button
+              onClick={() => setIsShareModalOpen(true)}
+              className="text-[10px] uppercase tracking-[4px] border-b border-onyx/20 text-onyx/60 hover:text-onyx transition-all pb-1 font-bold flex items-center gap-4 group"
+            >
+              <Share2 size={12} className="group-hover:rotate-12 transition-transform" />
+              Share Collection
+            </button>
+          )}
+        </header>
 
         {isSharedView && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12 bg-primary-50 p-6 rounded-sm border border-gold-500/20 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mb-32 p-12 border border-onyx/5 bg-white shadow-luxury rounded-sm flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden group"
           >
-            <div className="flex items-center gap-4">
-              <div className="bg-gold-50 p-3 rounded-full">
-                <Heart className="text-gold-500" size={24} fill="currentColor" />
-              </div>
-              <div>
-                <h3 className="text-lg font-serif text-primary-950">Viewing a shared wishlist</h3>
-                <p className="text-sm text-primary-950/60 font-light">Someone shared their favorite pieces with you.</p>
-              </div>
+            <div className="space-y-4">
+              <h3 className="text-3xl font-serif text-onyx">Arriving from a fellow connoisseur</h3>
+              <p className="text-onyx/40 font-light italic font-serif text-lg">"A selection of heritage pieces curated for your exploration."</p>
             </div>
-            <div className="flex flex-wrap gap-4">
-              <button 
+            <div className="flex flex-col sm:flex-row gap-6">
+              <button
                 onClick={addSharedToMyWishlist}
-                className="bg-gold-600 text-white px-6 py-3 text-[10px] tracking-[1px] uppercase hover:bg-gold-500 transition-all rounded-sm font-medium flex items-center gap-2 shadow-sm"
+                className="btn-primary px-12 h-16 min-w-[240px] !py-0 flex items-center justify-center gap-4"
               >
-                <Plus size={14} /> Add All to My Wishlist
+                <Plus size={16} /> Relocate to Vault
               </button>
-              <Link 
-                to="/wishlist" 
-                className="border border-gold-600 text-gold-600 px-6 py-3 text-[10px] tracking-[1px] uppercase hover:bg-gold-600 hover:text-white transition-all rounded-sm font-medium flex items-center gap-2"
+              <Link
+                to="/wishlist"
+                className="btn-secondary px-12 h-16 !py-0 flex items-center justify-center"
               >
-                Go to My Wishlist <ChevronRight size={14} />
+                My Own Vault
               </Link>
             </div>
           </motion.div>
         )}
 
         {displayProducts.length === 0 ? (
-          <div className="text-center py-24 bg-primary-50 rounded-sm border border-black/5 shadow-sm px-6">
-            <div className="w-20 h-20 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-8">
-              <Heart className="text-primary-200" size={32} strokeWidth={1} />
-            </div>
-            <h2 className="text-2xl font-serif text-primary-950 mb-4 font-normal">
-              {isSharedView ? "This wishlist is empty" : "Wait, Your wishlist is empty!"}
-            </h2>
-            <p className="text-primary-950/60 mb-10 max-w-sm mx-auto font-light leading-relaxed">
-              {isSharedView 
-                ? "The shared link doesn't contain any active products or the items are no longer available."
-                : "Explore our collection of heritage sarees and modern co-ord sets to find your perfect match."
-              }
-            </p>
-            <Link 
-              to="/shop" 
-              className="inline-block bg-primary-950 text-white px-10 py-4 text-[11px] tracking-[2px] uppercase hover:bg-gold-500 transition-colors rounded-sm font-medium shadow-lg shadow-primary-950/10"
-            >
-              Explore Collection
-            </Link>
+          <div className="py-48 text-center border border-dashed border-onyx/10 rounded-sm">
+             <Heart className="text-onyx/5 mx-auto mb-10" size={64} strokeWidth={0.5} />
+             <h2 className="mb-6 font-serif opacity-60 italic text-onyx">Your vault stands empty, awaiting beauty.</h2>
+             <Link to="/shop" className="text-[11px] uppercase tracking-[3px] font-bold text-gold-500 underline underline-offset-8">Discover our masterpieces</Link>
           </div>
         ) : (
-          <>
-            <div className="flex flex-col sm:flex-row justify-between items-center mb-12 gap-6">
-              <div className="flex items-center gap-4 bg-primary-50 px-4 py-2 rounded-full border border-black/5 shadow-sm">
-                <label htmlFor="sortBy" className="text-[10px] uppercase tracking-[1.5px] text-primary-950/40 font-medium">Sort By:</label>
-                <select
-                  id="sortBy"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-transparent border-none text-[11px] tracking-[1px] uppercase font-medium text-primary-950 focus:ring-0 cursor-pointer hover:text-gold-500 transition-colors py-0 pr-8"
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-x-12 gap-y-10 md:gap-y-20">
+            <AnimatePresence mode="popLayout">
+              {displayProducts.map((product, idx) => (
+                <motion.div
+                  key={product.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.05 }}
+                  className="group"
                 >
-                  <option value="default">Default</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name-az">Name: A-Z</option>
-                  <option value="name-za">Name: Z-A</option>
-                </select>
-              </div>
-
-              {!isSharedView && (
-                <button 
-                  onClick={() => setIsShareModalOpen(true)}
-                  className="flex items-center gap-3 bg-gold-600 text-white px-6 py-3 rounded-sm text-[11px] tracking-[1.5px] uppercase font-medium hover:bg-gold-500 transition-all shadow-md shadow-gold-600/20 group"
-                >
-                  <Share2 size={16} className="text-white group-hover:scale-110 transition-transform" /> Share My Collection
-                </button>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16">
-              <AnimatePresence mode="popLayout">
-                {displayProducts.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-primary-50 group border border-black/5 rounded-sm overflow-hidden flex flex-col h-full shadow-sm hover:shadow-xl transition-all duration-500"
-                  >
-                    <Link to={`/product/${product.slug}`} className="relative aspect-[2/3] overflow-hidden block">
-                      <img 
-                        src={product.image} 
+                  <div className="relative aspect-[3/4] bg-white border border-onyx/5 shadow-sm rounded-sm overflow-hidden mb-8">
+                    <Link to={`/product/${product.slug}`} className="block w-full h-full">
+                      <img
+                        src={product.image}
                         alt={product.name}
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                        className="w-full h-full object-contain object-top mix-blend-multiply opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1.5s]"
                       />
-                      <div className="absolute inset-0 bg-primary-950/0 group-hover:bg-primary-950/10 transition-colors duration-500" />
-                      
-                      {/* Price Badge over image */}
-                      <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-sm shadow-sm">
-                        <span className="text-[13px] font-medium text-primary-950">₹{product.price.toLocaleString()}</span>
-                      </div>
                     </Link>
-                    
-                    <div className="p-6 md:p-8 flex flex-col flex-grow">
-                      <div className="flex justify-between items-start mb-3">
-                        <div className="text-[10px] uppercase tracking-[2px] text-gold-500 font-medium">{product.fabric}</div>
-                        {!isSharedView && (
-                          <button 
-                            onClick={() => toggleWishlist(product.id)}
-                            className="text-primary-950/20 hover:text-primary-600 transition-colors p-1"
-                            title="Remove from favorites"
-                          >
-                            <Trash2 size={18} strokeWidth={1.5} />
-                          </button>
-                        )}
-                      </div>
-                      
-                      <Link to={`/product/${product.slug}`}>
-                        <h3 className="text-xl font-serif text-primary-950 mb-1 group-hover:text-gold-500 transition-colors leading-tight">{product.name}</h3>
-                      </Link>
-                      
-                      <div className="text-[12px] text-primary-950/50 mb-8 font-light line-clamp-2">
-                        Elegant {product.color} {product.category.toLowerCase()} that defines sophistication.
-                      </div>
-                      
-                      <div className="mt-auto">
-                        <button 
-                          onClick={() => handleAddToCart(product)}
-                          className="w-full flex items-center justify-center gap-3 bg-gold-600 text-white py-4 text-[11px] tracking-[2px] uppercase hover:bg-gold-500 transition-all rounded-sm font-medium shadow-md shadow-gold-600/20"
-                        >
-                          <ShoppingBag size={14} /> Add to Bag
-                        </button>
-                      </div>
+                    {!isSharedView && (
+                      <button
+                        onClick={() => toggleWishlist(product.id)}
+                        className="absolute top-4 right-4 p-3 bg-white/40 hover:bg-white text-onyx/40 hover:text-red-500 transition-all rounded-full border border-onyx/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 shadow-luxury"
+                      >
+                        <X size={14} />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="space-y-4 px-1">
+                    <div className="flex justify-between items-end">
+                      <h4 className="text-gold-500 text-[10px] uppercase tracking-[3px] font-bold">{product.category}</h4>
+                      <span className="text-onyx/80 font-light tracking-tighter text-lg">{formatPrice(product.price)}</span>
                     </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-          </>
+                    <Link to={`/product/${product.slug}`} className="block">
+                      <h3 className="text-xl font-serif text-onyx group-hover:text-gold-500 transition-colors leading-tight uppercase tracking-tighter">{product.name}</h3>
+                    </Link>
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="w-full h-14 border border-onyx/10 text-[10px] uppercase tracking-[3px] font-bold text-onyx/40 hover:text-onyx hover:bg-onyx/[0.02] transition-all flex items-center justify-center gap-4 bg-white shadow-sm"
+                    >
+                      <ShoppingBag size={14} /> Add to Bag
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         )}
       </div>
 
       {toastMessage && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[150]">
-          <div className="bg-primary-950 text-white px-6 py-3 rounded-full text-sm font-medium flex items-center shadow-2xl">
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[150]">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gold-500 text-white px-10 py-5 rounded-sm text-[13px] font-bold uppercase tracking-[2px] flex items-center shadow-luxury"
+          >
             {toastMessage}
-          </div>
+          </motion.div>
         </div>
       )}
 
-      {/* Share Modal */}
       <AnimatePresence>
         {isShareModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsShareModalOpen(false)}
-              className="absolute inset-0 bg-primary-950/60 backdrop-blur-md" 
+              className="absolute inset-0 bg-onyx/60 backdrop-blur-xl"
             />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative bg-primary-50 w-full max-w-md p-8 md:p-10 rounded-sm shadow-2xl overflow-hidden"
+              exit={{ opacity: 0, scale: 0.9, y: 40 }}
+              className="relative bg-ivory w-full max-w-lg p-10 md:p-14 rounded-sm shadow-luxury overflow-hidden border border-onyx/10"
             >
-              <button 
+              <div className="absolute top-0 right-0 w-48 h-48 bg-gold-500/5 rounded-full blur-3xl"></div>
+              
+              <button
                 onClick={() => setIsShareModalOpen(false)}
-                className="absolute top-6 right-6 text-primary-950/30 hover:text-primary-950 transition-colors"
+                className="absolute top-8 right-8 text-onyx/30 hover:text-onyx transition-all p-2"
                 aria-label="Close modal"
               >
-                <X size={24} strokeWidth={1.5} />
+                <X size={28} strokeWidth={1} />
               </button>
-              
-              <div className="w-16 h-16 bg-gold-50 rounded-full flex items-center justify-center mb-6">
-                <Share2 className="text-gold-500" size={28} />
+
+              <div className="w-20 h-20 bg-gold-500/10 rounded-full flex items-center justify-center mb-10 border border-gold-500/20 shadow-luxury">
+                <Share2 className="text-gold-500" size={32} />
               </div>
-              
-              <h3 className="text-2xl md:text-3xl font-serif text-primary-950 mb-4 font-normal">Share Wishlist</h3>
-              <p className="text-sm text-primary-950/60 mb-8 font-light leading-relaxed">Share your curated collection of favorites with your loved ones and get their thoughts.</p>
-              
-              <div className="space-y-6">
-                <div className="relative">
-                  <div className="flex items-center gap-3 p-4 bg-primary-50 border border-black/5 rounded-sm overflow-hidden">
-                    <div className="flex-grow truncate text-[11px] font-mono text-primary-950/70">{shareUrl}</div>
+
+              <h3 className="text-3xl font-serif text-onyx mb-6">Share The Vault</h3>
+              <p className="text-[15px] text-onyx/50 mb-10 font-medium leading-relaxed tracking-wide">
+                Expose your curated selection to fellow connoisseurs and celebrate your unique style.
+              </p>
+
+              <div className="space-y-10">
+                <div className="relative group">
+                  <div className="flex items-center gap-4 p-6 bg-white border border-onyx/10 rounded-sm group-hover:border-gold-500/50 transition-all shadow-sm">
+                    <div className="flex-grow truncate text-[13px] font-bold text-onyx/40">
+                      {shareUrl}
+                    </div>
                   </div>
-                  <button 
+                  <button
                     onClick={copyToClipboard}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2 bg-primary-50 px-4 py-2 rounded-sm border border-black/5 text-[10px] uppercase tracking-[1px] font-medium text-primary-950 hover:bg-gold-500 hover:text-white transition-all shadow-sm"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-3 bg-onyx text-white px-6 py-3 rounded-sm text-[11px] uppercase tracking-[2px] font-bold hover:bg-gold-500 transition-all shadow-xl"
                   >
-                    {copied ? 'Copied!' : <><Copy size={12} /> Copy</>}
+                    {copied ? "Copied" : "Copy Link"}
                   </button>
                 </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <button 
+
+                <div className="grid grid-cols-2 gap-6">
+                  <button
                     onClick={shareViaEmail}
-                    className="flex flex-col items-center justify-center gap-3 p-6 border border-black/5 rounded-sm hover:border-gold-500 hover:bg-gold-50/30 transition-all group"
+                    className="flex flex-col items-center justify-center gap-6 p-8 border border-onyx/10 rounded-sm hover:border-gold-500 hover:bg-gold-500/5 transition-all group relative overflow-hidden bg-white shadow-sm"
                   >
-                    <div className="w-10 h-10 bg-gold-50 text-gold-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Mail size={18} />
+                    <div className="w-14 h-14 bg-onyx/5 text-onyx/50 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:text-gold-500 transition-all border border-onyx/10">
+                      <Mail size={24} />
                     </div>
-                    <span className="text-[10px] uppercase tracking-[1.5px] font-medium text-primary-950">Email</span>
+                    <span className="text-[11px] uppercase tracking-[3px] font-bold text-onyx/40 group-hover:text-onyx">
+                      Direct Mail
+                    </span>
                   </button>
-                  <a 
-                    href={`https://wa.me/?text=${encodeURIComponent('Check out my favorite items from Mukesh Saree Centre: ' + shareUrl)}`}
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent("Check out my favorite items from Mukesh Saree Centre: " + shareUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex flex-col items-center justify-center gap-3 p-6 border border-black/5 rounded-sm hover:border-[#25D366] hover:bg-[#25D366]/5 transition-all group"
+                    className="flex flex-col items-center justify-center gap-6 p-8 border border-onyx/10 rounded-sm hover:border-[#25D366] hover:bg-[#25D366]/5 transition-all group relative overflow-hidden bg-white shadow-sm"
                   >
-                    <div className="w-10 h-10 bg-[#25D366]/10 text-[#25D366] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <MessageCircle size={18} />
+                    <div className="w-14 h-14 bg-[#25D366]/5 text-[#25D366]/60 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:text-[#25D366] transition-all border border-[#25D366]/20">
+                      <MessageCircle size={24} />
                     </div>
-                    <span className="text-[10px] uppercase tracking-[1.5px] font-medium text-primary-950">WhatsApp</span>
+                    <span className="text-[11px] uppercase tracking-[3px] font-bold text-onyx/40 group-hover:text-[#25D366]">
+                      WhatsApp
+                    </span>
                   </a>
                 </div>
               </div>

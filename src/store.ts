@@ -69,7 +69,7 @@ export const useStore = create<AppState>()(
       appliedCoupon: null,
       addToCart: (product, size, quantity = 1) => {
         set((state) => {
-          const newState = { appliedCoupon: 'FIRST100', cart: state.cart };
+          const newState = { appliedCoupon: state.appliedCoupon, cart: state.cart };
           
           const existingItem = state.cart.find(
             (item) => item.id === product.id && item.size === size
@@ -109,7 +109,15 @@ export const useStore = create<AppState>()(
         }));
       },
       cartTotal: () => {
-        return get().cart.reduce((total, item) => total + item.price * item.quantity, 0);
+        const state = get();
+        const activeCoupon = state.appliedCoupon || "VIP50";
+        let discountMultiplier = 0;
+        if (activeCoupon === "VIP50") discountMultiplier = 0.50;
+        else if (activeCoupon === "VIPCLUB60") discountMultiplier = 0.60;
+        
+        const subtotalMRP = state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
+        const totalDiscount = Math.floor(subtotalMRP * discountMultiplier);
+        return Math.max(0, subtotalMRP - totalDiscount);
       },
       applyCoupon: (code) => set({ appliedCoupon: code }),
     }),

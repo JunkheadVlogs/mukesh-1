@@ -1,14 +1,14 @@
-import { Helmet } from 'react-helmet-async';
 import type { ChangeEvent } from 'react';
 import { useState, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router';
-import { Filter, ChevronDown, Eye } from 'lucide-react';
+import { Filter, ChevronDown, Eye, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { products } from './mockData';
 import { formatPrice, optimizeImage } from './utils';
 import { ProductCard } from './components/ProductCard';
 import { Product, useStore } from './store';
 import QuickViewModal from './QuickViewModal';
+import { SEO } from './components/SEO';
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -95,7 +95,7 @@ export default function Shop() {
     }
 
     return result;
-  }, [categoryFilter, fabricFilter, colorFilter, sortParam, searchQuery]);
+  }, [categoryFilter, fabricFilter, colorFilter, sortParam, searchQuery, priceRangeFilter]);
 
   const handleCategoryChange = (cat: string | null) => {
     const newParams = new URLSearchParams(searchParams);
@@ -135,294 +135,176 @@ export default function Shop() {
     setSearchParams(newParams);
   };
 
-  const toggleColor = (color: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    let currentColors = newParams.get('color')?.split(',') || [];
-    
-    if (currentColors.some(c => c.toLowerCase() === color.toLowerCase())) {
-      currentColors = currentColors.filter(c => c.toLowerCase() !== color.toLowerCase());
-    } else {
-      currentColors.push(color);
-    }
-
-    if (currentColors.length > 0) {
-      newParams.set('color', currentColors.join(','));
-    } else {
-      newParams.delete('color');
-    }
-    setSearchParams(newParams);
-  };
-
   const clearAllFilters = () => {
     const newParams = new URLSearchParams();
-    // Keep search and sort if they exist
     if (searchQuery) newParams.set('search', searchQuery);
     if (sortParam) newParams.set('sort', sortParam);
     setSearchParams(newParams);
   };
 
-  const handlePriceRangeChange = (range: string | null) => {
-    const newParams = new URLSearchParams(searchParams);
-    if (range) {
-      newParams.set('priceRange', range);
-    } else {
-      newParams.delete('priceRange');
-    }
-    setSearchParams(newParams);
-  };
-
-  const handleFilterChange = (key: string, value: string | null) => {
-    const newParams = new URLSearchParams(searchParams);
-    if (value) {
-      newParams.set(key, value);
-    } else {
-      newParams.delete(key);
-    }
-    setSearchParams(newParams);
-  };
-
-  const uniqueFabrics = Array.from(new Set(products.map(p => p.fabric.split(' ').pop()))); // Simplistic extractor
   const baseFabrics = ['Silk', 'Organza', 'Crepe', 'Satin', 'Cotton'];
   const uniqueColors = Array.from(new Set(products.map(p => p.color)));
-  const priceRanges = [
-    { label: "Under ₹1,000", value: "0-999" },
-    { label: "₹1,000 - ₹1,500", value: "1000-1499" },
-    { label: "₹1,500 - ₹2,000", value: "1500-1999" },
-    { label: "Over ₹2,000", value: "2000-" },
-  ];
 
   return (
-    <div className="mobile-container sm:max-w-7xl mx-auto sm:px-6 lg:px-8 py-6 md:py-12">
-      <Helmet>
-        <title>{searchQuery ? `Search results for ${searchQuery}` : (categoryFilter ? `${categoryFilter} Collection` : 'Shop Our Collection')} | Mukesh Saree Centre</title>
-        <meta name="description" content={
-          categoryFilter === 'Sarees' 
-            ? "Discover an exquisite collection of premium sarees at Mukesh Saree Centre. From traditional silk to designer patterns, find the perfect drape for any occasion."
-            : categoryFilter === 'Co-Ord Sets'
-            ? "Shop designer co-ord sets at Mukesh Saree Centre. Explore modern silhouettes, floral patterns, and comfortable fabrics in our latest premium ethnic collection."
-            : "Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre. From traditional silk to modern cotton co-ords, find your perfect outfit today."
-        } />
-      </Helmet>
-      {/* Header */}
-      <div className="text-center mb-10 mt-2 px-4 sm:px-0">
-        <h1 className="text-2xl md:text-3xl font-serif text-primary-950 mb-4 font-normal">
-          {searchQuery ? `Results for "${searchQuery}"` : (categoryFilter || 'All Collection')}
-        </h1>
-        {searchQuery ? (
-          <button 
-            onClick={() => {
-              const newParams = new URLSearchParams(searchParams);
-              newParams.delete('search');
-              setSearchParams(newParams);
-            }}
-            className="text-[10px] tracking-[2px] uppercase text-gold-500 font-medium hover:underline"
-          >
-            Clear Search
-          </button>
-        ) : (
-          <p className="text-primary-950/70 max-w-2xl mx-auto font-light leading-relaxed">
-            Explore our handpicked curation of luxurious fabrics and modern silhouettes.
-          </p>
-        )}
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-        {/* Mobile Filter Toggle */}
-        <div className="lg:hidden flex justify-between items-center bg-transparent border-y border-black/5 py-4 mb-2 px-4 sm:px-0">
-          <button 
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex items-center text-[11px] tracking-[2px] uppercase text-primary-950 hover:text-gold-500 transition-colors"
-          >
-            <Filter size={16} className="mr-2" strokeWidth={1.5} />
-            Filters
-          </button>
-          
-          <select 
-            className="bg-transparent text-[11px] tracking-[2px] uppercase text-primary-950 outline-none"
-            value={sortParam || ''}
-            onChange={handleSortChange}
-          >
-            <option value="">Sort By</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-            <option value="new">New Arrivals</option>
-            <option value="best-selling">Best Selling</option>
-            <option value="name-az">Name: A-Z</option>
-            <option value="name-za">Name: Z-A</option>
-          </select>
-        </div>
-
-        {/* Sidebar Filters */}
-        <div className={`lg:w-1/5 ${isFilterOpen ? 'block' : 'hidden'} lg:block`}>
-          <div className="sticky top-28 space-y-10">
-            <div className="flex items-center justify-between pb-2 border-b border-black/5">
-              <h3 className="text-[10px] tracking-[2px] uppercase text-primary-950/40">Filters</h3>
-              {(categoryFilter || fabricFilter.length > 0 || colorFilter.length > 0 || priceRangeFilter) && (
-                <button 
-                  onClick={clearAllFilters}
-                  className="text-[9px] tracking-[1px] uppercase text-gold-500 hover:underline font-medium"
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
-
+    <div className="bg-primary-50 min-h-screen">
+      <SEO 
+        title={`${searchQuery ? `Search results for ${searchQuery}` : (categoryFilter ? `${categoryFilter} Collection` : 'Shop Our Collection')} | Mukesh Saree Centre`}
+        description="Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre. Premium ethnic wear at deals you can't miss."
+        url={searchQuery ? `/shop?search=${encodeURIComponent(searchQuery)}` : (categoryFilter ? `/shop?category=${encodeURIComponent(categoryFilter)}` : `/shop`)}
+      />
+      
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-10 lg:px-12 pt-[20px] md:pt-8 pb-12 mt-0 w-full" style={{ minHeight: "auto" }}>
+        <header className="mb-8 md:mb-12 border-b border-black/5 pb-6 md:pb-8" style={{ overflow: "visible" }}>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
             <div>
-              <h3 className="text-[10px] tracking-[2px] uppercase mb-6 text-primary-950/50 pb-2 border-b border-black/5">Categories</h3>
-              <ul className="space-y-4">
-                <li>
-                  <button 
-                    onClick={() => handleCategoryChange(null)}
-                    className={`text-left w-full text-[13px] tracking-[1px] hover:text-gold-500 transition-colors ${!categoryFilter ? 'text-gold-500' : 'text-primary-950'}`}
-                  >
-                    All Products
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => handleCategoryChange('Sarees')}
-                    className={`text-left w-full text-[13px] tracking-[1px] hover:text-gold-500 transition-colors ${categoryFilter === 'Sarees' ? 'text-gold-500' : 'text-primary-950'}`}
-                  >
-                    Sarees
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => handleCategoryChange('Co-Ord Sets')}
-                    className={`text-left w-full text-[13px] tracking-[1px] hover:text-gold-500 transition-colors ${categoryFilter === 'Co-Ord Sets' ? 'text-gold-500' : 'text-primary-950'}`}
-                  >
-                    Co-Ord Sets
-                  </button>
-                </li>
-              </ul>
+              <h1 className="text-2xl md:text-5xl font-serif text-primary-950 font-semibold tracking-[1px]" style={{ lineHeight: 1.2 }}>
+                {searchQuery ? `Results for "${searchQuery}"` : (categoryFilter || 'Shop All')}
+              </h1>
+              <p className="text-primary-950/50 text-sm mt-3 md:text-base font-sans font-medium">
+                {filteredAndSortedProducts.length} items found
+              </p>
             </div>
-
-            <div>
-              <h3 className="text-[10px] tracking-[2px] uppercase mb-6 text-primary-950/50 pb-2 border-b border-black/5">Price</h3>
-              <ul className="space-y-3">
-                <li>
-                  <label className="flex items-center group w-full text-left cursor-pointer">
-                    <input 
-                      type="radio"
-                      name="priceRange"
-                      checked={!priceRangeFilter}
-                      onChange={() => handlePriceRangeChange(null)}
-                      className="text-gold-500 focus:ring-gold-500 h-3.5 w-3.5 border-black/20 mr-3"
-                    />
-                    <span className={`text-[13px] tracking-[1px] transition-colors ${!priceRangeFilter ? 'text-primary-950 font-medium' : 'text-primary-950/60 group-hover:text-gold-500'}`}>
-                      Any Price
-                    </span>
-                  </label>
-                </li>
-                {priceRanges.map(range => (
-                  <li key={range.value}>
-                    <label className="flex items-center group w-full text-left cursor-pointer">
-                      <input 
-                        type="radio"
-                        name="priceRange"
-                        value={range.value}
-                        checked={priceRangeFilter === range.value}
-                        onChange={() => handlePriceRangeChange(range.value)}
-                        className="text-gold-500 focus:ring-gold-500 h-3.5 w-3.5 border-black/20 mr-3"
-                      />
-                      <span className={`text-[13px] tracking-[1px] transition-colors ${priceRangeFilter === range.value ? 'text-primary-950 font-medium' : 'text-primary-950/60 group-hover:text-gold-500'}`}>
-                        {range.label}
-                      </span>
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-[10px] tracking-[2px] uppercase mb-6 text-primary-950/50 pb-2 border-b border-black/5">Fabrics</h3>
-              <ul className="space-y-3">
-                {baseFabrics.map(fabric => (
-                  <li key={fabric}>
-                    <button 
-                      onClick={() => toggleFabric(fabric)}
-                      className="flex items-center group w-full text-left"
-                    >
-                      <div className={`w-3.5 h-3.5 border mr-3 rounded-sm flex items-center justify-center transition-colors ${fabricFilter.includes(fabric) ? 'bg-primary-950 border-primary-950' : 'border-black/20 group-hover:border-gold-500'}`}>
-                        {fabricFilter.includes(fabric) && <div className="w-1.5 h-1.5 bg-primary-50 rounded-full"></div>}
-                      </div>
-                      <span className={`text-[13px] tracking-[1px] transition-colors ${fabricFilter.includes(fabric) ? 'text-primary-950 font-medium' : 'text-primary-950/60 hover:text-gold-500'}`}>
-                        {fabric}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-[10px] tracking-[2px] uppercase mb-6 text-primary-950/50 pb-2 border-b border-black/5">Colors</h3>
-              <div className="flex flex-wrap gap-3">
-                {uniqueColors.map(color => {
-                  const isSelected = colorFilter.some(c => c.toLowerCase() === color.toLowerCase());
-                  return (
-                    <button 
-                      key={color}
-                      onClick={() => toggleColor(color)}
-                      title={color}
-                      className={`w-8 h-8 rounded-full border border-black/10 transition-all transform hover:scale-110 ${isSelected ? 'ring-2 ring-gold-500 ring-offset-2' : ''}`}
-                      style={{ backgroundColor: color.toLowerCase() === 'ivory' ? '#FFFFF0' : color.toLowerCase() === 'beige' ? '#F5F5DC' : color.toLowerCase() }}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Product Grid */}
-        <div className="lg:w-4/5 pt-2 lg:pt-0">
-          <div className="hidden lg:flex justify-between items-center mb-8 pb-4 px-4 sm:px-0">
-            <span className="text-[12px] tracking-[1px] uppercase text-primary-950/50">{filteredAndSortedProducts.length} Results</span>
-            <div className="flex items-center">
-              <span className="mr-3 text-[10px] uppercase tracking-[2px] text-primary-950/50">Sort by:</span>
-              <div className="relative">
+            
+            <div className="flex flex-row items-center gap-2 sm:gap-4 w-full md:w-auto mt-2 md:mt-0">
+              <button 
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className="lg:hidden flex-1 md:flex-none flex justify-center items-center gap-2 bg-white border border-black/5 px-4 py-3 md:py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider rounded-sm shadow-sm"
+              >
+                <Filter size={16} /> Filters
+              </button>
+              
+              <div className="relative group flex-1 md:flex-none">
                 <select 
-                  className="appearance-none bg-transparent border-b border-black/10 text-primary-950 py-1 pl-1 pr-6 hover:border-gold-500 focus:outline-none focus:border-gold-500 text-[12px] uppercase tracking-[1px] cursor-pointer transition-colors"
+                  className="w-full bg-white border border-black/5 px-4 py-3 md:py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider rounded-sm shadow-sm outline-none cursor-pointer focus:ring-1 focus:ring-gold-500 appearance-none min-w-[140px] md:min-w-[160px]"
                   value={sortParam || ''}
                   onChange={handleSortChange}
                 >
-                  <option value="">Featured</option>
+                  <option value="">Sort By</option>
                   <option value="price-low">Price: Low to High</option>
                   <option value="price-high">Price: High to Low</option>
-                  <option value="new">New Arrivals</option>
-                  <option value="trending">Trending</option>
-                  <option value="best-selling">Best Selling</option>
-                  <option value="name-az">Name: A-Z</option>
-                  <option value="name-za">Name: Z-A</option>
+                  <option value="new">Newest First</option>
+                  <option value="trending">Trending Now</option>
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-primary-950">
-                  <ChevronDown size={16} />
-                </div>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-950/20 pointer-events-none" />
               </div>
             </div>
           </div>
+        </header>
 
-          {filteredAndSortedProducts.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-6 md:gap-8 w-full">
-              {filteredAndSortedProducts.map((product, idx) => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product} 
-                  idx={idx} 
-                  onQuickView={setQuickViewProduct} 
-                />
-              ))}
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+          {/* Mobile Filter Backdrop */}
+          <AnimatePresence>
+            {isFilterOpen && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/40 z-[60] lg:hidden backdrop-blur-sm"
+                onClick={() => setIsFilterOpen(false)}
+              />
+            )}
+          </AnimatePresence>
+          
+          {/* Sidebar Filters */}
+          <aside className={`
+            fixed lg:relative inset-y-0 left-0 w-[280px] lg:w-64 bg-white lg:bg-transparent z-[70] lg:z-0
+            transform ${isFilterOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            transition-transform duration-300 ease-in-out p-8 lg:p-0 overflow-y-auto lg:overflow-visible
+            shadow-2xl lg:shadow-none
+          `}>
+            <div className="flex items-center justify-between lg:hidden mb-8">
+              <h2 className="text-xl font-serif font-semibold tracking-[1px]">Filters</h2>
+              <button onClick={() => setIsFilterOpen(false)}><X size={24} /></button>
             </div>
-          ) : (
-             <div className="text-center py-20">
-               <h3 className="text-2xl font-serif text-primary-900 mb-2">No products found</h3>
-               <p className="text-primary-600">Try adjusting your filters to find what you're looking for.</p>
-             </div>
-          )}
+
+            <div className="space-y-10">
+              {/* Category */}
+              <section>
+                <h3 className="text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-6">Category</h3>
+                <div className="flex flex-col gap-3">
+                  {[
+                    { name: 'All Collection', value: null },
+                    { name: 'Sarees', value: 'Sarees' },
+                    { name: 'Co-Ord Sets', value: 'Co-Ord Sets' }
+                  ].map((cat) => (
+                    <button 
+                      key={cat.name}
+                      onClick={() => handleCategoryChange(cat.value)}
+                      className={`text-left text-sm font-medium transition-all ${(!categoryFilter && cat.value === null) || (categoryFilter === cat.value) ? 'text-gold-600 font-bold' : 'text-primary-950/60 hover:text-primary-950'}`}
+                    >
+                      {cat.name}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              {/* Fabric */}
+              <section>
+                <h3 className="text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-6">Fabric</h3>
+                <div className="flex flex-col gap-3">
+                  {baseFabrics.map(fabric => (
+                    <button 
+                      key={fabric}
+                      onClick={() => toggleFabric(fabric)}
+                      className="flex items-center group w-full text-left gap-3"
+                    >
+                      <div className={`w-4 h-4 border rounded-sm transition-all ${fabricFilter.includes(fabric) ? 'bg-gold-500 border-gold-500' : 'border-black/10 group-hover:border-black/30'}`} />
+                      <span className={`text-sm transition-colors ${fabricFilter.includes(fabric) ? 'text-primary-950 font-bold' : 'text-primary-950/60 group-hover:text-primary-950'}`}>
+                        {fabric}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              {/* Price Range Placeholder */}
+              <section>
+                <h3 className="text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-6">Selection Benefit</h3>
+                <div className="bg-discount-bg p-4 rounded-sm border border-discount/10">
+                  <p className="text-[11px] font-black font-discount text-discount uppercase tracking-widest leading-relaxed">
+                    All items are 50% OFF.
+                  </p>
+                </div>
+              </section>
+            </div>
+            
+            <button 
+              onClick={clearAllFilters}
+              className="mt-12 w-full border border-black/10 py-3 text-[10px] uppercase tracking-[2px] font-bold hover:bg-black hover:text-white transition-all rounded-sm"
+            >
+              Clear All Filters
+            </button>
+          </aside>
+
+          {/* Product Grid */}
+          <main className="flex-1">
+            {filteredAndSortedProducts.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6">
+                {filteredAndSortedProducts.map((product) => (
+                  <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    onQuickView={setQuickViewProduct} 
+                  />
+                ))}
+              </div>
+            ) : (
+               <div className="flex flex-col items-center justify-center py-32 text-center bg-white border border-black/5 rounded-sm shadow-sm">
+                 <h3 className="text-xl font-serif text-primary-950 mb-4">No silhouettes found</h3>
+                 <p className="text-primary-950/50 mb-8 max-w-xs px-6">
+                   We couldn't find any products matching your current filters.
+                 </p>
+                 <button 
+                  onClick={clearAllFilters} 
+                  className="bg-gold-500 text-white rounded-sm shadow-md px-10 py-3 text-[10px] uppercase tracking-[2px] font-bold hover:bg-gold-600 transition-colors"
+                 >
+                   Reset Filters
+                 </button>
+               </div>
+            )}
+          </main>
         </div>
       </div>
-
 
       <QuickViewModal 
         product={quickViewProduct} 

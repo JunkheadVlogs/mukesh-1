@@ -15,10 +15,11 @@ export function formatPrice(price: number) {
 
 export function parseMarkdownDescription(markdown: string) {
   const sections: { title: string; content: string }[] = [];
-  const regex = /\*\*\d+\.\s+([^*]+)\*\*\s*([\s\S]*?)(?=\*\*\d+\.|$)/g;
+  // Updated regex to catch **Title** or **1. Title**
+  const regex = /\*\*(\d*\.?\s*([^*]+))\*\*\s*([\s\S]*?)(?=\*\*(\d*\.?\s*[^*]+)\*\*|$)/g;
   let match;
   while ((match = regex.exec(markdown)) !== null) {
-    sections.push({ title: match[1].trim(), content: match[2].trim() });
+    sections.push({ title: match[2].trim(), content: match[3].trim() });
   }
   
   if (sections.length === 0) {

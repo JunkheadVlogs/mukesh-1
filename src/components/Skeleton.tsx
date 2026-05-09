@@ -14,7 +14,7 @@ export function Skeleton({ className = "" }: SkeletonProps) {
         repeat: Infinity,
         ease: "easeInOut",
       }}
-      className={`bg-primary-950/5 rounded-sm ${className}`}
+      className={`bg-onyx/5 rounded-sm ${className}`}
     />
   );
 }

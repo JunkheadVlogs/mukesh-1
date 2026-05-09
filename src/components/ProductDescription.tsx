@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { parseMarkdownDescription } from "../utils";
+import { ChevronDown } from "lucide-react";
+
+interface Section {
+  title: string;
+  content: string;
+}
 
 export function ProductDescription({
   description,
@@ -9,61 +14,84 @@ export function ProductDescription({
   description: string;
   className?: string;
 }) {
-  const sections = parseMarkdownDescription(description);
+  const cleanDescription = (desc: string) => {
+    let clean = desc;
+    clean = clean.replace(/\*\*\s*\d+\.\s*Product Title\s*\*\*\n[^\n]+\n+/gi, '');
+    clean = clean.replace(/\*\*\s*\d+\.\s*Short Description\s*\*\*/gi, '**DESCRIPTION**');
+    clean = clean.replace(/\*\*\s*\d+\.\s*Product Details\s*\*\*/gi, '**DETAILS**');
+    clean = clean.replace(/\*\*\s*\d+\.\s*Care Instructions\s*\*\*/gi, '**CARE**');
+    clean = clean.replace(/\*\*\s*\d+\.\s*([^*]+)\*\*/g, (match, p1) => `**${p1.trim().toUpperCase()}**`);
+    clean = clean.replace(/\*\*\s*Description\s*\*\*/gi, '**DESCRIPTION**');
+    clean = clean.replace(/\*\*\s*Care Instructions\s*\*\*/gi, '**CARE**');
+    clean = clean.replace(/\*\*\s*Product Details\s*\*\*/gi, '**DETAILS**');
+    return clean;
+  };
 
-  if (sections.length === 1) {
-    return (
-      <div
-        className={`markdown-content text-primary-950/80 leading-relaxed font-light ${className}`}
-      >
-        <ReactMarkdown>{sections[0].content}</ReactMarkdown>
-      </div>
-    );
-  }
+  const parseSections = (text: string): Section[] => {
+    const sections: Section[] = [];
+    const regex = /\*\*(.*?)\*\*(.*?)(?=\*\*|$)/gs;
+    let match;
+    let index = 0;
+
+    // Check if there's text before the first header
+    const firstMatch = /\*\*(.*?)\*\*/.exec(text);
+    if (!firstMatch || firstMatch.index > 0) {
+      const precedingText = firstMatch ? text.substring(0, firstMatch.index).trim() : text.trim();
+      if (precedingText) {
+        sections.push({ title: "DESCRIPTION", content: precedingText });
+      }
+    }
+
+    while ((match = regex.exec(text)) !== null) {
+      let title = match[1].trim().replace(/:$/, "");
+      if (title.toUpperCase() === "WHY YOU’LL LOVE IT" || title.toUpperCase() === "WHY YOU'LL LOVE IT") {
+          title = "WHY YOU'LL LOVE IT";
+      }
+      const content = match[2].trim();
+      if (content) {
+        sections.push({ title, content });
+      }
+    }
+
+    if (sections.length === 0) {
+       sections.push({ title: "DESCRIPTION", content: text });
+    }
+
+    return sections;
+  };
+
+  const sections = parseSections(cleanDescription(description));
 
   return (
-    <div className={`space-y-4 ${className}`}>
-      {sections.map((section) => {
-        const titleLower = section.title.toLowerCase();
-        // Skip Product Title as it's already shown in the UI header
-        if (titleLower.includes("product title")) return null;
+    <div className={`space-y-0 border-b border-black/5 ${className}`}>
+      {sections.map((section, idx) => (
+        <AccordionItem key={idx} title={section.title} content={section.content} isOpenDefault={idx === 0} />
+      ))}
+    </div>
+  );
+}
 
-        const isList =
-          titleLower.includes("bullet") || section.content.includes("•");
+function AccordionItem({ title, content, isOpenDefault }: { title: string, content: string, isOpenDefault: boolean }) {
+  const [isOpen, setIsOpen] = useState(isOpenDefault);
 
-        return (
-          <div key={section.title} className="mb-2">
-            {titleLower !== "short description" && (
-              <h3 className="text-[11px] tracking-[2px] text-primary-950/50 mb-2 uppercase font-medium">
-                {section.title.replace(/^\d+\.\s*/, "")}
-              </h3>
-            )}
-            <div className="text-[13px] text-primary-950/80 leading-relaxed font-light whitespace-pre-wrap">
-              {section.content
-                .split("\n")
-                .filter((l) => l.trim().length > 0)
-                .map((line, i) => {
-                  if (
-                    line.trim().startsWith("•") ||
-                    line.trim().startsWith("-")
-                  ) {
-                    return (
-                      <div key={i} className="flex pl-1 mb-1">
-                        <span className="mr-2 text-primary-950/40">•</span>
-                        <span>{line.replace(/^[•-]\s*/, "").trim()}</span>
-                      </div>
-                    );
-                  }
-                  return (
-                    <p key={i} className="mb-1.5">
-                      {line}
-                    </p>
-                  );
-                })}
-            </div>
-          </div>
-        );
-      })}
+  return (
+    <div className="border-t border-black/5">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full py-4 lg:py-5 flex justify-between items-center bg-transparent focus:outline-none group text-left"
+      >
+        <span className="text-[12px] tracking-[2px] font-bold text-primary-950 uppercase pr-4">{title}</span>
+        <span className={`text-primary-950/40 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
+          <ChevronDown size={16} />
+        </span>
+      </button>
+      <div 
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[1000px] opacity-100 pb-5" : "max-h-0 opacity-0"}`}
+      >
+        <div className="text-[14px] md:text-[15px] leading-[1.6] text-primary-950/70 font-sans font-normal max-w-[95%] prose prose-sm prose-p:mb-3 prose-li:mb-1.5 prose-ul:list-disc prose-ul:pl-5 prose-strong:font-bold prose-strong:text-primary-950">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
+      </div>
     </div>
   );
 }

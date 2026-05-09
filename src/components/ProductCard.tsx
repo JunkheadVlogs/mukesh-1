@@ -1,28 +1,31 @@
-import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router';
-import { Eye } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Product, useStore } from '../store';
-import { formatPrice, optimizeImage } from '../utils';
-import { trackAddToCart } from '../tracking';
-import { Skeleton } from './Skeleton';
-import { OptimizedImage } from './OptimizedImage';
+import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router";
+import { Eye, Plus } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { Product, useStore } from "../store";
+import { formatPrice, optimizeImage } from "../utils";
+import { trackAddToCart } from "../tracking";
+import { Skeleton } from "./Skeleton";
+import { OptimizedImage } from "./OptimizedImage";
 
 interface ProductCardProps {
   product: Product;
-  idx: number;
-  onQuickView: (product: Product) => void;
+  idx?: number;
+  onQuickView?: (product: Product) => void;
 }
 
-export function ProductCard({ product, idx, onQuickView }: ProductCardProps) {
+export function ProductCard({
+  product,
+  idx = 0,
+  onQuickView,
+}: ProductCardProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [isInView, setIsInView] = useState(false);
-  const imageRef = useRef<HTMLImageElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
   const { addToCart } = useStore();
 
   useEffect(() => {
-    // Eagerly load the first few images
     if (idx < 4) {
       setIsInView(true);
       return;
@@ -36,9 +39,9 @@ export function ProductCard({ product, idx, onQuickView }: ProductCardProps) {
         }
       },
       {
-        rootMargin: '200px 0px', // Load before it comes into view
+        rootMargin: "200px 0px",
         threshold: 0.1,
-      }
+      },
     );
 
     if (imageRef.current) {
@@ -52,117 +55,121 @@ export function ProductCard({ product, idx, onQuickView }: ProductCardProps) {
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
-    addToCart(product, product.category === 'Co-Ord Sets' ? 'M' : undefined, 1);
+    addToCart(product, product.category === "Co-Ord Sets" ? "M" : undefined, 1);
     trackAddToCart(product);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 3000);
   };
 
   return (
-    <div className="product-card group flex flex-col h-full w-full">
-      <div className={`relative w-full overflow-hidden bg-transparent mb-2 flex items-center justify-center rounded-sm text-primary-950/10 ${!isLoaded ? 'aspect-[3/4]' : ''}`}>
-        {!isLoaded && (
-          <Skeleton className="absolute inset-0 z-10" />
-        )}
-        <Link 
-          to={`/product/${product.slug}`} 
+    <div className="group flex flex-col h-full bg-white transition-all duration-400 rounded-[24px] overflow-hidden border border-black/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1">
+      <div
+        ref={imageRef}
+        className="relative aspect-[3/4] w-full overflow-hidden bg-primary-50 flex items-center justify-center p-0 flex-shrink-0"
+      >
+        {!isLoaded && <Skeleton className="absolute inset-0 z-10" />}
+        <Link
+          to={`/product/${product.slug}`}
           className="block h-full w-full"
-          onMouseEnter={() => {
-            const img = new Image();
-            img.src = optimizeImage(product.image, 800);
-          }}
         >
           {isInView && (
-            <OptimizedImage 
+            <OptimizedImage
               src={product.image}
               width={idx < 4 ? 600 : 400}
-              srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w, ${optimizeImage(product.image, 900)} 900w`}
+              srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w`}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              alt={product.name} 
+              alt={product.name}
               loading={idx < 4 ? "eager" : "lazy"}
-              fetchPriority={idx < 4 ? "high" : "auto"}
               onLoad={() => setIsLoaded(true)}
-              className={`w-full h-auto group-hover:scale-105 transition-all duration-1000 ease-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`w-full h-full object-cover object-top transition-all duration-1000 ease-out group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0"}`}
             />
           )}
-          {!isInView && (
-            <img ref={imageRef} className="w-full h-auto opacity-0" alt="placeholder" />
-          )}
         </Link>
-        
-        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center pointer-events-none">
-          <button 
-            onClick={(e) => {
-              e.preventDefault();
-              onQuickView(product);
-            }}
-            className="bg-white/90 backdrop-blur-sm text-primary-950 h-10 w-10 flex items-center justify-center rounded-full shadow-2xl transition-all duration-500 transform translate-y-8 group-hover:translate-y-0 pointer-events-auto hover:bg-gold-500 hover:text-white"
-            title="Quick View"
-          >
-            <Eye size={18} strokeWidth={1} />
-          </button>
+
+        {/* Floating Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+          {product.isNew && (
+            <span className="bg-[#EFE7DC] text-[#2B2B2B] text-[10px] uppercase font-semibold px-2.5 py-1 rounded-sm tracking-[2px] shadow-sm">
+              New
+            </span>
+          )}
         </div>
 
-        {product.isNew && (
-          <span className="absolute top-3 left-3 bg-primary-50 border border-black/5 text-primary-950 text-[9px] px-2 py-1 tracking-[2px] uppercase shadow-sm rounded-sm font-medium z-20">New</span>
-        )}
+        {/* Wishlist Icon */}
+        <button 
+          className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-md text-primary-950 flex items-center justify-center rounded-full hover:bg-white hover:text-red-500 transition-all shadow-[0_2px_10px_rgba(0,0,0,0.08)] z-10"
+          onClick={(e) => {
+            e.preventDefault();
+            // Assuming wishlist toggle functionality exists in the store or we can just leave it as UI for now
+            // toggleWishlist(product.id)
+          }}
+          title="Add to Wishlist"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </button>
 
+        {/* Hover Action Overlay */}
+        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-400 hidden md:flex gap-2">
+          <button
+            onClick={handleQuickAdd}
+            className="flex-1 h-10 bg-primary-950 text-white text-[10px] uppercase tracking-[2px] font-bold hover:bg-black transition-all rounded-sm shadow-lg flex items-center justify-center"
+          >
+            Quick Add
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              if (onQuickView) onQuickView(product);
+            }}
+            className="w-10 h-10 bg-white text-primary-950 border border-black/5 flex items-center justify-center rounded-sm hover:bg-primary-50 transition-all shadow-lg"
+            title="Quick View"
+          >
+            <Eye size={16} />
+          </button>
+        </div>
+        
         <AnimatePresence>
           {isAdded && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="absolute inset-0 bg-primary-950/20 backdrop-blur-sm flex items-center justify-center z-20 pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-20 pointer-events-none"
             >
-               <span className="bg-primary-950 text-white px-4 py-2 text-[11px] font-bold tracking-[1px] uppercase rounded-sm shadow-xl">
-                 Added To Cart
-               </span>
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-6 h-6 rounded-full border-2 border-gold-500 border-t-transparent animate-spin" />
+                <span className="text-primary-950 text-[10px] font-bold uppercase tracking-[2px]">
+                  Added to Bag
+                </span>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-      <div className="text-center flex-grow flex flex-col mt-1">
-        <div className="text-[10px] uppercase tracking-[1px] text-gold-500 mb-1 font-medium">{product.fabric || product.category}</div>
-        <h3 className="font-serif text-[14px] sm:text-[15px] text-primary-950 mb-1 truncate font-normal tracking-wide">
-          <Link to={`/product/${product.slug}`} className="hover:text-gold-500 transition-colors">
-            {product.name}
-          </Link>
-        </h3>
-        <div className="flex flex-col items-center justify-center mt-auto pt-1">
-          <div className="flex items-center space-x-2 text-[14px]">
-            <span className="font-medium text-primary-950">{formatPrice(product.price)}</span>
-            {product.originalPrice && (
-               <>
-                 <span className="text-[12px] text-primary-950/40 line-through">{formatPrice(product.originalPrice)}</span>
-                 <span className="text-[10px] tracking-[1px] font-medium text-gold-600 bg-gold-600/10 px-1.5 py-0.5 rounded-sm">{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF</span>
-               </>
-            )}
+
+      <div className="flex flex-col flex-grow bg-white items-center text-center justify-between" style={{ padding: "10px 8px 12px", gap: "2px" }}>
+        <div className="flex flex-col items-center w-full" style={{ gap: "3px" }}>
+          <div className="text-[8px] md:text-[9px] uppercase tracking-[3px] text-primary-950/50 font-semibold w-full whitespace-nowrap overflow-hidden text-ellipsis text-center">
+            {product.category}
           </div>
-          
-          {product.colorVariants && product.colorVariants.length > 0 && (
-            <div className="flex justify-center gap-1.5 mt-3">
-              {product.colorVariants.map((variant) => (
-                <Link 
-                  key={variant.slug} 
-                  to={`/product/${variant.slug}`}
-                  title={variant.color}
-                  className={`w-4 h-4 rounded-full overflow-hidden border transition-colors hover:scale-110 ${variant.slug === product.slug ? 'border-primary-950' : 'border-black/20 hover:border-gold-500'}`}
-                >
-                  <OptimizedImage src={variant.image} width={50} alt={variant.color} className="w-full h-full object-cover" />
-                </Link>
-              ))}
-            </div>
-          )}
+          <h3 className="font-serif text-primary-950 font-medium tracking-wide group-hover:text-gold-600 transition-colors w-full text-center truncate" style={{ fontSize: "13px", lineHeight: "1.25" }}>
+            <Link to={`/product/${product.slug}`} title={product.name}>{product.name}</Link>
+          </h3>
         </div>
-        <button
-          onClick={handleQuickAdd}
-          className={`w-full mt-3 py-2 px-4 text-[11px] uppercase tracking-[1px] font-bold rounded-sm border transition-colors ${
-            isAdded ? 'bg-gold-600 text-white border-gold-600' : 'bg-gold-600 text-white border-gold-600 hover:bg-gold-500 hover:border-gold-500 shadow-sm shadow-gold-600/20'
-          }`}
-        >
-          {isAdded ? 'Added ✓' : 'Add to Bag'}
-        </button>
+        
+        <div className="mt-auto pt-1.5 flex items-center justify-center gap-1.5 md:gap-2 flex-nowrap w-full overflow-hidden">
+          <span className="text-[13px] md:text-[15px] font-bold text-primary-950 font-price whitespace-nowrap">
+            {formatPrice(Math.floor(product.price * 0.5))}
+          </span>
+          <span className="text-[10px] md:text-[11px] text-primary-900/40 line-through font-light font-price decoration-1 whitespace-nowrap flex-shrink-0">
+            {formatPrice(product.price)}
+          </span>
+          <span className="font-sans font-bold tracking-[1px] text-[#8A6A4A] whitespace-nowrap flex-shrink-0" style={{ fontSize: "9px", textTransform: "uppercase" }}>
+            50% OFF
+          </span>
+        </div>
       </div>
     </div>
   );

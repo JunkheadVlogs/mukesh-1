@@ -21,7 +21,15 @@ const Terms = lazy(() => import('./Terms'));
 export default function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-gold-500 border-t-transparent rounded-full animate-spin"></div></div>}>
+      <Suspense fallback={
+        <div className="w-full h-screen flex flex-col items-center justify-center bg-ivory space-y-12">
+          <div className="flex flex-col items-center space-y-4">
+             <span className="text-xl font-serif text-onyx tracking-[12px] uppercase">MUKESH</span>
+             <div className="w-12 h-[1px] bg-gold-500 animate-pulse"></div>
+          </div>
+          <div className="text-[10px] uppercase tracking-[6px] text-onyx/20 font-bold animate-pulse italic">The Selection is Loading</div>
+        </div>
+      }>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

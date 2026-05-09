@@ -7,8 +7,8 @@ export const products: Product[] = [
     name: "Cocoa Brown Cotton Co-Ord Set ",
     tagline: "Soft & Elegant",
     slug: "premium-pure-cotton-coord-set",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1Yy5HQ-XE4aulexv5D7WXiewiVYPHp52F&sz=w500",
@@ -49,8 +49,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "White & Pink Cotton Floral Co-Ord Set ",
     tagline: "Lightweight & Elegant",
     slug: "elegant-white-pink-embroidered-pure-cotton-kurta-pant-set",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1dOSHikQpkj8XdIkDyHsoSbx4te1hIBXj&sz=w500",
@@ -62,7 +62,7 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
       "https://drive.google.com/thumbnail?id=1QVYSXSR1ddqW6p6BzGqN5h-XihreG_V5&sz=w500",
     ],
     category: "Co-Ord Sets",
-    stock: 0,
+    stock: 10,
     fabric: "100% Pure Cotton",
     color: "White/Pink",
     isNew: true,
@@ -91,8 +91,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "Beige Cotton Floral Co-Ord Set ",
     tagline: " Perfect Summer Daily Wear\nLight, Elegant & Super Comfortable",
     slug: "pure-beige-cotton-floral-coord-set",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1ZSy1eQVSYFjEycvOwGeYq8d9REgMYaa3&sz=w500",
@@ -132,8 +132,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "White Cotton Floral Co-Ord Set ",
     tagline: "Airy & Gentle",
     slug: "pure-cotton-floral-coord-set-white",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1FkeDrcESuS03jcvuFtZCPOL7mcmvUDGD&sz=w500",
@@ -173,8 +173,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "Grey Cotton Embroidered Co-Ord Set 🩶",
     tagline: "Comfortable & Minimal",
     slug: "premium-pure-cotton-coord-set-grey",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1mwE1Gh-CoCjC1swlQMQ1JgkOCy_skAoe&sz=w500",
@@ -211,8 +211,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     sku: "SAREE-CHIF-YEL-001",
     name: "Sunshine Yellow Chiffon Saree with Hand Brush Floral Print & Sipli Cutwork Border",
     slug: "sunshine-yellow-chiffon-saree-hand-brush-floral",
-    price: 2099,
-    originalPrice: 4199,
+    price: 1499,
+    originalPrice: 2998,
     image:
       "https://drive.google.com/thumbnail?id=1_nSy0f7pCTZX5S7R2I7pYjGSUSA39tyZ&sz=w500",
     images: [
@@ -220,8 +220,6 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
       "https://drive.google.com/thumbnail?id=1OZrBsubaLtkCZCRnfV1Ade6py1TCPDbU&sz=w500",
       "https://drive.google.com/thumbnail?id=1xiBCbmLkoZejVxknGBU-hT6GZs5zh2A8&sz=w500",
     ],
-    videoUrl:
-      "https://drive.google.com/file/d/1hiXE-1yUV2PaRBQmJYfYerIOGboPxY7t/preview",
     category: "Sarees",
     fabric: "Premium Chiffon",
     color: "Sunshine Yellow",
@@ -246,6 +244,12 @@ The graceful fluid drape enhances the body silhouette beautifully, making it per
 **6. Care Instructions**
 Dry clean only to maintain the delicate sipli cutwork and handcrafted floral print.
 
+**7. Blouse Piece Details**
+- **Material:** Premium matching chiffon fabric
+- **Dimensions:** 1.00 Meter length (Unstitched)
+- **Design:** Features coordinating floral motifs to complement the saree's hand-brush print perfectly
+- **Versatility:** Sufficient length to tailor various styles, from contemporary sleeveless to traditional long sleeves.
+
 `,
     rating: 4.9,
   },
@@ -254,8 +258,8 @@ Dry clean only to maintain the delicate sipli cutwork and handcrafted floral pri
     sku: "SAREE-KHADI-BLK-001",
     name: "Black Khadi Cotton Saree with Multicolor Striped Pallu & Tassel Detailing",
     slug: "black-khadi-cotton-saree-multicolor-striped-pallu",
-    price: 749,
-    originalPrice: 1499,
+    price: 1499,
+    originalPrice: 2998,
     image:
       "https://drive.google.com/thumbnail?id=1pfrQ3N5-EBwWOy4DiyS8_0jqVw_jbIc8&sz=w500",
     images: [
@@ -298,8 +302,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "Elegant Forest Green Cotton Co-Ord Set ",
     tagline: "Effortless Elegance & All-Day Comfort",
     slug: "elegant-forest-green-cotton-coord-set",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1r0D-1RA8fSbXkhKrhvkNz91Ny9yRE_DI&sz=w500",
     images: [
@@ -355,8 +359,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "Royal Plum Cotton Co-Ord Set with Embroidery ",
     tagline: "Subtle Luxury with Everyday Wearability",
     slug: "royal-plum-cotton-coord-set-embroidery",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1T30aeMCN2CKJk7sOszn2zaap__mDXp9p&sz=w500",
     images: [
@@ -411,8 +415,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "Elegant Teal Green Cotton Co-Ord Set with Floral Embroidery ",
     tagline: "Effortless Charm & Graceful Style",
     slug: "elegant-teal-green-cotton-coord-set-floral-embroidery",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1OklbiWw6fH97r8mCWsw3VxdkvwAqvxFe&sz=w500",
     images: [
@@ -469,8 +473,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "Wine Berry Cotton Co-Ord Set with Elegant Embroidery ",
     tagline: "Effortless Sophistication & Refined Style",
     slug: "wine-berry-cotton-coord-set-elegant-embroidery",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1yqH8sha_dRXlYAOzvSP5Cu-ucdvMM-7x&sz=w500",
     images: [
@@ -528,8 +532,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "Soft Blush Pink Cotton Co-Ord Set with Delicate Embroidery ",
     tagline: "Subtle Elegance & Everyday Comfort",
     slug: "soft-blush-pink-cotton-coord-set-delicate-embroidery",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1GQSTuioaQUwqW5dZ44_S5yLjk6ysO-IP&sz=w500",
     images: [
@@ -587,8 +591,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ",
     tagline: "Vibrant Charm & Everyday Comfort",
     slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w500",
     images: [
@@ -646,8 +650,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ",
     tagline: "Vibrant Detailing & Premium Comfort",
     slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2",
-    price: 995,
-    originalPrice: 1990,
+    price: 1999,
+    originalPrice: 3998,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w500",
     images: [
@@ -704,8 +708,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     sku: "SAREE-LINEN-WHT-001",
     name: "Elegant Off-White Soft Linen Saree with Digital Floral Print & Cutwork Border",
     slug: "off-white-soft-linen-saree-digital-floral-print",
-    price: 749,
-    originalPrice: 1499,
+    price: 1499,
+    originalPrice: 2998,
     image:
       "https://drive.google.com/thumbnail?id=10sTYtNVliX2-pcwfkZDvYOJvglyexpME&sz=w500",
     images: [
@@ -756,8 +760,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     sku: "SAREE-LINEN-YEL-001",
     name: "Elegant Yellow Soft Linen Saree with Digital Floral Print & Cutwork Border",
     slug: "yellow-soft-linen-saree-digital-floral-print",
-    price: 749,
-    originalPrice: 1499,
+    price: 1499,
+    originalPrice: 2998,
     image:
       "https://drive.google.com/thumbnail?id=1-O_XsnPg-kdC1pg-bZcCwqOtYFJFAHj8&sz=w500",
     images: [
@@ -809,8 +813,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     sku: "SAREE-GEOR-YEL-001",
     name: "Festive Yellow Georgette Saree with Digital Foil Print & Green Designer Border",
     slug: "festive-yellow-georgette-saree-digital-foil-print",
-    price: 999,
-    originalPrice: 1990,
+    price: 1499,
+    originalPrice: 2998,
     image:
       "https://drive.google.com/thumbnail?id=1xmONKdYlc6VJQ15qwnsTtjMaOUHzy4QP&sz=w500",
     images: [
@@ -871,8 +875,8 @@ Dry clean or gentle hand wash. Do not iron directly on the foil print.`,
     sku: "SAREE-GEOR-GRN-001",
     name: "Elegant Green Georgette Saree with Digital Print & Rich Zari Border",
     slug: "elegant-green-georgette-saree-digital-print-zari-border",
-    price: 999,
-    originalPrice: 1990,
+    price: 1499,
+    originalPrice: 2998,
     image:
       "https://drive.google.com/thumbnail?id=1tZtZSwoe-Bl1vz84Dfs1fmO5vHnLW6PF&sz=w500",
     images: [
@@ -933,8 +937,8 @@ Dry clean recommended to maintain the intricate zari border and fabric sheen.`,
     sku: "SAREE-GEOR-RED-001",
     name: "Stunning Red Georgette Saree with Digital Print & Rich Jacquard Border",
     slug: "stunning-red-georgette-saree-digital-print-jacquard-border",
-    price: 999,
-    originalPrice: 1990,
+    price: 1499,
+    originalPrice: 2998,
     image:
       "https://drive.google.com/thumbnail?id=1LjT61r8jWSf8Dc51dKaa5y9pZlYWFlhd&sz=w500",
     images: [
@@ -995,8 +999,8 @@ Dry clean recommended to protect the bandhani print and jacquard woven border.`,
     sku: "SAREE-GEOR-GRN-002",
     name: "Elegant Green Georgette Saree with Foil Design & Contrast Pink Border",
     slug: "elegant-green-georgette-saree-foil-design-pink-border",
-    price: 999,
-    originalPrice: 1990,
+    price: 1499,
+    originalPrice: 2998,
     image:
       "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
     images: [
@@ -1057,8 +1061,8 @@ Dry clean or gentle hand wash. Avoid hot iron directly on foil prints.`,
     sku: "SAREE-LINEN-LAV-001",
     name: "Lavender Floral Linen Soft & Breathable Saree",
     slug: "lavender-floral-linen-saree",
-    price: 749,
-    originalPrice: 1499,
+    price: 1499,
+    originalPrice: 2998,
     image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
@@ -1131,8 +1135,8 @@ Washable and durable. Hand wash recommended.`,
     sku: "SAREE-LINEN-PNK-001",
     name: "Pink Floral Linen Soft & Breathable Saree",
     slug: "pink-floral-linen-saree",
-    price: 749,
-    originalPrice: 1499,
+    price: 1499,
+    originalPrice: 2998,
     image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
@@ -1203,8 +1207,8 @@ Washable and durable. Hand wash recommended.`,
     sku: "SAREE-LINEN-PCH-001",
     name: "Peach Floral Linen Soft & Breathable Saree",
     slug: "peach-floral-linen-saree",
-    price: 749,
-    originalPrice: 1499,
+    price: 1499,
+    originalPrice: 2998,
     image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
@@ -1276,8 +1280,8 @@ Washable and durable. Hand wash recommended.`,
     sku: "SAREE-LINEN-RPK-001",
     name: "Rani Pink Floral Linen Soft & Breathable Saree",
     slug: "rani-pink-floral-linen-saree",
-    price: 749,
-    originalPrice: 1499,
+    price: 1499,
+    originalPrice: 2998,
     image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
@@ -1351,8 +1355,8 @@ Washable and durable. Hand wash recommended.`,
     sku: "SAREE-LINEN-LGN-001",
     name: "Lime Green Floral Linen Soft & Breathable Saree",
     slug: "lime-green-floral-linen-saree",
-    price: 749,
-    originalPrice: 1499,
+    price: 1499,
+    originalPrice: 2998,
     image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
@@ -1424,8 +1428,8 @@ Washable and durable. Hand wash recommended.`,
     sku: "SAREE-LINEN-SKY-001",
     name: "Sky Blue Floral Linen Soft & Breathable Saree",
     slug: "sky-blue-floral-linen-saree",
-    price: 749,
-    originalPrice: 1499,
+    price: 1499,
+    originalPrice: 2998,
     image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
