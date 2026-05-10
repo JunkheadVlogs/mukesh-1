@@ -45,6 +45,18 @@ export default function Layout() {
   const [subscribeMessage, setSubscribeMessage] = useState("");
   const lastScrollY = useRef(0);
 
+  const [cartBadgeHighlight, setCartBadgeHighlight] = useState(false);
+  const prevCartCountRef = useRef(cartItemCount);
+
+  useEffect(() => {
+    if (cartItemCount > prevCartCountRef.current) {
+      setCartBadgeHighlight(true);
+      const timer = setTimeout(() => setCartBadgeHighlight(false), 2000); // 2 seconds
+      return () => clearTimeout(timer);
+    }
+    prevCartCountRef.current = cartItemCount;
+  }, [cartItemCount]);
+
   const toggleFooterAccordion = (section: string) => {
     setOpenFooterAccordion((prev) => (prev === section ? null : section));
   };
@@ -252,7 +264,7 @@ export default function Layout() {
 
       {/* Navigation */}
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-500 flex-col ${headerBg} ${
+        className={`fixed top-0 w-full z-50 transition-all duration-500 flex-col will-change-transform transform-gpu ${headerBg} ${
           isHidden ? "-translate-y-full" : "translate-y-0"
         } ${isScrolled ? "border-b border-black/5" : "border-b-0"} flex`}
       >
@@ -260,8 +272,8 @@ export default function Layout() {
           <span>THE LUXURY EDIT • 50% OFF ON ALL PRODUCTS</span>
         </div>
         
-        <div className={`transition-all duration-500 w-full ${isScrolled ? "py-0" : "py-0 md:py-1 sm:py-3"}`}>
-          <div className="h-14 md:h-20 flex items-center justify-between px-3 md:px-4 sm:px-10 w-full max-w-7xl mx-auto">
+        <div className={`transition-all duration-500 w-full px-3 md:px-4 sm:px-10 max-w-7xl mx-auto ${isScrolled ? "py-1" : "py-2 md:py-3"}`}>
+          <div className="flex items-center justify-between w-full">
             <div className="flex items-center md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -343,14 +355,27 @@ export default function Layout() {
               </Link>
               <Link
                 to="/cart"
-                className={`${iconColor} hover:text-gold-500 transition-all relative flex items-center p-1 md:p-1.5 mr-[-4px] md:mr-0`}
+                className={`${iconColor} hover:text-gold-500 transition-all relative flex items-center p-2`}
               >
-                <ShoppingBag size={20} strokeWidth={1} />
-                {cartItemCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-gold-600 text-white text-[8px] md:text-[9px] px-1 md:px-1.5 py-[1px] md:py-0.5 rounded-full min-w-[14px] md:min-w-[16px] text-center font-medium shadow-sm">
-                    {cartItemCount}
-                  </span>
-                )}
+                <motion.div
+                  animate={cartBadgeHighlight ? { scale: [1, 1.2, 1], rotate: [0, -10, 10, -10, 0] } : {}}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  <ShoppingBag size={20} strokeWidth={1} />
+                </motion.div>
+                <AnimatePresence>
+                  {cartItemCount > 0 && (
+                    <motion.span 
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: cartBadgeHighlight ? [1, 1.3, 1] : 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className={`absolute top-0 right-0 text-white text-[8px] md:text-[9px] px-1 md:px-1.5 py-[1px] md:py-0.5 rounded-full min-w-[14px] md:min-w-[16px] text-center font-medium shadow-sm transition-colors ${cartBadgeHighlight ? 'bg-black' : 'bg-gold-600'}`}
+                    >
+                      {cartItemCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </Link>
             </div>
           </div>
@@ -407,7 +432,7 @@ export default function Layout() {
       </header>
 
       {/* Main Content */}
-      <main className={`flex-grow flex flex-col ${isHomePage ? "" : "pt-[86px] md:pt-[130px]"}`}>
+      <main className={`flex-grow flex flex-col ${isHomePage ? "" : "pt-[80px] md:pt-[100px]"}`}>
         <Outlet />
       </main>
 
@@ -524,7 +549,7 @@ export default function Layout() {
         href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}
         target="_blank"
         rel="noopener noreferrer"
-        className={`fixed right-3 md:right-6 bg-[#6AA06E] text-white p-2.5 md:p-3 rounded-full shadow-[0_8px_20px_-6px_rgba(106,160,110,0.5)] hover:bg-[#5C8E5F] hover:-translate-y-1 transition-all z-50 flex items-center justify-center group ${location.pathname.startsWith('/product') ? "bottom-[100px] md:bottom-[20px]" : "bottom-[12px] md:bottom-[20px]"}`}
+        className={`fixed right-3 md:right-6 bg-[#6AA06E] text-white p-2.5 md:p-3 rounded-full shadow-[0_8px_20px_-6px_rgba(106,160,110,0.5)] hover:bg-[#5C8E5F] hover:-translate-y-1 transition-all z-50 flex items-center justify-center group will-change-transform transform-gpu ${location.pathname.startsWith('/product') ? "bottom-[100px] md:bottom-[20px]" : "bottom-[12px] md:bottom-[20px]"}`}
         aria-label="Contact on WhatsApp"
       >
         <MessageCircle className="w-5 h-5 md:w-[22px] md:h-[22px]" strokeWidth={1.5} />
@@ -541,7 +566,7 @@ export default function Layout() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.5, y: 20 }}
             onClick={scrollToTop}
-            className={`fixed right-5 md:right-7 bg-white/90 border border-black/5 text-primary-950 p-2 md:p-3 rounded-full shadow-xl hover:bg-gold-500 hover:text-white transition-all z-40 flex items-center justify-center group ${location.pathname.startsWith('/product') ? "bottom-[160px] md:bottom-[90px]" : "bottom-[80px] md:bottom-[90px]"}`}
+            className={`fixed right-5 md:right-7 bg-white/90 border border-black/5 text-primary-950 p-2 md:p-3 rounded-full shadow-xl hover:bg-gold-500 hover:text-white transition-all z-40 flex items-center justify-center group will-change-transform transform-gpu ${location.pathname.startsWith('/product') ? "bottom-[160px] md:bottom-[90px]" : "bottom-[80px] md:bottom-[90px]"}`}
             aria-label="Scroll to top"
           >
             <ArrowUp className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} />

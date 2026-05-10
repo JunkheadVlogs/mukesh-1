@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 interface Section {
   title: string;
@@ -47,7 +48,17 @@ export function ProductDescription({
       if (title.toUpperCase() === "WHY YOU’LL LOVE IT" || title.toUpperCase() === "WHY YOU'LL LOVE IT") {
           title = "WHY YOU'LL LOVE IT";
       }
-      const content = match[2].trim();
+      
+      let content = match[2].trim();
+      // Remove trailing hyphens (often left over from bullet points that preceded the next bold header)
+      content = content.replace(/(?:\n\s*-\s*)+$/, '').trim();
+      content = content.replace(/^-\s*/, '').trim(); // Remove leading hyphen if any
+
+      const upperTitle = title.toUpperCase();
+      if (upperTitle === "BLOUSE PIECE DETAILS" || upperTitle === "DIMENSIONS") {
+        continue;
+      }
+
       if (content) {
         sections.push({ title, content });
       }
@@ -81,17 +92,25 @@ function AccordionItem({ title, content, isOpenDefault }: { title: string, conte
         className="w-full py-4 lg:py-5 flex justify-between items-center bg-transparent focus:outline-none group text-left"
       >
         <span className="text-[12px] tracking-[2px] font-bold text-primary-950 uppercase pr-4">{title}</span>
-        <span className={`text-primary-950/40 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
+        <span className={`text-primary-950/40 transition-transform duration-300 transform-gpu will-change-transform ${isOpen ? "rotate-180" : ""}`}>
           <ChevronDown size={16} />
         </span>
       </button>
-      <div 
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[1000px] opacity-100 pb-5" : "max-h-0 opacity-0"}`}
-      >
-        <div className="text-[14px] md:text-[15px] leading-[1.6] text-primary-950/70 font-sans font-normal max-w-[95%] prose prose-sm prose-p:mb-3 prose-li:mb-1.5 prose-ul:list-disc prose-ul:pl-5 prose-strong:font-bold prose-strong:text-primary-950">
-          <ReactMarkdown>{content}</ReactMarkdown>
-        </div>
-      </div>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden will-change-transform transform-gpu"
+          >
+            <div className="pb-5 text-[14px] md:text-[15px] leading-[1.6] text-primary-950/70 font-sans font-normal max-w-[95%] prose prose-sm prose-p:mb-3 prose-li:mb-1.5 prose-ul:list-disc prose-ul:pl-5 prose-strong:font-bold prose-strong:text-primary-950">
+              <ReactMarkdown>{content}</ReactMarkdown>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

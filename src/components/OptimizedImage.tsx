@@ -31,6 +31,7 @@ export function OptimizedImage({ src, width = 800, alt, className, srcSet, sizes
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"
+        decoding="async"
         {...props}
       />
     </picture>

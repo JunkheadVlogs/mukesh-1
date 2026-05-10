@@ -211,8 +211,8 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     sku: "SAREE-CHIF-YEL-001",
     name: "Sunshine Yellow Chiffon Saree with Hand Brush Floral Print & Sipli Cutwork Border",
     slug: "sunshine-yellow-chiffon-saree-hand-brush-floral",
-    price: 1499,
-    originalPrice: 2998,
+    price: 4199,
+    originalPrice: 8398,
     image:
       "https://drive.google.com/thumbnail?id=1_nSy0f7pCTZX5S7R2I7pYjGSUSA39tyZ&sz=w500",
     images: [

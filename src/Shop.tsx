@@ -146,7 +146,7 @@ export default function Shop() {
   const uniqueColors = Array.from(new Set(products.map(p => p.color)));
 
   return (
-    <div className="bg-primary-50 min-h-screen">
+    <div className="bg-primary-50">
       <SEO 
         title={`${searchQuery ? `Search results for ${searchQuery}` : (categoryFilter ? `${categoryFilter} Collection` : 'Shop Our Collection')} | Mukesh Saree Centre`}
         description="Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre. Premium ethnic wear at deals you can't miss."

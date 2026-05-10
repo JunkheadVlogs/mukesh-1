@@ -16,6 +16,7 @@ import {
   Maximize2,
   MessageCircle,
   Phone,
+  CheckCircle,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -38,6 +39,8 @@ export default function ProductPage() {
 
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [isAdded, setIsAdded] = useState(false);
+  const [showAddedToast, setShowAddedToast] = useState<{visible: boolean, quantity: number, size?: string}>({visible: false, quantity: 1});
+  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
@@ -104,6 +107,14 @@ export default function ProductPage() {
     }
   }, [slug, product]);
 
+  useEffect(() => {
+    return () => {
+      if (toastTimeoutRef.current) {
+        clearTimeout(toastTimeoutRef.current);
+      }
+    };
+  }, []);
+
   if (!product) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center bg-primary-50">
@@ -139,6 +150,15 @@ export default function ProductPage() {
     trackAddToCart(product);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
+    
+    setShowAddedToast({ visible: true, quantity, size: isCoOrd ? selectedSize : undefined });
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    toastTimeoutRef.current = setTimeout(() => {
+      setShowAddedToast(prev => ({ ...prev, visible: false }));
+    }, 4000);
+
     return true;
   };
 
@@ -157,7 +177,7 @@ export default function ProductPage() {
   const maxStock = product.stock !== undefined ? product.stock : Infinity;
 
   return (
-    <div className="bg-primary-50 min-h-screen">
+    <div className="bg-primary-50">
       <SEO
         title={`${product.name} | Mukesh Saree Centre`}
         description={product.description.replace(/<[^>]*>?/gm, "").substring(0, 160)}
@@ -195,7 +215,8 @@ export default function ProductPage() {
                 src={productImages[activeImageIndex]}
                 width={800}
                 alt={product.name}
-                className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 mix-blend-multiply"
+                priority={true}
+                className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 mix-blend-multiply transform-gpu will-change-transform"
               />
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-primary-950 text-[10px] uppercase font-bold tracking-[1px] px-3 py-1.5 rounded-[8px] shadow-sm z-10">
                 50% OFF
@@ -240,7 +261,7 @@ export default function ProductPage() {
                     onClick={() => setActiveImageIndex(idx)}
                     className={`aspect-[3/4] w-14 md:w-auto flex-shrink-0 snap-center bg-[#F9F7F4] rounded-[6px] overflow-hidden transition-all flex items-center justify-center p-0 relative ${activeImageIndex === idx ? "border-[1.5px] border-solid border-[#C8A96B] shadow-sm transform scale-[1.02]" : "border-[1.5px] border-solid border-transparent opacity-60 hover:opacity-100"}`}
               >
-                <img src={img} alt={`${product.name} thumbnail ${idx + 1}`} className="w-full h-full object-cover mix-blend-multiply" />
+                <OptimizedImage src={img} width={150} alt={`${product.name} thumbnail ${idx + 1}`} className="w-full h-full object-cover mix-blend-multiply" />
               </button>
             ))}
           </div>
@@ -355,10 +376,10 @@ export default function ProductPage() {
               )}
 
               {/* Actions */}
-              <section className="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-2xl px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] md:p-0 md:bg-transparent md:relative z-50 border-t border-black/[0.03] md:border-0 shadow-[0_-12px_40px_rgba(0,0,0,0.06)] md:shadow-none mt-4 md:mt-8">
-                <div className="flex flex-row gap-3 max-w-7xl mx-auto">
+              <section className="fixed bottom-0 left-0 w-full px-4 pb-[calc(10px+env(safe-area-inset-bottom))] md:pb-0 pt-6 bg-gradient-to-t from-primary-50 via-primary-50/80 to-transparent pointer-events-none md:pointer-events-auto md:bg-none md:relative z-50 md:mt-8 will-change-transform transform-gpu">
+                <div className="flex flex-row gap-2 max-w-7xl mx-auto pointer-events-auto items-center">
                   <div className="flex gap-2 w-full">
-                    <div className="hidden md:flex items-center border border-black/10 bg-white shadow-sm flex-shrink-0" style={{ height: "48px", borderRadius: "10px", padding: "0 4px" }}>
+                    <div className="hidden md:flex items-center border border-black/10 bg-white shadow-sm flex-shrink-0" style={{ height: "42px", borderRadius: "8px", padding: "0 4px" }}>
                       <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-8 h-full text-primary-950/50 hover:text-primary-950 transition-colors font-sans text-xl flex items-center justify-center">-</button>
                       <span className="w-5 text-center font-bold text-primary-950 text-[14px]">{quantity}</span>
                       <button onClick={() => setQuantity(Math.min(maxStock, quantity + 1))} className="w-8 h-full text-primary-950/50 hover:text-primary-950 transition-colors font-sans text-xl flex items-center justify-center">+</button>
@@ -366,17 +387,17 @@ export default function ProductPage() {
                     <button
                       onClick={handleAddToCart}
                       disabled={isOutOfStock}
-                      className="flex-1 btn-primary disabled:opacity-50 text-[11px] md:text-[12px] tracking-[2px] uppercase shadow-[0_4px_14px_rgba(200,169,107,0.3)] hover:shadow-[0_6px_20px_rgba(200,169,107,0.4)] flex items-center justify-center rounded-[8px] h-[40px] md:h-[48px]"
+                      className="flex-1 btn-primary disabled:opacity-50 text-[11px] tracking-[2px] uppercase shadow-[0_4px_16px_rgba(200,169,107,0.4)] hover:shadow-[0_6px_20px_rgba(200,169,107,0.4)] flex items-center justify-center rounded-[6px] h-[38px] md:h-[42px]"
                       style={{ fontWeight: 700 }}
                     >
                       {isOutOfStock ? "SOLD OUT" : isAdded ? "✓ ADDED TO CART" : "ADD TO CART"}
                     </button>
                   </div>
                   
-                  <div className="flex gap-2 flex-shrink-0">
+                  <div className="flex flex-shrink-0">
                     <button
                       onClick={() => toggleWishlist(product.id)}
-                      className="w-[40px] h-[40px] md:w-[48px] md:h-[48px] bg-white border border-black/10 flex items-center justify-center transition-all hover:bg-black/5 rounded-[8px] shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
+                      className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] bg-white border border-black/10 flex items-center justify-center transition-all hover:bg-black/5 rounded-[6px] shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
                       aria-label="Wishlist"
                     >
                       <Heart size={16} fill={isWishlisted ? "currentColor" : "none"} className={isWishlisted ? "text-[#C8A96B]" : "text-primary-950/50"} strokeWidth={1.5} />
@@ -440,7 +461,7 @@ export default function ProductPage() {
         </div>
 
         {/* Related Section */}
-        <section className="mt-8 md:mt-20 border-t border-black/5 pt-8 md:pt-16 pb-[120px] md:pb-[40px] px-4 md:px-0">
+        <section className="mt-8 md:mt-20 border-t border-black/5 pt-8 md:pt-16 pb-8 md:pb-[40px] px-4 md:px-0">
           <div className="flex justify-between items-baseline mb-4 md:mb-6">
             <h2 className="text-xl md:text-2xl font-serif text-primary-950 font-medium tracking-wide">You May Also Like</h2>
             <Link to="/shop" className="text-[10px] uppercase font-bold text-[#8A6A4A] hover:text-primary-950 underline underline-offset-4 tracking-[2px] transition-colors">See All</Link>
@@ -483,6 +504,59 @@ export default function ProductPage() {
                  <button onClick={(e) => { e.stopPropagation(); nextImage(e); }} className="p-2 text-white/70 hover:text-white bg-black/20 rounded-full backdrop-blur-sm transition-all"><ChevronRight className="w-8 h-8 md:w-12 md:h-12" /></button>
               </div>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Cart Toast Notification */}
+      <AnimatePresence>
+        {showAddedToast.visible && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed top-[90px] md:top-28 right-4 md:right-8 z-[100] w-[calc(100%-32px)] sm:w-96 bg-white border border-black/10 shadow-[0_12px_40px_rgb(0,0,0,0.12)] rounded-md overflow-hidden flex flex-col pointer-events-auto mx-auto sm:mx-0 left-0 right-0 sm:left-auto"
+          >
+            <div className="bg-gold-500/10 px-4 py-2.5 flex items-center justify-between border-b border-gold-500/20">
+              <div className="flex items-center gap-2 text-gold-700">
+                <CheckCircle size={16} strokeWidth={2.5} />
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider">Added to Cart Successfully</span>
+              </div>
+              <button
+                onClick={() => setShowAddedToast(prev => ({ ...prev, visible: false }))}
+                className="text-primary-950/40 hover:text-primary-950 transition-colors p-1"
+                aria-label="Close"
+              >
+                <X size={16} />
+              </button>
+            </div>
+            <div className="p-4 flex gap-4 bg-white/50">
+              <div className="w-[60px] h-[75px] bg-primary-50 rounded-[4px] relative overflow-hidden flex-shrink-0 border border-black/5 shadow-sm">
+                <img src={optimizeImage(product.image, 100)} alt={product.name} className="w-full h-full object-cover object-top" />
+              </div>
+              <div className="flex-1 flex flex-col justify-center">
+                <h4 className="text-sm font-serif text-primary-950 line-clamp-2 leading-snug font-medium mb-1.5">{product.name}</h4>
+                <div className="flex items-center justify-between text-[11px] font-bold text-primary-950/60 uppercase tracking-widest mt-auto pb-1">
+                  <span>Qty: {showAddedToast.quantity}</span>
+                  {showAddedToast.size && <span>Size: {showAddedToast.size}</span>}
+                </div>
+              </div>
+            </div>
+            <div className="px-4 pb-4 pt-1 flex gap-3 bg-white/50 justify-between items-center">
+              <button
+                onClick={() => setShowAddedToast(prev => ({ ...prev, visible: false }))}
+                className="text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-primary-950/50 hover:text-primary-950 underline underline-offset-4 transition-colors"
+              >
+                Continue
+              </button>
+              <Link
+                to="/cart"
+                className="btn-primary text-[10px] md:text-[11px] px-6 py-2.5 rounded-[4px] shadow-sm hover:shadow-md transition-all"
+              >
+                View Cart
+              </Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

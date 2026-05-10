@@ -50,7 +50,7 @@ export default function Cart() {
   const [couponError, setCouponError] = useState("");
 
   const subtotalMRP = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  const activeCoupon = appliedCoupon || "VIP50";
+  const activeCoupon = appliedCoupon;
 
   let discountMultiplier = 0;
   if (activeCoupon === "VIP50") discountMultiplier = 0.50;
@@ -75,17 +75,11 @@ export default function Cart() {
   };
 
   const handleRemoveCoupon = () => {
-    // When removing the active coupon, it goes back to no coupon (null).
-    // Or maybe if we want VIP50 auto-applied, we just set appliedCoupon to null but it falls back to VIP50?
-    // Wait, if they remove VIP50, they might want to pay full price? Probably not.
-    // Let's just set it to null. If they remove, it will fall back to VIP50 because of our `activeCoupon` logic, 
-    // unless we strictly separate `appliedCoupon` and let them have nothing.
-    // If we want them to have 0 discount when they remove it:
     useStore.getState().applyCoupon(null);
   };
 
   return (
-    <div className="bg-primary-50 min-h-screen">
+    <div className="bg-primary-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <SEO
           title="Shopping Cart | Mukesh Saree Centre"
@@ -176,7 +170,7 @@ export default function Cart() {
             <div className="bg-white p-5 md:p-8 border border-black/5 rounded-sm shadow-xl shadow-black/[0.02] lg:sticky lg:top-32">
               <h2 className="text-lg md:text-xl font-serif text-primary-950 mb-4 md:mb-6 font-medium">Order Summary</h2>
               
-              {appliedCoupon ? (
+              {appliedCoupon && (
                 <div className="mb-4 pb-4 border-b border-black/5">
                   <div className="bg-[#F9F7F4] border border-[#8A6A4A]/20 p-4 rounded-sm flex flex-col items-center text-center">
                     <span className="text-[12px] uppercase tracking-[1px] font-bold text-[#8A6A4A] flex items-center gap-1.5 mb-1"><ShieldCheck size={16} /> Coupon Applied</span>
@@ -186,15 +180,6 @@ export default function Cart() {
                     <button onClick={handleRemoveCoupon} className="mt-3 text-[10px] uppercase font-bold text-primary-950/40 hover:text-red-500 transition-colors tracking-widest underline underline-offset-4">
                       Remove Coupon
                     </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="mb-4 pb-4 border-b border-black/5">
-                  <div className="bg-[#F9F7F4] border border-[#8A6A4A]/20 p-4 rounded-sm flex flex-col items-center text-center">
-                    <span className="text-[12px] uppercase tracking-[1px] font-bold text-[#8A6A4A] flex items-center gap-1.5 mb-1"><ShieldCheck size={16} /> Coupon Applied</span>
-                    <span className="font-serif text-lg text-primary-950 font-bold mb-1">VIP50</span>
-                    <span className="text-[11px] text-primary-950/60 font-medium mb-3 uppercase tracking-wider">50% OFF Applied Successfully</span>
-                    <span className="text-[13px] font-bold text-[#4CAF50] bg-[#4CAF50]/10 px-3 py-1.5 rounded-sm w-full">You Saved {formatPrice(totalDiscount)}</span>
                   </div>
                 </div>
               )}

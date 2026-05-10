@@ -114,7 +114,7 @@ export default function Wishlist() {
   };
 
   return (
-    <div className="bg-ivory min-h-screen">
+    <div className="bg-ivory">
       <SEO
         title={`${isSharedView ? "Curated Collection" : "The Vanity Vault"} | Mukesh Saree Centre`}
         description={

@@ -82,7 +82,7 @@ export default function Home() {
   const heroImageY = useTransform(scrollY, [0, 800], [0, 150]);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <SEO
         title="Mukesh Saree Centre – Premium Silk Sarees Since 1976"
         description="Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1976. Hurry, limited-time offers on premium collections!"

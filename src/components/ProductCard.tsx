@@ -39,8 +39,8 @@ export function ProductCard({
         }
       },
       {
-        rootMargin: "200px 0px",
-        threshold: 0.1,
+        rootMargin: "600px 0px",
+        threshold: 0,
       },
     );
 
@@ -62,7 +62,7 @@ export function ProductCard({
   };
 
   return (
-    <div className="group flex flex-col h-full bg-white transition-all duration-400 rounded-[24px] overflow-hidden border border-black/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1">
+    <div className="group flex flex-col h-full bg-white transition-[transform,box-shadow] duration-300 rounded-[24px] overflow-hidden border border-black/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 will-change-transform transform-gpu">
       <div
         ref={imageRef}
         className="relative aspect-[3/4] w-full overflow-hidden bg-primary-50 flex items-center justify-center p-0 flex-shrink-0"
@@ -81,7 +81,7 @@ export function ProductCard({
               alt={product.name}
               loading={idx < 4 ? "eager" : "lazy"}
               onLoad={() => setIsLoaded(true)}
-              className={`w-full h-full object-cover object-top transition-all duration-1000 ease-out group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+              className={`w-full h-full object-cover object-top transform-gpu will-change-transform transition-transform duration-700 ease-out group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0 transition-opacity"}`}
             />
           )}
         </Link>

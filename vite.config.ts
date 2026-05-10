@@ -11,13 +11,28 @@ export default defineConfig(({mode}) => {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
     build: {
-      cssCodeSplit: false,
+      cssCodeSplit: true,
+      minify: 'esbuild',
+      cssMinify: true,
       rollupOptions: {
         output: {
-          manualChunks: undefined,
-          entryFileNames: 'assets/[name].min.js',
-          chunkFileNames: 'assets/[name].min.js',
-          assetFileNames: 'assets/[name].min.[ext]',
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+                return 'vendor-react';
+              }
+              if (id.includes('motion')) {
+                return 'vendor-motion';
+              }
+              if (id.includes('lucide-react')) {
+                return 'vendor-icons';
+              }
+              return 'vendor';
+            }
+          },
+          entryFileNames: 'assets/[name].[hash].min.js',
+          chunkFileNames: 'assets/[name].[hash].min.js',
+          assetFileNames: 'assets/[name].[hash].min.[ext]',
         },
       },
     },

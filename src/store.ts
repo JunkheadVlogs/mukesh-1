@@ -66,7 +66,7 @@ export const useStore = create<AppState>()(
     (set, get) => ({
       cart: [],
       wishlist: [],
-      appliedCoupon: null,
+      appliedCoupon: "VIP50",
       addToCart: (product, size, quantity = 1) => {
         set((state) => {
           const newState = { appliedCoupon: state.appliedCoupon, cart: state.cart };
@@ -100,7 +100,7 @@ export const useStore = create<AppState>()(
           ),
         }));
       },
-      clearCart: () => set({ cart: [], appliedCoupon: null }),
+      clearCart: () => set({ cart: [], appliedCoupon: "VIP50" }),
       toggleWishlist: (productId) => {
         set((state) => ({
           wishlist: state.wishlist.includes(productId)
@@ -110,7 +110,7 @@ export const useStore = create<AppState>()(
       },
       cartTotal: () => {
         const state = get();
-        const activeCoupon = state.appliedCoupon || "VIP50";
+        const activeCoupon = state.appliedCoupon;
         let discountMultiplier = 0;
         if (activeCoupon === "VIP50") discountMultiplier = 0.50;
         else if (activeCoupon === "VIPCLUB60") discountMultiplier = 0.60;
