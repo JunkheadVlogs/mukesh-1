@@ -19,6 +19,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { products } from "./mockData";
 import { CONFIG } from "./config";
 import { formatPrice } from "./utils";
+import { OptimizedImage } from "./components/OptimizedImage";
 
 export default function Layout() {
   const { cart } = useStore();
@@ -199,11 +200,11 @@ export default function Layout() {
                             className="flex items-center gap-6 group"
                           >
                             <div className="w-20 aspect-[9/16] bg-transparent overflow-hidden rounded-sm flex-shrink-0">
-                              <img
+                              <OptimizedImage
                                 src={product.image}
+                                width={100}
                                 alt={product.name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                referrerPolicy="no-referrer"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 will-change-transform transform-gpu"
                               />
                             </div>
                             <div className="flex-grow">
@@ -344,18 +345,21 @@ export default function Layout() {
               <button
                 onClick={() => setIsSearchOpen(true)}
                 className={`${iconColor} hover:text-gold-500 transition-all block p-1 md:p-1.5`}
+                aria-label="Search"
               >
                 <Search size={20} strokeWidth={1} />
               </button>
               <Link
                 to="/wishlist"
                 className={`${iconColor} hover:text-gold-500 transition-all hidden sm:block p-1 md:p-1.5`}
+                aria-label="Wishlist"
               >
                 <Heart size={20} strokeWidth={1} />
               </Link>
               <Link
                 to="/cart"
                 className={`${iconColor} hover:text-gold-500 transition-all relative flex items-center p-2`}
+                aria-label="Cart"
               >
                 <motion.div
                   animate={cartBadgeHighlight ? { scale: [1, 1.2, 1], rotate: [0, -10, 10, -10, 0] } : {}}

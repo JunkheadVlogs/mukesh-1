@@ -176,6 +176,26 @@ export default function ProductPage() {
   const isOutOfStock = product.stock === 0;
   const maxStock = product.stock !== undefined ? product.stock : Infinity;
 
+  const productSchema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.name,
+    "image": productImages,
+    "description": product.description.replace(/<[^>]*>?/gm, ""),
+    "brand": {
+      "@type": "Brand",
+      "name": "Mukesh Saree Centre"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://mukeshsarees.com/product/${product.slug}`,
+      "priceCurrency": "INR",
+      "price": product.price,
+      "availability": isOutOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition"
+    }
+  };
+
   return (
     <div className="bg-primary-50">
       <SEO
@@ -190,6 +210,7 @@ export default function ProductPage() {
           availability: "in stock",
           condition: "new",
         }}
+        schema={productSchema}
       />
       
       <div className="max-w-7xl mx-auto px-0 md:px-4 sm:px-6 lg:px-8 pb-8 md:pb-12 product-page-top pt-0 md:pt-3">
@@ -344,7 +365,7 @@ export default function ProductPage() {
                         style={{ borderRadius: "8px", border: v.slug === slug ? "1.5px solid #C8A96B" : "1.5px solid transparent" }}
                        >
                          <div className="w-12 h-[60px] overflow-hidden bg-primary-50 relative">
-                           <img src={v.image} alt={v.color} className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-opacity" />
+                           <OptimizedImage src={v.image} alt={v.color} width={200} className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-opacity will-change-transform transform-gpu" />
                            {v.slug === slug && <div className="absolute inset-0 bg-[#C8A96B]/10 mix-blend-multiply pointer-events-none" />}
                          </div>
                        </Link>
@@ -496,7 +517,7 @@ export default function ProductPage() {
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full h-full md:w-auto md:h-auto md:max-w-5xl md:max-h-full relative flex items-center justify-center pointer-events-none"
             >
-              <img src={productImages[activeImageIndex]} alt={product.name} className="w-full h-full md:w-auto md:h-auto md:max-h-[90vh] object-contain md:rounded-sm md:shadow-2xl pointer-events-auto" onClick={e => e.stopPropagation()} />
+              <OptimizedImage src={productImages[activeImageIndex]} width={1200} alt={product.name} className="w-full h-full md:w-auto md:h-auto md:max-h-[90vh] object-contain md:rounded-sm md:shadow-2xl pointer-events-auto will-change-transform transform-gpu" onClick={(e: any) => e.stopPropagation()} />
               <div className="absolute inset-y-0 left-2 md:-left-20 flex items-center pointer-events-auto">
                  <button onClick={(e) => { e.stopPropagation(); prevImage(e); }} className="p-2 text-white/70 hover:text-white bg-black/20 rounded-full backdrop-blur-sm transition-all"><ChevronLeft className="w-8 h-8 md:w-12 md:h-12" /></button>
               </div>
@@ -533,7 +554,7 @@ export default function ProductPage() {
             </div>
             <div className="p-4 flex gap-4 bg-white/50">
               <div className="w-[60px] h-[75px] bg-primary-50 rounded-[4px] relative overflow-hidden flex-shrink-0 border border-black/5 shadow-sm">
-                <img src={optimizeImage(product.image, 100)} alt={product.name} className="w-full h-full object-cover object-top" />
+                <OptimizedImage src={product.image} width={100} alt={product.name} className="w-full h-full object-cover object-top will-change-transform transform-gpu" />
               </div>
               <div className="flex-1 flex flex-col justify-center">
                 <h4 className="text-sm font-serif text-primary-950 line-clamp-2 leading-snug font-medium mb-1.5">{product.name}</h4>

@@ -16,6 +16,11 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use((req, res, next) => {
+  console.log(`[REQUEST] ${req.method} ${req.url}`);
+  next();
+});
+
 // Configure CORS
 app.use(cors({
   origin: process.env.FRONTEND_URL || "*",
@@ -37,6 +42,58 @@ if (RAZORPAY_KEY_ID && RAZORPAY_KEY_SECRET) {
 }
 
 // ==== razorpay payment api ====
+app.post("/api/submit-order", async (req, res) => {
+  try {
+    const url = 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
+    
+    console.log("[PROXY] Submitting order to Google Sheets...");
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      redirect: 'follow', // Explicitly follow redirects
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(req.body),
+    });
+
+    const contentType = response.headers.get("content-type");
+    const text = await response.text();
+
+    if (!response.ok) {
+      console.error(`[PROXY] Google Sheets error: ${response.status} ${response.statusText}`);
+      console.error(`[PROXY] Response body: ${text.substring(0, 500)}`);
+      return res.status(response.status).json({
+        status: "error",
+        message: `Google Sheets returned ${response.status}: ${response.statusText}`,
+        details: text.substring(0, 200)
+      });
+    }
+
+    // Try to parse as JSON, if it fails, return the text
+    try {
+      if (text.startsWith("<!DOCTYPE") || text.includes("<html")) {
+        throw new Error("Received HTML instead of JSON from Google Sheets");
+      }
+      const result = JSON.parse(text);
+      res.json(result);
+    } catch (parseError) {
+      console.warn("[PROXY] Response was not valid JSON, returning as text/plain");
+      res.json({
+        status: "success", // Assume success if code is 200 but response is text (GAS quirk)
+        message: "Submission received (raw response)",
+        raw: text.substring(0, 1000)
+      });
+    }
+  } catch (error) {
+    console.error("Google Sheets Submission Proxy Error:", error);
+    res.status(500).json({
+      status: "error",
+      message: error.message || "Failed to proxy order to Google Sheets",
+    });
+  }
+});
+
 app.post("/api/create-order", async (req, res) => {
   try {
     if (!razorpay) {
@@ -50,7 +107,14 @@ app.post("/api/create-order", async (req, res) => {
 
     const order = await razorpay.orders.create(options);
 
-    res.json(order);
+    res.setHeader('Content-Type', 'application/json');
+    res.json({
+      success: true,
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      key: RAZORPAY_KEY_ID
+    });
   } catch (error) {
     console.error("Razorpay Create Order Error:", error);
     res.status(500).json({
@@ -112,9 +176,9 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   let ogTitle = "Mukesh Saree Centre – Premium Silk Sarees Since 1976";
   let ogDesc = "Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1976.";
   let ogImg = "https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me";
-  let ogUrl = "https://mukeshsareecentre.com" + originalUrl;
+  let ogUrl = "https://mukeshsarees.com" + originalUrl;
   
-  const productMatch = reqPath.match(/^\/product\/(.+)$/);
+  const productMatch = reqPath.match(/^\/product\/([^\/]+)\/?$/);
   if (productMatch) {
     const slug = productMatch[1];
     const prod = preParsedProducts.find(p => p.slug === slug);
@@ -128,36 +192,46 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     ogDesc = "Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre. From traditional silk to modern cotton co-ords, find your perfect outfit today.";
   }
 
+  const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
+
   let injectedHtml = html.replace(
-    '<title>Mukesh Saree Centre</title>',
-    `<title>${ogTitle}</title>
+    defaultOgBlockRegex,
+    `<!-- Dynamic OG Tags -->
      <meta property="og:title" content="${ogTitle}" />
      <meta property="og:description" content="${ogDesc}" />
      <meta property="og:image" content="${ogImg}" />
      <meta property="og:url" content="${ogUrl}" />
      <meta property="og:type" content="${productMatch ? 'product' : 'website'}" />
+     <meta property="og:site_name" content="Mukesh Saree Centre" />
      <meta property="og:image:width" content="1200" />
      <meta property="og:image:height" content="630" />
      <meta name="twitter:card" content="summary_large_image" />
      <meta name="twitter:title" content="${ogTitle}" />
      <meta name="twitter:description" content="${ogDesc}" />
      <meta name="twitter:image" content="${ogImg}" />
-    `
+     <!-- End Dynamic OG Tags -->`
   );
+  
+  // Update the title tag exclusively since we handled OGs above
+  injectedHtml = injectedHtml.replace(
+    '<title>Mukesh Saree Centre</title>',
+    `<title>${ogTitle}</title>`
+  );
+
   return injectedHtml;
 };
 
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain');
-  res.send(`User-agent: *\nDisallow: /api/\nAllow: /\n\nSitemap: https://mukeshsareecentre.com/sitemap.xml`);
+  res.send(`User-agent: *\nDisallow: /api/\nAllow: /\n\nUser-agent: WhatsApp\nAllow: /\n\nUser-agent: facebookexternalhit\nAllow: /\n\nUser-agent: Twitterbot\nAllow: /\n\nSitemap: https://mukeshsarees.com/sitemap.xml`);
 });
 
 app.get('/sitemap.xml', (req, res) => {
   res.type('application/xml');
   res.send(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://mukeshsareecentre.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-<url><loc>https://mukeshsareecentre.com/shop</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://mukeshsarees.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+<url><loc>https://mukeshsarees.com/shop</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
 </urlset>`);
 });
 

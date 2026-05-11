@@ -17,6 +17,7 @@ import { Link, useParams, useSearchParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
 import { formatPrice } from "./utils";
+import { OptimizedImage } from "./components/OptimizedImage";
 
 export default function Wishlist() {
   const { wishlist, toggleWishlist, addToCart } = useStore();
@@ -195,10 +196,11 @@ export default function Wishlist() {
                 >
                   <div className="relative aspect-[3/4] bg-white border border-onyx/5 shadow-sm rounded-sm overflow-hidden mb-8">
                     <Link to={`/product/${product.slug}`} className="block w-full h-full">
-                      <img
+                      <OptimizedImage
                         src={product.image}
+                        width={400}
                         alt={product.name}
-                        className="w-full h-full object-contain object-top mix-blend-multiply opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1.5s]"
+                        className="w-full h-full object-contain object-top mix-blend-multiply opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1.5s] will-change-transform transform-gpu"
                       />
                     </Link>
                     {!isSharedView && (

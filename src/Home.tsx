@@ -100,13 +100,13 @@ export default function Home() {
             width={1600}
             alt="Hero Exhibition"
             priority={true}
-            className="w-full h-full object-cover object-center lg:object-[center_20%]"
+            className="w-full h-full object-cover object-center lg:object-[center_20%] brightness-105 contrast-105"
           />
         </motion.div>
         
         <div className="absolute inset-0 bg-black/10 z-0 pointer-events-none md:bg-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-950/80 via-primary-950/30 to-transparent w-full md:w-[75%] z-0 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-transparent to-transparent md:hidden z-0 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/10 to-transparent w-full md:w-[60%] z-0 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent md:hidden z-0 pointer-events-none" />
 
         <motion.div
           className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-end md:justify-center h-full pb-20 md:pb-0"
@@ -370,7 +370,7 @@ export default function Home() {
 
             <div
               ref={scrollRef}
-              className="flex gap-6 overflow-x-auto pb-12 snap-x snap-mandatory scrollbar-hide no-scrollbar h-[450px] md:h-[550px]"
+              className="flex gap-6 overflow-x-auto pb-12 snap-x snap-mandatory scrollbar-hide no-scrollbar h-[450px] md:h-[550px] touch-pan-x will-change-scroll"
             >
               {shopImages.map((image, index) => (
                 <motion.div

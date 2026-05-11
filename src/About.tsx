@@ -1,4 +1,5 @@
 import { SEO } from './components/SEO';
+import { OptimizedImage } from './components/OptimizedImage';
 
 export default function About() {
   return (
@@ -22,10 +23,11 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 items-start">
           <div className="lg:col-span-12">
              <div className="aspect-[21/9] overflow-hidden bg-white rounded-sm group relative border border-onyx/5 shadow-sm">
-                <img 
+                <OptimizedImage 
                   src="https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
                   alt="Textile Detail" 
-                  className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[2s]" 
+                  width={1600}
+                  className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[2s] will-change-transform transform-gpu" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ivory via-transparent to-transparent flex items-end p-12">
                    <p className="text-[10px] uppercase tracking-[4px] text-onyx/40 font-bold italic">The Art of the Thread</p>
@@ -47,13 +49,13 @@ export default function About() {
 
           <div className="lg:col-span-7 grid grid-cols-2 gap-10">
               <div className="aspect-[3/4] bg-white overflow-hidden rounded-sm group relative border border-onyx/5 shadow-sm">
-                 <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" className="w-full h-full object-cover opacity-80 transition-all duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0" />
+                 <OptimizedImage src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="The Flagship" width={800} className="w-full h-full object-cover opacity-80 transition-all duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0 will-change-transform transform-gpu" />
                  <div className="absolute top-4 left-4">
                     <span className="text-[9px] uppercase tracking-[3px] text-onyx/20 font-bold">The Flagship</span>
                  </div>
               </div>
               <div className="aspect-[3/4] bg-white overflow-hidden rounded-sm group relative border border-onyx/5 shadow-sm">
-                 <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" className="w-full h-full object-cover opacity-80 transition-all duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0" />
+                 <OptimizedImage src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Heritage Gallery" width={800} className="w-full h-full object-cover opacity-80 transition-all duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0 will-change-transform transform-gpu" />
                  <div className="absolute top-4 left-4">
                     <span className="text-[9px] uppercase tracking-[3px] text-onyx/20 font-bold">Heritage Gallery</span>
                  </div>

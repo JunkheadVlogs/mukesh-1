@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import { lazy, Suspense } from 'react';
 import Layout from './Layout';
 import Home from './Home';
+import { ExitIntentPopup } from './components/ExitIntentPopup';
 
 const Shop = lazy(() => import('./Shop'));
 const Wishlist = lazy(() => import('./Wishlist'));
@@ -21,6 +22,7 @@ const Terms = lazy(() => import('./Terms'));
 export default function App() {
   return (
     <BrowserRouter>
+      <ExitIntentPopup />
       <Suspense fallback={
         <div className="w-full h-screen flex flex-col items-center justify-center bg-ivory space-y-12">
           <div className="flex flex-col items-center space-y-4">

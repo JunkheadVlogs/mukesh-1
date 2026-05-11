@@ -19,12 +19,12 @@ export function SEO({
   title,
   description,
   image = "https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me", // Default high-res banner
-  url = "https://mukeshsareecentre.com",
+  url = "https://mukeshsarees.com",
   type = "website",
   product,
   schema,
 }: SEOProps) {
-  const siteUrl = "https://mukeshsareecentre.com";
+  const siteUrl = "https://mukeshsarees.com";
   const absoluteUrl = url.startsWith("http") ? url : `${siteUrl}${url}`;
   const absoluteImage = image?.startsWith("http") ? image : `${siteUrl}${image}`;
 

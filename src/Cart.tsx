@@ -107,7 +107,7 @@ export default function Cart() {
                       src={item.image}
                       width={400}
                       alt={item.name}
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-cover object-top will-change-transform transform-gpu"
                     />
                   </div>
                   <div className="flex-grow flex flex-col justify-between py-1">

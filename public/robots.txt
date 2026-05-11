@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Specifically allow social crawlers (though User-agent: * covers them)
+User-agent: WhatsApp
+Allow: /
+User-agent: facebookexternalhit
+Allow: /
+User-agent: Twitterbot
+Allow: /
+
+Sitemap: https://mukeshsarees.com/sitemap.xml

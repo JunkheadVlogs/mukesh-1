@@ -1,5 +1,6 @@
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import { SEO } from "./components/SEO";
 import { Link, useNavigate } from "react-router";
 import { useStore } from "./store";
@@ -81,22 +82,24 @@ export default function Checkout() {
       const formData = new FormData(e.currentTarget);
       const fullName = formData.get("firstName")?.toString() || "";
       const mobileNumber = formData.get("mobileNumber")?.toString() || "";
-      const address = formData.get("address")?.toString() || "";
+      const email = formData.get("email")?.toString() || "";
+      const streetAddress = formData.get("streetAddress")?.toString() || "";
       const city = formData.get("city")?.toString() || "";
-      const pinCodeValue = formData.get("pinCode")?.toString() || "";
+      const zipCode = formData.get("zipCode")?.toString() || "";
 
       const errors: Record<string, string> = {};
       if (!fullName.trim()) errors.firstName = "Please enter your full name";
       if (!/^\d{10}$/.test(mobileNumber.trim())) errors.mobileNumber = "Please enter a valid 10-digit mobile number";
-      if (!address.trim()) errors.address = "Please enter your shipping address";
+      if (!streetAddress.trim()) errors.address = "Please enter your shipping address";
       if (!city.trim()) errors.city = "Please enter your city";
-      if (!/^\d{6}$/.test(pinCodeValue.trim())) errors.pinCode = "Please enter a 6-digit PIN code";
+      if (!/^\d{6}$/.test(zipCode.trim())) errors.pinCode = "Please enter a 6-digit PIN code";
 
       if (Object.keys(errors).length > 0) {
         setFormErrors(errors);
         setIsSubmitting(false);
         const firstErrorKey = Object.keys(errors)[0];
-        const errorElement = document.querySelector(`[name="${firstErrorKey}"]`) as HTMLElement;
+        const fieldName = firstErrorKey === 'address' ? 'streetAddress' : (firstErrorKey === 'pinCode' ? 'zipCode' : firstErrorKey);
+        const errorElement = document.querySelector(`[name="${fieldName}"]`) as HTMLElement;
         if (errorElement) {
           errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
           errorElement.focus();
@@ -110,25 +113,34 @@ export default function Checkout() {
 
       const finalizeOrder = async () => {
         try {
+          const productName = cart.map(i => i.name).join(", ");
+          const size = cart.map(i => i.size || "Standard").join(", ");
+          const sku = cart.map(i => i.sku || "N/A").join(", ");
+          const color = cart.map(i => i.color || "N/A").join(", ");
+
           const googleSheetsData = {
-            "First Name": fullName,
-            "Mobile Number": mobileNumber,
-            "Total Amount": total.toString(),
-            "Product Name": cart.map(i => i.name).join(", "),
-            "Date & Time": new Date().toLocaleString(),
             firstName: fullName,
-            mobileNumber,
-            address,
-            totalAmount: total.toString()
+            mobileNumber: mobileNumber,
+            email: email || "N/A",
+            streetAddress: streetAddress,
+            city: city,
+            zipCode: zipCode,
+            productName: productName,
+            totalAmount: total.toString(),
+            size: size,
+            sku: sku,
+            color: color
           };
-          await submitToGoogleSheets(googleSheetsData);
+
+          // Optimistically execute submission without awaiting to speed up UX
+          submitToGoogleSheets(googleSheetsData).catch(err => console.error("Sheet submit error:", err));
+
           trackPurchase(total, cart, newOrderId);
           setIsSuccess(true);
           clearCart();
         } catch (error) {
-          setIsSuccess(true);
-          clearCart();
-        } finally {
+          console.error("Submission error:", error);
+          alert("Something went wrong. Please check your connection.");
           setIsSubmitting(false);
         }
       };
@@ -141,38 +153,46 @@ export default function Checkout() {
           return;
         }
 
-        // Call backend API explicitly without VITE_API_BASE_URL to avoid wrong routes
-        const res = await fetch("/api/create-order", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount: total }),
-        });
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+        let res;
+        try {
+          res = await fetch(`${API_BASE_URL}/api/create-order`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: total }),
+          });
+        } catch (fetchErr) {
+          console.error("Network Error:", fetchErr);
+          alert("Payment initialization failed. Please try again.");
+          setIsSubmitting(false);
+          return;
+        }
         
         let orderData;
         try {
           const text = await res.text();
-          if (text.startsWith("<!doctype") || text.includes("<html")) {
-            throw new Error(`Invalid response from server. Are you running the backend Node.js server? Received HTML.`);
+          if (text.startsWith("<!doctype") || text.includes("<html") || text.includes("<title>Error")) {
+            throw new Error(`Invalid response from server. Received HTML.`);
           }
           orderData = JSON.parse(text);
           
-          if (!res.ok || orderData.error) {
+          if (!res.ok || orderData.error || !orderData.success) {
             throw new Error(orderData.error || "Failed to create order");
           }
         } catch (e: any) {
           console.error("Payment Error:", e);
-          alert(e.message || "Payment service is currently unavailable.");
+          alert("Payment initialization failed. Please try again.");
           setIsSubmitting(false);
           return;
         }
 
         const options = {
-          key: import.meta.env.VITE_RAZORPAY_KEY || "rzp_live_Slf11Odg572QOq",
+          key: orderData.key || import.meta.env.VITE_RAZORPAY_KEY || "rzp_live_Slf11Odg572QOq",
           amount: orderData.amount,
           currency: orderData.currency || "INR",
           name: "Mukesh Saree Centre",
           description: "Premium Purchase",
-          order_id: orderData.id,
+          order_id: orderData.orderId || orderData.id,
           handler: async function () {
             await finalizeOrder();
           },
@@ -196,21 +216,76 @@ export default function Checkout() {
 
   if (isSuccess) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-10 min-h-[70vh] flex flex-col items-center justify-center text-center bg-primary-50">
-        <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-8 border border-green-100">
+      <div className="max-w-4xl mx-auto px-4 py-10 min-h-[70vh] flex flex-col items-center justify-center text-center bg-primary-50 relative overflow-hidden">
+        {/* Subtle Confetti Dots using motion */}
+        {[...Array(12)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 0, x: 0, scale: 0 }}
+            animate={{ 
+              opacity: [0, 1, 0], 
+              y: -100 - Math.random() * 100, 
+              x: (Math.random() - 0.5) * 200,
+              scale: [0, 1.5, 0.5] 
+            }}
+            transition={{ duration: 2, ease: "easeOut", delay: i * 0.1 }}
+            className={`absolute w-2 h-2 rounded-full ${['bg-gold-400', 'bg-gold-600', 'bg-primary-500'][i % 3]} opacity-60`}
+            style={{ 
+              top: '50%', left: '50%', 
+              marginTop: '-50px' 
+            }}
+          />
+        ))}
+
+        <motion.div 
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-8 border border-green-100 z-10"
+        >
           <CheckCircle2 size={40} className="text-green-500" strokeWidth={1.5} />
-        </div>
-        <h1 className="text-3xl md:text-5xl font-serif text-primary-950 mb-4">Order Confirmed</h1>
-        <p className="text-primary-950/60 mb-10 max-w-md mx-auto">
-          Thank you for your purchase. Your order has been placed successfully and is being processed.
-        </p>
-        <div className="bg-white p-8 border border-black/5 rounded-sm shadow-xl shadow-black/[0.02] mb-12 max-w-sm w-full mx-auto">
+        </motion.div>
+        
+        <motion.h1 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="text-3xl md:text-5xl font-serif text-primary-950 mb-4 z-10"
+        >
+          Order Confirmed
+        </motion.h1>
+        
+        <motion.p 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-primary-950/80 mb-10 max-w-md mx-auto text-base md:text-lg z-10 leading-relaxed"
+        >
+          Your order has been placed successfully ❤️<br/>
+          We’re preparing your order and will contact you shortly.
+        </motion.p>
+        
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="bg-white p-6 md:p-8 border border-black/5 rounded-sm shadow-xl shadow-black/[0.02] mb-6 max-w-sm w-full mx-auto z-10"
+        >
            <p className="text-[10px] uppercase tracking-[2px] text-gold-600 font-bold mb-2">Order ID</p>
            <p className="text-2xl font-bold text-primary-950 mb-6">{orderId}</p>
-           <Link to="/shop" className="btn-primary">
+           <Link to="/shop" className="btn-primary w-full flex justify-center mb-4">
              Continue Shopping
            </Link>
-        </div>
+           <a 
+             href="https://wa.me/919999999999" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             className="flex items-center justify-center gap-2 text-green-600 hover:text-green-700 font-medium text-sm transition-colors py-2"
+           >
+             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+             WhatsApp Support
+           </a>
+        </motion.div>
       </div>
     );
   }
@@ -240,10 +315,10 @@ export default function Checkout() {
                 </h2>
                 <div className="grid grid-cols-1 gap-4">
                   <div className="space-y-1">
-                     <label className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">Full Name *</label>
+                     <label htmlFor="firstName" className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">Full Name *</label>
                      <input 
-                       required name="firstName" type="text"
-                       className={`w-full bg-primary-50/20 border ${formErrors.firstName ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-xs md:text-sm placeholder:text-primary-950/30`}
+                       required name="firstName" id="firstName" type="text"
+                       className={`w-full bg-primary-50/20 border ${formErrors.firstName ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-sm md:text-base placeholder:text-primary-950/50`}
                        placeholder="Enter your full name"
                      />
                      {formErrors.firstName && <p className="text-red-500 text-[9px] font-bold tracking-wide mt-1 ml-1">{formErrors.firstName}</p>}
@@ -251,29 +326,29 @@ export default function Checkout() {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                       <label className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">Mobile Number *</label>
+                       <label htmlFor="mobileNumber" className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">Mobile Number *</label>
                        <input 
-                         required name="mobileNumber" type="tel"
-                         className={`w-full bg-primary-50/20 border ${formErrors.mobileNumber ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-xs md:text-sm placeholder:text-primary-950/30`}
+                         required name="mobileNumber" id="mobileNumber" type="tel"
+                         className={`w-full bg-primary-50/20 border ${formErrors.mobileNumber ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-sm md:text-base placeholder:text-primary-950/50`}
                          placeholder="10-digit number"
                        />
                        {formErrors.mobileNumber && <p className="text-red-500 text-[9px] font-bold tracking-wide mt-1 ml-1">{formErrors.mobileNumber}</p>}
                     </div>
                     <div className="space-y-1">
-                       <label className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">Email <span className="text-primary-950/30 font-normal">(Optional)</span></label>
+                       <label htmlFor="email" className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">Email <span className="text-primary-950/30 font-normal">(Optional)</span></label>
                        <input 
-                         name="email" type="email"
-                         className="w-full bg-primary-50/20 border border-black/10 px-4 py-2.5 md:py-3 text-primary-950 focus:border-gold-500 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-xs md:text-sm placeholder:text-primary-950/30"
+                         name="email" id="email" type="email"
+                         className="w-full bg-primary-50/20 border border-black/10 px-4 py-2.5 md:py-3 text-primary-950 focus:border-gold-500 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-sm md:text-base placeholder:text-primary-950/50"
                          placeholder="email@example.com"
                        />
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                     <label className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">Shipping Address *</label>
+                     <label htmlFor="streetAddress" className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">Shipping Address *</label>
                      <input 
-                       required name="address" type="text"
-                       className={`w-full bg-primary-50/20 border ${formErrors.address ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-xs md:text-sm placeholder:text-primary-950/30`}
+                       required name="streetAddress" id="streetAddress" type="text"
+                       className={`w-full bg-primary-50/20 border ${formErrors.address ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-sm md:text-base placeholder:text-primary-950/50`}
                        placeholder="House no, Street name, Landmark"
                      />
                      {formErrors.address && <p className="text-red-500 text-[9px] font-bold tracking-wide mt-1 ml-1">{formErrors.address}</p>}
@@ -281,25 +356,32 @@ export default function Checkout() {
 
                   <div className="grid grid-cols-2 gap-3 md:gap-4">
                     <div className="space-y-1">
-                       <label className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">City *</label>
+                       <label htmlFor="city" className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">City *</label>
                        <input 
-                          required name="city" type="text" 
-                          className={`w-full bg-primary-50/20 border ${formErrors.city ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-xs md:text-sm placeholder:text-primary-950/30`} 
+                          required name="city" id="city" type="text" 
+                          className={`w-full bg-primary-50/20 border ${formErrors.city ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-sm md:text-base placeholder:text-primary-950/50`} 
                           placeholder="City name"
                        />
                        {formErrors.city && <p className="text-red-500 text-[9px] font-bold tracking-wide mt-1 ml-1">{formErrors.city}</p>}
                     </div>
                     <div className="space-y-1">
-                       <label className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">PIN Code *</label>
+                       <label htmlFor="zipCode" className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary-950/60 font-bold ml-1">PIN Code *</label>
                        <input 
-                         required name="pinCode" type="text"
-                         className={`w-full bg-primary-50/20 border ${formErrors.pinCode ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-xs md:text-sm placeholder:text-primary-950/30`}
+                         required name="zipCode" id="zipCode" type="text"
+                         className={`w-full bg-primary-50/20 border ${formErrors.pinCode ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-4 py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-sm md:text-base placeholder:text-primary-950/50`}
                          placeholder="6-digit PIN"
                        />
                        {formErrors.pinCode && <p className="text-red-500 text-[9px] font-bold tracking-wide mt-1 ml-1">{formErrors.pinCode}</p>}
                     </div>
                   </div>
                 </div>
+
+                {/* Hidden fields for ID requirements */}
+                <input type="hidden" id="productName" value={cart.map(i => i.name).join(", ")} />
+                <input type="hidden" id="totalAmount" value={total} />
+                <input type="hidden" id="size" value={cart.map(i => i.size || "Standard").join(", ")} />
+                <input type="hidden" id="sku" value={cart.map(i => i.sku || "N/A").join(", ")} />
+                <input type="hidden" id="color" value={cart.map(i => i.color || "N/A").join(", ")} />
               </section>
 
               {/* Payment Section */}
@@ -332,7 +414,13 @@ export default function Checkout() {
                   disabled={isSubmitting} 
                   className="w-full bg-primary-950 hover:bg-black text-white px-8 py-3.5 md:py-4 rounded-sm transition-all shadow-xl shadow-primary-950/20 text-xs md:text-sm font-bold tracking-[2px] uppercase flex items-center justify-center gap-3 disabled:opacity-70 active:scale-[0.98]"
                 >
-                  {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <>Complete Purchase <ArrowRight size={18} className="-mt-0.5" /></>}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" /> Processing Your Order...
+                    </>
+                  ) : (
+                    <>Place Order <ArrowRight size={18} className="-mt-0.5" /></>
+                  )}
                 </button>
               </div>
             </form>
@@ -347,7 +435,7 @@ export default function Checkout() {
                   {cart.map(item => (
                     <div key={`${item.id}-${item.size}`} className="flex gap-4">
                       <div className="w-16 h-20 bg-primary-50 rounded-sm relative overflow-hidden flex-shrink-0 border border-black/5">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover object-top" />
+                        <OptimizedImage src={item.image} alt={item.name} width={200} className="w-full h-full object-cover object-top will-change-transform transform-gpu" />
                         <div className="absolute top-1 right-1 bg-gold-500 text-white text-[9px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-sm">{item.quantity}</div>
                       </div>
                       <div className="flex flex-col justify-center gap-1">
@@ -378,7 +466,7 @@ export default function Checkout() {
                    <input 
                      type="text" value={couponInput} onChange={(e) => setCouponInput(e.target.value)}
                      placeholder="ENTER COUPON CODE"
-                     className="flex-1 bg-primary-50/20 border border-black/10 px-3 md:px-4 py-2.5 text-[10px] md:text-xs text-primary-950 focus:border-gold-500 focus:ring-1 focus:ring-gold-500/30 outline-none uppercase font-bold tracking-widest rounded-sm placeholder:text-primary-950/30"
+                     className="flex-1 bg-primary-50/20 border border-black/10 px-3 md:px-4 py-2.5 text-[10px] md:text-xs text-primary-950 focus:border-gold-500 focus:ring-1 focus:ring-gold-500/30 outline-none uppercase font-bold tracking-widest rounded-sm placeholder:text-primary-950/50"
                    />
                    <button type="button" onClick={handleApplyCoupon} className="bg-primary-950 text-white px-5 py-2.5 text-[9px] md:text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-black transition-colors">Apply</button>
                  </div>
