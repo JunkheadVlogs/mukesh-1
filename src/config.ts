@@ -9,19 +9,31 @@ export const CONFIG = {
 
 export async function submitToGoogleSheets(data: any) {
   try {
-    const response = await fetch('/api/submit-order', {
-      method: 'POST',
+    const response = await fetch(`/api/submit-order`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data)
     });
-    
-    const result = await response.json();
-    return result.status === "success";
+
+    const text = await response.text();
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch (err) {
+      console.error("Failed to parse response as JSON. Original response:", text.substring(0, 300));
+      throw new Error(`Invalid response format from /api/submit-order: ${text.substring(0, 100)}`);
+    }
+
+    console.log("Success:", result);
+    return result;
   } catch (error) {
-    console.error('Submission Error:', error);
-    return false;
+    console.error("Error:", error);
+    alert("Submission Failed");
+    return null;
   }
 }
+
+
 

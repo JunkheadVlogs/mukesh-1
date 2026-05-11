@@ -132,15 +132,18 @@ export default function Checkout() {
             color: color
           };
 
-          // Optimistically execute submission without awaiting to speed up UX
-          submitToGoogleSheets(googleSheetsData).catch(err => console.error("Sheet submit error:", err));
-
-          trackPurchase(total, cart, newOrderId);
-          setIsSuccess(true);
-          clearCart();
+          const result = await submitToGoogleSheets(googleSheetsData);
+          if (result && result.status === 'success') {
+            trackPurchase(total, cart, newOrderId);
+            setIsSuccess(true);
+            clearCart();
+          } else {
+            alert("Error: We could not process your order details at this moment. Please try again or contact support.");
+            setIsSubmitting(false);
+          }
         } catch (error) {
           console.error("Submission error:", error);
-          alert("Something went wrong. Please check your connection.");
+          alert("Something went wrong. Please check your connection and try again.");
           setIsSubmitting(false);
         }
       };
@@ -153,10 +156,9 @@ export default function Checkout() {
           return;
         }
 
-        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
         let res;
         try {
-          res = await fetch(`${API_BASE_URL}/api/create-order`, {
+          res = await fetch(`/api/create-order`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ amount: total }),
@@ -171,10 +173,12 @@ export default function Checkout() {
         let orderData;
         try {
           const text = await res.text();
-          if (text.startsWith("<!doctype") || text.includes("<html") || text.includes("<title>Error")) {
-            throw new Error(`Invalid response from server. Received HTML.`);
+          try {
+            orderData = JSON.parse(text);
+          } catch (e) {
+            console.error("Received non-JSON response:", text.substring(0, 500));
+            throw new Error(`The server returned an invalid response (not JSON). Snippet: ${text.substring(0, 100)}`);
           }
-          orderData = JSON.parse(text);
           
           if (!res.ok || orderData.error || !orderData.success) {
             throw new Error(orderData.error || "Failed to create order");
@@ -187,7 +191,7 @@ export default function Checkout() {
         }
 
         const options = {
-          key: orderData.key || import.meta.env.VITE_RAZORPAY_KEY || "rzp_live_Slf11Odg572QOq",
+          key: orderData.key || import.meta.env.VITE_RAZORPAY_KEY || "rzp_live_So7zJe4qbXm4LY",
           amount: orderData.amount,
           currency: orderData.currency || "INR",
           name: "Mukesh Saree Centre",

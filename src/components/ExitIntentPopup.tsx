@@ -106,8 +106,8 @@ export function ExitIntentPopup() {
     };
 
     try {
-      const success = await submitToGoogleSheets(payload);
-      if (success) {
+      const result = await submitToGoogleSheets(payload);
+      if (result && result.status === 'success') {
         setIsSuccess(true);
         localStorage.setItem('exitIntentSubmitted', 'true');
         // Close after 5 seconds if they don't close it themselves
@@ -126,7 +126,7 @@ export function ExitIntentPopup() {
   };
 
   const handleCopyCode = () => {
-    navigator.clipboard.writeText('VIPCLUB60');
+    navigator.clipboard.writeText('VIBCLUB60');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -164,7 +164,7 @@ export function ExitIntentPopup() {
                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-gold-200/30 rounded-tr-full -z-0"></div>
                  
                  <div className="relative z-10 font-sans font-bold text-3xl tracking-widest text-primary-950 mb-4 bg-white/60 py-3 rounded border border-white/80">
-                   VIPCLUB60
+                   VIBCLUB60
                  </div>
                  <p className="text-sm font-semibold text-gold-600 mb-4 uppercase tracking-wider">Get 60% OFF on Your Order</p>
                  

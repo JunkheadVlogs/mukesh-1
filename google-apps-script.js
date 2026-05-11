@@ -1,82 +1,66 @@
-// -------------------------------------------------------------
-// PLEASE COPY THIS CODE AND PASTE IT IN YOUR GOOGLE APPS SCRIPT
-// -------------------------------------------------------------
+function doOptions(e) {
+  return ContentService.createTextOutput("");
+}
 
 function doPost(e) {
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var data = JSON.parse(e.postData.contents);
     
-    // Parse the JSON data sent from our website
-    var data;
-    try {
-      data = JSON.parse(e.postData.contents);
-    } catch (parseError) {
-      // Fallback in case format is weird
-      data = JSON.parse(e.postData.getDataAsString());
-    }
-
-    // Check if this is an Exit Intent Lead
-    if (data["Action"] === "ExitLead" || data["leadSource"] === "Exit Intent Popup") {
-      var sheetName = "Exit Leads";
-      var leadSheet = ss.getSheetByName(sheetName);
-      // Create the sheet if it doesn't exist
-      if (!leadSheet) {
-        leadSheet = ss.insertSheet(sheetName);
-        leadSheet.appendRow(["Full Name", "Mobile Number", "Current Page URL", "Date & Time", "Device Type", "Source"]);
+    // Handle Exit Intent Popup Leads
+    if (data.leadSource === "Exit Intent Popup") {
+      var leadSheet = ss.getSheetByName("Exit Leads") || ss.insertSheet("Exit Leads");
+      if (leadSheet.getLastRow() === 0) {
+        leadSheet.appendRow(["First Name", "Mobile Number", "Lead Source", "Date"]);
       }
-      
-      var leadRowData = [
-        data["Full Name"] || data.firstName || data.name || "",
-        data["Mobile Number"] || data.mobileNumber || data.mobile || "",
-        data["Current Page URL"] || "",
-        data["Date & Time"] || new Date().toLocaleString(),
-        data["Device Type"] || "",
-        data["Source"] || data.leadSource || "Exit Popup"
+      var leadRow = [
+        data.firstName || '',
+        data.mobileNumber || '',
+        data.leadSource || '',
+        Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy hh:mm:ss a")
       ];
-      
-      leadSheet.appendRow(leadRowData);
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        "status": "success", 
-        "message": "Lead data successfully captured"
-      })).setMimeType(ContentService.MimeType.JSON);
+      leadSheet.appendRow(leadRow);
+      return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+        .setMimeType(ContentService.MimeType.JSON);
     }
     
-    // Otherwise, treat as regular Order
-    var sheet = ss.getSheetByName("Orders") || ss.getActiveSheet();
+    // Handle Checkout Orders
+    var sheet = ss.getSheetByName('Orders') || ss.insertSheet('Orders');
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(["First Name", "Mobile Number", "Email", "Street Address", "City", "Zip Code", "Product Name", "Total Amount", "Date & Time", "Size", "SKU", "Color", "Lead Source"]);
+    }
     
-    // Exactly extract data based on the explicit names we send from Checkout.tsx
-    // The keys map exactly to the camelCase properties in our React component
-    var rowData = [
-      data.firstName || data["First Name"] || "",         // Column A
-      data.mobileNumber || data["Mobile Number"] || "",   // Column B
-      data.email || data["Email"] || "",                  // Column C
-      data.streetAddress || data["Street Address"] || "", // Column D
-      data.city || data["City"] || "",                    // Column E
-      data.zipCode || data["Zip Code"] || "",             // Column F
-      data.productName || data["Product Name"] || "",     // Column G
-      data.totalAmount || data["Total Amount"] || "",     // Column H
-      data["Date & Time"] || new Date().toLocaleString(), // Column I
-      data.size || data["Size"] || "",                    // Column J
-      data.sku || data["SKU"] || data["SKU ID"] || "",     // Column K
-      data.color || data["Color"] || ""                   // Column L
+    var row = [
+      data.firstName || '',
+      data.mobileNumber || '',
+      data.email || '',
+      data.streetAddress || '',
+      data.city || '',
+      data.zipCode || '',
+      data.productName || '',
+      data.totalAmount || '',
+      Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy hh:mm:ss a"),
+      data.size || '',
+      data.sku || '',
+      data.color || '',
+      data.leadSource || ''
     ];
-    
-    // Append the completely organized row
-    sheet.appendRow(rowData);
-    
-    // Send Success Response Back
-    return ContentService.createTextOutput(JSON.stringify({
-      "status": "success", 
-      "message": "Order data successfully captured"
-    })).setMimeType(ContentService.MimeType.JSON);
-    
+
+    sheet.appendRow(row);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: 'success'
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+
   } catch (error) {
-    // If anything fails, return error logs
-    return ContentService.createTextOutput(JSON.stringify({
-      "status": "error", 
-      "message": error.toString()
-    })).setMimeType(ContentService.MimeType.JSON);
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: 'error',
+        message: error.toString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 }
 

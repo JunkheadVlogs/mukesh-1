@@ -30,8 +30,8 @@ app.use(cors({
 
 app.use(express.json());
 
-const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY;
-const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
+const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY || "rzp_live_So7zJe4qbXm4LY";
+const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG";
 
 let razorpay = null;
 if (RAZORPAY_KEY_ID && RAZORPAY_KEY_SECRET) {
@@ -142,6 +142,12 @@ app.post("/api/verify-payment", (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 });
+
+// JSON error for unhandled API routes, to avoid returning HTML
+app.all("/api/*", (req, res) => {
+  res.status(404).json({ success: false, error: `API route not found: ${req.method} ${req.url}` });
+});
+
 
 // Simple parser to extract product slugs and data for OG tags server-side
 let preParsedProducts = [];
@@ -261,6 +267,7 @@ async function setupServer() {
     
     app.use(express.static(distPath, { index: false }));
     
+    app.all('/api/*', (req, res) => { res.status(404).json({ success: false, error: 'API route not found' }); });
     app.get('*', (req, res) => {
       try {
         if (!fs.existsSync(indexPath)) {
