@@ -95,21 +95,7 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Wishlist Icon */}
-        <button 
-          className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-md text-primary-950 flex items-center justify-center rounded-full hover:bg-white hover:text-red-500 transition-all shadow-[0_2px_10px_rgba(0,0,0,0.08)] z-10"
-          onClick={(e) => {
-            e.preventDefault();
-            // Assuming wishlist toggle functionality exists in the store or we can just leave it as UI for now
-            // toggleWishlist(product.id)
-          }}
-          title="Add to Wishlist"
-          aria-label="Add to Wishlist"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-        </button>
+        {/* Wishlist Icon Removed */}
 
         {/* Hover Action Overlay */}
         <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-400 hidden md:flex gap-2">

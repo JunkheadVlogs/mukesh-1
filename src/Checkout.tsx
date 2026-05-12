@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "motion/react";
 import { SEO } from "./components/SEO";
 import { Link, useNavigate } from "react-router";
@@ -23,7 +23,6 @@ const loadRazorpay = () => {
 export default function Checkout() {
   const { cart, cartTotal, clearCart, appliedCoupon, applyCoupon } = useStore();
   const navigate = useNavigate();
-  const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("online");
@@ -31,6 +30,7 @@ export default function Checkout() {
   const [couponError, setCouponError] = useState("");
   const [pinCode, setPinCode] = useState("");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const isOrderSubmitted = useRef(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -111,14 +111,16 @@ export default function Checkout() {
       const newOrderId = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
       setOrderId(newOrderId);
 
-      const finalizeOrder = async () => {
+      const finalizeOrder = async (isSuccessState: boolean = true, status: string = paymentMethod === "online" ? "Online" : "Cash on Delivery", paymentId: string = "N/A") => {
         try {
           const productName = cart.map(i => i.name).join(", ");
           const size = cart.map(i => i.size || "Standard").join(", ");
           const sku = cart.map(i => i.sku || "N/A").join(", ");
           const color = cart.map(i => i.color || "N/A").join(", ");
 
+          const istTime = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
           const googleSheetsData = {
+            orderId: newOrderId,
             firstName: fullName,
             mobileNumber: mobileNumber,
             email: email || "N/A",
@@ -129,82 +131,85 @@ export default function Checkout() {
             totalAmount: total.toString(),
             size: size,
             sku: sku,
-            color: color
+            color: color,
+            paymentStatus: status,
+            paymentId: paymentId,
+            timestamp: istTime
           };
 
           const result = await submitToGoogleSheets(googleSheetsData);
-          if (result && result.status === 'success') {
-            trackPurchase(total, cart, newOrderId);
-            setIsSuccess(true);
-            clearCart();
-          } else {
-            alert("Error: We could not process your order details at this moment. Please try again or contact support.");
-            setIsSubmitting(false);
+          
+          if (isSuccessState) {
+            if (result && result.status === 'success') {
+              trackPurchase(total, cart, newOrderId);
+              isOrderSubmitted.current = true;
+              clearCart();
+              navigate("/thank-you", { state: { orderId: newOrderId }, replace: true });
+            } else {
+              throw new Error("Invalid response from server");
+            }
           }
         } catch (error) {
           console.error("Submission error:", error);
-          alert("Something went wrong. Please check your connection and try again.");
-          setIsSubmitting(false);
+          if (isSuccessState) {
+            alert("We could not process your order details at this moment. Please try again.");
+            setIsSubmitting(false);
+          }
         }
       };
 
       if (paymentMethod === "online") {
-        const isLoaded = await loadRazorpay();
-        if (!isLoaded) {
-          alert("Payment gateway failed to load.");
-          setIsSubmitting(false);
-          return;
-        }
-
-        let res;
         try {
-          res = await fetch(`/api/create-order`, {
+          const reqBody = { amount: total };
+          const response = await fetch("/api/create-order", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: total }),
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(reqBody)
           });
-        } catch (fetchErr) {
-          console.error("Network Error:", fetchErr);
-          alert("Payment initialization failed. Please try again.");
-          setIsSubmitting(false);
-          return;
-        }
-        
-        let orderData;
-        try {
-          const text = await res.text();
-          try {
-            orderData = JSON.parse(text);
-          } catch (e) {
-            console.error("Received non-JSON response:", text.substring(0, 500));
-            throw new Error(`The server returned an invalid response (not JSON). Snippet: ${text.substring(0, 100)}`);
-          }
-          
-          if (!res.ok || orderData.error || !orderData.success) {
-            throw new Error(orderData.error || "Failed to create order");
-          }
-        } catch (e: any) {
-          console.error("Payment Error:", e);
-          alert("Payment initialization failed. Please try again.");
-          setIsSubmitting(false);
-          return;
-        }
 
-        const options = {
-          key: orderData.key || import.meta.env.VITE_RAZORPAY_KEY || "rzp_live_So7zJe4qbXm4LY",
-          amount: orderData.amount,
-          currency: orderData.currency || "INR",
-          name: "Mukesh Saree Centre",
-          description: "Premium Purchase",
-          order_id: orderData.orderId || orderData.id,
-          handler: async function () {
-            await finalizeOrder();
-          },
-          prefill: { name: fullName, contact: mobileNumber },
-          theme: { color: "#D4AF37" },
-        };
-        const rzp = new (window as any).Razorpay(options);
-        rzp.open();
+          if (!response.ok) {
+            throw new Error("Failed to create order");
+          }
+
+          const data = await response.json();
+
+          if (!data.orderId) {
+            throw new Error("Invalid order response");
+          }
+
+          // Save order to sheets as Pending BEFORE opening payment gateway
+          await finalizeOrder(false, "Payment Pending", "N/A");
+
+          const options = {
+            key: data.key,
+            amount: data.amount,
+            currency: data.currency,
+            order_id: data.orderId,
+            name: "Mukesh Sarees",
+            description: "Order Payment",
+            prefill: { name: fullName, contact: mobileNumber },
+            theme: { color: "#D4AF37" },
+            handler: async function(paymentResponse: any) {
+              try {
+                // Submit to google sheets after successful payment
+                const rzpId = paymentResponse.razorpay_payment_id || "Success";
+                await finalizeOrder(true, "Paid Online", rzpId);
+              } catch (e) {
+                 console.error(e);
+                 alert("Payment successful but there was an error recording your order. Please contact support.");
+              }
+            }
+          };
+
+          const rzp = new (window as any).Razorpay(options);
+          rzp.open();
+        } catch (error) {
+          console.error("Payment Error:", error);
+          alert("Payment initialization failed. Please try again.");
+          setIsSubmitting(false);
+        }
       } else {
         await finalizeOrder();
       }
@@ -213,85 +218,14 @@ export default function Checkout() {
     }
   };
 
-  if (cart.length === 0 && !isSuccess) {
-    navigate("/cart");
+  useEffect(() => {
+    if (cart.length === 0 && !isOrderSubmitted.current) {
+      navigate("/cart");
+    }
+  }, [cart.length, navigate]);
+
+  if (cart.length === 0 && !isOrderSubmitted.current) {
     return null;
-  }
-
-  if (isSuccess) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-10 min-h-[70vh] flex flex-col items-center justify-center text-center bg-primary-50 relative overflow-hidden">
-        {/* Subtle Confetti Dots using motion */}
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 0, x: 0, scale: 0 }}
-            animate={{ 
-              opacity: [0, 1, 0], 
-              y: -100 - Math.random() * 100, 
-              x: (Math.random() - 0.5) * 200,
-              scale: [0, 1.5, 0.5] 
-            }}
-            transition={{ duration: 2, ease: "easeOut", delay: i * 0.1 }}
-            className={`absolute w-2 h-2 rounded-full ${['bg-gold-400', 'bg-gold-600', 'bg-primary-500'][i % 3]} opacity-60`}
-            style={{ 
-              top: '50%', left: '50%', 
-              marginTop: '-50px' 
-            }}
-          />
-        ))}
-
-        <motion.div 
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-8 border border-green-100 z-10"
-        >
-          <CheckCircle2 size={40} className="text-green-500" strokeWidth={1.5} />
-        </motion.div>
-        
-        <motion.h1 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="text-3xl md:text-5xl font-serif text-primary-950 mb-4 z-10"
-        >
-          Order Confirmed
-        </motion.h1>
-        
-        <motion.p 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-primary-950/80 mb-10 max-w-md mx-auto text-base md:text-lg z-10 leading-relaxed"
-        >
-          Your order has been placed successfully ❤️<br/>
-          We’re preparing your order and will contact you shortly.
-        </motion.p>
-        
-        <motion.div 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white p-6 md:p-8 border border-black/5 rounded-sm shadow-xl shadow-black/[0.02] mb-6 max-w-sm w-full mx-auto z-10"
-        >
-           <p className="text-[10px] uppercase tracking-[2px] text-gold-600 font-bold mb-2">Order ID</p>
-           <p className="text-2xl font-bold text-primary-950 mb-6">{orderId}</p>
-           <Link to="/shop" className="btn-primary w-full flex justify-center mb-4">
-             Continue Shopping
-           </Link>
-           <a 
-             href="https://wa.me/919999999999" 
-             target="_blank" 
-             rel="noopener noreferrer" 
-             className="flex items-center justify-center gap-2 text-green-600 hover:text-green-700 font-medium text-sm transition-colors py-2"
-           >
-             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-             WhatsApp Support
-           </a>
-        </motion.div>
-      </div>
-    );
   }
 
   return (

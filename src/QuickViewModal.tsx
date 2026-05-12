@@ -182,14 +182,6 @@ export default function QuickViewModal({
                       {isAdded ? "✓ ADDED TO CART" : `ADD TO CART`}
                     </button>
                     <div className="flex gap-4">
-                      <button
-                        onClick={() => toggleWishlist(product.id)}
-                        className="flex-1 border-2 border-black/5 bg-white hover:bg-primary-50 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all"
-                        style={{ height: "44px", borderRadius: "12px" }}
-                      >
-                        <Heart size={16} fill={isWishlisted ? "currentColor" : "none"} className={isWishlisted ? "text-red-500" : "text-primary-950/20"} />
-                        {isWishlisted ? "Saved" : "Save"}
-                      </button>
                       <Link
                         to={`/product/${product.slug}`}
                         onClick={onClose}

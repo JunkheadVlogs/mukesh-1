@@ -82,8 +82,16 @@ export function ExitIntentPopup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    const name = formData.name.trim();
+    const mobile = formData.mobile.trim();
+
+    if (!name || !mobile) {
+      alert("Please fill all fields");
+      return;
+    }
+
     // Mobile validation: 10 digits (handling optional 91 prefix)
-    let mobileValue = formData.mobile.replace(/\D/g, ''); // Remove non-digits
+    let mobileValue = mobile.replace(/\D/g, ''); // Remove non-digits
     
     // If it starts with 91 and is 12 digits, take last 10
     if (mobileValue.length === 12 && mobileValue.startsWith('91')) {
@@ -99,27 +107,33 @@ export function ExitIntentPopup() {
 
     setIsSubmitting(true);
 
-    const payload = {
-      firstName: formData.name,
-      mobileNumber: mobileValue,
-      leadSource: "Exit Intent Popup"
-    };
-
     try {
+      const payload = {
+        firstName: name,
+        mobileNumber: mobileValue,
+        leadSource: "Exit Intent Popup",
+        timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+      };
+
       const result = await submitToGoogleSheets(payload);
-      if (result && result.status === 'success') {
+
+      if (result && result.status === "success") {
         setIsSuccess(true);
         localStorage.setItem('exitIntentSubmitted', 'true');
-        // Close after 5 seconds if they don't close it themselves
+        
+        alert("Coupon Unlocked Successfully");
+        
+        // Close after 8 seconds if they don't close it themselves
         setTimeout(() => {
           if (isVisible) handleClose();
         }, 8000);
       } else {
-        alert("There was an error saving your request. Please try again.");
+        throw new Error(result?.message || "Submission failed");
       }
+      
     } catch (error) {
-      console.error("Popup submit error:", error);
-      alert("Something went wrong. Please check your connection.");
+      console.error("Popup Error:", error);
+      alert("Submission Failed. Please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -163,7 +177,7 @@ export function ExitIntentPopup() {
                  <div className="absolute top-0 right-0 w-20 h-20 bg-gold-200/30 rounded-bl-full -z-0"></div>
                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-gold-200/30 rounded-tr-full -z-0"></div>
                  
-                 <div className="relative z-10 font-sans font-bold text-3xl tracking-widest text-primary-950 mb-4 bg-white/60 py-3 rounded border border-white/80">
+                 <div id="couponCode" className="relative z-10 font-sans font-bold text-3xl tracking-widest text-primary-950 mb-4 bg-white/60 py-3 rounded border border-white/80">
                    VIBCLUB60
                  </div>
                  <p className="text-sm font-semibold text-gold-600 mb-4 uppercase tracking-wider">Get 60% OFF on Your Order</p>
@@ -208,6 +222,7 @@ export function ExitIntentPopup() {
                 <div className="text-left">
                   <label className="block text-[11px] uppercase tracking-wider text-primary-600 font-medium mb-1.5 ml-1">Full Name</label>
                   <input 
+                    id="popupName"
                     type="text" 
                     required
                     value={formData.name}
@@ -219,6 +234,7 @@ export function ExitIntentPopup() {
                 <div className="text-left mb-2">
                   <label className="block text-[11px] uppercase tracking-wider text-primary-600 font-medium mb-1.5 ml-1">Mobile Number</label>
                   <input 
+                    id="popupMobile"
                     type="tel" 
                     required
                     value={formData.mobile}

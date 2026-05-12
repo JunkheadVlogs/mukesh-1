@@ -415,15 +415,7 @@ export default function ProductPage() {
                     </button>
                   </div>
                   
-                  <div className="flex flex-shrink-0">
-                    <button
-                      onClick={() => toggleWishlist(product.id)}
-                      className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] bg-white border border-black/10 flex items-center justify-center transition-all hover:bg-black/5 rounded-[6px] shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
-                      aria-label="Wishlist"
-                    >
-                      <Heart size={16} fill={isWishlisted ? "currentColor" : "none"} className={isWishlisted ? "text-[#C8A96B]" : "text-primary-950/50"} strokeWidth={1.5} />
-                    </button>
-                  </div>
+                  {/* Wishlist Button Removed */}
                 </div>
               </section>
 

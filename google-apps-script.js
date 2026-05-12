@@ -1,5 +1,6 @@
 function doOptions(e) {
-  return ContentService.createTextOutput("");
+  return ContentService.createTextOutput("")
+    .setMimeType(ContentService.MimeType.TEXT);
 }
 
 function doPost(e) {
@@ -17,7 +18,7 @@ function doPost(e) {
         data.firstName || '',
         data.mobileNumber || '',
         data.leadSource || '',
-        Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy hh:mm:ss a")
+        data.timestamp || Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy hh:mm:ss a")
       ];
       leadSheet.appendRow(leadRow);
       return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
@@ -27,10 +28,11 @@ function doPost(e) {
     // Handle Checkout Orders
     var sheet = ss.getSheetByName('Orders') || ss.insertSheet('Orders');
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(["First Name", "Mobile Number", "Email", "Street Address", "City", "Zip Code", "Product Name", "Total Amount", "Date & Time", "Size", "SKU", "Color", "Lead Source"]);
+      sheet.appendRow(["Order ID", "Name", "Mobile Number", "Email", "Address", "City", "PIN Code", "Product Name", "Amount", "Size", "SKU", "Color", "Payment Method", "Order Status", "Payment ID", "Date & Time", "Lead Source"]);
     }
     
     var row = [
+      data.orderId || '',
       data.firstName || '',
       data.mobileNumber || '',
       data.email || '',
@@ -39,10 +41,13 @@ function doPost(e) {
       data.zipCode || '',
       data.productName || '',
       data.totalAmount || '',
-      Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy hh:mm:ss a"),
       data.size || '',
       data.sku || '',
       data.color || '',
+      data.paymentStatus === 'Cash on Delivery' ? 'COD' : (data.paymentMethod || data.paymentStatus || ''),
+      data.orderStatus || 'Pending',
+      data.paymentId || 'N/A',
+      data.timestamp || Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy hh:mm:ss a"),
       data.leadSource || ''
     ];
 
@@ -50,7 +55,8 @@ function doPost(e) {
 
     return ContentService
       .createTextOutput(JSON.stringify({
-        status: 'success'
+        status: 'success',
+        message: 'Order placed successfully'
       }))
       .setMimeType(ContentService.MimeType.JSON);
 

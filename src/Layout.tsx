@@ -349,13 +349,7 @@ export default function Layout() {
               >
                 <Search size={20} strokeWidth={1} />
               </button>
-              <Link
-                to="/wishlist"
-                className={`${iconColor} hover:text-gold-500 transition-all hidden sm:block p-1 md:p-1.5`}
-                aria-label="Wishlist"
-              >
-                <Heart size={20} strokeWidth={1} />
-              </Link>
+              {/* Wishlist Icon Removed */}
               <Link
                 to="/cart"
                 className={`${iconColor} hover:text-gold-500 transition-all relative flex items-center p-2`}
@@ -422,9 +416,7 @@ export default function Layout() {
                 <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-1">Our Legacy</Link>
                 
                 <div className="border-t border-black/5 pt-5 mt-2 flex flex-col space-y-5">
-                  <Link to="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 py-1">
-                    <Heart size={18} strokeWidth={1.5} /> Wishlist
-                  </Link>
+                  {/* Wishlist Mobile Link Removed */}
                   <button onClick={() => { setIsMobileMenuOpen(false); setIsSearchOpen(true); }} className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 text-left py-1">
                     <Search size={18} strokeWidth={1.5} /> Search
                   </button>
@@ -509,6 +501,7 @@ export default function Layout() {
                   </li>
                   <li className="pt-2">Contact Person: Mohit</li>
                   <li>WhatsApp / Call:<br /> {CONFIG.STORE_PHONE}</li>
+                  <li className="pt-2 text-[11px] font-medium text-primary-950/60 uppercase tracking-[1px]">Timings: 10:30 AM - 9:00 PM (IST)</li>
                 </ul>
               </div>
             </div>
