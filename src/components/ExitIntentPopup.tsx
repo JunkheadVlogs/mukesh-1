@@ -19,16 +19,10 @@ export function ExitIntentPopup() {
       if (hasShown) return false;
       
       const submitted = localStorage.getItem('exitIntentSubmittedTime');
-      const dismissed = localStorage.getItem('exitIntentDismissedTime');
       const now = Date.now();
-      const ONE_DAY = 24 * 60 * 60 * 1000;
+      const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
       
-      if (submitted && (now - parseInt(submitted)) < ONE_DAY) return false;
-      if (dismissed && (now - parseInt(dismissed)) < ONE_DAY) return false;
-      
-      // Fallbacks for older keys
-      if (localStorage.getItem('exitIntentSubmitted') === 'true') return false;
-      if (sessionStorage.getItem('exitIntentDismissed') === 'true') return false;
+      if (submitted && (now - parseInt(submitted)) < SEVEN_DAYS) return false;
       
       return true;
     };
@@ -65,13 +59,19 @@ export function ExitIntentPopup() {
     }, 12000);
 
     // 4. History / Back button intent on mobile
-    const handlePopState = () => {
+    // Create a dummy history state to trap the back button once
+    const handlePopState = (e: PopStateEvent) => {
+       if (e.state && e.state.exitIntentTrap === "trap") {
+         // This is our trap state, ignore
+         return;
+       }
        showPopup();
     };
 
-    // Initialize history state hack for back button intent
-    if (window.innerWidth <= 768 && !window.history.state?.exitIntent) {
-       window.history.pushState({ exitIntent: true }, "");
+    // Push two states so the user has to press back to trigger the popstate before leaving
+    if (!window.history.state || window.history.state.exitIntentTrap !== "trap") {
+       window.history.replaceState({ exitIntentTrap: "base" }, "");
+       window.history.pushState({ exitIntentTrap: "trap" }, "");
     }
 
     document.addEventListener('mouseout', handleMouseOut);
@@ -140,27 +140,55 @@ export function ExitIntentPopup() {
 
     try {
       const payload = {
+        orderId: "LEAD-" + Date.now().toString().slice(-6),
         firstName: name,
+        lastName: "",
+        email: "",
         mobileNumber: mobileValue,
-        leadSource: "Exit Intent Popup",
-        timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+        address: "Website Lead",
+        items: "Exit Intent Form Submitted",
+        totalAmount: "0",
+        discountAmount: "0",
+        paymentMethod: "",
+        paymentStatus: "Lead",
+        paymentId: "",
+        timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        leadType: "Exit Intent",
+        status: "Lead",
+        source: "Popup",
+        couponUsed: "VIBCLUB60",
+        pageUrl: window.location.href
       };
+
+      // Add actual keys specifically requested by user just in case the Google script picks up exact string matches
+      (payload as any)["Lead Type"] = "Exit Intent";
+      (payload as any)["Status"] = "Lead";
+      (payload as any)["Source"] = "Popup";
+      (payload as any)["Coupon Used"] = "VIBCLUB60";
+      (payload as any)["Page URL"] = window.location.href;
 
       const result = await submitToGoogleSheets(payload);
 
       if (result && (result.status === "success" || result.status === 200 || result.fallback)) {
         setIsSuccess(true);
         setSuccessStorage();
-        setTimeout(() => isVisible && handleClose(), 8000);
+        // Automatically copy the coupon code to clipboard
+        try {
+          navigator.clipboard.writeText('VIBCLUB60');
+          setCopied(true);
+        } catch (err) {}
+        
+        setTimeout(() => isVisible && handleClose(), 5000);
       } else {
         setIsSuccess(true);
         setSuccessStorage();
-        setTimeout(() => isVisible && handleClose(), 8000);
+        setTimeout(() => isVisible && handleClose(), 5000);
       }
     } catch (error) {
       console.error("Popup Error:", error);
       setIsSuccess(true);
       setSuccessStorage();
+      setTimeout(() => isVisible && handleClose(), 5000);
     } finally {
       setIsSubmitting(false);
     }
