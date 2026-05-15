@@ -51,15 +51,8 @@ export function ExitIntentPopup() {
       }, 60000);
     };
 
-    const handlePopState = () => {
-      showPopup();
-    };
-
-    window.history.pushState({ popupTrap: true }, '');
-
     document.addEventListener('mouseout', handleMouseOut);
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('popstate', handlePopState);
     
     const events = ['mousemove', 'touchstart', 'scroll', 'keydown', 'click'];
     events.forEach(e => document.addEventListener(e, resetTimer, { passive: true }));
@@ -68,7 +61,6 @@ export function ExitIntentPopup() {
     return () => {
       document.removeEventListener('mouseout', handleMouseOut);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('popstate', handlePopState);
       events.forEach(e => document.removeEventListener(e, resetTimer));
       clearTimeout(inactivityTimer);
     };
@@ -120,8 +112,6 @@ export function ExitIntentPopup() {
       if (result && result.status === "success") {
         setIsSuccess(true);
         localStorage.setItem('exitIntentSubmitted', 'true');
-        
-        alert("Coupon Unlocked Successfully");
         
         // Close after 8 seconds if they don't close it themselves
         setTimeout(() => {

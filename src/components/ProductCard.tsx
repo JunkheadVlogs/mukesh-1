@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Link } from "react-router";
-import { Eye, Plus } from "lucide-react";
+import { Eye, Plus, Star } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Product, useStore } from "../store";
-import { formatPrice, optimizeImage } from "../utils";
+import { formatPrice, optimizeImage, getProductReviewStats } from "../utils";
 import { trackAddToCart } from "../tracking";
 import { Skeleton } from "./Skeleton";
 import { OptimizedImage } from "./OptimizedImage";
@@ -24,6 +24,8 @@ export function ProductCard({
   const [isInView, setIsInView] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
   const { addToCart } = useStore();
+
+  const stats = useMemo(() => getProductReviewStats(product), [product.id]);
 
   useEffect(() => {
     if (idx < 4) {
@@ -93,6 +95,16 @@ export function ProductCard({
               New
             </span>
           )}
+          {product.isTrending && (
+            <span className="bg-[#C8A96B] text-white text-[10px] uppercase font-semibold px-2.5 py-1 rounded-sm tracking-[2px] shadow-sm">
+              Trending
+            </span>
+          )}
+          {product.isBestSelling && (
+            <span className="bg-[#25D366] text-white text-[10px] uppercase font-semibold px-2.5 py-1 rounded-sm tracking-[2px] shadow-sm">
+              Best Seller
+            </span>
+          )}
         </div>
 
         {/* Wishlist Icon Removed */}
@@ -146,18 +158,30 @@ export function ProductCard({
           <h3 className="font-serif text-primary-950 font-medium tracking-wide group-hover:text-gold-600 transition-colors w-full text-center truncate" style={{ fontSize: "13px", lineHeight: "1.25" }}>
             <Link to={`/product/${product.slug}`} title={product.name}>{product.name}</Link>
           </h3>
+          <div className="flex items-center justify-center gap-1 mt-0.5">
+            <div className="flex text-amber-500">
+              {[ ...Array(5)].map((_, i) => (
+                <Star key={i} className={`w-2.5 h-2.5 ${stats.rating >= i + 1 ? 'fill-current' : stats.rating >= i + 0.5 ? 'fill-current opacity-50' : 'text-gray-200'}`} />
+              ))}
+            </div>
+            <span className="text-[9px] text-primary-950/50">({product.reviewsCount || stats.reviewCount})</span>
+          </div>
         </div>
         
         <div className="mt-auto pt-1.5 flex items-center justify-center gap-1.5 md:gap-2 flex-nowrap w-full overflow-hidden">
           <span className="text-[13px] md:text-[15px] font-bold text-primary-950 font-price whitespace-nowrap">
-            {formatPrice(Math.floor(product.price * 0.5))}
-          </span>
-          <span className="text-[10px] md:text-[11px] text-primary-900/40 line-through font-light font-price decoration-1 whitespace-nowrap flex-shrink-0">
             {formatPrice(product.price)}
           </span>
-          <span className="font-sans font-bold tracking-[1px] text-[#8A6A4A] whitespace-nowrap flex-shrink-0" style={{ fontSize: "9px", textTransform: "uppercase" }}>
-            50% OFF
-          </span>
+          {product.originalPrice && (
+            <>
+              <span className="text-[10px] md:text-[11px] text-primary-900/40 line-through font-light font-price decoration-1 whitespace-nowrap flex-shrink-0">
+                {formatPrice(product.originalPrice)}
+              </span>
+              <span className="font-sans font-bold tracking-[1px] text-[#8A6A4A] whitespace-nowrap flex-shrink-0" style={{ fontSize: "9px", textTransform: "uppercase" }}>
+                {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
+              </span>
+            </>
+          )}
         </div>
       </div>
     </div>

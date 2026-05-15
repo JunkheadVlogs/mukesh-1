@@ -20,7 +20,13 @@ const Contact = lazy(() => import('./Contact'));
 const Privacy = lazy(() => import('./Privacy'));
 const Terms = lazy(() => import('./Terms'));
 
+import { CONFIG } from "./config";
+
 export default function App() {
+  // Version 1.0.1 - Cache Bust
+  console.log("[DEBUG] BASE_URL:", import.meta.env.BASE_URL);
+  console.log("[DEBUG] CONFIG API_BASE_URL:", CONFIG.API_BASE_URL);
+
   return (
     <BrowserRouter>
       <ExitIntentPopup />

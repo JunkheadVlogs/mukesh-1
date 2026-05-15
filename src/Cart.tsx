@@ -49,16 +49,19 @@ export default function Cart() {
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
 
-  const subtotalMRP = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subtotalCart = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subtotalMRP = cart.reduce((total, item) => total + (item.originalPrice || item.price) * item.quantity, 0);
+  const mRPDiscount = subtotalMRP - subtotalCart;
+
   const activeCoupon = appliedCoupon;
+  let couponDiscountMultiplier = 0;
+  if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.50;
+  else if (activeCoupon === "VIPCLUB60") couponDiscountMultiplier = 0.60;
 
-  let discountMultiplier = 0;
-  if (activeCoupon === "VIP50") discountMultiplier = 0.50;
-  else if (activeCoupon === "VIPCLUB60") discountMultiplier = 0.60;
-
-  const totalDiscount = Math.floor(subtotalMRP * discountMultiplier);
+  const couponDiscount = Math.floor(subtotalCart * couponDiscountMultiplier);
+  const totalDiscount = mRPDiscount + couponDiscount;
   const shipping = 0;
-  const total = Math.max(0, subtotalMRP - totalDiscount);
+  const total = Math.max(0, subtotalCart - couponDiscount);
   
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,8 +98,8 @@ export default function Cart() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           <div className="lg:col-span-8 space-y-6 md:space-y-8">
             {cart.map((item) => {
-              const itemMRP = item.price * item.quantity;
-              const itemSellingPrice = Math.floor(item.price * 0.5) * item.quantity;
+              const itemTotal = item.price * item.quantity;
+              const itemMRP = (item.originalPrice || item.price) * item.quantity;
               return (
                 <div
                   key={`${item.id}-${item.size}`}
@@ -118,14 +121,18 @@ export default function Cart() {
                         </h3>
                         <div className="flex flex-col items-end whitespace-nowrap">
                           <p className="text-sm md:text-lg font-sans font-bold text-primary-950">
-                            {formatPrice(itemSellingPrice)}
+                            {formatPrice(itemTotal)}
                           </p>
-                          <p className="text-[10px] md:text-xs text-primary-950/40 line-through font-medium">
-                            MRP {formatPrice(itemMRP)}
-                          </p>
-                          <p className="text-[9px] md:text-[10px] uppercase tracking-[1px] font-bold text-[#8A6A4A] mt-0.5">
-                            50% OFF
-                          </p>
+                          {item.originalPrice && (
+                            <>
+                              <p className="text-[10px] md:text-xs text-primary-950/40 line-through font-medium">
+                                MRP {formatPrice(itemMRP)}
+                              </p>
+                              <p className="text-[9px] md:text-[10px] uppercase tracking-[1px] font-bold text-[#8A6A4A] mt-0.5">
+                                {Math.round((1 - item.price / item.originalPrice) * 100)}% OFF
+                              </p>
+                            </>
+                          )}
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2 md:gap-4 text-[10px] md:text-xs font-medium uppercase tracking-wider text-primary-950/50">
@@ -175,7 +182,7 @@ export default function Cart() {
                   <div className="bg-[#F9F7F4] border border-[#8A6A4A]/20 p-4 rounded-sm flex flex-col items-center text-center">
                     <span className="text-[12px] uppercase tracking-[1px] font-bold text-[#8A6A4A] flex items-center gap-1.5 mb-1"><ShieldCheck size={16} /> Coupon Applied</span>
                     <span className="font-serif text-lg text-primary-950 font-bold mb-1">{appliedCoupon}</span>
-                    <span className="text-[11px] text-primary-950/60 font-medium mb-3 uppercase tracking-wider">{discountMultiplier * 100}% OFF Applied Successfully</span>
+                    <span className="text-[11px] text-primary-950/60 font-medium mb-3 uppercase tracking-wider">{couponDiscountMultiplier * 100}% OFF Applied Successfully</span>
                     <span className="text-[13px] font-bold text-[#4CAF50] bg-[#4CAF50]/10 px-3 py-1.5 rounded-sm w-full">You Saved {formatPrice(totalDiscount)}</span>
                     <button onClick={handleRemoveCoupon} className="mt-3 text-[10px] uppercase font-bold text-primary-950/40 hover:text-red-500 transition-colors tracking-widest underline underline-offset-4">
                       Remove Coupon
@@ -184,43 +191,51 @@ export default function Cart() {
                 </div>
               )}
 
-              <div className="mb-6 pb-6 border-b border-black/5">
-                <form onSubmit={handleApplyCoupon} className="flex gap-2">
-                   <input
-                     type="text"
-                     value={couponCode}
-                     onChange={(e) => setCouponCode(e.target.value)}
-                     placeholder="Enter Coupon Code"
-                     className="flex-1 bg-[#F9F7F4] border border-black/10 rounded-sm px-3 py-2 text-xs text-primary-950 placeholder:text-primary-950/40 focus:outline-none focus:border-gold-500 uppercase font-medium tracking-wide"
-                   />
-                   <button 
-                     type="submit" 
-                     className="bg-primary-950 text-gold-400 px-4 rounded-sm text-[10px] uppercase font-bold tracking-widest hover:bg-primary-900 transition-colors"
-                   >
-                     Apply
-                   </button>
-                 </form>
-                 {couponError && (
-                   <p className="text-red-500 text-[10px] font-bold uppercase tracking-wider mt-2">{couponError}</p>
-                 )}
-                 <p className="text-[9px] uppercase font-medium text-primary-950/40 mt-2 tracking-wider">Only one coupon can be applied per order.</p>
-              </div>
+              {!appliedCoupon && (
+                <div className="mb-6 pb-6 border-b border-black/5">
+                  <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                     <input
+                       type="text"
+                       value={couponCode}
+                       onChange={(e) => setCouponCode(e.target.value)}
+                       placeholder="Enter Coupon Code"
+                       className="flex-1 bg-[#F9F7F4] border border-black/10 rounded-sm px-3 py-2 text-xs text-primary-950 placeholder:text-primary-950/40 focus:outline-none focus:border-gold-500 uppercase font-medium tracking-wide"
+                     />
+                     <button 
+                       type="submit" 
+                       className="bg-primary-950 text-gold-400 px-4 rounded-sm text-[10px] uppercase font-bold tracking-widest hover:bg-primary-900 transition-colors"
+                     >
+                       Apply
+                     </button>
+                   </form>
+                   {couponError && (
+                     <p className="text-red-500 text-[10px] font-bold uppercase tracking-wider mt-2">{couponError}</p>
+                   )}
+                   <p className="text-[9px] uppercase font-medium text-primary-950/40 mt-2 tracking-wider">Only one coupon can be applied per order.</p>
+                </div>
+              )}
 
               <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
                 <div className="flex justify-between text-xs md:text-sm text-primary-950/60 font-medium">
-                  <span>MRP Subtotal</span>
-                  <span className="text-primary-950 font-bold">{formatPrice(subtotalMRP)}</span>
+                  <span>MRP Total</span>
+                  <span className="text-primary-950/40 line-through">{formatPrice(subtotalMRP)}</span>
                 </div>
                 <div className="flex justify-between text-xs md:text-sm text-[#8A6A4A] font-medium">
-                  <span>Discount</span>
-                  <span className="font-bold">-{formatPrice(totalDiscount)}</span>
+                  <span>Product Discount</span>
+                  <span className="font-bold">-{formatPrice(mRPDiscount)}</span>
                 </div>
+                {couponDiscount > 0 && (
+                  <div className="flex justify-between text-xs md:text-sm text-[#4CAF50] font-medium">
+                    <span>Coupon Discount</span>
+                    <span className="font-bold">-{formatPrice(couponDiscount)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-xs md:text-sm text-primary-950/60 font-medium">
                   <span>Shipping</span>
                   <span className="text-[#8A6A4A] font-bold">FREE</span>
                 </div>
                 <div className="pt-4 border-t border-black/5 flex justify-between items-center">
-                  <span className="text-base md:text-lg font-medium text-primary-950">Total</span>
+                  <span className="text-base md:text-lg font-medium text-primary-950">Subtotal (to pay)</span>
                   <span className="text-xl md:text-2xl font-bold text-primary-950">{formatPrice(total)}</span>
                 </div>
               </div>

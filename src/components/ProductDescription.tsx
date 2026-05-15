@@ -25,7 +25,9 @@ export function ProductDescription({
     clean = clean.replace(/\*\*\s*Description\s*\*\*/gi, '**DESCRIPTION**');
     clean = clean.replace(/\*\*\s*Care Instructions\s*\*\*/gi, '**CARE**');
     clean = clean.replace(/\*\*\s*Product Details\s*\*\*/gi, '**DETAILS**');
-    return clean;
+    // Remove repetitive marketing blurbs like "✨ COD Available..."
+    clean = clean.replace(/✨.*$/gm, '');
+    return clean.trim();
   };
 
   const parseSections = (text: string): Section[] => {
@@ -55,7 +57,7 @@ export function ProductDescription({
       content = content.replace(/^-\s*/, '').trim(); // Remove leading hyphen if any
 
       const upperTitle = title.toUpperCase();
-      if (upperTitle === "BLOUSE PIECE DETAILS" || upperTitle === "DIMENSIONS") {
+      if (upperTitle === "BLOUSE PIECE DETAILS") {
         continue;
       }
 
@@ -78,6 +80,11 @@ export function ProductDescription({
       {sections.map((section, idx) => (
         <AccordionItem key={idx} title={section.title} content={section.content} isOpenDefault={idx === 0} />
       ))}
+      <AccordionItem 
+        title="DELIVERY & RETURNS" 
+        content="Free shipping on all orders. Delivery takes 3-5 working days. We offer a hassle-free 7-day return policy for unused products with original tags." 
+        isOpenDefault={false} 
+      />
     </div>
   );
 }
@@ -92,8 +99,8 @@ function AccordionItem({ title, content, isOpenDefault }: { title: string, conte
         className="w-full py-4 lg:py-5 flex justify-between items-center bg-transparent focus:outline-none group text-left"
       >
         <span className="text-[12px] tracking-[2px] font-bold text-primary-950 uppercase pr-4">{title}</span>
-        <span className={`text-primary-950/40 transition-transform duration-300 transform-gpu will-change-transform ${isOpen ? "rotate-180" : ""}`}>
-          <ChevronDown size={16} />
+        <span className={`text-[#8A6A4A] transition-transform duration-300 transform-gpu will-change-transform ${isOpen ? "rotate-180" : ""}`}>
+          <ChevronDown size={14} strokeWidth={2.5} />
         </span>
       </button>
       <AnimatePresence initial={false}>
@@ -105,7 +112,7 @@ function AccordionItem({ title, content, isOpenDefault }: { title: string, conte
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden will-change-transform transform-gpu"
           >
-            <div className="pb-5 text-[14px] md:text-[15px] leading-[1.6] text-primary-950/70 font-sans font-normal max-w-[95%] prose prose-sm prose-p:mb-3 prose-li:mb-1.5 prose-ul:list-disc prose-ul:pl-5 prose-strong:font-bold prose-strong:text-primary-950">
+            <div className="pb-5 text-[14px] leading-relaxed text-primary-950/70 font-sans font-medium max-w-[95%] prose prose-sm prose-p:mb-3 prose-li:mb-2 prose-ul:list-none prose-ul:pl-0 prose-li:border-b prose-li:border-black/5 prose-li:pb-2 last:prose-li:border-0 prose-strong:font-bold prose-strong:text-primary-950">
               <ReactMarkdown>{content}</ReactMarkdown>
             </div>
           </motion.div>

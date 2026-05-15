@@ -38,7 +38,11 @@ export default function Shop() {
 
     // Filter
     if (categoryFilter) {
-      result = result.filter(p => p.category === categoryFilter);
+      if (categoryFilter === 'Sarees') {
+        result = result.filter(p => p.category === 'Sarees' || p.category === 'Linen Sarees');
+      } else {
+        result = result.filter(p => p.category === categoryFilter);
+      }
     }
 
     if (fabricFilter.length > 0) {
@@ -142,7 +146,7 @@ export default function Shop() {
     setSearchParams(newParams);
   };
 
-  const baseFabrics = ['Silk', 'Organza', 'Crepe', 'Satin', 'Cotton'];
+  const baseFabrics = ['Silk', 'Organza', 'Crepe', 'Satin', 'Cotton', 'Linen', 'Georgette', 'Chiffon', 'Khadi Cotton'];
   const uniqueColors = Array.from(new Set(products.map(p => p.color)));
 
   return (
@@ -222,19 +226,42 @@ export default function Shop() {
               <section>
                 <h3 className="text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-6">Category</h3>
                 <div className="flex flex-col gap-3">
-                  {[
-                    { name: 'All Collection', value: null },
-                    { name: 'Sarees', value: 'Sarees' },
-                    { name: 'Co-Ord Sets', value: 'Co-Ord Sets' }
-                  ].map((cat) => (
+                  <button 
+                    onClick={() => handleCategoryChange(null)}
+                    className={`text-left text-sm font-medium transition-all ${!categoryFilter ? 'text-gold-600 font-bold' : 'text-primary-950/60 hover:text-primary-950'}`}
+                  >
+                    All Collection
+                  </button>
+
+                  <div className="flex flex-col gap-2">
                     <button 
-                      key={cat.name}
-                      onClick={() => handleCategoryChange(cat.value)}
-                      className={`text-left text-sm font-medium transition-all ${(!categoryFilter && cat.value === null) || (categoryFilter === cat.value) ? 'text-gold-600 font-bold' : 'text-primary-950/60 hover:text-primary-950'}`}
+                      onClick={() => handleCategoryChange('Sarees')}
+                      className={`text-left text-sm font-medium transition-all ${categoryFilter === 'Sarees' || categoryFilter === 'Linen Sarees' ? 'text-gold-600 font-bold' : 'text-primary-950/60 hover:text-primary-950'}`}
                     >
-                      {cat.name}
+                      Sarees
                     </button>
-                  ))}
+                    {(categoryFilter === 'Sarees' || categoryFilter === 'Linen Sarees') && (
+                      <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        className="pl-4 flex flex-col gap-2 border-l border-gold-500/20 ml-1 overflow-hidden"
+                      >
+                        <button 
+                          onClick={() => handleCategoryChange('Linen Sarees')}
+                          className={`text-left text-xs font-medium transition-all py-1 ${categoryFilter === 'Linen Sarees' ? 'text-gold-600 font-bold' : 'text-primary-950/60 hover:text-primary-950'}`}
+                        >
+                          — Linen Sarees
+                        </button>
+                      </motion.div>
+                    )}
+                  </div>
+
+                  <button 
+                    onClick={() => handleCategoryChange('Co-Ord Sets')}
+                    className={`text-left text-sm font-medium transition-all ${categoryFilter === 'Co-Ord Sets' ? 'text-gold-600 font-bold' : 'text-primary-950/60 hover:text-primary-950'}`}
+                  >
+                    Co-Ord Sets
+                  </button>
                 </div>
               </section>
 

@@ -3,13 +3,16 @@ import { persist } from 'zustand/middleware';
 
 export interface Review {
   id: string;
-  productId: string;
-  userName: string;
+  productId?: string;
+  author?: string;
+  userName?: string;
   rating: number;
-  comment: string;
+  comment?: string;
+  text?: string;
   date: string;
-  helpful: number;
-  notHelpful: number;
+  helpful?: number;
+  notHelpful?: number;
+  verified?: boolean;
 }
 
 export interface ColorVariant {
@@ -28,7 +31,7 @@ export interface Product {
   image: string;
   images?: string[];
   videoUrl?: string;
-  category: 'Sarees' | 'Co-Ord Sets';
+  category: 'Sarees' | 'Co-Ord Sets' | string;
   fabric: string;
   color: string;
   colorVariants?: ColorVariant[];
@@ -39,6 +42,9 @@ export interface Product {
   slug: string;
   description: string;
   rating: number;
+  reviewsCount?: number;
+  reviews?: Review[];
+  enableUrgency?: boolean;
   availableSizes?: string[];
   stock?: number;
 }
@@ -66,7 +72,7 @@ export const useStore = create<AppState>()(
     (set, get) => ({
       cart: [],
       wishlist: [],
-      appliedCoupon: "VIP50",
+      appliedCoupon: null,
       addToCart: (product, size, quantity = 1) => {
         set((state) => {
           const newState = { appliedCoupon: state.appliedCoupon, cart: state.cart };
@@ -100,7 +106,7 @@ export const useStore = create<AppState>()(
           ),
         }));
       },
-      clearCart: () => set({ cart: [], appliedCoupon: "VIP50" }),
+      clearCart: () => set({ cart: [], appliedCoupon: null }),
       toggleWishlist: (productId) => {
         set((state) => ({
           wishlist: state.wishlist.includes(productId)
@@ -111,13 +117,13 @@ export const useStore = create<AppState>()(
       cartTotal: () => {
         const state = get();
         const activeCoupon = state.appliedCoupon;
-        let discountMultiplier = 0;
-        if (activeCoupon === "VIP50") discountMultiplier = 0.50;
-        else if (activeCoupon === "VIPCLUB60") discountMultiplier = 0.60;
+        let couponDiscountMultiplier = 0;
+        if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.50;
+        else if (activeCoupon === "VIPCLUB60") couponDiscountMultiplier = 0.60;
         
-        const subtotalMRP = state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
-        const totalDiscount = Math.floor(subtotalMRP * discountMultiplier);
-        return Math.max(0, subtotalMRP - totalDiscount);
+        const subtotalCart = state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
+        const couponDiscount = Math.floor(subtotalCart * couponDiscountMultiplier);
+        return Math.max(0, subtotalCart - couponDiscount);
       },
       applyCoupon: (code) => set({ appliedCoupon: code }),
     }),

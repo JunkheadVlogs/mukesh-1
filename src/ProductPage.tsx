@@ -17,25 +17,30 @@ import {
   MessageCircle,
   Phone,
   CheckCircle,
+  Share2,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { ProductDescription } from "./components/ProductDescription";
 import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
 import { trackViewContent, trackAddToCart } from "./tracking";
-import { formatPrice, optimizeImage } from "./utils";
+import { formatPrice, optimizeImage, getProductReviewStats } from "./utils";
 import { CONFIG } from "./config";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { ProductCard } from "./components/ProductCard";
 import { SEO } from "./components/SEO";
+import { UrgencyWidget } from "./components/UrgencyWidget";
+import { ProductReviews } from "./components/ProductReviews";
 
 export default function ProductPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const product = products.find((p) => p.slug === slug);
   const { addToCart, toggleWishlist, wishlist } = useStore();
+
+  const stats = useMemo(() => product ? getProductReviewStats(product) : { rating: 4.8, reviewCount: 150 }, [product?.id]);
 
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [isAdded, setIsAdded] = useState(false);
@@ -135,6 +140,32 @@ export default function ProductPage() {
       : [product.image];
   const totalMediaLength = productImages.length;
 
+  const handleShare = async () => {
+    // Determine the share URL. If we are in the development environment, 
+    // it will share the current URL. When deployed to production, it will be the real domain.
+    // We clean up any AI Studio specific workarounds for production readiness.
+    const shareUrl = window.location.href;
+    
+    const shareData = {
+      title: `${product.name} | Mukesh Saree Centre`,
+      text: "Check out this beautiful product at Mukesh Saree Centre!",
+      url: shareUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        alert("Link copied to clipboard!");
+      }
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        console.error("Error sharing:", err);
+      }
+    }
+  };
+
   const handleAddToCart = (): boolean => {
     if (isCoOrd && !selectedSize) {
       setSizeError(true);
@@ -219,6 +250,14 @@ export default function ProductPage() {
            <span className="opacity-20 text-[14px]">/</span>
            <Link to="/shop" className="hover:text-discount transition-colors">Shop</Link>
            <span className="opacity-20 text-[14px]">/</span>
+           <Link to={`/shop?category=${product.category === 'Linen Sarees' ? 'Sarees' : product.category}`} className="hover:text-discount transition-colors">{product.category === 'Linen Sarees' ? 'Sarees' : product.category}</Link>
+           {product.category === 'Linen Sarees' && (
+             <>
+               <span className="opacity-20 text-[14px]">/</span>
+               <Link to="/shop?category=Linen Sarees" className="hover:text-discount transition-colors">Linen Sarees</Link>
+             </>
+           )}
+           <span className="opacity-20 text-[14px]">/</span>
            <span className="text-primary-950/90">{product.name}</span>
         </nav>
 
@@ -293,9 +332,34 @@ export default function ProductPage() {
           <div className="px-4 md:px-0 pt-1 md:pt-0">
             <div className="lg:sticky lg:top-32">
               <header className="flex flex-col items-center justify-center text-center mt-0 mb-1.5 md:mb-3">
-                <span className="text-[10px] uppercase tracking-[3px] font-bold text-[#8A6A4A]/70 mb-0.5 md:mb-1.5">
-                  {product.category}
-                </span>
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <span className="text-[10px] uppercase tracking-[3px] font-bold text-[#8A6A4A]/70">
+                    {product.category}
+                  </span>
+                  {product.sku && (
+                    <>
+                      <span className="opacity-20 text-[10px]">|</span>
+                      <span className="text-[10px] uppercase tracking-[1.5px] font-bold text-primary-950/40">
+                        SKU: {product.sku}
+                      </span>
+                    </>
+                  )}
+                  {product.isNew && (
+                    <span className="text-[9px] uppercase tracking-[1px] font-bold bg-[#EFE7DC] text-[#2B2B2B] px-1.5 py-0.5 rounded-sm">
+                      New
+                    </span>
+                  )}
+                  {product.isTrending && (
+                    <span className="text-[9px] uppercase tracking-[1px] font-bold bg-[#C8A96B]/10 text-[#C8A96B] px-1.5 py-0.5 rounded-sm">
+                      Trending Now
+                    </span>
+                  )}
+                  {product.isBestSelling && (
+                    <span className="text-[9px] uppercase tracking-[1px] font-bold bg-[#25D366]/10 text-[#25D366] px-1.5 py-0.5 rounded-sm">
+                      Best Seller
+                    </span>
+                  )}
+                </div>
                 
                 {(() => {
                   const parts = product.name.split(/ with /i);
@@ -307,16 +371,40 @@ export default function ProductPage() {
                     </h1>
                   );
                 })()}
+
+                {/* Rating Summary Snippet */}
+                <a href="#reviews" className="flex items-center gap-1.5 mt-2 hover:opacity-80 transition-opacity">
+                  <div className="flex text-amber-500">
+                    {[ ...Array(5)].map((_, i) => (
+                      <Star key={i} className={`w-3.5 h-3.5 md:w-4 md:h-4 ${stats.rating >= i + 1 ? 'fill-current' : stats.rating >= i + 0.5 ? 'fill-current opacity-50' : 'text-gray-200'}`} />
+                    ))}
+                  </div>
+                  <span className="text-[11px] md:text-sm font-medium text-primary-950/70 border-b border-primary-950/20 pb-[1px]">
+                    {stats.rating} ({product.reviewsCount || stats.reviewCount} Reviews)
+                  </span>
+                </a>
               </header>
               
-              {/* Product Pricing */}
-              <div className="flex items-center justify-center gap-2 md:gap-3 flex-nowrap w-full overflow-hidden mb-3">
-                <span className="text-[20px] md:text-2xl font-bold text-primary-950 font-price whitespace-nowrap leading-none">
-                  {formatPrice(Math.floor(product.price * 0.5))}
-                </span>
-                <span className="text-[14px] md:text-lg text-primary-900/40 line-through font-light font-price decoration-1 whitespace-nowrap flex-shrink-0 leading-none">
-                  MRP {formatPrice(product.price)}
-                </span>
+              {/* Product Pricing and Share */}
+              <div className="flex items-center justify-center gap-4 w-full mb-3 relative">
+                <div className="flex items-center gap-2 md:gap-3 flex-nowrap overflow-hidden">
+                  <span className="text-[20px] md:text-2xl font-bold text-primary-950 font-price whitespace-nowrap leading-none">
+                    {formatPrice(product.price)}
+                  </span>
+                  {product.originalPrice && (
+                    <span className="text-[14px] md:text-lg text-primary-900/40 line-through font-light font-price decoration-1 whitespace-nowrap flex-shrink-0 leading-none">
+                      MRP {formatPrice(product.originalPrice)}
+                    </span>
+                  )}
+                </div>
+                
+                <button
+                  onClick={handleShare}
+                  className="flex items-center justify-center gap-1.5 w-[34px] h-[34px] rounded-full bg-[#F9F7F4] border border-black/5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:bg-[#F0EEEB] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all text-[#8A6A4A] ml-2"
+                  aria-label="Share product"
+                >
+                  <Share2 size={15} strokeWidth={2} className="ml-[-1px]" />
+                </button>
               </div>
 
               {/* Product Specifications - Inline Compact Layout */}
@@ -330,11 +418,11 @@ export default function ProductPage() {
                   <>
                     <div className="flex items-center gap-1.5">
                       <span className="text-[9px] uppercase tracking-[1px] text-primary-950/50 font-bold">Dimensions:</span>
-                      <span className="text-[12px] font-semibold text-primary-950">5.5m</span>
+                      <span className="text-[12px] font-semibold text-primary-950">5.50 Meters</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span className="text-[9px] uppercase tracking-[1px] text-primary-950/50 font-bold">Blouse:</span>
-                      <span className="text-[12px] font-semibold text-primary-950">1m Included</span>
+                      <span className="text-[12px] font-semibold text-primary-950">1 Meter</span>
                     </div>
                   </>
                 )}
@@ -396,11 +484,26 @@ export default function ProductPage() {
                 </section>
               )}
 
+              {/* Urgency Widget */}
+              {(product.enableUrgency !== false) && (
+                <div className="mb-4">
+                  <UrgencyWidget productId={product.id} />
+                </div>
+              )}
+
+              {/* Stock Urgency */}
+              {product.stock && product.stock <= 15 && (
+                <div className="flex items-center gap-1.5 mb-2 mt-4 px-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+                  <span className="text-[11px] font-bold text-red-600 uppercase tracking-[1px]">Only {product.stock} left in stock - selling fast!</span>
+                </div>
+              )}
+
               {/* Actions */}
               <section className="fixed bottom-0 left-0 w-full px-4 pb-[calc(10px+env(safe-area-inset-bottom))] md:pb-0 pt-6 bg-gradient-to-t from-primary-50 via-primary-50/80 to-transparent pointer-events-none md:pointer-events-auto md:bg-none md:relative z-50 md:mt-8 will-change-transform transform-gpu">
                 <div className="flex flex-row gap-2 max-w-7xl mx-auto pointer-events-auto items-center">
                   <div className="flex gap-2 w-full">
-                    <div className="hidden md:flex items-center border border-black/10 bg-white shadow-sm flex-shrink-0" style={{ height: "42px", borderRadius: "8px", padding: "0 4px" }}>
+                    <div className="flex items-center border border-black/10 bg-white shadow-sm flex-shrink-0" style={{ height: "42px", borderRadius: "8px", padding: "0 4px" }}>
                       <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-8 h-full text-primary-950/50 hover:text-primary-950 transition-colors font-sans text-xl flex items-center justify-center">-</button>
                       <span className="w-5 text-center font-bold text-primary-950 text-[14px]">{quantity}</span>
                       <button onClick={() => setQuantity(Math.min(maxStock, quantity + 1))} className="w-8 h-full text-primary-950/50 hover:text-primary-950 transition-colors font-sans text-xl flex items-center justify-center">+</button>
@@ -419,58 +522,55 @@ export default function ProductPage() {
                 </div>
               </section>
 
-              {/* Delivery Info Banner */}
-              <section className="pt-2 md:pt-4">
-                <div className="flex items-center gap-3 bg-[#F9F7F4] p-3 py-2.5 rounded-[12px] border border-black/5 mt-1">
-                  <Truck size={20} className="text-[#8A6A4A] flex-shrink-0" />
-                  <div className="flex flex-col">
-                    <span className="text-[11px] font-bold text-primary-950 uppercase tracking-[1px]">Free Shipping</span>
-                    <span className="text-[12px] text-primary-950/70 font-medium">Delivery Time 3 - 5 Working Days</span>
-                  </div>
-                </div>
-              </section>
-
-              {/* Guarantees - Compact */}
-              <section className="pt-2 md:pt-4 pb-1 md:pb-2 grid grid-cols-3 gap-2 border-none">
-                 <div className="flex flex-col items-center text-center gap-1.5 text-[8.5px] uppercase tracking-[1px] font-bold text-primary-950/60 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-black/[0.03] rounded-[10px] p-2">
-                   <Truck size={16} strokeWidth={1.5} className="text-[#8A6A4A]" />
-                   <span>Free<br/>Shipping</span>
+              {/* Support & Trust Badges - Clean Unified Section */}
+              <section className="pt-5 md:pt-6 pb-2">
+                <div className="grid grid-cols-3 gap-2 md:gap-3 mb-4">
+                 <div className="flex flex-col items-center text-center gap-1.5 text-[9px] md:text-[10px] uppercase tracking-[1px] font-bold text-primary-950/70 bg-[#F9F7F4] border border-black/5 rounded-[8px] p-3 transition-colors hover:bg-white hover:border-[#C8A96B]/30 hover:shadow-sm">
+                   <Truck size={18} strokeWidth={1.5} className="text-[#8A6A4A]" />
+                   <span>Free & Fast<br/>Shipping</span>
                  </div>
-                 <div className="flex flex-col items-center text-center gap-1.5 text-[8.5px] uppercase tracking-[1px] font-bold text-primary-950/60 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-black/[0.03] rounded-[10px] p-2">
-                   <RotateCcw size={16} strokeWidth={1.5} className="text-[#8A6A4A]" />
+                 <div className="flex flex-col items-center text-center gap-1.5 text-[9px] md:text-[10px] uppercase tracking-[1px] font-bold text-primary-950/70 bg-[#F9F7F4] border border-black/5 rounded-[8px] p-3 transition-colors hover:bg-white hover:border-[#C8A96B]/30 hover:shadow-sm">
+                   <RotateCcw size={18} strokeWidth={1.5} className="text-[#8A6A4A]" />
                    <span>Easy<br/>Returns</span>
                  </div>
-                 <div className="flex flex-col items-center text-center gap-1.5 text-[8.5px] uppercase tracking-[1px] font-bold text-primary-950/60 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-black/[0.03] rounded-[10px] p-2">
-                   <ShieldCheck size={16} strokeWidth={1.5} className="text-[#8A6A4A]" />
-                   <span>Quality<br/>Check</span>
+                 <div className="flex flex-col items-center text-center gap-1.5 text-[9px] md:text-[10px] uppercase tracking-[1px] font-bold text-primary-950/70 bg-[#F9F7F4] border border-black/5 rounded-[8px] p-3 transition-colors hover:bg-white hover:border-[#C8A96B]/30 hover:shadow-sm">
+                   <div className="flex items-center justify-center -space-x-1">
+                     <ShieldCheck size={16} strokeWidth={1.5} className="text-[#8A6A4A]" />
+                     <span className="text-[15px] font-serif text-[#8A6A4A]">₹</span>
+                   </div>
+                   <span>Cash on<br/>Delivery</span>
                  </div>
-              </section>
+                </div>
 
-              {/* Customer Support Section */}
-              <section className="pt-2 md:pt-3 pb-3 md:pb-4">
-                <div className="flex items-center gap-2 md:gap-3 w-full px-1 md:px-0">
-                  <a href="https://wa.me/917020664641" target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-1.5 md:gap-2 bg-white py-2.5 px-3 rounded-full border border-black/10 hover:border-[#C8A96B]/50 hover:bg-[#F9F7F4] shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all group">
-                    <div className="flex items-center justify-center text-[#25D366]">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.878-.788-1.473-1.761-1.643-2.062-.17-.3-.018-.463.13-.611.134-.135.298-.348.446-.522.148-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-                      </svg>
-                    </div>
-                    <span className="text-[12px] md:text-[13px] text-primary-950 font-medium group-hover:text-[#8A6A4A] transition-colors leading-none tracking-[0.2px]">Chat With Us</span>
+                {/* Customer Support Line */}
+                <div className="flex items-center justify-center gap-4 bg-white py-2.5 px-4 rounded-full border border-black/5">
+                  <span className="text-[11px] md:text-[12px] text-primary-950/60 font-medium uppercase tracking-[1px]">Need Help?</span>
+                  <div className="w-[1px] h-3 bg-black/10" />
+                  <a href="https://wa.me/917020664641" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary-950 hover:text-[#25D366] transition-colors group">
+                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#25D366] group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.878-.788-1.473-1.761-1.643-2.062-.17-.3-.018-.463.13-.611.134-.135.298-.348.446-.522.148-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                    </svg>
+                    <span className="text-[12px] font-bold tracking-[0.5px]">WhatsApp Us</span>
                   </a>
-
-                  <a href="tel:+917020664641" className="flex-1 flex items-center justify-center gap-1.5 md:gap-2 bg-white py-2.5 px-3 rounded-full border border-black/10 hover:border-[#C8A96B]/50 hover:bg-[#F9F7F4] shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all group">
-                    <Phone className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary-950/70 group-hover:text-[#8A6A4A] transition-colors" strokeWidth={1.5} />
-                    <span className="text-[12px] md:text-[13px] text-primary-950 font-medium group-hover:text-[#8A6A4A] transition-colors leading-none tracking-[0.5px]">+91 7020664641</span>
+                  <div className="w-[1px] h-3 bg-black/10" />
+                  <a href="tel:+917020664641" className="flex items-center gap-1.5 text-primary-950 hover:text-[#8A6A4A] transition-colors group">
+                    <Phone className="w-3.5 h-3.5 md:w-4 md:h-4 group-hover:scale-110 transition-transform" strokeWidth={2} />
+                    <span className="text-[12px] font-bold tracking-[0.5px]">Call Us</span>
                   </a>
                 </div>
               </section>
               
               {/* Description */}
-              <section className="pt-4 md:pt-6 border-t border-black/5">
+              <section className="pt-4 md:pt-6 border-t border-black/5 mt-4">
                 <ProductDescription description={product.description} />
               </section>
             </div>
           </div>
+        </div>
+
+        {/* Product Reviews */}
+        <div id="reviews">
+          <ProductReviews product={product} />
         </div>
 
         {/* Related Section */}
@@ -481,7 +581,20 @@ export default function ProductPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6">
              {products
-              .filter((p) => !p.isVariant && p.id !== product.id && (p.category === product.category))
+              .filter((p) => {
+                if (p.isVariant || p.id === product.id) return false;
+                const isSareeFamily = (cat: string) => cat === 'Sarees' || cat === 'Linen Sarees';
+                if (isSareeFamily(product.category)) {
+                  return isSareeFamily(p.category);
+                }
+                return p.category === product.category;
+              })
+              .sort((a, b) => {
+                // Prioritize exact same category
+                if (a.category === product.category && b.category !== product.category) return -1;
+                if (b.category === product.category && a.category !== product.category) return 1;
+                return 0;
+              })
               .slice(0, 4)
               .map((p) => (
                 <ProductCard key={p.id} product={p} />

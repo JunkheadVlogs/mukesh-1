@@ -107,9 +107,11 @@ export default function Layout() {
     ? products
         .filter(
           (p) =>
+            !p.isVariant && (
             p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.fabric.toLowerCase().includes(searchQuery.toLowerCase()),
+            p.fabric.toLowerCase().includes(searchQuery.toLowerCase())
+            ),
         )
         .slice(0, 5)
     : [];
@@ -329,6 +331,7 @@ export default function Layout() {
                   <div className="py-2 flex flex-col">
                     <Link to="/shop" className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors">All Products</Link>
                     <Link to="/shop?category=Sarees" className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors">Sarees</Link>
+                    <Link to="/shop?category=Linen Sarees" className="px-8 py-2 text-[10px] tracking-[1.5px] uppercase font-medium text-primary-950/70 hover:bg-gold-50 hover:text-gold-600 transition-colors pl-10">— Linen Sarees</Link>
                     <Link to="/shop?category=Co-Ord Sets" className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors">Co-Ord Sets</Link>
                   </div>
                 </div>
@@ -407,6 +410,7 @@ export default function Layout() {
                         <div className="flex flex-col space-y-5 py-2">
                           <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600">All Products</Link>
                           <Link to="/shop?category=Sarees" onClick={() => setIsMobileMenuOpen(false)} className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600">Sarees</Link>
+                          <Link to="/shop?category=Linen Sarees" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950/60 hover:text-gold-600 pl-4">— Linen Sarees</Link>
                           <Link to="/shop?category=Co-Ord Sets" onClick={() => setIsMobileMenuOpen(false)} className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600">Co-Ord Sets</Link>
                         </div>
                       </motion.div>
@@ -479,6 +483,7 @@ export default function Layout() {
               <div className={`overflow-hidden transition-all duration-300 md:!h-auto md:!opacity-100 ${openFooterAccordion === 'categories' ? "max-h-48 opacity-100 mt-4" : "max-h-0 opacity-0 md:mt-0"}`}>
                 <ul className="space-y-3 text-sm text-primary-950/70 pb-4 md:pb-0">
                   <li><Link to="/shop?category=Sarees" className="hover:text-gold-500 transition-colors">Sarees</Link></li>
+                  <li><Link to="/shop?category=Linen Sarees" className="hover:text-gold-500 transition-colors text-xs pl-3">— Linen Sarees</Link></li>
                   <li><Link to="/shop?category=Co-Ord Sets" className="hover:text-gold-500 transition-colors">Co-Ord Sets</Link></li>
                   <li><Link to="/shop?sort=new" className="hover:text-gold-500 transition-colors">New Arrivals</Link></li>
                 </ul>

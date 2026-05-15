@@ -1,48 +1,35 @@
 
+const BASE_URL = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
+
 export const CONFIG = {
+  API_BASE_URL: import.meta.env.VITE_API_BASE_URL || BASE_URL,
   STORE_NAME: 'Mukesh Saree Centre',
   STORE_EMAIL: 'info.mukeshsareecentre@gmail.com',
   STORE_PHONE: '+91 7020664641',
   STORE_ADDRESS: 'Jaganth Road, Gandibagh, Nagpur 440002',
-  RAZORPAY_KEY: import.meta.env.VITE_RAZORPAY_KEY || 'rzp_live_So7zJe4qbXm4LY',
+  RAZORPAY_KEY_ID: import.meta.env.VITE_RAZORPAY_KEY_ID, // STRICTLY KEY_ID NO SECRET
 };
 
 export async function submitToGoogleSheets(data: any) {
   try {
-    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec";
-    
-    // We use text/plain to avoid CORS preflight issues with Google Apps Script
-    const response = await fetch(WEBHOOK_URL, {
+    const response = await fetch(`${CONFIG.API_BASE_URL}/api/submit-order`, {
       method: "POST",
       headers: {
-        // "Content-Type": "text/plain" is safer for GAS CORS, but the user requested application/json
-        // But for direct fetch to GAS from browser, text/plain or application/x-www-form-urlencoded is required to bypass preflight.
-        "Content-Type": "text/plain;charset=utf-8"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
     });
 
     if (!response.ok) {
-      throw new Error(`Network response failed: ${response.status}`);
+      const errorText = await response.text();
+      console.error("Submission failed details:", errorText);
+      throw new Error(`Failed to submit order to backend proxy: ${response.status} - ${errorText.substring(0, 100)}`);
     }
 
-    const text = await response.text();
-    let result;
-    try {
-      result = JSON.parse(text);
-    } catch (e) {
-      console.error("Failed to parse JSON response:", text);
-      throw new Error("Invalid response from server");
-    }
-
-    if (result.status !== "success") {
-      throw new Error(result.message || "Unknown error");
-    }
-
-    console.log("Success:", result);
+    const result = await response.json();
     return result;
   } catch (error) {
-    console.error("COD Order Error:", error);
+    console.error("Order Submission Error:", error);
     throw error;
   }
 }

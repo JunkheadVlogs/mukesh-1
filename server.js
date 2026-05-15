@@ -23,46 +23,65 @@ app.use((req, res, next) => {
 
 // Configure CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "*",
+  origin: function (origin, callback) {
+    callback(null, origin || "*");
+  },
   methods: ["GET", "POST", "OPTIONS"],
   credentials: true
 }));
 
 app.use(express.json());
 
-const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY || "rzp_live_So7zJe4qbXm4LY";
-const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG";
+// Normalize URLs to remove potential AI Studio prefix from all requests
+app.use((req, res, next) => {
+  // Pattern to match /AIzaSy.../path and capture /path
+  const match = req.url.match(/^\/AIzaSy[^\/]+(\/.*)/);
+  if (match) {
+    const newUrl = match[1];
+    // Check if we should log (avoid spamming for assets)
+    if (newUrl.startsWith('/api/')) {
+      console.log(`[ROUTE FIX] Normalizing prefix: ${req.url} -> ${newUrl}`);
+    }
+    req.url = newUrl;
+  }
+  next();
+});
+
+const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID;
+const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
 
 let razorpay = null;
-if (RAZORPAY_KEY_ID && RAZORPAY_KEY_SECRET) {
+try {
   razorpay = new Razorpay({
-    key_id: RAZORPAY_KEY_ID,
-    key_secret: RAZORPAY_KEY_SECRET
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
+} catch (e) {
+  console.log("Could not initialize razorpay", e);
 }
 
-// ==== razorpay payment api ====
-app.post("/api/submit-order", async (req, res) => {
+// API Routes
+const apiRouter = express.Router();
+
+// ==== google sheets submission proxy ====
+apiRouter.post("/submit-order", async (req, res) => {
   try {
     const url = 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
     
-    console.log("[PROXY] Submitting order to Google Sheets...");
+    console.log(`[PROXY] Submitting order to Google Sheets... (${req.body.orderId || 'no-id'})`);
     
     const response = await fetch(url, {
       method: 'POST',
-      redirect: 'follow', // Explicitly follow redirects
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(req.body),
     });
 
-    const contentType = response.headers.get("content-type");
     const text = await response.text();
 
     if (!response.ok) {
       console.error(`[PROXY] Google Sheets error: ${response.status} ${response.statusText}`);
-      console.error(`[PROXY] Response body: ${text.substring(0, 500)}`);
       return res.status(response.status).json({
         status: "error",
         message: `Google Sheets returned ${response.status}: ${response.statusText}`,
@@ -70,19 +89,15 @@ app.post("/api/submit-order", async (req, res) => {
       });
     }
 
-    // Try to parse as JSON, if it fails, return the text
     try {
-      if (text.startsWith("<!DOCTYPE") || text.includes("<html")) {
-        throw new Error("Received HTML instead of JSON from Google Sheets");
-      }
       const result = JSON.parse(text);
       res.json(result);
     } catch (parseError) {
-      console.warn("[PROXY] Response was not valid JSON, returning as text/plain");
+      console.warn("[PROXY] Response was not valid JSON, but response was OK");
       res.json({
-        status: "success", // Assume success if code is 200 but response is text (GAS quirk)
-        message: "Submission received (raw response)",
-        raw: text.substring(0, 1000)
+        status: "success",
+        message: "Submission received",
+        raw: text.substring(0, 500)
       });
     }
   } catch (error) {
@@ -94,42 +109,36 @@ app.post("/api/submit-order", async (req, res) => {
   }
 });
 
-app.post("/api/create-order", async (req, res) => {
+// ==== razorpay order creation ====
+apiRouter.post('/create-order', async (req, res) => {
   try {
     if (!razorpay) {
-      throw new Error("Razorpay keys are missing in backend environment variables.");
+      return res.status(500).json({ success: false, error: "Razorpay not initialized" });
     }
-
+    
     const options = {
       amount: Math.round(req.body.amount * 100),
-      currency: "INR",
-      receipt: "receipt_" + Date.now() + Math.floor(Math.random() * 1000)
+      currency: 'INR',
+      receipt: `receipt_${Date.now()}`
     };
 
     const order = await razorpay.orders.create(options);
-
-    res.setHeader('Content-Type', 'application/json');
-    res.json({
-      success: true,
-      orderId: order.id,
-      amount: order.amount,
-      currency: order.currency,
-      key: RAZORPAY_KEY_ID
-    });
-  } catch (error) {
-    console.error("Razorpay Create Order Error:", error);
+    res.json(order);
+  } catch (err) {
+    console.error("[RAZORPAY] Create Order Error:", err);
     res.status(500).json({
       success: false,
-      error: error.message || "Failed to create order",
+      error: err.message || "Failed to create order"
     });
   }
 });
 
-app.post("/api/verify-payment", (req, res) => {
+// ==== razorpay payment verification ====
+apiRouter.post("/verify-payment", (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
-    const expectedSign = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    const expectedSign = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET || "")
                                .update(sign.toString())
                                .digest("hex");
     
@@ -144,8 +153,12 @@ app.post("/api/verify-payment", (req, res) => {
   }
 });
 
-// JSON error for unhandled API routes, to avoid returning HTML
+// Mount API router
+app.use("/api", apiRouter);
+
+// Catch-all for undefined API routes
 app.all("/api/*", (req, res) => {
+  console.log(`[404] API route not found: ${req.method} ${req.url}`);
   res.status(404).json({ success: false, error: `API route not found: ${req.method} ${req.url}` });
 });
 
@@ -216,12 +229,13 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta name="twitter:title" content="${ogTitle}" />
      <meta name="twitter:description" content="${ogDesc}" />
      <meta name="twitter:image" content="${ogImg}" />
+     <link rel="canonical" href="${ogUrl}" />
      <!-- End Dynamic OG Tags -->`
   );
   
   // Update the title tag exclusively since we handled OGs above
   injectedHtml = injectedHtml.replace(
-    '<title>Mukesh Saree Centre</title>',
+    /<title>.*?<\/title>/,
     `<title>${ogTitle}</title>`
   );
 
@@ -243,6 +257,27 @@ app.get('/sitemap.xml', (req, res) => {
 });
 
 async function setupServer() {
+  // 1. Explicitly bypass any application-level cookie/auth checks for social bots
+  app.use((req, res, next) => {
+    const userAgent = (req.headers['user-agent'] || '').toLowerCase();
+    const isBot = [
+      'whatsapp', 
+      'facebookexternalhit', 
+      'facebot', 
+      'twitterbot', 
+      'telegrambot', 
+      'linkedinbot', 
+      'slackbot',
+      'googlebot'
+    ].some(bot => userAgent.includes(bot));
+    
+    if (isBot) {
+      req.isBot = true;
+      // Skip any potential auth middlewares running afterwards
+    }
+    next();
+  });
+
   if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -251,6 +286,11 @@ async function setupServer() {
     app.use(vite.middlewares);
     
     app.get('*', async (req, res, next) => {
+      // Prevent returning HTML for missing JS/TS/CSS assets which causes hydration/import errors
+      if (req.path.match(/\.(js|ts|tsx|jsx|css|scss|json|map)$/) || req.query.t) {
+        return next();
+      }
+      
       try {
         const url = req.originalUrl;
         let template = fs.readFileSync(path.resolve(process.cwd(), 'index.html'), 'utf-8');
@@ -262,14 +302,29 @@ async function setupServer() {
         next(e);
       }
     });
+
+    // Final fallback for non-GET requests that reached the end
+    app.use((req, res) => {
+      console.log(`[404 FALLTHROUGH-DEV] ${req.method} ${req.url}`);
+      res.status(404).json({
+        success: false,
+        error: `Route not found: ${req.method} ${req.url}`,
+        normalizedUrl: req.url,
+        originalUrl: req.originalUrl
+      });
+    });
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     const indexPath = path.join(distPath, 'index.html');
     
     app.use(express.static(distPath, { index: false }));
     
-    app.all('/api/*', (req, res) => { res.status(404).json({ success: false, error: 'API route not found' }); });
     app.get('*', (req, res) => {
+      // Prevent returning HTML for missing assets
+      if (req.path.match(/\.(js|ts|tsx|jsx|css|scss|json|map|png|jpg|jpeg|gif|svg|webp)$/)) {
+        return res.status(404).send('Asset not found');
+      }
+
       try {
         if (!fs.existsSync(indexPath)) {
           return res.status(404).send('Not built yet.');
@@ -286,6 +341,17 @@ async function setupServer() {
         console.error(err);
         res.status(500).send("Server Error");
       }
+    });
+
+    // Final fallback for non-GET requests that reached the end
+    app.use((req, res) => {
+      console.log(`[404 FALLTHROUGH] ${req.method} ${req.url}`);
+      res.status(404).json({
+        success: false,
+        error: `Route not found: ${req.method} ${req.url}`,
+        normalizedUrl: req.url,
+        originalUrl: req.originalUrl
+      });
     });
   }
 }

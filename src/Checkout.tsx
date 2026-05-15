@@ -47,16 +47,19 @@ export default function Checkout() {
     }
   }, [appliedCoupon]);
 
-  const subtotalMRP = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subtotalCart = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subtotalMRP = cart.reduce((total, item) => total + (item.originalPrice || item.price) * item.quantity, 0);
+  const mRPDiscount = subtotalMRP - subtotalCart;
   const shipping = 0;
   
   const activeCoupon = appliedCoupon;
-  let discountMultiplier = 0;
-  if (activeCoupon === "VIP50") discountMultiplier = 0.50;
-  else if (activeCoupon === "VIPCLUB60") discountMultiplier = 0.60;
+  let couponDiscountMultiplier = 0;
+  if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.50;
+  else if (activeCoupon === "VIPCLUB60") couponDiscountMultiplier = 0.60;
 
-  const totalDiscount = Math.floor(subtotalMRP * discountMultiplier);
-  const total = Math.max(0, subtotalMRP + shipping - totalDiscount);
+  const couponDiscount = Math.floor(subtotalCart * couponDiscountMultiplier);
+  const totalDiscount = mRPDiscount + couponDiscount;
+  const total = Math.max(0, subtotalCart - couponDiscount);
 
   const handleApplyCoupon = () => {
     const code = couponInput.trim().toUpperCase();
@@ -161,7 +164,7 @@ export default function Checkout() {
       if (paymentMethod === "online") {
         try {
           const reqBody = { amount: total };
-          const response = await fetch("/api/create-order", {
+          const response = await fetch(`${CONFIG.API_BASE_URL}/api/create-order`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -170,27 +173,33 @@ export default function Checkout() {
           });
 
           if (!response.ok) {
-            throw new Error("Failed to create order");
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(errData.error || "Failed to create order");
           }
 
           const data = await response.json();
 
-          if (!data.orderId) {
+          if (!data.orderId && !data.id) {
             throw new Error("Invalid order response");
           }
 
           // Save order to sheets as Pending BEFORE opening payment gateway
-          await finalizeOrder(false, "Payment Pending", "N/A");
+          finalizeOrder(false, "Payment Pending", "N/A").catch(console.error);
 
           const options = {
-            key: data.key,
+            key: import.meta.env.VITE_RAZORPAY_KEY_ID || CONFIG.RAZORPAY_KEY_ID,
             amount: data.amount,
             currency: data.currency,
-            order_id: data.orderId,
+            order_id: data.orderId || data.id,
             name: "Mukesh Sarees",
             description: "Order Payment",
             prefill: { name: fullName, contact: mobileNumber },
             theme: { color: "#D4AF37" },
+            modal: {
+              ondismiss: function() {
+                setIsSubmitting(false);
+              }
+            },
             handler: async function(paymentResponse: any) {
               try {
                 // Submit to google sheets after successful payment
@@ -205,9 +214,10 @@ export default function Checkout() {
 
           const rzp = new (window as any).Razorpay(options);
           rzp.open();
-        } catch (error) {
+        } catch (error: any) {
           console.error("Payment Error:", error);
-          alert("Payment initialization failed. Please try again.");
+          const errorMessage = error?.message || "Payment initialization failed. Please try again.";
+          alert(`Payment Error: ${errorMessage}`);
           setIsSubmitting(false);
         }
       } else {
@@ -386,40 +396,48 @@ export default function Checkout() {
                </div>
 
                <div className="space-y-4 pt-5 border-t border-black/5">
-                 {appliedCoupon && (
+                 {appliedCoupon ? (
                    <div className="mb-4 pb-4 border-b border-black/5">
                      <div className="bg-[#F9F7F4] border border-[#8A6A4A]/20 p-3 rounded-sm flex flex-col items-center text-center">
                        <span className="text-[10px] md:text-[11px] uppercase tracking-[1px] font-bold text-[#8A6A4A] flex items-center gap-1 mb-1"><ShieldCheck size={12} /> Coupon Applied</span>
                        <span className="font-serif text-sm md:text-base text-primary-950 font-bold mb-0.5">{appliedCoupon}</span>
-                       <span className="text-[9px] md:text-[10px] text-primary-950/60 font-medium mb-2.5 uppercase tracking-wider">{discountMultiplier * 100}% OFF Applied Successfully</span>
+                       <span className="text-[9px] md:text-[10px] text-primary-950/60 font-medium mb-2.5 uppercase tracking-wider">{couponDiscountMultiplier * 100}% OFF Applied Successfully</span>
                        <span className="text-[11px] md:text-[12px] font-bold text-[#4CAF50] bg-[#4CAF50]/10 px-3 py-1.5 rounded-sm w-full">You Saved {formatPrice(totalDiscount)}</span>
                        <button type="button" onClick={handleRemoveCoupon} className="mt-2 text-[9px] uppercase font-bold text-primary-950/40 hover:text-red-500 transition-colors tracking-widest underline underline-offset-4">
                          Remove Coupon
                        </button>
                      </div>
                    </div>
+                 ) : (
+                   <div className="mb-4 pb-4 border-b border-black/5">
+                     <div className="flex gap-2">
+                       <input 
+                         type="text" value={couponInput} onChange={(e) => setCouponInput(e.target.value)}
+                         placeholder="ENTER COUPON CODE"
+                         className="flex-1 bg-primary-50/20 border border-black/10 px-3 md:px-4 py-2.5 text-[10px] md:text-xs text-primary-950 focus:border-gold-500 focus:ring-1 focus:ring-gold-500/30 outline-none uppercase font-bold tracking-widest rounded-sm placeholder:text-primary-950/50"
+                       />
+                       <button type="button" onClick={handleApplyCoupon} className="bg-primary-950 text-white px-5 py-2.5 text-[9px] md:text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-black transition-colors">Apply</button>
+                     </div>
+                     {couponError && <p className="text-red-500 text-[9px] font-bold uppercase tracking-widest mt-1 ml-1">{couponError}</p>}
+                     <p className="text-[8px] uppercase font-medium text-primary-950/40 mt-1 mb-2 ml-1 tracking-wider">Only one coupon can be applied per order.</p>
+                   </div>
                  )}
-
-                 <div className="flex gap-2">
-                   <input 
-                     type="text" value={couponInput} onChange={(e) => setCouponInput(e.target.value)}
-                     placeholder="ENTER COUPON CODE"
-                     className="flex-1 bg-primary-50/20 border border-black/10 px-3 md:px-4 py-2.5 text-[10px] md:text-xs text-primary-950 focus:border-gold-500 focus:ring-1 focus:ring-gold-500/30 outline-none uppercase font-bold tracking-widest rounded-sm placeholder:text-primary-950/50"
-                   />
-                   <button type="button" onClick={handleApplyCoupon} className="bg-primary-950 text-white px-5 py-2.5 text-[9px] md:text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-black transition-colors">Apply</button>
-                 </div>
-                 {couponError && <p className="text-red-500 text-[9px] font-bold uppercase tracking-widest mt-1 ml-1">{couponError}</p>}
-                 <p className="text-[8px] uppercase font-medium text-primary-950/40 mt-1 mb-2 ml-1 tracking-wider">Only one coupon can be applied per order.</p>
                  
                  <div className="space-y-2.5 text-xs font-medium text-primary-950/60">
-                   <div className="flex justify-between items-center text-primary-950">
-                     <span>MRP Subtotal</span>
-                     <span className="font-bold">{formatPrice(subtotalMRP)}</span>
+                   <div className="flex justify-between items-center text-primary-950/60">
+                     <span>MRP Total</span>
+                     <span className="text-primary-950/40 line-through">{formatPrice(subtotalMRP)}</span>
                    </div>
                    <div className="flex justify-between items-center text-gold-700">
-                     <span>Discount</span>
-                     <span className="font-bold">-{formatPrice(totalDiscount)}</span>
+                     <span>Product Discount</span>
+                     <span className="font-bold">-{formatPrice(mRPDiscount)}</span>
                    </div>
+                   {couponDiscount > 0 && (
+                     <div className="flex justify-between items-center text-[#4CAF50]">
+                       <span>Coupon Discount</span>
+                       <span className="font-bold">-{formatPrice(couponDiscount)}</span>
+                     </div>
+                   )}
                    <div className="flex justify-between items-center">
                      <span>Shipping</span>
                      <span className="text-gold-700 font-bold">FREE</span>

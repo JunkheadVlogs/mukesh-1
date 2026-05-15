@@ -2,5 +2,5 @@
   "name": "Mukesh Saree Centre",
   "description": "Premium ecommerce website for Mukesh Saree Centre, specializing in luxury sarees and co-ord sets.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

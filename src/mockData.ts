@@ -1,14 +1,17 @@
+/**
+ * @version 1.0.1
+ */
 import { Product } from "./store";
 
 export const products: Product[] = [
   {
     id: "p4",
-    sku: "COORD-COCOA-001",
-    name: "Cocoa Brown Cotton Co-Ord Set ",
+    sku: "CRD-COT-COA-001",
+    name: "Cocoa Brown Cotton Co-Ord Set",
     tagline: "Soft & Elegant",
     slug: "premium-pure-cotton-coord-set",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1Yy5HQ-XE4aulexv5D7WXiewiVYPHp52F&sz=w500",
@@ -24,33 +27,42 @@ export const products: Product[] = [
     fabric: "100% Pure Cotton",
     color: "Cocoa Brown",
     isNew: true,
-    isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium 100% Cotton Fabric
-- ️ Soft, breathable & summer-friendly
--  Elegant cocoa brown design
--  Comfortable for daily & office wear
--  COD Available
 
-**Description**
-Stay comfortable and stylish all day with this premium cocoa brown cotton co-ord set.
-Designed for modern women who love effortless fashion.
-Perfect for daily wear, office, and casual outings.
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Cocoa Brown Cotton Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
-**Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
+
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
+
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.8,
   },
   {
     id: "p6",
-    sku: "COORD-WHTPNK-001",
-    name: "White & Pink Cotton Floral Co-Ord Set ",
+    sku: "CRD-COT-WHT-001",
+    name: "White & Pink Cotton Floral Co-Ord Set",
     tagline: "Lightweight & Elegant",
     slug: "elegant-white-pink-embroidered-pure-cotton-kurta-pant-set",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1dOSHikQpkj8XdIkDyHsoSbx4te1hIBXj&sz=w500",
@@ -65,34 +77,43 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     stock: 10,
     fabric: "100% Pure Cotton",
     color: "White/Pink",
-    isNew: true,
     isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium 100% Cotton Fabric
-- ️ Soft, breathable & summer-friendly
--  Elegant white & pink floral design
--  Comfortable for daily & office wear
--  COD Available
 
-**Description**
-Stay comfortable and stylish all day with this elegant white and pink floral cotton co-ord set.
-Designed for modern women who love effortless fashion.
-Perfect for daily wear, office, and casual outings.
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated White & Pink Cotton Floral Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
-**Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
+
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
+
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.8,
   },
   {
     id: "p7",
-    sku: "COORD-BEIGE-001",
-    name: "Beige Cotton Floral Co-Ord Set ",
-    tagline: " Perfect Summer Daily Wear\nLight, Elegant & Super Comfortable",
+    sku: "CRD-COT-BGE-001",
+    name: "Beige Cotton Floral Co-Ord Set",
+    tagline: "Perfect Summer Daily Wear - Light, Elegant & Super Comfortable",
     slug: "pure-beige-cotton-floral-coord-set",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1ZSy1eQVSYFjEycvOwGeYq8d9REgMYaa3&sz=w500",
@@ -106,34 +127,42 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "Beige",
-    isNew: true,
-    isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium 100% Cotton Fabric
-- ️ Soft, breathable & summer-friendly
--  Elegant beige floral design
--  Comfortable for daily & office wear
--  COD Available
+    
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Beige Cotton Floral Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-**Description**
-Stay comfortable and stylish all day with this premium beige floral cotton co-ord set.
-Designed for modern women who love effortless fashion.
-Perfect for daily wear, office, and casual outings.
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
-Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
+
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p8",
-    sku: "COORD-WHITE-001",
-    name: "White Cotton Floral Co-Ord Set ",
+    sku: "CRD-COT-WHT-002",
+    name: "White Cotton Floral Co-Ord Set",
     tagline: "Airy & Gentle",
     slug: "pure-cotton-floral-coord-set-white",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1FkeDrcESuS03jcvuFtZCPOL7mcmvUDGD&sz=w500",
@@ -147,34 +176,43 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "White",
-    isNew: true,
-    isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium 100% Cotton Fabric
-- ️ Soft, breathable & summer-friendly
--  Elegant white floral design
--  Comfortable for daily & office wear
--  COD Available
+    isBestSelling: true,
 
-**Description**
-Stay comfortable and stylish all day with this premium pure white floral cotton co-ord set.
-Designed for modern women who love effortless fashion.
-Perfect for daily wear, office, and casual outings.
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated White Cotton Floral Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
-**Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
+
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
+
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p9",
-    sku: "COORD-GREY-001",
-    name: "Grey Cotton Embroidered Co-Ord Set 🩶",
+    sku: "CRD-COT-GRY-001",
+    name: "Grey Cotton Embroidered Co-Ord Set",
     tagline: "Comfortable & Minimal",
     slug: "premium-pure-cotton-coord-set-grey",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image:
       "https://drive.google.com/thumbnail?id=1mwE1Gh-CoCjC1swlQMQ1JgkOCy_skAoe&sz=w500",
@@ -187,32 +225,41 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     fabric: "100% Pure Cotton",
     color: "Grey",
     isNew: true,
-    isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium 100% Cotton Fabric
-- ️ Soft, breathable & summer-friendly
--  Elegant grey embroidered design
--  Comfortable for daily & office wear
--  COD Available
 
-**Description**
-Stay comfortable and stylish all day with this elegant grey embroidered cotton co-ord set.
-Designed for modern women who love effortless fashion.
-Perfect for daily wear, office, and casual outings.
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Grey Cotton Embroidered Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-Made with 100% pure breathable cotton, it feels incredibly soft and airy against your skin. Enjoy a relaxed fit that keeps you cool and confident from morning to night.
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
-**Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
+
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
+
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p10",
-    sku: "SAREE-CHIF-YEL-001",
-    name: "Sunshine Yellow Chiffon Saree with Hand Brush Floral Print & Sipli Cutwork Border",
+    sku: "SAR-CHI-YEL-001",
+    name: "Sunshine Yellow Chiffon Saree",
     slug: "sunshine-yellow-chiffon-saree-hand-brush-floral",
-    price: 4199,
-    originalPrice: 8398,
+    price: 2099,
+    originalPrice: 4199,
     image:
       "https://drive.google.com/thumbnail?id=1_nSy0f7pCTZX5S7R2I7pYjGSUSA39tyZ&sz=w500",
     images: [
@@ -223,43 +270,44 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Sarees",
     fabric: "Premium Chiffon",
     color: "Sunshine Yellow",
-    isNew: true,
     isTrending: true,
-    description: `**Description**
-Step into elegance with this sunshine yellow chiffon saree, designed for effortless grace and modern sophistication.
 
-**Product Details**
-- Fabric: Premium Chiffon
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+    description: `**DESCRIPTION:**
+Embrace weightless beauty with this flowing Sunshine Yellow Chiffon Saree. The delicate fabric drapes gracefully, making every movement a statement of premium elegance.
 
-**Design Details**
-Features beautiful brush-painted floral motifs with digital printing for long-lasting vibrancy, complete with a subtle shimmer from the cutwork border.
+**HIGHLIGHTS:**
+• Flowy and graceful
+• Lightweight elegance
+• Effortless drape
+• Sheer sophistication
+• Premium designer finish
 
-**5. Why You’ll Love It**
-The graceful fluid drape enhances the body silhouette beautifully, making it perfect for day functions, festive occasions, and parties without heaviness.
+**FABRIC DETAILS:**
+Made from Premium Chiffon. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**6. Care Instructions**
-Dry clean only to maintain the delicate sipli cutwork and handcrafted floral print.
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
 
-**7. Blouse Piece Details**
-- **Material:** Premium matching chiffon fabric
-- **Dimensions:** 1.00 Meter length (Unstitched)
-- **Design:** Features coordinating floral motifs to complement the saree's hand-brush print perfectly
-- **Versatility:** Sufficient length to tailor various styles, from contemporary sleeveless to traditional long sleeves.
+**STYLING:**
+Ideal occasions:
+- Evening events
+- Wedding functions
+- Festive wear
+- Elegant casuals
 
-`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p11",
-    sku: "SAREE-KHADI-BLK-001",
-    name: "Black Khadi Cotton Saree with Multicolor Striped Pallu & Tassel Detailing",
+    sku: "SAR-COT-BLK-001",
+    name: "Black Khadi Cotton Saree",
     slug: "black-khadi-cotton-saree-multicolor-striped-pallu",
-    price: 1499,
-    originalPrice: 2998,
+    price: 749,
+    originalPrice: 1499,
     image:
       "https://drive.google.com/thumbnail?id=1pfrQ3N5-EBwWOy4DiyS8_0jqVw_jbIc8&sz=w500",
     images: [
@@ -273,37 +321,43 @@ Dry clean only to maintain the delicate sipli cutwork and handcrafted floral pri
     color: "Black with Multicolor Stripes",
     isNew: true,
     isTrending: false,
-    description: `**1. Product Title**
-Black Khadi Cotton Saree with Multicolor Striped Pallu & Tassel Detailing
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Black Khadi Cotton Saree. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-**2. Short Description**
-Elevate your everyday ethnic wardrobe with this black khadi cotton saree, designed for comfort and effortless elegance.
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
-**3. Product Details**
-- Fabric: Khadi Cotton
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**FABRIC DETAILS:**
+Made from premium Khadi Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**4. Design Details**
-The saree features a beautiful multicolor striped pallu, blending vibrant hues like teal, mustard, maroon, and pink over a classic black base. The clean stripe pattern gives it a contemporary yet traditional appeal. Finished with playful tassels on the pallu, this saree adds a subtle stylish flair while maintaining its minimal elegance.
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
 
-**5. Why You’ll Love It**
-Crafted from soft, breathable khadi cotton, this saree ensures a lightweight feel, making it ideal for long wear. It's comfortable in summer and suitable for year-round styling. Whether you're heading to work, a casual outing, or a small gathering, this saree is a perfect go-to choice.
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
 
-**6. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.8,
   },
   {
     id: "p12",
-    sku: "COORD-GREEN-001",
-    name: "Elegant Forest Green Cotton Co-Ord Set ",
-    tagline: "Effortless Elegance & All-Day Comfort",
+    sku: "CRD-COT-GRN-001",
+    name: "Elegant Forest Green Cotton Co-Ord Set",
+    tagline: "Effortless Elegance & All-day Comfort",
     slug: "elegant-forest-green-cotton-coord-set",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1r0D-1RA8fSbXkhKrhvkNz91Ny9yRE_DI&sz=w500",
     images: [
@@ -316,51 +370,42 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "Forest Green",
-    isNew: true,
-    isTrending: true,
-    description: `**1. Product Title**
-Elegant Forest Green Cotton Co-Ord Set
+    
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Elegant Forest Green Cotton Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-**2. Short Description**
-Upgrade your everyday style with this sophisticated forest green co-ord set, designed for effortless elegance and all-day comfort.
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
-**3. Fabric & Color**
- Fabric: 100% Pure Cotton
- Soft, breathable & skin-friendly
- Perfect for daily wear, office, or casual outings
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
- Color:
-Rich deep forest green base with subtle off-white floral embroidery, giving it a classy and refined look.
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
 
-**4. Design Details**
- Design Details:
- Beautiful minimal floral embroidery spread across the kurta
- Smart front placket with contrast striped collar
- 3/4th sleeves for a modern, versatile appeal
- Straight-fit pants for a clean, structured silhouette
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
 
-**5. Fit & Style**
- Fit & Style:
- Comfortable relaxed fit
- Easy to carry from day to evening wear
- Ideal for a polished yet effortless look
-
-**6. Why You'll Love It**
- Why You'll Love It:
-Lightweight, breathable, and stylish — this co-ord set blends comfort with understated luxury, making it a must-have in your wardrobe.
-
-**7. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p13",
-    sku: "COORD-PLUM-001",
-    name: "Royal Plum Cotton Co-Ord Set with Embroidery ",
+    sku: "CRD-COT-PLM-001",
+    name: "Royal Plum Cotton Co-Ord Set Embroidered",
     tagline: "Subtle Luxury with Everyday Wearability",
     slug: "royal-plum-cotton-coord-set-embroidery",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1T30aeMCN2CKJk7sOszn2zaap__mDXp9p&sz=w500",
     images: [
@@ -372,51 +417,43 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "Royal Plum",
-    isNew: true,
-    isTrending: true,
-    description: `**1. Product Title**
-Royal Plum Cotton Co-Ord Set with Embroidery
+    isBestSelling: true,
 
-**2. Short Description**
-Step into effortless elegance with this stunning royal plum co-ord set, designed to give you a rich and graceful look while keeping comfort at its core.
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Royal Plum Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-**3. Fabric & Color**
- Fabric: 100% Pure Cotton
- Soft, breathable & lightweight
- Gentle on skin, perfect for all-day wear
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
- Color:
-Deep royal plum (wine/purple tone) base enhanced with delicate beige-gold floral embroidery, creating a luxurious and eye-catching contrast.
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**4. Design Details**
- Design Details:
- Intricate floral embroidery on the front panel, sleeves & pants
- Smart collared neckline with a clean front placket
- Full sleeves with embroidered cuffs for a refined touch
- Straight-fit pants with coordinated embroidery
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
 
-**5. Fit & Style**
- Fit & Style:
- Tailored yet comfortable silhouette
- Perfect for festive wear, office chic, or casual outings
- Elegant fusion of traditional embroidery with modern co-ord styling
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
 
-**6. Why You'll Love It**
- Why You'll Love It:
-This outfit blends rich color, fine craftsmanship, and breathable comfort, making it an ideal pick for those who love subtle luxury with everyday wearability.
-
-**7. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p14",
-    sku: "COORD-TEAL-001",
-    name: "Elegant Teal Green Cotton Co-Ord Set with Floral Embroidery ",
+    sku: "CRD-COT-GRN-002",
+    name: "Elegant Teal Green Cotton Co-Ord Set Embroidered",
     tagline: "Effortless Charm & Graceful Style",
     slug: "elegant-teal-green-cotton-coord-set-floral-embroidery",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1OklbiWw6fH97r8mCWsw3VxdkvwAqvxFe&sz=w500",
     images: [
@@ -430,51 +467,42 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     fabric: "100% Pure Cotton",
     color: "Teal Green",
     isNew: true,
-    isTrending: true,
-    description: `**1. Product Title**
-Elegant Teal Green Cotton Co-Ord Set with Floral Embroidery
 
-**2. Short Description**
-Add a touch of effortless charm to your wardrobe with this beautifully crafted teal green co-ord set, designed for comfort and graceful everyday style.
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Elegant Teal Green Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-**3. Fabric & Color**
- Fabric: 100% Pure Cotton
- Soft, breathable & lightweight
- Skin-friendly and ideal for all-day wear
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
- Color:
-Rich deep teal green base enhanced with vibrant multicolor floral embroidery in shades of mustard yellow, deep red, and subtle grey, creating a fresh and elegant contrast.
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**4. Design Details**
- Design Details:
- Delicate embroidery on neckline for a refined look
- Artistic floral embroidery along the hemline and sleeve cuffs
- Stylish V-neck with minimal detailing for a modern touch
- 3/4th sleeves for versatile wear
- Straight-fit pants for a clean and structured finish
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
 
-**5. Fit & Style**
- Fit & Style:
- Comfortable relaxed silhouette
- Perfect for daily wear, office, or casual gatherings
- Blends traditional embroidery with contemporary co-ord styling
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
 
-**6. Why You'll Love It**
- Why You'll Love It:
-This co-ord set offers the perfect mix of comfort, color, and craftsmanship, making it an ideal choice for women who love subtle elegance with a pop of floral freshness.
-
-**7. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p15",
-    sku: "COORD-WINE-001",
-    name: "Wine Berry Cotton Co-Ord Set with Elegant Embroidery ",
+    sku: "CRD-COT-WIN-001",
+    name: "Wine Berry Cotton Co-Ord Set Embroidered",
     tagline: "Effortless Sophistication & Refined Style",
     slug: "wine-berry-cotton-coord-set-elegant-embroidery",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1yqH8sha_dRXlYAOzvSP5Cu-ucdvMM-7x&sz=w500",
     images: [
@@ -488,52 +516,43 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "Wine Berry",
-    isNew: true,
     isTrending: true,
-    description: `**1. Product Title**
-Wine Berry Cotton Co-Ord Set with Elegant Embroidery
 
-**2. Short Description**
-Bring effortless sophistication to your wardrobe with this beautifully designed wine berry co-ord set, perfect for both comfort and refined style.
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Wine Berry Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-**3. Fabric & Color**
- Fabric: 100% Pure Cotton
- Soft, breathable & lightweight
- Gentle on skin, ideal for all-day wear
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
- Color:
-Rich wine berry (deep magenta/plum tone) base enhanced with subtle beige thread embroidery, creating a graceful and classy contrast.
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**4. Design Details**
- Design Details:
- Elegant floral embroidery on the front panel and hemline
- Minimal embroidered detailing on sleeves and pants
- Smart collared neckline with a clean front placket
- 3/4th sleeves for a versatile, modern look
- Straight-fit pants with coordinated embroidery accents
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
 
-**5. Fit & Style**
- Fit & Style:
- Relaxed yet structured silhouette
- Perfect for daily wear, office, or casual gatherings
- A balanced blend of traditional embroidery and contemporary styling
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
 
-**6. Why You'll Love It**
- Why You'll Love It:
-This co-ord set offers a perfect mix of rich color, fine craftsmanship, and breathable comfort, making it a must-have for women who appreciate understated elegance.
-
-**7. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.8,
   },
   {
     id: "p16",
-    sku: "COORD-PINK-001",
-    name: "Soft Blush Pink Cotton Co-Ord Set with Delicate Embroidery ",
+    sku: "CRD-COT-PNK-001",
+    name: "Soft Blush Pink Cotton Co-Ord Set Embroidered",
     tagline: "Subtle Elegance & Everyday Comfort",
     slug: "soft-blush-pink-cotton-coord-set-delicate-embroidery",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1GQSTuioaQUwqW5dZ44_S5yLjk6ysO-IP&sz=w500",
     images: [
@@ -547,52 +566,42 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "Blush Pink",
-    isNew: true,
-    isTrending: true,
-    description: `**1. Product Title**
-Soft Blush Pink Cotton Co-Ord Set with Delicate Embroidery
+    
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Soft Blush Pink Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-**2. Short Description**
-Add a touch of elegance and freshness to your wardrobe with this beautifully crafted blush pink co-ord set, designed for comfort and graceful everyday wear.
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
-**3. Fabric & Color**
- Fabric: 100% Pure Cotton
- Soft, breathable & lightweight
- Skin-friendly for all-day comfort
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
- Color:
-Soothing blush pink base adorned with elegant off-white floral embroidery, giving it a soft, feminine and premium look.
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
 
-**4. Design Details**
- Design Details:
- Intricate embroidery on the front panel for a refined appeal
- Coordinated embroidery on sleeves and pant hems
- Smart collared neckline with a neat front placket
- 3/4th sleeves for a modern, versatile style
- Straight-fit pants for a clean and polished silhouette
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
 
-**5. Fit & Style**
- Fit & Style:
- Relaxed yet structured fit
- Perfect for daily wear, office, or casual outings
- A beautiful blend of traditional embroidery with contemporary co-ord styling
-
-**6. Why You'll Love It**
- Why You'll Love It:
-Lightweight, breathable, and effortlessly stylish — this co-ord set offers subtle elegance with everyday comfort, making it a must-have in your collection.
-
-**7. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p17",
-    sku: "COORD-PINK-002",
-    name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ",
+    sku: "CRD-COT-PNK-002",
+    name: "Soft Blush Pink Cotton Co-Ord Set Embroidered",
     tagline: "Vibrant Charm & Everyday Comfort",
     slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w500",
     images: [
@@ -606,52 +615,43 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
     color: "Blush Pink",
-    isNew: true,
-    isTrending: true,
-    description: `**1. Product Title**
-Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery
+    isBestSelling: true,
 
-**2. Short Description**
-Add a touch of elegance and freshness to your wardrobe with this beautifully crafted blush pink co-ord set, designed for comfort and graceful everyday wear.
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Soft Blush Pink Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-**3. Fabric & Color**
- Fabric: 100% Pure Cotton
- Soft, breathable & lightweight
- Skin-friendly for all-day comfort
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
- Color:
-Soothing blush pink base adorned with elegant multicolor floral embroidery, adding a vibrant yet subtle charm for a premium look.
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**4. Design Details**
- Design Details:
- Intricate multicolor embroidery on the front panel for a refined appeal
- Coordinated embroidery on sleeves and pant hems
- Smart collared neckline with a neat front placket
- 3/4th sleeves for a modern, versatile style
- Straight-fit pants for a clean and polished silhouette
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
 
-**5. Fit & Style**
- Fit & Style:
- Relaxed yet structured fit
- Perfect for daily wear, office, or casual outings
- A beautiful blend of traditional embroidery with contemporary co-ord styling
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
 
-**6. Why You'll Love It**
- Why You'll Love It:
-Lightweight, breathable, and effortlessly stylish — this co-ord set offers subtle elegance with a touch of vibrant detailing, making it a must-have in your collection.
-
-**7. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p18",
-    sku: "COORD-PINK-003",
-    name: "Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery ",
+    sku: "CRD-COT-PNK-003",
+    name: "Soft Blush Pink Cotton Co-Ord Set Embroidered",
     tagline: "Vibrant Detailing & Premium Comfort",
     slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2",
-    price: 1999,
-    originalPrice: 3998,
+    price: 999,
+    originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     image: "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w500",
     images: [
@@ -665,156 +665,128 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     fabric: "100% Pure Cotton",
     color: "Blush Pink",
     isNew: true,
-    isTrending: true,
-    isVariant: true,
-    description: `**1. Product Title**
-Soft Blush Pink Cotton Co-Ord Set with Multicolor Embroidery
 
-**2. Short Description**
-Add a touch of elegance and freshness to your wardrobe with this beautifully crafted blush pink co-ord set, designed for comfort and graceful everyday wear.
+    description: `**DESCRIPTION:**
+Elevate your everyday wardrobe with this sophisticated Soft Blush Pink Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
 
-**3. Fabric & Color**
- Fabric: 100% Pure Cotton
- Soft, breathable & lightweight
- Skin-friendly for all-day comfort
+**HIGHLIGHTS:**
+• Breathable weave
+• All-day comfort
+• Soft touch
+• Premium durable finish
+• Easy to wear
 
- Color:
-Soothing blush pink base adorned with elegant multicolor floral embroidery, adding a vibrant yet subtle charm for a premium look.
+**FABRIC DETAILS:**
+Made from premium 100% Pure Cotton. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**4. Design Details**
- Design Details:
- Intricate multicolor embroidery on the front panel for a refined appeal
- Coordinated embroidery on sleeves and pant hems
- Smart collared neckline with a neat front placket
- 3/4th sleeves for a modern, versatile style
- Straight-fit pants for a clean and polished silhouette
+**SIZE & FIT:**
+Standard regular fit. Please refer to the size chart for exact measurements.
 
-**5. Fit & Style**
- Fit & Style:
- Relaxed yet structured fit
- Perfect for daily wear, office, or casual outings
- A beautiful blend of traditional embroidery with contemporary co-ord styling
+**STYLING:**
+Ideal occasions:
+- Office wear
+- Daily luxury wear
+- Daytime events
+- Casual elegance
 
-**6. Why You'll Love It**
- Why You'll Love It:
-Lightweight, breathable, and effortlessly stylish — this co-ord set offers subtle elegance with a touch of vibrant detailing, making it a must-have in your collection.
-
-**7. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p19",
-    sku: "SAREE-LINEN-WHT-001",
-    name: "Elegant Off-White Soft Linen Saree with Digital Floral Print & Cutwork Border",
+    sku: "SAR-LIN-OWH-019",
+    name: "Summer Bouquet Linen Saree",
+    tagline: "Blooming Elegance in Breathable Fabric",
     slug: "off-white-soft-linen-saree-digital-floral-print",
-    price: 1499,
-    originalPrice: 2998,
+    price: 699,
+    originalPrice: 1399,
     image:
       "https://drive.google.com/thumbnail?id=10sTYtNVliX2-pcwfkZDvYOJvglyexpME&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=10sTYtNVliX2-pcwfkZDvYOJvglyexpME&sz=w500",
     ],
-    category: "Sarees",
+    category: "Linen Sarees",
     fabric: "Premium Soft Linen",
     color: "Off-White with Blush Pink & Mustard Yellow floral",
-    colorVariants: [
-      {
-        color: "Off-White",
-        image: "https://drive.google.com/thumbnail?id=10sTYtNVliX2-pcwfkZDvYOJvglyexpME&sz=w500",
-        slug: "off-white-soft-linen-saree-digital-floral-print"
-      },
-      {
-        color: "Yellow",
-        image: "https://drive.google.com/thumbnail?id=1-O_XsnPg-kdC1pg-bZcCwqOtYFJFAHj8&sz=w500",
-        slug: "yellow-soft-linen-saree-digital-floral-print"
-      }
-    ],
-    isNew: true,
     isTrending: true,
-    description: `**1. Product Title**
-Elegant Off-White Soft Linen Saree with Digital Floral Print & Cutwork Border
 
-**2. Short Description**
-Elevate your everyday elegance with this beautifully designed off-white soft linen saree, crafted for comfort and effortless style.
+    description: `**DESCRIPTION:**
+Capture the essence of spring with this stunning Off-White Linen Saree. Adorned with delicate digital floral prints in blush pink and mustard yellow, it's a masterpiece of subtle grace. The lightweight fabric ensures you stay cool and comfortable while looking effortlessly chic.
 
-**3. Product Details**
-- Fabric: Premium Soft Linen
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**HIGHLIGHTS:**
+• Premium Digital Floral Print
+• Lightweight & Breathable Linen
+• Soft Natural Texture
+• Elegant Drape
+• Minimalist Aesthetic
 
-**4. Design Details**
-Featuring a finely detailed digital floral print in soothing blush pink and mustard yellow tones, this saree offers a modern yet graceful appeal with its delicate cutwork border.
+**FABRIC DETAILS:**
+High-quality Soft Linen blend. This fabric is specially processed for a smooth, irritation-free feel against the skin, making it perfect for long hours of wear.
 
-**5. Why You’ll Love It**
-Made from breathable soft linen fabric, it ensures a light and airy feel. Pair it with pearl jewelry or statement jhumkas for a classy, graceful look.
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Border: No Border (Clean Edge)
 
-**6. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**STYLING:**
+Perfect for:
+- Garden parties
+- Day weddings
+- Sophisticated office wear
+- Sunday brunches`,
     rating: 4.9,
   },
   {
     id: "p20",
-    sku: "SAREE-LINEN-YEL-001",
-    name: "Elegant Yellow Soft Linen Saree with Digital Floral Print & Cutwork Border",
+    sku: "SAR-LIN-YEL-020",
+    name: "Golden Sunshine Linen Saree",
+    tagline: "Radiate Joy with Every Drape",
     slug: "yellow-soft-linen-saree-digital-floral-print",
-    price: 1499,
-    originalPrice: 2998,
+    price: 699,
+    originalPrice: 1399,
     image:
       "https://drive.google.com/thumbnail?id=1-O_XsnPg-kdC1pg-bZcCwqOtYFJFAHj8&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1-O_XsnPg-kdC1pg-bZcCwqOtYFJFAHj8&sz=w500",
     ],
-    category: "Sarees",
+    category: "Linen Sarees",
     fabric: "Premium Soft Linen",
     color: "Yellow with Floral accents",
-    colorVariants: [
-      {
-        color: "Off-White",
-        image: "https://drive.google.com/thumbnail?id=10sTYtNVliX2-pcwfkZDvYOJvglyexpME&sz=w500",
-        slug: "off-white-soft-linen-saree-digital-floral-print"
-      },
-      {
-        color: "Yellow",
-        image: "https://drive.google.com/thumbnail?id=1-O_XsnPg-kdC1pg-bZcCwqOtYFJFAHj8&sz=w500",
-        slug: "yellow-soft-linen-saree-digital-floral-print"
-      }
-    ],
-    isNew: true,
-    isTrending: true,
-    isVariant: true,
-    description: `**1. Product Title**
-Elegant Yellow Soft Linen Saree with Digital Floral Print & Cutwork Border
+    
+    description: `**DESCRIPTION:**
+Brighten up any occasion with our Golden Sunshine Linen Saree. This vibrant piece features artistic floral accents on a cheery yellow base, creating a look that's both modern and traditionally rooted. The breathable linen fabric makes it your best companion for summer festivities.
 
-**2. Short Description**
-Elevate your everyday elegance with this beautifully designed yellow soft linen saree, crafted for comfort and effortless style.
+**HIGHLIGHTS:**
+• Vibrant Yellow Hue
+• Artistic Floral Motifs
+• Superior Breathability
+• Soft-to-touch Linen
+• Easy to Style
 
-**3. Product Details**
-- Fabric: Premium Soft Linen
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**FABRIC DETAILS:**
+Premium Soft Linen. Known for its strength and moisture-wicking properties, this linen is ideal for the Indian climate.
 
-**4. Design Details**
-Featuring a finely detailed digital floral print, this vibrant yellow saree offers a modern yet graceful appeal with its delicate cutwork border.
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Soft Finished
 
-**5. Why You’ll Love It**
-Made from breathable soft linen fabric, it ensures a light and airy feel. Pair it with statement jhumkas or oxidised silver jewelry for a contemporary ethnic look.
-
-**6. Care Instructions**
-Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibrant colors.`,
+**STYLING:**
+Ideal for:
+- Haldi ceremonies
+- Festive gatherings
+- Casual day outings
+- Work events`,
     rating: 4.9,
   },
   {
     id: "p21",
-    sku: "SAREE-GEOR-YEL-001",
-    name: "Festive Yellow Georgette Saree with Digital Foil Print & Green Designer Border",
+    sku: "SAR-GEO-YEL-001",
+    name: "Festive Yellow Georgette Saree",
     slug: "festive-yellow-georgette-saree-digital-foil-print",
-    price: 1499,
-    originalPrice: 2998,
+    price: 749,
+    originalPrice: 1499,
     image:
       "https://drive.google.com/thumbnail?id=1xmONKdYlc6VJQ15qwnsTtjMaOUHzy4QP&sz=w500",
     images: [
@@ -823,60 +795,45 @@ Machine wash or gentle hand wash in cold water. Dry in shade to protect the vibr
     category: "Sarees",
     fabric: "Premium Georgette",
     color: "Bright Festive Yellow with Green Border",
-    colorVariants: [
-      {
-        color: "Yellow",
-        image: "https://drive.google.com/thumbnail?id=1xmONKdYlc6VJQ15qwnsTtjMaOUHzy4QP&sz=w500",
-        slug: "festive-yellow-georgette-saree-digital-foil-print"
-      },
-      {
-        color: "Green/Red",
-        image: "https://drive.google.com/thumbnail?id=1tZtZSwoe-Bl1vz84Dfs1fmO5vHnLW6PF&sz=w500",
-        slug: "elegant-green-georgette-saree-digital-print-zari-border"
-      },
-      {
-        color: "Red",
-        image: "https://drive.google.com/thumbnail?id=1LjT61r8jWSf8Dc51dKaa5y9pZlYWFlhd&sz=w500",
-        slug: "stunning-red-georgette-saree-digital-print-jacquard-border"
-      },
-      {
-        color: "Green/Pink",
-        image: "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
-        slug: "elegant-green-georgette-saree-foil-design-pink-border"
-      }
-    ],
-    isNew: true,
-    isTrending: true,
-    description: `**1. Product Title**
-Festive Yellow Georgette Saree with Digital Foil Print & Green Designer Border
+    isBestSelling: true,
 
-**2. Short Description**
-Brighten up your festive wardrobe with this stunning yellow georgette saree, designed to radiate elegance and tradition.
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and elegance with this luxury Festive Yellow Georgette Saree. Handcrafted to ensure a graceful drape and premium feel across all occasions.
 
-**3. Product Details**
-- Fabric: Premium Georgette
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**HIGHLIGHTS:**
+• Soft breathable fabric
+• Easy to drape
+• Lightweight & comfortable
+• Premium finish
+• Elegant design
 
-**4. Design Details**
-Adorned with intricate digital foil print, the saree features delicate traditional motifs that add a subtle shimmer. The vibrant yellow base is beautifully complemented by a rich green designer border with golden detailing.
+**FABRIC DETAILS:**
+Made from Premium Georgette. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**5. Why You’ll Love It**
-Crafted from lightweight and flowy georgette fabric, this saree offers a graceful drape and all-day comfort. Pair it with gold jhumkas and bangles for a complete festive look.
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
 
-**6. Care Instructions**
-Dry clean or gentle hand wash. Do not iron directly on the foil print.`,
+**STYLING:**
+Ideal occasions:
+- Festive wear
+- Office wear
+- Casual elegance
+- Wedding functions
+- Daily luxury wear
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p22",
-    sku: "SAREE-GEOR-GRN-001",
-    name: "Elegant Green Georgette Saree with Digital Print & Rich Zari Border",
+    sku: "SAR-GEO-GRN-001",
+    name: "Elegant Green Georgette Saree",
     slug: "elegant-green-georgette-saree-digital-print-zari-border",
-    price: 1499,
-    originalPrice: 2998,
+    price: 749,
+    originalPrice: 1499,
     image:
       "https://drive.google.com/thumbnail?id=1tZtZSwoe-Bl1vz84Dfs1fmO5vHnLW6PF&sz=w500",
     images: [
@@ -885,60 +842,45 @@ Dry clean or gentle hand wash. Do not iron directly on the foil print.`,
     category: "Sarees",
     fabric: "Premium Georgette",
     color: "Rich Dark Green Base with Red & Gold accents",
-    colorVariants: [
-      {
-        color: "Yellow",
-        image: "https://drive.google.com/thumbnail?id=1xmONKdYlc6VJQ15qwnsTtjMaOUHzy4QP&sz=w500",
-        slug: "festive-yellow-georgette-saree-digital-foil-print"
-      },
-      {
-        color: "Green/Red",
-        image: "https://drive.google.com/thumbnail?id=1tZtZSwoe-Bl1vz84Dfs1fmO5vHnLW6PF&sz=w500",
-        slug: "elegant-green-georgette-saree-digital-print-zari-border"
-      },
-      {
-        color: "Red",
-        image: "https://drive.google.com/thumbnail?id=1LjT61r8jWSf8Dc51dKaa5y9pZlYWFlhd&sz=w500",
-        slug: "stunning-red-georgette-saree-digital-print-jacquard-border"
-      },
-      {
-        color: "Green/Pink",
-        image: "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
-        slug: "elegant-green-georgette-saree-foil-design-pink-border"
-      }
-    ],
     isNew: true,
-    isTrending: true,
-    description: `**1. Product Title**
-Rich Green Georgette Saree with Digital Print & Heavy Zari Border
 
-**2. Short Description**
-Step into timeless elegance with this stunning green georgette saree, designed to blend tradition with modern style.
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and elegance with this luxury Elegant Green Georgette Saree. Handcrafted to ensure a graceful drape and premium feel across all occasions.
 
-**3. Product Details**
-- Fabric: Premium Georgette
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**HIGHLIGHTS:**
+• Soft breathable fabric
+• Easy to drape
+• Lightweight & comfortable
+• Premium finish
+• Elegant design
 
-**4. Design Details**
-The saree features a finely detailed digital print pattern across the body. The highlight of this piece is its rich zari woven border in deep red and gold tones, adding a luxurious and festive touch.
+**FABRIC DETAILS:**
+Made from Premium Georgette. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**5. Why You’ll Love It**
-Crafted from lightweight and flowy georgette fabric, this saree offers a graceful drape that is perfect for any occasion without compromising comfort.
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
 
-**6. Care Instructions**
-Dry clean recommended to maintain the intricate zari border and fabric sheen.`,
+**STYLING:**
+Ideal occasions:
+- Festive wear
+- Office wear
+- Casual elegance
+- Wedding functions
+- Daily luxury wear
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p23",
-    sku: "SAREE-GEOR-RED-001",
-    name: "Stunning Red Georgette Saree with Digital Print & Rich Jacquard Border",
+    sku: "SAR-GEO-RED-001",
+    name: "Stunning Red Georgette Saree",
     slug: "stunning-red-georgette-saree-digital-print-jacquard-border",
-    price: 1499,
-    originalPrice: 2998,
+    price: 749,
+    originalPrice: 1499,
     image:
       "https://drive.google.com/thumbnail?id=1LjT61r8jWSf8Dc51dKaa5y9pZlYWFlhd&sz=w500",
     images: [
@@ -947,60 +889,45 @@ Dry clean recommended to maintain the intricate zari border and fabric sheen.`,
     category: "Sarees",
     fabric: "Premium Georgette",
     color: "Rich Festive Red",
-    colorVariants: [
-      {
-        color: "Yellow",
-        image: "https://drive.google.com/thumbnail?id=1xmONKdYlc6VJQ15qwnsTtjMaOUHzy4QP&sz=w500",
-        slug: "festive-yellow-georgette-saree-digital-foil-print"
-      },
-      {
-        color: "Green/Red",
-        image: "https://drive.google.com/thumbnail?id=1tZtZSwoe-Bl1vz84Dfs1fmO5vHnLW6PF&sz=w500",
-        slug: "elegant-green-georgette-saree-digital-print-zari-border"
-      },
-      {
-        color: "Red",
-        image: "https://drive.google.com/thumbnail?id=1LjT61r8jWSf8Dc51dKaa5y9pZlYWFlhd&sz=w500",
-        slug: "stunning-red-georgette-saree-digital-print-jacquard-border"
-      },
-      {
-        color: "Green/Pink",
-        image: "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
-        slug: "elegant-green-georgette-saree-foil-design-pink-border"
-      }
-    ],
-    isNew: true,
     isTrending: true,
-    description: `**1. Product Title**
-Festive Red Georgette Saree with Bandhani Print & Gold Jacquard Border
 
-**2. Short Description**
-Make a bold and elegant statement with this gorgeous red georgette saree, designed for women who love timeless ethnic style.
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and elegance with this luxury Stunning Red Georgette Saree. Handcrafted to ensure a graceful drape and premium feel across all occasions.
 
-**3. Product Details**
-- Fabric: Premium Georgette
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**HIGHLIGHTS:**
+• Soft breathable fabric
+• Easy to drape
+• Lightweight & comfortable
+• Premium finish
+• Elegant design
 
-**4. Design Details**
-The saree features intricate digital printed traditional patterns, inspired by classic bandhani-style motifs. The highlight is its luxurious jacquard woven border in rich gold tone, adorned with detailed floral designs.
+**FABRIC DETAILS:**
+Made from Premium Georgette. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**5. Why You’ll Love It**
-Crafted from soft and flowy georgette fabric, this saree offers a graceful drape that flatters every silhouette, perfect for making a vibrant and cultural statement.
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
 
-**6. Care Instructions**
-Dry clean recommended to protect the bandhani print and jacquard woven border.`,
+**STYLING:**
+Ideal occasions:
+- Festive wear
+- Office wear
+- Casual elegance
+- Wedding functions
+- Daily luxury wear
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p24",
-    sku: "SAREE-GEOR-GRN-002",
-    name: "Elegant Green Georgette Saree with Foil Design & Contrast Pink Border",
+    sku: "SAR-GEO-GRN-002",
+    name: "Elegant Green Georgette Saree",
     slug: "elegant-green-georgette-saree-foil-design-pink-border",
-    price: 1499,
-    originalPrice: 2998,
+    price: 749,
+    originalPrice: 1499,
     image:
       "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
     images: [
@@ -1009,279 +936,207 @@ Dry clean recommended to protect the bandhani print and jacquard woven border.`,
     category: "Sarees",
     fabric: "Premium Georgette",
     color: "Rich Green with Bright Pink Border",
-    colorVariants: [
-      {
-        color: "Yellow",
-        image: "https://drive.google.com/thumbnail?id=1xmONKdYlc6VJQ15qwnsTtjMaOUHzy4QP&sz=w500",
-        slug: "festive-yellow-georgette-saree-digital-foil-print"
-      },
-      {
-        color: "Green/Red",
-        image: "https://drive.google.com/thumbnail?id=1tZtZSwoe-Bl1vz84Dfs1fmO5vHnLW6PF&sz=w500",
-        slug: "elegant-green-georgette-saree-digital-print-zari-border"
-      },
-      {
-        color: "Red",
-        image: "https://drive.google.com/thumbnail?id=1LjT61r8jWSf8Dc51dKaa5y9pZlYWFlhd&sz=w500",
-        slug: "stunning-red-georgette-saree-digital-print-jacquard-border"
-      },
-      {
-        color: "Green/Pink",
-        image: "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
-        slug: "elegant-green-georgette-saree-foil-design-pink-border"
-      }
-    ],
-    isNew: true,
-    isTrending: true,
-    description: `**1. Product Title**
-Green Georgette Saree with Foil Print & Contrast Pink Border
+    
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and elegance with this luxury Elegant Green Georgette Saree. Handcrafted to ensure a graceful drape and premium feel across all occasions.
 
-**2. Short Description**
-Add a refreshing touch of elegance to your ethnic collection with this beautiful green georgette saree.
+**HIGHLIGHTS:**
+• Soft breathable fabric
+• Easy to drape
+• Lightweight & comfortable
+• Premium finish
+• Elegant design
 
-**3. Product Details**
-- Fabric: Premium Georgette
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**FABRIC DETAILS:**
+Made from Premium Georgette. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**4. Design Details**
-The saree features a delicate foil print design, highlighted with traditional-inspired motifs that add a subtle shimmer. The rich green base is perfectly complemented by a striking contrast pink border.
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
 
-**5. Why You’ll Love It**
-Crafted from soft and flowy georgette fabric, this saree offers a lightweight feel and a graceful drape, perfect for long hours of wear without compromising on ethnic style.
+**STYLING:**
+Ideal occasions:
+- Festive wear
+- Office wear
+- Casual elegance
+- Wedding functions
+- Daily luxury wear
 
-**6. Care Instructions**
-Dry clean or gentle hand wash. Avoid hot iron directly on foil prints.`,
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.9,
   },
   {
     id: "p25",
-    sku: "SAREE-LINEN-LAV-001",
-    name: "Lavender Floral Linen Soft & Breathable Saree",
+    sku: "SAR-LIN-LAV-025",
+    name: "Lavender Fields Floral Linen Saree",
+    tagline: "Serene Hues & Artistic Design",
     slug: "lavender-floral-linen-saree",
-    price: 1499,
-    originalPrice: 2998,
+    price: 699,
+    originalPrice: 1399,
     image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
       "https://drive.google.com/thumbnail?id=12PWfrmxUN3a68SJp7gc2_hO1bObEt0_n&sz=w500",
       "https://drive.google.com/thumbnail?id=10tE2QOg_tS7f0to9djZKJLHwUwcGZW_0&sz=w500"
     ],
-    category: "Sarees",
+    category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Lavender",
     colorVariants: [
-      {
-        color: "Lavender",
-        image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
-        slug: "lavender-floral-linen-saree"
-      },
-      {
-        color: "Pink",
-        image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
-        slug: "pink-floral-linen-saree"
-      },
-      {
-        color: "Peach",
-        image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
-        slug: "peach-floral-linen-saree"
-      },
-      {
-        color: "Rani Pink",
-        image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
-        slug: "rani-pink-floral-linen-saree"
-      },
-      {
-        color: "Lime Green",
-        image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
-        slug: "lime-green-floral-linen-saree"
-      },
-      {
-        color: "Sky Blue",
-        image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
-        slug: "sky-blue-floral-linen-saree"
-      }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
-    isNew: true,
-    isTrending: true,
-    description: `**Why You'll Love It:**
-- Premium Soft Linen Fabric
-- Lightweight, breathable, washable & durable
-- Elegant Lavender Base with White floral prints
-- Designer Tassel Pallu for a stylish finish
-- Easy to drape, making it perfect for beginners and daily wear
-- Comes with a White Blouse matching with Flower color
-- Ideal for Office wear, day events & casual outings
-- COD Available
+    isBestSelling: true,
 
-**Description**
-Upgrade your everyday ethnic style with this beautiful lavender floral linen saree, designed for women who love subtle elegance with comfort. Made from soft, breathable, and washable linen fabric, this saree ensures a lightweight feel, making it perfect for all-day wear. The soothing lavender shade paired with delicate white floral prints gives it a fresh, graceful, and modern appeal. Its easy-to-drape texture is a dream, and it comes with a White Blouse matching the flower color perfectly.
+    description: `**DESCRIPTION:**
+Embrace the calm of lavender with this exquisitely printed Linen Saree. Featuring a rich floral pattern across the length, this saree balances a dreamy aesthetic with the grounded comfort of high-grade linen. A must-have for the woman who values artistic expression and comfort.
 
-**Product Details**
-- Fabric: Premium Linen
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**HIGHLIGHTS:**
+• Intricate Floral Pattern
+• Soothing Lavender Tone
+• Premium Breathable Weave
+• Contemporary Drape
+• Skin-Friendly Fabric
 
-**Care Instructions**
-Washable and durable. Hand wash recommended.`,
+**FABRIC DETAILS:**
+Crafted from our signature Premium Linen. Durable yet exceptionally soft, it gets better with every wash.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Digital Print
+
+**STYLING:**
+Suggested occasions:
+- Evening teas
+- Art gallery visits
+- Corporate events
+- Family dinners`,
     rating: 4.8,
   },
   {
     id: "p26",
-    sku: "SAREE-LINEN-PNK-001",
-    name: "Pink Floral Linen Soft & Breathable Saree",
+    sku: "SAR-LIN-PNK-001",
+    name: "Pink Floral Linen Saree",
     slug: "pink-floral-linen-saree",
-    price: 1499,
-    originalPrice: 2998,
+    price: 699,
+    originalPrice: 1399,
     image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
       "https://drive.google.com/thumbnail?id=1y3o_cgdZ1eE7hHKSKiIlWUTmAB6Mi_4K&sz=w500"
     ],
-    category: "Sarees",
+    category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Pink",
     isVariant: true,
     colorVariants: [
-      {
-        color: "Lavender",
-        image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
-        slug: "lavender-floral-linen-saree"
-      },
-      {
-        color: "Pink",
-        image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
-        slug: "pink-floral-linen-saree"
-      },
-      {
-        color: "Peach",
-        image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
-        slug: "peach-floral-linen-saree"
-      },
-      {
-        color: "Rani Pink",
-        image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
-        slug: "rani-pink-floral-linen-saree"
-      },
-      {
-        color: "Lime Green",
-        image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
-        slug: "lime-green-floral-linen-saree"
-      },
-      {
-        color: "Sky Blue",
-        image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
-        slug: "sky-blue-floral-linen-saree"
-      }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
     isNew: true,
-    isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium Soft Linen Fabric
-- ️ Lightweight, breathable, washable & durable
--  Beautiful Pink Base with subtle floral prints
--  Easy to drape, making it perfect for beginners and daily wear
--  Ideal for Office wear, day functions & casual outings
--  COD Available
 
-**Description**
-Add effortless elegance to your wardrobe with this beautiful pink floral linen saree, crafted for comfort and style. Made from soft and breathable linen fabric, this saree feels light on the skin, making it perfect for long hours of wear. The delicate floral pattern on a soothing pink base enhances its charm, giving you a graceful and modern ethnic look. With its easy-to-drape texture, even beginners can carry it confidently.
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and style with this premium Pink Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
 
-**Product Details**
-- Fabric: Premium Linen
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**HIGHLIGHTS:**
+• Breathable and lightweight
+• Soft, natural texture
+• Elegant drape
+• Premium weave
+• Perfect for all seasons
 
-**Care Instructions**
-Washable and durable. Hand wash recommended.`,
+**FABRIC DETAILS:**
+Made from Premium Linen. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
+
+**STYLING:**
+Ideal occasions:
+- Premium daily wear
+- Office wear
+- Casual elegance
+- Daytime gatherings
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.8,
   },
   {
     id: "p27",
-    sku: "SAREE-LINEN-PCH-001",
-    name: "Peach Floral Linen Soft & Breathable Saree",
+    sku: "SAR-LIN-PCH-001",
+    name: "Peach Floral Linen Saree",
     slug: "peach-floral-linen-saree",
-    price: 1499,
-    originalPrice: 2998,
+    price: 699,
+    originalPrice: 1399,
     image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
       "https://drive.google.com/thumbnail?id=1L9fkrCWzbIPWw0KL5PEy3DZ7zZQYahHx&sz=w500"
     ],
-    category: "Sarees",
+    category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Peach",
     isVariant: true,
     colorVariants: [
-      {
-        color: "Lavender",
-        image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
-        slug: "lavender-floral-linen-saree"
-      },
-      {
-        color: "Pink",
-        image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
-        slug: "pink-floral-linen-saree"
-      },
-      {
-        color: "Peach",
-        image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
-        slug: "peach-floral-linen-saree"
-      },
-      {
-        color: "Rani Pink",
-        image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
-        slug: "rani-pink-floral-linen-saree"
-      },
-      {
-        color: "Lime Green",
-        image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
-        slug: "lime-green-floral-linen-saree"
-      },
-      {
-        color: "Sky Blue",
-        image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
-        slug: "sky-blue-floral-linen-saree"
-      }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
-    isNew: true,
     isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium Soft Linen Fabric
-- ️ Lightweight, breathable, washable & durable
--  Elegant Peach Base with White floral prints
--  Easy to drape, making it perfect for beginners and daily wear
--  Stylish Tassel Pallu for a trendy finish
--  Ideal for Office wear, brunch & small gatherings
--  COD Available
 
-**Description**
-Step into effortless elegance with this beautiful peach floral linen saree, designed to give you both comfort and style. Crafted from soft and breathable linen fabric, this saree is lightweight and perfect for all-day wear, especially in warm weather. The subtle peach tone combined with delicate white floral prints creates a refreshing and sophisticated look that suits both casual and semi-formal occasions. Its easy-to-drape fabric makes it ideal for beginners.
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and style with this premium Peach Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
 
-**Product Details**
-- Fabric: Premium Linen
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**HIGHLIGHTS:**
+• Breathable and lightweight
+• Soft, natural texture
+• Elegant drape
+• Premium weave
+• Perfect for all seasons
 
-**Care Instructions**
-Washable and durable. Hand wash recommended.`,
+**FABRIC DETAILS:**
+Made from Premium Linen. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
+
+**STYLING:**
+Ideal occasions:
+- Premium daily wear
+- Office wear
+- Casual elegance
+- Daytime gatherings
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.8,
   },
   {
     id: "p28",
-    sku: "SAREE-LINEN-RPK-001",
-    name: "Rani Pink Floral Linen Soft & Breathable Saree",
+    sku: "SAR-LIN-PNK-002",
+    name: "Rani Pink Floral Linen Saree",
     slug: "rani-pink-floral-linen-saree",
-    price: 1499,
-    originalPrice: 2998,
+    price: 699,
+    originalPrice: 1399,
     image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
@@ -1289,211 +1144,1237 @@ Washable and durable. Hand wash recommended.`,
       "https://drive.google.com/thumbnail?id=1FnbLkQrzjbJFsWQ9NypbwlC2YPsmTZaM&sz=w500",
       "https://drive.google.com/thumbnail?id=1OFYZngEwVtBupxT3jgItxNeN_mgM3rtl&sz=w500"
     ],
-    category: "Sarees",
+    category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Rani Pink",
     isVariant: true,
     colorVariants: [
-      {
-        color: "Lavender",
-        image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
-        slug: "lavender-floral-linen-saree"
-      },
-      {
-        color: "Pink",
-        image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
-        slug: "pink-floral-linen-saree"
-      },
-      {
-        color: "Peach",
-        image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
-        slug: "peach-floral-linen-saree"
-      },
-      {
-        color: "Rani Pink",
-        image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
-        slug: "rani-pink-floral-linen-saree"
-      },
-      {
-        color: "Lime Green",
-        image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
-        slug: "lime-green-floral-linen-saree"
-      },
-      {
-        color: "Sky Blue",
-        image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
-        slug: "sky-blue-floral-linen-saree"
-      }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
-    isNew: true,
-    isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium Soft Linen Fabric
-- ️ Lightweight, breathable, washable & durable
--  Vibrant Rani Pink Base with White floral prints
--  Easy to drape, making it perfect for beginners and daily wear
--  Stylish Tassel Pallu for a festive touch
--  Ideal for Office, casual outings & festive day wear
--  COD Available
+    
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and style with this premium Rani Pink Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
 
-**Description**
-Make a bold and elegant statement with this beautiful Rani Pink floral linen saree, designed for women who love comfort with style. Crafted from soft and breathable linen fabric, this saree ensures you stay comfortable throughout the day, even in warm weather. The vibrant rani pink shade paired with subtle white floral prints creates a fresh and eye-catching look, perfect for both everyday wear and special casual occasions. The easy-to-drape fabric ensures a hassle-free styling experience.
+**HIGHLIGHTS:**
+• Breathable and lightweight
+• Soft, natural texture
+• Elegant drape
+• Premium weave
+• Perfect for all seasons
 
-**Product Details**
-- Fabric: Premium Linen
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**FABRIC DETAILS:**
+Made from Premium Linen. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
 
-**Care Instructions**
-Washable and durable. Hand wash recommended.`,
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
+
+**STYLING:**
+Ideal occasions:
+- Premium daily wear
+- Office wear
+- Casual elegance
+- Daytime gatherings
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.8,
   },
   {
     id: "p29",
-    sku: "SAREE-LINEN-LGN-001",
-    name: "Lime Green Floral Linen Soft & Breathable Saree",
+    sku: "SAR-LIN-GRN-001",
+    name: "Lime Green Floral Linen Saree",
     slug: "lime-green-floral-linen-saree",
-    price: 1499,
-    originalPrice: 2998,
+    price: 699,
+    originalPrice: 1399,
     image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
       "https://drive.google.com/thumbnail?id=1oumxqdVSj82YHacUObv5XOfZUriXi5uw&sz=w500"
     ],
-    category: "Sarees",
+    category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Lime Green",
     isVariant: true,
     colorVariants: [
-      {
-        color: "Lavender",
-        image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
-        slug: "lavender-floral-linen-saree"
-      },
-      {
-        color: "Pink",
-        image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
-        slug: "pink-floral-linen-saree"
-      },
-      {
-        color: "Peach",
-        image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
-        slug: "peach-floral-linen-saree"
-      },
-      {
-        color: "Rani Pink",
-        image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
-        slug: "rani-pink-floral-linen-saree"
-      },
-      {
-        color: "Lime Green",
-        image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
-        slug: "lime-green-floral-linen-saree"
-      },
-      {
-        color: "Sky Blue",
-        image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
-        slug: "sky-blue-floral-linen-saree"
-      }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
-    isNew: true,
-    isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium Soft Linen Fabric
-- ️ Lightweight, breathable, washable & durable
--  Fresh Lime Green Base with White floral prints
--  Easy to drape, making it perfect for beginners and daily wear
--  Elegant Pallu Finish for a modern touch
--  Ideal for Office, casual outings & summer wear
--  COD Available
+    isBestSelling: true,
 
-**Description**
-Add a fresh and vibrant touch to your wardrobe with this beautiful lime green floral linen saree, designed for comfort and effortless style. Crafted from soft and breathable linen fabric, this saree keeps you cool and comfortable, making it perfect for warm weather and long wear. The bright lime green shade paired with subtle white floral prints creates a cheerful and elegant look, ideal for casual outings, office wear, and daytime events.
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and style with this premium Lime Green Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
 
-**Product Details**
-- Fabric: Premium Linen
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**HIGHLIGHTS:**
+• Breathable and lightweight
+• Soft, natural texture
+• Elegant drape
+• Premium weave
+• Perfect for all seasons
 
-**Care Instructions**
-Washable and durable. Hand wash recommended.`,
+**FABRIC DETAILS:**
+Made from Premium Linen. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
+
+**STYLING:**
+Ideal occasions:
+- Premium daily wear
+- Office wear
+- Casual elegance
+- Daytime gatherings
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
     rating: 4.8,
   },
   {
     id: "p30",
-    sku: "SAREE-LINEN-SKY-001",
-    name: "Sky Blue Floral Linen Soft & Breathable Saree",
+    sku: "SAR-LIN-BLU-001",
+    name: "Sky Blue Floral Linen Saree",
     slug: "sky-blue-floral-linen-saree",
-    price: 1499,
-    originalPrice: 2998,
+    price: 699,
+    originalPrice: 1399,
     image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
     images: [
       "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
       "https://drive.google.com/thumbnail?id=1ORuFO71G6JyOCiyGm5haVqgv5oMhq8cU&sz=w500"
     ],
-    category: "Sarees",
+    category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Sky Blue",
     isVariant: true,
     colorVariants: [
-      {
-        color: "Lavender",
-        image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
-        slug: "lavender-floral-linen-saree"
-      },
-      {
-        color: "Pink",
-        image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
-        slug: "pink-floral-linen-saree"
-      },
-      {
-        color: "Peach",
-        image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
-        slug: "peach-floral-linen-saree"
-      },
-      {
-        color: "Rani Pink",
-        image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
-        slug: "rani-pink-floral-linen-saree"
-      },
-      {
-        color: "Lime Green",
-        image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
-        slug: "lime-green-floral-linen-saree"
-      },
-      {
-        color: "Sky Blue",
-        image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
-        slug: "sky-blue-floral-linen-saree"
-      }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
     isNew: true,
+
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and style with this premium Sky Blue Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
+
+**HIGHLIGHTS:**
+• Breathable and lightweight
+• Soft, natural texture
+• Elegant drape
+• Premium weave
+• Perfect for all seasons
+
+**FABRIC DETAILS:**
+Made from Premium Linen. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
+
+**STYLING:**
+Ideal occasions:
+- Premium daily wear
+- Office wear
+- Casual elegance
+- Daytime gatherings
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
+    rating: 4.8,
+  },
+  {
+    id: "p31",
+    sku: "SAR-LIN-WHT-031",
+    name: "Aqua Breeze Pure Linen Saree",
+    tagline: "Crisp White Meets Refreshing Aqua",
+    slug: "pure-linen-printed-saree-white-aqua-green",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1QsLdWEebrbwPGcsA1HunX7IEeaiW8HM0&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1QsLdWEebrbwPGcsA1HunX7IEeaiW8HM0&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1LNZjkqG2t02FAOurLsDIKlC0rYv50Epv&sz=w1000"
+    ],
+    stock: 12,
+    category: "Linen Sarees",
+    fabric: "Pure Linen",
+    color: "White with Aqua Green Border",
     isTrending: true,
-    description: `**Why You’ll Love It:**
--  Premium Soft Linen Fabric
-- ️ Lightweight, breathable, washable & durable
--  Elegant Sky Blue Base with White floral prints
--  Easy to drape, making it perfect for beginners and daily wear
--  Stylish Tassel Pallu for a chic look
--  Ideal for Office, vacations & summer occasions
--  COD Available
 
-**Description**
-Bring a touch of freshness and elegance to your wardrobe with this beautiful sky blue floral linen saree, crafted for comfort and effortless style. Made from soft and breathable linen fabric, this saree feels light on the skin and is perfect for long hours, especially in warm weather. The soothing sky blue shade combined with delicate white floral prints creates a serene and graceful look, making it ideal for daytime wear, casual outings, and vacations.
+    description: `**DESCRIPTION:**
+A vision of purity and freshness, this White Pure Linen Saree features a striking Aqua Green border. The contrast is sharp and sophisticated, perfect for a smart, contemporary look. the pure linen fabric offers an unmatched structure and breathability.
 
-**Product Details**
-- Fabric: Premium Linen
-- Saree Length: 5.50 meters
-- Blouse Piece Length: 1.00 meter (Unstitched)
-- Saree Width: 1.06 meters (approx. 42–44 inches)
-- Fit: Suitable for all body types, easy to drape
+**HIGHLIGHTS:**
+• Contrast Aqua Green Border
+• Crisp White Base
+• Pure Linen Sophistication
+• Structural Drape
+• Professional Look
 
-**Care Instructions**
-Washable and durable. Hand wash recommended.`,
+**FABRIC DETAILS:**
+100% Pure Linen. This authentic weave celebrates the natural irregularities of linen, adding character and a luxury tactile feel to your ensemble.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+
+**STYLING:**
+Recommended for:
+- Formal board meetings
+- Elegant high-noons
+- Professional conferences
+- Summer luncheons`,
+    rating: 4.9,
+  },
+  {
+    id: "p32",
+    sku: "SAR-LIN-WHT-032",
+    name: "Rose Petal White Linen Saree",
+    tagline: "A Dance of Pink Florals on Pure White",
+    slug: "pure-linen-floral-printed-saree-white-pink",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1bFJUo-dQrcWxXpINaXG4XnsFs03H2b62&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1bFJUo-dQrcWxXpINaXG4XnsFs03H2b62&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1_UgeqhWDYaq4ZbTHKCB4i9Z8lDC_9m7I&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Up75AmF9Vd8p6n4_c1221WX51F8h6kuD&sz=w1000"
+    ],
+    stock: 12,
+    category: "Linen Sarees",
+    fabric: "Pure Linen",
+    color: "White with Pink Floral Print",
+    
+    description: `**DESCRIPTION:**
+Delicacy redefined. This White Pure Linen Saree is punctuated with graceful pink floral prints that look like scattered petals. It's the perfect choice for an understated yet unmistakably feminine look that transitions perfectly from day to night.
+
+**HIGHLIGHTS:**
+• Graceful Pink Floral Print
+• Natural White Texture
+• High-Definition Digital Print
+• Airy & Lightweight
+• Timeless Design`,
+    rating: 4.9,
+  },
+  {
+    id: "p33",
+    sku: "SAR-LIN-NVY-033",
+    name: "Midnight Bloom Navy Linen Saree",
+    tagline: "Dramatic Navy with Artistic Details",
+    slug: "pure-linen-navy-blue-printed-saree-multicolor",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w1000",
+      "https://drive.google.com/thumbnail?id=19Ttzbno_KN4iGWWPYThO_i0IJKqCn0sy&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1hFrK47cf5j2dnIY_diITuKSiUIB9hnLz&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Pf-_cVlPEAOWkz54D5kItrLN_8Ril2UM&sz=w1000"
+    ],
+    stock: 12,
+    category: "Linen Sarees",
+    fabric: "Pure Linen",
+    color: "Navy Blue with Multicolor Print",
+    isBestSelling: true,
+
+    description: `**DESCRIPTION:**
+Sophistication takes a dark turn with this Navy Blue Pure Linen Saree. Featuring multicolor prints that pop against the deep navy base, this saree is for the woman who loves an artistic statement. Perfect for making a quiet impact at any evening gathering.
+
+**HIGHLIGHTS:**
+• Deep Navy Blue Hue
+• Vibrant Multicolor Print
+• Artisan-Inspired Design
+• High-Grade Pure Linen
+• Sophisticated Palette`,
+    rating: 4.9,
+  },
+  {
+    id: "p34",
+    sku: "SAR-LIN-WHT-034",
+    name: "Daffodil White Floral Linen Saree",
+    tagline: "Cheerful Yellow Blooms on Pure White",
+    slug: "elegant-white-floral-linen-saree-yellow-white",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Soft Linen",
+    color: "White with Yellow Floral Print",
+    isNew: true,
+
+    colorVariants: [
+      { color: "Yellow White", slug: "elegant-white-floral-linen-saree-yellow-white", image: "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500" },
+      { color: "Orange White", slug: "elegant-white-floral-linen-saree-orange-white", image: "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500" },
+      { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500" }
+    ],
+    description: `**DESCRIPTION:**
+Bring a touch of summer to your wardrobe with the Daffodil White Floral Linen Saree. The bright yellow floral prints on the pristine white base create a refreshing and joyful look. Perfect for daytime events where you want to stand out with understated elegance.
+
+**HIGHLIGHTS:**
+• Bright Yellow Floral Print
+• Crisp White Linen Base
+• Lightweight & Cool Feel
+• Subtle Natural Luster
+• Easy-to-Drape Fabric`,
+    rating: 4.8,
+  },
+  {
+    id: "p35",
+    sku: "SAR-LIN-WHT-035",
+    name: "Marigold White Floral Linen Saree",
+    tagline: "Vibrant Orange Accents on Soft Linen",
+    slug: "elegant-white-floral-linen-saree-orange-white",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Soft Linen",
+    color: "White with Orange Floral Print",
+    isTrending: true,
+
+    isVariant: true,
+    colorVariants: [
+      { color: "Yellow White", slug: "elegant-white-floral-linen-saree-yellow-white", image: "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500" },
+      { color: "Orange White", slug: "elegant-white-floral-linen-saree-orange-white", image: "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500" },
+      { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500" }
+    ],
+    description: `**DESCRIPTION:**
+The Marigold White Floral Linen Saree is a celebration of color and comfort. The vibrant orange floral motifs add a energetic pop to the soft white linen, making it an ideal choice for festive mornings or professional settings that allow for a splash of color.
+
+**HIGHLIGHTS:**
+• Energetic Orange Florals
+• Soft Finished White Linen
+• Breathable Natural Fiber
+• Elegant Daily Wear
+• High-Definition Print`,
+    rating: 4.8,
+  },
+  {
+    id: "p36",
+    sku: "SAR-LIN-WHT-PNK-001",
+    name: "Elegant White & Pink Floral Linen Saree",
+    tagline: "Soft & Breathable Everyday Wear",
+    slug: "elegant-white-floral-linen-saree-pink-white",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Soft Linen",
+    color: "White with Pink Floral Print",
+    
+    isVariant: true,
+    colorVariants: [
+      { color: "Yellow White", slug: "elegant-white-floral-linen-saree-yellow-white", image: "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500" },
+      { color: "Orange White", slug: "elegant-white-floral-linen-saree-orange-white", image: "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500" },
+      { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500" }
+    ],
+    description: `**DESCRIPTION:**
+Experience the perfect blend of comfort and style with this Elegant White & Pink Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
+
+**HIGHLIGHTS:**
+• Breathable and lightweight
+• Soft, natural texture
+• Elegant drape
+• Premium weave
+• Perfect for all seasons
+
+**FABRIC DETAILS:**
+Made from Premium Soft Linen. This piece is designed to offer maximum comfort while maintaining a pristine, luxurious visual appeal.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Style: Free size natural drape
+
+**STYLING:**
+Ideal occasions:
+- Premium daily wear
+- Office wear
+- Casual elegance
+- Daytime gatherings
+
+**CARE INSTRUCTIONS:**
+We recommend a gentle hand wash or dry clean to maintain the luxury feel and longevity of the fabric.`,
+    rating: 4.8,
+  },
+  {
+    id: "p37",
+    sku: "SAR-LIN-COL-037",
+    name: "Contemporary Tribal Art Ivory Linen Saree",
+    tagline: "Handloom-Inspired Artistry with Minimal Luxury",
+    slug: "contemporary-tribal-art-ivory-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=18M0Otdeax-m-Db3rDSCYinsZ-wm7Uut4&sz=w800",
+    images: [
+      "https://drive.google.com/thumbnail?id=18M0Otdeax-m-Db3rDSCYinsZ-wm7Uut4&sz=w800",
+      "https://drive.google.com/thumbnail?id=1t_MHZaxnqz-2zqNDsrOUWkZSK02sLUNM&sz=w800",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Linen Cotton Blend",
+    color: "Ivory / Off-white with Sage Grey Border",
+    isBestSelling: true,
+
+    description: `**DESCRIPTION:**
+Experience the perfect blend of tradition and modernity with this Contemporary Ethnic Linen Saree. Featuring abstract zig-zag woven designs and soft textured brushstroke effects, this piece is inspired by handloom artistry. The ivory base is beautifully contrasted by an elegant solid sage grey woven border adorned with fine ethnic circular and zig-zag motifs. The pallu is a masterpiece of rich multicolor traditional tribal artwork and intricate floral motifs.
+
+**HIGHLIGHTS:**
+• Abstract Zig-Zag & Tribal Geometric Patterns
+• Elegant Solid Sage Grey Woven Border
+• Rich Multicolor Tribal Art Pallu
+• Soft Grey Handmade Tassels
+• Premium Handloom Aesthetic
+
+**COLOR DETAILS:**
+- Base: Ivory / Off-white / Cream Beige
+- Border: Sage Grey / Ash Grey
+- Print: Rust Orange, Olive Green, Soft Teal Blue, Charcoal Grey, and Dusty Peach
+
+**FABRIC & FEEL:**
+Premium Linen Blend offering a soft, lightweight drape and a natural matte texture. This fabric is highly breathable and perfect for a sophisticated luxury look.
+
+**BLOUSE:**
+Comes with a matching solid Sage Grey blouse piece featuring a subtle sheen texture for a complete ensemble.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Premium Soft Matte
+
+**STYLING:**
+Ideal for:
+- Sophisticated festive celebrations
+- Premium office & corporate wear
+- Creative & artistic gatherings
+- Minimalist luxury styling`,
+    rating: 4.9,
+  },
+  {
+    id: "p38",
+    sku: "SAR-LIN-BLK-038",
+    name: "Plum Shibori Chevron Linen Saree",
+    tagline: "Modern Artistic Vibes with Contemporary Ethnic Charm",
+    slug: "plum-shibori-chevron-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
+      "https://drive.google.com/thumbnail?id=1tTM8OPJRov7-kitZaOP476DIci3lpA4R&sz=w500",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Linen",
+    color: "Deep Purple / Plum with Ivory White",
+    isNew: true,
+
+    description: `**DESCRIPTION:**
+Embrace modern artistry with this bold tie-dye / shibori-inspired linen saree. Featuring an abstract chevron and zigzag geometric wave pattern in soft ivory white across a deep purple / plum tone base. The rich solid purple border offers a subtle woven texture, perfectly framing this vibrant piece for a contemporary ethnic appeal.
+
+**HIGHLIGHTS:**
+• Hand-Dyed Tie-Dye / Shibori-Inspired Geometric Waves
+• Bold Abstract Zigzag & Chevron Pattern
+• Rich Solid Purple Border with Subtle Texture
+• Clean Artisanal Finish
+• Modern & Artistic Aesthetic
+
+**COLOR PALETTE:**
+Deep Purple / Plum tone base with Soft Ivory White patterns.
+
+**FABRIC DETAILS:**
+Premium Linen with a natural woven texture and artisanal finish, providing exceptional breathability and a comfortable drape.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Soft Artisanal Touch
+
+**STYLING:**
+Ideal for:
+- Artistic events & exhibitions
+- Festive celebrations
+- Contemporary evening wear
+- Statement casual outings`,
+    rating: 4.7,
+  },
+  {
+    id: "p39",
+    sku: "SAR-LIN-MNT-039",
+    name: "Blush Botanical Fusion Linen Saree",
+    tagline: "Elegant Vintage Charm with Modern Abstract Panels",
+    slug: "blush-botanical-fusion-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1SQjviFGMGJ48khfJvaGN0k-7VnBuxAEK&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1SQjviFGMGJ48khfJvaGN0k-7VnBuxAEK&sz=w500",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Handwoven-Inspired Linen",
+    color: "Soft Blush Pink with Botanical Florals",
+    isTrending: true,
+
+    description: `**DESCRIPTION:**
+Discover soft vintage-inspired charm with this elegant blushing-botanical linen saree. The soft blush pink and pastel beige background is beautifully canvas to a contemporary floral fusion with modern abstract blocks. Framed by a multicolor floral border featuring intricate vine motifs, traditional ornamental patterns, and a dark charcoal accent stripe.
+
+**HIGHLIGHTS:**
+• Contemporary Floral Fusion with Abstract Blocks
+• Intricate Floral Vine & Ornamental Border
+• Dark Charcoal Accent Stripe
+• Soft Artisanal Finish
+• Feminine Vintage-Inspired Charm
+
+**COLOR PALETTE:**
+Soft Blush Pink with pastel beige tones, layered with Deep Pink, Maroon, Peach, Olive Green, Charcoal Grey, and Ivory White.
+
+**FABRIC DETAILS:**
+High-quality Natural Linen, bringing a lovely woven texture and a soft artisanal finish for effortless grace and supreme comfort.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Premium Artisanal Soft
+
+**STYLING:**
+Ideal for:
+- Brunch gatherings & daytime events
+- Sophisticated garden parties
+- Festive daytime wear
+- Vintage-inspired celebrations`,
+    rating: 4.8,
+  },
+  {
+    id: "p40",
+    sku: "SAR-LIN-OWH-040",
+    name: "Tropical Ivory Ethnic Fusion Linen Saree",
+    tagline: "Minimal Luxury with Tropical & Geometric Artistry",
+    slug: "tropical-ivory-ethnic-fusion-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1MHnxEfj5Eatj3Tny9gpjZ-FkudzBhzCG&sz=w800",
+    images: [
+      "https://drive.google.com/thumbnail?id=1MHnxEfj5Eatj3Tny9gpjZ-FkudzBhzCG&sz=w800",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Linen Cotton Blend",
+    color: "Ivory White with Charcoal Grey Motifs",
+    
+    description: `**DESCRIPTION:**
+Experience the perfect harmony of nature and geometry with this Tropical Ivory Ethnic Fusion Linen Saree. Featuring artistic palm tree motifs paired with bold zig-zag geometric woven-inspired patterns, this saree is a masterpiece of minimal contemporary design. The layered charcoal and ash grey border provides a clean, modern striped finish to this sophisticated monochrome piece.
+
+**HIGHLIGHTS:**
+• Artistic Tropical Palm tree Motifs
+• Bold Zig-Zag Geometric Woven Artwork
+• Layered Charcoal & Ash Grey Border
+• Soft Ivory/Grey Handmade Tassels
+• Minimal Monochrome Artistic Styling
+
+**COLOR PALETTE:**
+A refined combination of Ivory White/Natural Cream base with primary designs in Charcoal Grey, Ash Grey, and Smoky Grey with soft beige undertones.
+
+**FABRIC & FEEL:**
+Premium Linen Cotton Blend with a soft, breathable texture and a natural matte finish. Offers a lightweight and elegant drape suitable for all-day wear.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Natural Matte Handloom Look
+
+**STYLING:**
+Ideal for:
+- Sophisticated corporate & office wear
+- Minimalist luxury gatherings
+- Contemporary ethnic celebrations
+- Artistic daytime events`,
+    rating: 4.9,
+  },
+  {
+    id: "p41",
+    sku: "SAR-LIN-GRY-041",
+    name: "Silver Mist Floral Linen Saree",
+    tagline: "Understated Elegance in Grey Tones",
+    slug: "sophisticated-grey-floral-pure-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1gP52ny_Iu-XIg0mDvE7LrvKXa020zzhe&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1gP52ny_Iu-XIg0mDvE7LrvKXa020zzhe&sz=w500",
+    ],
+    category: "Linen Sarees",
+    fabric: "Pure Linen",
+    color: "Grey with Floral Print",
+    isBestSelling: true,
+
+    description: `**DESCRIPTION:**
+The Silver Mist Floral Linen Saree is the epitome of understated grace. The sophisticated grey base is enhanced with subtle floral details, making it a perfect choice for the modern woman who values minimal yet impactful design. Breathable and lightweight for all-day elegance.
+
+**HIGHLIGHTS:**
+• Sophisticated Grey Base
+• Subtle & Graceful Prints
+• Airy Linen Comfort
+• Modern Minimalist Style
+• Versatile Day-to-Night Wear`,
+    rating: 4.6,
+  },
+  {
+    id: "p42",
+    sku: "SAR-LIN-PCH-042",
+    name: "Ivory Linen Saree with Maroon Tribal Geometric Border and Ethnic Woven Pallu",
+    tagline: "Sophisticated Tribal Fusion with Maroon & Pink Woven Artistry",
+    slug: "ivory-linen-maroon-tribal-geometric-border-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1It7fxGgBu83mqNn7Ah7c5xaCF5638WV4&sz=w800",
+    images: [
+      "https://drive.google.com/thumbnail?id=1It7fxGgBu83mqNn7Ah7c5xaCF5638WV4&sz=w800",
+      "https://drive.google.com/thumbnail?id=1ilAUNpTx5RK6OHg8tqOA4FCPQ_sm0VeJ&sz=w800",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Linen Cotton Blend",
+    color: "Ivory Cream with Deep Maroon / Wine Pink",
+    isNew: true,
+
+    description: `**DESCRIPTION:**
+Radiate a sophisticated ethnic charm with this premium Ivory Linen saree. Adorned with scattered maroon tribal geometric motifs and artistic woven-style prints, this piece is a masterpiece of contemporary handloom design. The ivory cream base is beautifully contrasted by a rich double-layered maroon and pink tribal border, while the heavy geometric pallu adds a bold, heritage-inspired silhouette.
+
+**HIGHLIGHTS:**
+• Scattered Tribal Geometric Motifs
+• Rich Maroon & Pink Tribal Geometric Border
+• Intricate Zig-Zag & Traditional Ethnic Patterning
+• Heavy Tribal-Inspired Geometric Artwork Pallu
+• Soft Pink Handmade Tassels
+• Contemporary Handcrafted Aesthetic
+
+**COLOR DETAILS:**
+- Base: Ivory Cream / Off-White / Soft Beige
+- Border & Pallu: Deep Maroon / Wine Pink
+- Accents: Dusty Pink, Soft Sage Green, Muted Peach, and Grey undertones
+
+**FABRIC & TEXTURE:**
+Premium Linen Cotton Blend with a natural handloom-inspired weave and soft matte texture. Lightweight and breathable for an elegant drape and all-day comfort.
+
+**BLOUSE:**
+Includes a matching Wine-Maroon blouse piece with subtle woven ethnic motifs and a soft sheen finish.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Premium Soft Matte
+
+**STYLING:**
+Ideal for:
+- Sophisticated festive wear
+- Elegant office & corporate meetings
+- Modern tribal-fusion looks
+- Traditional heritage celebrations`,
+    rating: 4.8,
+  },
+  {
+    id: "p43",
+    sku: "SAR-LIN-YEL-043",
+    name: "Sunshine Harvest Yellow & Green Saree",
+    tagline: "Vibrant Harvest Hues in Every Fold",
+    slug: "yellow-green-floral-pure-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1YSKHaVlWLpNVhN4qmnptmabV7UpVQeky&sz=w500",
+    images: ["https://drive.google.com/thumbnail?id=1YSKHaVlWLpNVhN4qmnptmabV7UpVQeky&sz=w1000"],
+    category: "Linen Sarees",
+    fabric: "Pure Linen",
+    color: "Yellow & Green Floral",
+    isTrending: true,
+
+    description: `**DESCRIPTION:**
+Celebrate the colors of nature with the Sunshine Harvest Saree. The blend of yellow and green floral prints on a breathable linen base creates a look that is as vibrant as it is comfortable. Ideal for making a cheerful statement at any outdoor gathering or festive event.
+
+**HIGHLIGHTS:**
+• Yellow & Green Color Play
+• Vibrant Botanical Prints
+• Breathable Harvest Tones
+• Premium Natural Texture
+• Cheerful Festive Look`,
+    rating: 4.7,
+  },
+  {
+    id: "p44",
+    sku: "SAR-LIN-WHT-044",
+    name: "Cerulean Classic Blue & White Saree",
+    tagline: "A Timeless Blend of Tradition & Comfort",
+    slug: "blue-white-floral-pure-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1qVDTYZTUeeBTnk730HFrqOWhU_t4HESX&sz=w500",
+    images: ["https://drive.google.com/thumbnail?id=1qVDTYZTUeeBTnk730HFrqOWhU_t4HESX&sz=w1000"],
+    category: "Linen Sarees",
+    fabric: "Pure Linen",
+    color: "Blue & White Floral",
+    
+    description: `**DESCRIPTION:**
+The Cerulean Classic Saree brings together the timeless combination of blue and white. With its elegant floral prints and high-quality linen fabric, this saree offers a look that is both traditional and modern. Perfect for those who appreciate classic styles with a contemporary twist.
+
+**HIGHLIGHTS:**
+• Classic Blue & White Palette
+• Timeless Floral Graphics
+• Structured Linen Comfort
+• Polished Traditional Look
+• Superior Weave Quality`,
+    rating: 4.9,
+  },
+  {
+    id: "p45",
+    sku: "SAR-LIN-BGE-045",
+    name: "Madhubani Heritage Blush Linen Saree with Folk-Art Detail",
+    tagline: "Elegant Heritage Artistry with Contemporary Fusion",
+    slug: "madhubani-heritage-blush-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1N6zBqH_99XSpqhb37dz04WUO4YcemuTZ&sz=w800",
+    images: [
+      "https://drive.google.com/thumbnail?id=1N6zBqH_99XSpqhb37dz04WUO4YcemuTZ&sz=w800",
+      "https://drive.google.com/thumbnail?id=1wFA_YXesJKu-BV7tC0kP3ndkmUVx2woV&sz=w800",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Linen Cotton Blend",
+    color: "Soft Blush Beige / Ivory Pink with Folk Motifs",
+    isBestSelling: true,
+
+    description: `**DESCRIPTION:**
+Immerse yourself in heritage with this premium Madhubani-inspired contemporary ethnic saree. Featuring rich all-over traditional folk motifs and intricate hand-drawn style ethnic patterns, this saree is a tribute to symmetrical folk artistry. The soft blush beige base is accented by a multi-layer woven border and a heavy artistic heritage pallu, creating a sophisticated silhouette of handcrafted elegance and luxury.
+
+**HIGHLIGHTS:**
+• Madhubani-Inspired Folk Motifs & Geometric Artwork
+• Intricate Hand-Drawn Style Ethnic Patterns
+• Elegant Multi-Layer Woven Border with Geometric Detail
+• Heavy Artistic Folk-Art Inspired Pallu
+• Soft Ivory Handmade Tassels
+• Luxury Handloom heritage Aesthetic
+
+**COLOR DETAILS:**
+- Base: Soft Blush Beige / Ivory Pink / Nude Cream
+- Prints: Dusty Mauve, Antique Gold, Soft Lavender Grey, Muted Olive Green, Pastel Peach, Ash Grey, and Warm Beige
+
+**FABRIC & FEEL:**
+High-quality Linen Cotton blend with a soft breathable handloom texture. Lightweight and elegant with a natural woven feel and a premium matte finish.
+
+**BLOUSE:**
+Includes a matching Blush Beige blouse piece with a subtle woven floral-geometric texture for a seamless aesthetic.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Premium Soft Matte
+
+**STYLING:**
+Perfect for:
+- Elegant festive and occasion wear
+- Artistic heritage ethnic gatherings
+- Sophisticated contemporary traditional fusion
+- Premium daytime luxury styling`,
+    rating: 4.8,
+  },
+  {
+    id: "p46",
+    sku: "SAR-LIN-GRY-046",
+    name: "Abstract Charcoal Artistic Linen Saree",
+    tagline: "Contemporary Sophistication with a Handloom-Inspired Aesthetic",
+    slug: "abstract-charcoal-artistic-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=14eONZVJHxuXP_Mknm9sfuMFAoGULq1oX&sz=w800",
+    images: [
+      "https://drive.google.com/thumbnail?id=14eONZVJHxuXP_Mknm9sfuMFAoGULq1oX&sz=w800",
+      "https://drive.google.com/thumbnail?id=1RQqEXJG9yBpFUqMvZ0_dxIBp6frXHz_B&sz=w800",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Linen Cotton Blend",
+    color: "Charcoal Grey with Ash & Smoky Accents",
+    isNew: true,
+
+    description: `**DESCRIPTION:**
+Redefine contemporary elegance with this Abstract Charcoal Artistic Linen Saree. Featuring a bold modern abstract design with layered brushstroke effects and subtle geometric patterns, this piece is a masterpiece of monochrome ethnic styling. The soft charcoal grey base is accented by smoky ash tones and charcoal grey woven-look borders, providing a sophisticated, minimal luxury aesthetic perfect for the modern workspace or an artistic gathering.
+
+**HIGHLIGHTS:**
+• Bold Modern Abstract Artistic Design
+• Layered Charcoal & Ash Grey Brushstroke Effects
+• Minimalist Monochrome Styling
+• Natural Woven Texture & Handloom Feel
+• Sophisticated & Unique Aesthetic Statement
+
+**COLOR PALETTE:**
+A refined mix of Deep Charcoal Grey, Ash Grey, Smoky Blue-Grey, and Muted Taupe undertones.
+
+**FABRIC DETAILS:**
+High-quality Linen Cotton blend with a natural woven texture and a soft matte finish. This fabric offers exceptional breathability and a structural drape that stays graceful all day.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Premium Soft Matte
+
+**STYLING:**
+Ideal for:
+- Sophisticated professional & office wear
+- Artistic events & contemporary gatherings
+- Minimalist festive occasions
+- Casual-chic luxury statement`,
+    rating: 4.8,
+  },
+  {
+    id: "p47",
+    sku: "SAR-LIN-LAV-047",
+    name: "Elegant Floral Garden-Inspired Ivory Linen Saree",
+    tagline: "Artistic Scenic Print with Soft Pastel Botanical Artistry",
+    slug: "elegant-floral-garden-ivory-scenic-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=14hI_eCK72N2hYireybWOpcnzRlA5Gvy6&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=14hI_eCK72N2hYireybWOpcnzRlA5Gvy6&sz=w1000",
+      "https://drive.google.com/thumbnail?id=12N-5f9LwboAoBNOyKRggEldvhDcrlnLP&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Linen Cotton Blend",
+    color: "Ivory White / Pearl Cream with Pastel Flora",
+    isTrending: true,
+
+    description: `**DESCRIPTION:**
+Experience the elegance of nature with this floral garden-inspired contemporary linen saree. Featuring soft floral motifs scattered across the body and a nature-inspired scenic artwork on the pallu, this piece beautifully blends botanical illustrations with a minimal, sophisticated handcrafted aesthetic. Crafted for the modern woman, it offers a refined silhouette that speaks of artistic heritage and contemporary fusion.
+
+**HIGHLIGHTS:**
+• Nature-Inspired Scenic Garden Artwork on Pallu
+• Soft Floral Motifs Scattered Across the Body
+• Delicate Botanical & Garden Landscape Illustrations
+• Subtle Blush Pink Floral Woven Border
+• Soft Ivory Handmade Tassels for Graceful Appeal
+
+**COLOR DETAILS:**
+- Base Color: Ivory White / Pearl Cream / Soft Off-White
+- Primary Print Colors: Pastel Peach, Blush Pink, Sage Green, Mint Green, and Soft Grey accents
+
+**FABRIC & TEXTURE:**
+Premium Linen Cotton blend with a lightweight, breathable handloom texture. Features a soft matte elegant finish and a natural drape for all-day comfort and sophistication.
+
+**BLOUSE:**
+Includes a matching Ivory blouse piece with tiny floral prints and soft pastel detailing to complement the garden aesthetic.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Premium Soft Matte
+
+**STYLING:**
+Ideal for:
+- Elegant daytime festive & brunch wear
+- Soft feminine floral-themed events
+- Sophisticated contemporary ethnic looks
+- Artistic heritage celebration gatherings`,
+    rating: 4.8,
+  },
+  {
+    id: "p48",
+    sku: "SAR-LIN-SGR-048",
+    name: "Enchanted Garden Sea Green Saree",
+    tagline: "Nature's Palette in Every Fold",
+    slug: "sea-green-botanical-pure-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1gi8s8ufouBf_4qSpQwz1PxIuyRx1hgTK&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1gi8s8ufouBf_4qSpQwz1PxIuyRx1hgTK&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1AS441jlkGmxuB1_-Z9apkC2kiqGKIkoq&sz=w1000"
+    ],
+    category: "Linen Sarees",
+    fabric: "Pure Linen",
+    color: "Sea Green Botanical",
+    
+    description: `**DESCRIPTION:**
+Dive into nature with this Sea Green Botanical Linen Saree. The botanical prints are lush and detailed, reflecting an organic beauty that perfectly complements the natural texture of the linen fabric. Refreshing, cool, and undeniably elegant.
+
+**HIGHLIGHTS:**
+• Lush Botanical Prints
+• Refreshing Sea Green Base
+• Organic Texture & Feel
+• Eco-Chic Appeal
+• Breathable Comfort`,
+    rating: 4.7,
+  },
+  {
+    id: "p49",
+    sku: "SAR-LIN-ORG-049",
+    name: "Ice Blue Botanical Floral Linen Saree",
+    tagline: "Elegant Floral Contemporary Saree with Soft Botanical Artistry",
+    slug: "ice-blue-botanical-floral-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1mrBPQ5J4T4vxWBztzs2ZltVF5eR9SCPN&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1mrBPQ5J4T4vxWBztzs2ZltVF5eR9SCPN&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1YiyHGBCDaODnv9fyRIuAhZq4NEzD0iUo&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Premium Linen Cotton Blend",
+    color: "Ice Blue / Pastel Aqua with Sea Green Border",
+    isBestSelling: true,
+
+    description: `**DESCRIPTION:**
+Elevate your ethnic wardrobe with this Elegant Floral Contemporary Linen Saree. Featuring an all-over floral vine and leaf motif with artistic botanical scroll patterns, this piece is a masterpiece of soft botanical ethnic artwork. The ice blue base is beautifully contrasted by a soft sea green woven border and an ornamental pallu featuring decorative floral medallions, merging traditional charm with a graceful luxury aesthetic.
+
+**HIGHLIGHTS:**
+• All-Over Floral Vine & Leaf Motifs
+• Artistic Botanical Scroll Patterns
+• Soft Sea Green Woven Border with Silver-Grey Stripes
+• Decorative Floral Medallion Pallu
+• Soft Grey Handmade Tassels
+
+**COLOR DETAILS:**
+- Base Color: Ice Blue / Powder Blue / Pastel Aqua
+- Primary Border: Sea Green / Mint Green
+- Prints: Sage Green, Smoky Grey, Soft Lavender Grey, and Muted Pastel Pink accents
+
+**FABRIC & FEEL:**
+High-quality Linen Cotton blend with a lightweight, breathable drape and a matte elegant texture. Features a natural handloom-inspired finish for a sophisticated look and all-day comfort.
+
+**BLOUSE:**
+Includes a matching pastel Sea Green blouse piece with a subtle woven texture to complement the saree's border.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched)
+• Finish: Premium Soft Matte
+
+**STYLING:**
+Perfect for:
+- Sophisticated daytime festive wear
+- Elegant office & professional meetings
+- Graceful floral-themed gatherings
+- Contemporary handcrafted ethnic luxury looks`,
+    rating: 4.8,
+  },
+  {
+    id: "p50",
+    sku: "SAR-LIN-BGE-050",
+    name: "Elegant Beige & Grey Linen Saree with Pastel Tribal Floral Weaving",
+    tagline: "Soft Breathable Fabric | Easy to Drape",
+    slug: "elegant-beige-grey-linen-saree-pastel-tribal-floral",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1s6Yw5bZ4lsNVtSSIXrIgPyLBGQkmyrP1&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1s6Yw5bZ4lsNVtSSIXrIgPyLBGQkmyrP1&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1jYcuZoqzyG_xdOdrvHZfgDYGMyhfHD_5&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "Beige & Ash Grey with Pastel Accents",
+    isNew: true,
+
+    description: `**DESCRIPTION:**
+This elegant linen saree features a soothing beige and ash grey base with beautifully woven pastel floral vine patterns in subtle peach, ivory, mustard, and muted blue tones. The saree is enhanced with artistic tribal-inspired geometric borders and intricate woven detailing on the pallu, giving it a sophisticated handcrafted look.
+
+Made from soft breathable linen fabric, this saree offers a lightweight feel with a smooth texture that ensures all-day comfort. The easy-to-drape fabric creates graceful pleats and a naturally elegant fall, making it perfect for festive gatherings, office wear, casual elegance, and cultural occasions.
+
+**HIGHLIGHTS:**
+• Soft Beige and Ash Grey Dual-Tone Color Combination
+• Elegant Woven Floral Vine Motifs All Over
+• Tribal Geometric Woven Border and Pallu Detailing
+• Subtle Pastel Accents for a Classy Premium Look
+• Decorative Tassels on Pallu Edges
+• Rich Linen Texture with Graceful Drape
+
+**FABRIC FEATURES:**
+• Soft breathable linen fabric
+• Lightweight and comfortable for long wear
+• Easy to drape with elegant fall
+• Premium woven finish with sophisticated appeal`,
+    rating: 4.8,
+  },
+  {
+    id: "p51",
+    sku: "SAR-LIN-OWH-051",
+    name: "Elegant Off White & Steel Blue Linen Saree with Floral Paisley Weaving",
+    tagline: "Soft Breathable Fabric | Easy to Drape",
+    slug: "elegant-off-white-steel-blue-linen-saree-floral-paisley",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1faouBJX53ZOI3oMOvIarct56E959USJU&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1faouBJX53ZOI3oMOvIarct56E959USJU&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1HiqBm7XEkAIh86wu4wqw5IDU2_c1NPoG&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "Off White & Steel Blue",
+    isTrending: true,
+
+    description: `**DESCRIPTION:**
+Enhance your ethnic wardrobe with this graceful off white linen saree featuring delicate steel blue and ash grey woven floral paisley motifs throughout the drape. The saree showcases intricate traditional patterns blended with elegant geometric border detailing, creating a timeless sophisticated look. The beautifully designed pallu with artistic floral and paisley weaving adds a rich handcrafted appeal perfect for both festive and elegant everyday styling.
+
+Crafted from soft breathable linen fabric, this saree offers a lightweight texture with a smooth comfortable feel for all-day wear. The easy-to-drape fabric ensures graceful pleats and a naturally elegant fall, making it ideal for office wear, festive occasions, family gatherings, and cultural events.
+
+**HIGHLIGHTS:**
+• Elegant Off White and Steel Blue Color Combination
+• Intricate Woven Floral and Paisley Motifs All Over
+• Artistic Geometric and Traditional Border Detailing
+• Rich Woven Pallu with Ethnic Design Elements
+• Soft Neutral Tones with Classy Blue Accents
+• Decorative Tassel Detailing on Pallu Edges
+
+**FABRIC FEATURES:**
+• Soft breathable linen fabric
+• Lightweight and skin-friendly texture
+• Easy to drape with elegant flow
+• Comfortable for long wear
+• Premium woven finish with sophisticated look`,
+    rating: 4.8,
+  },
+  {
+    id: "p52",
+    sku: "SAR-LIN-GRY-052",
+    name: "Elegant Mist Grey Linen Saree with Pink Geometric Woven Design",
+    tagline: "Soft Breathable Fabric | Easy to Drape",
+    slug: "elegant-mist-grey-linen-saree-pink-geometric",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1p5w5cutPIw19vqOhW36z8yxMzGYxkDYP&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1p5w5cutPIw19vqOhW36z8yxMzGYxkDYP&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1EowFuIBWDFxPoS97AYWpqL1mDnxXcFdn&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "Mist Grey with Soft Pink Accents",
+    
+    description: `**DESCRIPTION:**
+Add timeless elegance to your ethnic collection with this beautiful mist grey linen saree featuring delicate woven geometric motifs in soft pink and charcoal tones. The saree showcases subtle all-over woven detailing paired with an artistic ethnic pallu adorned with intricate diamond and floral-inspired geometric patterns, creating a graceful contemporary traditional look.
+
+Crafted from soft breathable linen fabric, this saree offers a lightweight texture with exceptional comfort for all-day wear. The easy-to-drape fabric ensures smooth pleats and a naturally elegant fall, making it perfect for office wear, festive occasions, casual gatherings, and sophisticated everyday styling.
+
+**HIGHLIGHTS:**
+• Elegant Mist Grey Color with Soft Pink Accents
+• Delicate All-Over Woven Geometric Motifs
+• Artistic Ethnic Pallu with Intricate Diamond Patterns
+• Subtle Traditional and Contemporary Fusion Design
+• Elegant Woven Border Detailing
+• Decorative Tassel Finish on Pallu Edges
+
+**FABRIC FEATURES:**
+• Soft breathable linen fabric
+• Lightweight and comfortable feel
+• Easy to drape with graceful flow
+• Smooth texture with premium woven finish
+• Suitable for long wear and all-day comfort`,
+    rating: 4.8,
+  },
+  {
+    id: "p53",
+    sku: "SAR-LIN-MUV-053",
+    name: "Elegant Wine Mauve Linen Saree with Floral Woven Design",
+    tagline: "Soft Breathable Fabric | Easy to Drape",
+    slug: "elegant-wine-mauve-linen-saree-floral-woven",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1VZ0IyqP2B_0yV2V5io6IG_ojQgNDkCCN&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1VZ0IyqP2B_0yV2V5io6IG_ojQgNDkCCN&sz=w1000",
+      "https://drive.google.com/thumbnail?id=14NR5FAQxNcRghqylFsneJyDNg_cB6W1e&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "Wine Mauve with Soft Blush Pink Accents",
+    isBestSelling: true,
+
+    description: `**DESCRIPTION:**
+Elevate your ethnic style with this graceful wine mauve linen saree featuring elegant white floral woven patterns across the drape. The saree showcases beautifully detailed botanical motifs paired with a richly designed traditional pallu featuring intricate mandala and striped woven detailing, creating a sophisticated artistic look. The soft contrast border enhances the overall elegance and gives the saree a timeless premium appeal.
+
+Crafted from soft breathable linen fabric, this saree offers a lightweight feel with exceptional comfort for all-day wear. The easy-to-drape texture creates smooth pleats and a graceful fall, making it perfect for festive occasions, office wear, casual gatherings, and elegant day celebrations.
+
+**HIGHLIGHTS:**
+• Rich Wine Mauve Color with Soft Blush Pink Accents
+• Elegant Floral Woven Motifs Throughout the Saree
+• Intricate Mandala-Inspired Pallu Detailing
+• Traditional Striped and Ethnic Woven Border Design
+• Sophisticated Handcrafted Artistic Look
+• Decorative Tassel Detailing on Pallu Edges
+
+**FABRIC FEATURES:**
+• Soft breathable linen fabric
+• Lightweight and comfortable texture
+• Easy to drape with elegant flow
+• Smooth premium woven finish
+• Comfortable for long wear and all-day styling`,
+    rating: 4.8,
+  },
+  {
+    id: "p54",
+    sku: "SAR-LIN-BGE-054",
+    name: "Elegant Beige & Royal Blue Linen Saree with Peacock Floral Artistic Print",
+    tagline: "Soft Breathable Fabric | Easy to Drape",
+    slug: "elegant-beige-royal-blue-linen-saree-peacock-floral",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=17tkWt4h141fcEBga4oKLGwvD9eR1Ica1&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=17tkWt4h141fcEBga4oKLGwvD9eR1Ica1&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "Beige & Royal Blue",
+    isNew: true,
+
+    description: `**DESCRIPTION:**
+Bring timeless elegance to your ethnic collection with this stunning beige linen saree beautifully enhanced with rich royal blue borders and artistic peacock floral prints. The saree features graceful peacock motifs blended with vibrant floral artwork, creating a luxurious traditional yet contemporary appeal. The intricately designed paisley floral pallu adds a statement handcrafted look, making this saree perfect for festive and elegant occasions.
+
+Crafted from soft breathable linen fabric, this saree offers a lightweight texture with superior comfort for all-day wear. The easy-to-drape fabric ensures smooth pleats and a graceful flow, making it ideal for festive gatherings, cultural events, office wear, and sophisticated celebrations.
+
+**HIGHLIGHTS:**
+• Elegant Beige Base with Royal Blue Border Detailing
+• Artistic Peacock and Floral Printed Motifs
+• Rich Paisley-Inspired Designer Pallu Artwork
+• Intricate Multicolor Floral and Ethnic Patterns
+• Stylish Contrast Border for Premium Appeal
+• Decorative Tassel Detailing on Pallu Edges
+
+**FABRIC FEATURES:**
+• Soft breathable linen fabric
+• Lightweight and comfortable texture
+• Easy to drape with elegant fall
+• Smooth premium finish with rich look
+• Comfortable for long wear and festive styling`,
+    rating: 4.8,
+  },
+  {
+    id: "p55",
+    sku: "SAR-LIN-PNK-055",
+    name: "Elegant Blush Pink Linen Saree with Silver Stripe Weaving",
+    tagline: "Soft Breathable Fabric | Easy to Drape",
+    slug: "elegant-blush-pink-linen-saree-silver-stripe",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1FF5bugsFm5ww4UPaDOjIsy4tGcuKNnAm&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1FF5bugsFm5ww4UPaDOjIsy4tGcuKNnAm&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "Blush Pink & Silver",
+    isTrending: true,
+
+    description: `**DESCRIPTION:**
+Add graceful charm to your ethnic wardrobe with this elegant blush pink linen saree featuring shimmering silver woven stripe patterns throughout the drape. The saree is beautifully enhanced with artistic tribal-inspired woven detailing on the pallu, creating a sophisticated blend of modern elegance and traditional craftsmanship. The soft pastel tone paired with subtle sheen gives this saree a refined and luxurious appeal.
+
+Crafted from soft breathable linen fabric, this saree offers a lightweight texture with superior comfort for all-day wear. The easy-to-drape fabric creates smooth pleats and a naturally graceful fall, making it perfect for festive occasions, office wear, casual gatherings, and elegant celebrations.
+
+**HIGHLIGHTS:**
+• Elegant Blush Pink Color with Silver Woven Stripes
+• Stylish Diagonal Stripe Pattern Across the Saree
+• Artistic Tribal-Inspired Woven Pallu Detailing
+• Soft Shimmering Finish for Premium Appeal
+• Elegant Contrast Border with Subtle Shine
+• Decorative Tassel Detailing on Pallu Edges
+
+**FABRIC FEATURES:**
+• Soft breathable linen fabric
+• Lightweight and comfortable texture
+• Easy to drape with graceful flow
+• Smooth premium woven finish
+• Comfortable for long wear and festive styling`,
+    rating: 4.8,
+  },
+  {
+    id: "p56",
+    sku: "SAR-LIN-GRY-056",
+    name: "Elegant Charcoal Grey Linen Saree with Rustic Floral Woven Design",
+    tagline: "Soft Breathable Fabric | Easy to Drape",
+    slug: "elegant-charcoal-grey-linen-saree-rustic-floral",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=10JwW8G8YgJfHxyhYH3iXL4SHNPME461v&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=10JwW8G8YgJfHxyhYH3iXL4SHNPME461v&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "Charcoal Grey & Maroon",
+    
+    description: `**DESCRIPTION:**
+Enhance your ethnic elegance with this stunning charcoal grey linen saree featuring intricate rustic floral woven motifs in rich maroon and antique gold tones. The saree showcases beautifully detailed traditional floral vines paired with an artistic ethnic pallu featuring geometric and ornamental woven patterns, creating a timeless sophisticated appeal. The contrast woven borders add a luxurious handcrafted finish perfect for festive and graceful occasions.
+
+Crafted from soft breathable linen fabric, this saree offers a lightweight and airy texture for superior all-day comfort. The easy-to-drape fabric creates smooth pleats and a graceful fall, making it ideal for festive celebrations, office wear, family gatherings, and elegant traditional styling.
+
+**HIGHLIGHTS:**
+• Elegant Charcoal Grey Base with Maroon Floral Weaving
+• Intricate Traditional Floral Vine Motifs Throughout
+• Artistic Ethnic Pallu with Ornamental Geometric Detailing
+• Rich Antique Gold Woven Border Accents
+• Sophisticated Handcrafted Traditional Look
+• Decorative Tassel Detailing on Pallu Edges
+
+**FABRIC FEATURES:**
+• Soft breathable linen fabric
+• Lightweight and comfortable texture
+• Easy to drape with elegant flow
+• Smooth premium woven finish
+• Comfortable for long wear and festive occasions`,
+    rating: 4.8,
+  },
+  {
+    id: "p57",
+    sku: "SAR-LIN-BRN-057",
+    name: "Elegant Rust Brown & Slate Grey Linen Saree with Traditional Woven Design",
+    tagline: "Soft Breathable Fabric | Easy to Drape",
+    slug: "elegant-rust-brown-slate-grey-linen-saree-traditional-woven",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1BHeeRcB79OQgPJ2V2XtbtZ7fJr45jqlx&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1BHeeRcB79OQgPJ2V2XtbtZ7fJr45jqlx&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "Rust Brown & Slate Grey",
+    isBestSelling: true,
+
+    description: `**DESCRIPTION:**
+Add timeless sophistication to your ethnic wardrobe with this elegant rust brown linen saree beautifully paired with slate grey woven borders and pallu detailing. The saree features delicate traditional motifs and fine woven stripe patterns throughout the drape, creating a graceful handcrafted appeal. The richly designed geometric and floral woven pallu adds a luxurious ethnic touch, making this saree perfect for elegant festive styling and cultural occasions.
+
+Crafted from soft breathable linen fabric, this saree offers a lightweight and airy texture for superior comfort throughout the day. The easy-to-drape fabric creates smooth pleats and a naturally graceful fall, making it ideal for festive celebrations, office wear, family gatherings, and traditional events.
+
+**HIGHLIGHTS:**
+• Elegant Rust Brown and Slate Grey Color Combination
+• Delicate Traditional Woven Motifs Throughout
+• Fine Striped Weave Pattern for Sophisticated Appeal
+• Artistic Geometric and Floral Woven Pallu Design
+• Rich Contrast Border with Ethnic Detailing
+• Decorative Tassel Finish on Pallu Edges
+
+**FABRIC FEATURES:**
+• Soft breathable linen fabric
+• Lightweight and comfortable feel
+• Easy to drape with elegant flow
+• Smooth premium woven texture
+• Comfortable for long wear and festive styling`,
     rating: 4.8,
   }
 ];
