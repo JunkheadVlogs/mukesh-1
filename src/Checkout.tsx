@@ -173,8 +173,10 @@ export default function Checkout() {
         } catch (error: any) {
           console.error("Submission error:", error);
           if (isSuccessState) {
-            alert("Unable to place your order right now. Please try again.");
             setIsSubmitting(false);
+            setTimeout(() => {
+              alert("Unable to place your order right now. Please try again.");
+            }, 10);
           }
         }
       };
@@ -247,8 +249,10 @@ export default function Checkout() {
       }
     } catch (err: any) {
       console.error("Checkout unhandled error:", err);
-      alert("Unable to place your order right now. Please try again.");
       setIsSubmitting(false);
+      setTimeout(() => {
+        alert("Unable to place your order right now. Please try again.");
+      }, 10);
     }
   };
 

@@ -25,9 +25,10 @@ app.use((req, res, next) => {
 // Configure CORS
 app.use(cors({
   origin: function (origin, callback) {
-    callback(null, origin || "*");
+    if (!origin) return callback(null, true);
+    return callback(null, origin);
   },
-  methods: ["GET", "POST", "OPTIONS"],
+  methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
   credentials: true
 }));
 
