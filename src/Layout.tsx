@@ -20,6 +20,7 @@ import { products } from "./mockData";
 import { CONFIG } from "./config";
 import { formatPrice } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
+import { LiveTimestamp } from "./components/LiveTimestamp";
 
 export default function Layout() {
   const { cart } = useStore();
@@ -540,8 +541,9 @@ export default function Layout() {
             </div>
           </div>
 
-          <div className="text-center text-[10px] uppercase tracking-[1px] text-primary-950/50 pt-4 border-t border-black/5">
-            © {new Date().getFullYear()} Mukesh Saree Centre. Tradition Meets Modern Elegance Since 1976.
+          <div className="text-center text-[10px] uppercase tracking-[1px] text-primary-950/50 pt-4 border-t border-black/5 flex flex-col items-center gap-1">
+            <span>© {new Date().getFullYear()} Mukesh Saree Centre. Tradition Meets Modern Elegance Since 1976.</span>
+            <span className="opacity-70"><LiveTimestamp /></span>
           </div>
         </div>
       </footer>
