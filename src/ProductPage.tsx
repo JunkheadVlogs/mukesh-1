@@ -332,7 +332,7 @@ export default function ProductPage() {
           <div className="px-4 md:px-0 pt-1 md:pt-0">
             <div className="lg:sticky lg:top-32">
               <header className="flex flex-col items-center justify-center text-center mt-0 mb-1.5 md:mb-3">
-                <div className="flex items-center gap-1.5 mb-1.5">
+                <div className="flex flex-wrap items-center justify-center gap-1.5 mb-2">
                   <span className="text-[10px] uppercase tracking-[3px] font-bold text-[#8A6A4A]/70">
                     {product.category}
                   </span>
@@ -345,18 +345,18 @@ export default function ProductPage() {
                     </>
                   )}
                   {product.isNew && (
-                    <span className="text-[9px] uppercase tracking-[1px] font-bold bg-[#EFE7DC] text-[#2B2B2B] px-1.5 py-0.5 rounded-sm">
-                      New
+                    <span className="text-[8px] uppercase tracking-[1px] font-semibold flex-shrink-0 bg-white/80 border border-primary-100/50 text-primary-950 px-1.5 py-0.5 rounded-[1px] shadow-sm">
+                      NEW
                     </span>
                   )}
                   {product.isTrending && (
-                    <span className="text-[9px] uppercase tracking-[1px] font-bold bg-[#C8A96B]/10 text-[#C8A96B] px-1.5 py-0.5 rounded-sm">
-                      Trending Now
+                    <span className="text-[8px] uppercase tracking-[1px] font-semibold flex-shrink-0 bg-[#f0e6d2] border border-[#C8A96B]/20 text-[#6b5a41] px-1.5 py-0.5 rounded-[1px] shadow-sm">
+                      TRENDING
                     </span>
                   )}
                   {product.isBestSelling && (
-                    <span className="text-[9px] uppercase tracking-[1px] font-bold bg-[#25D366]/10 text-[#25D366] px-1.5 py-0.5 rounded-sm">
-                      Best Seller
+                    <span className="text-[8px] uppercase tracking-[1px] font-semibold flex-shrink-0 bg-[#e2eadc] border border-[#a2c095] text-[#30402b] px-1.5 py-0.5 rounded-[1px] shadow-sm">
+                      BEST SELLER
                     </span>
                   )}
                 </div>
