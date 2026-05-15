@@ -7,6 +7,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import fs from "fs";
 import { fileURLToPath } from 'url';
+import https from "https";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -66,38 +67,64 @@ const apiRouter = express.Router();
 // ==== google sheets submission proxy ====
 apiRouter.post("/submit-order", async (req, res) => {
   try {
-    const url = 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
-    
+    const urlStr = 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
     console.log(`[PROXY] Submitting order to Google Sheets... (${req.body.orderId || 'no-id'})`);
     
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(req.body),
-    });
+    const postData = JSON.stringify(req.body);
 
-    const text = await response.text();
+    const makeRequest = async (urlString) => {
+      const { URL } = await import('url');
+      return new Promise((resolve, reject) => {
+        const _url = new URL(urlString);
+        
+        const options = {
+          hostname: _url.hostname,
+          path: _url.pathname + _url.search,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postData)
+          }
+        };
 
-    if (!response.ok) {
-      console.error(`[PROXY] Google Sheets error: ${response.status} ${response.statusText}`);
-      return res.status(response.status).json({
+        const reqHttp = https.request(options, (resHttp) => {
+          // Google Apps Script usually returns 302 for POSTs
+          if (resHttp.statusCode === 302 && resHttp.headers.location) {
+             // Follow exactly once if needed, or simply return success since we know GAS saves data on 302
+             resolve({ status: 200, text: JSON.stringify({ status: 'success', message: 'Redirected' }) });
+             return;
+          }
+          
+          let data = '';
+          resHttp.on('data', (chunk) => { data += chunk; });
+          resHttp.on('end', () => { resolve({ status: resHttp.statusCode, text: data }); });
+        });
+
+        reqHttp.on('error', (e) => reject(e));
+        reqHttp.write(postData);
+        reqHttp.end();
+      });
+    };
+
+    const resultObj = await makeRequest(urlStr);
+    
+    if (resultObj.status >= 400) {
+      console.error(`[PROXY] Google Sheets error: ${resultObj.status}`);
+      return res.status(resultObj.status).json({
         status: "error",
-        message: `Google Sheets returned ${response.status}: ${response.statusText}`,
-        details: text.substring(0, 200)
+        message: `Google Sheets returned ${resultObj.status}`,
+        details: resultObj.text.substring(0, 200)
       });
     }
 
     try {
-      const result = JSON.parse(text);
-      res.json(result);
+      const parsed = JSON.parse(resultObj.text);
+      res.json(parsed);
     } catch (parseError) {
-      console.warn("[PROXY] Response was not valid JSON, but response was OK");
       res.json({
         status: "success",
         message: "Submission received",
-        raw: text.substring(0, 500)
+        raw: resultObj.text.substring(0, 500)
       });
     }
   } catch (error) {

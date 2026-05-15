@@ -26,10 +26,9 @@ export async function submitToGoogleSheets(data: any) {
       throw new Error(`Failed to submit order to backend proxy: ${response.status} - ${errorText.substring(0, 100)}`);
     }
 
-    const result = await response.json();
-    return result;
+    return await response.json();
   } catch (error) {
-    console.error("Order Submission Error:", error);
+    console.error("Order Submission Proxy Error:", error);
     throw error;
   }
 }

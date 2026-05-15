@@ -51,17 +51,28 @@ export default function Cart() {
 
   const subtotalCart = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const subtotalMRP = cart.reduce((total, item) => total + (item.originalPrice || item.price) * item.quantity, 0);
-  const mRPDiscount = subtotalMRP - subtotalCart;
+  
+  const productSavings = subtotalMRP - subtotalCart;
 
   const activeCoupon = appliedCoupon;
   let couponDiscountMultiplier = 0;
   if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.50;
-  else if (activeCoupon === "VIPCLUB60") couponDiscountMultiplier = 0.60;
+  else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") couponDiscountMultiplier = 0.60;
 
-  const couponDiscount = Math.floor(subtotalCart * couponDiscountMultiplier);
-  const totalDiscount = mRPDiscount + couponDiscount;
+  let finalPayable = subtotalCart;
+  let finalCouponSavings = 0;
+
+  if (couponDiscountMultiplier > 0) {
+    const priceWithCoupon = Math.floor(subtotalMRP * (1 - couponDiscountMultiplier));
+    if (priceWithCoupon < subtotalCart) {
+      finalPayable = priceWithCoupon;
+      finalCouponSavings = subtotalCart - priceWithCoupon;
+    }
+  }
+
+  const totalDiscount = productSavings + finalCouponSavings;
   const shipping = 0;
-  const total = Math.max(0, subtotalCart - couponDiscount);
+  const total = Math.max(0, finalPayable);
   
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
@@ -222,12 +233,12 @@ export default function Cart() {
                 </div>
                 <div className="flex justify-between text-xs md:text-sm text-[#8A6A4A] font-medium">
                   <span>Product Discount</span>
-                  <span className="font-bold">-{formatPrice(mRPDiscount)}</span>
+                  <span className="font-bold">-{formatPrice(productSavings)}</span>
                 </div>
-                {couponDiscount > 0 && (
+                {finalCouponSavings > 0 && (
                   <div className="flex justify-between text-xs md:text-sm text-[#4CAF50] font-medium">
-                    <span>Coupon Discount</span>
-                    <span className="font-bold">-{formatPrice(couponDiscount)}</span>
+                    <span>Coupon Savings</span>
+                    <span className="font-bold">-{formatPrice(finalCouponSavings)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-xs md:text-sm text-primary-950/60 font-medium">

@@ -119,11 +119,19 @@ export const useStore = create<AppState>()(
         const activeCoupon = state.appliedCoupon;
         let couponDiscountMultiplier = 0;
         if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.50;
-        else if (activeCoupon === "VIPCLUB60") couponDiscountMultiplier = 0.60;
+        else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") couponDiscountMultiplier = 0.60;
         
         const subtotalCart = state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
-        const couponDiscount = Math.floor(subtotalCart * couponDiscountMultiplier);
-        return Math.max(0, subtotalCart - couponDiscount);
+        const subtotalMRP = state.cart.reduce((total, item) => total + (item.originalPrice || item.price) * item.quantity, 0);
+        
+        let finalTotal = subtotalCart;
+        if (couponDiscountMultiplier > 0) {
+          const priceWithCoupon = Math.floor(subtotalMRP * (1 - couponDiscountMultiplier));
+          if (priceWithCoupon < subtotalCart) {
+            finalTotal = priceWithCoupon;
+          }
+        }
+        return Math.max(0, finalTotal);
       },
       applyCoupon: (code) => set({ appliedCoupon: code }),
     }),

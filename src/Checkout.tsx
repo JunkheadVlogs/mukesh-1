@@ -49,17 +49,28 @@ export default function Checkout() {
 
   const subtotalCart = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const subtotalMRP = cart.reduce((total, item) => total + (item.originalPrice || item.price) * item.quantity, 0);
-  const mRPDiscount = subtotalMRP - subtotalCart;
+  
+  const productSavings = subtotalMRP - subtotalCart;
   const shipping = 0;
   
   const activeCoupon = appliedCoupon;
   let couponDiscountMultiplier = 0;
   if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.50;
-  else if (activeCoupon === "VIPCLUB60") couponDiscountMultiplier = 0.60;
+  else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") couponDiscountMultiplier = 0.60;
 
-  const couponDiscount = Math.floor(subtotalCart * couponDiscountMultiplier);
-  const totalDiscount = mRPDiscount + couponDiscount;
-  const total = Math.max(0, subtotalCart - couponDiscount);
+  let finalPayable = subtotalCart;
+  let finalCouponSavings = 0;
+
+  if (couponDiscountMultiplier > 0) {
+    const priceWithCoupon = Math.floor(subtotalMRP * (1 - couponDiscountMultiplier));
+    if (priceWithCoupon < subtotalCart) {
+      finalPayable = priceWithCoupon;
+      finalCouponSavings = subtotalCart - priceWithCoupon;
+    }
+  }
+
+  const totalDiscount = productSavings + finalCouponSavings;
+  const total = Math.max(0, finalPayable);
 
   const handleApplyCoupon = () => {
     const code = couponInput.trim().toUpperCase();
@@ -159,10 +170,10 @@ export default function Checkout() {
               navigate("/thank-you", { state: { orderId: newOrderId }, replace: true });
             }
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error("Submission error:", error);
           if (isSuccessState) {
-            alert("Something went wrong while placing your order. Please try again.");
+            alert("Unable to place your order right now. Please try again.");
             setIsSubmitting(false);
           }
         }
@@ -234,7 +245,9 @@ export default function Checkout() {
       } else {
         await finalizeOrder();
       }
-    } catch (err) {
+    } catch (err: any) {
+      console.error("Checkout unhandled error:", err);
+      alert("Unable to place your order right now. Please try again.");
       setIsSubmitting(false);
     }
   };
@@ -441,12 +454,12 @@ export default function Checkout() {
                    </div>
                    <div className="flex justify-between items-center text-gold-700">
                      <span>Product Discount</span>
-                     <span className="font-bold">-{formatPrice(mRPDiscount)}</span>
+                     <span className="font-bold">-{formatPrice(productSavings)}</span>
                    </div>
-                   {couponDiscount > 0 && (
+                   {finalCouponSavings > 0 && (
                      <div className="flex justify-between items-center text-[#4CAF50]">
-                       <span>Coupon Discount</span>
-                       <span className="font-bold">-{formatPrice(couponDiscount)}</span>
+                       <span>Coupon Savings</span>
+                       <span className="font-bold">-{formatPrice(finalCouponSavings)}</span>
                      </div>
                    )}
                    <div className="flex justify-between items-center">
