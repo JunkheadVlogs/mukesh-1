@@ -15,61 +15,101 @@ export function ExitIntentPopup() {
   });
 
   useEffect(() => {
-    const hasSubmitted = localStorage.getItem('exitIntentSubmitted');
-    const hasDismissed = sessionStorage.getItem('exitIntentDismissed');
-    
-    if (hasSubmitted === 'true' || hasDismissed === 'true' || hasShown) {
-      return;
-    }
+    const checkShouldShow = () => {
+      if (hasShown) return false;
+      
+      const submitted = localStorage.getItem('exitIntentSubmittedTime');
+      const dismissed = localStorage.getItem('exitIntentDismissedTime');
+      const now = Date.now();
+      const ONE_DAY = 24 * 60 * 60 * 1000;
+      
+      if (submitted && (now - parseInt(submitted)) < ONE_DAY) return false;
+      if (dismissed && (now - parseInt(dismissed)) < ONE_DAY) return false;
+      
+      // Fallbacks for older keys
+      if (localStorage.getItem('exitIntentSubmitted') === 'true') return false;
+      if (sessionStorage.getItem('exitIntentDismissed') === 'true') return false;
+      
+      return true;
+    };
+
+    if (!checkShouldShow()) return;
 
     const showPopup = () => {
-      if (!hasShown) {
+      if (!hasShown && checkShouldShow()) {
         setIsVisible(true);
         setHasShown(true);
       }
     };
 
+    // 1. Desktop Exit Intent
     const handleMouseOut = (e: MouseEvent) => {
-      if (e.clientY < 20 && e.clientX > 0) {
+      if (e.clientY < 20 && e.movementY < 0) {
         showPopup();
       }
     };
 
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        showPopup();
-      }
-    };
-
-    let inactivityTimer: NodeJS.Timeout;
-    const resetTimer = () => {
-      clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(() => {
-        const path = window.location.pathname;
-        if (path.includes('/product') || path.includes('/cart') || path.includes('/checkout')) {
+    // 2. Mobile Scroll Depth (40%)
+    const handleScroll = () => {
+      if (window.innerWidth <= 768) {
+        const scrollDepth = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+        if (scrollDepth > 0.4) {
           showPopup();
         }
-      }, 60000);
+      }
     };
 
-    document.addEventListener('mouseout', handleMouseOut);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    
-    const events = ['mousemove', 'touchstart', 'scroll', 'keydown', 'click'];
-    events.forEach(e => document.addEventListener(e, resetTimer, { passive: true }));
-    resetTimer();
+    // 3. Fallback Timers (Mobile & Desktop)
+    const timeTimer = setTimeout(() => {
+      showPopup();
+    }, 12000);
 
+    // 4. History / Back button intent on mobile
+    const handlePopState = () => {
+       showPopup();
+    };
+
+    // Initialize history state hack for back button intent
+    if (window.innerWidth <= 768 && !window.history.state?.exitIntent) {
+       window.history.pushState({ exitIntent: true }, "");
+    }
+
+    document.addEventListener('mouseout', handleMouseOut);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('popstate', handlePopState);
+    
     return () => {
       document.removeEventListener('mouseout', handleMouseOut);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      events.forEach(e => document.removeEventListener(e, resetTimer));
-      clearTimeout(inactivityTimer);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('popstate', handlePopState);
+      clearTimeout(timeTimer);
     };
   }, [hasShown]);
 
+  // Lock body scroll when popup is open
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = 'hidden';
+      // Prevent slight layout shift when scrollbar disappears
+      document.body.style.paddingRight = '15px'; 
+    } else {
+      document.body.style.overflow = 'unset';
+      document.body.style.paddingRight = '0';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.body.style.paddingRight = '0';
+    };
+  }, [isVisible]);
+
+  const setSuccessStorage = () => {
+    localStorage.setItem('exitIntentSubmittedTime', Date.now().toString());
+    localStorage.setItem('exitIntentSubmitted', 'true');
+  };
+
   const handleClose = () => {
     setIsVisible(false);
-    sessionStorage.setItem('exitIntentDismissed', 'true');
+    localStorage.setItem('exitIntentDismissedTime', Date.now().toString());
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -85,16 +125,13 @@ export function ExitIntentPopup() {
     }
 
     // Mobile validation: 10 digits (handling optional 91 prefix)
-    let mobileValue = mobile.replace(/\D/g, ''); // Remove non-digits
+    let mobileValue = mobile.replace(/\D/g, '');
     
-    // If it starts with 91 and is 12 digits, take last 10
     if (mobileValue.length === 12 && mobileValue.startsWith('91')) {
       mobileValue = mobileValue.substring(2);
     }
     
-    const mobileRegex = /^[0-9]{10}$/;
-    
-    if (!mobileRegex.test(mobileValue)) {
+    if (mobileValue.length !== 10) {
       setErrorMsg("Please enter a valid 10-digit mobile number");
       return;
     }
@@ -111,29 +148,19 @@ export function ExitIntentPopup() {
 
       const result = await submitToGoogleSheets(payload);
 
-      if (result && (result.status === "success" || result.status === 200)) {
+      if (result && (result.status === "success" || result.status === 200 || result.fallback)) {
         setIsSuccess(true);
-        localStorage.setItem('exitIntentSubmitted', 'true');
-        
-        // Close after 8 seconds if they don't close it themselves
-        setTimeout(() => {
-          if (isVisible) handleClose();
-        }, 8000);
+        setSuccessStorage();
+        setTimeout(() => isVisible && handleClose(), 8000);
       } else {
-        // We will default to success because sometimes the proxies return weird stuff but succeed
-        // Let's assume OK if no exception was thrown by submitToGoogleSheets. (The fetch throws if !res.ok)
         setIsSuccess(true);
-        localStorage.setItem('exitIntentSubmitted', 'true');
-        setTimeout(() => {
-          if (isVisible) handleClose();
-        }, 8000);
+        setSuccessStorage();
+        setTimeout(() => isVisible && handleClose(), 8000);
       }
-      
     } catch (error) {
       console.error("Popup Error:", error);
-      // Fallback: even if network fails, we can give them the code so they aren't stuck
       setIsSuccess(true);
-      localStorage.setItem('exitIntentSubmitted', 'true');
+      setSuccessStorage();
     } finally {
       setIsSubmitting(false);
     }
@@ -148,43 +175,46 @@ export function ExitIntentPopup() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[2147483647] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300"
         onClick={handleClose}
       />
 
       {/* Popup */}
       <div
-        className="relative w-full max-w-[360px] md:max-w-md bg-[#FFFBF7] shadow-2xl overflow-hidden rounded-xl border border-gold-200 z-10 flex flex-col animate-in fade-in zoom-in duration-300"
+        className="relative w-full max-w-[90vw] md:max-w-[400px] bg-[#FFFBF7] shadow-2xl rounded-2xl border border-gold-200 z-10 flex flex-col animate-in slide-in-from-bottom-8 md:slide-in-from-bottom-0 md:zoom-in-95 fade-in duration-400 ease-out py-6 px-5 sm:px-8"
       >
         <button 
           onClick={handleClose}
-          className="absolute top-4 right-4 z-10 p-2 text-primary-900 bg-black/5 hover:bg-black/10 rounded-full transition-colors"
+          className="absolute top-3 right-3 z-20 p-2 text-primary-500 hover:text-primary-900 bg-black/5 hover:bg-black/10 rounded-full transition-colors focus:outline-none"
           aria-label="Close"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
 
-        <div className="p-6 md:p-8 flex flex-col items-center text-center">
+        <div className="flex flex-col items-center text-center">
           {isSuccess ? (
-            <div className="flex flex-col items-center py-2 w-full animate-in fade-in duration-300">
-              <h3 className="text-xl md:text-2xl font-serif font-medium text-primary-950 mb-2">🎉 Thank You!</h3>
-              <p className="text-primary-700 font-sans mb-6">Your 60% OFF coupon has been unlocked.</p>
+            <div className="flex flex-col items-center py-2 w-full animate-in fade-in duration-500">
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                 <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <h3 className="text-xl md:text-2xl font-serif font-medium text-primary-950 mb-2">Thank You!</h3>
+              <p className="text-primary-700 font-sans text-sm md:text-base mb-6">Your 60% OFF coupon has been unlocked.</p>
 
-              <div className="w-full bg-gold-50 border border-gold-200 rounded-lg p-5 mb-6 shadow-sm relative overflow-hidden">
-                 <div className="absolute top-0 right-0 w-20 h-20 bg-gold-200/30 rounded-bl-full -z-0"></div>
-                 <div className="absolute bottom-0 left-0 w-16 h-16 bg-gold-200/30 rounded-tr-full -z-0"></div>
+              <div className="w-full bg-gold-50/50 border border-gold-200 rounded-xl p-5 mb-5 shadow-sm relative overflow-hidden">
+                 <div className="absolute top-0 right-0 w-24 h-24 bg-gold-200/20 rounded-bl-[100px] -z-0"></div>
+                 <div className="absolute bottom-0 left-0 w-20 h-20 bg-gold-200/20 rounded-tr-[80px] -z-0"></div>
                  
-                 <div id="couponCode" className="relative z-10 font-sans font-bold text-2xl md:text-3xl tracking-widest text-primary-950 mb-4 bg-white/60 py-3 rounded border border-white/80">
+                 <div id="couponCode" className="relative z-10 font-sans font-bold text-2xl md:text-3xl tracking-widest text-primary-950 mb-3 bg-white/80 py-3 rounded-lg border border-white/80 shadow-sm">
                    VIBCLUB60
                  </div>
-                 <p className="text-[11px] font-semibold text-gold-600 mb-4 uppercase tracking-wider">Get 60% OFF on Your Order</p>
+                 <p className="text-[10px] sm:text-xs font-semibold text-gold-600 mb-4 uppercase tracking-widest">Get 60% OFF on Your Order</p>
                  
                  <button 
                    onClick={handleCopyCode}
-                   className="w-full bg-gold-500 hover:bg-gold-600 text-white font-medium py-3 px-6 rounded transition-colors flex items-center justify-center gap-2 text-sm"
+                   className="w-full bg-gold-500 hover:bg-gold-600 text-white font-medium py-3.5 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm active:scale-[0.98]"
                  >
                    {copied ? (
                      <>
@@ -200,7 +230,7 @@ export function ExitIntentPopup() {
                  </button>
               </div>
 
-              <p className="text-xs text-primary-600 font-sans italic">Apply this code at checkout</p>
+              <p className="text-[11px] text-primary-600 font-sans italic opacity-80">Apply this code at checkout</p>
               
               <button 
                 onClick={handleClose}
@@ -210,17 +240,17 @@ export function ExitIntentPopup() {
               </button>
             </div>
           ) : (
-            <div className="animate-in fade-in duration-300 w-full flex flex-col items-center">
-              <h2 className="text-2xl md:text-3xl font-serif font-medium text-primary-950 mb-2 leading-tight">
+            <div className="animate-in fade-in duration-500 w-full flex flex-col items-center pt-2">
+              <h2 className="text-[22px] md:text-[28px] font-serif font-medium text-primary-950 mb-2 leading-tight">
                 Wait! Unlock <span className="text-gold-500 font-bold">60% OFF</span> ✨
               </h2>
-              <p className="text-primary-700 font-sans text-xs md:text-sm mb-6">
+              <p className="text-primary-700 font-sans text-[13px] md:text-sm mb-6 leading-relaxed">
                 Enter your details to receive your special discount code instantly.
               </p>
 
-              <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3.5">
+              <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
                 <div className="text-left">
-                  <label className="block text-[10px] uppercase tracking-wider text-primary-600 font-semibold mb-1 ml-1">Full Name</label>
+                  <label className="block text-[11px] uppercase tracking-wider text-primary-700 font-semibold mb-1.5 ml-1">Full Name</label>
                   <input 
                     id="popupName"
                     type="text" 
@@ -228,19 +258,19 @@ export function ExitIntentPopup() {
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     placeholder="Your Name"
-                    className="w-full px-4 py-2.5 bg-white border border-primary-200 focus:border-gold-400 focus:ring-1 focus:ring-gold-400 outline-none transition-all placeholder:text-primary-300 rounded font-sans text-sm"
+                    className="w-full px-4 py-3 bg-white border border-primary-200 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all placeholder:text-primary-300 rounded-lg font-sans text-sm md:text-base shadow-sm"
                   />
                 </div>
                 <div className="text-left mb-1">
-                  <label className="block text-[10px] uppercase tracking-wider text-primary-600 font-semibold mb-1 ml-1">Mobile Number</label>
+                  <label className="block text-[11px] uppercase tracking-wider text-primary-700 font-semibold mb-1.5 ml-1">Mobile Number</label>
                   <input 
                     id="popupMobile"
                     type="tel" 
                     required
                     value={formData.mobile}
                     onChange={(e) => setFormData({...formData, mobile: e.target.value})}
-                    placeholder="+91"
-                    className="w-full px-4 py-2.5 bg-white border border-primary-200 focus:border-gold-400 focus:ring-1 focus:ring-gold-400 outline-none transition-all placeholder:text-primary-300 rounded font-sans text-sm"
+                    placeholder="+91 Mobile Number"
+                    className="w-full px-4 py-3 bg-white border border-primary-200 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all placeholder:text-primary-300 rounded-lg font-sans text-sm md:text-base shadow-sm"
                   />
                 </div>
                 
@@ -251,15 +281,15 @@ export function ExitIntentPopup() {
                 <button 
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-primary-950 text-white font-medium py-3 px-6 mt-1 hover:bg-primary-900 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center font-sans tracking-wide rounded text-sm md:text-base relative"
+                  className="w-full bg-primary-950 text-white font-medium py-3.5 px-6 mt-2 hover:bg-black transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center font-sans tracking-wide rounded-lg text-sm md:text-base shadow-md active:scale-[0.98] relative"
                 >
                   {isSubmitting ? (
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   ) : (
                     "Unlock My Offer"
                   )}
                 </button>
-                <p className="text-[10px] text-primary-500 mt-2 font-sans opacity-80">
+                <p className="text-[11px] text-primary-500 mt-2 font-sans opacity-80 text-center">
                   No spam. Only exclusive offers & new arrivals.
                 </p>
               </form>
@@ -270,3 +300,4 @@ export function ExitIntentPopup() {
     </div>
   );
 }
+
