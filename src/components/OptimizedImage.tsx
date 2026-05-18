@@ -3,6 +3,7 @@ import { optimizeImage } from '../utils';
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   width?: number;
+  height?: number;
   alt: string;
   className?: string;
   srcSet?: string;
@@ -10,9 +11,11 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   priority?: boolean;
 }
 
-export function OptimizedImage({ src, width = 800, alt, className, srcSet, sizes, priority = false, ...props }: OptimizedImageProps) {
+export function OptimizedImage({ src, width = 600, height, alt, className, srcSet, sizes, priority = false, ...props }: OptimizedImageProps) {
   const webpUrl = optimizeImage(src, width, 'webp');
   const jpgUrl = optimizeImage(src, width, 'jpg');
+
+  const calculatedHeight = height || Math.round(width * 1.33333);
 
   // Generate responsive srcSet if not provided
   const generatedSrcSetWebp = srcSet || `${optimizeImage(src, 400, 'webp')} 400w, ${optimizeImage(src, 800, 'webp')} 800w, ${optimizeImage(src, 1200, 'webp')} 1200w`;
@@ -27,6 +30,8 @@ export function OptimizedImage({ src, width = 800, alt, className, srcSet, sizes
         srcSet={generatedSrcSetJpg}
         sizes={defaultSizes}
         alt={alt}
+        width={width}
+        height={calculatedHeight}
         className={className}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}

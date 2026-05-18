@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Product, useStore } from "./store";
-import { formatPrice, optimizeImage } from "./utils";
+import { formatPrice, optimizeImage, getImageAlt } from "./utils";
 import { ProductDescription } from "./components/ProductDescription";
 import { OptimizedImage } from "./components/OptimizedImage";
 
@@ -104,7 +104,7 @@ export default function QuickViewModal({
                <OptimizedImage
                   src={productImages[activeImageIndex]}
                   width={800}
-                  alt={product.name}
+                  alt={getImageAlt(product)}
                   className="w-full h-full object-cover object-top"
                 />
                 

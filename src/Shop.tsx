@@ -152,8 +152,8 @@ export default function Shop() {
   return (
     <div className="bg-primary-50">
       <SEO 
-        title={`${searchQuery ? `Search results for ${searchQuery}` : (categoryFilter ? `${categoryFilter} Collection` : 'Shop Our Collection')} | Mukesh Saree Centre`}
-        description="Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre. Premium ethnic wear at deals you can't miss."
+        title={categoryFilter ? `Buy ${categoryFilter} Online — Silk, Banarasi, Georgette, Cotton | Mukesh Saree Centre` : `Buy Sarees Online — Silk, Banarasi, Georgette, Cotton Sarees | Mukesh Saree Centre`}
+        description={categoryFilter ? `Explore our collection of 100+ handpicked ${categoryFilter.toLowerCase()} — Banarasi silk, pure cotton, georgette, and designer wear. COD available. Free shipping. Shop at Mukesh Saree Centre.` : `Explore our collection of 100+ handpicked sarees — Banarasi silk, pure cotton, georgette, and designer sarees. COD available. Free shipping. Shop at Mukesh Saree Centre.`}
         url={searchQuery ? `/shop?search=${encodeURIComponent(searchQuery)}` : (categoryFilter ? `/shop?category=${encodeURIComponent(categoryFilter)}` : `/shop`)}
       />
       

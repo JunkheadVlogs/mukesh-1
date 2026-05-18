@@ -18,7 +18,7 @@ import type { FormEvent } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { products } from "./mockData";
 import { CONFIG } from "./config";
-import { formatPrice } from "./utils";
+import { formatPrice, getImageAlt } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { LiveTimestamp } from "./components/LiveTimestamp";
 
@@ -47,6 +47,7 @@ export default function Layout() {
   const [subscribeMessage, setSubscribeMessage] = useState("");
   const lastScrollY = useRef(0);
 
+  const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [cartBadgeHighlight, setCartBadgeHighlight] = useState(false);
   const prevCartCountRef = useRef(cartItemCount);
 
@@ -74,12 +75,13 @@ export default function Layout() {
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 50);
 
-      // Hide header when scrolling down, show when scrolling up
-      if (currentScrollY > lastScrollY.current && currentScrollY > 200) {
-        setIsHidden(true);
-      } else {
-        setIsHidden(false);
-      }
+      // Disable hiding header so it smoothly fades to solid and stays visible
+      // if (currentScrollY > lastScrollY.current && currentScrollY > 200) {
+      //   setIsHidden(true);
+      // } else {
+      //   setIsHidden(false);
+      // }
+      setIsHidden(false);
 
       lastScrollY.current = currentScrollY;
     };
@@ -108,14 +110,29 @@ export default function Layout() {
     ? products
         .filter(
           (p) =>
-            !p.isVariant && (
-            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.fabric.toLowerCase().includes(searchQuery.toLowerCase())
-            ),
+            !p.isVariant &&
+            (p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              p.fabric.toLowerCase().includes(searchQuery.toLowerCase())),
         )
         .slice(0, 5)
     : [];
+
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
+
+  const announcements = [
+    "✨ FREE SHIPPING ON ALL ORDERS",
+    "🚚 CASH ON DELIVERY AVAILABLE",
+    "👑 THE LUXURY EDIT • 50% OFF ON ALL PRODUCTS",
+    "🏛️ TRUSTED SINCE 1978 · NAGPUR",
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setAnnouncementIndex((prev) => (prev + 1) % announcements.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleSearchSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -126,11 +143,21 @@ export default function Layout() {
   };
 
   const isTransparent = isHomePage && !isScrolled && !isMobileMenuOpen;
-  const headerBg = isTransparent
-    ? "bg-transparent"
-    : "bg-primary-50/80 backdrop-blur-xl shadow-sm";
-  const textColor = isTransparent ? "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" : "text-primary-950";
-  const iconColor = isTransparent ? "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" : "text-primary-950";
+
+  const headerStyle = {
+    background: isTransparent
+      ? "rgba(250, 246, 240, 0)"
+      : "rgba(250, 246, 240, 0.95)",
+    backdropFilter: isTransparent ? "none" : "blur(16px)",
+    WebkitBackdropFilter: isTransparent ? "none" : "blur(16px)",
+    boxShadow: isTransparent ? "none" : "0 4px 20px rgba(0,0,0,0.05)",
+  };
+
+  const textColor = isTransparent
+    ? "text-white drop-shadow-md"
+    : "text-[#3D2C23]";
+  const iconColor = isTransparent ? "text-white" : "text-[#3D2C23]";
+  const borderColor = isTransparent ? "bg-white/30" : "bg-[#3D2C23]/20";
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
@@ -206,7 +233,7 @@ export default function Layout() {
                               <OptimizedImage
                                 src={product.image}
                                 width={100}
-                                alt={product.name}
+                                alt={getImageAlt(product)}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 will-change-transform transform-gpu"
                               />
                             </div>
@@ -231,7 +258,11 @@ export default function Layout() {
                     </div>
                   ) : searchQuery ? (
                     <div className="text-center py-20 bg-primary-50 rounded-sm">
-                      <Search size={40} strokeWidth={1} className="mx-auto text-primary-950/20 mb-4" />
+                      <Search
+                        size={40}
+                        strokeWidth={1}
+                        className="mx-auto text-primary-950/20 mb-4"
+                      />
                       <p className="text-primary-950/60">
                         No products found for "{searchQuery}"
                       </p>
@@ -268,15 +299,27 @@ export default function Layout() {
 
       {/* Navigation */}
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-500 flex-col will-change-transform transform-gpu ${headerBg} ${
-          isHidden ? "-translate-y-full" : "translate-y-0"
-        } ${isScrolled ? "border-b border-black/5" : "border-b-0"} flex`}
+        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-500 flex flex-col will-change-transform transform-gpu ${
+          isHidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
+        } ${!isTransparent && isScrolled ? "border-b border-[#1A0A00]/5" : "border-b-0"}`}
+        style={headerStyle}
       >
-        <div className="bg-primary-950 text-gold-400 text-center py-1.5 px-4 w-full text-[10px] sm:text-[11px] font-medium tracking-[2px] md:tracking-[3px] uppercase flex items-center justify-center gap-2 relative z-[60]">
-          <span>THE LUXURY EDIT • 50% OFF ON ALL PRODUCTS</span>
-        </div>
-        
-        <div className={`transition-all duration-500 w-full px-3 md:px-4 sm:px-10 max-w-7xl mx-auto ${isScrolled ? "py-1" : "py-2 md:py-3"}`}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={announcements[announcementIndex]}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.5 }}
+            className="absolute top-0 left-0 w-full bg-[#1A0A00] text-[#F0D88A] text-center py-1.5 px-4 text-[9px] sm:text-[10px] font-medium tracking-[2px] md:tracking-[3px] uppercase flex items-center justify-center z-[60]"
+          >
+            <span>{announcements[announcementIndex]}</span>
+          </motion.div>
+        </AnimatePresence>
+
+        <div
+          className={`transition-all duration-500 w-full px-3 md:px-4 sm:px-10 max-w-7xl mx-auto mt-7 ${!isTransparent && isScrolled ? "py-1" : "py-2 md:py-3"}`}
+        >
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center md:hidden">
               <button
@@ -299,15 +342,23 @@ export default function Layout() {
                 onClick={scrollToTop}
                 className="flex flex-col items-center group transition-all duration-500 transform"
               >
-                <span className={`text-[16px] md:text-2xl font-serif font-medium ${textColor} tracking-[3px] md:tracking-[10px] uppercase text-center leading-none transition-all group-hover:text-gold-500`}>
+                <span
+                  className={`text-[17px] md:text-2xl font-serif font-semibold tracking-[4px] md:tracking-[8px] uppercase text-center leading-none transition-all ${textColor} group-hover:opacity-70`}
+                >
                   MUKESH
                 </span>
-                <div className="flex items-center gap-2 md:gap-3 w-full mt-1 md:mt-1.5 px-1">
-                  <div className={`h-[1px] flex-1 ${isTransparent ? "bg-white/30" : "bg-primary-950/10"} group-hover:bg-gold-500/20 transition-colors`} />
-                  <span className={`text-[7px] md:text-[9px] font-sans font-medium tracking-[3px] md:tracking-[6px] uppercase ${isTransparent ? "text-white/80 drop-shadow-md" : "text-primary-950/60"} transition-colors group-hover:text-gold-600 whitespace-nowrap`}>
+                <div className="flex items-center gap-2 md:gap-3 w-full mt-1.5 md:mt-2 px-1 opacity-90">
+                  <div
+                    className={`h-[1px] flex-1 ${borderColor} transition-colors`}
+                  />
+                  <span
+                    className={`text-[8px] md:text-[10px] font-sans font-medium tracking-[4px] md:tracking-[6px] uppercase ${textColor} transition-colors whitespace-nowrap`}
+                  >
                     Saree Centre
                   </span>
-                  <div className={`h-[1px] flex-1 ${isTransparent ? "bg-white/30" : "bg-primary-950/10"} group-hover:bg-gold-500/20 transition-colors`} />
+                  <div
+                    className={`h-[1px] flex-1 ${borderColor} transition-colors`}
+                  />
                 </div>
                 <div className="h-[2px] w-0 bg-gold-400/30 group-hover:w-1/2 transition-all duration-700 mt-0.5" />
               </Link>
@@ -326,14 +377,38 @@ export default function Layout() {
                   to="/shop"
                   className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} group-hover:text-gold-500 transition-colors py-4 flex items-center pr-2`}
                 >
-                  Shop <ChevronDown size={14} className="ml-1 opacity-70 group-hover:rotate-180 transition-transform duration-300" />
+                  Shop{" "}
+                  <ChevronDown
+                    size={14}
+                    className="ml-1 opacity-70 group-hover:rotate-180 transition-transform duration-300"
+                  />
                 </Link>
                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-48 bg-white border border-black/5 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-50">
                   <div className="py-2 flex flex-col">
-                    <Link to="/shop" className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors">All Products</Link>
-                    <Link to="/shop?category=Sarees" className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors">Sarees</Link>
-                    <Link to="/shop?category=Linen Sarees" className="px-8 py-2 text-[10px] tracking-[1.5px] uppercase font-medium text-primary-950/70 hover:bg-gold-50 hover:text-gold-600 transition-colors pl-10">— Linen Sarees</Link>
-                    <Link to="/shop?category=Co-Ord Sets" className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors">Co-Ord Sets</Link>
+                    <Link
+                      to="/shop"
+                      className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
+                    >
+                      All Products
+                    </Link>
+                    <Link
+                      to="/shop?category=Sarees"
+                      className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
+                    >
+                      Sarees
+                    </Link>
+                    <Link
+                      to="/shop?category=Linen Sarees"
+                      className="px-8 py-2 text-[10px] tracking-[1.5px] uppercase font-medium text-primary-950/70 hover:bg-gold-50 hover:text-gold-600 transition-colors pl-10"
+                    >
+                      — Linen Sarees
+                    </Link>
+                    <Link
+                      to="/shop?category=Co-Ord Sets"
+                      className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
+                    >
+                      Co-Ord Sets
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -348,7 +423,7 @@ export default function Layout() {
             <div className="flex items-center justify-end space-x-2 sm:space-x-4 md:space-x-6 md:flex-1">
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className={`${iconColor} hover:text-gold-500 transition-all block p-1 md:p-1.5`}
+                className={`${iconColor} hover:text-gold-200 transition-all block p-1 md:p-1.5`}
                 aria-label="Search"
               >
                 <Search size={20} strokeWidth={1} />
@@ -360,19 +435,26 @@ export default function Layout() {
                 aria-label="Cart"
               >
                 <motion.div
-                  animate={cartBadgeHighlight ? { scale: [1, 1.2, 1], rotate: [0, -10, 10, -10, 0] } : {}}
+                  animate={
+                    cartBadgeHighlight
+                      ? { scale: [1, 1.2, 1], rotate: [0, -10, 10, -10, 0] }
+                      : {}
+                  }
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                 >
                   <ShoppingBag size={20} strokeWidth={1} />
                 </motion.div>
                 <AnimatePresence>
                   {cartItemCount > 0 && (
-                    <motion.span 
+                    <motion.span
                       initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: cartBadgeHighlight ? [1, 1.3, 1] : 1, opacity: 1 }}
+                      animate={{
+                        scale: cartBadgeHighlight ? [1, 1.3, 1] : 1,
+                        opacity: 1,
+                      }}
                       exit={{ scale: 0, opacity: 0 }}
                       transition={{ duration: 0.4 }}
-                      className={`absolute top-0 right-0 text-white text-[8px] md:text-[9px] px-1 md:px-1.5 py-[1px] md:py-0.5 rounded-full min-w-[14px] md:min-w-[16px] text-center font-medium shadow-sm transition-colors ${cartBadgeHighlight ? 'bg-black' : 'bg-gold-600'}`}
+                      className={`absolute top-0 right-0 text-white text-[8px] md:text-[9px] px-1 md:px-1.5 py-[1px] md:py-0.5 rounded-full min-w-[14px] md:min-w-[16px] text-center font-medium shadow-sm transition-colors ${cartBadgeHighlight ? "bg-black" : "bg-gold-600"}`}
                     >
                       {cartItemCount}
                     </motion.span>
@@ -393,11 +475,25 @@ export default function Layout() {
               className="md:hidden bg-primary-50 overflow-hidden border-t border-black/5"
             >
               <div className="px-5 py-6 flex flex-col space-y-5">
-                <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-1">Home</Link>
+                <Link
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-1"
+                >
+                  Home
+                </Link>
                 <div className="flex flex-col">
-                  <div className="flex items-center justify-between cursor-pointer py-1" onClick={() => setIsMobileShopOpen(!isMobileShopOpen)}>
-                    <span className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950">Shop</span>
-                    <ChevronDown size={16} className={`text-primary-950/70 transition-transform duration-300 ${isMobileShopOpen ? "rotate-180" : ""}`} />
+                  <div
+                    className="flex items-center justify-between cursor-pointer py-1"
+                    onClick={() => setIsMobileShopOpen(!isMobileShopOpen)}
+                  >
+                    <span className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950">
+                      Shop
+                    </span>
+                    <ChevronDown
+                      size={16}
+                      className={`text-primary-950/70 transition-transform duration-300 ${isMobileShopOpen ? "rotate-180" : ""}`}
+                    />
                   </div>
                   <AnimatePresence>
                     {isMobileShopOpen && (
@@ -409,20 +505,56 @@ export default function Layout() {
                         className="flex flex-col pl-4 mt-4 border-l border-gold-500/30 overflow-hidden"
                       >
                         <div className="flex flex-col space-y-5 py-2">
-                          <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600">All Products</Link>
-                          <Link to="/shop?category=Sarees" onClick={() => setIsMobileMenuOpen(false)} className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600">Sarees</Link>
-                          <Link to="/shop?category=Linen Sarees" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950/60 hover:text-gold-600 pl-4">— Linen Sarees</Link>
-                          <Link to="/shop?category=Co-Ord Sets" onClick={() => setIsMobileMenuOpen(false)} className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600">Co-Ord Sets</Link>
+                          <Link
+                            to="/shop"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                          >
+                            All Products
+                          </Link>
+                          <Link
+                            to="/shop?category=Sarees"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                          >
+                            Sarees
+                          </Link>
+                          <Link
+                            to="/shop?category=Linen Sarees"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950/60 hover:text-gold-600 pl-4"
+                          >
+                            — Linen Sarees
+                          </Link>
+                          <Link
+                            to="/shop?category=Co-Ord Sets"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                          >
+                            Co-Ord Sets
+                          </Link>
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
-                <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-1">Our Legacy</Link>
-                
+                <Link
+                  to="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-1"
+                >
+                  Our Legacy
+                </Link>
+
                 <div className="border-t border-black/5 pt-5 mt-2 flex flex-col space-y-5">
                   {/* Wishlist Mobile Link Removed */}
-                  <button onClick={() => { setIsMobileMenuOpen(false); setIsSearchOpen(true); }} className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 text-left py-1">
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsSearchOpen(true);
+                    }}
+                    className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 text-left py-1"
+                  >
                     <Search size={18} strokeWidth={1.5} /> Search
                   </button>
                 </div>
@@ -433,147 +565,233 @@ export default function Layout() {
       </header>
 
       {/* Main Content */}
-      <main className={`flex-grow flex flex-col ${isHomePage ? "" : "pt-[80px] md:pt-[100px]"}`}>
+      <main
+        className={`flex-grow flex flex-col ${!isHomePage ? "pt-[85px] md:pt-[100px]" : ""}`}
+      >
         <Outlet />
       </main>
 
       {/* Footer */}
-      <footer className="bg-primary-50 border-t border-black/5 mt-auto" style={{ paddingTop: '20px', paddingBottom: '10px', lineHeight: 1.2 }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-4 pb-4 border-b border-black/5 gap-4 text-center md:text-left">
-            <div className="text-[11px] uppercase tracking-[1px] text-primary-950/70 flex flex-wrap justify-center items-center gap-2">
-              <span>Since 1976 Legacy</span>
-              <span className="w-1 h-1 bg-gold-500 rounded-full mx-1" />
-              <span>Premium Quality</span>
-              <span className="w-1 h-1 bg-gold-500 rounded-full mx-1" />
-              <span>COD AVAILABLE</span>
-              <span className="w-1 h-1 bg-gold-500 rounded-full mx-1" />
-              <span>Affordable Luxury</span>
+      <footer
+        style={{
+          background: "#1A0A00",
+          color: "rgba(250,246,240,0.7)",
+          padding: "48px 24px 24px",
+        }}
+        className="mt-auto"
+      >
+        <div
+          style={{
+            maxWidth: "1100px",
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "32px",
+          }}
+        >
+          {/* Brand column */}
+          <div>
+            <div
+              style={{
+                fontFamily: "'Cormorant Garamond',serif",
+                fontSize: "22px",
+                color: "#F0D88A",
+                marginBottom: "12px",
+              }}
+            >
+              Mukesh Saree Centre
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-[10px] uppercase tracking-[1px] opacity-50">Follow Us: @MukeshSareeCentre</span>
+            <p style={{ fontSize: "13px", lineHeight: 1.7 }}>
+              Premium Indian ethnic wear since 1978. Authentic sarees, lehengas
+              & suits from Nagpur.
+            </p>
+            <div style={{ marginTop: "16px", fontSize: "13px" }}>
+              📍 Jagnath Road, Nagpur, Maharashtra
+              <br />
+              📞{" "}
+              <a href="tel:+917020664641" style={{ color: "#F0D88A" }}>
+                +91 70206 64641
+              </a>
+              <br />
+              ✉️{" "}
+              <a
+                href="mailto:info@mukeshsarees.com"
+                style={{ color: "#F0D88A" }}
+              >
+                info@mukeshsarees.com
+              </a>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-4">
-            <div className="border-b border-black/5 md:border-none pb-4 md:pb-0">
-              <button 
-                onClick={() => toggleFooterAccordion('quickLinks')}
-                className="flex items-center justify-between w-full md:cursor-default"
-              >
-                <h4 className="text-[11px] uppercase tracking-[2px] font-medium text-primary-950 md:mb-6">Quick Links</h4>
-                <ChevronDown size={16} className={`md:hidden transition-transform duration-300 ${openFooterAccordion === 'quickLinks' ? "rotate-180" : ""}`} />
-              </button>
-              <div className={`overflow-hidden transition-all duration-300 md:!h-auto md:!opacity-100 ${openFooterAccordion === 'quickLinks' ? "max-h-48 opacity-100 mt-4" : "max-h-0 opacity-0 md:mt-0"}`}>
-                <ul className="space-y-3 text-sm text-primary-950/70 pb-4 md:pb-0">
-                  <li><Link to="/shop" className="hover:text-gold-500 transition-colors">Shop All</Link></li>
-                  <li><Link to="/about" className="hover:text-gold-500 transition-colors">Our Legacy</Link></li>
-                  <li><Link to="/terms" className="hover:text-gold-500 transition-colors">Terms & Conditions</Link></li>
-                </ul>
-              </div>
+          {/* Quick Links */}
+          <div>
+            <div
+              style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "#F0D88A",
+                marginBottom: "12px",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              Shop
             </div>
-
-            <div className="border-b border-black/5 md:border-none pb-4 md:pb-0">
-              <button 
-                onClick={() => toggleFooterAccordion('categories')}
-                className="flex items-center justify-between w-full md:cursor-default"
-              >
-                <h4 className="text-[11px] uppercase tracking-[2px] font-medium text-primary-950 md:mb-6">Categories</h4>
-                <ChevronDown size={16} className={`md:hidden transition-transform duration-300 ${openFooterAccordion === 'categories' ? "rotate-180" : ""}`} />
-              </button>
-              <div className={`overflow-hidden transition-all duration-300 md:!h-auto md:!opacity-100 ${openFooterAccordion === 'categories' ? "max-h-48 opacity-100 mt-4" : "max-h-0 opacity-0 md:mt-0"}`}>
-                <ul className="space-y-3 text-sm text-primary-950/70 pb-4 md:pb-0">
-                  <li><Link to="/shop?category=Sarees" className="hover:text-gold-500 transition-colors">Sarees</Link></li>
-                  <li><Link to="/shop?category=Linen Sarees" className="hover:text-gold-500 transition-colors text-xs pl-3">— Linen Sarees</Link></li>
-                  <li><Link to="/shop?category=Co-Ord Sets" className="hover:text-gold-500 transition-colors">Co-Ord Sets</Link></li>
-                  <li><Link to="/shop?sort=new" className="hover:text-gold-500 transition-colors">New Arrivals</Link></li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="border-b border-black/5 md:border-none pb-4 md:pb-0">
-              <button 
-                onClick={() => toggleFooterAccordion('contact')}
-                className="flex items-center justify-between w-full md:cursor-default"
-              >
-                <h4 className="text-[11px] uppercase tracking-[2px] font-medium text-primary-950 md:mb-6">Contact Us</h4>
-                <ChevronDown size={16} className={`md:hidden transition-transform duration-300 ${openFooterAccordion === 'contact' ? "rotate-180" : ""}`} />
-              </button>
-              <div className={`overflow-hidden transition-all duration-300 md:!h-auto md:!opacity-100 ${openFooterAccordion === 'contact' ? "max-h-48 opacity-100 mt-4" : "max-h-0 opacity-0 md:mt-0"}`}>
-                <ul className="space-y-3 text-sm text-primary-950/70 pb-4 md:pb-0 font-sans">
-                  <li className="leading-relaxed">
-                    {CONFIG.STORE_NAME}<br />
-                    {CONFIG.STORE_ADDRESS}
-                  </li>
-                  <li className="pt-2">Contact Person: Mohit</li>
-                  <li>WhatsApp / Call:<br /> {CONFIG.STORE_PHONE}</li>
-                  <li className="pt-2 text-[11px] font-medium text-primary-950/60 uppercase tracking-[1px]">Timings: 10:30 AM - 9:00 PM (IST)</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-primary-950 p-6 rounded-sm text-white flex flex-col justify-center mt-4 md:mt-0 shadow-xl shadow-primary-950/10">
-              <h4 className="text-sm font-serif tracking-[1px] mb-3 uppercase text-gold-500">Exclusive Newsletter</h4>
-              <p className="text-[11px] opacity-80 mb-5 leading-relaxed font-light">Subscribe for early access to new collections, secret sales, and styling tips.</p>
-              
-              {subscribeStatus === "success" ? (
-                <div className="bg-primary-50/10 text-white p-3 rounded text-[11px] font-medium animate-pulse text-center tracking-[1px]">
-                  {subscribeMessage}
-                </div>
-              ) : (
-                <form className="flex flex-col gap-3" onSubmit={(e) => { e.preventDefault(); const form = e.target as any; const email = form.elements.namedItem('email').value; if(!email || !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) { setSubscribeStatus("error"); setSubscribeMessage("Please enter a valid email."); return; } setSubscribeStatus("success"); setSubscribeMessage("Thank you for subscribing!"); form.reset();}}>
-                  <div className="relative">
-                    <input 
-                      type="email" 
-                      name="email"
-                      placeholder="Enter your email" 
-                      required
-                      className={`w-full bg-transparent text-white placeholder-white/40 text-[12px] px-4 py-3 border ${subscribeStatus === "error" ? "border-red-400" : "border-white/20"} outline-none focus:border-gold-500 transition-colors rounded-sm shadow-inner shadow-black/20`}
-                      onChange={() => setSubscribeStatus("idle")}
-                    />
-                    {subscribeStatus === "error" && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4 left-0">{subscribeMessage}</p>}
-                  </div>
-                  <button type="submit" className="w-full bg-gold-500 text-primary-950 py-3 px-4 text-[11px] uppercase tracking-[2px] font-bold mt-1 hover:bg-white hover:text-primary-950 transition-all duration-300 shadow-md">
-                    Subscribe Now
-                  </button>
-                </form>
-              )}
-            </div>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                fontSize: "13px",
+                lineHeight: 2.4,
+              }}
+            >
+              <li>
+                <Link
+                  to="/shop?category=Sarees"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Sarees
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=Lehengas"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Lehengas
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=Co-Ord Sets"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Readymade Suits
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?sort=new"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  New Arrivals
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Sale
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          <div className="text-center text-[10px] uppercase tracking-[1px] text-primary-950/50 pt-4 border-t border-black/5 flex flex-col items-center gap-1">
-            <span>© {new Date().getFullYear()} Mukesh Saree Centre. Tradition Meets Modern Elegance Since 1976.</span>
-            <span className="opacity-70"><LiveTimestamp /></span>
+          {/* Policies */}
+          <div>
+            <div
+              style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "#F0D88A",
+                marginBottom: "12px",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              Support
+            </div>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                fontSize: "13px",
+                lineHeight: 2.4,
+              }}
+            >
+              <li>
+                <Link
+                  to="/shipping-policy"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Shipping Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/return-policy"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Return & Exchange
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/privacy"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/terms"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Terms & Conditions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
           </div>
+        </div>
+
+        <div
+          style={{
+            borderTop: "1px solid rgba(201,168,76,0.15)",
+            marginTop: "32px",
+            paddingTop: "20px",
+            textAlign: "center",
+            fontSize: "12px",
+          }}
+        >
+          © {new Date().getFullYear()} Mukesh Saree Centre · All Rights Reserved
         </div>
       </footer>
 
       {/* Floating WhatsApp */}
       <a
+        id="whatsapp-float"
         href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}
         target="_blank"
         rel="noopener noreferrer"
-        className={`fixed right-3 md:right-6 bg-[#6AA06E] text-white p-2.5 md:p-3 rounded-full shadow-[0_8px_20px_-6px_rgba(106,160,110,0.5)] hover:bg-[#5C8E5F] hover:-translate-y-1 transition-all z-50 flex items-center justify-center group will-change-transform transform-gpu ${location.pathname.startsWith('/product') ? "bottom-[100px] md:bottom-[20px]" : "bottom-[12px] md:bottom-[20px]"}`}
+        className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform ${location.pathname.startsWith("/product") ? "bottom-[140px] md:bottom-[24px]" : "bottom-[24px]"}`}
         aria-label="Contact on WhatsApp"
       >
-        <MessageCircle className="w-5 h-5 md:w-[22px] md:h-[22px]" strokeWidth={1.5} />
-        <span className="max-w-0 overflow-hidden group-hover:max-w-xs group-hover:ml-2.5 transition-all duration-500 whitespace-nowrap text-[11px] md:text-xs font-medium tracking-wide">
-          Assistant
-        </span>
+        <MessageCircle size={24} strokeWidth={1.5} />
       </a>
 
       {/* Scroll to Top */}
       <AnimatePresence>
         {isScrolled && (
           <motion.button
+            id="scroll-to-top"
             initial={{ opacity: 0, scale: 0.5, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.5, y: 20 }}
             onClick={scrollToTop}
-            className={`fixed right-5 md:right-7 bg-white/90 border border-black/5 text-primary-950 p-2 md:p-3 rounded-full shadow-xl hover:bg-gold-500 hover:text-white transition-all z-40 flex items-center justify-center group will-change-transform transform-gpu ${location.pathname.startsWith('/product') ? "bottom-[160px] md:bottom-[90px]" : "bottom-[80px] md:bottom-[90px]"}`}
+            className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#1A0A00] text-[#F0D88A] border border-[rgba(201,168,76,0.3)] flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform ${location.pathname.startsWith("/product") ? "bottom-[80px] md:bottom-[84px]" : "bottom-[84px] md:bottom-[84px]"}`}
             aria-label="Scroll to top"
           >
-            <ArrowUp className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} />
+            <ArrowUp size={20} strokeWidth={2} />
           </motion.button>
         )}
       </AnimatePresence>

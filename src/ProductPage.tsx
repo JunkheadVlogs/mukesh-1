@@ -26,13 +26,14 @@ import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
 import { trackViewContent, trackAddToCart } from "./tracking";
-import { formatPrice, optimizeImage, getProductReviewStats } from "./utils";
+import { formatPrice, optimizeImage, getProductReviewStats, getImageAlt } from "./utils";
 import { CONFIG } from "./config";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { ProductCard } from "./components/ProductCard";
 import { SEO } from "./components/SEO";
 import { UrgencyWidget } from "./components/UrgencyWidget";
 import { ProductReviews } from "./components/ProductReviews";
+import { TrustBadges } from "./components/TrustBadges";
 
 export default function ProductPage() {
   const { slug } = useParams();
@@ -53,6 +54,8 @@ export default function ProductPage() {
   const [isZoomed, setIsZoomed] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const mainAtcRef = useRef<HTMLButtonElement>(null);
+  const [showStickyAtc, setShowStickyAtc] = useState(false);
 
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
@@ -113,12 +116,39 @@ export default function ProductPage() {
   }, [slug, product]);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]) {
+          setShowStickyAtc(!entries[0].isIntersecting);
+        }
+      },
+      { threshold: 0 }
+    );
+
+    if (mainAtcRef.current) {
+      observer.observe(mainAtcRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     return () => {
       if (toastTimeoutRef.current) {
         clearTimeout(toastTimeoutRef.current);
       }
     };
   }, []);
+
+  const handleBuyNow = () => {
+    if (handleAddToCart() !== false) {
+      if (!isOutOfStock) {
+          navigate('/checkout');
+      }
+    }
+  };
 
   if (!product) {
     return (
@@ -213,6 +243,7 @@ export default function ProductPage() {
     "name": product.name,
     "image": productImages,
     "description": product.description.replace(/<[^>]*>?/gm, ""),
+    "sku": product.sku || product.id,
     "brand": {
       "@type": "Brand",
       "name": "Mukesh Saree Centre"
@@ -223,18 +254,27 @@ export default function ProductPage() {
       "priceCurrency": "INR",
       "price": product.price,
       "availability": isOutOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
-      "itemCondition": "https://schema.org/NewCondition"
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": {
+        "@type": "Organization",
+        "name": "Mukesh Saree Centre"
+      }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": stats.rating.toString(),
+      "reviewCount": stats.reviewCount.toString()
     }
   };
 
   return (
-    <div className="bg-primary-50">
+    <div className="bg-primary-50 product-page-content">
       <SEO
-        title={`${product.name} | Mukesh Saree Centre`}
-        description={product.description.replace(/<[^>]*>?/gm, "").substring(0, 160)}
+        title={`${product.color} ${product.fabric} ${product.category} — Buy Online at ₹${product.price} | Mukesh Saree Centre`}
+        description={`Shop ${product.name} at Mukesh Saree Centre. ${product.description.replace(/<[^>]*>?/gm, "").substring(0, 100)}. COD available. Free delivery on all orders. Easy returns.`}
         image={product.image}
         url={`/product/${product.slug}`}
-        type="product"
+        type="og:product"
         product={{
           price: product.price,
           currency: "INR",
@@ -274,9 +314,9 @@ export default function ProductPage() {
               <OptimizedImage
                 src={productImages[activeImageIndex]}
                 width={800}
-                alt={product.name}
+                alt={getImageAlt(product)}
                 priority={true}
-                className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 mix-blend-multiply transform-gpu will-change-transform"
+                className="product-image-main group-hover:scale-105 transition-transform duration-700 transform-gpu will-change-transform"
               />
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-primary-950 text-[10px] uppercase font-bold tracking-[1px] px-3 py-1.5 rounded-[8px] shadow-sm z-10">
                 50% OFF
@@ -319,9 +359,9 @@ export default function ProductPage() {
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`aspect-[3/4] w-14 md:w-auto flex-shrink-0 snap-center bg-[#F9F7F4] rounded-[6px] overflow-hidden transition-all flex items-center justify-center p-0 relative ${activeImageIndex === idx ? "border-[1.5px] border-solid border-[#C8A96B] shadow-sm transform scale-[1.02]" : "border-[1.5px] border-solid border-transparent opacity-60 hover:opacity-100"}`}
+                    className={`gallery-thumb transition-all flex items-center justify-center p-0 relative ${activeImageIndex === idx ? "active shadow-sm transform scale-[1.02]" : "opacity-60 hover:opacity-100"}`}
               >
-                <OptimizedImage src={img} width={150} alt={`${product.name} thumbnail ${idx + 1}`} className="w-full h-full object-cover mix-blend-multiply" />
+                <OptimizedImage src={img} width={150} alt={`${getImageAlt(product)} - Thumbnail ${idx + 1}`} className="product-thumbnail" />
               </button>
             ))}
           </div>
@@ -500,62 +540,75 @@ export default function ProductPage() {
               )}
 
               {/* Actions */}
-              <section className="fixed bottom-0 left-0 w-full px-4 pb-[calc(10px+env(safe-area-inset-bottom))] md:pb-0 pt-6 bg-gradient-to-t from-primary-50 via-primary-50/80 to-transparent pointer-events-none md:pointer-events-auto md:bg-none md:relative z-50 md:mt-8 will-change-transform transform-gpu">
-                <div className="flex flex-row gap-2 max-w-7xl mx-auto pointer-events-auto items-center">
-                  <div className="flex gap-2 w-full">
-                    <div className="flex items-center border border-black/10 bg-white shadow-sm flex-shrink-0" style={{ height: "42px", borderRadius: "8px", padding: "0 4px" }}>
-                      <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-8 h-full text-primary-950/50 hover:text-primary-950 transition-colors font-sans text-xl flex items-center justify-center">-</button>
-                      <span className="w-5 text-center font-bold text-primary-950 text-[14px]">{quantity}</span>
-                      <button onClick={() => setQuantity(Math.min(maxStock, quantity + 1))} className="w-8 h-full text-primary-950/50 hover:text-primary-950 transition-colors font-sans text-xl flex items-center justify-center">+</button>
+              <section className="w-full mt-6 md:mt-8 relative will-change-transform transform-gpu">
+                <div className="flex flex-col gap-3 max-w-7xl mx-auto w-full">
+                  <div className="flex flex-row gap-2 w-full items-center">
+                    <div className="flex gap-2 w-full">
+                      <div className="flex items-center border border-black/10 bg-white shadow-sm flex-shrink-0" style={{ height: "42px", borderRadius: "8px", padding: "0 4px" }}>
+                        <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-8 h-full text-primary-950/50 hover:text-primary-950 transition-colors font-sans text-xl flex items-center justify-center">-</button>
+                        <span className="w-5 text-center font-bold text-primary-950 text-[14px]">{quantity}</span>
+                        <button onClick={() => setQuantity(Math.min(maxStock, quantity + 1))} className="w-8 h-full text-primary-950/50 hover:text-primary-950 transition-colors font-sans text-xl flex items-center justify-center">+</button>
+                      </div>
+                      <button
+                        ref={mainAtcRef}
+                        onClick={handleAddToCart}
+                        disabled={isOutOfStock}
+                        className="flex-1 btn-primary disabled:opacity-50 text-[11px] tracking-[2px] uppercase shadow-[0_4px_16px_rgba(200,169,107,0.4)] hover:shadow-[0_6px_20px_rgba(200,169,107,0.4)] flex items-center justify-center rounded-[6px] h-[38px] md:h-[42px]"
+                        style={{ fontWeight: 700 }}
+                      >
+                        {isOutOfStock ? "SOLD OUT" : isAdded ? "✓ ADDED TO CART" : "ADD TO CART"}
+                      </button>
                     </div>
-                    <button
-                      onClick={handleAddToCart}
-                      disabled={isOutOfStock}
-                      className="flex-1 btn-primary disabled:opacity-50 text-[11px] tracking-[2px] uppercase shadow-[0_4px_16px_rgba(200,169,107,0.4)] hover:shadow-[0_6px_20px_rgba(200,169,107,0.4)] flex items-center justify-center rounded-[6px] h-[38px] md:h-[42px]"
-                      style={{ fontWeight: 700 }}
-                    >
-                      {isOutOfStock ? "SOLD OUT" : isAdded ? "✓ ADDED TO CART" : "ADD TO CART"}
-                    </button>
                   </div>
                   
-                  {/* Wishlist Button Removed */}
+                  <a
+                    href={`https://wa.me/917020664641?text=${encodeURIComponent(`Hi! I want to order ${product.name} (₹${product.price}). Please confirm availability.`)}`}
+                    target="_blank"
+                    rel="noopener"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "10px",
+                      width: "100%",
+                      background: "#25D366",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "8px",
+                      padding: "14px 20px",
+                      fontSize: "15px",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      marginTop: "2px",
+                      minHeight: "52px",
+                    }}
+                  >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    Order on WhatsApp
+                  </a>
                 </div>
               </section>
 
               {/* Support & Trust Badges - Clean Unified Section */}
               <section className="pt-5 md:pt-6 pb-2">
-                <div className="grid grid-cols-3 gap-2 md:gap-3 mb-4">
-                 <div className="flex flex-col items-center text-center gap-1.5 text-[9px] md:text-[10px] uppercase tracking-[1px] font-bold text-primary-950/70 bg-[#F9F7F4] border border-black/5 rounded-[8px] p-3 transition-colors hover:bg-white hover:border-[#C8A96B]/30 hover:shadow-sm">
-                   <Truck size={18} strokeWidth={1.5} className="text-[#8A6A4A]" />
-                   <span>Free & Fast<br/>Shipping</span>
-                 </div>
-                 <div className="flex flex-col items-center text-center gap-1.5 text-[9px] md:text-[10px] uppercase tracking-[1px] font-bold text-primary-950/70 bg-[#F9F7F4] border border-black/5 rounded-[8px] p-3 transition-colors hover:bg-white hover:border-[#C8A96B]/30 hover:shadow-sm">
-                   <RotateCcw size={18} strokeWidth={1.5} className="text-[#8A6A4A]" />
-                   <span>Easy<br/>Returns</span>
-                 </div>
-                 <div className="flex flex-col items-center text-center gap-1.5 text-[9px] md:text-[10px] uppercase tracking-[1px] font-bold text-primary-950/70 bg-[#F9F7F4] border border-black/5 rounded-[8px] p-3 transition-colors hover:bg-white hover:border-[#C8A96B]/30 hover:shadow-sm">
-                   <div className="flex items-center justify-center -space-x-1">
-                     <ShieldCheck size={16} strokeWidth={1.5} className="text-[#8A6A4A]" />
-                     <span className="text-[15px] font-serif text-[#8A6A4A]">₹</span>
-                   </div>
-                   <span>Cash on<br/>Delivery</span>
-                 </div>
-                </div>
+                <TrustBadges compact={true} />
 
                 {/* Customer Support Line */}
-                <div className="flex items-center justify-center gap-4 bg-white py-2.5 px-4 rounded-full border border-black/5">
-                  <span className="text-[11px] md:text-[12px] text-primary-950/60 font-medium uppercase tracking-[1px]">Need Help?</span>
-                  <div className="w-[1px] h-3 bg-black/10" />
-                  <a href="https://wa.me/917020664641" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary-950 hover:text-[#25D366] transition-colors group">
-                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#25D366] group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div className="need-help-bar mt-4">
+                  <span className="help-label">Need Help?</span>
+                  <div className="help-divider" />
+                  <a href="https://wa.me/917020664641" target="_blank" rel="noopener noreferrer" className="group">
+                    <svg className="w-5 h-5 text-[#25D366] group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.878-.788-1.473-1.761-1.643-2.062-.17-.3-.018-.463.13-.611.134-.135.298-.348.446-.522.148-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
                     </svg>
-                    <span className="text-[12px] font-bold tracking-[0.5px]">WhatsApp Us</span>
+                    <span>WhatsApp</span>
                   </a>
-                  <div className="w-[1px] h-3 bg-black/10" />
-                  <a href="tel:+917020664641" className="flex items-center gap-1.5 text-primary-950 hover:text-[#8A6A4A] transition-colors group">
-                    <Phone className="w-3.5 h-3.5 md:w-4 md:h-4 group-hover:scale-110 transition-transform" strokeWidth={2} />
-                    <span className="text-[12px] font-bold tracking-[0.5px]">Call Us</span>
+                  <div className="help-divider" />
+                  <a href="tel:+917020664641" className="group">
+                    <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" strokeWidth={2} />
+                    <span>Call Us</span>
                   </a>
                 </div>
               </section>
@@ -622,7 +675,7 @@ export default function ProductPage() {
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full h-full md:w-auto md:h-auto md:max-w-5xl md:max-h-full relative flex items-center justify-center pointer-events-none"
             >
-              <OptimizedImage src={productImages[activeImageIndex]} width={1200} alt={product.name} className="w-full h-full md:w-auto md:h-auto md:max-h-[90vh] object-contain md:rounded-sm md:shadow-2xl pointer-events-auto will-change-transform transform-gpu" onClick={(e: any) => e.stopPropagation()} />
+              <OptimizedImage src={productImages[activeImageIndex]} width={1200} alt={getImageAlt(product)} className="w-full h-full md:w-auto md:h-auto md:max-h-[90vh] object-contain md:rounded-sm md:shadow-2xl pointer-events-auto will-change-transform transform-gpu" onClick={(e: any) => e.stopPropagation()} />
               <div className="absolute inset-y-0 left-2 md:-left-20 flex items-center pointer-events-auto">
                  <button onClick={(e) => { e.stopPropagation(); prevImage(e); }} className="p-2 text-white/70 hover:text-white bg-black/20 rounded-full backdrop-blur-sm transition-all"><ChevronLeft className="w-8 h-8 md:w-12 md:h-12" /></button>
               </div>
@@ -659,7 +712,7 @@ export default function ProductPage() {
             </div>
             <div className="p-4 flex gap-4 bg-white/50">
               <div className="w-[60px] h-[75px] bg-primary-50 rounded-[4px] relative overflow-hidden flex-shrink-0 border border-black/5 shadow-sm">
-                <OptimizedImage src={product.image} width={100} alt={product.name} className="w-full h-full object-cover object-top will-change-transform transform-gpu" />
+                <OptimizedImage src={product.image} width={100} alt={getImageAlt(product)} className="w-full h-full object-cover object-top will-change-transform transform-gpu" />
               </div>
               <div className="flex-1 flex flex-col justify-center">
                 <h4 className="text-sm font-serif text-primary-950 line-clamp-2 leading-snug font-medium mb-1.5">{product.name}</h4>
@@ -686,6 +739,37 @@ export default function ProductPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Sticky Mobile ATC Bar */}
+      {showStickyAtc && (
+        <div id="sticky-atc" className="sticky-atc-bar md:hidden">
+          <div className="sticky-product-info">
+            <div className="sticky-product-name">
+              {product.name}
+            </div>
+            <div className="sticky-product-price">
+              {formatPrice(product.price)}
+            </div>
+          </div>
+          <div className="flex gap-2 flex-1 justify-end ml-2">
+            <button 
+              onClick={handleAddToCart}
+              disabled={isOutOfStock}
+              className="sticky-atc-btn disabled:opacity-50 disabled:cursor-not-allowed flex-1 max-w-[120px]"
+            >
+              {isOutOfStock ? "Sold Out" : "Cart"}
+            </button>
+            {!isOutOfStock && (
+              <button 
+                onClick={handleBuyNow}
+                className="sticky-buynow-btn flex-1 max-w-[120px]"
+              >
+                Buy Now
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

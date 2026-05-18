@@ -2376,5 +2376,88 @@ Crafted from soft breathable linen fabric, this saree offers a lightweight and a
 • Smooth premium woven texture
 • Comfortable for long wear and festive styling`,
     rating: 4.8,
+  },
+  {
+    id: "p58",
+    sku: "SAR-LIN-BGE-058",
+    name: "Beige Cream Floral Printed Linen Saree",
+    tagline: "Effortless Elegance & Breathable Style",
+    slug: "beige-cream-floral-printed-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1k-NEFKmgrVgDxjEqZ3otVUyKjBTeCLND&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1k-NEFKmgrVgDxjEqZ3otVUyKjBTeCLND&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Linen Blend",
+    color: "Beige Cream",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Bring effortless elegance to your wardrobe with this soft and breathable beige cream linen saree, designed for all-day comfort and graceful style. Crafted in lightweight linen fabric, this saree features vibrant floral prints in mustard yellow and pink tones beautifully spread across a subtle cream base. The multicolor vertical stripe detailing adds a modern artistic touch, while the golden border enhances its premium festive appeal.
+
+The fabric feels soft on the skin and offers a naturally airy texture, making it perfect for summer wear, casual outings, office wear, family gatherings, and daily elegance. Its lightweight drape gives a classy flow and comfortable fit throughout the day.
+
+**HIGHLIGHTS:**
+• Soft & breathable linen fabric
+• Elegant beige cream base color
+• Vibrant pink & mustard floral prints
+• Stylish multicolor stripe pattern
+• Rich golden woven border
+• Lightweight and comfortable drape
+• Perfect for daily wear, office, casual & festive occasions
+
+**FABRIC DETAILS:**
+• Fabric: Linen Blend
+• Color: Beige Cream
+• Work: Floral Printed Design
+• Border: Golden Border
+• Texture: Soft, airy & lightweight
+
+**STYLING TIP:**
+Pair it with pearl jewelry or minimal golden accessories for a classy and elegant look.`,
+    rating: 4.9,
+  },
+  {
+    id: "p59",
+    sku: "SAR-LIN-BGE-059",
+    name: "Elegant Beige Floral Printed Linen Saree",
+    tagline: "Timeless Charm & Graceful Drape",
+    slug: "elegant-beige-floral-printed-linen-saree",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1ZCkHoxkhNHC9TxJRRRr93LFbtWMpvkAs&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1ZCkHoxkhNHC9TxJRRRr93LFbtWMpvkAs&sz=w1000",
+    ],
+    category: "Linen Sarees",
+    fabric: "Linen Blend",
+    color: "Beige Cream",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Add timeless charm to your collection with this elegant beige linen saree featuring delicate multicolor floral vine prints and artistic floral patch designs on the pallu. Crafted from soft and breathable linen fabric, this saree offers a lightweight feel with a graceful drape, making it ideal for everyday elegance and special occasions alike.
+
+The soothing beige cream shade gives a classy and minimal look, while the subtle floral detailing adds feminine beauty and sophistication. The rich floral printed pallu in vibrant orange, pink, and green tones enhances the saree with a modern ethnic touch. Finished with a sleek golden border, this saree perfectly blends comfort with graceful style.
+
+**HIGHLIGHTS:**
+• Premium soft linen fabric
+• Elegant beige cream color
+• Delicate floral vine print design
+• Artistic floral printed pallu
+• Lightweight & breathable texture
+• Soft, smooth & comfortable drape
+• Elegant golden border finish
+• Perfect for office wear, casual outings & festive occasions
+
+**FABRIC DETAILS:**
+• Fabric: Linen Blend
+• Color: Beige Cream
+• Design: Floral Printed Pattern
+• Border: Golden Border
+• Feel: Soft, airy & lightweight
+
+**STYLING TIP:**
+Style it with oxidised earrings or minimal gold jewelry along with heels for a classy ethnic look.`,
+    rating: 4.8,
   }
 ];

@@ -10,15 +10,19 @@ function doPost(e) {
     
     // Handle Exit Intent Popup Leads
     if (data.leadSource === "Exit Intent Popup") {
-      var leadSheet = ss.getSheetByName("Exit Leads") || ss.insertSheet("Exit Leads");
+      var leadSheet = ss.getSheetByName("ExitIntentLeads") || ss.insertSheet("ExitIntentLeads");
       if (leadSheet.getLastRow() === 0) {
-        leadSheet.appendRow(["First Name", "Mobile Number", "Lead Source", "Date"]);
+        leadSheet.appendRow(["Name", "Mobile", "Product Viewed", "Page URL", "Date", "Time", "Device Type", "Source"]);
       }
       var leadRow = [
         data.firstName || '',
         data.mobileNumber || '',
-        data.leadSource || '',
-        data.timestamp || Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy hh:mm:ss a")
+        data.productViewed || '',
+        data.pageUrl || '',
+        data.date || Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy"),
+        data.time || Utilities.formatDate(new Date(), "Asia/Kolkata", "hh:mm:ss a"),
+        data.deviceType || '',
+        data.source || 'Popup'
       ];
       leadSheet.appendRow(leadRow);
       return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))

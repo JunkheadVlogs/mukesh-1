@@ -16,7 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
-import { formatPrice } from "./utils";
+import { formatPrice, getImageAlt } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
 
 export default function Wishlist() {
@@ -199,7 +199,7 @@ export default function Wishlist() {
                       <OptimizedImage
                         src={product.image}
                         width={400}
-                        alt={product.name}
+                        alt={getImageAlt(product)}
                         className="w-full h-full object-contain object-top mix-blend-multiply opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1.5s] will-change-transform transform-gpu"
                       />
                     </Link>

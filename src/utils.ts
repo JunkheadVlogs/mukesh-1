@@ -1,8 +1,40 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { Product } from "./store"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+export function getImageAlt(product: Partial<Product>) {
+  if (!product) return "Mukesh Saree Centre";
+  const parts = [];
+  if (product.color) parts.push(product.color);
+  if (product.fabric) parts.push(product.fabric);
+  
+  if (product.category === 'Co-Ord Sets' && product.name?.toLowerCase().includes('suit')) {
+    parts.push('Suit');
+  } else if (product.category) {
+    if (product.category.toLowerCase() === 'co-ord sets') parts.push('Co-Ord Set');
+    else if (product.category.toLowerCase() === 'sarees') parts.push('Saree');
+    else if (product.category.toLowerCase() === 'lehengas') parts.push('Lehenga');
+    else parts.push(product.category);
+  }
+  
+  let occasion = '';
+  const desc = product.description?.toLowerCase() || '';
+  if (desc.includes('brid') || desc.includes('wedding')) occasion = 'for Wedding';
+  else if (desc.includes('festiv')) occasion = 'for Festive Wear';
+  else if (desc.includes('party')) occasion = 'for Party Wear';
+  else if (desc.includes('office') || desc.includes('work') || desc.includes('formal')) occasion = 'for Office Wear';
+  else if (desc.includes('casual') || desc.includes('daily') || desc.includes('everyday')) occasion = 'for Daily Wear';
+
+  let text = parts.join(' ').trim();
+  if (occasion) {
+    text += ` ${occasion}`;
+  }
+  
+  return text ? `${text} — Mukesh Saree Centre` : `${product.name} — Mukesh Saree Centre`;
 }
 
 export function formatPrice(price: number) {

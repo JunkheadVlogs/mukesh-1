@@ -18,7 +18,7 @@ interface SEOProps {
 export function SEO({
   title,
   description,
-  image = "https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me", // Default high-res banner
+  image = "https://mukeshsarees.com/images/og-banner.jpg",
   url = "https://mukeshsarees.com",
   type = "website",
   product,
@@ -54,7 +54,7 @@ export function SEO({
       <meta name="twitter:image" content={absoluteImage} />
 
       {/* Product Specific */}
-      {type === "product" && product && (
+      {(type === "product" || type === "og:product") && product && (
         <>
           {product.price && <meta property="product:price:amount" content={product.price.toString()} />}
           {product.currency && <meta property="product:price:currency" content={product.currency} />}

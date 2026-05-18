@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { Eye, Plus, Star } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Product, useStore } from "../store";
-import { formatPrice, optimizeImage, getProductReviewStats } from "../utils";
+import { formatPrice, optimizeImage, getProductReviewStats, getImageAlt } from "../utils";
 import { trackAddToCart } from "../tracking";
 import { Skeleton } from "./Skeleton";
 import { OptimizedImage } from "./OptimizedImage";
@@ -80,8 +80,8 @@ export function ProductCard({
               width={idx < 4 ? 600 : 400}
               srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w`}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              alt={product.name}
-              loading={idx < 4 ? "eager" : "lazy"}
+              alt={getImageAlt(product)}
+              priority={idx < 4}
               onLoad={() => setIsLoaded(true)}
               className={`w-full h-full object-cover object-top transform-gpu will-change-transform transition-transform duration-700 ease-out group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0 transition-opacity"}`}
             />

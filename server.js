@@ -204,6 +204,78 @@ apiRouter.post("/verify-payment", (req, res) => {
   }
 });
 
+// ==== Meta Conversions API (CAPI) ====
+apiRouter.post("/meta-capi", async (req, res) => {
+  const { event_name, event_id, value, currency, content_ids, contents, num_items } = req.body;
+  const PIXEL_ID = process.env.META_PIXEL_ID;
+  const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
+
+  if (!PIXEL_ID || !ACCESS_TOKEN) {
+    console.log("[CAPI] Missing META_PIXEL_ID or META_ACCESS_TOKEN, skipping.");
+    return res.json({ success: false, reason: "Missing config" });
+  }
+
+  try {
+    const clientIpAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const clientUserAgent = req.headers['user-agent'];
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+
+    const eventData = {
+      event_name: event_name || 'Purchase',
+      event_time: currentTimestamp,
+      event_id: event_id,
+      action_source: "website",
+      user_data: {
+        client_ip_address: clientIpAddress,
+        client_user_agent: clientUserAgent
+      },
+      custom_data: {
+        currency: currency || "INR",
+        value: Number(value),
+        content_ids: content_ids || [],
+        contents: contents || [],
+        content_type: 'product',
+        num_items: num_items
+      }
+    };
+
+    const payload = JSON.stringify({
+      data: [eventData]
+    });
+
+    const https = await import("https");
+    const options = {
+      hostname: 'graph.facebook.com',
+      path: `/v19.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload)
+      }
+    };
+
+    const capiReq = https.request(options, (capiRes) => {
+      let data = '';
+      capiRes.on('data', chunk => data += chunk);
+      capiRes.on('end', () => {
+        console.log(`[CAPI] Meta response: ${capiRes.statusCode} - ${data}`);
+        res.json({ success: true, metaStatus: capiRes.statusCode });
+      });
+    });
+
+    capiReq.on('error', (e) => {
+      console.error("[CAPI] Error calling Meta:", e);
+      res.status(500).json({ success: false, error: e.message });
+    });
+
+    capiReq.write(payload);
+    capiReq.end();
+  } catch (error) {
+    console.error("[CAPI] Exception:", error);
+    res.status(500).json({ success: false });
+  }
+});
+
 // Mount API router
 app.use("/api", apiRouter);
 
@@ -214,33 +286,21 @@ app.all("/api/*", (req, res) => {
 });
 
 
-// Simple parser to extract product slugs and data for OG tags server-side
+// Load product metadata generated during build for OG tags
 let preParsedProducts = [];
 try {
-  const mockDataPath = path.join(process.cwd(), "src", "mockData.ts");
-  if (fs.existsSync(mockDataPath)) {
-    const tsContent = fs.readFileSync(mockDataPath, "utf-8");
-    const productBlocks = tsContent.split('id:');
-    for (const block of productBlocks) {
-      const nameMatch = block.match(/name:\s*["']([^"']+)["']/);
-      const slugMatch = block.match(/slug:\s*["']([^"']+)["']/);
-      const descMatch = block.match(/description:\s*`([^`]+)`/);
-      const imgMatch = block.match(/image:\s*["']([^"']+)["']/);
-      const priceMatch = block.match(/price:\s*(\d+)/);
-      
-      if (nameMatch && slugMatch && descMatch && imgMatch) {
-         preParsedProducts.push({
-           name: nameMatch[1],
-           slug: slugMatch[1],
-           description: descMatch[1].replace(/<[^>]*>?/gm, '').substring(0, 150),
-           image: imgMatch[1],
-           price: priceMatch ? priceMatch[1] : ""
-         });
-      }
-    }
+  let productsMetaPath = path.join(process.cwd(), "dist", "products-meta.json");
+  if (!fs.existsSync(productsMetaPath)) {
+    // Development fallback
+    productsMetaPath = path.join(process.cwd(), "public", "products-meta.json");
+  }
+  if (fs.existsSync(productsMetaPath)) {
+    preParsedProducts = JSON.parse(fs.readFileSync(productsMetaPath, "utf-8"));
+  } else {
+    console.log("products-meta.json not found. Run 'node scripts/build_meta.js' to generate it.");
   }
 } catch (e) {
-  console.log("Could not pre-parse mockData for OG tags", e);
+  console.log("Could not load products-meta.json for OG tags", e);
 }
 
 const injectOGTags = (html, reqPath, originalUrl) => {
@@ -248,6 +308,8 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   let ogDesc = "Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1976.";
   let ogImg = "https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me";
   let ogUrl = "https://mukeshsarees.com" + originalUrl;
+  let price = "";
+  let isProduct = false;
   
   const productMatch = reqPath.match(/^\/product\/([^\/]+)\/?$/);
   if (productMatch) {
@@ -255,8 +317,11 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     const prod = preParsedProducts.find(p => p.slug === slug);
     if (prod) {
       ogTitle = `${prod.name} | Mukesh Saree Centre`;
-      ogDesc = prod.description + "...";
+      // Ensure description is plain text and trim
+      ogDesc = (prod.description || "").replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
       ogImg = prod.image;
+      price = prod.price || "0";
+      isProduct = true;
     }
   } else if (reqPath.startsWith('/shop')) {
     ogTitle = "Shop Our Collection | Mukesh Saree Centre";
@@ -265,14 +330,12 @@ const injectOGTags = (html, reqPath, originalUrl) => {
 
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
 
-  let injectedHtml = html.replace(
-    defaultOgBlockRegex,
-    `<!-- Dynamic OG Tags -->
+  let dynamicTags = `<!-- Dynamic OG Tags -->
      <meta property="og:title" content="${ogTitle}" />
      <meta property="og:description" content="${ogDesc}" />
      <meta property="og:image" content="${ogImg}" />
      <meta property="og:url" content="${ogUrl}" />
-     <meta property="og:type" content="${productMatch ? 'product' : 'website'}" />
+     <meta property="og:type" content="${isProduct ? 'product' : 'website'}" />
      <meta property="og:site_name" content="Mukesh Saree Centre" />
      <meta property="og:image:width" content="1200" />
      <meta property="og:image:height" content="630" />
@@ -281,14 +344,49 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta name="twitter:description" content="${ogDesc}" />
      <meta name="twitter:image" content="${ogImg}" />
      <link rel="canonical" href="${ogUrl}" />
-     <!-- End Dynamic OG Tags -->`
-  );
+     <!-- End Dynamic OG Tags -->`;
+
+  let injectedHtml = html.replace(defaultOgBlockRegex, dynamicTags);
   
-  // Update the title tag exclusively since we handled OGs above
+  // Replace standard title tag
   injectedHtml = injectedHtml.replace(
     /<title>.*?<\/title>/,
     `<title>${ogTitle}</title>`
   );
+
+  // Replace standard meta description
+  injectedHtml = injectedHtml.replace(
+    /<meta name="description" content="[^"]*"\s*\/>/,
+    `<meta name="description" content="${ogDesc.replace(/"/g, '&quot;')}" />`
+  );
+
+  // Inject Google structured data (JSON-LD) for products
+  if (isProduct) {
+    const jsonLd = `
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "${ogTitle.replace(/"/g, '\\"')}",
+      "image": "${ogImg}",
+      "description": "${ogDesc.replace(/"/g, '\\"')}",
+      "brand": {
+        "@type": "Brand",
+        "name": "Mukesh Saree Centre"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "${ogUrl}",
+        "priceCurrency": "INR",
+        "price": "${price}",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+    </script>
+    </head>`;
+    // Inject right before </head>
+    injectedHtml = injectedHtml.replace(/<\/head>/, jsonLd);
+  }
 
   return injectedHtml;
 };

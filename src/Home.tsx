@@ -20,6 +20,7 @@ import { products } from "./mockData";
 import { type Product } from "./store";
 import { formatPrice, optimizeImage } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
+import { TrustBadges } from "./components/TrustBadges";
 
 export default function Home() {
   const mainProducts = products.filter((p) => !p.isVariant);
@@ -84,13 +85,30 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <SEO
-        title="Mukesh Saree Centre – Premium Silk Sarees Since 1976"
-        description="Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1976. Hurry, limited-time offers on premium collections!"
+        title="Mukesh Saree Centre — Buy Sarees, Lehengas & Ethnic Wear Online | Since 1978"
+        description="Shop premium Indian ethnic wear at Mukesh Saree Centre, Nagpur. Authentic sarees, designer lehengas, readymade suits. COD available. Free shipping on all orders. Trusted since 1978."
         url="/"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "ClothingStore",
+          name: "Mukesh Saree Centre",
+          url: "https://mukeshsarees.com",
+          logo: "https://mukeshsarees.com/images/logo.png",
+          foundingDate: "1978",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Jagnath Road",
+            addressLocality: "Nagpur",
+            addressRegion: "Maharashtra",
+            addressCountry: "IN",
+          },
+          telephone: "+917020664641",
+          sameAs: ["https://www.facebook.com/Mukeshsareesindia"],
+        }}
       />
-      
+
       {/* Hero Section */}
-      <section className="relative w-full h-[70vh] md:h-[75vh] min-h-[500px] md:min-h-[600px] bg-primary-50 flex items-center overflow-hidden">
+      <section className="relative w-full h-[70vh] md:h-[85vh] bg-[#1A0A00] flex items-center overflow-hidden">
         <motion.div
           className="absolute inset-0 w-full h-full z-0 overflow-hidden"
           style={{ y: heroImageY }}
@@ -98,26 +116,36 @@ export default function Home() {
           <OptimizedImage
             src="https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me"
             width={1600}
+            height={1000}
             alt="Hero Exhibition"
             priority={true}
-            className="w-full h-full object-cover object-center lg:object-[center_20%] brightness-105 contrast-105"
+            className="w-full h-full object-cover object-[center_0%] md:object-[center_0%] opacity-95 transition-opacity duration-700"
           />
         </motion.div>
-        
-        <div className="absolute inset-0 bg-black/10 z-0 pointer-events-none md:bg-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/10 to-transparent w-full md:w-[60%] z-0 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent md:hidden z-0 pointer-events-none" />
+
+        {/* Cinematic gradient overlay */}
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(16,8,0,0.85) 0%, rgba(16,8,0,0.35) 45%, rgba(16,8,0,0.05) 75%, transparent 100%)",
+          }}
+        />
 
         <motion.div
-          className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-end md:justify-center h-full pb-20 md:pb-0"
+          className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-center h-full pt-12 md:pt-0"
           style={{ opacity: heroTextOpacity, y: heroTextY }}
         >
-          <div className="max-w-lg md:max-w-xl text-left">
+          <div className="max-w-md md:max-w-xl text-center md:text-left mx-auto md:mx-0 mt-auto pb-12 md:pb-0 md:mb-0 md:mt-0">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-[40px] md:text-[56px] lg:text-[72px] font-serif text-white mb-6 leading-[1.1] font-normal tracking-wide drop-shadow-sm"
+              className="text-[34px] sm:text-[44px] md:text-[56px] lg:text-[72px] font-serif mb-2 md:mb-3 leading-[1.05] font-normal tracking-wide"
+              style={{
+                textShadow: "0 2px 16px rgba(0,0,0,0.9)",
+                color: "#FFFDF8",
+              }}
             >
               The Luxury <br className="hidden md:block" /> Edit
             </motion.h1>
@@ -126,18 +154,26 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-[15px] sm:text-[17px] leading-[1.8] text-white/90 mb-10 max-w-md font-sans font-light tracking-wide"
+              className="text-[14px] sm:text-[15px] leading-[1.6] mb-6 md:mb-8 max-w-[300px] md:max-w-[420px] mx-auto md:mx-0 font-sans font-light tracking-wide"
+              style={{
+                textShadow: "0 2px 10px rgba(0,0,0,0.9)",
+                color: "#F5EFE6",
+              }}
             >
-              Discover our exclusive collection of premium silk sarees and sophisticated co-ord sets, crafted for timeless elegance.
+              Discover our exclusive collection of premium silk sarees and
+              sophisticated co-ord sets, crafted for timeless elegance.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex justify-center md:justify-start"
             >
-              <Link to="/shop" className="btn-primary w-fit px-12">
+              <Link
+                to="/shop"
+                className="btn-hero-white w-[160px] md:w-[180px]"
+              >
                 Discover Styles
               </Link>
             </motion.div>
@@ -145,57 +181,46 @@ export default function Home() {
         </motion.div>
 
         <motion.div
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer z-20 p-4"
           style={{ opacity: heroTextOpacity }}
           onClick={() => {
             const nextSec = document.getElementById("next-section");
             if (nextSec) {
               const rect = nextSec.getBoundingClientRect();
-              window.scrollTo({ top: rect.top + window.scrollY, behavior: "smooth" });
+              window.scrollTo({
+                top: rect.top + window.scrollY - 80,
+                behavior: "smooth",
+              });
             }
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
         >
-          <span className="text-white/70 text-[9px] uppercase tracking-[3px]">Scroll Down</span>
           <motion.div
             animate={{ y: [0, 5, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           >
-            <ChevronDown className="text-white/70 w-4 h-4" />
+            <ChevronDown className="text-white/90 w-5 h-5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
           </motion.div>
         </motion.div>
       </section>
 
       {/* Trust Badge Strip */}
-      <section id="next-section" className="bg-white py-4 border-b border-black/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 text-center">
-            <div className="flex items-center gap-2">
-              <Star className="w-4 h-4 text-gold-500" strokeWidth={1.5} />
-              <span className="text-[10px] uppercase tracking-[1px] text-primary-950/70 font-medium">Premium Quality</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Truck className="w-4 h-4 text-gold-500" strokeWidth={1.5} />
-              <span className="text-[10px] uppercase tracking-[1px] text-primary-950/70 font-medium">Fast Delivery</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-gold-500" strokeWidth={1.5} />
-              <span className="text-[10px] uppercase tracking-[1px] text-primary-950/70 font-medium">COD Available</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-1.5">
-              <span className="text-[11px] uppercase tracking-[1px] text-primary-950/70 font-medium">Since 1976 Legacy</span>
-            </div>
-          </div>
-        </div>
+      <section id="next-section">
+        <TrustBadges />
       </section>
 
       {/* Shop by Category */}
-      <section className="bg-primary-50 border-b border-black/5" style={{ paddingTop: "50px", paddingBottom: "40px" }}>
+      <section
+        className="bg-primary-50 border-b border-black/5"
+        style={{ paddingTop: "50px", paddingBottom: "40px" }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-baseline mb-6 md:mb-8">
-            <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-semibold tracking-[1px]">Shop by Category</h2>
+            <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-semibold tracking-[1px]">
+              Shop by Category
+            </h2>
             <Link
               to="/shop"
               className="text-[11px] uppercase text-gold-500 tracking-[1px] hover:text-gold-600 transition-colors font-medium"
@@ -205,7 +230,10 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <Link to="/shop?category=Co-Ord Sets" className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-sm">
+            <Link
+              to="/shop?category=Co-Ord Sets"
+              className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-sm"
+            >
               <div className="absolute inset-0">
                 <OptimizedImage
                   src="https://drive.google.com/thumbnail?id=1_PdNfAScYuOrr_cA0e6TZQdAlSCvzZ8M&sz=w800"
@@ -216,16 +244,26 @@ export default function Home() {
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-950/30 to-transparent" />
               <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-                <h3 className="text-2xl md:text-3xl font-serif mb-1 text-white drop-shadow-md font-semibold tracking-[1px]">Co-Ord Sets</h3>
-                <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-0.5 drop-shadow-md">Best Sellers | <span className="font-discount font-black">50% OFF</span></div>
-                <div className="text-[14px] font-sans font-bold text-gold-400 mb-3 drop-shadow-md">Starting at ₹995</div>
+                <h3 className="text-2xl md:text-3xl font-serif mb-1 text-white drop-shadow-md font-semibold tracking-[1px]">
+                  Co-Ord Sets
+                </h3>
+                <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-0.5 drop-shadow-md">
+                  Best Sellers |{" "}
+                  <span className="font-discount font-black">50% OFF</span>
+                </div>
+                <div className="text-[14px] font-sans font-bold text-gold-400 mb-3 drop-shadow-md">
+                  Starting at ₹995
+                </div>
                 <div>
                   <span className="btn-primary">Shop Now</span>
                 </div>
               </div>
             </Link>
 
-            <Link to="/shop?category=Sarees" className="lg:col-span-5 xl:col-span-4 relative h-[450px] md:h-[550px] overflow-hidden group rounded-sm">
+            <Link
+              to="/shop?category=Sarees"
+              className="lg:col-span-5 xl:col-span-4 relative h-[450px] md:h-[550px] overflow-hidden group rounded-sm"
+            >
               <div className="absolute inset-0">
                 <OptimizedImage
                   src="https://drive.google.com/thumbnail?id=1u0O4RqmNHGbiS3cksJDjixD4wzwkYpfw&sz=w800"
@@ -236,9 +274,16 @@ export default function Home() {
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-950/20 to-transparent" />
               <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-                <h3 className="text-2xl md:text-3xl font-serif mb-1 text-white font-semibold tracking-[1px]">Sarees</h3>
-                <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-0.5 drop-shadow-sm">Premium Quality | <span className="font-discount font-black">50% OFF</span></div>
-                <div className="text-[14px] font-sans font-bold text-gold-400 mb-3 drop-shadow-sm">Starting at ₹649</div>
+                <h3 className="text-2xl md:text-3xl font-serif mb-1 text-white font-semibold tracking-[1px]">
+                  Sarees
+                </h3>
+                <div className="text-[12px] md:text-[14px] font-sans font-light tracking-[1px] text-white/90 mb-0.5 drop-shadow-sm">
+                  Premium Quality |{" "}
+                  <span className="font-discount font-black">50% OFF</span>
+                </div>
+                <div className="text-[14px] font-sans font-bold text-gold-400 mb-3 drop-shadow-sm">
+                  Starting at ₹649
+                </div>
                 <div>
                   <span className="btn-primary">Shop Now</span>
                 </div>
@@ -249,7 +294,10 @@ export default function Home() {
       </section>
 
       {/* Trending Section */}
-      <section className="bg-primary-100/50" style={{ paddingTop: "40px", paddingBottom: "30px" }}>
+      <section
+        className="bg-primary-100/50"
+        style={{ paddingTop: "40px", paddingBottom: "30px" }}
+      >
         <div className="mobile-container sm:max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-6 md:mb-8 px-4 sm:px-0">
             <div>
@@ -270,10 +318,7 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center" style={{ marginTop: "20px" }}>
-            <Link
-              to="/shop?sort=trending"
-              className="btn-primary"
-            >
+            <Link to="/shop?sort=trending" className="btn-primary">
               Shop Top Sellers
             </Link>
           </div>
@@ -281,10 +326,15 @@ export default function Home() {
       </section>
 
       {/* New Arrivals Section */}
-      <section className="bg-white relative" style={{ paddingTop: "40px", paddingBottom: "30px" }}>
+      <section
+        className="bg-white relative"
+        style={{ paddingTop: "40px", paddingBottom: "30px" }}
+      >
         <div className="mobile-container sm:max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-6 md:mb-8 px-4 sm:px-0">
-            <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-semibold tracking-[1px]">Fresh Styles Just Dropped</h2>
+            <h2 className="text-2xl md:text-3xl font-serif text-primary-950 font-semibold tracking-[1px]">
+              Fresh Styles Just Dropped
+            </h2>
             <Link
               to="/shop?sort=new"
               className="hidden md:block text-[11px] uppercase border-b border-gold-500 text-gold-500 tracking-[1px] hover:text-gold-600 transition-colors pb-0.5 mt-4 md:mt-0"
@@ -299,10 +349,7 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center" style={{ marginTop: "20px" }}>
-            <Link
-              to="/shop?sort=new"
-              className="btn-secondary"
-            >
+            <Link to="/shop?sort=new" className="btn-secondary">
               Shop New Arrivals
             </Link>
           </div>
@@ -310,27 +357,38 @@ export default function Home() {
       </section>
 
       {/* Offer Banner */}
-      <section className="bg-primary-100 text-primary-950 text-center relative overflow-hidden shadow-inner" style={{ paddingTop: "40px", paddingBottom: "30px", minHeight: "auto" }}>
-        <div 
+      <section
+        className="bg-primary-100 text-primary-950 text-center relative overflow-hidden shadow-inner"
+        style={{ paddingTop: "40px", paddingBottom: "30px", minHeight: "auto" }}
+      >
+        <div
           className="absolute inset-0 z-0 opacity-[0.15] mix-blend-multiply"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1583391733958-d25e07fac04f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80')",
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1583391733958-d25e07fac04f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backgroundRepeat: "no-repeat"
+            backgroundRepeat: "no-repeat",
           }}
         />
         <div className="max-w-3xl mx-auto px-4 relative z-10">
-          <div className="text-[11px] tracking-[3px] uppercase text-gold-600 mb-6 font-semibold">Signature Collection</div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-primary-950 mb-6 font-normal tracking-wide leading-tight">Premium Collections<br className="hidden md:block" /> at 50% OFF</h2>
-          <p className="text-[15px] opacity-80 font-light max-w-lg mx-auto text-primary-900 leading-[1.8]" style={{ marginBottom: "20px" }}>
-            Discover our curated selection of premium fabrics and silhouettes crafted for elegance. Don't miss out on our most exclusive event of the season.
+          <div className="text-[11px] tracking-[3px] uppercase text-gold-600 mb-6 font-semibold">
+            Signature Collection
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-primary-950 mb-6 font-normal tracking-wide leading-tight">
+            Premium Collections
+            <br className="hidden md:block" /> at 50% OFF
+          </h2>
+          <p
+            className="text-[15px] opacity-80 font-light max-w-lg mx-auto text-primary-900 leading-[1.8]"
+            style={{ marginBottom: "20px" }}
+          >
+            Discover our curated selection of premium fabrics and silhouettes
+            crafted for elegance. Don't miss out on our most exclusive event of
+            the season.
           </p>
           <div className="text-center" style={{ marginTop: "20px" }}>
-            <Link
-              to="/shop"
-              className="btn-primary px-10"
-            >
+            <Link to="/shop" className="btn-primary px-10">
               Shop Luxury Edit
             </Link>
           </div>
@@ -338,13 +396,22 @@ export default function Home() {
       </section>
 
       {/* Experience Store Section */}
-      <section className="bg-primary-50 overflow-hidden" style={{ paddingTop: "40px", paddingBottom: "30px" }}>
+      <section
+        className="bg-primary-50 overflow-hidden"
+        style={{ paddingTop: "40px", paddingBottom: "30px" }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <div className="text-[10px] tracking-[3px] uppercase text-gold-500 mb-4 font-medium italic">Visit Us</div>
-            <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-semibold tracking-[1px]">Experience Luxury In-Person</h2>
+            <div className="text-[10px] tracking-[3px] uppercase text-gold-500 mb-4 font-medium italic">
+              Visit Us
+            </div>
+            <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-6 font-semibold tracking-[1px]">
+              Experience Luxury In-Person
+            </h2>
             <p className="text-[14px] text-primary-950/60 max-w-xl mx-auto font-light leading-relaxed">
-              Step into the world of Mukesh Saree Centre. Our flagship store in Nagpur offers an exquisite collection of handpicked sarees and modern ensembles in an ambiance of timeless heritage.
+              Step into the world of Mukesh Saree Centre. Our flagship store in
+              Nagpur offers an exquisite collection of handpicked sarees and
+              modern ensembles in an ambiance of timeless heritage.
             </p>
           </div>
 
@@ -386,16 +453,24 @@ export default function Home() {
                     src={image.url}
                     width={800}
                     alt={image.label}
-                    loading="lazy"
                     className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-1000"
                   />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/item:opacity-100 transition-opacity flex items-center justify-center">
-                    <Maximize2 size={32} className="text-white drop-shadow-lg" />
+                    <Maximize2
+                      size={32}
+                      className="text-white drop-shadow-lg"
+                    />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-all duration-300 flex flex-col justify-end p-10 transform translate-y-4 group-hover/item:translate-y-0">
-                    <p className="text-gold-400 text-[10px] uppercase tracking-[3px] font-medium mb-2">Exclusive Preview</p>
-                    <h3 className="text-white text-2xl font-serif mb-1 font-normal">{image.label}</h3>
-                    <p className="text-white/60 text-[11px] uppercase tracking-[1px] font-light">Explore our designer collections in person</p>
+                    <p className="text-gold-400 text-[10px] uppercase tracking-[3px] font-medium mb-2">
+                      Exclusive Preview
+                    </p>
+                    <h3 className="text-white text-2xl font-serif mb-1 font-normal">
+                      {image.label}
+                    </h3>
+                    <p className="text-white/60 text-[11px] uppercase tracking-[1px] font-light">
+                      Explore our designer collections in person
+                    </p>
                   </div>
                 </motion.div>
               ))}

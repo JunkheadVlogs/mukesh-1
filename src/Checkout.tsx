@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { SEO } from "./components/SEO";
 import { Link, useNavigate } from "react-router";
 import { useStore } from "./store";
-import { formatPrice, optimizeImage } from "./utils";
+import { formatPrice, optimizeImage, getImageAlt } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { CheckCircle2, Loader2, ArrowLeft, ArrowRight, Truck, ShieldCheck } from "lucide-react";
 import { CONFIG, submitToGoogleSheets } from "./config";
@@ -14,6 +14,7 @@ const loadRazorpay = () => {
   return new Promise((resolve) => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.defer = true;
     script.onload = () => resolve(true);
     script.onerror = () => resolve(false);
     document.body.appendChild(script);
@@ -25,7 +26,7 @@ export default function Checkout() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderId, setOrderId] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("online");
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [couponInput, setCouponInput] = useState(appliedCoupon || "");
   const [couponError, setCouponError] = useState("");
   const [pinCode, setPinCode] = useState("");
@@ -350,6 +351,11 @@ export default function Checkout() {
                        {formErrors.pinCode && <p className="text-red-500 text-[9px] font-bold tracking-wide mt-1 ml-1">{formErrors.pinCode}</p>}
                     </div>
                   </div>
+                  
+                  <div className="mt-4 flex items-center gap-2">
+                    <input type="checkbox" id="saveDetails" className="w-4 h-4 rounded text-gold-500 focus:ring-gold-500/30 border-black/20" />
+                    <label htmlFor="saveDetails" className="text-[11px] md:text-sm text-primary-950/80">Save my details for next time</label>
+                  </div>
                 </div>
 
                 {/* Hidden fields for ID requirements */}
@@ -366,21 +372,60 @@ export default function Checkout() {
                   <span className="w-6 h-6 md:w-7 md:h-7 bg-gold-500/10 text-gold-600 rounded-full flex items-center justify-center text-[10px] md:text-xs font-bold">2</span>
                   Payment Method
                 </h2>
-                <div className="grid grid-cols-2 gap-3">
-                   <label className={`relative p-3 md:p-4 border rounded-sm cursor-pointer transition-all flex items-center justify-center text-center h-full ${paymentMethod === 'online' ? 'bg-gold-500/5 border-gold-500 ring-1 ring-gold-500/30' : 'bg-primary-50/20 border-black/10 hover:border-black/20'}`}>
-                     <input type="radio" value="online" checked={paymentMethod === 'online'} onChange={() => setPaymentMethod('online')} className="hidden" />
-                     <div className="flex flex-col items-center justify-center gap-0.5 md:gap-1 w-full">
-                       <span className={`text-[13px] md:text-sm font-bold ${paymentMethod === 'online' ? 'text-gold-700' : 'text-primary-950'}`}>Pay Online</span>
-                       <span className="text-[9px] md:text-[10px] uppercase font-bold text-primary-950/40 tracking-wider">UPI / Cards</span>
-                     </div>
-                   </label>
-                   <label className={`relative p-3 md:p-4 border rounded-sm cursor-pointer transition-all flex items-center justify-center text-center h-full ${paymentMethod === 'cod' ? 'bg-gold-500/5 border-gold-500 ring-1 ring-gold-500/30' : 'bg-primary-50/20 border-black/10 hover:border-black/20'}`}>
-                     <input type="radio" value="cod" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="hidden" />
-                     <div className="flex flex-col items-center justify-center gap-0.5 md:gap-1 w-full">
-                       <span className={`text-[13px] md:text-sm font-bold ${paymentMethod === 'cod' ? 'text-gold-700' : 'text-primary-950'}`}>Cash on Delivery</span>
-                       <span className="text-[9px] md:text-[10px] uppercase font-bold text-primary-950/40 tracking-wider">Pay when received</span>
-                     </div>
-                   </label>
+                <div className="flex flex-col gap-3">
+                  <div
+                    className="payment-option transition-all"
+                    style={{
+                      border: paymentMethod === 'cod' ? '2px solid #C9A84C' : '1px solid rgba(0,0,0,0.1)',
+                      borderRadius: '10px',
+                      padding: '16px',
+                      background: paymentMethod === 'cod' ? '#FFFDF8' : 'rgba(250, 246, 240, 0.2)',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setPaymentMethod('cod')}
+                  >
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', margin: 0 }}>
+                      <input 
+                        type="radio" 
+                        name="payment_method" 
+                        value="cod" 
+                        checked={paymentMethod === 'cod'} 
+                        onChange={() => setPaymentMethod('cod')} 
+                        style={{ width: '18px', height: '18px', accentColor: '#C9A84C' }} 
+                      />
+                      <div>
+                        <strong style={{ fontSize: '15px', color: '#1A0A00' }}>💵 Cash on Delivery</strong>
+                        <div style={{ fontSize: '13px', color: '#6B5F4A', marginTop: '2px' }}>Pay when your order arrives. 100% safe.</div>
+                      </div>
+                    </label>
+                  </div>
+
+                  <div
+                    className="payment-option transition-all"
+                    style={{
+                      border: paymentMethod === 'online' ? '2px solid #C9A84C' : '1px solid rgba(0,0,0,0.1)',
+                      borderRadius: '10px',
+                      padding: '16px',
+                      background: paymentMethod === 'online' ? '#FFFDF8' : 'rgba(250, 246, 240, 0.2)',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setPaymentMethod('online')}
+                  >
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', margin: 0 }}>
+                      <input 
+                        type="radio" 
+                        name="payment_method" 
+                        value="online" 
+                        checked={paymentMethod === 'online'} 
+                        onChange={() => setPaymentMethod('online')} 
+                        style={{ width: '18px', height: '18px', accentColor: '#C9A84C' }} 
+                      />
+                      <div>
+                        <strong style={{ fontSize: '15px', color: '#1A0A00' }}>💳 Pay Online</strong>
+                        <div style={{ fontSize: '13px', color: '#6B5F4A', marginTop: '2px' }}>UPI, Credit/Debit Cards, Netbanking.</div>
+                      </div>
+                    </label>
+                  </div>
                 </div>
               </section>
 
@@ -411,7 +456,7 @@ export default function Checkout() {
                   {cart.map(item => (
                     <div key={`${item.id}-${item.size}`} className="flex gap-4">
                       <div className="w-16 h-20 bg-primary-50 rounded-sm relative overflow-hidden flex-shrink-0 border border-black/5">
-                        <OptimizedImage src={item.image} alt={item.name} width={200} className="w-full h-full object-cover object-top will-change-transform transform-gpu" />
+                        <OptimizedImage src={item.image} alt={getImageAlt(item)} width={200} className="w-full h-full object-cover object-top will-change-transform transform-gpu" />
                         <div className="absolute top-1 right-1 bg-gold-500 text-white text-[9px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-sm">{item.quantity}</div>
                       </div>
                       <div className="flex flex-col justify-center gap-1">

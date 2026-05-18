@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { SEO } from "./components/SEO";
 import { useStore } from "./store";
-import { formatPrice, optimizeImage } from "./utils";
+import { formatPrice, optimizeImage, getImageAlt } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { Trash2, Plus, Minus, ArrowRight, ShieldCheck, Truck, ShoppingBag } from "lucide-react";
 
@@ -10,6 +10,16 @@ export default function Cart() {
   const { cart, removeFromCart, updateQuantity, cartTotal, appliedCoupon } =
     useStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Preload Razorpay script on Cart page for faster checkout
+    if (!document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) {
+      const script = document.createElement('script');
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.defer = true;
+      document.body.appendChild(script);
+    }
+  }, []);
 
   const handleQuantityChange = (
     id: string,
@@ -120,7 +130,7 @@ export default function Cart() {
                     <OptimizedImage
                       src={item.image}
                       width={400}
-                      alt={item.name}
+                      alt={getImageAlt(item)}
                       className="w-full h-full object-cover object-top will-change-transform transform-gpu"
                     />
                   </div>

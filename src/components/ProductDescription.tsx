@@ -73,18 +73,37 @@ export function ProductDescription({
     return sections;
   };
 
-  const sections = parseSections(cleanDescription(description));
+  const sectionsList = parseSections(cleanDescription(description));
+  
+  let descContent = "";
+  let detailsContent = "";
+  let stylingContent = "";
+
+  sectionsList.forEach(sec => {
+    const title = sec.title.toUpperCase();
+    if (title.includes("DETAIL") || title.includes("FABRIC") || title.includes("DIMENSION") || title.includes("BLOUSE") || title.includes("COLOR") || title.includes("CARE")) {
+      detailsContent += `\n\n**${sec.title}**\n${sec.content}`;
+    } else if (title.includes("STYLING") || title.includes("HIGHLIGHT")) {
+      stylingContent += `\n\n**${sec.title}**\n${sec.content}`;
+    } else {
+      if (title === "DESCRIPTION") {
+        descContent += `\n\n${sec.content}`;
+      } else {
+        descContent += `\n\n**${sec.title}**\n${sec.content}`;
+      }
+    }
+  });
+
+  const finalSections = [];
+  if (descContent.trim()) finalSections.push({ title: "DESCRIPTION", content: descContent.trim(), isOpenDefault: true });
+  if (detailsContent.trim()) finalSections.push({ title: "DETAILS", content: detailsContent.trim(), isOpenDefault: false });
+  if (stylingContent.trim()) finalSections.push({ title: "STYLING TIPS", content: stylingContent.trim(), isOpenDefault: false });
 
   return (
-    <div className={`space-y-0 border-b border-black/5 ${className}`}>
-      {sections.map((section, idx) => (
-        <AccordionItem key={idx} title={section.title} content={section.content} isOpenDefault={idx === 0} />
+    <div className={`space-y-0 ${className}`}>
+      {finalSections.map((section, idx) => (
+        <AccordionItem key={idx} title={section.title} content={section.content} isOpenDefault={section.isOpenDefault} />
       ))}
-      <AccordionItem 
-        title="DELIVERY & RETURNS" 
-        content="Free shipping on all orders. Delivery takes 3-5 working days. We offer a hassle-free 7-day return policy for unused products with original tags." 
-        isOpenDefault={false} 
-      />
     </div>
   );
 }
@@ -93,15 +112,13 @@ function AccordionItem({ title, content, isOpenDefault }: { title: string, conte
   const [isOpen, setIsOpen] = useState(isOpenDefault);
 
   return (
-    <div className="border-t border-black/5">
+    <div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-4 lg:py-5 flex justify-between items-center bg-transparent focus:outline-none group text-left"
+        className={`accordion-header ${isOpen ? "open" : ""}`}
       >
-        <span className="text-[12px] tracking-[2px] font-bold text-primary-950 uppercase pr-4">{title}</span>
-        <span className={`text-[#8A6A4A] transition-transform duration-300 transform-gpu will-change-transform ${isOpen ? "rotate-180" : ""}`}>
-          <ChevronDown size={14} strokeWidth={2.5} />
-        </span>
+        <span>{title}</span>
+        <ChevronDown className="chevron" />
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
@@ -112,7 +129,7 @@ function AccordionItem({ title, content, isOpenDefault }: { title: string, conte
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden will-change-transform transform-gpu"
           >
-            <div className="pb-5 text-[14px] leading-relaxed text-primary-950/70 font-sans font-medium max-w-[95%] prose prose-sm prose-p:mb-3 prose-li:mb-2 prose-ul:list-none prose-ul:pl-0 prose-li:border-b prose-li:border-black/5 prose-li:pb-2 last:prose-li:border-0 prose-strong:font-bold prose-strong:text-primary-950">
+            <div className="accordion-body prose-sm prose-p:mb-3 prose-li:mb-2 prose-ul:list-none prose-ul:pl-0 prose-strong:font-bold prose-strong:text-primary-950">
               <ReactMarkdown>{content}</ReactMarkdown>
             </div>
           </motion.div>
