@@ -206,7 +206,7 @@ apiRouter.post("/verify-payment", (req, res) => {
 
 // ==== Meta Conversions API (CAPI) ====
 apiRouter.post("/meta-capi", async (req, res) => {
-  const { event_name, event_id, value, currency, content_ids, contents, num_items } = req.body;
+  const { event_name, event_id, value, currency, content_ids, contents, num_items, user_data: clientUserData, event_source_url } = req.body;
   const PIXEL_ID = process.env.META_PIXEL_ID;
   const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
 
@@ -216,26 +216,100 @@ apiRouter.post("/meta-capi", async (req, res) => {
   }
 
   try {
-    const clientIpAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const clientUserAgent = req.headers['user-agent'];
+    const rawIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || "";
+    // Handle proxy-forwarded IP arrays (retrieve first client IP address)
+    const clientIpAddress = typeof rawIp === "string" ? rawIp.split(',')[0].trim() : rawIp;
+    const clientUserAgent = req.headers['user-agent'] || "";
     const currentTimestamp = Math.floor(Date.now() / 1000);
+
+    const helperHash = (val) => {
+      if (!val) return undefined;
+      const clean = val.toString().trim().toLowerCase();
+      if (!clean) return undefined;
+      // If already a valid hex SHA-256 string, use as-is
+      if (/^[a-f0-9]{64}$/i.test(clean)) {
+        return clean;
+      }
+      return crypto.createHash('sha256').update(clean).digest('hex');
+    };
+
+    const providedUserData = clientUserData || {};
+    const userDataObj = {
+      client_ip_address: clientIpAddress,
+      client_user_agent: clientUserAgent,
+    };
+
+    // Add cookie identifiers if available in cookies or payload
+    const parsedCookies = {};
+    if (req.headers.cookie) {
+      req.headers.cookie.split(';').forEach(cookie => {
+        const parts = cookie.split('=');
+        if (parts.length === 2) {
+          parsedCookies[parts[0].trim()] = parts[1].trim();
+        }
+      });
+    }
+
+    const finalFbp = providedUserData.fbp || parsedCookies['_fbp'] || null;
+    const finalFbc = providedUserData.fbc || parsedCookies['_fbc'] || null;
+
+    if (finalFbp) userDataObj.fbp = finalFbp;
+    if (finalFbc) userDataObj.fbc = finalFbc;
+
+    // Standardize hashing for multiple fields to optimize match quality
+    if (providedUserData.em) {
+      const emHash = helperHash(providedUserData.em);
+      if (emHash) userDataObj.em = [emHash];
+    }
+    if (providedUserData.ph) {
+      let numericPhone = providedUserData.ph.toString().replace(/\D/g, '');
+      if (numericPhone.length === 10) {
+        numericPhone = '91' + numericPhone; // default to India prefix
+      }
+      const phHash = helperHash(numericPhone);
+      if (phHash) userDataObj.ph = [phHash];
+    }
+    if (providedUserData.fn) {
+      const fnHash = helperHash(providedUserData.fn);
+      if (fnHash) userDataObj.fn = [fnHash];
+    }
+    if (providedUserData.ln) {
+      const lnHash = helperHash(providedUserData.ln);
+      if (lnHash) userDataObj.ln = [lnHash];
+    }
+    if (providedUserData.ct) {
+      const ctHash = helperHash(providedUserData.ct);
+      if (ctHash) userDataObj.ct = [ctHash];
+    }
+    if (providedUserData.st) {
+      const stHash = helperHash(providedUserData.st);
+      if (stHash) userDataObj.st = [stHash];
+    }
+    if (providedUserData.zp) {
+      const zpHash = helperHash(providedUserData.zp);
+      if (zpHash) userDataObj.zp = [zpHash];
+    }
+    if (providedUserData.country) {
+      const countryHash = helperHash(providedUserData.country);
+      if (countryHash) userDataObj.country = [countryHash];
+    } else {
+      userDataObj.country = [helperHash('in')]; // Default to India country identifier
+    }
 
     const eventData = {
       event_name: event_name || 'Purchase',
       event_time: currentTimestamp,
       event_id: event_id,
       action_source: "website",
-      user_data: {
-        client_ip_address: clientIpAddress,
-        client_user_agent: clientUserAgent
-      },
+      event_source_url: event_source_url || req.headers.referer || "https://mukeshsarees.com/",
+      user_data: userDataObj,
       custom_data: {
         currency: currency || "INR",
-        value: Number(value),
+        value: Number(value) || 0,
         content_ids: content_ids || [],
         contents: contents || [],
         content_type: 'product',
-        num_items: num_items
+        num_items: num_items || (contents ? contents.reduce((acc, c) => acc + (c.quantity || 1), 0) : 1)
       }
     };
 
@@ -258,7 +332,7 @@ apiRouter.post("/meta-capi", async (req, res) => {
       let data = '';
       capiRes.on('data', chunk => data += chunk);
       capiRes.on('end', () => {
-        console.log(`[CAPI] Meta response: ${capiRes.statusCode} - ${data}`);
+        console.log(`[CAPI] Meta dynamic response [${event_name}]: ${capiRes.statusCode} - ${data}`);
         res.json({ success: true, metaStatus: capiRes.statusCode });
       });
     });
@@ -304,28 +378,38 @@ try {
 }
 
 const injectOGTags = (html, reqPath, originalUrl) => {
-  let ogTitle = "Mukesh Saree Centre – Premium Silk Sarees Since 1976";
-  let ogDesc = "Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1976.";
-  let ogImg = "https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me";
+  let ogTitle = "Mukesh Saree Centre – Premium Silk Sarees Since 1978";
+  let ogDesc = "Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1978.";
+  
+  const defaultBannerUrl = "https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me";
+  // Fallback banner optimized to 1200x630 landscape JPG for standard page sharing
+  let ogImg = `https://wsrv.nl/?url=${encodeURIComponent(defaultBannerUrl)}&w=1200&h=630&fit=contain&output=jpg`;
   let ogUrl = "https://mukeshsarees.com" + originalUrl;
   let price = "";
   let isProduct = false;
   
   const productMatch = reqPath.match(/^\/product\/([^\/]+)\/?$/);
   if (productMatch) {
-    const slug = productMatch[1];
-    const prod = preParsedProducts.find(p => p.slug === slug);
+    const slug = productMatch[1].trim().toLowerCase();
+    const prod = preParsedProducts.find(p => p.slug && p.slug.trim().toLowerCase() === slug);
     if (prod) {
-      ogTitle = `${prod.name} | Mukesh Saree Centre`;
-      // Ensure description is plain text and trim
-      ogDesc = (prod.description || "").replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
-      ogImg = prod.image;
+      ogTitle = prod.name;
+      // Format description specifically for WhatsApp with Price and Branding first, as requested
+      const baseDesc = (prod.description || "").replace(/<[^>]*>?/gm, '').trim();
+      ogDesc = `₹${prod.price || "999"} | Mukesh Saree Centre\n\n${baseDesc}`;
+      if (ogDesc.length > 200) {
+        ogDesc = ogDesc.substring(0, 197) + "...";
+      }
+
+      // Convert Google Drive or local product images to a square, fast-loading JPG image for WhatsApp compatibility
+      const rawProdImg = prod.image || defaultBannerUrl;
+      ogImg = `https://wsrv.nl/?url=${encodeURIComponent(rawProdImg)}&w=800&h=800&fit=contain&output=jpg`;
       price = prod.price || "0";
       isProduct = true;
     }
   } else if (reqPath.startsWith('/shop')) {
-    ogTitle = "Shop Our Collection | Mukesh Saree Centre";
-    ogDesc = "Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre. From traditional silk to modern cotton co-ords, find your perfect outfit today.";
+    ogTitle = "Shop Our Collection — Mukesh Saree Centre";
+    ogDesc = "Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre Nagpur. Cash on Delivery (COD) and free shipping available.";
   }
 
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
@@ -337,8 +421,8 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta property="og:url" content="${ogUrl}" />
      <meta property="og:type" content="${isProduct ? 'product' : 'website'}" />
      <meta property="og:site_name" content="Mukesh Saree Centre" />
-     <meta property="og:image:width" content="1200" />
-     <meta property="og:image:height" content="630" />
+     <meta property="og:image:width" content="800" />
+     <meta property="og:image:height" content="800" />
      <meta name="twitter:card" content="summary_large_image" />
      <meta name="twitter:title" content="${ogTitle}" />
      <meta name="twitter:description" content="${ogDesc}" />
@@ -351,13 +435,13 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   // Replace standard title tag
   injectedHtml = injectedHtml.replace(
     /<title>.*?<\/title>/,
-    `<title>${ogTitle}</title>`
+    `<title>${ogTitle} — Mukesh Saree Centre</title>`
   );
 
   // Replace standard meta description
   injectedHtml = injectedHtml.replace(
     /<meta name="description" content="[^"]*"\s*\/>/,
-    `<meta name="description" content="${ogDesc.replace(/"/g, '&quot;')}" />`
+    `<meta name="description" content="${ogDesc.replace(/"/g, '&quot;').replace(/\n/g, ' ')}" />`
   );
 
   // Inject Google structured data (JSON-LD) for products
@@ -369,7 +453,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
       "@type": "Product",
       "name": "${ogTitle.replace(/"/g, '\\"')}",
       "image": "${ogImg}",
-      "description": "${ogDesc.replace(/"/g, '\\"')}",
+      "description": "${ogDesc.replace(/"/g, '\\"').replace(/\n/g, ' ')}",
       "brand": {
         "@type": "Brand",
         "name": "Mukesh Saree Centre"

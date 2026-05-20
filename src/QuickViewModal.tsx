@@ -15,6 +15,7 @@ import { Product, useStore } from "./store";
 import { formatPrice, optimizeImage, getImageAlt } from "./utils";
 import { ProductDescription } from "./components/ProductDescription";
 import { OptimizedImage } from "./components/OptimizedImage";
+import { trackAddToCart } from "./tracking";
 
 interface QuickViewModalProps {
   product: Product | null;
@@ -65,7 +66,8 @@ export default function QuickViewModal({
     }
 
     setSizeError(false);
-    addToCart(product, isCoOrd ? selectedSize : undefined);
+    addToCart(product, isCoOrd ? selectedSize : undefined, 1);
+    trackAddToCart(product, 1);
     setIsAdded(true);
     setTimeout(() => {
       setIsAdded(false);
@@ -194,12 +196,14 @@ export default function QuickViewModal({
                 </div>
               </div>
 
-              <footer className="pt-8 border-t border-black/5 space-y-4">
-                 <div className="flex items-center gap-3 text-[10px] uppercase tracking-wider font-bold text-primary-950/50">
-                    <Truck size={14} strokeWidth={2} className="text-gold-500" /> Free Delivery Global
+              <footer className="pt-6 mt-6 border-t border-black/5 flex flex-col space-y-3">
+                 <div className="flex items-center gap-2 group cursor-default">
+                    <Truck size={14} className="text-[var(--color-gold-dark)] opacity-70 group-hover:opacity-100 transition-opacity" />
+                    <span className="text-[10px] md:text-[11px] uppercase tracking-[0.1em] font-medium text-[var(--color-dark)] opacity-80 group-hover:opacity-100 transition-opacity">Free Delivery Global</span>
                  </div>
-                 <div className="flex items-center gap-3 text-[10px] uppercase tracking-wider font-bold text-primary-950/50">
-                    <ShieldCheck size={14} strokeWidth={2} className="text-gold-500" /> Quality Verified
+                 <div className="flex items-center gap-2 group cursor-default">
+                    <ShieldCheck size={14} className="text-[var(--color-gold-dark)] opacity-70 group-hover:opacity-100 transition-opacity" />
+                    <span className="text-[10px] md:text-[11px] uppercase tracking-[0.1em] font-medium text-[var(--color-dark)] opacity-80 group-hover:opacity-100 transition-opacity">Quality Verified</span>
                  </div>
               </footer>
             </div>

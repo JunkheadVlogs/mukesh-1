@@ -36,7 +36,9 @@ export default function Layout() {
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const { scrollY } = useScroll();
+  const [logoError, setLogoError] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDeepScrolled, setIsDeepScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [openFooterAccordion, setOpenFooterAccordion] = useState<string | null>(
     null,
@@ -74,6 +76,7 @@ export default function Layout() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 50);
+      setIsDeepScrolled(currentScrollY > 400);
 
       // Disable hiding header so it smoothly fades to solid and stays visible
       // if (currentScrollY > lastScrollY.current && currentScrollY > 200) {
@@ -229,7 +232,7 @@ export default function Layout() {
                             to={`/product/${product.slug}`}
                             className="flex items-center gap-6 group"
                           >
-                            <div className="w-20 aspect-[9/16] bg-transparent overflow-hidden rounded-sm flex-shrink-0">
+                            <div className="w-20 aspect-[9/16] bg-transparent overflow-hidden rounded-none flex-shrink-0">
                               <OptimizedImage
                                 src={product.image}
                                 width={100}
@@ -257,7 +260,7 @@ export default function Layout() {
                       </div>
                     </div>
                   ) : searchQuery ? (
-                    <div className="text-center py-20 bg-primary-50 rounded-sm">
+                    <div className="text-center py-20 bg-primary-50 rounded-none">
                       <Search
                         size={40}
                         strokeWidth={1}
@@ -299,9 +302,9 @@ export default function Layout() {
 
       {/* Navigation */}
       <header
-        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-500 flex flex-col will-change-transform transform-gpu ${
+        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-500 will-change-transform transform-gpu ${
           isHidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
-        } ${!isTransparent && isScrolled ? "border-b border-[#1A0A00]/5" : "border-b-0"}`}
+        } ${!isTransparent && isScrolled ? "border-b border-[#2B2B2B]/5" : "border-b-0"} h-[85px] md:h-[95px] flex flex-col`}
         style={headerStyle}
       >
         <AnimatePresence mode="wait">
@@ -311,60 +314,31 @@ export default function Layout() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.5 }}
-            className="absolute top-0 left-0 w-full bg-[#1A0A00] text-[#F0D88A] text-center py-1.5 px-4 text-[9px] sm:text-[10px] font-medium tracking-[2px] md:tracking-[3px] uppercase flex items-center justify-center z-[60]"
+            className="absolute top-0 left-0 w-full bg-[#2B2B2B] text-[#C8A96B] text-center px-4 text-[9px] sm:text-[10px] font-medium tracking-[2px] md:tracking-[3px] uppercase flex items-center justify-center z-[60] h-[26px]"
           >
             <span>{announcements[announcementIndex]}</span>
           </motion.div>
         </AnimatePresence>
 
-        <div
-          className={`transition-all duration-500 w-full px-3 md:px-4 sm:px-10 max-w-7xl mx-auto mt-7 ${!isTransparent && isScrolled ? "py-1" : "py-2 md:py-3"}`}
-        >
-          <div className="flex items-center justify-between w-full">
-            <div className="flex items-center md:hidden">
+        <div className="w-full px-4 md:px-8 max-w-7xl mx-auto h-[59px] md:h-[69px] mt-[26px] flex items-center justify-between">
+          {/* Left Section: Hamburger on Mobile, Nav Links on Desktop */}
+          <div className="flex items-center flex-1 h-full">
+            <div className="md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`${iconColor} focus:outline-none transition-colors ml-[-4px] p-1.5`}
+                className={`${iconColor} focus:outline-none transition-colors h-11 w-11 flex items-center justify-start`}
                 aria-expanded={isMobileMenuOpen}
                 aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               >
                 {isMobileMenuOpen ? (
-                  <X size={20} strokeWidth={1} />
+                  <X size={24} strokeWidth={1.5} />
                 ) : (
-                  <Menu size={20} strokeWidth={1} />
+                  <Menu size={24} strokeWidth={1.5} />
                 )}
               </button>
             </div>
 
-            <div className="flex-shrink-0 flex flex-col items-center justify-center flex-1 md:flex-none">
-              <Link
-                to="/"
-                onClick={scrollToTop}
-                className="flex flex-col items-center group transition-all duration-500 transform"
-              >
-                <span
-                  className={`text-[17px] md:text-2xl font-serif font-semibold tracking-[4px] md:tracking-[8px] uppercase text-center leading-none transition-all ${textColor} group-hover:opacity-70`}
-                >
-                  MUKESH
-                </span>
-                <div className="flex items-center gap-2 md:gap-3 w-full mt-1.5 md:mt-2 px-1 opacity-90">
-                  <div
-                    className={`h-[1px] flex-1 ${borderColor} transition-colors`}
-                  />
-                  <span
-                    className={`text-[8px] md:text-[10px] font-sans font-medium tracking-[4px] md:tracking-[6px] uppercase ${textColor} transition-colors whitespace-nowrap`}
-                  >
-                    Saree Centre
-                  </span>
-                  <div
-                    className={`h-[1px] flex-1 ${borderColor} transition-colors`}
-                  />
-                </div>
-                <div className="h-[2px] w-0 bg-gold-400/30 group-hover:w-1/2 transition-all duration-700 mt-0.5" />
-              </Link>
-            </div>
-
-            <nav className="hidden md:flex flex-1 justify-center space-x-8 items-center h-full">
+            <nav className="hidden md:flex space-x-8 items-center h-full">
               <Link
                 to="/"
                 onClick={scrollToTop}
@@ -383,7 +357,7 @@ export default function Layout() {
                     className="ml-1 opacity-70 group-hover:rotate-180 transition-transform duration-300"
                   />
                 </Link>
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-48 bg-white border border-black/5 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-50">
+                <div className="absolute top-full left-0 mt-0 w-48 bg-white border border-black/5 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-50">
                   <div className="py-2 flex flex-col">
                     <Link
                       to="/shop"
@@ -413,55 +387,87 @@ export default function Layout() {
                 </div>
               </div>
               <Link
-                to="/about"
+                to="/contact"
                 className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
-                Legacy
+                Contact Us
               </Link>
             </nav>
+          </div>
 
-            <div className="flex items-center justify-end space-x-2 sm:space-x-4 md:space-x-6 md:flex-1">
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className={`${iconColor} hover:text-gold-200 transition-all block p-1 md:p-1.5`}
-                aria-label="Search"
-              >
-                <Search size={20} strokeWidth={1} />
-              </button>
-              {/* Wishlist Icon Removed */}
-              <Link
-                to="/cart"
-                className={`${iconColor} hover:text-gold-500 transition-all relative flex items-center p-2`}
-                aria-label="Cart"
-              >
-                <motion.div
-                  animate={
-                    cartBadgeHighlight
-                      ? { scale: [1, 1.2, 1], rotate: [0, -10, 10, -10, 0] }
-                      : {}
+          {/* Center Section: Logo */}
+          <div className="flex-shrink-0 flex flex-col items-center justify-center m-0 p-0">
+            <Link
+              to="/"
+              onClick={scrollToTop}
+              className="flex items-center justify-center group transition-all duration-500 transform m-0 p-0"
+            >
+              <img
+                src="https://drive.google.com/thumbnail?id=1rXEc_ve9qXelBQakWWVGcm4ffvbGF4yT&sz=w1000"
+                alt="Mukesh Saree Centre Logo"
+                className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain transition-opacity group-hover:opacity-80 drop-shadow-sm m-0 p-0 block header-logo"
+                onError={(e) => {
+                  (e.currentTarget as any).style.display = "none";
+                  const parent = e.currentTarget.parentElement;
+                  if (parent) {
+                    const span = document.createElement("span");
+                    span.className = `text-[17px] md:text-2xl font-serif font-semibold tracking-[4px] md:tracking-[8px] uppercase text-center leading-none transition-all ${textColor} group-hover:opacity-70`;
+                    span.innerText = "MUKESH";
+
+                    const div = document.createElement("div");
+                    div.className =
+                      "flex items-center gap-2 md:gap-3 w-full mt-1.5 md:mt-2 px-1 opacity-90";
+                    div.innerHTML = `<div class="h-[1px] flex-1 ${borderColor} transition-colors"></div><span class="text-[8px] md:text-[10px] font-sans font-medium tracking-[4px] md:tracking-[6px] uppercase ${textColor} transition-colors whitespace-nowrap">Saree Centre</span><div class="h-[1px] flex-1 ${borderColor} transition-colors"></div>`;
+
+                    parent.appendChild(span);
+                    parent.appendChild(div);
                   }
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                >
-                  <ShoppingBag size={20} strokeWidth={1} />
-                </motion.div>
-                <AnimatePresence>
-                  {cartItemCount > 0 && (
-                    <motion.span
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{
-                        scale: cartBadgeHighlight ? [1, 1.3, 1] : 1,
-                        opacity: 1,
-                      }}
-                      exit={{ scale: 0, opacity: 0 }}
-                      transition={{ duration: 0.4 }}
-                      className={`absolute top-0 right-0 text-white text-[8px] md:text-[9px] px-1 md:px-1.5 py-[1px] md:py-0.5 rounded-full min-w-[14px] md:min-w-[16px] text-center font-medium shadow-sm transition-colors ${cartBadgeHighlight ? "bg-black" : "bg-gold-600"}`}
-                    >
-                      {cartItemCount}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </Link>
-            </div>
+                }}
+              />
+            </Link>
+          </div>
+
+          <div className="flex items-center justify-end space-x-1 sm:space-x-4 md:space-x-6 flex-1">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className={`${iconColor} hover:text-gold-200 transition-all h-11 w-11 flex items-center justify-center`}
+              aria-label="Search"
+            >
+              <Search size={22} strokeWidth={1.5} />
+            </button>
+            {/* Wishlist Icon Removed */}
+            <Link
+              to="/cart"
+              className={`${iconColor} hover:text-gold-500 transition-all relative h-11 w-11 flex items-center justify-end md:justify-center`}
+              aria-label="Cart"
+            >
+              <motion.div
+                animate={
+                  cartBadgeHighlight
+                    ? { scale: [1, 1.2, 1], rotate: [0, -10, 10, -10, 0] }
+                    : {}
+                }
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
+                <ShoppingBag size={22} strokeWidth={1.5} />
+              </motion.div>
+              <AnimatePresence>
+                {cartItemCount > 0 && (
+                  <motion.span
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{
+                      scale: cartBadgeHighlight ? [1, 1.3, 1] : 1,
+                      opacity: 1,
+                    }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className={`absolute top-1 right-1 text-white text-[9px] px-1 md:px-1.5 py-[1px] md:py-0.5 rounded-full min-w-[16px] text-center font-medium shadow-sm transition-colors ${cartBadgeHighlight ? "bg-black" : "bg-gold-600"}`}
+                  >
+                    {cartItemCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </Link>
           </div>
         </div>
 
@@ -474,24 +480,24 @@ export default function Layout() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="md:hidden bg-primary-50 overflow-hidden border-t border-black/5"
             >
-              <div className="px-5 py-6 flex flex-col space-y-5">
+              <div className="px-6 py-8 flex flex-col space-y-2">
                 <Link
                   to="/"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-1"
+                  className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-3"
                 >
                   Home
                 </Link>
                 <div className="flex flex-col">
                   <div
-                    className="flex items-center justify-between cursor-pointer py-1"
+                    className="flex items-center justify-between cursor-pointer py-3"
                     onClick={() => setIsMobileShopOpen(!isMobileShopOpen)}
                   >
                     <span className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950">
                       Shop
                     </span>
                     <ChevronDown
-                      size={16}
+                      size={20}
                       className={`text-primary-950/70 transition-transform duration-300 ${isMobileShopOpen ? "rotate-180" : ""}`}
                     />
                   </div>
@@ -502,34 +508,34 @@ export default function Layout() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="flex flex-col pl-4 mt-4 border-l border-gold-500/30 overflow-hidden"
+                        className="flex flex-col pl-4 mt-2 mb-2 border-l border-gold-500/30 overflow-hidden"
                       >
-                        <div className="flex flex-col space-y-5 py-2">
+                        <div className="flex flex-col space-y-1 py-2">
                           <Link
                             to="/shop"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600 py-2"
                           >
                             All Products
                           </Link>
                           <Link
                             to="/shop?category=Sarees"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600 py-2"
                           >
                             Sarees
                           </Link>
                           <Link
                             to="/shop?category=Linen Sarees"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950/60 hover:text-gold-600 pl-4"
+                            className="text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950/60 hover:text-gold-600 pl-4 py-2"
                           >
                             — Linen Sarees
                           </Link>
                           <Link
                             to="/shop?category=Co-Ord Sets"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600"
+                            className="text-[12px] tracking-[1.5px] uppercase font-medium text-primary-950/80 hover:text-gold-600 py-2"
                           >
                             Co-Ord Sets
                           </Link>
@@ -539,23 +545,22 @@ export default function Layout() {
                   </AnimatePresence>
                 </div>
                 <Link
-                  to="/about"
+                  to="/contact"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-1"
+                  className="text-[13px] tracking-[2px] uppercase font-medium text-primary-950 flex items-center justify-between py-3"
                 >
-                  Our Legacy
+                  Contact Us
                 </Link>
 
-                <div className="border-t border-black/5 pt-5 mt-2 flex flex-col space-y-5">
-                  {/* Wishlist Mobile Link Removed */}
+                <div className="border-t border-black/5 pt-4 mt-4 flex flex-col space-y-2">
                   <button
                     onClick={() => {
                       setIsMobileMenuOpen(false);
                       setIsSearchOpen(true);
                     }}
-                    className="flex items-center gap-3 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 text-left py-1"
+                    className="flex items-center gap-4 text-[13px] tracking-[2px] uppercase font-medium text-primary-950 text-left py-3"
                   >
-                    <Search size={18} strokeWidth={1.5} /> Search
+                    <Search size={22} strokeWidth={1.5} /> Search
                   </button>
                 </div>
               </div>
@@ -566,204 +571,75 @@ export default function Layout() {
 
       {/* Main Content */}
       <main
-        className={`flex-grow flex flex-col ${!isHomePage ? "pt-[85px] md:pt-[100px]" : ""}`}
+        className={`flex-grow flex flex-col ${!isHomePage ? "pt-[85px] md:pt-[95px]" : ""}`}
       >
         <Outlet />
       </main>
 
       {/* Footer */}
-      <footer
-        style={{
-          background: "#1A0A00",
-          color: "rgba(250,246,240,0.7)",
-          padding: "48px 24px 24px",
-        }}
-        className="mt-auto"
-      >
-        <div
-          style={{
-            maxWidth: "1100px",
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "32px",
-          }}
-        >
-          {/* Brand column */}
-          <div>
-            <div
-              style={{
-                fontFamily: "'Cormorant Garamond',serif",
-                fontSize: "22px",
-                color: "#F0D88A",
-                marginBottom: "12px",
-              }}
-            >
-              Mukesh Saree Centre
+      <footer className="bg-[#FAF8F5] pt-4 md:pt-10 pb-1.5 md:pb-4 border-t border-gold-200/30">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+          <div className="grid grid-cols-2 gap-y-5 gap-x-6 md:gap-8 max-w-2xl">
+            <div>
+              <h4 className="text-[11px] font-medium text-primary-950 mb-1.5 md:mb-3 tracking-[0.12em] md:tracking-[0.15em] uppercase">
+                Explore
+              </h4>
+              <ul className="space-y-0.5 md:space-y-1 font-light text-[13px] text-primary-950/70">
+                <li>
+                  <Link to="/shop?category=Sarees" className="hover:text-gold-600 transition-colors">
+                    Sarees
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=Lehengas" className="hover:text-gold-600 transition-colors">
+                    Lehengas
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=Co-Ord Sets" className="hover:text-gold-600 transition-colors">
+                    Readymade Suits
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?sort=new" className="hover:text-gold-600 transition-colors">
+                    New Arrivals
+                  </Link>
+                </li>
+              </ul>
             </div>
-            <p style={{ fontSize: "13px", lineHeight: 1.7 }}>
-              Premium Indian ethnic wear since 1978. Authentic sarees, lehengas
-              & suits from Nagpur.
+            <div>
+              <h4 className="text-[11px] font-medium text-primary-950 mb-1.5 md:mb-3 tracking-[0.12em] md:tracking-[0.15em] uppercase">
+                Support
+              </h4>
+              <ul className="space-y-0.5 md:space-y-1 font-light text-[13px] text-primary-950/70">
+                <li>
+                  <Link to="/shipping-policy" className="hover:text-gold-600 transition-colors">
+                    Shipping Info
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/return-policy" className="hover:text-gold-600 transition-colors">
+                    Returns & Exchange
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/terms" className="hover:text-gold-600 transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="hover:text-gold-600 transition-colors">
+                    Contact Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-2.5 md:mt-10 pt-1.5 md:pt-2.5 border-t border-primary-950/10 flex flex-col items-center max-w-full">
+            <p className="text-[9px] sm:text-[11px] text-primary-950/40 font-light tracking-wider uppercase text-center whitespace-nowrap">
+              © {new Date().getFullYear()} Mukesh Saree Centre. All Rights Reserved.
             </p>
-            <div style={{ marginTop: "16px", fontSize: "13px" }}>
-              📍 Jagnath Road, Nagpur, Maharashtra
-              <br />
-              📞{" "}
-              <a href="tel:+917020664641" style={{ color: "#F0D88A" }}>
-                +91 70206 64641
-              </a>
-              <br />
-              ✉️{" "}
-              <a
-                href="mailto:info@mukeshsarees.com"
-                style={{ color: "#F0D88A" }}
-              >
-                info@mukeshsarees.com
-              </a>
-            </div>
           </div>
-
-          {/* Quick Links */}
-          <div>
-            <div
-              style={{
-                fontSize: "13px",
-                fontWeight: 600,
-                color: "#F0D88A",
-                marginBottom: "12px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-              }}
-            >
-              Shop
-            </div>
-            <ul
-              style={{
-                listStyle: "none",
-                padding: 0,
-                fontSize: "13px",
-                lineHeight: 2.4,
-              }}
-            >
-              <li>
-                <Link
-                  to="/shop?category=Sarees"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  Sarees
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop?category=Lehengas"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  Lehengas
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop?category=Co-Ord Sets"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  Readymade Suits
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop?sort=new"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  New Arrivals
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  Sale
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Policies */}
-          <div>
-            <div
-              style={{
-                fontSize: "13px",
-                fontWeight: 600,
-                color: "#F0D88A",
-                marginBottom: "12px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-              }}
-            >
-              Support
-            </div>
-            <ul
-              style={{
-                listStyle: "none",
-                padding: 0,
-                fontSize: "13px",
-                lineHeight: 2.4,
-              }}
-            >
-              <li>
-                <Link
-                  to="/shipping-policy"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  Shipping Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/return-policy"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  Return & Exchange
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/privacy"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/terms"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  Terms & Conditions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/contact"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  Contact Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div
-          style={{
-            borderTop: "1px solid rgba(201,168,76,0.15)",
-            marginTop: "32px",
-            paddingTop: "20px",
-            textAlign: "center",
-            fontSize: "12px",
-          }}
-        >
-          © {new Date().getFullYear()} Mukesh Saree Centre · All Rights Reserved
         </div>
       </footer>
 
@@ -773,28 +649,11 @@ export default function Layout() {
         href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}
         target="_blank"
         rel="noopener noreferrer"
-        className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform ${location.pathname.startsWith("/product") ? "bottom-[140px] md:bottom-[24px]" : "bottom-[24px]"}`}
+        className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform ${location.pathname.startsWith("/product") ? "bottom-[140px] md:bottom-[24px]" : location.pathname === "/checkout" ? "bottom-[80px] md:bottom-[24px]" : "bottom-[24px]"}`}
         aria-label="Contact on WhatsApp"
       >
         <MessageCircle size={24} strokeWidth={1.5} />
       </a>
-
-      {/* Scroll to Top */}
-      <AnimatePresence>
-        {isScrolled && (
-          <motion.button
-            id="scroll-to-top"
-            initial={{ opacity: 0, scale: 0.5, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5, y: 20 }}
-            onClick={scrollToTop}
-            className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#1A0A00] text-[#F0D88A] border border-[rgba(201,168,76,0.3)] flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform ${location.pathname.startsWith("/product") ? "bottom-[80px] md:bottom-[84px]" : "bottom-[84px] md:bottom-[84px]"}`}
-            aria-label="Scroll to top"
-          >
-            <ArrowUp size={20} strokeWidth={2} />
-          </motion.button>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

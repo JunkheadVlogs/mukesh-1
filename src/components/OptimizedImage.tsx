@@ -33,10 +33,11 @@ export function OptimizedImage({ src, width = 600, height, alt, className, srcSe
         width={width}
         height={calculatedHeight}
         className={className}
-        loading={priority ? "eager" : "lazy"}
+        loading={priority ? undefined : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"
-        decoding="async"
+        decoding={priority ? "sync" : "async"}
+        style={{ background: '#F5F0E8', ...(props.style || {}) }}
         {...props}
       />
     </picture>

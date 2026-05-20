@@ -44,7 +44,7 @@ export function ExitIntentPopup() {
         
         // Tracking: popup impressions
         if ((window as any).fbq) {
-          (window as any).fbq('trackCustom', 'ExitIntentImpression');
+          (window as any).fbq('trackCustom', 'ExitIntentShown');
         }
         if ((window as any).gtag) {
           (window as any).gtag('event', 'view_promotion', {
@@ -66,7 +66,7 @@ export function ExitIntentPopup() {
       clearTimeout(activityTimer);
       activityTimer = setTimeout(() => {
         showPopup();
-      }, 45000); // 45 seconds of inactivity
+      }, 30000); // 30 seconds of inactivity
     };
 
     // 1. Desktop Exit Intent (Mouse leave top)
@@ -83,7 +83,7 @@ export function ExitIntentPopup() {
       const currentScroll = window.scrollY;
       if (currentScroll < scrollPos) {
         scrollUpCount++;
-        if (scrollUpCount > 3 && currentScroll < 100) {
+        if (scrollUpCount > 4 && currentScroll < 150) {
           showPopup();
         }
       } else {
@@ -134,7 +134,7 @@ export function ExitIntentPopup() {
 
     const autoShowTimer = setTimeout(() => {
       showPopup();
-    }, 45000); // Auto show after 45 seconds of staying on page
+    }, 30000); // Auto show after 30 seconds of staying on page
     
     return () => {
       clearTimeout(activateTriggers);
@@ -283,17 +283,19 @@ export function ExitIntentPopup() {
         // Automatically copy the coupon code to clipboard
         copyText('VIPCLUB60');
         
-        setTimeout(() => isVisible && handleClose(), 5000);
+        setTimeout(() => isVisible && handleClose(), 20000);
       } else {
         setIsSuccess(true);
         setSuccessStorage();
-        setTimeout(() => isVisible && handleClose(), 5000);
+        copyText('VIPCLUB60');
+        setTimeout(() => isVisible && handleClose(), 20000);
       }
     } catch (error) {
       console.error("Popup Error:", error);
       setIsSuccess(true);
       setSuccessStorage();
-      setTimeout(() => isVisible && handleClose(), 5000);
+      copyText('VIPCLUB60');
+      setTimeout(() => isVisible && handleClose(), 20000);
     } finally {
       setIsSubmitting(false);
     }
@@ -404,10 +406,10 @@ export function ExitIntentPopup() {
           ) : (
             <div className="animate-in fade-in duration-500 w-full flex flex-col items-center pt-2">
               <h2 className="text-[22px] md:text-[28px] font-serif font-medium text-primary-950 mb-2 leading-tight">
-                WAIT! Unlock <span className="text-gold-500 font-bold">Exclusive 60% OFF</span> ✨
+                Wait! Enjoy an <span className="text-gold-500 font-bold">Exclusive Offer</span> ✨
               </h2>
               <p className="text-primary-700 font-sans text-[13px] md:text-sm mb-5 leading-relaxed">
-                Get your special VIP member discount before you leave.
+                Get an exclusive 60% OFF discount on your order today!
               </p>
 
               <div className="flex flex-col items-start gap-2.5 w-full mb-6 bg-gold-50/40 px-5 py-4 rounded-xl border border-gold-100/60 shadow-[inset_0_0_20px_rgba(234,179,8,0.03)]">
@@ -463,7 +465,7 @@ export function ExitIntentPopup() {
                   {isSubmitting ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   ) : (
-                    "UNLOCK MY DISCOUNT"
+                    "Unlock Offer"
                   )}
                 </button>
                 <div className="flex flex-col items-center mt-1 w-full gap-2">

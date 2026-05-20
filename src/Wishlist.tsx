@@ -18,6 +18,9 @@ import { products } from "./mockData";
 import { useStore } from "./store";
 import { formatPrice, getImageAlt } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
+import { ProductCard } from "./components/ProductCard";
+
+import { trackAddToCart } from "./tracking";
 
 export default function Wishlist() {
   const { wishlist, toggleWishlist, addToCart } = useStore();
@@ -46,6 +49,7 @@ export default function Wishlist() {
 
   const handleAddToCart = (product: any) => {
     addToCart(product);
+    trackAddToCart(product, 1);
     showToast(`${product.name} added to bag successfully.`);
   };
 
@@ -182,7 +186,7 @@ export default function Wishlist() {
              <Link to="/shop" className="text-[11px] uppercase tracking-[3px] font-bold text-gold-500 underline underline-offset-8">Discover our masterpieces</Link>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-x-12 gap-y-10 md:gap-y-20">
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             <AnimatePresence mode="popLayout">
               {displayProducts.map((product, idx) => (
                 <motion.div
@@ -194,39 +198,16 @@ export default function Wishlist() {
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.05 }}
                   className="group"
                 >
-                  <div className="relative aspect-[3/4] bg-white border border-onyx/5 shadow-sm rounded-sm overflow-hidden mb-8">
-                    <Link to={`/product/${product.slug}`} className="block w-full h-full">
-                      <OptimizedImage
-                        src={product.image}
-                        width={400}
-                        alt={getImageAlt(product)}
-                        className="w-full h-full object-contain object-top mix-blend-multiply opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1.5s] will-change-transform transform-gpu"
-                      />
-                    </Link>
+                  <div className="relative group" key={product.id}>
+                    <ProductCard product={product} />
                     {!isSharedView && (
                       <button
                         onClick={() => toggleWishlist(product.id)}
-                        className="absolute top-4 right-4 p-3 bg-white/40 hover:bg-white text-onyx/40 hover:text-red-500 transition-all rounded-full border border-onyx/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 shadow-luxury"
+                        className="absolute top-2 right-2 p-2 bg-white/40 hover:bg-white text-onyx/40 hover:text-red-500 transition-all rounded-full border border-onyx/5 backdrop-blur-sm shadow-luxury z-20 group-hover:opacity-100 lg:opacity-0"
                       >
                         <X size={14} />
                       </button>
                     )}
-                  </div>
-
-                  <div className="space-y-4 px-1">
-                    <div className="flex justify-between items-end">
-                      <h4 className="text-gold-500 text-[10px] uppercase tracking-[3px] font-bold">{product.category}</h4>
-                      <span className="text-onyx/80 font-light tracking-tighter text-lg">{formatPrice(product.price)}</span>
-                    </div>
-                    <Link to={`/product/${product.slug}`} className="block">
-                      <h3 className="text-xl font-serif text-onyx group-hover:text-gold-500 transition-colors leading-tight uppercase tracking-tighter">{product.name}</h3>
-                    </Link>
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="w-full h-14 border border-onyx/10 text-[10px] uppercase tracking-[3px] font-bold text-onyx/40 hover:text-onyx hover:bg-onyx/[0.02] transition-all flex items-center justify-center gap-4 bg-white shadow-sm"
-                    >
-                      <ShoppingBag size={14} /> Add to Bag
-                    </button>
                   </div>
                 </motion.div>
               ))}

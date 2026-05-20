@@ -3,7 +3,12 @@ import { Link } from "react-router";
 import { Eye, Plus, Star } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Product, useStore } from "../store";
-import { formatPrice, optimizeImage, getProductReviewStats, getImageAlt } from "../utils";
+import {
+  formatPrice,
+  optimizeImage,
+  getProductReviewStats,
+  getImageAlt,
+} from "../utils";
 import { trackAddToCart } from "../tracking";
 import { Skeleton } from "./Skeleton";
 import { OptimizedImage } from "./OptimizedImage";
@@ -64,56 +69,51 @@ export function ProductCard({
   };
 
   return (
-    <div className="group flex flex-col h-full bg-white transition-[transform,box-shadow] duration-300 rounded-[24px] overflow-hidden border border-black/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 will-change-transform transform-gpu">
+    <div className="group flex flex-col h-full bg-white rounded-[18px] md:rounded-[24px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden hover:-translate-y-1 transform-gpu">
       <div
         ref={imageRef}
         className="relative aspect-[3/4] w-full overflow-hidden bg-primary-50 flex items-center justify-center p-0 flex-shrink-0"
       >
         {!isLoaded && <Skeleton className="absolute inset-0 z-10" />}
-        <Link
-          to={`/product/${product.slug}`}
-          className="block h-full w-full"
-        >
+        <Link to={`/product/${product.slug}`} className="block h-full w-full">
           {isInView && (
             <OptimizedImage
               src={product.image}
-              width={idx < 4 ? 600 : 400}
+              width={idx < 4 ? 400 : 300}
               srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w`}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               alt={getImageAlt(product)}
               priority={idx < 4}
               onLoad={() => setIsLoaded(true)}
-              className={`w-full h-full object-cover object-top transform-gpu will-change-transform transition-transform duration-700 ease-out group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0 transition-opacity"}`}
+              className={`w-full h-full object-cover object-top transform-gpu transition-transform duration-700 ease-out group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0 transition-opacity"}`}
             />
           )}
         </Link>
 
         {/* Floating Badges */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
           {product.isNew && (
-            <span className="bg-white/80 backdrop-blur-md border border-white/50 text-primary-950 text-[7px] sm:text-[8px] uppercase font-semibold px-1.5 py-0.5 tracking-[1px] rounded-[1px] shadow-sm w-max transition-opacity">
+            <span className="bg-white/95 backdrop-blur-md text-primary-950 border border-white/50 text-[9px] uppercase font-semibold px-3 py-1 tracking-[1px] rounded-md shadow-[0_2px_10px_rgba(0,0,0,0.05)] w-max">
               NEW
             </span>
           )}
           {product.isTrending && (
-            <span className="bg-[#f0e6d2]/80 backdrop-blur-md border border-white/50 text-[#6b5a41] text-[7px] sm:text-[8px] uppercase font-semibold px-1.5 py-0.5 tracking-[1px] rounded-[1px] shadow-sm w-max transition-opacity">
+            <span className="bg-white/95 backdrop-blur-md text-primary-950 border border-white/50 text-[9px] uppercase font-semibold px-3 py-1 tracking-[1px] rounded-md shadow-[0_2px_10px_rgba(0,0,0,0.05)] w-max">
               TRENDING
             </span>
           )}
           {product.isBestSelling && (
-            <span className="bg-[#e2eadc]/80 backdrop-blur-md border border-white/50 text-[#30402b] text-[7px] sm:text-[8px] uppercase font-semibold px-1.5 py-0.5 tracking-[1px] rounded-[1px] shadow-sm w-max transition-opacity">
+            <span className="bg-white/95 backdrop-blur-md text-primary-950 border border-white/50 text-[9px] uppercase font-semibold px-3 py-1 tracking-[1px] rounded-md shadow-[0_2px_10px_rgba(0,0,0,0.05)] w-max">
               BEST SELLER
             </span>
           )}
         </div>
 
-        {/* Wishlist Icon Removed */}
-
         {/* Hover Action Overlay */}
-        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-400 hidden md:flex gap-2">
+        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-400 hidden lg:flex gap-2">
           <button
             onClick={handleQuickAdd}
-            className="flex-1 h-10 bg-primary-950 text-white text-[10px] uppercase tracking-[2px] font-bold hover:bg-black transition-all rounded-sm shadow-lg flex items-center justify-center"
+            className="flex-1 h-12 rounded-[4px] bg-primary-950 text-white text-[11px] uppercase tracking-[2px] font-medium hover:bg-black transition-all flex items-center justify-center border border-primary-950"
             aria-label="Quick Add"
           >
             Quick Add
@@ -123,14 +123,14 @@ export function ProductCard({
               e.preventDefault();
               if (onQuickView) onQuickView(product);
             }}
-            className="w-10 h-10 bg-white text-primary-950 border border-black/5 flex items-center justify-center rounded-sm hover:bg-primary-50 transition-all shadow-lg"
+            className="w-12 h-12 rounded-[4px] bg-white text-primary-950 border border-gold-200 flex items-center justify-center hover:bg-primary-50 transition-all"
             title="Quick View"
             aria-label="Quick View"
           >
-            <Eye size={16} />
+            <Eye size={16} strokeWidth={1.5} />
           </button>
         </div>
-        
+
         <AnimatePresence>
           {isAdded && (
             <motion.div
@@ -150,35 +150,55 @@ export function ProductCard({
         </AnimatePresence>
       </div>
 
-      <div className="flex flex-col flex-grow bg-white items-center text-center justify-between px-3 py-3.5 md:px-4 md:py-4 gap-1.5">
-        <div className="flex flex-col items-center w-full gap-1">
-          <div className="text-[8px] md:text-[9px] uppercase tracking-[2.5px] text-primary-950/40 font-semibold w-full whitespace-nowrap overflow-hidden text-ellipsis text-center">
+      <div className="flex flex-col flex-grow bg-white items-center text-center justify-between px-3 md:px-4 pb-4 md:pb-5 pt-4 rounded-b-[18px] md:rounded-b-[24px]">
+        <div className="flex flex-col items-center w-full">
+          <div className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-[#8C8276] font-medium w-full mb-1.5">
             {product.category}
           </div>
-          <h3 className="font-serif text-primary-950 font-medium tracking-wide group-hover:text-gold-600 transition-colors w-full text-center truncate text-[13px] md:text-[14px]">
-            <Link to={`/product/${product.slug}`} title={product.name}>{product.name}</Link>
+          <h3 className="font-serif text-[#2C241B] tracking-wide group-hover:text-gold-600 transition-colors w-full truncate text-[14px] md:text-[15px] leading-[1.35] font-medium px-1 mb-2.5">
+            <Link to={`/product/${product.slug}`} title={product.name}>
+              {product.name}
+            </Link>
           </h3>
-          <div className="flex items-center justify-center gap-1 opacity-90">
-            <div className="flex text-amber-500">
-              {[ ...Array(5)].map((_, i) => (
-                <Star key={i} className={`w-2.5 h-2.5 ${stats.rating >= i + 1 ? 'fill-current' : stats.rating >= i + 0.5 ? 'fill-current opacity-50' : 'text-gray-200'}`} />
+
+          {/* Rating Section */}
+          <div className="flex items-center justify-center gap-1.5 mb-3 w-full">
+            <div className="flex items-center gap-[2px]">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star
+                  key={i}
+                  className={`w-[10px] h-[10px] sm:w-[11px] sm:h-[11px] ${
+                    stats.rating >= i + 1
+                      ? "fill-[#F4B63D] text-[#F4B63D]"
+                      : stats.rating >= i + 0.5
+                        ? "fill-[#F4B63D] text-[#F4B63D] opacity-50"
+                        : "fill-[#E6DEC8] text-[#E6DEC8]"
+                  }`}
+                />
               ))}
             </div>
-            <span className="text-[9px] text-primary-950/40">({product.reviewsCount || stats.reviewCount})</span>
+            <span className="text-[11px] sm:text-[12px] text-[#9CA3AF] font-medium leading-none">
+              ({product.reviewsCount || stats.reviewCount})
+            </span>
           </div>
         </div>
-        
-        <div className="mt-auto pt-1 flex items-center justify-center gap-1.5 md:gap-2 flex-nowrap w-full overflow-hidden">
-          <span className="text-[14px] md:text-[15px] font-bold text-primary-950 font-price whitespace-nowrap">
+
+        <div className="mt-auto flex items-center justify-center gap-1.5 md:gap-2 w-full whitespace-nowrap overflow-hidden">
+          <span className="text-[14px] sm:text-[15px] md:text-[16px] font-bold text-[#2C241B] shrink-0">
             {formatPrice(product.price)}
           </span>
-          {product.originalPrice && (
+          {product.originalPrice && product.originalPrice > product.price && (
             <>
-              <span className="text-[10px] md:text-[11px] text-primary-900/40 line-through font-light font-price decoration-1 whitespace-nowrap flex-shrink-0">
+              <span className="text-[10px] sm:text-[11px] md:text-[12px] text-[#8C8276] line-through font-normal shrink-0">
                 {formatPrice(product.originalPrice)}
               </span>
-              <span className="font-sans font-bold tracking-[1.5px] text-[#8A6A4A] whitespace-nowrap flex-shrink-0 text-[8px] md:text-[9px] uppercase bg-[#FAF5F0] px-1.5 py-0.5 rounded-sm">
-                {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
+              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-medium text-[#2C241B] bg-[#F4F0EA] rounded-[4px] px-1.5 py-0.5 tracking-[0.05em] uppercase shrink-0">
+                {Math.round(
+                  ((product.originalPrice - product.price) /
+                    product.originalPrice) *
+                    100,
+                )}
+                % OFF
               </span>
             </>
           )}

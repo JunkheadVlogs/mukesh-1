@@ -18,7 +18,7 @@ interface SEOProps {
 export function SEO({
   title,
   description,
-  image = "https://mukeshsarees.com/images/og-banner.jpg",
+  image = "https://mukeshsarees.com/images/og-homepage.jpg",
   url = "https://mukeshsarees.com",
   type = "website",
   product,

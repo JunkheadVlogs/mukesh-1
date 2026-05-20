@@ -2,15 +2,24 @@ import { motion } from "motion/react";
 import { Link, useLocation } from "react-router";
 import { CheckCircle2 } from "lucide-react";
 import { SEO } from "./components/SEO";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { trackPurchase } from "./tracking";
 
 export default function ThankYou() {
   const location = useLocation();
   const orderId = location.state?.orderId || `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
+  const total = location.state?.total;
+  const cart = location.state?.cart;
+  const hasTracked = useRef(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    
+    if (total && cart && !hasTracked.current) {
+      trackPurchase(total, cart, orderId);
+      hasTracked.current = true;
+    }
+  }, [total, cart, orderId]);
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 min-h-[70vh] flex flex-col items-center justify-center text-center bg-primary-50 relative overflow-hidden">
