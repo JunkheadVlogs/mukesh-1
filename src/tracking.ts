@@ -6,8 +6,32 @@ const getCookie = (name: string): string | null => {
   return null;
 };
 
-// Cache to prevent duplicate ViewContent events on the same product page view
-const trackedViewContents = new Set<string>();
+const setCookie = (name: string, value: string, days: number) => {
+  if (typeof document === "undefined") return;
+  const d = new Date();
+  d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = "expires=" + d.toUTCString();
+  document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax;Secure`;
+};
+
+// Generates or retrieves a unique, high-entropy advertiser-side user ID (external_id)
+// matches browser and server events to dramatically raise Meta Event Match Quality (EMQ)
+export const getExternalId = (): string => {
+  if (typeof window === "undefined") return "";
+  let extId = localStorage.getItem('_msc_ext_id');
+  if (!extId) {
+    extId = getCookie('_msc_ext_id');
+    if (!extId) {
+      extId = 'msc_ext_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+    localStorage.setItem('_msc_ext_id', extId);
+  }
+  setCookie('_msc_ext_id', extId, 365);
+  return extId;
+};
+
+// Map of tracked ViewContent events with their timestamps to prevent reactive duplicate fires
+const trackedViewContentTimes = new Map<string, number>();
 
 if (typeof window !== "undefined") {
   // Safe helper to bootstrap Meta Pixel dynamically if not already initialized
@@ -33,14 +57,122 @@ if (typeof window !== "undefined") {
 
     const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384"; // Fallback to provided defaults if none configured
     if (pixelId) {
-      (window as any).fbq("init", pixelId);
-      (window as any).fbq("track", "PageView");
-      console.log(`[Pixel Tracker] Initialized on client with ID: ${pixelId}`);
+      const extId = getExternalId();
+      const initUserData: any = { external_id: extId };
+
+      // Enrich initial loading parameters with stored validated user details if present
+      try {
+        const info = localStorage.getItem('customer_checkout_info');
+        if (info) {
+          const stored = JSON.parse(info);
+          if (stored.email) initUserData.em = stored.email;
+          if (stored.phone) initUserData.ph = stored.phone;
+          if (stored.name) {
+            initUserData.fn = stored.name.split(' ')[0];
+            initUserData.ln = stored.name.split(' ').slice(1).join(' ');
+          }
+          if (stored.city) initUserData.ct = stored.city;
+          if (stored.zip) initUserData.zp = stored.zip;
+        }
+      } catch (e) {}
+
+      (window as any).fbq("init", pixelId, initUserData);
+      console.log(`[Pixel Tracker] Initialized on client with ID: ${pixelId} and matched user data`);
     }
   };
 
-  initMetaPixel();
+  // Defer initialization to avoid main thread blockage during startup
+  const delayInit = () => {
+    const run = () => {
+      if ((window as any)._fbq_initialized) return;
+      (window as any)._fbq_initialized = true;
+      initMetaPixel();
+    };
+
+    // Fallback if no activity is detected within a reasonable timeframe (lab audits)
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => setTimeout(run, 1500));
+    } else {
+      setTimeout(run, 2000);
+    }
+
+    // Trigger on first human interaction
+    const triggerEvents = ["mousedown", "keypress", "touchstart", "scroll"];
+    const triggerLoader = () => {
+      run();
+      triggerEvents.forEach((ev) => window.removeEventListener(ev, triggerLoader));
+    };
+    triggerEvents.forEach((ev) => window.addEventListener(ev, triggerLoader, { passive: true }));
+  };
+
+  delayInit();
 }
+
+// Dynamically updates Meta Pixel user properties matching the active session
+export const updateTrackerUserData = (userData: { email?: string; phone?: string; name?: string; city?: string; zip?: string }) => {
+  if (typeof window !== "undefined") {
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384";
+    if (pixelId && (window as any).fbq) {
+      const extId = getExternalId();
+      const pixelUserData: any = { external_id: extId };
+      if (userData.email) pixelUserData.em = userData.email;
+      if (userData.phone) pixelUserData.ph = userData.phone;
+      if (userData.name) {
+        pixelUserData.fn = userData.name.split(' ')[0];
+        pixelUserData.ln = userData.name.split(' ').slice(1).join(' ');
+      }
+      if (userData.city) pixelUserData.ct = userData.city;
+      if (userData.zip) pixelUserData.zp = userData.zip;
+
+      (window as any).fbq("init", pixelId, pixelUserData);
+      console.log("[Pixel Tracker] User properties updated dynamically.");
+    }
+  }
+};
+
+// Dynamic deduplicated PageView tracking on SPA transitions
+export const trackPageView = (path: string) => {
+  if (typeof window !== "undefined") {
+    const eventId = `pv_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
+    const extId = getExternalId();
+
+    // Fetch stored user data for PageView tracking
+    let storedUserData: any = {};
+    try {
+      const info = localStorage.getItem('customer_checkout_info');
+      if (info) storedUserData = JSON.parse(info);
+    } catch (e) {}
+
+    // Server-Side Conversions API PageView Trigger
+    fetch("/api/meta-capi", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event_name: "PageView",
+        event_id: eventId,
+        event_source_url: window.location.origin + path,
+        user_data: {
+          fbp,
+          fbc,
+          external_id: extId,
+          em: storedUserData.email || undefined,
+          ph: storedUserData.phone || undefined,
+          fn: storedUserData.name ? storedUserData.name.split(' ')[0] : undefined,
+          ln: storedUserData.name ? storedUserData.name.split(' ').slice(1).join(' ') : undefined,
+          ct: storedUserData.city || undefined,
+          zp: storedUserData.zip || undefined
+        }
+      })
+    }).catch(err => console.error("[CAPI PageView Error]", err));
+
+    // Browser Multi-Channel Meta Pixel trigger
+    if ((window as any).fbq) {
+      (window as any).fbq('track', 'PageView', {}, { eventID: eventId });
+    }
+  }
+};
 
 export const trackWhatsAppClick = () => {
   if (typeof window !== "undefined") {
@@ -62,12 +194,14 @@ export const trackViewContent = (product: any) => {
   if (typeof window !== "undefined") {
     const pId = product.sku || product.id || product.slug;
     
-    // Prevent duplicated ViewContent firing on re-renders, fulfilling Task #2
-    if (trackedViewContents.has(pId)) {
-      console.log(`[Pixel] ViewContent for product ${product.name} already tracked, skipping duplicate.`);
+    // Prevent duplicated ViewContent firing on re-renders, while preserving correct tracking on subsequent visits
+    const now = Date.now();
+    const lastTrackedTime = trackedViewContentTimes.get(pId) || 0;
+    if (now - lastTrackedTime < 5000) {
+      console.log(`[Pixel] ViewContent for product ${product.name} already tracked within last 5 seconds, skipping duplicate.`);
       return;
     }
-    trackedViewContents.add(pId);
+    trackedViewContentTimes.set(pId, now);
 
     // Identical event_id for browser and server (Task #3 & #4)
     const eventId = `vc_${pId}_${Date.now()}`;
@@ -75,6 +209,7 @@ export const trackViewContent = (product: any) => {
 
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
+    const extId = getExternalId();
 
     // Server CAPI Post (Task #8)
     fetch("/api/meta-capi", {
@@ -91,7 +226,7 @@ export const trackViewContent = (product: any) => {
         contents: [{ id: pId, quantity: 1 }],
         num_items: 1,
         event_source_url: window.location.href,
-        user_data: { fbp, fbc }
+        user_data: { fbp, fbc, external_id: extId }
       })
     }).catch(err => console.error("[CAPI ViewContent Error]", err));
 
@@ -149,6 +284,7 @@ export const trackAddToCart = (product: any, quantity: number = 1) => {
 
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
+    const extId = getExternalId();
 
     // Server CAPI Post (Task #8)
     fetch("/api/meta-capi", {
@@ -165,7 +301,7 @@ export const trackAddToCart = (product: any, quantity: number = 1) => {
         contents: [{ id: pId, quantity: quantity }],
         num_items: quantity,
         event_source_url: window.location.href,
-        user_data: { fbp, fbc }
+        user_data: { fbp, fbc, external_id: extId }
       })
     }).catch(err => console.error("[CAPI AddToCart Error]", err));
 
@@ -222,6 +358,7 @@ export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
 
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
+    const extId = getExternalId();
 
     // Retrieve local stored client info to upgrade Event Match Quality (Task #9)
     let storedUserData: any = {};
@@ -248,6 +385,7 @@ export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
         user_data: {
           fbp,
           fbc,
+          external_id: extId,
           em: storedUserData.email || undefined,
           ph: storedUserData.phone || undefined,
           fn: storedUserData.name ? storedUserData.name.split(' ')[0] : undefined,
@@ -318,6 +456,7 @@ export const trackPurchase = (totalValue: number, items: any[], transactionId: s
 
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
+    const extId = getExternalId();
 
     let storedUserData: any = {};
     try {
@@ -343,6 +482,7 @@ export const trackPurchase = (totalValue: number, items: any[], transactionId: s
         user_data: {
           fbp,
           fbc,
+          external_id: extId,
           em: storedUserData.email || undefined,
           ph: storedUserData.phone || undefined,
           fn: storedUserData.name ? storedUserData.name.split(' ')[0] : undefined,

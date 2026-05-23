@@ -3,10 +3,10 @@ const BASE_URL = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_UR
 
 export const CONFIG = {
   API_BASE_URL: import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || BASE_URL || '',
-  STORE_NAME: 'Mukesh Saree Centre',
-  STORE_EMAIL: 'Info.mukeshsarees.com',
-  STORE_PHONE: '+91 7020664641',
-  STORE_ADDRESS: 'Jaganth Road, Gandibagh, Nagpur 440002',
+  STORE_NAME: import.meta.env.VITE_SITE_NAME || 'Mukesh Saree Centre',
+  STORE_EMAIL: import.meta.env.VITE_STORE_EMAIL || 'info.mukeshsareecentre@gmail.com',
+  STORE_PHONE: import.meta.env.VITE_STORE_PHONE || '+91 7020664641',
+  STORE_ADDRESS: import.meta.env.VITE_STORE_ADDRESS || 'Jagnath Road, Gandhibagh, Nagpur 440002',
   RAZORPAY_KEY_ID: import.meta.env.VITE_RAZORPAY_KEY_ID, // STRICTLY KEY_ID NO SECRET
 };
 
@@ -30,7 +30,7 @@ export async function submitToGoogleSheets(data: any) {
     
     // Direct Fallback to Google Apps Script bypassing Node backend entirely
     try {
-      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
+      const GOOGLE_SCRIPT_URL = import.meta.env.VITE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",

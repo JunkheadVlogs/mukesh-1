@@ -8,7 +8,8 @@ async function test() {
     console.log('Status Text:', res.statusText);
     const text = await res.text();
     console.log('Body length:', text.length);
-    console.log('Starts with:', text.substring(0, 100));
+    console.log('Full response body:');
+    console.log(text);
   } catch (e) {
     console.error('Error:', e);
   }

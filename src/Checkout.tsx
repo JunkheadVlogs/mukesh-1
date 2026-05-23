@@ -15,7 +15,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { CONFIG, submitToGoogleSheets } from "./config";
-import { trackInitiateCheckout } from "./tracking";
+import { trackInitiateCheckout, updateTrackerUserData } from "./tracking";
 
 const loadRazorpay = () => {
   return new Promise((resolve) => {
@@ -38,6 +38,7 @@ export default function Checkout() {
   const [couponError, setCouponError] = useState("");
   const [pinCode, setPinCode] = useState("");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState("");
   const isOrderSubmitted = useRef(false);
 
   useEffect(() => {
@@ -107,7 +108,10 @@ export default function Checkout() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmitting || isOrderSubmitted.current) return;
+    
     setIsSubmitting(true);
+    setSubmitError("");
 
     try {
       const formData = new FormData(e.currentTarget);
@@ -158,6 +162,14 @@ export default function Checkout() {
           city: city,
           zip: zipCode
         }));
+        // Update browser Pixel matching metadata dynamically
+        updateTrackerUserData({
+          email: email || "",
+          phone: mobileNumber,
+          name: fullName,
+          city: city,
+          zip: zipCode
+        });
       } catch (err) {
         console.warn("Could not save customer info:", err);
       }
@@ -199,50 +211,46 @@ export default function Checkout() {
             timestamp: istTime,
           };
 
-          const result = await submitToGoogleSheets(googleSheetsData);
+          // Race with 1600ms timeout so customers on slow mobile networks are not left waiting
+          const submitPromise = submitToGoogleSheets(googleSheetsData);
+          const timeoutPromise = new Promise((resolve) => setTimeout(() => resolve({ status: "timeout" }), 1600));
+
+          await Promise.race([submitPromise, timeoutPromise]).catch((err) => {
+            console.warn("Google Sheet submission errored, passing to next step:", err);
+          });
 
           if (isSuccessState) {
-            // Assume success if no exception was thrown by submitToGoogleSheets
-            if (
-              result &&
-              (result.status === "success" ||
-                result.result === "success" ||
-                result.status === 200 ||
-                !result.status)
-            ) {
-              alert("Order Placed Successfully!");
-              isOrderSubmitted.current = true;
-              const cartData = [...cart];
-              clearCart();
+            isOrderSubmitted.current = true;
+            const cartData = [...cart];
+            clearCart();
+            // Provide a small delay for premium feels of the "Processing" transition
+            setTimeout(() => {
               navigate("/thank-you", {
                 state: { orderId: newOrderId, total, cart: cartData },
                 replace: true,
               });
-            } else {
-              // Usually the proxy adds `status: 'success'` or the sheet sets it. If not, it's safer to just proceed if no HTTP error
-              alert("Order Placed Successfully!");
-              isOrderSubmitted.current = true;
-              const cartData = [...cart];
-              clearCart();
-              navigate("/thank-you", {
-                state: { orderId: newOrderId, total, cart: cartData },
-                replace: true,
-              });
-            }
+            }, 400);
           }
         } catch (error: any) {
           console.error("Submission error:", error);
           if (isSuccessState) {
             setIsSubmitting(false);
-            setTimeout(() => {
-              alert("Unable to place your order right now. Please try again.");
-            }, 10);
+            setSubmitError("Unable to register your order. Please check your internet connection and try again.");
           }
         }
       };
 
       if (paymentMethod === "online") {
         try {
+          // Dynamic script loading to ensure checkout.js exists before execution
+          if (!(window as any).Razorpay) {
+            console.log("[RAZORPAY] Script not loaded. Attempting dynamic script loading...");
+            const loaded = await loadRazorpay();
+            if (!loaded || !(window as any).Razorpay) {
+              throw new Error("Razorpay SDK failed to load. Please check your network connection and try again.");
+            }
+          }
+
           const reqBody = { amount: total };
           const response = await fetch(
             `${CONFIG.API_BASE_URL}/api/create-order`,
@@ -269,7 +277,11 @@ export default function Checkout() {
           // Save order to sheets as Pending BEFORE opening payment gateway
           finalizeOrder(false, "Payment Pending", "N/A").catch(console.error);
 
+          // Priority 1: Use the key returned directly from the backend to ensure a perfect merchant key match
+          // Priority 2: Use client-side environment variable
+          // Priority 3: Fallback live key
           let rzpKey = (
+            data.key ||
             import.meta.env.VITE_RAZORPAY_KEY_ID ||
             import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
             CONFIG.RAZORPAY_KEY_ID ||
@@ -295,14 +307,39 @@ export default function Checkout() {
             },
             handler: async function (paymentResponse: any) {
               try {
-                // Submit to google sheets after successful payment
+                // Verify payment signature on the backend for extra security & verification as requested
+                const verifyResponse = await fetch(
+                  `${CONFIG.API_BASE_URL}/api/verify-payment`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      razorpay_order_id: paymentResponse.razorpay_order_id,
+                      razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                      razorpay_signature: paymentResponse.razorpay_signature,
+                    }),
+                  }
+                );
+
+                if (!verifyResponse.ok) {
+                  const verifyErr = await verifyResponse.json().catch(() => ({}));
+                  throw new Error(verifyErr.error || "Payment signature verification failed");
+                }
+
+                const verifyData = await verifyResponse.json();
+                if (!verifyData.success) {
+                  throw new Error(verifyData.error || "Verification failed");
+                }
+
+                // Submit to google sheets after successful payment and signature verification
                 const rzpId = paymentResponse.razorpay_payment_id || "Success";
                 await finalizeOrder(true, "Paid Online", rzpId);
-              } catch (e) {
-                console.error(e);
-                alert(
-                  "Payment successful but there was an error recording your order. Please contact support.",
-                );
+              } catch (e: any) {
+                console.error("[RAZORPAY VERIFICATION ERROR]:", e);
+                setSubmitError(`Payment completed, but verification failed: ${e.message || "Please contact customer support with your payment ID."}`);
+                setIsSubmitting(false);
               }
             },
           };
@@ -311,7 +348,7 @@ export default function Checkout() {
           rzp.open();
         } catch (error: any) {
           console.error("Payment Error:", error);
-          alert("Unable to initiate payment right now. Please try again.");
+          setSubmitError(error.message || "Unable to initiate online payment right now. Please select Cash on Delivery or refer to customer support.");
           setIsSubmitting(false);
         }
       } else {
@@ -320,9 +357,7 @@ export default function Checkout() {
     } catch (err: any) {
       console.error("Checkout unhandled error:", err);
       setIsSubmitting(false);
-      setTimeout(() => {
-        alert("Unable to place your order right now. Please try again.");
-      }, 10);
+      setSubmitError("Unable to place your Cash on Delivery order right now. Please try again.");
     }
   };
 
@@ -629,6 +664,11 @@ export default function Checkout() {
               </section>
 
               <div className="sticky bottom-0 md:static z-20 px-3.5 py-2 md:py-0 md:px-0 -mx-3.5 md:mx-0 bg-primary-50/95 backdrop-blur-md border-t border-black/5 md:border-t-0 md:backdrop-blur-none md:bg-transparent shadow-[0_-8px_20px_rgba(0,0,0,0.03)] md:shadow-none">
+                {submitError && (
+                  <div className="mb-2.5 p-3 sm:p-4 bg-red-50 border border-red-200/50 text-red-700 text-[11px] sm:text-xs rounded-sm font-medium leading-relaxed shadow-sm">
+                    ⚠️ {submitError}
+                  </div>
+                )}
                 <button
                   type="submit"
                   disabled={isSubmitting}

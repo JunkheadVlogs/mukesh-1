@@ -68,7 +68,8 @@ const apiRouter = express.Router();
 // ==== google sheets submission proxy ====
 apiRouter.post("/submit-order", async (req, res) => {
   try {
-    const urlStr = 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
+    const rawUrl = process.env.VITE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
+    const urlStr = rawUrl.trim().replace(/^['"]|['"]$/g, '');
     console.log(`[PROXY] Submitting order to Google Sheets... (${req.body.orderId || 'no-id'})`);
     
     const postData = JSON.stringify(req.body);
@@ -140,8 +141,8 @@ apiRouter.post("/submit-order", async (req, res) => {
 // ==== razorpay order creation ====
 apiRouter.post('/create-order', async (req, res) => {
   try {
- // Always initialize with latest process.env in case it was updated
-    let currentKeyId = (process.env.RAZORPAY_KEY_ID || "").trim();
+    // Always initialize with latest process.env in case it was updated
+    let currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "").trim();
     let currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "").trim();
     
     // Fallback to the working keys from test-rzp-again.js if current ones are empty or the known broken ones
@@ -167,7 +168,12 @@ apiRouter.post('/create-order', async (req, res) => {
     };
 
     const order = await rzp.orders.create(options);
-    res.json(order);
+    
+    // Return key back to prevent client/server key mismatch
+    res.json({
+      ...order,
+      key: currentKeyId
+    });
   } catch (err) {
     console.error("[RAZORPAY] Create Order Error:", err);
     const errorMessage = err?.error?.description || err?.message || "Failed to create order";
@@ -184,8 +190,10 @@ apiRouter.post("/verify-payment", (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     
+    let currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "").trim();
     let currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "").trim();
-    if (!currentKeySecret || currentKeySecret === 'DA0NuRhgI39Ng8GNtc0X97h0') {
+    
+    if (!currentKeySecret || !currentKeyId || currentKeyId === 'rzp_live_Slf11Odg572QOq') {
       currentKeySecret = "z245tbFDtCZmJ7Wztx2XSHrG";
     }
 
@@ -234,13 +242,13 @@ apiRouter.post("/meta-capi", async (req, res) => {
     };
 
     const providedUserData = clientUserData || {};
-    const userDataObj = {
+    const userDataObj: any = {
       client_ip_address: clientIpAddress,
       client_user_agent: clientUserAgent,
     };
 
     // Add cookie identifiers if available in cookies or payload
-    const parsedCookies = {};
+    const parsedCookies: any = {};
     if (req.headers.cookie) {
       req.headers.cookie.split(';').forEach(cookie => {
         const parts = cookie.split('=');
@@ -251,10 +259,29 @@ apiRouter.post("/meta-capi", async (req, res) => {
     }
 
     const finalFbp = providedUserData.fbp || parsedCookies['_fbp'] || null;
-    const finalFbc = providedUserData.fbc || parsedCookies['_fbc'] || null;
+    let finalFbc = providedUserData.fbc || parsedCookies['_fbc'] || null;
+
+    // Rescue FB Click ID (fbclid) query parameters from URL to boost match accuracy if cookie is missing
+    if (!finalFbc && event_source_url) {
+      try {
+        const parsedUrl = new URL(event_source_url);
+        const fbclid = parsedUrl.searchParams.get('fbclid');
+        if (fbclid) {
+          finalFbc = `fb.1.${Date.now()}.${fbclid}`;
+        }
+      } catch (e) {
+        // Ignore URL parsing errors
+      }
+    }
 
     if (finalFbp) userDataObj.fbp = finalFbp;
     if (finalFbc) userDataObj.fbc = finalFbc;
+
+    // Handle high-value customer stitch parameters (external_id)
+    if (providedUserData.external_id) {
+      const extIdHash = helperHash(providedUserData.external_id);
+      if (extIdHash) userDataObj.external_id = [extIdHash];
+    }
 
     // Standardize hashing for multiple fields to optimize match quality
     if (providedUserData.em) {
@@ -648,7 +675,21 @@ async function setupServer() {
     const distPath = path.join(process.cwd(), 'dist');
     const indexPath = path.join(distPath, 'index.html');
     
-    app.use(express.static(distPath, { index: false }));
+    app.use(express.static(distPath, { 
+      index: false,
+      maxAge: '7d', // Default fallback cache of 7 days for normal static files
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.html')) {
+          res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        } else if (filePath.match(/\.(js|css|woff|woff2|ttf|otf)$/)) {
+          // Content-hashed bundle assets are safe to cache forever immutably
+          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        } else if (filePath.match(/\.(png|jpg|jpeg|gif|svg|webp|ico)$/)) {
+          // General image resources
+          res.setHeader('Cache-Control', 'public, max-age=2592000, stale-while-revalidate=86400');
+        }
+      }
+    }));
     
     app.get('*', (req, res) => {
       // Prevent returning HTML for missing assets

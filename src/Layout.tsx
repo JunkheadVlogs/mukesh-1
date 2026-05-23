@@ -29,6 +29,7 @@ import { formatPrice, getImageAlt } from "./utils";
 import { searchProducts } from "./services/search";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { LiveTimestamp } from "./components/LiveTimestamp";
+import { trackPageView } from "./tracking";
 
 export default function Layout() {
   const { cart } = useStore();
@@ -61,7 +62,7 @@ export default function Layout() {
     null,
   );
   const [subscribeStatus, setSubscribeStatus] = useState<
-    "idle" | "success" | "error"
+    "idle" | "submitting" | "success" | "error"
   >("idle");
   const [subscribeMessage, setSubscribeMessage] = useState("");
   const lastScrollY = useRef(0);
@@ -83,18 +84,27 @@ export default function Layout() {
     setOpenFooterAccordion((prev) => (prev === section ? null : section));
   };
 
-  const handleNewsletterSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleNewsletterSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const email = (formData.get("email") as string || "").trim();
-    if (!email || !email.includes("@")) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
       setSubscribeStatus("error");
       setSubscribeMessage("Please enter a valid email address.");
       return;
     }
+    
+    setSubscribeStatus("submitting");
+    setSubscribeMessage("");
+
+    // Simulate network submission delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     setSubscribeStatus("success");
     setSubscribeMessage("Welcome to the Mukesh Saree Centre family!");
-    e.currentTarget.reset();
+    form.reset();
   };
 
   useEffect(() => {
@@ -192,6 +202,9 @@ export default function Layout() {
     const params = new URLSearchParams(location.search);
     const qValue = params.get("q") || params.get("search") || "";
     setSearchQuery(qValue);
+
+    // Track dynamic PageView for dynamic SPA transitions
+    trackPageView(location.pathname + location.search);
   }, [location.pathname, location.search]);
 
   const scrollToTop = () => {
@@ -232,10 +245,10 @@ export default function Layout() {
 
   const headerStyle = {
     background: isTransparent
-      ? "linear-gradient(to bottom, rgba(16, 8, 0, 0.45) 0%, rgba(16, 8, 0, 0.15) 60%, rgba(16, 8, 0, 0) 100%)"
+      ? "transparent"
       : "rgba(250, 246, 240, 0.95)",
-    backdropFilter: isTransparent ? "blur(4px)" : "blur(16px)",
-    WebkitBackdropFilter: isTransparent ? "blur(4px)" : "blur(16px)",
+    backdropFilter: isTransparent ? "none" : "blur(16px)",
+    WebkitBackdropFilter: isTransparent ? "none" : "blur(16px)",
     boxShadow: isTransparent ? "none" : "0 4px 20px rgba(0,0,0,0.05)",
   };
 
@@ -547,7 +560,7 @@ export default function Layout() {
 
       {/* Navigation */}
       <header
-        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-500 will-change-transform transform-gpu ${
+        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ease-in-out will-change-transform transform-gpu ${
           isHidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
         } ${!isTransparent && isScrolled ? "border-b border-[#2B2B2B]/5" : "border-b-0"} h-[85px] md:h-[95px] flex flex-col`}
         style={headerStyle}
@@ -648,7 +661,7 @@ export default function Layout() {
               className="flex items-center justify-center group transition-all duration-500 transform m-0 p-0"
             >
               <img
-                src="https://drive.google.com/thumbnail?id=1rXEc_ve9qXelBQakWWVGcm4ffvbGF4yT&sz=w1000"
+                src="/images/logo.webp"
                 alt="Mukesh Saree Centre Logo"
                 style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
                 className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain transition-all duration-500 group-hover:opacity-80 drop-shadow-sm m-0 p-0 block header-logo"
@@ -957,15 +970,19 @@ export default function Layout() {
                 <input
                   type="email"
                   name="email"
-                  placeholder="ENTER YOUR EMAIL"
+                  placeholder="Enter Your Email"
+                  defaultValue=""
+                  autoComplete="off"
                   required
-                  className="flex-grow bg-[#FAF8F5] border border-[#2b2b2b]/20 px-4 py-3 text-xs tracking-widest text-[#2b2b2b] placeholder-[#2b2b2b]/40 focus:outline-none focus:border-[#C8A96B] transition-colors"
+                  disabled={subscribeStatus === "submitting"}
+                  className="flex-grow bg-[#FAF8F5] border border-[#2b2b2b]/20 px-4 py-3 text-xs tracking-widest text-[#2b2b2b] placeholder-[#2b2b2b]/40 focus:outline-none focus:border-[#C8A96B] transition-colors disabled:opacity-60"
                 />
                 <button
                   type="submit"
-                  className="bg-[#2b2b2b] hover:bg-[#C8A96B] text-white hover:text-[#2b2b2b] transition-all duration-300 font-medium px-8 py-3 text-xs tracking-widest uppercase flex-shrink-0"
+                  disabled={subscribeStatus === "submitting"}
+                  className="bg-[#2b2b2b] hover:bg-[#C8A96B] text-white hover:text-[#2b2b2b] transition-all duration-300 font-medium px-8 py-3 text-xs tracking-widest uppercase flex-shrink-0 disabled:bg-[#2b2b2b]/60 disabled:cursor-not-allowed disabled:text-white"
                 >
-                  Subscribe
+                  {subscribeStatus === "submitting" ? "Submitting..." : "Subscribe"}
                 </button>
               </form>
               {subscribeStatus === "success" && (

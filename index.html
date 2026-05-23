@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_ID%"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '%VITE_GA4_ID%');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Mukesh Saree Centre — Buy Sarees, Lehengas & Ethnic Wear Online | Since 1978, Nagpur</title>
@@ -12,7 +21,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Mukesh Saree Centre — Premium Indian Ethnic Wear Since 1978">
     <meta property="og:description" content="Authentic sarees, lehengas & suits from Nagpur. COD available. Free shipping ₹999+. Trusted since 1978.">
-    <meta property="og:image" content="https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me">
+    <meta property="og:image" content="/images/hero_exhibition.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://mukeshsarees.com">
@@ -21,19 +30,17 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Mukesh Saree Centre — Premium Ethnic Wear">
     <meta name="twitter:description" content="Authentic sarees, lehengas & suits. COD available. Free shipping above ₹999.">
-    <meta name="twitter:image" content="https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me">
+    <meta name="twitter:image" content="/images/hero_exhibition.webp">
     <!-- End Default OG Tags -->
-    <meta name="facebook-domain-verification" content="3rvp08d3i9ly47zapd0c4v0gzolavc">
-    <meta name="p:domain_verify" content="5099ed06768c1b801e53b45489b5bf2d">
+    <meta name="facebook-domain-verification" content="%VITE_FB_DOMAIN_VERIFY%">
+    <meta name="p:domain_verify" content="%VITE_PINTEREST_DOMAIN%">
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://drive.google.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
-    <link rel="dns-prefetch" href="https://drive.google.com" />
     <link rel="dns-prefetch" href="https://wsrv.nl" />
-    <link rel="preload" as="image" href="https://wsrv.nl/?url=https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1600&output=webp" type="image/webp" fetchpriority="high" imagesrcset="https://wsrv.nl/?url=https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me&w=400&output=webp 400w, https://wsrv.nl/?url=https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me&w=800&output=webp 800w, https://wsrv.nl/?url=https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&output=webp 1200w" imagesizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+    <link rel="preload" as="image" href="/images/hero_exhibition.webp" type="image/webp" fetchpriority="high" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -49,7 +56,7 @@
         "addressRegion": "Maharashtra",
         "addressCountry": "IN"
       },
-      "telephone": "+917020664641",
+      "telephone": "%VITE_STORE_PHONE%",
       "sameAs": ["https://www.facebook.com/Mukeshsareesindia"]
     }
     </script>
@@ -64,26 +71,17 @@
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NBT7QTN2"
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=%VITE_GTM_ID%"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
-    <!-- Google Analytics 4 (GA4) -->
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script defer>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-XXXXXXXXXX');
-    </script>
 
     <!-- Google Tag Manager -->
     <script defer>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.defer=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NBT7QTN2');</script>
+    })(window,document,'script','dataLayer','%VITE_GTM_ID%');</script>
     
     <script type="module" src="/src/main.tsx"></script>
   </body>

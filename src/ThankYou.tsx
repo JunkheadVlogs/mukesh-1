@@ -97,7 +97,7 @@ export default function ThankYou() {
            Continue Shopping
          </Link>
          <a 
-           href="https://wa.me/917020664641" 
+           href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '917020664641'}`} 
            target="_blank" 
            rel="noopener noreferrer" 
            className="flex items-center justify-center gap-2 text-green-600 hover:text-green-700 font-medium text-sm transition-colors py-2"

@@ -4,6 +4,7 @@ import { ProductCard } from "./components/ProductCard";
 import { ProductCardSkeleton } from "./components/ProductCardSkeleton";
 import { SEO } from "./components/SEO";
 import { LookReelCard } from "./components/LookReelCard";
+import { CONFIG } from "./config";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import {
   ArrowRight,
@@ -88,15 +89,23 @@ const LOOK_REELS = [
 
 export default function Home() {
   const mainProducts = products.filter((p) => !p.isVariant);
-  const trendingProducts = mainProducts.filter((p) => p.isTrending).slice(0, 4);
+  const trendingProductsList = mainProducts.filter((p) => p.isTrending);
+  const trendingProducts =
+    trendingProductsList.length >= 8
+      ? trendingProductsList.slice(0, 8)
+      : [
+          ...trendingProductsList,
+          ...mainProducts.filter((p) => !p.isTrending),
+        ].slice(0, 8);
+
   const trendingIds = new Set(trendingProducts.map((p) => p.id));
   const newArrivalsProductsList = [...mainProducts]
     .reverse()
     .filter((p) => p.isNew && !trendingIds.has(p.id));
-  // If there are less than 4 new arrivals, fill with other non-trending products to make sure we show 4
+  // If there are less than 8 new arrivals, fill with other non-trending products to make sure we show 8
   const newArrivals =
-    newArrivalsProductsList.length >= 4
-      ? newArrivalsProductsList.slice(0, 4)
+    newArrivalsProductsList.length >= 8
+      ? newArrivalsProductsList.slice(0, 8)
       : [
           ...newArrivalsProductsList,
           ...mainProducts.filter(
@@ -104,7 +113,7 @@ export default function Home() {
               !trendingIds.has(p.id) &&
               !newArrivalsProductsList.find((n) => n.id === p.id),
           ),
-        ].slice(0, 4);
+        ].slice(0, 8);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -135,7 +144,19 @@ export default function Home() {
 
   const visibleIndices = LOOK_REELS.map((reel, index) => visibleReelIds[reel.id] ? index : -1).filter((idx) => idx !== -1);
 
+  const reelsScrollTick = useRef<boolean>(false);
+
   const handleReelsScroll = () => {
+    if (!reelsScrollTick.current) {
+      window.requestAnimationFrame(() => {
+        performReelsScrollCalculation();
+        reelsScrollTick.current = false;
+      });
+      reelsScrollTick.current = true;
+    }
+  };
+
+  const performReelsScrollCalculation = () => {
     if (reelsScrollRef.current) {
       const container = reelsScrollRef.current;
       const { scrollLeft, scrollWidth, clientWidth } = container;
@@ -187,19 +208,19 @@ export default function Home() {
 
   const shopImages = [
     {
-      url: "https://lh3.googleusercontent.com/d/1IFI6HR5__1CmmWFj2SOU9dRZkJL3oSRU",
+      url: "/images/main_shop_entrance.webp",
       label: "Main Shop Entrance",
     },
     {
-      url: "https://lh3.googleusercontent.com/d/1BkjTW2c9Lp0KUQH337w7boQtrXmrnHDl",
+      url: "/images/billing_counter.webp",
       label: "Billing Counter",
     },
     {
-      url: "https://lh3.googleusercontent.com/d/1ANZwb_MyHYzwJE8otCzY2DiwvkU_N7T4",
+      url: "/images/saree_section.webp",
       label: "Saree Section",
     },
     {
-      url: "https://lh3.googleusercontent.com/d/1gjPnofLFUOXMAbD4gowCAi_3ie36HJmp",
+      url: "/images/lehenga_section.webp",
       label: "Lehenga Section",
     },
   ];
@@ -231,7 +252,7 @@ export default function Home() {
           "@type": "ClothingStore",
           name: "Mukesh Saree Centre",
           url: "https://mukeshsarees.com",
-          logo: "https://drive.google.com/thumbnail?id=1rXEc_ve9qXelBQakWWVGcm4ffvbGF4yT&sz=w1000",
+          logo: "https://mukeshsarees.com/images/logo.webp",
           foundingDate: "1978",
           address: {
             "@type": "PostalAddress",
@@ -240,7 +261,7 @@ export default function Home() {
             addressRegion: "Maharashtra",
             addressCountry: "IN",
           },
-          telephone: "+917020664641",
+          telephone: CONFIG.STORE_PHONE,
           sameAs: [
             "https://www.facebook.com/Mukeshsareesindia/",
             "https://www.instagram.com/mukeshsarees_nagpur",
@@ -257,12 +278,12 @@ export default function Home() {
           style={{ y: heroImageY }}
         >
           <OptimizedImage
-            src="https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me"
+            src="/images/hero_exhibition.webp"
             width={1600}
             height={1000}
             alt="Hero Exhibition"
             priority={true}
-            className="w-full h-full object-cover object-[center_top] md:object-[center_top] opacity-95 transition-opacity duration-700"
+            className="w-full h-full object-cover object-[72%_bottom] md:object-bottom opacity-100 transition-opacity duration-700"
           />
         </motion.div>
 
@@ -271,33 +292,33 @@ export default function Home() {
           className="absolute inset-0 z-0 pointer-events-none"
           style={{
             background:
-              "linear-gradient(to top, rgba(16,8,0,0.9) 0%, rgba(16,8,0,0.5) 30%, rgba(16,8,0,0.1) 60%, transparent 100%)",
+              "linear-gradient(to right, rgba(16,8,0,0.22) 0%, rgba(16,8,0,0.06) 45%, transparent 80%), linear-gradient(to top, rgba(16,8,0,0.12) 0%, transparent 30%)",
           }}
         />
 
         <motion.div
-          className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-end items-center sm:items-start h-full pb-20 md:pb-32"
+          className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-start items-start h-full pt-[105px] xs:pt-[115px] sm:pt-36 md:pt-40 lg:pt-44 pb-12"
           style={{ opacity: heroTextOpacity, y: heroTextY }}
         >
-          <div className="max-w-[320px] sm:max-w-md md:max-w-xl text-center sm:text-left mb-4 md:mb-8 mx-auto sm:mx-0">
+          <div className="max-w-[160px] xs:max-w-[185px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[500px] text-left mb-4 md:mb-8">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-[34px] sm:text-[44px] md:text-[56px] lg:text-[72px] font-serif mb-3 md:mb-4 leading-[1.1] font-normal tracking-widest uppercase"
+              className="text-[17px] xs:text-[19px] sm:text-[30px] md:text-[38px] lg:text-[45px] font-serif mb-3 md:mb-4 leading-[1.3] sm:leading-[1.2] font-normal tracking-[0.14em] sm:tracking-[0.12em] uppercase"
               style={{
                 textShadow: "0 2px 20px rgba(0,0,0,0.6)",
                 color: "#FFFDF8",
               }}
             >
-              Explore Our Premium Sarees
+              Explore Our <br className="block sm:hidden" />Premium Sarees
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-[11px] sm:text-[13px] md:text-[15px] leading-[1.8] mb-8 md:mb-12 max-w-[200px] md:max-w-[340px] font-sans font-light tracking-[0.1em] uppercase opacity-90 mx-auto sm:mx-0"
+              className="text-[9.5px] xs:text-[10px] sm:text-[13px] md:text-[15px] leading-[1.8] mb-10 md:mb-12 max-w-[150px] xs:max-w-[175px] sm:max-w-[300px] md:max-w-[360px] lg:max-w-[420px] font-sans font-light tracking-[0.12em] uppercase opacity-90"
               style={{
                 textShadow: "0 2px 10px rgba(0,0,0,0.5)",
                 color: "#F5EFE6",
@@ -310,11 +331,11 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="flex justify-center sm:justify-start"
+              className="flex justify-start"
             >
               <Link
                 to="/shop"
-                className="btn-hero-white w-[180px] md:w-[220px] tracking-[0.2em] text-[10px] md:text-[11px]"
+                className="btn-hero-white w-[145px] xs:w-[160px] sm:w-[220px] tracking-[0.2em] text-[9.5px] md:text-[11px]"
               >
                 SHOP NOW
               </Link>
@@ -366,11 +387,11 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
             <Link
               to="/shop?category=Co-Ord Sets"
-              className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-none"
+              className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-2xl"
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="https://drive.google.com/thumbnail?id=1_PdNfAScYuOrr_cA0e6TZQdAlSCvzZ8M&sz=w800"
+                  src="/images/category_coord_sets.webp"
                   width={800}
                   alt="Co-Ord Sets"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
@@ -398,11 +419,11 @@ export default function Home() {
 
             <Link
               to="/shop?category=Sarees"
-              className="lg:col-span-5 xl:col-span-4 relative h-[450px] md:h-[550px] overflow-hidden group rounded-none"
+              className="lg:col-span-5 xl:col-span-4 relative h-[450px] md:h-[550px] overflow-hidden group rounded-2xl"
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="https://drive.google.com/thumbnail?id=1u0O4RqmNHGbiS3cksJDjixD4wzwkYpfw&sz=w800"
+                  src="/images/category_sarees.webp"
                   width={800}
                   alt="Sarees"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -449,7 +470,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-4 md:gap-8 w-full mx-auto">
             {isLoading
-              ? [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
+              ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : trendingProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -545,7 +566,7 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-4 md:gap-8 w-full mx-auto">
             {isLoading
-              ? [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
+              ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : newArrivals.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}

@@ -69,7 +69,7 @@ export default function Contact() {
                     Have a question or looking to place a custom order? Chat directly with our store assistants.
                   </p>
                   <a 
-                    href="https://wa.me/917020664641?text=Hello Mukesh Saree Centre, I need assistance."
+                    href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '917020664641'}?text=Hello Mukesh Saree Centre, I need assistance.`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white font-medium text-[13px] tracking-wide uppercase rounded-sm py-3 transition-transform hover:scale-[1.01] active:scale-[0.99] shadow-sm font-sans"

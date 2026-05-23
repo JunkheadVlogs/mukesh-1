@@ -63,7 +63,7 @@ export default function ShippingPolicy() {
           </p>
 
           <a 
-            href="https://wa.me/917020664641?text=Hello Mukesh Saree Centre, I would like to request a return/exchange for my order."
+            href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '917020664641'}?text=Hello Mukesh Saree Centre, I would like to request a return/exchange for my order.`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white font-medium text-[14px] rounded-md py-3.5 transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-sm max-w-sm mx-auto"

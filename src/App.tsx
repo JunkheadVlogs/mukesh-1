@@ -45,7 +45,7 @@ export default function App() {
       <Suspense fallback={
         <div className="w-full h-screen flex flex-col items-center justify-center bg-ivory space-y-12">
           <div className="flex flex-col items-center space-y-4">
-             <img src="https://drive.google.com/thumbnail?id=1rXEc_ve9qXelBQakWWVGcm4ffvbGF4yT&sz=w1000" alt="Mukesh Saree Centre Logo" className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block header-logo" onError={(e) => {
+             <img src="/images/logo.webp" alt="Mukesh Saree Centre Logo" className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block header-logo" onError={(e) => {
                (e.currentTarget as any).style.display = 'none';
                const sibling = e.currentTarget.nextElementSibling;
                if (sibling && sibling.tagName === 'SPAN') {
