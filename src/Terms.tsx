@@ -6,7 +6,7 @@ export default function Terms() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         <SEO 
           title="Terms & Conditions | Mukesh Saree Centre" 
-          description="Review the terms of service for Mukesh Saree Centre. Understanding our guidelines ensures a transparent and smooth shopping experience for all our patrons." 
+          description="Review the terms of service for Mukesh Saree Centre. Understanding our guidelines ensures a transparent and smooth shopping experience for all our customers." 
           url="/terms"
         />
         

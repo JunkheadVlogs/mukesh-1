@@ -64,6 +64,8 @@ export default function ProductPage() {
     visible: boolean;
     quantity: number;
     size?: string;
+    customName?: string;
+    customImg?: string;
   }>({ visible: false, quantity: 1 });
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -72,33 +74,67 @@ export default function ProductPage() {
   const [sizeGuideUnit, setSizeGuideUnit] = useState<"in" | "cm">("in");
   const [quantity, setQuantity] = useState(1);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const touchRef = useRef<{
+    startX: number;
+    startY: number;
+    currentX: number;
+    currentY: number;
+    gestureLock: "horizontal" | "vertical" | null;
+  }>({
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    currentY: 0,
+    gestureLock: null,
+  });
   const mainAtcRef = useRef<HTMLButtonElement>(null);
   const [showStickyAtc, setShowStickyAtc] = useState(false);
 
   const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+    const touch = e.targetTouches[0];
+    touchRef.current = {
+      startX: touch.clientX,
+      startY: touch.clientY,
+      currentX: touch.clientX,
+      currentY: touch.clientY,
+      gestureLock: null,
+    };
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    const touch = e.targetTouches[0];
+    const current = touchRef.current;
+    current.currentX = touch.clientX;
+    current.currentY = touch.clientY;
+
+    if (!current.gestureLock) {
+      const dx = Math.abs(touch.clientX - current.startX);
+      const dy = Math.abs(touch.clientY - current.startY);
+      if (dx > 10 || dy > 10) {
+        if (dx > dy) {
+          current.gestureLock = "horizontal";
+        } else {
+          current.gestureLock = "vertical";
+        }
+      }
+    }
   };
 
   const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-    if (isLeftSwipe) {
-      setActiveImageIndex((prev) => (prev + 1) % productImages.length);
+    const current = touchRef.current;
+    if (current.gestureLock === "horizontal") {
+      const distance = current.startX - current.currentX;
+      const isLeftSwipe = distance > 50;
+      const isRightSwipe = distance < -50;
+      if (isLeftSwipe) {
+        setActiveImageIndex((prev) => (prev + 1) % productImages.length);
+      } else if (isRightSwipe) {
+        setActiveImageIndex(
+          (prev) => (prev - 1 + productImages.length) % productImages.length,
+        );
+      }
     }
-    if (isRightSwipe) {
-      setActiveImageIndex(
-        (prev) => (prev - 1 + productImages.length) % productImages.length,
-      );
-    }
+    current.gestureLock = null;
   };
   const [zoomStyle, setZoomStyle] = useState<React.CSSProperties>({});
   const [sizeError, setSizeError] = useState(false);
@@ -252,6 +288,7 @@ export default function ProductPage() {
     return true;
   };
 
+
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
     setActiveImageIndex((prev) => (prev + 1) % productImages.length);
@@ -360,7 +397,8 @@ export default function ProductPage() {
           {/* Gallery Section */}
           <div className="w-full lg:w-7/12 space-y-3 md:space-y-4">
             <div
-              className="bg-[#FAF8F5] lg:rounded-2xl overflow-hidden relative cursor-zoom-in group w-full flex items-center justify-center aspect-[4/5] sm:aspect-[3/4] lg:aspect-auto lg:min-h-[700px]"
+              className="bg-[#FAF8F5] lg:rounded-2xl overflow-hidden relative cursor-zoom-in group w-full flex items-center justify-center aspect-[4/5] sm:aspect-[3/4] lg:aspect-auto lg:min-h-[700px] touch-pan-y"
+              style={{ touchAction: 'pan-y pinch-zoom' }}
               onClick={() => setIsLightboxOpen(true)}
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
@@ -425,7 +463,10 @@ export default function ProductPage() {
             </div>
 
             {productImages.length > 1 && (
-              <div className="flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 py-2">
+              <div 
+                className="flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 py-2 touch-pan-x touch-pan-y"
+                style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
+              >
                 {productImages.map((img, idx) => (
                   <button
                     key={idx}
@@ -449,7 +490,7 @@ export default function ProductPage() {
           {/* Details Section */}
           <div className="w-full lg:w-5/12 px-5 md:px-0">
             <div className="lg:sticky lg:top-32 lg:pb-12">
-              <header className="flex flex-col items-start text-left mt-0 mb-2">
+              <header className="flex flex-col items-start text-left mt-0 mb-1 lg:mb-2">
                 <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
                   <span className="text-[10px] uppercase tracking-[3px] font-bold text-[#8A6A4A]/70">
                     {product.category}
@@ -480,11 +521,11 @@ export default function ProductPage() {
                 </div>
 
                 <h1
-                  className="font-serif text-[var(--color-dark)] font-normal product-title w-full mt-1 truncate"
+                  className="font-serif text-[var(--color-dark)] font-normal product-title w-full mt-1 overflow-visible break-words whitespace-normal"
                   title={product.name}
                   style={{
-                    fontSize: "clamp(22px, 4.5vw, 34px)",
-                    lineHeight: 1.1,
+                    fontSize: "clamp(19px, 4.5vw, 28px)",
+                    lineHeight: 1.25,
                     letterSpacing: "-0.01em",
                   }}
                 >
@@ -494,7 +535,7 @@ export default function ProductPage() {
                 {/* Rating Summary Snippet */}
                 <a
                   href="#reviews"
-                  className="flex items-center gap-1.5 mt-2 hover:opacity-80 transition-opacity"
+                  className="flex items-center gap-1.5 mt-1 sm:mt-1.5 hover:opacity-80 transition-opacity"
                 >
                   <div className="flex items-center gap-[2px]">
                     {[...Array(5)].map((_, i) => (
@@ -514,7 +555,7 @@ export default function ProductPage() {
                     ({product.reviewsCount || stats.reviewCount})
                   </span>
                 </a>
-                <LiveViewerCounter productId={product.id} />
+                <LiveViewerCounter productId={product.id} category={product.category} />
               </header>
 
               {/* Product Pricing and Share */}
@@ -733,7 +774,7 @@ export default function ProductPage() {
         {/* Product Reviews */}
         <div
           id="reviews"
-          className="mt-4 md:mt-10 pt-3 md:pt-8 border-t border-[var(--color-border)] px-4 md:px-0"
+          className="mt-2 md:mt-6 pt-2 md:pt-4 border-t border-[var(--color-border)] px-4 md:px-0"
         >
           <ProductReviews product={product} />
         </div>
@@ -898,7 +939,7 @@ export default function ProductPage() {
             <div className="p-5 flex gap-5 bg-white">
               <div className="w-[70px] h-[90px] bg-primary-50 rounded-[4px] relative overflow-hidden flex-shrink-0 border border-black/5 shadow-sm">
                 <OptimizedImage
-                  src={product.image}
+                  src={showAddedToast.customImg || product.image}
                   width={100}
                   alt={getImageAlt(product)}
                   className="w-full h-full object-contain object-center will-change-transform transform-gpu"
@@ -906,7 +947,7 @@ export default function ProductPage() {
               </div>
               <div className="flex-1 flex flex-col justify-center">
                 <h4 className="text-sm md:text-base font-serif text-primary-950 line-clamp-2 leading-snug font-medium mb-2">
-                  {product.name}
+                  {showAddedToast.customName || product.name}
                 </h4>
                 <div className="flex items-center text-[11px] md:text-xs font-bold text-primary-950/60 uppercase tracking-widest mt-auto pb-1">
                   <span>Qty: {showAddedToast.quantity}</span>

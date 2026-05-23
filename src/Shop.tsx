@@ -1,11 +1,13 @@
 import type { ChangeEvent } from "react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSearchParams, Link } from "react-router";
 import { Filter, ChevronDown, Eye, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { products } from "./mockData";
 import { formatPrice, optimizeImage } from "./utils";
+import { searchProducts } from "./services/search";
 import { ProductCard } from "./components/ProductCard";
+import { ProductCardSkeleton } from "./components/ProductCardSkeleton";
 import { Product, useStore } from "./store";
 import QuickViewModal from "./QuickViewModal";
 import { SEO } from "./components/SEO";
@@ -17,26 +19,30 @@ export default function Shop() {
   const colorFilter = searchParams.get("color")?.split(",") || [];
   const priceRangeFilter = searchParams.get("priceRange");
   const sortParam = searchParams.get("sort");
-  const searchQuery = searchParams.get("search");
+  const searchQuery = searchParams.get("search") || searchParams.get("q");
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
     null,
   );
+  const [isLoading, setIsLoading] = useState(true);
   const { addToCart } = useStore();
+
+  useEffect(() => {
+    // Beautiful, super-snappy initial skeleton load on mount
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 250);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredAndSortedProducts = useMemo(() => {
     let result = products.filter((p) => !p.isVariant);
 
     // Search
     if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(query) ||
-          p.category.toLowerCase().includes(query) ||
-          p.fabric.toLowerCase().includes(query),
-      );
+      result = searchProducts(searchQuery);
     }
 
     // Filter
@@ -241,6 +247,7 @@ export default function Shop() {
                   <option value="price-high">Price: High to Low</option>
                   <option value="new">Newest First</option>
                   <option value="trending">Trending Now</option>
+                  <option value="best-selling">Best Sellers</option>
                 </select>
                 <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary-950/20 pointer-events-none" />
               </div>
@@ -375,7 +382,13 @@ export default function Shop() {
 
           {/* Product Grid */}
           <main className="flex-1">
-            {filteredAndSortedProducts.length > 0 ? (
+            {isLoading ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2.5 gap-y-4 sm:gap-6 md:gap-8">
+                {[...Array(8)].map((_, i) => (
+                  <ProductCardSkeleton key={i} />
+                ))}
+              </div>
+            ) : filteredAndSortedProducts.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2.5 gap-y-4 sm:gap-6 md:gap-8">
                 {filteredAndSortedProducts.map((product) => (
                   <ProductCard
@@ -386,19 +399,41 @@ export default function Shop() {
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-32 text-center bg-white border border-black/5 rounded-sm shadow-sm">
-                <h3 className="text-xl font-serif text-primary-950 mb-4">
-                  No silhouettes found
-                </h3>
-                <p className="text-primary-950/50 mb-8 max-w-xs px-6">
-                  We couldn't find any products matching your current filters.
-                </p>
-                <button
-                  onClick={clearAllFilters}
-                  className="bg-gold-500 text-white rounded-sm shadow-md px-10 py-3 text-[10px] uppercase tracking-[2px] font-bold hover:bg-gold-600 transition-colors"
-                >
-                  Reset Filters
-                </button>
+              <div className="space-y-12">
+                <div className="flex flex-col items-center justify-center py-16 text-center bg-white border border-black/5 rounded-sm shadow-sm w-full">
+                  <h3 className="text-xl font-serif text-primary-950 mb-3">
+                    No items matched your style criteria
+                  </h3>
+                  <p className="text-primary-950/50 mb-6 max-w-md px-6 text-sm">
+                    {searchQuery 
+                      ? `We couldn't find any direct matches for "${searchQuery}". Please check the spelling or explore our popular items below.`
+                      : "We couldn't find any matches with current filters. Clear filters or explore our collection below."}
+                  </p>
+                  <button
+                    onClick={clearAllFilters}
+                    className="bg-gold-500 text-white rounded-sm px-8 py-2.5 text-[10px] uppercase tracking-[2px] font-bold hover:bg-gold-600 transition-colors shadow-sm"
+                  >
+                    Reset & Browse All
+                  </button>
+                </div>
+
+                <div>
+                  <h4 className="text-xs uppercase tracking-[2px] font-bold text-primary-950/40 mb-6 text-center">
+                    Discover Our Bestselling Masterpieces
+                  </h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-2.5 gap-y-4 sm:gap-6 md:gap-8">
+                    {products
+                      .filter((p) => !p.isVariant && (p.isBestSelling || p.isTrending || p.isNew))
+                      .slice(0, 4)
+                      .map((product) => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          onQuickView={setQuickViewProduct}
+                        />
+                      ))}
+                  </div>
+                </div>
               </div>
             )}
           </main>

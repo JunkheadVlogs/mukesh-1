@@ -543,3 +543,89 @@ select,
 section:empty {
   display: none !important;
 }
+
+@keyframes bounce-horizontal {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3.5px);
+  }
+}
+.animate-bounce-horizontal {
+  animation: bounce-horizontal 1.25s infinite ease-in-out;
+}
+
+/* Ensure the Reel cards fit a 9:16 aspect ratio properly with absolute zero black bars */
+#next-section .grid .LookReelCard,
+.LookReelCard {
+  aspect-ratio: 9 / 16 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#next-section .grid .LookReelCard .video-wrapper,
+.LookReelCard .video-wrapper {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  border-radius: 16px !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #000000 !important;
+}
+
+#next-section .grid .LookReelCard iframe,
+.LookReelCard iframe {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 316.5% !important;
+  height: 124% !important;
+  min-width: 316.5% !important;
+  min-height: 124% !important;
+  border: none !important;
+  outline: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Force Hide all YouTube Web Player controller classes and native browser video overrides */
+.ytp-large-play-button,
+.ytp-button,
+.ytp-chrome-top,
+.ytp-chrome-bottom,
+.ytp-gradient-top,
+.ytp-gradient-bottom,
+.ytp-pause-overlay,
+.ytp-ce-element,
+.ytp-show-cards-title,
+.ytp-overflow-button,
+video::-webkit-media-controls,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-panel,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-volume-slider,
+video::-webkit-media-controls-mute-button,
+video::-webkit-media-controls-timeline,
+video::-webkit-media-controls-current-time-display,
+video::-webkit-media-controls-time-remaining-display,
+video::-webkit-media-controls-toggle-closed-captions-button,
+video::-webkit-media-controls-fullscreen-button {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+
+

@@ -15,7 +15,7 @@ export default function Contact() {
           <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-2 tracking-wide uppercase">Mukesh Saree Centre</h1>
           <div className="w-16 h-[1px] bg-gold-200 mx-auto mb-3"></div>
           <p className="max-w-md mx-auto text-primary-950/60 text-[14px] font-light leading-relaxed">
-            Since 1978. Curating authentic sarees, luxury lehengas, and designer ensembles.
+            Since 1978. Providing beautiful sarees, party-wear lehengas, and designer outfits.
           </p>
         </div>
         
@@ -63,10 +63,10 @@ export default function Contact() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 text-gold-600">
                     <Award size={18} />
-                    <span className="text-[12px] uppercase tracking-wider font-semibold">Premium Concierge</span>
+                    <span className="text-[12px] uppercase tracking-wider font-semibold">Customer Support</span>
                   </div>
                   <p className="text-[13px] text-primary-950/60 font-light leading-relaxed">
-                    Have a question or looking to place a bespoke order? Chat directly with our boutique assistants.
+                    Have a question or looking to place a custom order? Chat directly with our store assistants.
                   </p>
                   <a 
                     href="https://wa.me/917020664641?text=Hello Mukesh Saree Centre, I need assistance."

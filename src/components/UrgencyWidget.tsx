@@ -1,187 +1,144 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface Props {
   productId?: string;
+  category?: string;
 }
 
-// A pool of realistic luxury fashion hub cities in India
-const INDIAN_CITIES = ["Nagpur", "Pune", "Hyderabad", "Bangalore", "Mumbai", "Delhi"];
+interface UrgencyMessage {
+  icon: string;
+  text: string;
+}
 
-export const LiveViewerCounter: React.FC<Props> = ({ productId }) => {
-  const [detectedCity, setDetectedCity] = useState<string | null>(null);
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-  const [currentNumber, setCurrentNumber] = useState(7);
-  
-  // Track previous numbers to fluctuate organically
-  const numRef = useRef(7);
+// 1. Category pools as requested by the user
+const SAREES_POOL: UrgencyMessage[] = [
+  { icon: "✨", text: "Most Loved Saree" },
+  { icon: "🔥", text: "Trending Saree Collection" },
+  { icon: "👑", text: "Premium Ethnic Pick" },
+  { icon: "💫", text: "Customer Favorite Saree" },
+  { icon: "⚡", text: "Fast Selling Saree" },
+  { icon: "🖤", text: "Elegant Bestseller" },
+  { icon: "⭐", text: "Most Ordered Today" },
+  { icon: "🔥", text: "Viral Saree Collection" },
+];
 
-  // Fetch approximate visitor location via IP-based geolocation
-  useEffect(() => {
-    let active = true;
+const CO_ORD_POOL: UrgencyMessage[] = [
+  { icon: "🛍️", text: "Bestselling Co-Ord Set" },
+  { icon: "⚡", text: "Selling Out Quickly" },
+  { icon: "🔥", text: "Trending Co-Ord Style" },
+  { icon: "💎", text: "Premium Fashion Pick" },
+  { icon: "👑", text: "Most Loved Co-Ord Set" },
+  { icon: "✨", text: "Fast Moving Style" },
+  { icon: "⭐", text: "Top Rated Collection" },
+  { icon: "🖤", text: "Premium Bestseller" },
+];
 
-    const fetchGeoIP = async () => {
-      // Try ipapi.co (supports SSL/HTTPS securely)
-      try {
-        const res = await fetch("https://ipapi.co/json/");
-        if (res.ok) {
-          const data = await res.json();
-          if (active && data && data.city && typeof data.city === "string") {
-            setDetectedCity(data.city);
-            return;
-          }
-        }
-      } catch (err) {
-        // Silent catch for ad-blockers or connection issues
-      }
+const LEHENGAS_POOL: UrgencyMessage[] = [
+  { icon: "👑", text: "Wedding Favorite" },
+  { icon: "✨", text: "Premium Bridal Pick" },
+  { icon: "🔥", text: "Trending Lehenga Style" },
+  { icon: "💎", text: "Special Wedding Collection" },
+  { icon: "⭐", text: "Most Loved Lehenga" },
+  { icon: "⚡", text: "Limited Pieces Available" },
+  { icon: "🖤", text: "Elegant Bridal Fashion" },
+  { icon: "🔥", text: "Viral Wedding Collection" },
+];
 
-      // Try fallback IP geo-db
-      try {
-        const res = await fetch("https://geolocation-db.com/json/");
-        if (res.ok) {
-          const data = await res.json();
-          if (active && data && data.city && data.city !== "Not found" && data.city !== "null") {
-            setDetectedCity(data.city);
-            return;
-          }
-        }
-      } catch (err) {
-        // Silent catch
-      }
+const SUITS_POOL: UrgencyMessage[] = [
+  { icon: "💫", text: "Customer Favorite Suit" },
+  { icon: "🔥", text: "Hot Selling Design" },
+  { icon: "⚡", text: "Fast Selling Collection" },
+  { icon: "👑", text: "Premium Suit Collection" },
+  { icon: "⭐", text: "Top Pick Today" },
+  { icon: "🛍️", text: "Most Ordered Style" },
+  { icon: "✨", text: "Elegant Trending Design" },
+  { icon: "🖤", text: "Premium Collection" },
+];
 
-      // Elegant browser geolocation query as passive fallback if permitted before
-      if (navigator.geolocation && navigator.permissions) {
-        try {
-          const status = await navigator.permissions.query({ name: "geolocation" });
-          if (status.state === "granted") {
-            navigator.geolocation.getCurrentPosition(
-              (pos) => {
-                // Since browser coords don't give city names instantly without reverse-geocoding,
-                // we keep Nagpur/user's area as the closest fallback
-                if (active) setDetectedCity("your area");
-              },
-              () => {},
-              { timeout: 3000 }
-            );
-          }
-        } catch (e) {
-          // Silent catch
-        }
-      }
-    };
+const GENERAL_POOL: UrgencyMessage[] = [
+  { icon: "✨", text: "Most Loved Saree Collection" },
+  { icon: "👑", text: "Premium Ethnic Selection" },
+  { icon: "🔥", text: "Trending Ethnic Piece" },
+  { icon: "💫", text: "Customer Favorite Design" },
+  { icon: "⚡", text: "Fast Selling Favorite" },
+  { icon: "🖤", text: "Elegant Best Seller" },
+  { icon: "⭐", text: "Highly Popular Today" },
+];
 
-    fetchGeoIP();
+export const LiveViewerCounter: React.FC<Props> = ({ productId, category }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  // Generate a random, ultra-realistic number between 5 and 28 with natural fluctuations
-  const getNextRealisticNumber = (prev: number) => {
-    const change = Math.floor(Math.random() * 5) - 2; // -2, -1, 0, 1, 2
-    let next = prev + change;
-    if (next < 5) next = 5 + Math.floor(Math.random() * 3);
-    if (next > 28) next = 28 - Math.floor(Math.random() * 3);
-    return next;
-  };
-
-  // Setup loop to rotate messages smoothly every 2.5 to 3.5 seconds
-  useEffect(() => {
-    // Set initial realistic number
-    const initialNum = Math.floor(Math.random() * 12) + 6; // 6 to 17
-    setCurrentNumber(initialNum);
-    numRef.current = initialNum;
-
-    const rotateMessage = () => {
-      // Rotate index gracefully
-      setCurrentMessageIndex((prev) => (prev + 1) % 9);
-      
-      // Fluctuate the visual numbers organically
-      const nextNum = getNextRealisticNumber(numRef.current);
-      setCurrentNumber(nextNum);
-      numRef.current = nextNum;
-    };
-
-    // Use a slight randomized duration interval (between 2500ms and 3500ms) to feel fully natural
-    const intervalTime = 2800 + Math.floor(Math.random() * 800);
-    const timer = setInterval(rotateMessage, intervalTime);
-
-    return () => clearInterval(timer);
-  }, [productId]);
-
-  // Evaluates the current text message dynamically 
-  const getMessageContent = () => {
-    switch (currentMessageIndex) {
-      case 0:
-        return {
-          icon: "👀",
-          text: `${currentNumber} people in your area are checking this right now`
-        };
-      case 1:
-        return {
-          icon: "👀",
-          text: `${currentNumber} shoppers near Nagpur are checking this product`
-        };
-      case 2:
-        return {
-          icon: "🔥",
-          text: `Trending in Nagpur today`
-        };
-      case 3:
-        return {
-          icon: "💫",
-          text: `Popular among shoppers in your area`
-        };
-      case 4:
-        return {
-          icon: "⚡",
-          text: `High demand product in your area right now`
-        };
-      case 5:
-        return {
-          icon: "🛍️",
-          text: `Recently viewed in your area`
-        };
-      case 6:
-        return {
-          icon: "⏳",
-          text: `Only few pieces left in stock`
-        };
-      case 7:
-        return {
-          icon: "✨",
-          text: `Bestseller this week`
-        };
-      case 8:
-        return {
-          icon: "🔥",
-          text: `This product is getting attention near Nagpur`
-        };
-      default:
-        return {
-          icon: "👀",
-          text: `Highly viewed item in your area`
-        };
+  // Determine matching pool dynamically based on the category of the product
+  const selectedPool = useMemo(() => {
+    const rawCat = (category || "").toLowerCase();
+    
+    if (rawCat.includes("co-ord")) {
+      return CO_ORD_POOL;
     }
-  };
+    if (rawCat.includes("lehenga")) {
+      return LEHENGAS_POOL;
+    }
+    if (rawCat.includes("suit")) {
+      return SUITS_POOL;
+    }
+    if (rawCat.includes("saree")) {
+      return SAREES_POOL;
+    }
+    
+    // Fallback to General/Saree style since Mukesh Saree Centre is a luxury ethnic brand
+    return GENERAL_POOL;
+  }, [category]);
 
-  const currentItem = getMessageContent();
+  // Randomly select 4-5 unique messages from the matched array on load/productId change
+  const dynamicMessages = useMemo(() => {
+    const pool = [...selectedPool];
+    
+    // Simple Durstenfeld shuffle
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    
+    // Take exactly 5 messages (or limit to pool length if smaller)
+    const countToTake = Math.min(5, pool.length);
+    return pool.slice(0, countToTake);
+  }, [productId, selectedPool]);
+
+  // Smooth rotation interval between the selected 5 messages
+  useEffect(() => {
+    setCurrentIndex(0); // Reset index on product change
+    
+    if (dynamicMessages.length <= 1) return;
+
+    // Premium interval duration for rotation (4 seconds feels luxury, readable and elegant)
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % dynamicMessages.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [dynamicMessages]);
+
+  const currentMessage = dynamicMessages[currentIndex];
+
+  if (!currentMessage) return null;
 
   return (
-    <div className="inline-flex items-center min-h-[20px] mt-1 mb-0.5">
+    <div className="inline-flex items-center min-h-[20px] mt-1 sm:mt-2 mb-0 sm:mb-0.5 select-none">
       <AnimatePresence mode="wait">
         <motion.div
-          key={currentMessageIndex}
-          initial={{ opacity: 0, y: 2 }}
+          key={`${productId}_${currentIndex}`}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -2 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="inline-flex items-center gap-1.5 bg-[#FAF6F0] border border-[#C8A96B]/35 rounded-full px-2.5 py-0.5 text-[10.5px] font-medium tracking-wide text-primary-950 shadow-[0_1px_4px_rgba(200,169,107,0.12)]"
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-flex items-center gap-1.5 bg-[#FAF6F0] border border-[#C8A96B]/25 rounded-full px-3.5 py-1 text-[10.5px] sm:text-[11px] font-medium tracking-wide text-[#2b2b2b] shadow-[0_2px_8px_rgba(200,169,107,0.06)] hover:scale-[1.01] hover:border-[#C8A96B]/40 hover:shadow-[0_4px_12px_rgba(200,169,107,0.1)] transition-all duration-300 cursor-default"
         >
-          <span className="text-[12px] leading-none select-none filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.1)]">{currentItem.icon}</span>
-          <span className="font-sans leading-none mt-[0.5px] whitespace-nowrap">
-            {currentItem.text}
+          <span className="text-[12px] leading-none filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.08)]">
+            {currentMessage.icon}
+          </span>
+          <span className="font-sans leading-none mt-[0.5px]">
+            {currentMessage.text}
           </span>
         </motion.div>
       </AnimatePresence>
@@ -189,7 +146,7 @@ export const LiveViewerCounter: React.FC<Props> = ({ productId }) => {
   );
 };
 
-// Return null to completely remove older, static or hyper-inflated widgets
+// Kept exported placeholders to avoid any import resolution breaking elsewhere in the codebase
 export const LowStockMessage: React.FC<Props> = () => {
   return null;
 };

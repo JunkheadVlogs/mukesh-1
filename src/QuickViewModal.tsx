@@ -131,7 +131,7 @@ export default function QuickViewModal({
             <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-12 overflow-y-auto max-h-[90vh] bg-white">
               <header className="mb-6 md:mb-8 text-center">
                  <div className="text-[10px] uppercase tracking-[2px] font-bold text-discount mb-2 text-center w-full">{product.category}</div>
-                 <h2 className="text-2xl md:text-3xl font-serif text-primary-950 mb-4 font-semibold tracking-[1px] text-center truncate">{product.name}</h2>
+                 <h2 className="text-xl sm:text-2xl md:text-3xl font-serif text-primary-950 mb-4 font-semibold tracking-[1px] text-center overflow-visible break-words whitespace-normal leading-snug">{product.name}</h2>
                  <div className="flex items-center justify-center gap-3 mb-5 flex-wrap w-full">
                     <span className="text-[24px] font-bold text-price font-price whitespace-nowrap">{formatPrice(product.price)}</span>
                     <span className="text-[15px] md:text-xl text-primary-950/40 line-through font-medium font-price whitespace-nowrap">MRP {formatPrice(product.originalPrice || product.price * 2)}</span>

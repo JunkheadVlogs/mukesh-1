@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router";
-import { Eye, Plus, Star } from "lucide-react";
+import { Eye, Star } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Product, useStore } from "../store";
 import {
@@ -10,7 +10,6 @@ import {
   getImageAlt,
 } from "../utils";
 import { trackAddToCart } from "../tracking";
-import { Skeleton } from "./Skeleton";
 import { OptimizedImage } from "./OptimizedImage";
 
 interface ProductCardProps {
@@ -24,41 +23,10 @@ export function ProductCard({
   idx = 0,
   onQuickView,
 }: ProductCardProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-  const [isInView, setIsInView] = useState(false);
-  const imageRef = useRef<HTMLDivElement>(null);
   const { addToCart } = useStore();
 
   const stats = useMemo(() => getProductReviewStats(product), [product.id]);
-
-  useEffect(() => {
-    if (idx < 4) {
-      setIsInView(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
-      },
-      {
-        rootMargin: "600px 0px",
-        threshold: 0,
-      },
-    );
-
-    if (imageRef.current) {
-      observer.observe(imageRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [idx]);
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -71,23 +39,18 @@ export function ProductCard({
   return (
     <div className="group flex flex-col h-full bg-white rounded-[18px] md:rounded-[24px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden hover:-translate-y-1 transform-gpu">
       <div
-        ref={imageRef}
         className="relative aspect-[3/4] w-full overflow-hidden bg-primary-50 flex items-center justify-center p-0 flex-shrink-0"
       >
-        {!isLoaded && <Skeleton className="absolute inset-0 z-10" />}
         <Link to={`/product/${product.slug}`} className="block h-full w-full">
-          {isInView && (
-            <OptimizedImage
-              src={product.image}
-              width={idx < 4 ? 400 : 300}
-              srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w`}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              alt={getImageAlt(product)}
-              priority={idx < 4}
-              onLoad={() => setIsLoaded(true)}
-              className={`w-full h-full object-cover object-top transform-gpu transition-transform duration-700 ease-out group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0 transition-opacity"}`}
-            />
-          )}
+          <OptimizedImage
+            src={product.image}
+            width={idx < 4 ? 400 : 300}
+            srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w`}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            alt={getImageAlt(product)}
+            priority={idx < 4}
+            className="w-full h-full object-cover object-top transform-gpu transition-all duration-700 ease-out group-hover:scale-105"
+          />
         </Link>
 
         {/* Floating Badges */}

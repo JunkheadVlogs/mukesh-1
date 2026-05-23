@@ -94,9 +94,9 @@ export default function Wishlist() {
   };
 
   const shareViaEmail = () => {
-    const subject = encodeURIComponent("My Heritage Collection | Mukesh Saree Centre");
+    const subject = encodeURIComponent("My Wishlist | Mukesh Saree Centre");
     const body = encodeURIComponent(
-      `I've curated a collection of my favorites from Mukesh Saree Centre. Take a look: ${shareUrl}`,
+      `I've created a list of my favorites from Mukesh Saree Centre. Take a look: ${shareUrl}`,
     );
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
@@ -111,21 +111,21 @@ export default function Wishlist() {
     });
     if (addedCount > 0) {
       showToast(
-        `Added ${addedCount} masterpiece${addedCount > 1 ? "s" : ""} to your vault.`,
+        `Added ${addedCount} item${addedCount > 1 ? "s" : ""} to your wishlist.`,
       );
     } else {
-      showToast("These pieces are already in your vault.");
+      showToast("These items are already in your wishlist.");
     }
   };
 
   return (
     <div className="bg-ivory">
       <SEO
-        title={`${isSharedView ? "Curated Collection" : "The Vanity Vault"} | Mukesh Saree Centre`}
+        title={`${isSharedView ? "Shared Selection" : "My Wishlist"} | Mukesh Saree Centre`}
         description={
           isSharedView
-            ? "Discover a collection of curated favorites from Mukesh Saree Centre shared with you. Shop these elegant sarees and co-ord sets directly from this wishlist."
-            : "View and manage your favorite picks from Mukesh Saree Centre. Curate your dream collection of elegant sarees and designer co-ord sets for every occasion."
+            ? "Discover a list of favorite sarees from Mukesh Saree Centre shared with you. Shop these elegant sarees and co-ord sets directly from this list."
+            : "View and manage your favorite picks from Mukesh Saree Centre. Create your dream wishlist of elegant sarees and designer co-ord sets."
         }
         url="/wishlist"
       />
@@ -134,10 +134,10 @@ export default function Wishlist() {
         <header className="mb-24 flex flex-col md:flex-row justify-between items-end gap-12">
           <div className="max-w-3xl">
             <h4 className="text-gold-500 mb-6 drop-shadow-sm uppercase tracking-[4px] font-bold text-[11px]">
-              {isSharedView ? "Guest Curation" : "Private Collection"}
+              {isSharedView ? "Shared Selection" : "My Favorites"}
             </h4>
             <h1 className="text-5xl md:text-7xl font-serif leading-tight text-onyx">
-              {isSharedView ? "Shared Masterpieces" : "The Vanity Vault"}
+              {isSharedView ? "Shared Favorites" : "My Wishlist"}
             </h1>
           </div>
           
@@ -159,21 +159,21 @@ export default function Wishlist() {
             className="mb-32 p-12 border border-onyx/5 bg-white shadow-luxury rounded-sm flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden group"
           >
             <div className="space-y-4">
-              <h3 className="text-3xl font-serif text-onyx">Arriving from a fellow connoisseur</h3>
-              <p className="text-onyx/40 font-light italic font-serif text-lg">"A selection of heritage pieces curated for your exploration."</p>
+              <h3 className="text-3xl font-serif text-onyx">Shared by a friend</h3>
+              <p className="text-onyx/40 font-light italic font-serif text-lg">"A selection of beautiful sarees picked out for you."</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-6">
               <button
                 onClick={addSharedToMyWishlist}
                 className="btn-primary px-12 h-16 min-w-[240px] !py-0 flex items-center justify-center gap-4"
               >
-                <Plus size={16} /> Relocate to Vault
+                <Plus size={16} /> Add to My Wishlist
               </button>
               <Link
                 to="/wishlist"
                 className="btn-secondary px-12 h-16 !py-0 flex items-center justify-center"
               >
-                My Own Vault
+                My Wishlist
               </Link>
             </div>
           </motion.div>
@@ -258,9 +258,9 @@ export default function Wishlist() {
                 <Share2 className="text-gold-500" size={32} />
               </div>
 
-              <h3 className="text-3xl font-serif text-onyx mb-6">Share The Vault</h3>
+              <h3 className="text-3xl font-serif text-onyx mb-6">Share Your Wishlist</h3>
               <p className="text-[15px] text-onyx/50 mb-10 font-medium leading-relaxed tracking-wide">
-                Expose your curated selection to fellow connoisseurs and celebrate your unique style.
+                Share your favorite saree collection with your friends and family.
               </p>
 
               <div className="space-y-10">

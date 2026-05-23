@@ -41,7 +41,7 @@ export function TrustBadges({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <div className="w-full py-6 md:py-8 border-b border-gold-200/50 bg-gradient-to-b from-transparent to-primary-50/30">
+    <div className="w-full py-3.5 md:py-5 border-b border-gold-200/50 bg-gradient-to-b from-transparent to-primary-50/30">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-3 md:gap-8 lg:gap-12">
           {badges.map((badge, idx) => (

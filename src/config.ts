@@ -4,7 +4,7 @@ const BASE_URL = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_UR
 export const CONFIG = {
   API_BASE_URL: import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || BASE_URL || '',
   STORE_NAME: 'Mukesh Saree Centre',
-  STORE_EMAIL: 'info.mukeshsareecentre@gmail.com',
+  STORE_EMAIL: 'Info.mukeshsarees.com',
   STORE_PHONE: '+91 7020664641',
   STORE_ADDRESS: 'Jaganth Road, Gandibagh, Nagpur 440002',
   RAZORPAY_KEY_ID: import.meta.env.VITE_RAZORPAY_KEY_ID, // STRICTLY KEY_ID NO SECRET

@@ -1373,9 +1373,9 @@ Delicacy redefined. This White Pure Linen Saree is punctuated with graceful pink
   {
     id: "p33",
     sku: "SAR-LIN-NVY-033",
-    name: "Midnight Bloom Navy Linen Saree",
-    tagline: "Dramatic Navy with Artistic Details",
-    slug: "pure-linen-navy-blue-printed-saree-multicolor",
+    name: "Blue Soft Linen Saree with Digital Elephant Print",
+    tagline: "Elegant Printed Saree with Blouse Piece",
+    slug: "blue-soft-linen-saree-with-digital-elephant-print",
     price: 699,
     originalPrice: 1399,
     image: "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500",
@@ -1387,19 +1387,28 @@ Delicacy redefined. This White Pure Linen Saree is punctuated with graceful pink
     ],
     stock: 12,
     category: "Linen Sarees",
-    fabric: "Pure Linen",
-    color: "Navy Blue with Multicolor Print",
+    fabric: "Soft Breathable Linen",
+    color: "Blue",
     isBestSelling: true,
-
+    colorVariants: [
+      { color: "Blue", slug: "blue-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500" },
+      { color: "White", slug: "white-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w500" },
+      { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500" }
+    ],
     description: `**DESCRIPTION:**
-Sophistication takes a dark turn with this Navy Blue Pure Linen Saree. Featuring multicolor prints that pop against the deep navy base, this saree is for the woman who loves an artistic statement. Perfect for making a quiet impact at any evening gathering.
+Upgrade your ethnic wardrobe with this elegant Blue Soft Linen Saree featuring stylish digital elephant print and artistic designer border ✨ Crafted from soft breathable linen fabric, this saree offers lightweight comfort and graceful drape for all-day wear. The rich blue shade with colorful artistic patterns gives a classy modern ethnic look perfect for festive wear, office wear, casual outings and family gatherings 🌿 Easy to drape and comfortable to carry all day. Available in 3 beautiful colors.
 
 **HIGHLIGHTS:**
-• Deep Navy Blue Hue
-• Vibrant Multicolor Print
-• Artisan-Inspired Design
-• High-Grade Pure Linen
-• Sophisticated Palette`,
+• 🌿 Fabric: Soft Breathable Linen
+• 🎨 Design: Digital Elephant Print
+• 💙 Saree Color: Blue
+• ✨ Artistic Designer Border Print
+• 👗 Saree Length: 5.50 Meters
+• ✂️ Blouse Piece Length: 1 Meter
+• 💖 Soft, Lightweight & Comfortable Fabric
+• 🌸 Easy to Drape & Elegant Fall
+• 👜 Perfect for Office, Casual & Festive Wear
+• 🌈 Available in 3 Beautiful Colors`,
     rating: 4.9,
   },
   {
@@ -1597,19 +1606,19 @@ Embrace modern artistry with this bold tie-dye / shibori-inspired linen saree. F
 • Hand-Dyed Tie-Dye / Shibori-Inspired Geometric Waves
 • Bold Abstract Zigzag & Chevron Pattern
 • Rich Solid Purple Border with Subtle Texture
-• Clean Artisanal Finish
+• Clean Beautiful Finish
 • Modern & Artistic Aesthetic
 
 **COLOR PALETTE:**
 Deep Purple / Plum tone base with Soft Ivory White patterns.
 
 **FABRIC DETAILS:**
-Premium Linen with a natural woven texture and artisanal finish, providing exceptional breathability and a comfortable drape.
+Premium Linen with a natural woven texture and traditional finish, providing exceptional breathability and a comfortable drape.
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
 • Blouse Piece: 0.8 Meters (Unstitched)
-• Finish: Soft Artisanal Touch
+• Finish: Soft Beautiful Touch
 
 **STYLING:**
 Ideal for:
@@ -1627,35 +1636,34 @@ Ideal for:
     slug: "blush-botanical-fusion-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "https://drive.google.com/thumbnail?id=1SQjviFGMGJ48khfJvaGN0k-7VnBuxAEK&sz=w500",
+    image: "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
     images: [
-      "https://drive.google.com/thumbnail?id=1SQjviFGMGJ48khfJvaGN0k-7VnBuxAEK&sz=w500",
+      "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
     ],
     category: "Linen Sarees",
-    fabric: "Soft Handwoven-Inspired Linen",
-    color: "Soft Blush Pink with Botanical Florals",
-    isTrending: true,
-
+    fabric: "High-quality Natural Linen",
+    color: "Soft Blush Pink with Pastel Beige",
+    isNew: true,
     description: `**DESCRIPTION:**
-Discover soft vintage-inspired charm with this elegant blushing-botanical linen saree. The soft blush pink and pastel beige background is beautifully canvas to a contemporary floral fusion with modern abstract blocks. Framed by a multicolor floral border featuring intricate vine motifs, traditional ornamental patterns, and a dark charcoal accent stripe.
+Discover soft vintage-style charm with this beautiful blushing-floral linen saree. The soft blush pink and pastel beige background is a beautiful canvas for a modern floral design with abstract blocks. Framed by a multi-color floral border featuring beautiful vine motifs, traditional patterns, and a dark charcoal accent stripe.
 
 **HIGHLIGHTS:**
-• Contemporary Floral Fusion with Abstract Blocks
-• Intricate Floral Vine & Ornamental Border
+• Modern Floral Design with Abstract Blocks
+• Intricate Floral Vine & Traditional Border
 • Dark Charcoal Accent Stripe
-• Soft Artisanal Finish
+• Soft Beautiful Finish
 • Feminine Vintage-Inspired Charm
 
 **COLOR PALETTE:**
 Soft Blush Pink with pastel beige tones, layered with Deep Pink, Maroon, Peach, Olive Green, Charcoal Grey, and Ivory White.
 
 **FABRIC DETAILS:**
-High-quality Natural Linen, bringing a lovely woven texture and a soft artisanal finish for effortless grace and supreme comfort.
+High-quality Natural Linen, bringing a lovely woven texture and a soft beautiful finish for effortless grace and supreme comfort.
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
 • Blouse Piece: 0.8 Meters (Unstitched)
-• Finish: Premium Artisanal Soft
+• Finish: Premium Soft Weave
 
 **STYLING:**
 Ideal for:
@@ -1757,7 +1765,7 @@ The Silver Mist Floral Linen Saree is the epitome of understated grace. The soph
     isNew: true,
 
     description: `**DESCRIPTION:**
-Radiate a sophisticated ethnic charm with this premium Ivory Linen saree. Adorned with scattered maroon tribal geometric motifs and artistic woven-style prints, this piece is a masterpiece of contemporary handloom design. The ivory cream base is beautifully contrasted by a rich double-layered maroon and pink tribal border, while the heavy geometric pallu adds a bold, heritage-inspired silhouette.
+Radiate a beautiful design with this premium Ivory Linen saree. Adorned with scattered maroon tribal geometric motifs and artistic woven-style prints, this piece is a beautiful work of handloom design. The ivory cream base is beautifully contrasted by a rich double-layered maroon and pink tribal border, while the heavy geometric pallu adds a bold, traditional-inspired silhouette.
 
 **HIGHLIGHTS:**
 • Scattered Tribal Geometric Motifs
@@ -1765,7 +1773,7 @@ Radiate a sophisticated ethnic charm with this premium Ivory Linen saree. Adorne
 • Intricate Zig-Zag & Traditional Ethnic Patterning
 • Heavy Tribal-Inspired Geometric Artwork Pallu
 • Soft Pink Handmade Tassels
-• Contemporary Handcrafted Aesthetic
+• Modern Handcrafted Look
 
 **COLOR DETAILS:**
 - Base: Ivory Cream / Off-White / Soft Beige
@@ -1788,7 +1796,7 @@ Ideal for:
 - Sophisticated festive wear
 - Elegant office & corporate meetings
 - Modern tribal-fusion looks
-- Traditional heritage celebrations`,
+- Traditional festival celebrations`,
     rating: 4.8,
   },
   {
@@ -1845,9 +1853,9 @@ The Cerulean Classic Saree brings together the timeless combination of blue and 
   {
     id: "p45",
     sku: "SAR-LIN-BGE-045",
-    name: "Madhubani Heritage Blush Linen Saree with Folk-Art Detail",
-    tagline: "Elegant Heritage Artistry with Contemporary Fusion",
-    slug: "madhubani-heritage-blush-linen-saree",
+    name: "Madhubani Art Blush Linen Saree with Folk-Art Detail",
+    tagline: "Beautiful Traditional Art with Modern Design",
+    slug: "madhubani-art-blush-linen-saree",
     price: 699,
     originalPrice: 1399,
     image: "https://drive.google.com/thumbnail?id=1N6zBqH_99XSpqhb37dz04WUO4YcemuTZ&sz=w800",
@@ -1861,7 +1869,7 @@ The Cerulean Classic Saree brings together the timeless combination of blue and 
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Immerse yourself in heritage with this premium Madhubani-inspired contemporary ethnic saree. Featuring rich all-over traditional folk motifs and intricate hand-drawn style ethnic patterns, this saree is a tribute to symmetrical folk artistry. The soft blush beige base is accented by a multi-layer woven border and a heavy artistic heritage pallu, creating a sophisticated silhouette of handcrafted elegance and luxury.
+Enjoy beautiful traditional designs with this premium Madhubani-inspired contemporary ethnic saree. Featuring rich all-over traditional folk motifs and intricate hand-drawn style ethnic patterns, this saree is a tribute to symmetrical folk artistry. The soft blush beige base is accented by a multi-layer woven border and a heavy artistic traditional pallu, creating a sophisticated silhouette of handcrafted design and premium quality.
 
 **HIGHLIGHTS:**
 • Madhubani-Inspired Folk Motifs & Geometric Artwork
@@ -1869,7 +1877,7 @@ Immerse yourself in heritage with this premium Madhubani-inspired contemporary e
 • Elegant Multi-Layer Woven Border with Geometric Detail
 • Heavy Artistic Folk-Art Inspired Pallu
 • Soft Ivory Handmade Tassels
-• Luxury Handloom heritage Aesthetic
+• Beautiful Handloom Traditional Look
 
 **COLOR DETAILS:**
 - Base: Soft Blush Beige / Ivory Pink / Nude Cream
@@ -1889,9 +1897,9 @@ Includes a matching Blush Beige blouse piece with a subtle woven floral-geometri
 **STYLING:**
 Perfect for:
 - Elegant festive and occasion wear
-- Artistic heritage ethnic gatherings
+- Festive get-togethers and family functions
 - Sophisticated contemporary traditional fusion
-- Premium daytime luxury styling`,
+- Beautiful daytime outfit styling`,
     rating: 4.8,
   },
   {
@@ -1960,7 +1968,7 @@ Ideal for:
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Experience the elegance of nature with this floral garden-inspired contemporary linen saree. Featuring soft floral motifs scattered across the body and a nature-inspired scenic artwork on the pallu, this piece beautifully blends botanical illustrations with a minimal, sophisticated handcrafted aesthetic. Crafted for the modern woman, it offers a refined silhouette that speaks of artistic heritage and contemporary fusion.
+Experience the beauty of nature with this floral garden-inspired contemporary linen saree. Featuring soft floral motifs scattered across the body and a nature-inspired scenic artwork on the pallu, this piece beautifully blends flower illustrations with a clean, beautiful handcrafted design. Crafted for the modern woman, it offers a regular fit and look that speaks of beautiful traditional art and modern design.
 
 **HIGHLIGHTS:**
 • Nature-Inspired Scenic Garden Artwork on Pallu
@@ -1989,7 +1997,7 @@ Ideal for:
 - Elegant daytime festive & brunch wear
 - Soft feminine floral-themed events
 - Sophisticated contemporary ethnic looks
-- Artistic heritage celebration gatherings`,
+- Traditional festival celebrations and family gatherings`,
     rating: 4.8,
   },
   {
@@ -2458,6 +2466,253 @@ The soothing beige cream shade gives a classy and minimal look, while the subtle
 
 **STYLING TIP:**
 Style it with oxidised earrings or minimal gold jewelry along with heels for a classy ethnic look.`,
+    rating: 4.8,
+  },
+  {
+    id: "p60",
+    sku: "SAR-TIS-COT-060",
+    name: "Tissue Cotton Digital Floral Print Saree with Blouse Piece",
+    tagline: "Elegant Party & Festive Wear Saree",
+    slug: "tissue-cotton-digital-floral-print-saree-with-blouse-piece",
+    price: 999,
+    originalPrice: 1999,
+    image: "https://drive.google.com/thumbnail?id=1KHXfsoBBBAhhsn7t2nbRIGoG7U2Go9bd&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1KHXfsoBBBAhhsn7t2nbRIGoG7U2Go9bd&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1hWOLWucUmrJNFFqXDujB00i7jLwb3mHg&sz=w1000",
+      "https://drive.google.com/thumbnail?id=13JWJZJTGSA33ZfcOd20d9jrUMGt5IybU&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1v2wzQ_IIbKC_07VYRkj5Xlc9xAwyolUu&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1RuPRcn_0Dxrpyd4DoqMVW_ckZcoOizJg&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Pl6PFuQEDvmd_jewIvs-4L01-fpNPk1e&sz=w1000"
+    ],
+    category: "Sarees",
+    fabric: "Tissue Cotton",
+    color: "Gold & Multicolor Floral",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Upgrade your ethnic collection with this beautiful Tissue Cotton Saree featuring elegant digital floral prints 🌼 Soft, lightweight and graceful drape makes it perfect for festive wear, family functions, parties and traditional occasions. Comes with matching blouse piece for a complete stylish look ✨
+
+**HIGHLIGHTS:**
+• 🌸 Fabric: Tissue Cotton
+• 🎨 Design: Digital Floral Print
+• 👗 Saree Length: 5.50 Meters
+• ✂️ Blouse Length: 1 Meter
+• ✨ Soft & Lightweight Fabric
+• 💖 Perfect for Festive, Casual & Party Wear
+• 🌿 Elegant Floral Pattern with Modern Look
+
+**FABRIC FEATURES:**
+• Soft & lightweight tissue cotton fabric with a beautiful natural sheen
+• Detailed premium digital floral print
+• Extremely easy to drape and comfortable for long-duration party wear
+• Perfectly breathable for all-season ethnic styling
+
+**STYLING TIP:**
+Style this majestic digital floral printed saree with elegant minimal jewelry and metallic heels for a stunning diva look at parties, weddings, or family festivals.`,
+    rating: 4.9,
+  },
+  {
+    id: "p61",
+    sku: "SAR-LIN-WRL-061",
+    name: "Linen Saree with Warli Digital Print & Mirror Work",
+    tagline: "Traditional Ethnic Saree with Tassels",
+    slug: "linen-saree-with-warli-digital-print-and-mirror-work",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1ICWEzHpRhrDb_1Uor6pHJME17k6qkge_&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1ICWEzHpRhrDb_1Uor6pHJME17k6qkge_&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1YNRBtlhzn4USA3TWafQ0eYE3uRR7XlCy&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1dlpczE5Uy_mRg8A5qPDzYU_5QvUwKHUM&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1vbKIoEH6g-9orqzWboQjfa2u7X0c5oa0&sz=w1000"
+    ],
+    category: "Linen Sarees",
+    fabric: "Linen",
+    color: "Beige / Cream",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Add an artistic ethnic charm to your wardrobe with this elegant Linen Saree featuring beautiful Warli Digital Print and stylish Mirror Work ✨ The soothing beige shade with tribal-inspired border design gives a classy traditional look perfect for festive wear, office wear, casual outings and cultural events. Comes with matching blouse piece and decorative tassels for a graceful finish 🌸
+
+**HIGHLIGHTS:**
+• 🌿 Fabric: Linen
+• 🎨 Work: Warli Digital Print
+• ✨ Highlight: Mirror Work Detailing
+• 🧵 Tassel Pallu Design
+• 👗 Saree Length: 5.50 Meters
+• ✂️ Blouse Piece: 1 Meter
+• 🤎 Saree Color: Beige / Cream
+• 🖤 Blouse Color: Black
+• 💖 Lightweight & Comfortable Fabric
+• 🌸 Perfect for Casual, Festive & Traditional Wear
+
+**FABRIC FEATURES:**
+• Soft, breathable and highly durable pure linen blend fabric
+• Intricate warli digital art prints depicting traditional tribal daily life and folk motifs
+• Real mirror work accents carefully detailed along the border for a festive shimmer
+• Beautiful decorative colorful tassels on the pallu to enhance modern appeal
+
+**STYLING TIP:**
+Pair it with the matching black blouse piece and silver oxidised tribal jewelry to highlight the gorgeous Warli print aesthetic.`,
+    rating: 4.8,
+  },
+  {
+    id: "p62",
+    sku: "SAR-LIN-BRD-062",
+    name: "Chiku Linen Saree with Bird Digital Print & Foil Border",
+    tagline: "Elegant Printed Saree with Blouse Piece",
+    slug: "chiku-linen-saree-with-bird-digital-print-and-foil-border",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1NEHBHiqkmhdj7EfgvTGbHSF1h3MYVxt1&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1NEHBHiqkmhdj7EfgvTGbHSF1h3MYVxt1&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1nreGBlzcF5t2GFH5paTI0fvMkEyh9SfI&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1cbymQP0ro-thTbyHdxMePwiXMoBXNQUj&sz=w1000"
+    ],
+    category: "Linen Sarees",
+    fabric: "Linen",
+    color: "Chiku / Beige",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Add elegance to your ethnic wardrobe with this beautiful Chiku Linen Saree featuring graceful bird digital prints and stylish foil line border detailing ✨ The soft earthy tone with artistic nature-inspired design gives a classy and sophisticated look perfect for festive wear, office wear, casual outings and family gatherings 🌿 Comes with matching printed blouse piece for a complete stylish appearance.
+
+**HIGHLIGHTS:**
+• 🌿 Fabric: Linen
+• 🎨 Design: Bird Digital Print
+• ✨ Work: Foil Line Border Design
+• 🤎 Saree Color: Chiku / Beige
+• 🖤 Blouse Color: Navy Blue Printed Blouse
+• 👗 Saree Length: 5.50 Meters
+• ✂️ Blouse Piece Length: 1 Meter
+• 💖 Lightweight & Comfortable Fabric
+• 🌸 Perfect for Casual, Office & Festive Wear
+• 🧵 Elegant Nature Inspired Pattern
+
+**FABRIC FEATURES:**
+• Highly breathable and lightweight premium linen blend
+• Majestic digital artwork of birds and nature-inspired elements
+• Sleek and shiny foil line border detailing for a subtle luxurious touch
+• Smooth and comfortable texture suited for all-day ethnic wear
+
+**STYLING TIP:**
+Style this nature-inspired bird print saree with minimal gold-toned stud earrings and a neat high bun to complement its elegant sophistication.`,
+    rating: 4.8,
+  },
+  {
+    id: "p63",
+    sku: "SAR-LIN-ELE-063",
+    name: "Soft Linen Saree with Elephant Digital Print & Tribal Border",
+    tagline: "Elegant White Ethnic Saree with Blouse Piece",
+    slug: "soft-linen-saree-with-elephant-digital-print-and-tribal-border",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1zgyqrDJ-noXDHb-In0M8xAhdXP6x8m-s&sz=w1000",
+    images: [
+      "https://drive.google.com/thumbnail?id=1zgyqrDJ-noXDHb-In0M8xAhdXP6x8m-s&sz=w1000"
+    ],
+    category: "Linen Sarees",
+    fabric: "Soft Linen",
+    color: "White / Off White",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Enhance your ethnic collection with this graceful Soft Linen Saree featuring beautiful elephant digital prints and stylish tribal border detailing ✨ The elegant white shade combined with artistic traditional motifs gives a classy and cultural look perfect for festive wear, office wear, casual outings and traditional occasions 🌿 Crafted in soft breathable linen fabric for all-day comfort and elegant drape. Comes with matching blouse piece for a complete ethnic look.
+
+**HIGHLIGHTS:**
+• 🌿 Fabric: Soft Linen
+• 🎨 Design: Elephant Digital Print
+• ✨ Pattern: Tribal Border Design
+• 🤍 Saree Color: White / Off White
+• 🖤 Blouse Color: Black Printed Blouse
+• 👗 Saree Length: 5.50 Meters
+• ✂️ Blouse Piece Length: 1 Meter
+• 💖 Soft, Lightweight & Breathable Fabric
+• 🌸 Perfect for Casual, Office & Festive Wear
+• 🧵 Elegant Traditional Ethnic Pattern
+
+**FABRIC FEATURES:**
+• Super soft, highly breathable premium linen fabric blend
+• Artistic elephant digital printed motifs depicting traditional Indian culture
+• Unique border with tribal decorative patterns
+• Perfectly lightweight feel that guarantees graceful effortless draping
+
+**STYLING TIP:**
+Style this beautiful white elephant tribal digital print saree with a high-contrast black printed blouse, elegant silver/oxidized jewelry, and a sleek bindi for a majestic, traditional, and graceful look.`,
+    rating: 4.8,
+  },
+  {
+    id: "p64",
+    sku: "SAR-LIN-WHT-033",
+    name: "White Soft Linen Saree with Digital Elephant Print",
+    tagline: "Elegant Printed Saree with Blouse Piece",
+    slug: "white-soft-linen-saree-with-digital-elephant-print",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w1000"
+    ],
+    stock: 12,
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "White",
+    isVariant: true,
+    colorVariants: [
+      { color: "Blue", slug: "blue-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500" },
+      { color: "White", slug: "white-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w500" },
+      { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500" }
+    ],
+    description: `**DESCRIPTION:**
+Upgrade your ethnic wardrobe with this elegant White Soft Linen Saree featuring stylish digital elephant print and artistic designer border ✨ Crafted from soft breathable linen fabric, this saree offers lightweight comfort and graceful drape for all-day wear. The ivory white shade with colorful artistic patterns gives a classy modern ethnic look perfect for festive wear, office wear, casual outings and family gatherings 🌿 Easy to drape and comfortable to carry all day. Available in 3 beautiful colors.
+
+**HIGHLIGHTS:**
+• 🌿 Fabric: Soft Breathable Linen
+• 🎨 Design: Digital Elephant Print
+• 🤍 Saree Color: White
+• ✨ Artistic Designer Border Print
+• 👗 Saree Length: 5.50 Meters
+• ✂️ Blouse Piece Length: 1 Meter
+• 💖 Soft, Lightweight & Comfortable Fabric
+• 🌸 Easy to Drape & Elegant Fall
+• 👜 Perfect for Office, Casual & Festive Wear
+• 🌈 Available in 3 Beautiful Colors`,
+    rating: 4.8,
+  },
+  {
+    id: "p65",
+    sku: "SAR-LIN-RED-033",
+    name: "Red Soft Linen Saree with Digital Elephant Print",
+    tagline: "Elegant Printed Saree with Blouse Piece",
+    slug: "red-soft-linen-saree-with-digital-elephant-print",
+    price: 699,
+    originalPrice: 1399,
+    image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500",
+    images: [
+      "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w1000"
+    ],
+    stock: 12,
+    category: "Linen Sarees",
+    fabric: "Soft Breathable Linen",
+    color: "Red",
+    isVariant: true,
+    colorVariants: [
+      { color: "Blue", slug: "blue-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500" },
+      { color: "White", slug: "white-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w500" },
+      { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500" }
+    ],
+    description: `**DESCRIPTION:**
+Upgrade your ethnic wardrobe with this elegant Red Soft Linen Saree featuring stylish digital elephant print and artistic designer border ✨ Crafted from soft breathable linen fabric, this saree offers lightweight comfort and graceful drape for all-day wear. The vibrant red shade with colorful artistic patterns gives a classy modern ethnic look perfect for festive wear, office wear, casual outings and family gatherings 🌿 Easy to drape and comfortable to carry all day. Available in 3 beautiful colors.
+
+**HIGHLIGHTS:**
+• 🌿 Fabric: Soft Breathable Linen
+• 🎨 Design: Digital Elephant Print
+• ❤️ Saree Color: Red
+• ✨ Artistic Designer Border Print
+• 👗 Saree Length: 5.50 Meters
+• ✂️ Blouse Piece Length: 1 Meter
+• 💖 Soft, Lightweight & Comfortable Fabric
+• 🌸 Easy to Drape & Elegant Fall
+• 👜 Perfect for Office, Casual & Festive Wear
+• 🌈 Available in 3 Beautiful Colors`,
     rating: 4.8,
   }
 ];

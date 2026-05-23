@@ -350,6 +350,104 @@ apiRouter.post("/meta-capi", async (req, res) => {
   }
 });
 
+// ==== Server-Side Geolocation API ====
+apiRouter.get("/geolocation", async (req, res) => {
+  try {
+    const rawIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip || "";
+    // Handle proxy-forwarded IP arrays
+    let clientIp = typeof rawIp === "string" ? rawIp.split(',')[0].trim() : rawIp;
+    
+    // Normalize IPv6 mapped IPv4 addresses (like ::ffff:127.0.0.1)
+    if (clientIp.startsWith("::ffff:")) {
+      clientIp = clientIp.substring(7);
+    }
+
+    console.log(`[GEO] Detected client IP: ${clientIp}`);
+
+    // If local or loopback (e.g. testing in dev server), return Nagpur or mock fallback
+    if (!clientIp || clientIp === "127.0.0.1" || clientIp === "::1" || clientIp === "localhost") {
+      return res.json({
+        success: true,
+        city: "Nagpur",
+        country: "IN",
+        isLocalhost: true
+      });
+    }
+
+    // Try primary keyless geolocation resolver: https://ipwho.is/{ip}
+    const url = `https://ipwho.is/${encodeURIComponent(clientIp)}`;
+    const https = await import("https");
+
+    const fetchGeoData = () => {
+      return new Promise((resolve, reject) => {
+        https.get(url, (geoRes) => {
+          let data = "";
+          geoRes.on("data", chunk => data += chunk);
+          geoRes.on("end", () => {
+            try {
+              const parsed = JSON.parse(data);
+              resolve(parsed);
+            } catch (e) {
+              reject(e);
+            }
+          });
+        }).on("error", (err) => {
+          reject(err);
+        });
+      });
+    };
+
+    const geoData = await fetchGeoData();
+    if (geoData && geoData.success && geoData.city) {
+      console.log(`[GEO] Successfully localized IP [${clientIp}] to city: ${geoData.city}`);
+      return res.json({
+        success: true,
+        city: geoData.city,
+        country: geoData.country_code || "IN"
+      });
+    }
+
+    // Fallback Geolocation API: https://ipapi.co/{ip}/json/
+    const fallbackUrl = `https://ipapi.co/${encodeURIComponent(clientIp)}/json/`;
+    const fetchFallbackGeoData = () => {
+      return new Promise((resolve, reject) => {
+        https.get(fallbackUrl, (geoRes) => {
+          let data = "";
+          geoRes.on("data", chunk => data += chunk);
+          geoRes.on("end", () => {
+            try {
+              const parsed = JSON.parse(data);
+              resolve(parsed);
+            } catch (e) {
+              reject(e);
+            }
+          });
+        }).on("error", (err) => {
+          reject(err);
+        });
+      });
+    };
+
+    const fbData = await fetchFallbackGeoData();
+    if (fbData && fbData.city && !fbData.error) {
+      console.log(`[GEO-FB] Successfully localized IP [${clientIp}] to city: ${fbData.city}`);
+      return res.json({
+        success: true,
+        city: fbData.city,
+        country: fbData.country_code || "IN"
+      });
+    }
+
+    // Return failure gracefully if lookup services are rate-limited or offline
+    console.warn(`[GEO] Geolocation resolution failed for IP [${clientIp}]`);
+    res.json({ success: false, error: "Geolocation resolution failed" });
+
+  } catch (error) {
+    console.error("[GEO] Error resolving geolocation server-side:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
 // Mount API router
 app.use("/api", apiRouter);
 
