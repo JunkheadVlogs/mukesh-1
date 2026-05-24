@@ -9,8 +9,22 @@ import fs from "fs";
 import { fileURLToPath } from 'url';
 import https from "https";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let _filename = "";
+let _dirname = "";
+try {
+  if (typeof import.meta !== "undefined" && import.meta.url) {
+    _filename = fileURLToPath(import.meta.url);
+    _dirname = path.dirname(_filename);
+  } else {
+    _filename = typeof __filename !== "undefined" ? __filename : process.cwd();
+    _dirname = typeof __dirname !== "undefined" ? __dirname : process.cwd();
+  }
+} catch (e) {
+  _filename = process.cwd();
+  _dirname = process.cwd();
+}
+const __filename = _filename;
+const __dirname = _dirname;
 
 dotenv.config();
 

@@ -876,17 +876,17 @@ export default function Layout() {
                 </div>
 
                 {/* 3. Bottom Client Support & Social Integration info panel */}
-                <div className="mt-auto pt-2 border-t border-[#C8A96B]/15 space-y-2">
+                <div className="mt-6 pt-2 border-t border-[#C8A96B]/15 space-y-2">
                   <div className="space-y-1 bg-[#F7F4EF]/80 px-3 py-2 rounded-md border border-[#C8A96B]/15 shadow-3xs">
                     <span className="text-[7.5px] font-sans font-extrabold tracking-[2px] text-amber-900 uppercase block leading-none mb-1">
                       Customer Assistance
                     </span>
                     <a
-                      href={`mailto:${CONFIG.STORE_EMAIL}`}
+                      href="mailto:info@mukeshsarees.com"
                       className="text-[10px] tracking-wider text-neutral-950 hover:text-gold-600 font-bold transition-colors flex items-center gap-1.5 font-sans break-all"
                     >
                       <Mail size={10} className="text-[#C8A96B] flex-shrink-0" />
-                      <span className="text-neutral-900">{CONFIG.STORE_EMAIL}</span>
+                      <span className="text-neutral-900">info@mukeshsarees.com</span>
                     </a>
                     <a
                       href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}

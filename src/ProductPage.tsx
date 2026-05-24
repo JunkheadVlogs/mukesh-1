@@ -765,7 +765,7 @@ export default function ProductPage() {
 
               {/* Description */}
               <section className="pt-1 border-t border-[var(--color-border)] mt-1">
-                <ProductDescription description={product.description} />
+                <ProductDescription description={product.description} product={product} />
               </section>
             </div>
           </div>

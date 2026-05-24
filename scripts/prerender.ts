@@ -84,7 +84,7 @@ function getFooterHtml(): string {
           <h4 style="font-family: 'Playfair Display', serif; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: #faf6f0; margin: 0 0 20px 0;">Contact Details</h4>
           <p style="opacity: 0.82; font-size: 13px; line-height: 1.8; color: #e5dfd5; margin: 0 0 12px 0;">📍 Mukesh Saree Centre, Jagnath Road, Gandhibagh, Nagpur, MH, 440002</p>
           <p style="opacity: 0.82; font-size: 13px; color: #e5dfd5; margin: 0 0 8px 0;">📞 Phone: +91 7020664641</p>
-          <p style="opacity: 0.82; font-size: 13px; color: #e5dfd5; margin: 0;">✉ Email: info.mukeshsareecentre@gmail.com</p>
+          <p style="opacity: 0.82; font-size: 13px; color: #e5dfd5; margin: 0;">✉ Email: info@mukeshsarees.com</p>
         </div>
       </div>
       <div style="text-align: center; border-top: 1px solid rgba(250,246,240,0.08); padding-top: 24px; margin-top: 64px; font-size: 12px; opacity: 0.55; color: #faf6f0; font-family: 'Inter', sans-serif;">
@@ -546,7 +546,7 @@ async function runPrerender() {
               <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; margin-top: 0; margin-bottom: 24px; color: #1a0a00;">Store Showroom</h2>
               <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">📍 <strong>Address:</strong> Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India</p>
               <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">📞 <strong>Phone:</strong> +91 7020664641</p>
-              <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">✉ <strong>Email:</strong> info.mukeshsareecentre@gmail.com</p>
+              <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">✉ <strong>Email:</strong> info@mukeshsarees.com</p>
               <p style="font-size: 14px; line-height: 1.6; margin-bottom: 0;">⏰ <strong>Hours:</strong> 11:30 AM to 9:30 PM (All days except Mon)</p>
             </div>
           </main>
@@ -605,7 +605,7 @@ async function runPrerender() {
               <p>Returns are accepted within 7 days of package delivery. The items must be unused, unwashed, unaltered, and retain all native tags and designer cardboards.</p>
 
               <h3>2. How to Initiate a Return</h3>
-              <p>Email us at info.mukeshsareecentre@gmail.com or WhatsApp us at +91 7020664641 with your Order ID and photo of the item. Our team will verify eligibility.</p>
+              <p>Email us at info@mukeshsarees.com or WhatsApp us at +91 7020664641 with your Order ID and photo of the item. Our team will verify eligibility.</p>
 
               <h3>3. Refunds</h3>
               <p>Once verified, refunds are processed via Bank Transfer or GPay within 3-5 business days. For COD orders, refund options include store credit or UPI/Bank transfers securely.</p>

@@ -287,7 +287,7 @@ Made from Premium Chiffon. This piece is designed to offer maximum comfort while
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -336,7 +336,7 @@ Made from premium Khadi Cotton. This piece is designed to offer maximum comfort 
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -726,7 +726,7 @@ High-quality Soft Linen blend. This fabric is specially processed for a smooth, 
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Border: No Border (Clean Edge)
 
 **STYLING:**
@@ -769,7 +769,7 @@ Premium Soft Linen. Known for its strength and moisture-wicking properties, this
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Finish: Soft Finished
 
 **STYLING:**
@@ -812,7 +812,7 @@ Made from Premium Georgette. This piece is designed to offer maximum comfort whi
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -859,7 +859,7 @@ Made from Premium Georgette. This piece is designed to offer maximum comfort whi
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -906,7 +906,7 @@ Made from Premium Georgette. This piece is designed to offer maximum comfort whi
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -952,7 +952,7 @@ Made from Premium Georgette. This piece is designed to offer maximum comfort whi
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -1009,7 +1009,7 @@ Crafted from our signature Premium Linen. Durable yet exceptionally soft, it get
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Digital Print
 
 **STYLING:**
@@ -1061,7 +1061,7 @@ Made from Premium Linen. This piece is designed to offer maximum comfort while m
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -1116,7 +1116,7 @@ Made from Premium Linen. This piece is designed to offer maximum comfort while m
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -1172,7 +1172,7 @@ Made from Premium Linen. This piece is designed to offer maximum comfort while m
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -1227,7 +1227,7 @@ Made from Premium Linen. This piece is designed to offer maximum comfort while m
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -1282,7 +1282,7 @@ Made from Premium Linen. This piece is designed to offer maximum comfort while m
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -1330,7 +1330,7 @@ A vision of purity and freshness, this White Pure Linen Saree features a strikin
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 
 **STYLING:**
 Recommended for:
@@ -1515,7 +1515,7 @@ Made from Premium Soft Linen. This piece is designed to offer maximum comfort wh
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Style: Free size natural drape
 
 **STYLING:**
@@ -1570,7 +1570,7 @@ Comes with a matching solid Sage Grey blouse piece featuring a subtle sheen text
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Finish: Premium Soft Matte
 
 **STYLING:**
@@ -1617,7 +1617,7 @@ Premium Linen with a natural woven texture and traditional finish, providing exc
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Finish: Soft Beautiful Touch
 
 **STYLING:**
@@ -1627,51 +1627,6 @@ Ideal for:
 - Contemporary evening wear
 - Statement casual outings`,
     rating: 4.7,
-  },
-  {
-    id: "p39",
-    sku: "SAR-LIN-MNT-039",
-    name: "Blush Botanical Fusion Linen Saree",
-    tagline: "Elegant Vintage Charm with Modern Abstract Panels",
-    slug: "blush-botanical-fusion-linen-saree",
-    price: 699,
-    originalPrice: 1399,
-    image: "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
-    images: [
-      "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
-    ],
-    category: "Linen Sarees",
-    fabric: "High-quality Natural Linen",
-    color: "Soft Blush Pink with Pastel Beige",
-    isNew: true,
-    description: `**DESCRIPTION:**
-Discover soft vintage-style charm with this beautiful blushing-floral linen saree. The soft blush pink and pastel beige background is a beautiful canvas for a modern floral design with abstract blocks. Framed by a multi-color floral border featuring beautiful vine motifs, traditional patterns, and a dark charcoal accent stripe.
-
-**HIGHLIGHTS:**
-• Modern Floral Design with Abstract Blocks
-• Intricate Floral Vine & Traditional Border
-• Dark Charcoal Accent Stripe
-• Soft Beautiful Finish
-• Feminine Vintage-Inspired Charm
-
-**COLOR PALETTE:**
-Soft Blush Pink with pastel beige tones, layered with Deep Pink, Maroon, Peach, Olive Green, Charcoal Grey, and Ivory White.
-
-**FABRIC DETAILS:**
-High-quality Natural Linen, bringing a lovely woven texture and a soft beautiful finish for effortless grace and supreme comfort.
-
-**DIMENSIONS:**
-• Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
-• Finish: Premium Soft Weave
-
-**STYLING:**
-Ideal for:
-- Brunch gatherings & daytime events
-- Sophisticated garden parties
-- Festive daytime wear
-- Vintage-inspired celebrations`,
-    rating: 4.8,
   },
   {
     id: "p40",
@@ -1707,7 +1662,7 @@ Premium Linen Cotton Blend with a soft, breathable texture and a natural matte f
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Finish: Natural Matte Handloom Look
 
 **STYLING:**
@@ -1788,7 +1743,7 @@ Includes a matching Wine-Maroon blouse piece with subtle woven ethnic motifs and
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Finish: Premium Soft Matte
 
 **STYLING:**
@@ -1891,7 +1846,7 @@ Includes a matching Blush Beige blouse piece with a subtle woven floral-geometri
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Finish: Premium Soft Matte
 
 **STYLING:**
@@ -1938,7 +1893,7 @@ High-quality Linen Cotton blend with a natural woven texture and a soft matte fi
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Finish: Premium Soft Matte
 
 **STYLING:**
@@ -1989,7 +1944,7 @@ Includes a matching Ivory blouse piece with tiny floral prints and soft pastel d
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Finish: Premium Soft Matte
 
 **STYLING:**
@@ -2069,7 +2024,7 @@ Includes a matching pastel Sea Green blouse piece with a subtle woven texture to
 
 **DIMENSIONS:**
 • Saree Length: 5.5 Meters
-• Blouse Piece: 0.8 Meters (Unstitched)
+• Blouse Piece: 1 Meter (Unstitched)
 • Finish: Premium Soft Matte
 
 **STYLING:**

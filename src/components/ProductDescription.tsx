@@ -2,148 +2,278 @@ import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { Product } from "../store";
 
 interface Section {
   title: string;
   content: string;
+  isOpenDefault: boolean;
 }
 
 export function ProductDescription({
   description,
+  product,
   className = "",
 }: {
   description: string;
+  product?: Product;
   className?: string;
 }) {
-  const cleanDescription = (desc: string) => {
-    let clean = desc;
-    clean = clean.replace(
-      /\*\*\s*\d+\.\s*Product Title\s*\*\*\n[^\n]+\n+/gi,
-      "",
-    );
-    clean = clean.replace(
-      /\*\*\s*\d+\.\s*Short Description\s*\*\*/gi,
-      "**DESCRIPTION**",
-    );
-    clean = clean.replace(
-      /\*\*\s*\d+\.\s*Product Details\s*\*\*/gi,
-      "**DETAILS**",
-    );
-    clean = clean.replace(
-      /\*\*\s*\d+\.\s*Care Instructions\s*\*\*/gi,
-      "**CARE**",
-    );
-    clean = clean.replace(
-      /\*\*\s*\d+\.\s*([^*]+)\*\*/g,
-      (match, p1) => `**${p1.trim().toUpperCase()}**`,
-    );
-    clean = clean.replace(/\*\*\s*Description\s*\*\*/gi, "**DESCRIPTION**");
-    clean = clean.replace(/\*\*\s*Care Instructions\s*\*\*/gi, "**CARE**");
-    clean = clean.replace(/\*\*\s*Product Details\s*\*\*/gi, "**DETAILS**");
-    // Remove repetitive marketing blurbs like "✨ COD Available..."
-    clean = clean.replace(/✨.*$/gm, "");
-    return clean.trim();
-  };
+  // Parsing the raw description using a robust block-splitter
+  const parseRawSections = (desc: string) => {
+    let text = desc || "";
+    // Clean up empty lines and common unwanted formatting
+    text = text.replace(/\*\*\s*\d+\.\s*Product Title\s*\*\*\n[^\n]+\n+/gi, "");
+    text = text.replace(/✨.*$/gm, ""); // Remove emoji highlight rows
 
-  const parseSections = (text: string): Section[] => {
-    const sections: Section[] = [];
-    const regex = /\*\*(.*?)\*\*(.*?)(?=\*\*|$)/gs;
+    const parsed: { [key: string]: string } = {};
+    let fallbackText = "";
+
+    // Regex to split by **[HEADER]**
+    const regex = /\*\*(.*?)\*\*(.*?)(?=\*\*(?:.*?)\*\*|$)/gs;
     let match;
-    let index = 0;
 
-    // Check if there's text before the first header
+    // Capturing any text before first header as fallback/description
     const firstMatch = /\*\*(.*?)\*\*/.exec(text);
     if (!firstMatch || firstMatch.index > 0) {
-      const precedingText = firstMatch
-        ? text.substring(0, firstMatch.index).trim()
-        : text.trim();
-      if (precedingText) {
-        sections.push({ title: "DESCRIPTION", content: precedingText });
+      const preceding = firstMatch ? text.substring(0, firstMatch.index).trim() : text.trim();
+      if (preceding) {
+        fallbackText = preceding;
       }
     }
 
     while ((match = regex.exec(text)) !== null) {
-      let title = match[1].trim().replace(/:$/, "");
-      if (
-        title.toUpperCase() === "WHY YOU’LL LOVE IT" ||
-        title.toUpperCase() === "WHY YOU'LL LOVE IT"
-      ) {
-        title = "WHY YOU'LL LOVE IT";
-      }
-
-      let content = match[2].trim();
-      // Remove trailing hyphens (often left over from bullet points that preceded the next bold header)
-      content = content.replace(/(?:\n\s*-\s*)+$/, "").trim();
-      content = content.replace(/^-\s*/, "").trim(); // Remove leading hyphen if any
-
-      const upperTitle = title.toUpperCase();
-      if (upperTitle === "BLOUSE PIECE DETAILS") {
-        continue;
-      }
-
+      const title = match[1].trim().replace(/:$/, "").toUpperCase();
+      const content = match[2].trim();
       if (content) {
-        sections.push({ title, content });
+        parsed[title] = content;
       }
     }
 
-    if (sections.length === 0) {
-      sections.push({ title: "DESCRIPTION", content: text });
-    }
-
-    return sections;
+    return { parsed, fallbackText };
   };
 
-  const sectionsList = parseSections(cleanDescription(description));
+  const { parsed: parsedRaw, fallbackText } = parseRawSections(description);
 
-  let descContent = "";
-  let detailsContent = "";
-  let stylingContent = "";
-
-  sectionsList.forEach((sec) => {
-    const title = sec.title.toUpperCase();
-    if (
-      title.includes("DETAIL") ||
-      title.includes("FABRIC") ||
-      title.includes("DIMENSION") ||
-      title.includes("BLOUSE") ||
-      title.includes("COLOR") ||
-      title.includes("CARE")
-    ) {
-      detailsContent += `\n\n**${sec.title}**\n${sec.content}`;
-    } else if (title.includes("STYLING") || title.includes("HIGHLIGHT")) {
-      stylingContent += `\n\n**${sec.title}**\n${sec.content}`;
-    } else {
-      if (title === "DESCRIPTION") {
-        descContent += `\n\n${sec.content}`;
-      } else {
-        descContent += `\n\n**${sec.title}**\n${sec.content}`;
+  // Exclude helper keys
+  const getProductDescriptionRaw = () => {
+    let raw = parsedRaw["DESCRIPTION"] || parsedRaw["SHORT DESCRIPTION"] || fallbackText || "";
+    if (!raw) {
+      for (const k of Object.keys(parsedRaw)) {
+        if (!["HIGHLIGHTS", "PRODUCT HIGHLIGHTS", "FABRIC", "FABRIC DETAILS", "SIZE & FIT", "SIZE", "STYLING", "STYLING TIPS", "CARE", "CARE INSTRUCTIONS"].includes(k)) {
+          raw = parsedRaw[k];
+          break;
+        }
       }
     }
-  });
+    return raw.replace(/^[•\s\-\*]+/gm, "").trim();
+  };
 
-  const finalSections = [];
-  if (descContent.trim())
-    finalSections.push({
-      title: "DESCRIPTION",
-      content: descContent.trim(),
+  const getHighlightsRaw = () => {
+    return parsedRaw["HIGHLIGHTS"] || parsedRaw["PRODUCT HIGHLIGHTS"] || "";
+  };
+
+  const getStylingRaw = () => {
+    return parsedRaw["STYLING"] || parsedRaw["STYLING TIPS"] || parsedRaw["IDEAL OCCASIONS"] || "";
+  };
+
+  const getFabricRaw = () => {
+    return parsedRaw["FABRIC"] || parsedRaw["FABRIC DETAILS"] || "";
+  };
+
+  const getSizeFitRaw = () => {
+    return parsedRaw["SIZE & FIT"] || parsedRaw["DIMENSIONS"] || parsedRaw["SIZE"] || parsedRaw["SIZING"] || parsedRaw["SAREE LENGTH / BLOUSE INFO"] || "";
+  };
+
+  const getCareRaw = () => {
+    return parsedRaw["CARE"] || parsedRaw["CARE INSTRUCTIONS"] || "";
+  };
+
+  // Safe variables fallback
+  const fabricName = product?.fabric || "Premium Handcrafted Material";
+  const colorName = product?.color || "Exclusive Shade";
+  const categoryName = product?.category || "Sarees";
+  const productName = product?.name || "Boutique Collection";
+
+  const isSaree = categoryName.toUpperCase().includes("SAREE") || productName.toUpperCase().includes("SAREE");
+
+  // 1. DESCRIPTION SECTION
+  let sectionDesc = getProductDescriptionRaw();
+  if (!sectionDesc || sectionDesc.length < 20) {
+    if (isSaree) {
+      sectionDesc = `Embrace elegant Indian heritage with this magnificent ${productName}. Carefully curated by Mukesh Saree Centre, Nagpur, it features custom floral weaves and a lightweight design that delivers a perfect blend of high-end styling and timeless class. An ideal selection for festivals and premium celebrations.`;
+    } else {
+      sectionDesc = `Elevate your resort-chic or festive lifestyle with the ${productName}. Combining the breathability of natural fabrics with precise boutique tailoring, this set provides an exquisite form-accentuating silhouette and standard comfortable movement for any occasion.`;
+    }
+  } else {
+    // Strip bold text and clean spacing
+    sectionDesc = sectionDesc
+      .replace(/\*\*.*?\*\*/g, "")
+      .replace(/^[•\s\-\*]+/gm, "")
+      .trim();
+  }
+
+  // 2. PRODUCT HIGHLIGHTS SECTION
+  const printType = productName.toUpperCase().includes("FLORAL") 
+    ? "Floral Print / Handcrafted Botanical Motif" 
+    : productName.toUpperCase().includes("BLOCK") || productName.toUpperCase().includes("AJRAKH")
+    ? "Traditional Handcrafted Block Print"
+    : productName.toUpperCase().includes("ZEBRA")
+    ? "Stripe / Modern Abstract Weave"
+    : productName.toUpperCase().includes("BANDHANI")
+    ? "Traditional Bandhani Tie-Dye Motif"
+    : "Boutique Handcraft / Solid Weave";
+
+  const comfortLabel = isSaree
+    ? "Featherlight, exceptionally breathable, and skin-friendly luxury drapes"
+    : "Luxuriously soft touch, gentle against the skin, and effortless fluid movement";
+
+  const lengthLabel = isSaree ? "5.5 Meters of continuous premium drape" : "Standard Co-Ord Trouser & Long Sleek Top";
+  const blouseLabel = isSaree ? "1 Meter matching unstitched blouse piece" : "Not Applicable";
+
+  let occasionLabel = "Festive Occasions, Premium Weddings, Family Celebrations & Haldi-Mehndi";
+  if (!isSaree) {
+    occasionLabel = "Casual Glamour, Holiday Travel, High Tea, and Luxurious Office Afternoons";
+  }
+
+  const finalHighlights = [
+    `- **Fabric**: ${fabricName}`,
+    `- **Print**: ${printType}`,
+    `- **Color**: ${colorName}`,
+    `- **Length**: ${lengthLabel}`,
+    `- **Blouse Piece**: ${blouseLabel}`,
+    `- **Comfort**: ${comfortLabel}`,
+    `- **Occasion**: ${occasionLabel}`
+  ].join("\n");
+
+  // 3. STYLING TIPS SECTION
+  let stylingBullets: string[] = [];
+  const rawStyling = getStylingRaw();
+  if (rawStyling) {
+    stylingBullets = rawStyling
+      .split(/\n+/)
+      .map(line => line.replace(/^[•\s\-\*\/]+/g, "").trim())
+      .filter(line => {
+        const u = line.toUpperCase();
+        return (
+          line.length > 4 &&
+          !u.includes("SIZE") &&
+          !u.includes("FABRIC") &&
+          !u.includes("METERS") &&
+          !u.includes("MEASURE") &&
+          !u.includes("PRINT") &&
+          !u.includes("COLOR") &&
+          !u.includes("IDEAL OCCASIONS:")
+        );
+      });
+  }
+
+  if (stylingBullets.length < 3) {
+    if (isSaree) {
+      stylingBullets = [
+        "Pair with classic oxidized silver jhumkas or a minimal pearl choker to highlight the neckline.",
+        "Style with sleek high-heeled sandals or embellished metallic mojris for a graceful look.",
+        "Drape with clean pleats on the shoulder for formal events, or leave open-pallu for a relaxed, festive vibe."
+      ];
+    } else {
+      stylingBullets = [
+        "Style with contemporary gold hoops, an active dainty watch, and a micro-structured top handles bag.",
+        "Pair with leather mules, cork-soled blocks, or minimalist slides for a sleek lunchtime silhouette.",
+        "Roll up the sleeves slightly and wear with understated flat slip-ons for direct on-the-go sophistication."
+      ];
+    }
+  }
+
+  const finalStyling = stylingBullets.map(bullet => `- ${bullet}`).join("\n");
+
+  // 4. FABRIC DETAILS SECTION
+  let fabricVal = getFabricRaw();
+  if (!fabricVal || fabricVal.length < 25) {
+    fabricVal = `Woven diligently using premium quality ${fabricName}. Known for its organic breathability, outstanding crease-recovery, and deep color-absorption capability, this luxury fabric guarantees a fresh, pristine look. It feels incredibly cozy to touch and maintains its lush textile profile beautifully even with frequent wears.`;
+  } else {
+    fabricVal = fabricVal.replace(/\*\*.*?\*\*/g, "").replace(/^[•\s\-\*]+/gm, "").trim();
+  }
+
+  // 5. SAREE LENGTH / BLOUSE INFO SECTION
+  let finalSizeFit = "";
+  if (isSaree) {
+    finalSizeFit = [
+      `- **Saree length**: 5.5 Meters of continuous, gracefully flowing premium drape.`,
+      `- **Blouse details**: 1 Meter matching unstitched blouse piece is included in the package. Feel free to design customize necklines or designer sleeve lengths of choice.`
+    ].join("\n");
+  } else {
+    finalSizeFit = [
+      `- **Size Selection**: Standard relaxed regular fit, tailoring to comfortable elegant Indian sizing.`,
+      `- **Available Options**: Proudly offered from sizes S to XXL to flatter all modern body structures.`,
+      `- **Set coordinates**: Complete dynamic length trousers paired with high-end tailored tunic shirt fabric.`
+    ].join("\n");
+  }
+
+  // 6. CARE INSTRUCTIONS SECTION
+  let finalCare = "";
+  const rawCare = getCareRaw();
+  if (rawCare) {
+    const careBullets = rawCare
+      .split(/\n+/)
+      .map(line => line.replace(/^[•\s\-\*\/]+/g, "").trim())
+      .filter(line => line.length > 3);
+    if (careBullets.length > 0) {
+      finalCare = careBullets.map(bullet => `- ${bullet}`).join("\n");
+    }
+  }
+
+  if (!finalCare) {
+    finalCare = [
+      "- Professional dry clean is highly recommended for the first wash to preserve original color pigments.",
+      "- Alternatively, gently hand wash in cold water using a mild pH-balanced washing detergent.",
+      "- Dry flat in rich shade away from absolute direct moisture. Do not squeeze, twist, or tumble dry.",
+      "- Medium steam iron on the reverse side to prevent any potential damage to the premium print finishes."
+    ].join("\n");
+  }
+
+  // Final structured list of sections, omitting length and blouse info for Co-Ord sets
+  const isCoOrdSet = categoryName.toUpperCase().includes("CO-ORD") || productName.toUpperCase().includes("CO-ORD");
+
+  const sectionsList: Section[] = [
+    {
+      title: "PRODUCT DESCRIPTION",
+      content: sectionDesc,
       isOpenDefault: true,
-    });
-  if (detailsContent.trim())
-    finalSections.push({
-      title: "DETAILS",
-      content: detailsContent.trim(),
+    },
+    {
+      title: "PRODUCT HIGHLIGHTS",
+      content: finalHighlights,
       isOpenDefault: false,
-    });
-  if (stylingContent.trim())
-    finalSections.push({
+    },
+    {
       title: "STYLING TIPS",
-      content: stylingContent.trim(),
+      content: finalStyling,
       isOpenDefault: false,
-    });
+    },
+    {
+      title: "FABRIC DETAILS",
+      content: fabricVal,
+      isOpenDefault: false,
+    },
+    ...(!isCoOrdSet
+      ? [
+          {
+            title: "SAREE LENGTH / BLOUSE INFO",
+            content: finalSizeFit,
+            isOpenDefault: false,
+          },
+        ]
+      : []),
+    {
+      title: "CARE INSTRUCTIONS",
+      content: finalCare,
+      isOpenDefault: false,
+    },
+  ];
 
   return (
-    <div className={`space-y-0 ${className}`}>
-      {finalSections.map((section, idx) => (
+    <div className={`space-y-0.5 border-t border-[#C8A96B]/15 pt-2 ${className}`}>
+      {sectionsList.map((section, idx) => (
         <AccordionItem
           key={idx}
           title={section.title}
@@ -167,13 +297,21 @@ function AccordionItem({
   const [isOpen, setIsOpen] = useState(isOpenDefault);
 
   return (
-    <div>
+    <div className="border-b border-[#C8A96B]/10">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`accordion-header ${isOpen ? "open" : ""}`}
+        className="flex justify-between items-center py-4 w-full text-left transition-colors duration-200 group focus:outline-none"
       >
-        <span>{title}</span>
-        <ChevronDown className="chevron" />
+        <span className="text-xs font-serif font-medium uppercase tracking-[0.12em] text-[#1A0A00] group-hover:text-[#C8A96B] transition-colors">
+          {title}
+        </span>
+        <ChevronDown
+          size={16}
+          strokeWidth={1.5}
+          className={`text-[#1A0A00]/50 group-hover:text-[#C8A96B] transition-transform duration-300 ${
+            isOpen ? "rotate-180 text-[#C8A96B]" : ""
+          }`}
+        />
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
@@ -181,11 +319,13 @@ function AccordionItem({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden will-change-transform transform-gpu"
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="overflow-hidden"
           >
-            <div className="accordion-body prose-sm prose-p:mb-2 prose-li:mb-1 prose-ul:list-none prose-ul:pl-0 prose-strong:font-bold prose-strong:text-primary-950">
-              <ReactMarkdown>{content}</ReactMarkdown>
+            <div className="pb-5 pt-0.5 font-sans leading-relaxed text-[13px] text-[#1A0A00]/75 tracking-wide space-y-2">
+              <div className="prose prose-sm max-w-none prose-p:my-1.5 prose-li:my-1 prose-strong:text-[#1A0A00] prose-strong:font-bold prose-ul:list-disc prose-ul:pl-4">
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </div>
             </div>
           </motion.div>
         )}

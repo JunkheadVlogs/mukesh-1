@@ -278,7 +278,7 @@ export default function Home() {
           style={{ y: heroImageY }}
         >
           <OptimizedImage
-            src="/images/hero_exhibition.webp"
+            src="https://lh3.googleusercontent.com/d/1tucc1ZblHYQt5suadHkwZl-3BzyzAuIA"
             width={1600}
             height={1000}
             alt="Hero Exhibition"
@@ -391,7 +391,7 @@ export default function Home() {
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="/images/category_coord_sets.webp"
+                  src="https://lh3.googleusercontent.com/d/1lSuvWpjCmEyPWtWlDOmlJPAP9oaBaW6c"
                   width={800}
                   alt="Co-Ord Sets"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
@@ -423,7 +423,7 @@ export default function Home() {
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="/images/category_sarees.webp"
+                  src="https://lh3.googleusercontent.com/d/1oU1UYZS8CU3OOa-3CNyc3cQlyAS0AfJ_"
                   width={800}
                   alt="Sarees"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"

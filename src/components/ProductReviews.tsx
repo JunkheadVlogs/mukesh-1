@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Product, Review } from "../store";
-import { Star, ShieldCheck, ChevronDown, X } from "lucide-react";
+import { Star, ShieldCheck, ChevronDown, X, Camera, Image as ImageIcon, Loader2, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { getProductReviewStats, getSeededRandom } from "../utils";
 
@@ -12,6 +12,7 @@ interface ProductReviewsProps {
 export interface EnhancedReview extends Review {
   city?: string;
   trustSignal?: string;
+  images?: string[];
 }
 
 const firstFemaleNames = [
@@ -216,17 +217,102 @@ function generateReviews(product: Product): EnhancedReview[] {
   return reviews;
 }
 
+const compressAndOptimizeImage = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    if (!window.FileReader) {
+      resolve("");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+          resolve(dataUrl);
+        } else {
+          resolve((e.target?.result as string) || "");
+        }
+      };
+      img.onerror = () => {
+        resolve((e.target?.result as string) || "");
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = (err) => reject(err);
+    reader.readAsDataURL(file);
+  });
+};
+
+const ratingLabels = [
+  "Select a rating",
+  "1 - Disappointed",
+  "2 - Below Expectations",
+  "3 - Met Expectations",
+  "4 - Highly Satisfied",
+  "5 - Truly Elegant!"
+];
+
 export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
   const [visibleCount, setVisibleCount] = useState(3);
   const [isWritingReview, setIsWritingReview] = useState(false);
-  const [reviewForm, setReviewForm] = useState({
+  const [reviewForm, setReviewForm] = useState<{
+    name: string;
+    rating: number;
+    comment: string;
+    images: string[];
+  }>({
     name: "",
     rating: 5,
     comment: "",
+    images: [],
   });
+  
   const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
+  const [selectedFullImage, setSelectedFullImage] = useState<string | null>(null);
 
-  const [localReviews, setLocalReviews] = useState<EnhancedReview[]>([]);
+  const [localReviews, setLocalReviews] = useState<EnhancedReview[]>(() => {
+    try {
+      const saved = localStorage.getItem(`reviews-${product.id}`);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const localReviewsLength = localReviews.length;
+  useEffect(() => {
+    try {
+      localStorage.setItem(`reviews-${product.id}`, JSON.stringify(localReviews));
+    } catch (e) {
+      console.error("Failed to save reviews to localStorage", e);
+    }
+  }, [localReviewsLength, product.id]);
 
   const handleReviewSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -238,6 +324,7 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
       author: reviewForm.name || "Anonymous",
       rating: reviewForm.rating,
       text: reviewForm.comment,
+      images: reviewForm.images,
       date: new Date().toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
@@ -251,8 +338,57 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
     setTimeout(() => {
       setIsWritingReview(false);
       setIsReviewSubmitted(false);
-      setReviewForm({ name: "", rating: 5, comment: "" });
+      setReviewForm({ name: "", rating: 5, comment: "", images: [] });
+      setUploadError(null);
     }, 2000);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    setUploadError(null);
+    setIsUploading(true);
+
+    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+    const loadedImages: string[] = [...reviewForm.images];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!validTypes.includes(file.type)) {
+        setUploadError("Only JPG, PNG and WEBP formats are supported.");
+        continue;
+      }
+      
+      if (file.size > 10 * 1024 * 1024) {
+        setUploadError("Image file size should be less than 10MB.");
+        continue;
+      }
+
+      try {
+        const optimized = await compressAndOptimizeImage(file);
+        if (optimized) {
+          loadedImages.push(optimized);
+        }
+      } catch (err) {
+        console.error("Image optimization failed", err);
+        setUploadError("Failed to upload some images. Please try again.");
+      }
+    }
+
+    setReviewForm((prev) => ({
+      ...prev,
+      images: loadedImages,
+    }));
+    setIsUploading(false);
+    e.target.value = "";
+  };
+
+  const removeUploadedImage = (indexToRemove: number) => {
+    setReviewForm((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, idx) => idx !== indexToRemove),
+    }));
   };
 
   const reviews = useMemo(() => {
@@ -303,66 +439,88 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
       {createPortal(
         <AnimatePresence>
           {isWritingReview && (
-            <div className="fixed inset-0 z-[1005] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-[2px]">
+            <div className="fixed inset-0 z-[1005] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-[2px]">
               <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                initial={{ opacity: 0, scale: 0.95, y: 15 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white w-full max-w-[420px] max-h-[85vh] overflow-y-auto rounded-[18px] shadow-2xl relative"
+                exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                className="bg-[#FCFAF7] w-full max-w-[450px] max-h-[92vh] sm:max-h-[90vh] overflow-hidden rounded-[20px] shadow-2xl relative flex flex-col border border-[#C8A96B]/20"
               >
-                <div className="sticky top-0 bg-white z-10 px-6 py-5 border-b border-black/5 flex justify-between items-center">
-                  <h3 className="text-[17px] font-serif text-[var(--color-dark)] m-0">
-                    Write a Review
-                  </h3>
+                {/* Header - Fixed & Compact */}
+                <div className="bg-white px-4 sm:px-6 py-3 sm:py-4 border-b border-[#C8A96B]/15 flex justify-between items-center flex-shrink-0">
+                  <div>
+                    <h3 className="text-base sm:text-lg font-serif text-[#1A0A00] font-normal tracking-wide m-0">
+                      Share Your Experience
+                    </h3>
+                    <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#C8A96B] font-medium m-0 mt-0.5">
+                      {product.name}
+                    </p>
+                  </div>
                   <button
                     onClick={() => setIsWritingReview(false)}
-                    className="text-black/40 hover:text-black transition-colors p-1.5 bg-black/5 rounded-full"
+                    className="text-[#1A0A00]/40 hover:text-[#1A0A00] hover:bg-[#1A0A00]/5 transition-all p-1.5 sm:p-2 rounded-full flex-shrink-0"
+                    aria-label="Close modal"
                   >
-                    <X size={18} strokeWidth={1.5} />
+                    <X size={18} strokeWidth={2} />
                   </button>
                 </div>
 
-                <div className="p-6">
+                {/* Content - Scrollable with tighter gaps on mobile */}
+                <div className="overflow-y-auto p-4 sm:p-6 flex-1 space-y-3.5 sm:space-y-4">
                   {isReviewSubmitted ? (
-                    <div className="text-center py-8">
-                      <div className="w-14 h-14 bg-green-50 text-[#25D366] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="text-center py-8 px-4">
+                      <div className="w-14 h-14 bg-[#F4ECDD] text-[#C8A96B] rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
                         <ShieldCheck size={28} strokeWidth={1.5} />
                       </div>
-                      <h3 className="text-xl font-serif text-[var(--color-dark)] mb-2">
-                        Thank you!
+                      <h3 className="text-lg font-serif text-[#1A0A00] mb-1 font-normal">
+                        Post Submitted!
                       </h3>
-                      <p className="text-black/60 text-[13px] font-light">
-                        Your review has been successfully added.
+                      <p className="text-black/60 text-xs font-light max-w-xs mx-auto leading-relaxed">
+                        Thank you for your review. Your genuine feedback helps our design team and the Mukesh Saree family grow.
                       </p>
                     </div>
                   ) : (
-                    <form onSubmit={handleReviewSubmit} className="space-y-6">
-                      <div>
-                        <label className="block text-[10px] uppercase tracking-[0.1em] font-bold text-[var(--color-dark)] mb-3">
-                          Rating
+                    <form onSubmit={handleReviewSubmit} className="space-y-3.5 sm:space-y-4">
+                      {/* Rating Selection - Compact padding */}
+                      <div className="bg-white p-3 sm:p-4 rounded-xl border border-[#C8A96B]/10 shadow-3xs">
+                        <label className="block text-[8px] sm:text-[9px] uppercase tracking-[0.15em] font-extrabold text-[#C8A96B] mb-1 sm:mb-1.5">
+                          Your Rating
                         </label>
-                        <div className="flex gap-1.5">
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <button
-                              key={s}
-                              type="button"
-                              onClick={() =>
-                                setReviewForm({ ...reviewForm, rating: s })
-                              }
-                              className="focus:outline-none focus:scale-110 active:scale-95 transition-transform"
-                            >
-                              <Star
-                                className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors ${s <= reviewForm.rating ? "fill-[#F4B63D] text-[#F4B63D]" : "text-black/10"}`}
-                              />
-                            </button>
-                          ))}
+                        <div className="flex items-center gap-1.5">
+                          <div className="flex gap-0.5" onMouseLeave={() => setHoveredRating(null)}>
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <button
+                                key={s}
+                                type="button"
+                                onMouseEnter={() => setHoveredRating(s)}
+                                onClick={() =>
+                                  setReviewForm({ ...reviewForm, rating: s })
+                                }
+                                className="focus:outline-none hover:scale-110 active:scale-95 transition-all p-0.5"
+                              >
+                                <Star
+                                  size={22}
+                                  className={`transition-colors ${
+                                    s <= (hoveredRating !== null ? hoveredRating : reviewForm.rating)
+                                      ? "fill-[#F4B63D] text-[#F4B63D]"
+                                      : "text-black/10 hover:text-black/20"
+                                  }`}
+                                />
+                              </button>
+                            ))}
+                          </div>
+                          
+                          <span className="text-[10.5px] font-sans font-medium text-[#1A0A00]/70 ml-1.5">
+                            {ratingLabels[hoveredRating !== null ? hoveredRating : reviewForm.rating]}
+                          </span>
                         </div>
                       </div>
 
-                      <div>
-                        <label className="block text-[10px] uppercase tracking-[0.1em] font-bold text-[var(--color-dark)] mb-2">
-                          Name
+                      {/* Name input - Shorter client-side inputs */}
+                      <div className="space-y-1">
+                        <label className="block text-[8px] sm:text-[9px] uppercase tracking-[0.15em] font-extrabold text-[#C8A96B] m-0">
+                          Your Name
                         </label>
                         <input
                           type="text"
@@ -374,14 +532,15 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
                               name: e.target.value,
                             })
                           }
-                          className="w-full h-11 px-4 border border-black/10 rounded-md focus:outline-none focus:border-black/30 focus:ring-1 focus:ring-black/30 bg-transparent text-[13px] transition-all font-light"
-                          placeholder="Your name"
+                          className="w-full h-10 px-3.5 border border-black/10 rounded-lg focus:outline-none focus:border-[#C8A96B] focus:ring-1 focus:ring-[#C8A96B] bg-white text-[12.5px] sm:text-[13px] transition-all font-light text-[#1A0A00]"
+                          placeholder="e.g. Anjali Sharma"
                         />
                       </div>
 
-                      <div>
-                        <label className="block text-[10px] uppercase tracking-[0.1em] font-bold text-[var(--color-dark)] mb-2">
-                          Review
+                      {/* Comment textarea - Shorter on mobile viewports */}
+                      <div className="space-y-1">
+                        <label className="block text-[8px] sm:text-[9px] uppercase tracking-[0.15em] font-extrabold text-[#C8A96B] m-0">
+                          Review Message
                         </label>
                         <textarea
                           required
@@ -392,14 +551,99 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
                               comment: e.target.value,
                             })
                           }
-                          className="w-full p-4 border border-black/10 rounded-md focus:outline-none focus:border-black/30 focus:ring-1 focus:ring-black/30 bg-transparent text-[13px] min-h-[100px] resize-none transition-all font-light"
-                          placeholder="Share your experience with this product..."
+                          className="w-full p-3 border border-black/10 rounded-lg focus:outline-none focus:border-[#C8A96B] focus:ring-1 focus:ring-[#C8A96B] bg-white text-[12.5px] sm:text-[13px] min-h-[75px] sm:min-h-[90px] max-h-[110px] sm:max-h-[130px] resize-none transition-all font-light text-[#1A0A00] leading-relaxed"
+                          placeholder="Tell us about the fabric feel, drape quality, luster, or style fit..."
                         />
                       </div>
 
+                      {/* Upload Section - Reduced empty space */}
+                      <div className="bg-white p-3 sm:p-4 rounded-xl border border-[#C8A96B]/15 shadow-3xs space-y-2">
+                        <div className="flex justify-between items-center">
+                          <label className="block text-[8px] sm:text-[9px] uppercase tracking-[0.15em] font-extrabold text-[#C8A96B]">
+                            Upload Photos
+                          </label>
+                          <span className="text-[8.5px] text-[#1A0A00]/40 font-serif italic">
+                            Product, Draping, or Selfie
+                          </span>
+                        </div>
+
+                        {uploadError && (
+                          <div className="text-[10.5px] text-red-600 bg-red-50/50 p-2 rounded-md border border-red-100 font-light w-full">
+                            {uploadError}
+                          </div>
+                        )}
+
+                        {/* Drag and drop or click trigger zone - Tighter inner padding */}
+                        <div className="relative">
+                          <input
+                            type="file"
+                            id="review-image-picker"
+                            accept="image/png, image/jpeg, image/jpg, image/webp"
+                            multiple
+                            onChange={handleImageUpload}
+                            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                            disabled={isUploading}
+                          />
+                          <div className="border border-dashed border-[#C8A96B]/30 hover:border-[#C8A96B]/70 bg-[#FDFCFB] hover:bg-[#FAF7F2] py-2.5 sm:py-3 px-3 rounded-lg text-center transition-all flex flex-col items-center justify-center gap-1 shadow-2xs">
+                            {isUploading ? (
+                              <>
+                                <Loader2 className="w-4 h-4 text-[#C8A96B] animate-spin" />
+                                <span className="text-[10px] text-neutral-500 font-light">
+                                  Optimizing...
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <div className="p-1.5 bg-[#F5EFE4] text-[#C8A96B] rounded-full">
+                                  <Camera size={15} strokeWidth={1.5} />
+                                </div>
+                                <div>
+                                  <p className="text-[10.5px] text-[#1A0A00] font-medium m-0">
+                                    Click to capture or attach photos
+                                  </p>
+                                  <p className="text-[8px] text-neutral-400 m-0 mt-0.5">
+                                    JPG, PNG, WEBP (Supports camera & gallery)
+                                  </p>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Image previews - Extra compact */}
+                        {reviewForm.images.length > 0 && (
+                          <div className="grid grid-cols-5 gap-1.5 pt-1">
+                            {reviewForm.images.map((imgUrl, index) => (
+                              <div
+                                key={index}
+                                className="relative aspect-square rounded-md overflow-hidden border border-black/5 bg-neutral-50 group shadow-3xs"
+                              >
+                                <img
+                                  src={imgUrl}
+                                  alt={`Uploaded preview ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                  loading="lazy"
+                                  referrerPolicy="no-referrer"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => removeUploadedImage(index)}
+                                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/75 hover:bg-black text-white p-1 rounded-full opacity-100 transition-opacity flex items-center justify-center"
+                                  title="Remove image"
+                                >
+                                  <X size={10} strokeWidth={3} />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Submit block - Shorter button */}
                       <button
                         type="submit"
-                        className="w-full h-12 bg-[#1A0A00] text-white text-[11px] uppercase tracking-[0.1em] font-bold rounded-md hover:bg-[#331400] transition-colors shadow-lg shadow-black/10"
+                        disabled={isUploading}
+                        className="w-full h-10 sm:h-11 bg-[#1A0A00] text-white text-[10.5px] uppercase tracking-[0.15em] font-extrabold rounded-lg hover:bg-[#331400] active:scale-[0.99] disabled:bg-[#1A0A00]/40 disabled:scale-100 transition-all shadow-md shadow-black/5 flex items-center justify-center gap-1.5"
                       >
                         Submit Review
                       </button>
@@ -536,6 +780,29 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
                           {review.text}
                         </p>
 
+                        {/* Uploaded review images */}
+                        {review.images && review.images.length > 0 && (
+                          <div className="flex flex-wrap gap-2 my-2.5">
+                            {review.images.map((imgUrl, index) => (
+                              <button
+                                key={index}
+                                type="button"
+                                onClick={() => setSelectedFullImage(imgUrl)}
+                                className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border border-black/5 cursor-zoom-in bg-neutral-100 hover:border-[#C8A96B]/50 transition-colors shadow-2xs group flex-shrink-0"
+                              >
+                                <img
+                                  src={imgUrl}
+                                  alt={`Review attachment by ${review.author || "customer"} ${index + 1}`}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                  loading="lazy"
+                                  referrerPolicy="no-referrer"
+                                />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
+                              </button>
+                            ))}
+                          </div>
+                        )}
+
                         {review.trustSignal && (
                           <div className="inline-flex items-center gap-1 mt-1.5 px-2.5 py-1 bg-[var(--color-surface)]/70 border border-[var(--color-border)] rounded-full text-[8.5px] md:text-[9px] uppercase tracking-wider text-[var(--color-gold-dark)] font-medium">
                             <Star className="w-2 h-2 md:w-2.5 md:h-2.5 fill-[var(--color-gold-dark)] text-[var(--color-gold-dark)]" />
@@ -566,6 +833,38 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
           )}
         </div>
       </div>
+
+      {createPortal(
+        <AnimatePresence>
+          {selectedFullImage && (
+            <div
+              className="fixed inset-0 z-[1100] bg-black/95 backdrop-blur-xs flex items-center justify-center p-4 cursor-zoom-out"
+              onClick={() => setSelectedFullImage(null)}
+            >
+              <button
+                onClick={() => setSelectedFullImage(null)}
+                className="absolute top-4 right-4 text-white/75 hover:text-white bg-white/10 p-2.5 rounded-full backdrop-blur-md transition-all duration-200 z-50 hover:bg-white/20"
+                aria-label="Close image"
+              >
+                <X size={20} strokeWidth={2} />
+              </button>
+              <motion.img
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                src={selectedFullImage}
+                alt="Enlarged Review Saree Drape attachment"
+                className="max-w-full max-h-[85vh] sm:max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </div>
   );
 };
