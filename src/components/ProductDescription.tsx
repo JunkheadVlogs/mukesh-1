@@ -115,9 +115,19 @@ export function ProductDescription({
 
   // 2. PRODUCT HIGHLIGHTS SECTION
   const isP60 = product?.sku === "SAR-TIS-COT-060" || product?.id === "p60";
+  const isElephantPrint = 
+    product?.sku === "SAR-LIN-NVY-033" || 
+    product?.sku === "SAR-LIN-WHT-033" || 
+    product?.sku === "SAR-LIN-RED-033" || 
+    product?.id === "p33" || 
+    product?.id === "p64" || 
+    product?.id === "p65" ||
+    productName.toUpperCase().includes("ELEPHANT");
 
   const printType = isP60
     ? "Digital Floral Print / Modern Motif"
+    : isElephantPrint
+    ? "Digital Elephant Print / Modern Motif"
     : productName.toUpperCase().includes("FLORAL") 
     ? "Floral Print / Handcrafted Botanical Motif" 
     : productName.toUpperCase().includes("BLOCK") || productName.toUpperCase().includes("AJRAKH")
@@ -138,7 +148,9 @@ export function ProductDescription({
   const blouseLabel = isSaree ? "1 Meter matching unstitched blouse piece" : "Not Applicable";
 
   let occasionLabel = "Festive Occasions, Premium Weddings, Family Celebrations & Haldi-Mehndi";
-  if (!isSaree) {
+  if (isElephantPrint) {
+    occasionLabel = "Festive Occasions, Premium Weddings, Family Celebrations & Social Gatherings";
+  } else if (!isSaree) {
     occasionLabel = "Casual Glamour, Holiday Travel, High Tea, and Luxurious Office Afternoons";
   }
 
