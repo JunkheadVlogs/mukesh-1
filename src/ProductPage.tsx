@@ -318,22 +318,31 @@ export default function ProductPage() {
   const isOutOfStock = product.stock === 0;
   const maxStock = product.stock !== undefined ? product.stock : Infinity;
 
+  const absoluteProductImages = productImages.map((img) =>
+    img.startsWith("http") ? img : `https://mukeshsarees.com${img.startsWith("/") ? "" : "/"}${img}`
+  );
+
   const productSchema = {
     "@context": "https://schema.org/",
     "@type": "Product",
     name: product.name,
-    image: productImages,
+    image: absoluteProductImages,
     description: cleanSEOText(product.description).substring(0, 300),
     sku: product.sku || product.id,
+    mpn: product.sku || product.id,
     brand: {
       "@type": "Brand",
       name: "Mukesh Saree Centre",
     },
+    category: product.category,
+    color: product.color,
+    material: product.fabric,
     offers: {
       "@type": "Offer",
       url: `https://mukeshsarees.com/product/${product.slug}`,
       priceCurrency: "INR",
       price: product.price,
+      priceValidUntil: "2027-12-31",
       availability: isOutOfStock
         ? "https://schema.org/OutOfStock"
         : "https://schema.org/InStock",
@@ -342,6 +351,41 @@ export default function ProductPage() {
         "@type": "Organization",
         name: "Mukesh Saree Centre",
       },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: 0,
+          currency: "INR"
+        },
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "IN"
+        },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: {
+            "@type": "QuantitativeValue",
+            minValue: 1,
+            maxValue: 2,
+            unitCode: "DAY"
+          },
+          transitTime: {
+            "@type": "QuantitativeValue",
+            minValue: 2,
+            maxValue: 5,
+            unitCode: "DAY"
+          }
+        }
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "IN",
+        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnPeriod",
+        merchantReturnDays: 7,
+        returnMethod: "https://schema.org/ReturnByMail",
+        returnFees: "https://schema.org/FreeReturn"
+      }
     },
     aggregateRating: {
       "@type": "AggregateRating",
@@ -605,20 +649,15 @@ export default function ProductPage() {
                     <Share2 size={16} strokeWidth={1.5} />
                   </button>
 
-                  <button
-                    onClick={() => {
-                      const cleanDesc = cleanDescriptionForOG(product.description);
-                      const mrpVal = (product as any).mrp || product.originalPrice || '';
-                      const whatsappText = 
-                        `✨ *${product.name}*\n` +
-                        `💰 ₹${product.price}${mrpVal ? ` (MRP ₹${mrpVal})` : ''}\n` +
-                        `${cleanDesc}\n\n` +
-                        `🛒 Order here: https://mukeshsarees.com/product/${product.slug}`;
-
-                      const whatsappUrl = 
-                        `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
-                      window.open(whatsappUrl, '_blank');
-                    }}
+                  <a
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                      `✨ *${product.name}*\n` +
+                      `💰 ₹${product.price}${((product as any).mrp || product.originalPrice) ? ` (MRP ₹${(product as any).mrp || product.originalPrice})` : ''}\n` +
+                      `${cleanDescriptionForOG(product.description)}\n\n` +
+                      `🛒 Order here: https://mukeshsarees.com/product/${product.slug}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center justify-center w-9 h-9 rounded-full border border-[#25D366]/30 bg-transparent hover:bg-[#25D366]/10 transition-colors text-[#25D366]"
                     aria-label="Share on WhatsApp"
                     title="Share on WhatsApp"
@@ -626,7 +665,7 @@ export default function ProductPage() {
                     <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current" xmlns="http://www.w3.org/2000/svg">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                     </svg>
-                  </button>
+                  </a>
                 </div>
               </div>
 
@@ -747,8 +786,10 @@ export default function ProductPage() {
               {/* Actions */}
               <section className="w-full mt-1 relative">
                 <div className="flex flex-col gap-2 w-full">
-                  <div className="flex gap-2 w-full h-[48px] md:h-[52px]">
-                    <div className="flex items-center justify-between px-1.5 border border-[var(--color-border)] bg-transparent w-24 shrink-0 rounded-sm">
+                  {/* Quantity selector */}
+                  <div className="flex items-center gap-3 mb-1">
+                    <span className="text-[10px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-medium">Quantity:</span>
+                    <div className="flex items-center justify-between px-1.5 border border-[var(--color-border)] bg-transparent w-24 h-[40px] rounded-sm">
                       <button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
                         className="text-[var(--color-muted)] hover:text-[var(--color-dark)] transition-colors w-8 h-full flex items-center justify-center pt-0.5"
@@ -767,29 +808,44 @@ export default function ProductPage() {
                         <span className="text-xl leading-none select-none">+</span>
                       </button>
                     </div>
+                  </div>
+
+                  <div className="product-actions">
                     <button
                       ref={mainAtcRef}
                       onClick={handleAddToCart}
                       disabled={isOutOfStock}
-                      className="flex-1 btn-primary disabled:opacity-50 h-full flex items-center justify-center text-[11px] md:text-[12px] tracking-[0.18em] font-medium uppercase m-0 bg-[var(--color-dark)] hover:bg-[var(--color-dark)]/90 border-none rounded-sm transition-all shadow-sm active:scale-[0.98]"
+                      className="add-to-cart-btn"
+                      data-action="add-to-cart"
+                      id="add-to-cart"
                     >
                       {isOutOfStock ? "Sold Out" : isAdded ? "✓ Added" : "Add To Cart"}
                     </button>
+                    <button
+                      onClick={handleBuyNow}
+                      disabled={isOutOfStock}
+                      className="buy-now-btn"
+                      data-action="buy-now"
+                      id="buy-now"
+                    >
+                      Buy Now
+                    </button>
                   </div>
 
-                  <button
-                    onClick={() => {
-                      const message = `Hi Mukesh Saree Centre, I want to order:\n\n*Product:* ${product.name}\n${selectedSize ? `*Size:* ${selectedSize}\n` : ""}*Link:* ${window.location.href}`;
-                      const encodedMessage = encodeURIComponent(message);
-                      window.open(`https://wa.me/919910006733?text=${encodedMessage}`, "_blank");
-                    }}
-                    className="w-full h-[48px] md:h-[52px] border border-[#2D452F]/20 bg-[#f4f7f4] text-[#2D452F] text-[11px] md:text-[12px] uppercase tracking-[0.18em] font-medium hover:bg-[#e8ede8] transition-all rounded-sm flex items-center justify-center gap-2 group"
+                  <a
+                    href={`https://wa.me/919910006733?text=${encodeURIComponent(
+                      `Hi Mukesh Saree Centre, I want to order:\n\n*Product:* ${product.name}\n${selectedSize ? `*Size:* ${selectedSize}\n` : ""}*Link:* ${window.location.href}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full h-[44px] md:h-[52px] border border-[#2D452F]/20 bg-[#f4f7f4] text-[#2D452F] text-[11px] md:text-[12px] uppercase tracking-[0.18em] font-medium hover:bg-[#e8ede8] transition-all rounded-sm flex items-center justify-center gap-2 group style-none no-underline"
+                    style={{ textDecoration: 'none' }}
                   >
                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current opacity-80 group-hover:opacity-100 transition-opacity" xmlns="http://www.w3.org/2000/svg">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                     </svg>
                     Order on WhatsApp
-                  </button>
+                  </a>
                   
                   <CartActivityMessage productId={product.id} />
                 </div>

@@ -109,8 +109,8 @@ export function ExitIntentPopup() {
 
       // User aggressively scrolling upward near top
       if (
-        upCount >= 5 &&
-        currentY < 200 &&
+        upCount >= 3 &&
+        currentY < 150 &&
         !exitPopupShown
       ) {
         triggerExitPopup();
@@ -120,13 +120,13 @@ export function ExitIntentPopup() {
     };
 
     // ===============================
-    // TRIGGER 2: Time on page
+    // TRIGGER 2: Time on page (reduced to 25s for higher conversion)
     // ===============================
     const timerId = setTimeout(() => {
       if (!exitPopupShown) {
         triggerExitPopup();
       }
-    }, 45000);
+    }, 25000);
 
     // ===============================
     // TRIGGER 3: Browser back button
@@ -145,11 +145,26 @@ export function ExitIntentPopup() {
     };
 
     // ===============================
-    // DESKTOP EXIT INTENT
+    // TRIGGER 4: Visibility Change & Window Blur (Mobile Exit Intent)
+    // ===============================
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden' && !exitPopupShown) {
+        triggerExitPopup();
+      }
+    };
+
+    const handleWindowBlur = () => {
+      if (!exitPopupShown) {
+        triggerExitPopup();
+      }
+    };
+
+    // ===============================
+    // DESKTOP EXIT INTENT (Mouse out of top boundary)
     // ===============================
     const handleMouseLeave = (e: MouseEvent) => {
       if (
-        e.clientY <= 10 &&
+        e.clientY <= 15 &&
         !exitPopupShown
       ) {
         triggerExitPopup();
@@ -159,12 +174,14 @@ export function ExitIntentPopup() {
     // Delay activation to avoid showing immediately on load (fast-track in dev/preview)
     const activationDelay = (window.location.hostname.includes('localhost') || 
                              window.location.hostname.includes('127.0.0.1') || 
-                             window.location.hostname.includes('.run.app')) ? 2000 : 10000;
+                             window.location.hostname.includes('.run.app')) ? 1500 : 8000;
 
     const activateTriggers = setTimeout(() => {
       document.addEventListener('mouseleave', handleMouseLeave);
       window.addEventListener('scroll', handleScroll, { passive: true });
       window.addEventListener('popstate', handlePopState);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('blur', handleWindowBlur);
     }, activationDelay);
 
     return () => {
@@ -173,6 +190,8 @@ export function ExitIntentPopup() {
       document.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('popstate', handlePopState);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
     };
   }, [hasShown]);
 
@@ -428,7 +447,7 @@ export function ExitIntentPopup() {
                   </button>
 
                   <a
-                    href={`https://wa.me/?text=${encodeURIComponent("Hey! Check out Mukesh Saree Centre! Use VIP coupon 'VIPCLUB60' to get an instant discount on premium luxury sarees! Website: https://mukeshsarees.com")}`}
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent("Hey! Check out Mukesh Saree Centre! Use VIP coupon 'VIPCLUB60' to get an instant discount on premium luxury sarees! Website: https://mukeshsarees.com")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full border border-[#25D366]/30 bg-[#25D366]/5 hover:bg-[#25D366]/15 text-[#25D366] font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm active:scale-[0.98]"

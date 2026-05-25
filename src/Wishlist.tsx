@@ -291,7 +291,7 @@ export default function Wishlist() {
                     </span>
                   </button>
                   <a
-                    href={`https://wa.me/?text=${encodeURIComponent("Check out my favorite items from Mukesh Saree Centre: " + shareUrl)}`}
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent("Check out my favorite items from Mukesh Saree Centre: " + shareUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex flex-col items-center justify-center gap-6 p-8 border border-onyx/10 rounded-sm hover:border-[#25D366] hover:bg-[#25D366]/5 transition-all group relative overflow-hidden bg-white shadow-sm"
