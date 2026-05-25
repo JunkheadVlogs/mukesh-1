@@ -3,6 +3,23 @@ import path from "path";
 import { products } from "../src/mockData.js";
 
 // Helper to sanitize text for meta/JSON attributes
+function cleanDescriptionForPrerender(rawDesc: string): string {
+  if (!rawDesc) return "";
+  let text = rawDesc;
+  // Remove markdown headers/labels
+  text = text.replace(/\*\*(DESCRIPTION|HIGHLIGHTS|FABRIC DETAILS|SIZE & FIT|STYLING|CARE INSTRUCTIONS|WASH CARE|FABRIC):\*\*/gi, "");
+  text = text.replace(/\*\*[A-Z\s&_:\-]+\:\*\*/gi, "");
+  text = text.replace(/\*\*[A-Z\s&_:\-]+\*\*/gi, "");
+  // Remove bold/italic markup markers
+  text = text.replace(/\*\*/g, "");
+  text = text.replace(/\*/g, "");
+  // Remove bullet points
+  text = text.replace(/^[•\-\*\s]+/gm, "");
+  // Replace multiple spaces and newlines
+  text = text.replace(/\s+/g, " ");
+  return text.trim();
+}
+
 function sanitize(text: string): string {
   if (!text) return "";
   return text
@@ -39,7 +56,7 @@ function getHeaderHtml(): string {
     <header style="background: rgba(250, 246, 240, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); font-family: 'Playfair Display', serif; position: sticky; top: 0; z-index: 100;">
       <div style="display: flex; align-items: center; gap: 12px;">
         <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-          <span style="font-size: 18px; font-weight: bold; letter-spacing: 3px; color: #1a0a00; font-family: 'Playfair Display', serif;">MUKESH SAREE CENTRE</span>
+          <img src="/images/logo.webp" alt="Mukesh Saree Centre Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
         </a>
       </div>
       <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
@@ -236,7 +253,7 @@ async function runPrerender() {
 
   // Inject into index.html for Root and Schema
   let updatedHomeHtml = baseHtml
-    .replace('<div id="root"></div>', `<div id="root">${homepageBody}</div>`);
+    .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${homepageBody}</div>`);
 
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
   const homeOgTags = `<!-- Dynamic OG Tags -->
@@ -309,7 +326,7 @@ async function runPrerender() {
   `;
 
   let shopHtml = baseHtml
-    .replace('<div id="root"></div>', `<div id="root">${shopBody}</div>`)
+    .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${shopBody}</div>`)
     .replace(/<title>.*?<\/title>/, "<title>Shop Premium Indian Ethnic Ensembles | Mukesh Saree Centre</title>")
     .replace(
       /<meta name="description" content=".*?"\s*\/>/,
@@ -487,7 +504,7 @@ async function runPrerender() {
     `;
 
     let prodHtml = baseHtml
-      .replace('<div id="root"></div>', `<div id="root">${productBody}</div>`)
+      .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${productBody}</div>`)
       .replace(/<title>.*?<\/title>/, `<title>${sanitize(p.name)} | Buy Online at ₹${p.price} — Mukesh Saree Centre</title>`)
       .replace(
         /<meta name="description" content=".*?"\s*\/>/,
@@ -495,9 +512,9 @@ async function runPrerender() {
       );
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
-    const wsrvImgSquare = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=800&h=800&fit=contain&output=jpg`;
-    const rawDesc = (p.description || "").replace(/<[^>]*>?/gm, '').trim();
-    const prodDesc = `₹${p.price || "999"} | Mukesh Saree Centre\n\n${rawDesc}`.substring(0, 197) + "...";
+    const wsrvImgSquare = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=800&h=800&fit=contain&bg=ffffff&output=jpg`;
+    const cleanDesc = cleanDescriptionForPrerender(p.description || "");
+    const prodDesc = `₹${p.price || "999"} | Mukesh Saree Centre — ${cleanDesc}`.substring(0, 197) + "...";
     
     const dynamicTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="${sanitize(p.name)} | Mukesh Saree Centre" />
@@ -646,7 +663,7 @@ async function runPrerender() {
   console.log("[PRERENDER] Compiling static policies...");
   for (const page of staticPages) {
     let phtml = baseHtml
-      .replace('<div id="root"></div>', `<div id="root">${page.body}</div>`)
+      .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${page.body}</div>`)
       .replace(/<title>.*?<\/title>/, `<title>${page.title}</title>`)
       .replace(/<meta name="description" content=".*?"\s*\/>/, `<meta name="description" content="${page.desc}" />`);
 

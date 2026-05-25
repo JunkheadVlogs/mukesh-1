@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -42,6 +42,7 @@ const REVIEWS = [
 
 export function CustomerReviews() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -53,8 +54,33 @@ export function CustomerReviews() {
     }
   };
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const scrollPosition = container.scrollLeft;
+    const cardWidth = container.scrollWidth / REVIEWS.length;
+    const index = Math.round(scrollPosition / cardWidth);
+    if (index >= 0 && index < REVIEWS.length) {
+      setActiveIndex(index);
+    }
+  };
+
+  const scrollToReview = (index: number) => {
+    if (scrollRef.current) {
+      const container = scrollRef.current;
+      const children = container.children;
+      if (children[index]) {
+        children[index].scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+        setActiveIndex(index);
+      }
+    }
+  };
+
   return (
-    <section className="bg-[#FAF6F0]/40 pt-6 pb-2.5 md:pt-10 md:pb-6 border-t border-[#C8A96B]/15">
+    <section className="bg-[#FAF6F0]/40 pt-6 pb-4 md:pt-10 md:pb-6 border-t border-[#C8A96B]/15">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-4 md:mb-8">
           <div className="text-[11px] tracking-[0.25em] uppercase text-[var(--color-gold)] mb-1.5 font-semibold">
@@ -99,8 +125,9 @@ export function CustomerReviews() {
           {/* Carousel */}
           <div
             ref={scrollRef}
+            onScroll={handleScroll}
             style={{ touchAction: "pan-x pan-y pinch-zoom" }}
-            className="flex gap-4 md:gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scrollbar-hide no-scrollbar touch-pan-x touch-pan-y"
+            className="-mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 flex gap-4 md:gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scrollbar-hide no-scrollbar touch-pan-x touch-pan-y"
           >
             {REVIEWS.map((review, index) => (
               <motion.div
@@ -109,7 +136,7 @@ export function CustomerReviews() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="flex-none w-[85vw] sm:w-[350px] md:w-[400px] snap-center bg-white p-4 sm:p-5 md:p-6 border border-[#C8A96B]/10 shadow-[0_2px_12px_rgba(200,169,107,0.03)] rounded-xl relative flex flex-col justify-between"
+                className="flex-none w-[78vw] sm:w-[350px] md:w-[400px] snap-center bg-white p-4 sm:p-5 md:p-6 border border-[#C8A96B]/10 shadow-[0_2px_12px_rgba(200,169,107,0.03)] rounded-xl relative flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center gap-0.5 mb-4">
@@ -140,7 +167,13 @@ export function CustomerReviews() {
             ))}
           </div>
 
-          {/* Premium indicator layout (optional, but looks good) */}
+          {/* Swipe Indicators */}
+          <div className="flex flex-col items-center justify-center gap-2 mt-1 md:hidden">
+            {/* Swipe Instruction Text */}
+            <div className="flex items-center gap-1 text-[9px] tracking-[0.2em] uppercase text-[#C8A96B] font-semibold opacity-70 animate-pulse mt-0.5">
+              <span>← swipe to view more →</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

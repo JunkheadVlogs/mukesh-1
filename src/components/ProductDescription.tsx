@@ -211,24 +211,36 @@ export function ProductDescription({
 
   // 6. CARE INSTRUCTIONS SECTION
   let finalCare = "";
-  const rawCare = getCareRaw();
-  if (rawCare) {
-    const careBullets = rawCare
-      .split(/\n+/)
-      .map(line => line.replace(/^[•\s\-\*\/]+/g, "").trim())
-      .filter(line => line.length > 3);
-    if (careBullets.length > 0) {
-      finalCare = careBullets.map(bullet => `- ${bullet}`).join("\n");
-    }
-  }
+  const isLinen = fabricName.toUpperCase().includes("LINEN") || productName.toUpperCase().includes("LINEN") || categoryName.toUpperCase().includes("LINEN");
 
-  if (!finalCare) {
+  if (isLinen) {
     finalCare = [
-      "- Professional dry clean is highly recommended for the first wash to preserve original color pigments.",
-      "- Alternatively, gently hand wash in cold water using a mild pH-balanced washing detergent.",
-      "- Dry flat in rich shade away from absolute direct moisture. Do not squeeze, twist, or tumble dry.",
-      "- Medium steam iron on the reverse side to prevent any potential damage to the premium print finishes."
+      "- This premium Linen saree is fully washable for easy maintenance.",
+      "- Hand wash gently or use a delicate machine cycle in cold water with mild detergent.",
+      "- Wash dark colors separately to preserve color brilliancy.",
+      "- Hang to dry in a cool shade; do not wring, twist, or tumble dry.",
+      "- Warm iron on the reverse while slightly damp to restore its natural crisp texture."
     ].join("\n");
+  } else {
+    const rawCare = getCareRaw();
+    if (rawCare) {
+      const careBullets = rawCare
+        .split(/\n+/)
+        .map(line => line.replace(/^[•\s\-\*\/]+/g, "").trim())
+        .filter(line => line.length > 3);
+      if (careBullets.length > 0) {
+        finalCare = careBullets.map(bullet => `- ${bullet}`).join("\n");
+      }
+    }
+
+    if (!finalCare) {
+      finalCare = [
+        "- Professional dry clean is highly recommended for the first wash to preserve original color pigments.",
+        "- Alternatively, gently hand wash in cold water using a mild pH-balanced washing detergent.",
+        "- Dry flat in rich shade away from absolute direct moisture. Do not squeeze, twist, or tumble dry.",
+        "- Medium steam iron on the reverse side to prevent any potential damage to the premium print finishes."
+      ].join("\n");
+    }
   }
 
   // Final structured list of sections, omitting length and blouse info for Co-Ord sets

@@ -107,6 +107,10 @@ export function getProductReviewStats(product: { id: string, fabric?: string, ca
 export function optimizeImage(url: string, width: number = 800, format: 'webp' | 'jpg' | 'png' = 'webp') {
   if (!url) return url;
   
+  if (url.startsWith('/images/')) {
+    return url;
+  }
+  
   if (url.includes('drive.google.com/thumbnail')) {
     // Get a high-res version from Drive then optimize via wsrv.nl (Cloudflare) for webp caching
     const targetUrl = url.replace(/sz=w\d+/, 'sz=w2000');
@@ -126,8 +130,22 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     return urlObj.toString();
   }
   
-  if (url.startsWith('http')) {
-     return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=${format}&q=80&we`;
+  let absoluteUrl = url;
+  if (url.startsWith('/')) {
+    if (typeof window !== "undefined") {
+      const origin = window.location.origin;
+      // Convert relative browser path to absolute to leverage wsrv.nl on production
+      if (!origin.includes('localhost') && !origin.includes('127.0.0.1') && !origin.includes('::1') && !origin.includes('3000') && !origin.includes('run.app')) {
+        absoluteUrl = origin + url;
+      }
+    } else {
+      // During server-side prerendering, prefix with production site domain
+      absoluteUrl = "https://mukeshsarees.com" + url;
+    }
+  }
+
+  if (absoluteUrl.startsWith('http') && !absoluteUrl.includes('localhost') && !absoluteUrl.includes('127.0.0.1') && !absoluteUrl.includes('3000') && !absoluteUrl.includes('run.app')) {
+     return `https://wsrv.nl/?url=${encodeURIComponent(absoluteUrl)}&w=${width}&output=${format}&q=80&we`;
   }
   
   return url;

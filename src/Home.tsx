@@ -292,22 +292,22 @@ export default function Home() {
           className="absolute inset-0 z-0 pointer-events-none"
           style={{
             background:
-              "linear-gradient(to right, rgba(16,8,0,0.22) 0%, rgba(16,8,0,0.06) 45%, transparent 80%), linear-gradient(to top, rgba(16,8,0,0.12) 0%, transparent 30%)",
+              "linear-gradient(to right, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.12) 35%, transparent 65%), linear-gradient(to top, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.08) 30%, transparent 60%)",
           }}
         />
 
         <motion.div
-          className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-start items-start h-full pt-[105px] xs:pt-[115px] sm:pt-36 md:pt-40 lg:pt-44 pb-12"
+          className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-center items-start h-full pt-[100px] md:pt-[110px] pb-12"
           style={{ opacity: heroTextOpacity, y: heroTextY }}
         >
-          <div className="max-w-[160px] xs:max-w-[185px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[500px] text-left mb-4 md:mb-8">
+          <div className="max-w-[200px] xs:max-w-[220px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[500px] text-left mb-4 md:mb-8">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-[17px] xs:text-[19px] sm:text-[30px] md:text-[38px] lg:text-[45px] font-serif mb-3 md:mb-4 leading-[1.3] sm:leading-[1.2] font-normal tracking-[0.14em] sm:tracking-[0.12em] uppercase"
+              className="text-[19px] xs:text-[21px] sm:text-[30px] md:text-[38px] lg:text-[45px] font-serif mb-2.5 md:mb-4 leading-[1.35] sm:leading-[1.2] font-normal tracking-[0.14em] sm:tracking-[0.12em] uppercase"
               style={{
-                textShadow: "0 2px 20px rgba(0,0,0,0.6)",
+                textShadow: "0 2px 10px rgba(0,0,0,0.45), 0 4px 24px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.2)",
                 color: "#FFFDF8",
               }}
             >
@@ -318,9 +318,9 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-[9.5px] xs:text-[10px] sm:text-[13px] md:text-[15px] leading-[1.8] mb-10 md:mb-12 max-w-[150px] xs:max-w-[175px] sm:max-w-[300px] md:max-w-[360px] lg:max-w-[420px] font-sans font-light tracking-[0.12em] uppercase opacity-90"
+              className="text-[10px] xs:text-[11px] sm:text-[13px] md:text-[15px] leading-[1.8] mb-8 md:mb-10 max-w-[190px] xs:max-w-[200px] sm:max-w-[300px] md:max-w-[360px] lg:max-w-[420px] font-sans font-light tracking-[0.12em] uppercase opacity-95"
               style={{
-                textShadow: "0 2px 10px rgba(0,0,0,0.5)",
+                textShadow: "0 2px 8px rgba(0,0,0,0.4), 0 4px 18px rgba(0,0,0,0.25)",
                 color: "#F5EFE6",
               }}
             >
@@ -661,28 +661,27 @@ export default function Home() {
                   className="flex-none w-[82%] sm:w-[500px] md:w-[600px] h-full relative overflow-hidden group/item rounded-xl md:rounded-2xl shadow-md border border-[#C8A96B]/10 cursor-zoom-in snap-center"
                   onClick={() => setSelectedShopImage(image.url)}
                 >
-                  <OptimizedImage
-                    src={image.url}
-                    width={800}
-                    alt={image.label}
-                    className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-1000 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-black/25 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 z-0 overflow-hidden">
+                    <OptimizedImage
+                      src={image.url}
+                      width={800}
+                      alt={image.label}
+                      className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-1000 ease-out"
+                    />
+                  </div>
+                  <div className="absolute inset-0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                     <Maximize2
                       size={28}
                       className="text-white drop-shadow-md"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark)]/90 via-transparent to-transparent opacity-90 sm:opacity-0 sm:group-hover/item:opacity-100 transition-all duration-300 flex flex-col justify-end p-5 sm:p-8 transform sm:translate-y-3 sm:group-hover/item:translate-y-0">
-                    <p className="text-[var(--color-gold-light)] text-[10px] uppercase tracking-[0.2em] font-medium mb-1.5">
-                      Exclusive Preview
-                    </p>
-                    <h3 className="text-white text-xl sm:text-2xl font-serif mb-1 font-normal">
+                  <div className="absolute inset-0 transition-all duration-300 flex flex-col justify-end p-5 sm:p-8 z-10 pointer-events-none">
+                    <h3 
+                      style={{ color: '#E7D3A8', fontWeight: 600, opacity: 1, visibility: 'visible', textShadow: '0px 2px 8px rgba(0,0,0,0.85), 0px 1px 3px rgba(0,0,0,0.95)' }}
+                      className="text-xl sm:text-2xl font-serif mb-0 tracking-wide"
+                    >
                       {image.label}
                     </h3>
-                    <p className="text-white/80 text-[11px] font-light">
-                      Explore our designer collections in person
-                    </p>
                   </div>
                 </motion.div>
               ))}
@@ -712,20 +711,20 @@ export default function Home() {
           </div>
 
           {/* Text block (Placed after the Image/Gallery with tight spacing) */}
-          <div className="text-center mt-2.5">
+          <div className="text-center mt-2">
             <div className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-gold)] mb-0.5 font-semibold">
               Visit Us
             </div>
-            <h2 className="text-2xl md:text-3xl font-serif text-[var(--color-dark)] mb-1 font-normal tracking-wide leading-tight">
+            <h2 className="text-2xl md:text-3xl font-serif text-[var(--color-dark)] mb-0.5 font-normal tracking-wide leading-tight">
               Visit Our Store In-Person
             </h2>
-            <p className="text-[13.5px] sm:text-[14px] text-[var(--color-dark)]/75 max-w-2xl mx-auto font-light leading-relaxed px-2">
-              Step into the world of Mukesh Saree Centre. Visit our popular Nagpur store and see our beautiful sarees, premium designs, and traditional styles since 1978.
+            <p className="text-[13.5px] sm:text-[14px] text-[var(--color-dark)]/75 max-w-[90%] md:max-w-2xl mx-auto font-light leading-normal px-2">
+              Step into the world of Mukesh Saree Centre. Visit our popular Nagpur store and discover beautiful sarees, premium designs, and timeless traditional styles since 1978.
             </p>
           </div>
 
           {/* Elegant Small Labels Row / Bullet list */}
-          <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 mt-2.5 px-4 text-center text-[10px] sm:text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-dark)]/50 font-medium font-sans">
+          <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-0.5 mt-2 px-4 text-center text-[10px] sm:text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-dark)]/50 font-medium font-sans">
             <span className="flex items-center gap-1 whitespace-nowrap">
               <span className="w-1 h-1 rounded-full bg-[#C8A96B]" />
               Trusted Since 1978
@@ -741,12 +740,12 @@ export default function Home() {
           </div>
 
           {/* Premium Call to Action Button (Single button, tightly connected) */}
-          <div className="flex justify-center mt-2.5 w-full px-4">
+          <div className="flex justify-center mt-2 w-full px-4">
             <a
-              href="https://g.page/r/CScAZL7hsuWjEBE/review"
+              href="https://share.google/NxoqmjodTDirGBDUo"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary w-full sm:w-56 inline-flex items-center justify-center text-center py-3 transform active:scale-95 transition-all duration-300"
+              className="btn-primary w-full sm:w-56 inline-flex items-center justify-center text-center py-2.5 transform active:scale-95 transition-all duration-300"
             >
               Visit Our Store
             </a>
@@ -788,14 +787,15 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative max-w-full max-h-full aspect-auto shadow-2xl"
+              className="relative max-w-full max-h-full shadow-2xl flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
-              <OptimizedImage
+              <img
                 src={selectedShopImage}
-                width={1600}
                 alt="Store View"
-                className="max-w-full max-h-[85vh] object-contain rounded-none shadow-luxury"
+                className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-white/10"
+                loading="eager"
+                referrerPolicy="no-referrer"
               />
             </motion.div>
           </motion.div>

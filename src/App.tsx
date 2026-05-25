@@ -4,7 +4,7 @@
  */
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import Layout from './Layout';
 import Home from './Home';
 import { ExitIntentPopup } from './components/ExitIntentPopup';
@@ -16,12 +16,34 @@ const ProductPage = lazy(() => import('./ProductPage'));
 const Cart = lazy(() => import('./Cart'));
 const Checkout = lazy(() => import('./Checkout'));
 const ThankYou = lazy(() => import('./ThankYou'));
-const Contact = lazy(() => import('./Contact'));
-const Terms = lazy(() => import('./Terms'));
-const ShippingPolicy = lazy(() => import('./ShippingPolicy'));
-const ReturnPolicy = lazy(() => import('./ReturnPolicy'));
+import Contact from './Contact';
+import Terms from './Terms';
+import ShippingPolicy from './ShippingPolicy';
+import ReturnPolicy from './ReturnPolicy';
 
 import { CONFIG } from "./config";
+
+function LoadingScreen() {
+  const [logoError, setLogoError] = useState(false);
+  return (
+    <div className="w-full h-screen flex flex-col items-center justify-center bg-ivory space-y-12">
+      <div className="flex flex-col items-center space-y-4">
+         {!logoError ? (
+           <img 
+             src="/images/logo.webp" 
+             alt="Mukesh Saree Centre Logo" 
+             className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block header-logo" 
+             onError={() => setLogoError(true)} 
+           />
+         ) : (
+           <span className="text-xl font-serif text-onyx tracking-[12px] uppercase block">MUKESH</span>
+         )}
+         <div className="w-12 h-[1px] bg-gold-500 animate-pulse"></div>
+      </div>
+      <div className="text-[10px] uppercase tracking-[6px] text-onyx/20 font-bold animate-pulse italic">The Selection is Loading</div>
+    </div>
+  );
+}
 
 export default function App() {
   // Version 1.0.1 - Cache Bust
@@ -42,22 +64,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ExitIntentPopup />
-      <Suspense fallback={
-        <div className="w-full h-screen flex flex-col items-center justify-center bg-ivory space-y-12">
-          <div className="flex flex-col items-center space-y-4">
-             <img src="/images/logo.webp" alt="Mukesh Saree Centre Logo" className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block header-logo" onError={(e) => {
-               (e.currentTarget as any).style.display = 'none';
-               const sibling = e.currentTarget.nextElementSibling;
-               if (sibling && sibling.tagName === 'SPAN') {
-                 (sibling as any).style.display = 'block';
-               }
-             }} />
-             <span className="text-xl font-serif text-onyx tracking-[12px] uppercase hidden">MUKESH</span>
-             <div className="w-12 h-[1px] bg-gold-500 animate-pulse"></div>
-          </div>
-          <div className="text-[10px] uppercase tracking-[6px] text-onyx/20 font-bold animate-pulse italic">The Selection is Loading</div>
-        </div>
-      }>
+      <Suspense fallback={<LoadingScreen />}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

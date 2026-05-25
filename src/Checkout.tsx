@@ -240,117 +240,223 @@ export default function Checkout() {
         }
       };
 
-      if (paymentMethod === "online") {
+      const createRazorpayOrder = async (orderData: { amount: number; productName: string; customerName: string }) => {
         try {
-          // Dynamic script loading to ensure checkout.js exists before execution
-          if (!(window as any).Razorpay) {
-            console.log("[RAZORPAY] Script not loaded. Attempting dynamic script loading...");
-            const loaded = await loadRazorpay();
-            if (!loaded || !(window as any).Razorpay) {
-              throw new Error("Razorpay SDK failed to load. Please check your network connection and try again.");
-            }
-          }
+          // Clear previous errors
+          setSubmitError("");
 
-          const reqBody = { amount: total };
-          const response = await fetch(
-            `${CONFIG.API_BASE_URL}/api/create-order`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(reqBody),
+          const response = await fetch(`${CONFIG.API_BASE_URL}/api/create-order`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
             },
-          );
+            body: JSON.stringify({
+              amount: Math.round(orderData.amount * 100),
+              isPaise: true, // send in Paise (multiply by 100)
+              currency: "INR",
+              receipt: `order_${Date.now()}`,
+              notes: {
+                product_name: orderData.productName,
+                customer_name: orderData.customerName
+              }
+            })
+          });
 
           if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            throw new Error(errData.error || "Failed to create order");
+            const errorText = await response.text();
+            throw new Error(`Server error ${response.status}: ${errorText}`);
           }
 
           const data = await response.json();
 
           if (!data.orderId && !data.id) {
-            throw new Error("Invalid order response");
+            throw new Error("No order ID returned from server");
           }
 
-          // Save order to sheets as Pending BEFORE opening payment gateway
-          finalizeOrder(false, "Payment Pending", "N/A").catch(console.error);
-
-          // Priority 1: Use the key returned directly from the backend to ensure a perfect merchant key match
-          // Priority 2: Use client-side environment variable
-          // Priority 3: Fallback live key
-          let rzpKey = (
-            data.key ||
-            import.meta.env.VITE_RAZORPAY_KEY_ID ||
-            import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-            CONFIG.RAZORPAY_KEY_ID ||
-            ""
-          ).trim();
-          if (!rzpKey || rzpKey === "rzp_live_Slf11Odg572QOq") {
-            rzpKey = "rzp_live_So7zJe4qbXm4LY";
-          }
-
-          const options = {
-            key: rzpKey,
-            amount: data.amount,
-            currency: data.currency,
-            order_id: data.orderId || data.id,
-            name: "Mukesh Sarees",
-            description: "Order Payment",
-            prefill: { name: fullName, contact: mobileNumber },
-            theme: { color: "#D4AF37" },
-            modal: {
-              ondismiss: function () {
-                setIsSubmitting(false);
-              },
-            },
-            handler: async function (paymentResponse: any) {
-              try {
-                // Verify payment signature on the backend for extra security & verification as requested
-                const verifyResponse = await fetch(
-                  `${CONFIG.API_BASE_URL}/api/verify-payment`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      razorpay_order_id: paymentResponse.razorpay_order_id,
-                      razorpay_payment_id: paymentResponse.razorpay_payment_id,
-                      razorpay_signature: paymentResponse.razorpay_signature,
-                    }),
-                  }
-                );
-
-                if (!verifyResponse.ok) {
-                  const verifyErr = await verifyResponse.json().catch(() => ({}));
-                  throw new Error(verifyErr.error || "Payment signature verification failed");
-                }
-
-                const verifyData = await verifyResponse.json();
-                if (!verifyData.success) {
-                  throw new Error(verifyData.error || "Verification failed");
-                }
-
-                // Submit to google sheets after successful payment and signature verification
-                const rzpId = paymentResponse.razorpay_payment_id || "Success";
-                await finalizeOrder(true, "Paid Online", rzpId);
-              } catch (e: any) {
-                console.error("[RAZORPAY VERIFICATION ERROR]:", e);
-                setSubmitError(`Payment completed, but verification failed: ${e.message || "Please contact customer support with your payment ID."}`);
-                setIsSubmitting(false);
-              }
-            },
-          };
-
-          const rzp = new (window as any).Razorpay(options);
-          rzp.open();
+          return data;
         } catch (error: any) {
-          console.error("Payment Error:", error);
-          setSubmitError(error.message || "Unable to initiate online payment right now. Please select Cash on Delivery or refer to customer support.");
-          setIsSubmitting(false);
+          console.error("Order creation failed:", error);
+
+          // Show specific error message to user
+          let userMessage = "Failed to create order. ";
+          if (error.message.includes("fetch") || error.message.includes("Network")) {
+            userMessage += "Network error — check your internet connection.";
+          } else if (error.message.includes("500")) {
+            userMessage += "Server error — please try again in a moment.";
+          } else if (error.message.includes("401") || error.message.includes("403")) {
+            userMessage += "Payment service error — please contact support.";
+          } else {
+            userMessage += "Please try again or use Cash on Delivery.";
+          }
+
+          setSubmitError(userMessage);
+          throw error;
         }
+      };
+
+      if (paymentMethod === "online") {
+        const initiateRazorpayPayment = async (orderDetails: {
+          totalAmount: number;
+          items: typeof cart;
+          customer: {
+            name: string;
+            phone: string;
+            email: string;
+            address: string;
+            city: string;
+            pincode: string;
+          };
+        }) => {
+          try {
+            setIsSubmitting(true);
+            setSubmitError("");
+
+            // Step 1: Create order on server
+            const order = await createRazorpayOrder({
+              amount: orderDetails.totalAmount,
+              productName: orderDetails.items.map(i => i.name).join(', '),
+              customerName: orderDetails.customer.name
+            });
+
+            // Save order to sheets as Pending BEFORE opening payment gateway
+            finalizeOrder(false, "Payment Pending", "N/A").catch(console.error);
+
+            // Step 2: Load Razorpay SDK if not loaded
+            if (!(window as any).Razorpay) {
+              console.log("[RAZORPAY] Script not loaded. Attempting dynamic script loading...");
+              const loaded = await loadRazorpay();
+              if (!loaded || !(window as any).Razorpay) {
+                throw new Error("Razorpay SDK failed to load. Please check your network connection and try again.");
+              }
+            }
+
+            // Key selection logic
+            let rzpKey = (
+              order.key ||
+              import.meta.env.VITE_RAZORPAY_KEY_ID ||
+              import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
+              CONFIG.RAZORPAY_KEY_ID ||
+              ""
+            ).trim();
+            if (!rzpKey || rzpKey === "rzp_live_Slf11Odg572QOq") {
+              rzpKey = "rzp_live_So7zJe4qbXm4LY";
+            }
+
+            // Step 3: Open Razorpay modal
+            const options = {
+              key: rzpKey,
+              amount: order.amount,       // comes from server in paise
+              currency: order.currency || 'INR',
+              name: 'Mukesh Saree Centre',
+              description: orderDetails.items[0]?.name || 'Luxury Saree Order',
+              image: 'https://mukeshsarees.com/images/logo.webp',
+              order_id: order.orderId || order.id,         // REQUIRED — from server
+              prefill: {
+                name: orderDetails.customer.name,
+                contact: orderDetails.customer.phone,
+                email: orderDetails.customer.email || 'info.customer@gmail.com'
+              },
+              notes: {
+                shipping_address: orderDetails.customer.address,
+                city: orderDetails.customer.city,
+                pincode: orderDetails.customer.pincode
+              },
+              theme: { color: '#1A0A00' },
+              handler: function(response: any) {
+                // Payment SUCCESS
+                verifyAndCompleteOrder(response, orderDetails);
+              },
+              modal: {
+                ondismiss: function() {
+                  // Customer closed without paying
+                  setIsSubmitting(false);
+                  setSubmitError(
+                    'Payment cancelled. Your cart is saved — try again or order via WhatsApp.'
+                  );
+                },
+                confirm_close: true,
+                escape: false
+              }
+            };
+
+            const rzp = new (window as any).Razorpay(options);
+            
+            rzp.on('payment.failed', function(response: any) {
+              setIsSubmitting(false);
+              setSubmitError(
+                `Payment failed: ${response.error.description}. Please try again.`
+              );
+            });
+
+            rzp.open();
+
+          } catch (error: any) {
+            console.error('Payment initiation failed:', error);
+            setIsSubmitting(false);
+          }
+        };
+
+        const verifyAndCompleteOrder = async (
+          paymentResponse: any, 
+          orderDetails: { totalAmount: number; items: typeof cart }
+        ) => {
+          try {
+            // Verify payment signature on server
+            const verifyRes = await fetch(`${CONFIG.API_BASE_URL}/api/verify-payment`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: paymentResponse.razorpay_order_id,
+                razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                razorpay_signature: paymentResponse.razorpay_signature,
+                orderDetails: orderDetails
+              })
+            });
+
+            if (verifyRes.ok) {
+              const verifyData = await verifyRes.json();
+              if (!verifyData.success) {
+                throw new Error(verifyData.error || "Verification failed");
+              }
+              // Fire Meta Pixel Purchase event
+              const fbq = (window as any).fbq;
+              if (typeof fbq !== 'undefined') {
+                fbq('track', 'Purchase', {
+                  value: orderDetails.totalAmount,
+                  currency: 'INR',
+                  content_ids: orderDetails.items.map((i: any) => i.sku || i.id)
+                });
+              }
+              // Submit to google sheets after successful payment and signature verification
+              const rzpId = paymentResponse.razorpay_payment_id || "Success";
+              await finalizeOrder(true, "Paid Online", rzpId);
+            } else {
+              setSubmitError('Payment received but verification failed. Contact support with payment ID: ' + 
+                paymentResponse.razorpay_payment_id);
+              setIsSubmitting(false);
+            }
+          } catch (err: any) {
+            console.error("[RAZORPAY VERIFICATION ERROR]:", err);
+            setSubmitError('Order confirmation failed. Please save your payment ID: ' + 
+              paymentResponse.razorpay_payment_id + ' and contact support.');
+            setIsSubmitting(false);
+          }
+        };
+
+        // Trigger payment flow
+        await initiateRazorpayPayment({
+          totalAmount: total,
+          items: cart,
+          customer: {
+            name: fullName,
+            phone: mobileNumber,
+            email: email,
+            address: streetAddress,
+            city: city,
+            pincode: zipCode
+          }
+        });
       } else {
         await finalizeOrder();
       }
@@ -665,14 +771,33 @@ export default function Checkout() {
 
               <div className="sticky bottom-0 md:static z-20 px-3.5 py-2 md:py-0 md:px-0 -mx-3.5 md:mx-0 bg-primary-50/95 backdrop-blur-md border-t border-black/5 md:border-t-0 md:backdrop-blur-none md:bg-transparent shadow-[0_-8px_20px_rgba(0,0,0,0.03)] md:shadow-none">
                 {submitError && (
-                  <div className="mb-2.5 p-3 sm:p-4 bg-red-50 border border-red-200/50 text-red-700 text-[11px] sm:text-xs rounded-sm font-medium leading-relaxed shadow-sm">
-                    ⚠️ {submitError}
+                  <div className="mb-4 p-3.5 sm:p-5 bg-red-50/80 border border-red-200/60 rounded-md shadow-sm">
+                    <div className="flex items-start gap-2 text-red-800 text-[11px] sm:text-xs md:text-sm font-semibold leading-relaxed">
+                      <span>⚠️ {submitError}</span>
+                    </div>
+                    
+                    <div className="mt-3 pt-3 border-t border-red-200/40">
+                      <p className="text-[11px] sm:text-xs text-primary-950/70 mb-3 leading-snug">
+                        Don't worry — you can still order via WhatsApp instantly! We will complete your order manually.
+                      </p>
+                      <a
+                        href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '917020664641'}?text=${encodeURIComponent(
+                          `Hi! I wanted to place an order on your website but encountered an error: "${submitError}". Could you please help me complete my order?`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-sm py-2.5 sm:py-3 px-4 font-bold text-xs sm:text-sm shadow-md shadow-[#25D366]/10 transition-all active:scale-[0.98] cursor-pointer"
+                      >
+                        📱 Order via WhatsApp Instead
+                      </a>
+                    </div>
                   </div>
                 )}
                 <button
+                  id="place-order-btn"
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-primary-950 hover:bg-black text-white px-8 py-2.5 sm:py-3.5 md:py-4 rounded-sm transition-all shadow-xl shadow-primary-950/20 text-xs md:text-sm font-bold tracking-[2px] uppercase flex items-center justify-center gap-3 disabled:opacity-70 active:scale-[0.98]"
+                  className="place-order-btn w-full bg-primary-950 hover:bg-black text-white px-8 py-2.5 sm:py-3.5 md:py-4 rounded-sm transition-all shadow-xl shadow-primary-950/20 text-xs md:text-sm font-bold tracking-[2px] uppercase flex items-center justify-center gap-3 disabled:opacity-70 active:scale-[0.98]"
                 >
                   {isSubmitting ? (
                     <>

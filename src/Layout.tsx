@@ -20,7 +20,7 @@ import {
   Phone,
 } from "lucide-react";
 import { useStore } from "./store";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import type { FormEvent } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { products } from "./mockData";
@@ -58,6 +58,34 @@ export default function Layout() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDeepScrolled, setIsDeepScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+
+  const hasStickyBar = location.pathname.startsWith("/product") || location.pathname === "/checkout";
+
+  // Determine positions of both buttons dynamically to prevent overlapping with sticky bars on mobile
+  const getWhatsAppPosition = () => {
+    if (hasStickyBar) {
+      if (isDeepScrolled) {
+        return "bottom-[calc(140px+env(safe-area-inset-bottom))] md:bottom-[84px]";
+      } else {
+        return "bottom-[calc(80px+env(safe-area-inset-bottom))] md:bottom-[24px]";
+      }
+    } else {
+      if (isDeepScrolled) {
+        return "bottom-[calc(80px+env(safe-area-inset-bottom))] md:bottom-[84px]";
+      } else {
+        return "bottom-[calc(20px+env(safe-area-inset-bottom))] md:bottom-[24px]";
+      }
+    }
+  };
+
+  const getScrollToTopPosition = () => {
+    if (hasStickyBar) {
+      return "bottom-[calc(80px+env(safe-area-inset-bottom))] md:bottom-[24px]";
+    } else {
+      return "bottom-[calc(20px+env(safe-area-inset-bottom))] md:bottom-[24px]";
+    }
+  };
+
   const [openFooterAccordion, setOpenFooterAccordion] = useState<string | null>(
     null,
   );
@@ -658,31 +686,30 @@ export default function Layout() {
             <Link
               to="/"
               onClick={scrollToTop}
-              className="flex items-center justify-center group transition-all duration-500 transform m-0 p-0"
+              className="flex items-center justify-center flex-col group transition-all duration-500 transform m-0 p-0"
             >
-              <img
-                src="/images/logo.webp"
-                alt="Mukesh Saree Centre Logo"
-                style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
-                className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain transition-all duration-500 group-hover:opacity-80 drop-shadow-sm m-0 p-0 block header-logo"
-                onError={(e) => {
-                  (e.currentTarget as any).style.display = "none";
-                  const parent = e.currentTarget.parentElement;
-                  if (parent) {
-                    const span = document.createElement("span");
-                    span.className = `text-[17px] md:text-2xl font-serif font-semibold tracking-[4px] md:tracking-[8px] uppercase text-center leading-none transition-all ${textColor} group-hover:opacity-70`;
-                    span.innerText = "MUKESH";
-
-                    const div = document.createElement("div");
-                    div.className =
-                      "flex items-center gap-2 md:gap-3 w-full mt-1.5 md:mt-2 px-1 opacity-90";
-                    div.innerHTML = `<div class="h-[1px] flex-1 ${borderColor} transition-colors"></div><span class="text-[8px] md:text-[10px] font-sans font-medium tracking-[4px] md:tracking-[6px] uppercase ${textColor} transition-colors whitespace-nowrap">Saree Centre</span><div class="h-[1px] flex-1 ${borderColor} transition-colors"></div>`;
-
-                    parent.appendChild(span);
-                    parent.appendChild(div);
-                  }
-                }}
-              />
+              {!logoError ? (
+                <img
+                  src="/images/logo.webp"
+                  alt="Mukesh Saree Centre Logo"
+                  style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
+                  className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain transition-all duration-500 group-hover:opacity-80 drop-shadow-sm m-0 p-0 block header-logo"
+                  onError={() => setLogoError(true)}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center">
+                  <span className={`text-[17px] md:text-2xl font-serif font-semibold tracking-[4px] md:tracking-[8px] uppercase text-center leading-none transition-all ${textColor} group-hover:opacity-70`}>
+                    MUKESH
+                  </span>
+                  <div className="flex items-center gap-2 md:gap-3 w-full mt-1.5 md:mt-2 px-1 opacity-90">
+                    <div className={`h-[1px] flex-1 ${borderColor} transition-colors`}></div>
+                    <span className={`text-[8px] md:text-[10px] font-sans font-medium tracking-[4px] md:tracking-[6px] uppercase ${textColor} transition-colors whitespace-nowrap`}>
+                      Saree Centre
+                    </span>
+                    <div className={`h-[1px] flex-1 ${borderColor} transition-colors`}></div>
+                  </div>
+                </div>
+              )}
             </Link>
           </div>
 
@@ -950,23 +977,36 @@ export default function Layout() {
       <main
         className={`flex-grow flex flex-col ${!isHomePage ? "pt-[85px] md:pt-[95px]" : ""}`}
       >
-        <Outlet />
+        <Suspense fallback={
+          <div className="flex-grow min-h-[50vh] flex flex-col items-center justify-center bg-[#FAF8F4] space-y-4">
+            <div className="w-8 h-8 border-2 border-[#C8A96B] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[10px] uppercase tracking-[4px] text-primary-950/40 font-bold italic animate-pulse text-center">Loading Collection...</p>
+          </div>
+        }>
+          <Outlet />
+        </Suspense>
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#f5f1eb] text-[#2b2b2b] pt-3 pb-6 md:pt-12 md:pb-10 border-t border-[#C8A96B]/25">
+      <footer className="bg-[#111111] text-neutral-300 pt-3 pb-2.5 md:pt-14 md:pb-12 border-t border-[#C8A96B]/25">
         <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
           
           {/* Newsletter Section */}
-          <div className="mb-6 md:mb-10 border-b border-[#2b2b2b]/10 pb-6 md:pb-8">
+          <div className="mb-2 md:mb-12 border-b border-white/10 pb-2 md:pb-10">
             <div className="max-w-xl mx-auto text-center">
-              <h3 className="text-xs md:text-sm uppercase tracking-[0.25em] font-semibold text-[#2b2b2b] mb-2 sm:mb-3">
+              <h3 
+                className="text-xs md:text-sm uppercase tracking-[0.25em] font-semibold mb-1.5 sm:mb-3"
+                style={{
+                  color: "rgba(250, 246, 240, 0.95)",
+                  textShadow: "0 1px 8px rgba(0,0,0,0.35)"
+                }}
+              >
                 JOIN THE MUKESH SAREE CENTRE FAMILY
               </h3>
-              <p className="text-[11px] md:text-xs text-[#2b2b2b]/65 tracking-wider mb-4 sm:mb-5 leading-relaxed">
+              <p className="text-[11px] md:text-sm text-[#eae6df]/75 tracking-wider mb-3 md:mb-5 leading-normal">
                 Subscribe to receive early access to new collections, exclusive previews, and ethnic styling inspiration.
               </p>
-              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-1.5 max-w-md mx-auto">
                 <input
                   type="email"
                   name="email"
@@ -975,23 +1015,23 @@ export default function Layout() {
                   autoComplete="off"
                   required
                   disabled={subscribeStatus === "submitting"}
-                  className="flex-grow bg-[#FAF8F5] border border-[#2b2b2b]/20 px-4 py-3 text-xs tracking-widest text-[#2b2b2b] placeholder-[#2b2b2b]/40 focus:outline-none focus:border-[#C8A96B] transition-colors disabled:opacity-60"
+                  className="flex-grow bg-[#1a1a1a] border border-white/10 px-4 py-2.5 md:py-3 text-xs tracking-widest text-white placeholder-white/35 focus:outline-none focus:border-[#C8A96B] transition-colors disabled:opacity-60"
                 />
                 <button
                   type="submit"
                   disabled={subscribeStatus === "submitting"}
-                  className="bg-[#2b2b2b] hover:bg-[#C8A96B] text-white hover:text-[#2b2b2b] transition-all duration-300 font-medium px-8 py-3 text-xs tracking-widest uppercase flex-shrink-0 disabled:bg-[#2b2b2b]/60 disabled:cursor-not-allowed disabled:text-white"
+                  className="bg-[#C8A96B] hover:bg-[#FAF8F4] text-neutral-950 hover:text-neutral-950 transition-all duration-300 font-medium px-8 py-2.5 md:py-3 text-xs tracking-widest uppercase flex-shrink-0 disabled:bg-neutral-800 disabled:cursor-not-allowed"
                 >
                   {subscribeStatus === "submitting" ? "Submitting..." : "Subscribe"}
                 </button>
               </form>
               {subscribeStatus === "success" && (
-                <p className="text-xs text-emerald-700 mt-3 tracking-wider font-medium">{subscribeMessage}</p>
+                <p className="text-xs text-emerald-400 mt-2 tracking-wider font-medium">{subscribeMessage}</p>
               )}
               {subscribeStatus === "error" && (
-                <p className="text-xs text-rose-700 mt-3 tracking-wider font-medium">{subscribeMessage}</p>
+                <p className="text-xs text-rose-400 mt-2 tracking-wider font-medium">{subscribeMessage}</p>
               )}
-              <p className="text-[10px] text-[#2b2b2b]/40 tracking-wider mt-4">
+              <p className="text-[9.5px] text-white/35 tracking-wider mt-2 md:mt-4">
                 By subscribing, you agree to our Privacy Policy and consent to receive updates.
               </p>
             </div>
@@ -1001,17 +1041,17 @@ export default function Layout() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-y-0 md:gap-x-10 lg:gap-x-16">
             
             {/* 1. QUICK LINKS Accordion */}
-            <div className="border-b border-[#2b2b2b]/10 md:border-b-0 py-0.5 md:py-0">
+            <div className="border-b border-white/10 md:border-b-0 py-0">
               <button
                 onClick={() => toggleFooterAccordion("quick-links")}
-                className="w-full flex items-center justify-between py-2 md:py-0 md:mb-4 md:pointer-events-none text-left"
+                className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
               >
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#2b2b2b]">
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
                   QUICK LINKS
                 </span>
                 <ChevronDown
-                  size={16}
-                  className={`transition-transform duration-300 md:hidden text-[#2b2b2b]/50 ${
+                  size={14}
+                  className={`transition-transform duration-300 md:hidden text-neutral-400 ${
                     openFooterAccordion === "quick-links" ? "rotate-180" : ""
                   }`}
                 />
@@ -1020,51 +1060,50 @@ export default function Layout() {
               <div
                 className={`transition-all duration-300 ${
                   openFooterAccordion === "quick-links" ? "block animate-fadeIn" : "hidden"
-                } md:block pb-5 md:pb-0`}
+                } md:block pb-1 md:pb-0`}
               >
-                <ul className="space-y-3 text-[12.5px] text-[#2b2b2b]/75 tracking-wider">
+                <ul className="space-y-0 md:space-y-4 text-[12.5px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-none pb-1">
                   <li>
-                    <Link to="/shop?category=Sarees" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/shop?category=Sarees" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Sarees
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?category=Lehengas" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/shop?category=Lehengas" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Lehengas
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?category=Co-Ord Sets" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/shop?category=Co-Ord Sets" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Co-Ord Sets
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?sort=new" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/shop?sort=new" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       New Arrivals
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?sort=best-selling" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/shop?sort=best-selling" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Best Sellers
                     </Link>
                   </li>
-
                 </ul>
               </div>
             </div>
 
             {/* 2. SUPPORT Accordion */}
-            <div className="border-b border-[#2b2b2b]/10 md:border-b-0 py-0.5 md:py-0">
+            <div className="border-b border-white/10 md:border-b-0 py-0">
               <button
                 onClick={() => toggleFooterAccordion("support")}
-                className="w-full flex items-center justify-between py-2 md:py-0 md:mb-4 md:pointer-events-none text-left"
+                className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
               >
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#2b2b2b]">
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
                   SUPPORT
                 </span>
                 <ChevronDown
-                  size={16}
-                  className={`transition-transform duration-300 md:hidden text-[#2b2b2b]/50 ${
+                  size={14}
+                  className={`transition-transform duration-300 md:hidden text-neutral-400 ${
                     openFooterAccordion === "support" ? "rotate-180" : ""
                   }`}
                 />
@@ -1073,51 +1112,50 @@ export default function Layout() {
               <div
                 className={`transition-all duration-300 ${
                   openFooterAccordion === "support" ? "block animate-fadeIn" : "hidden"
-                } md:block pb-5 md:pb-0`}
+                } md:block pb-1 md:pb-0`}
               >
-                <ul className="space-y-3 text-[12.5px] text-[#2b2b2b]/75 tracking-wider">
+                <ul className="space-y-0 md:space-y-4 text-[12.5px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-none pb-1">
                   <li>
-                    <Link to="/contact" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/contact" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Contact Us
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shipping-policy" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/shipping-policy" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Shipping Policy
                     </Link>
                   </li>
                   <li>
-                    <Link to="/return-policy" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/return-policy" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Returns & Exchanges
                     </Link>
                   </li>
                   <li>
-                    <Link to="/terms" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/terms" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Terms of Service
                     </Link>
                   </li>
                   <li>
-                    <Link to="/terms" className="hover:text-[#C8A96B] transition-colors">
+                    <Link to="/terms" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Privacy Policy
                     </Link>
                   </li>
-
                 </ul>
               </div>
             </div>
 
             {/* 3. CONTACT Accordion (Elegant 2-column layout inside) */}
-            <div className="border-b border-[#2b2b2b]/10 md:border-b-0 py-0.5 md:py-0">
+            <div className="border-b border-white/10 md:border-b-0 py-0">
               <button
                 onClick={() => toggleFooterAccordion("contact")}
-                className="w-full flex items-center justify-between py-2 md:py-0 md:mb-4 md:pointer-events-none text-left"
+                className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
               >
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#2b2b2b]">
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
                   CONTACT
                 </span>
                 <ChevronDown
-                  size={16}
-                  className={`transition-transform duration-300 md:hidden text-[#2b2b2b]/50 ${
+                  size={14}
+                  className={`transition-transform duration-300 md:hidden text-neutral-400 ${
                     openFooterAccordion === "contact" ? "rotate-180" : ""
                   }`}
                 />
@@ -1126,29 +1164,29 @@ export default function Layout() {
               <div
                 className={`transition-all duration-300 ${
                   openFooterAccordion === "contact" ? "block animate-fadeIn" : "hidden"
-                } md:block pb-5 md:pb-0`}
+                } md:block pb-1 md:pb-0`}
               >
-                <div className="grid grid-cols-2 gap-4 text-xs tracking-wider">
+                <div className="grid grid-cols-[1.25fr_0.75fr] md:grid-cols-2 gap-y-1 gap-x-2 md:gap-4 text-xs tracking-wider leading-none pt-0.5">
                   <div>
-                    <h5 className="text-[9px] font-bold uppercase tracking-widest text-[#2b2b2b]/40 mb-1">
+                    <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-neutral-500 mb-0.5 md:mb-1">
                       CUSTOMER CARE
                     </h5>
                     <a
                       href={`mailto:${CONFIG.STORE_EMAIL}`}
-                      className="text-[11.5px] text-[#2b2b2b] hover:text-[#C8A96B] transition-colors font-medium break-all"
+                      className="text-[11.5px] min-[370px]:text-[12px] md:text-[12.5px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors font-semibold tracking-wider whitespace-nowrap block py-0.5 md:py-0.5"
                     >
                       {CONFIG.STORE_EMAIL}
                     </a>
                   </div>
                   <div>
-                    <h5 className="text-[9px] font-bold uppercase tracking-widest text-[#2b2b2b]/40 mb-1">
+                    <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-neutral-500 mb-0.5 md:mb-1">
                       WHATSAPP SUPPORT
                     </h5>
                     <a
                       href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[11.5px] text-[#2b2b2b] hover:text-[#C8A96B] transition-colors font-medium whitespace-nowrap"
+                      className="text-[11.5px] min-[370px]:text-[12px] md:text-[12.5px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors font-semibold tracking-wider whitespace-nowrap block py-0.5 md:py-0.5"
                     >
                       {CONFIG.STORE_PHONE}
                     </a>
@@ -1158,17 +1196,15 @@ export default function Layout() {
               </div>
             </div>
 
-
-
           </div>
 
           {/* Social Icons Section */}
-          <div className="flex justify-center items-center gap-7 mt-6 md:mt-10 border-t border-[#2b2b2b]/10 pt-5">
+          <div className="flex justify-center items-center gap-6 mt-2 md:mt-12 border-t border-white/10 pt-2.5 md:pt-6">
             <a
               href="https://www.instagram.com/mukeshsarees_nagpur"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#2b2b2b] hover:text-[#C8A96B] transition-colors p-2 hover:scale-105 transform active:scale-95 duration-200"
+              className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
               aria-label="Instagram"
             >
               <Instagram size={20} strokeWidth={1.5} />
@@ -1177,7 +1213,7 @@ export default function Layout() {
               href="https://www.facebook.com/Mukeshsareesindia/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#2b2b2b] hover:text-[#C8A96B] transition-colors p-2 hover:scale-105 transform active:scale-95 duration-200"
+              className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
               aria-label="Facebook"
             >
               <Facebook size={20} strokeWidth={1.5} />
@@ -1186,7 +1222,7 @@ export default function Layout() {
               href="https://www.pinterest.com/MukeshSareesdotcom/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#2b2b2b] hover:text-[#C8A96B] transition-colors p-2 hover:scale-105 transform active:scale-95 duration-200"
+              className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1.5 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
               aria-label="Pinterest"
             >
               <svg
@@ -1202,7 +1238,7 @@ export default function Layout() {
               href="https://youtube.com/@mukeshsarees?si=aMljrBMnIJYQDGDI"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#2b2b2b] hover:text-[#C8A96B] transition-colors p-2 hover:scale-105 transform active:scale-95 duration-200"
+              className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
               aria-label="YouTube"
             >
               <Youtube size={20} strokeWidth={1.5} />
@@ -1210,8 +1246,8 @@ export default function Layout() {
           </div>
 
           {/* Copyright Section */}
-          <div className="mt-4 pt-3.5 border-t border-[#2b2b2b]/5 flex flex-col items-center">
-            <p className="text-[10px] text-[#2b2b2b]/50 tracking-[0.1em] font-medium uppercase text-center leading-relaxed">
+          <div className="mt-1.5 md:mt-4 pt-1.5 md:pt-4 border-t border-white/5 flex flex-col items-center">
+            <p className="text-[9.5px] md:text-[10px] text-white/45 tracking-[0.15em] font-medium uppercase text-center leading-normal">
               © {new Date().getFullYear()} Mukesh Saree Centre. All Rights Reserved.
             </p>
           </div>
@@ -1219,13 +1255,30 @@ export default function Layout() {
         </div>
       </footer>
 
-      {/* Floating WhatsApp */}
+      {/* Floating Buttons Stack with Smooth Scroll to Top and WhatsApp */}
+      <AnimatePresence>
+        {isDeepScrolled && (
+          <motion.button
+            key="scroll-top"
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 10 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            onClick={scrollToTop}
+            className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#FAF8F4] text-[#2b2b2b] border border-[#C8A96B]/35 flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:border-[#C8A96B] hover:text-[#C8A96B] hover:scale-110 active:scale-95 transition-all duration-300 pointer-events-auto cursor-pointer ${getScrollToTopPosition()}`}
+            aria-label="Scroll to top"
+          >
+            <ArrowUp size={20} strokeWidth={2} />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       <a
         id="whatsapp-float"
         href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}
         target="_blank"
         rel="noopener noreferrer"
-        className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform ${location.pathname.startsWith("/product") ? "bottom-[140px] md:bottom-[24px]" : location.pathname === "/checkout" ? "bottom-[80px] md:bottom-[24px]" : "bottom-[24px]"}`}
+        className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_6px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_8px_25px_rgba(37,211,102,0.4)] hover:scale-110 active:scale-95 transition-all duration-300 ${getWhatsAppPosition()}`}
         aria-label="Contact on WhatsApp"
       >
         <MessageCircle size={24} strokeWidth={1.5} />

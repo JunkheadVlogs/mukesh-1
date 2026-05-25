@@ -46,6 +46,19 @@ app.use(cors({
   credentials: true
 }));
 
+// Additional explicit CORS header fallback to prevent any CORS issues across domains
+app.use((req, res, next) => {
+  const origin = req.headers.origin || "https://mukeshsarees.com";
+  res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.json());
 
 // Normalize URLs to remove potential AI Studio prefix from all requests
@@ -175,10 +188,16 @@ apiRouter.post('/create-order', async (req, res) => {
       key_secret: currentKeySecret,
     });
     
+    // Support pre-multiplied paise or raw rupees
+    const rawAmount = req.body.amount;
+    const isAlreadyPaise = req.body.isPaise || (rawAmount > 50000);
+    const finalAmount = isAlreadyPaise ? Math.round(rawAmount) : Math.round(rawAmount * 100);
+
     const options = {
-      amount: Math.round(req.body.amount * 100),
-      currency: 'INR',
-      receipt: `receipt_${Date.now()}`
+      amount: finalAmount,
+      currency: req.body.currency || 'INR',
+      receipt: req.body.receipt || `receipt_${Date.now()}`,
+      notes: req.body.notes || {}
     };
 
     const order = await rzp.orders.create(options);
@@ -188,7 +207,7 @@ apiRouter.post('/create-order', async (req, res) => {
       ...order,
       key: currentKeyId
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[RAZORPAY] Create Order Error:", err);
     const errorMessage = err?.error?.description || err?.message || "Failed to create order";
     res.status(500).json({
