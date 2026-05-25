@@ -226,7 +226,21 @@ export default function Checkout() {
             // Provide a small delay for premium feels of the "Processing" transition
             setTimeout(() => {
               navigate("/thank-you", {
-                state: { orderId: newOrderId, total, cart: cartData },
+                state: { 
+                  orderId: newOrderId, 
+                  total, 
+                  cart: cartData,
+                  customer: {
+                    fullName,
+                    mobileNumber,
+                    email,
+                    streetAddress,
+                    city,
+                    state: "India",
+                    zipCode,
+                    paymentMethod
+                  }
+                },
                 replace: true,
               });
             }, 400);

@@ -114,7 +114,11 @@ export function ProductDescription({
   }
 
   // 2. PRODUCT HIGHLIGHTS SECTION
-  const printType = productName.toUpperCase().includes("FLORAL") 
+  const isP60 = product?.sku === "SAR-TIS-COT-060" || product?.id === "p60";
+
+  const printType = isP60
+    ? "Digital Floral Print / Modern Motif"
+    : productName.toUpperCase().includes("FLORAL") 
     ? "Floral Print / Handcrafted Botanical Motif" 
     : productName.toUpperCase().includes("BLOCK") || productName.toUpperCase().includes("AJRAKH")
     ? "Traditional Handcrafted Block Print"
@@ -124,7 +128,9 @@ export function ProductDescription({
     ? "Traditional Bandhani Tie-Dye Motif"
     : "Boutique Handcraft / Solid Weave";
 
-  const comfortLabel = isSaree
+  const comfortLabel = isP60
+    ? "Featherlight feel with a smooth tactile finish and exquisite drape"
+    : isSaree
     ? "Featherlight, exceptionally breathable, and skin-friendly luxury drapes"
     : "Luxuriously soft touch, gentle against the skin, and effortless fluid movement";
 
@@ -189,7 +195,11 @@ export function ProductDescription({
   // 4. FABRIC DETAILS SECTION
   let fabricVal = getFabricRaw();
   if (!fabricVal || fabricVal.length < 25) {
-    fabricVal = `Woven diligently using premium quality ${fabricName}. Known for its organic breathability, outstanding crease-recovery, and deep color-absorption capability, this luxury fabric guarantees a fresh, pristine look. It feels incredibly cozy to touch and maintains its lush textile profile beautifully even with frequent wears.`;
+    if (isP60) {
+      fabricVal = `Woven diligently using premium quality ${fabricName}. Known for its stunning metallic lustre, lightweight form, and gorgeous crease-recovery, this luxury fabric guarantees a fresh, pristine look. It feels incredibly cozy to touch and maintains its beautiful textile profile perfectly for all your special occasions.`;
+    } else {
+      fabricVal = `Woven diligently using premium quality ${fabricName}. Known for its organic breathability, outstanding crease-recovery, and deep color-absorption capability, this luxury fabric guarantees a fresh, pristine look. It feels incredibly cozy to touch and maintains its lush textile profile beautifully even with frequent wears.`;
+    }
   } else {
     fabricVal = fabricVal.replace(/\*\*.*?\*\*/g, "").replace(/^[•\s\-\*]+/gm, "").trim();
   }
@@ -210,38 +220,7 @@ export function ProductDescription({
   }
 
   // 6. CARE INSTRUCTIONS SECTION
-  let finalCare = "";
-  const isLinen = fabricName.toUpperCase().includes("LINEN") || productName.toUpperCase().includes("LINEN") || categoryName.toUpperCase().includes("LINEN");
-
-  if (isLinen) {
-    finalCare = [
-      "- This premium Linen saree is fully washable for easy maintenance.",
-      "- Hand wash gently or use a delicate machine cycle in cold water with mild detergent.",
-      "- Wash dark colors separately to preserve color brilliancy.",
-      "- Hang to dry in a cool shade; do not wring, twist, or tumble dry.",
-      "- Warm iron on the reverse while slightly damp to restore its natural crisp texture."
-    ].join("\n");
-  } else {
-    const rawCare = getCareRaw();
-    if (rawCare) {
-      const careBullets = rawCare
-        .split(/\n+/)
-        .map(line => line.replace(/^[•\s\-\*\/]+/g, "").trim())
-        .filter(line => line.length > 3);
-      if (careBullets.length > 0) {
-        finalCare = careBullets.map(bullet => `- ${bullet}`).join("\n");
-      }
-    }
-
-    if (!finalCare) {
-      finalCare = [
-        "- Professional dry clean is highly recommended for the first wash to preserve original color pigments.",
-        "- Alternatively, gently hand wash in cold water using a mild pH-balanced washing detergent.",
-        "- Dry flat in rich shade away from absolute direct moisture. Do not squeeze, twist, or tumble dry.",
-        "- Medium steam iron on the reverse side to prevent any potential damage to the premium print finishes."
-      ].join("\n");
-    }
-  }
+  const finalCare = "Gentle hand wash with care to preserve the beauty of the fabric.";
 
   // Final structured list of sections, omitting length and blouse info for Co-Ord sets
   const isCoOrdSet = categoryName.toUpperCase().includes("CO-ORD") || productName.toUpperCase().includes("CO-ORD");
@@ -284,7 +263,7 @@ export function ProductDescription({
   ];
 
   return (
-    <div className={`space-y-0.5 border-t border-[#C8A96B]/15 pt-2 ${className}`}>
+    <div className={`space-y-0.5 border-t border-[#C8A96B]/10 pt-1 ${className}`}>
       {sectionsList.map((section, idx) => (
         <AccordionItem
           key={idx}
@@ -307,21 +286,22 @@ function AccordionItem({
   isOpenDefault: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(isOpenDefault);
+  const isCareSection = title === "CARE INSTRUCTIONS";
 
   return (
-    <div className="border-b border-[#C8A96B]/10">
+    <div className="border-b border-[#1A0A00]/5 last:border-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex justify-between items-center py-4 w-full text-left transition-colors duration-200 group focus:outline-none"
+        className="flex justify-between items-center py-5 md:py-6 w-full text-left transition-colors duration-200 group focus:outline-none"
       >
-        <span className="text-xs font-serif font-medium uppercase tracking-[0.12em] text-[#1A0A00] group-hover:text-[#C8A96B] transition-colors">
+        <span className="text-[10px] sm:text-[11px] font-sans font-light uppercase tracking-[0.18em] sm:tracking-[0.22em] text-[#1A0A00]/70 group-hover:text-[#C8A96B] transition-colors">
           {title}
         </span>
         <ChevronDown
-          size={16}
-          strokeWidth={1.5}
-          className={`text-[#1A0A00]/50 group-hover:text-[#C8A96B] transition-transform duration-300 ${
-            isOpen ? "rotate-180 text-[#C8A96B]" : ""
+          size={12}
+          strokeWidth={1.0}
+          className={`text-[#1A0A00]/25 group-hover:text-[#C8A96B] transition-transform duration-300 ${
+            isOpen ? "rotate-180 text-[#C8A96B]/80" : ""
           }`}
         />
       </button>
@@ -334,10 +314,16 @@ function AccordionItem({
             transition={{ duration: 0.25, ease: "easeOut" }}
             className="overflow-hidden"
           >
-            <div className="pb-5 pt-0.5 font-sans leading-relaxed text-[13px] text-[#1A0A00]/75 tracking-wide space-y-2">
-              <div className="prose prose-sm max-w-none prose-p:my-1.5 prose-li:my-1 prose-strong:text-[#1A0A00] prose-strong:font-bold prose-ul:list-disc prose-ul:pl-4">
-                <ReactMarkdown>{content}</ReactMarkdown>
-              </div>
+            <div className="pb-6 pt-1 font-sans text-xs sm:text-[13px] tracking-wide">
+              {isCareSection ? (
+                <div className="leading-relaxed text-[#5f5a54] font-light font-sans tracking-wide md:max-w-xl pb-3 pr-2 select-none">
+                  {content}
+                </div>
+              ) : (
+                <div className="prose prose-sm max-w-none text-[#1A0A00]/70 leading-relaxed prose-p:my-1.5 prose-li:my-1 prose-strong:text-[#1A0A00] prose-strong:font-medium prose-ul:list-disc prose-ul:pl-4">
+                  <ReactMarkdown>{content}</ReactMarkdown>
+                </div>
+              )}
             </div>
           </motion.div>
         )}

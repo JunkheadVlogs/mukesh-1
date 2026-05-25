@@ -899,5 +899,75 @@ video::-webkit-media-controls-fullscreen-button {
   }
 }
 
+/* ==========================================================================
+   PRINT MEDIA STYLES (Clean printable invoice adjustments)
+   ========================================================================== */
+@media print {
+  /* Hide non-printable web sections entirely */
+  header, 
+  footer, 
+  nav, 
+  .no-print, 
+  .whatsapp-sticky, 
+  #whatsapp-widget, 
+  .exit-intent-popup, 
+  button, 
+  a.btn-primary,
+  .continue-shopping-btn,
+  .whatsapp-support-btn {
+    display: none !important;
+  }
+  
+  /* Reset page colors for black-on-white high contrast print */
+  body, 
+  html {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #000000 !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Convert page container to a full-width invoice sheet layout */
+  .print-invoice-page {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0.4in !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .print-invoice-header {
+    border-bottom: 2px solid #1a1a1a !important;
+    padding-bottom: 1.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .print-avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Grid style restoration for standard print sheets */
+  .print-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 2rem !important;
+  }
+
+  /* Make sure images are printed cleanly or hidden if not desired */
+  .print-product-img {
+    max-width: 60px !important;
+    height: auto !important;
+  }
+}
+
 
 

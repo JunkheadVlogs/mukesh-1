@@ -2460,7 +2460,7 @@ Upgrade your ethnic collection with this beautiful Tissue Cotton Saree featuring
 • Soft & lightweight tissue cotton fabric with a beautiful natural sheen
 • Detailed premium digital floral print
 • Extremely easy to drape and comfortable for long-duration party wear
-• Perfectly breathable for all-season ethnic styling
+• Elegant and versatile for all-season ethnic styling
 
 **STYLING TIP:**
 Style this majestic digital floral printed saree with elegant minimal jewelry and metallic heels for a stunning diva look at parties, weddings, or family festivals.`,
