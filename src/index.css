@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('/fonts/fonts.css');
 @import "tailwindcss";
 
 :root {
@@ -968,6 +968,85 @@ video::-webkit-media-controls-fullscreen-button {
     height: auto !important;
   }
 }
+
+/* ==========================================================================
+   CUSTOM EXIT INTENT POPUP COMPONENT CLASSES
+   ========================================================================== */
+.exit-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  animation: exitFadeIn 0.3s ease forwards;
+}
+.exit-modal {
+  background: #1A0A00; color: #fff;
+  border: 1px solid #C8A96E;
+  border-radius: 16px; padding: 40px 36px;
+  max-width: 440px; width: 90%; position: relative;
+  animation: exitSlideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes exitFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes exitSlideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.exit-close {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; color: #888;
+  font-size: 20px; cursor: pointer;
+}
+.exit-badge { background: #C8A96E; color: #000; padding: 4px 12px;
+  border-radius: 100px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 12px; }
+.exit-modal h2 { font-size: 26px; margin-bottom: 10px; font-family: var(--font-display); color: #fff; }
+.phone-input-group { display: flex; border: 1px solid #C8A96E; border-radius: 8px; overflow: hidden; margin: 18px 0 6px; }
+.phone-prefix { padding: 12px 14px; background: rgba(200,169,110,0.1); color: #C8A96E; font-size: 14px; white-space: nowrap; }
+.phone-input-group input { flex: 1; background: transparent; border: none; color: #fff; padding: 12px 14px; font-size: 16px; outline: none; }
+.claim-btn { width: 100%; background: #C8A96E; color: #000; border: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; }
+.claim-btn:hover { background: #d4b87e; }
+.no-spam { font-size: 12px; color: #888; text-align: center; margin-top: 10px; }
+.trust-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; font-size: 12px; color: #aaa; justify-content: center; }
+.error-msg { color: #FF6B6B; font-size: 13px; }
+
+/* 💬 WhatsApp Float Button */
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: #25D366;
+  color: #fff !important;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.45);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.whatsapp-float:hover {
+  background-color: #20ba5a;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.65);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  .whatsapp-float {
+    bottom: 16px;
+    right: 16px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}
+
+
 
 
 

@@ -45,6 +45,7 @@ export interface Product {
   reviewsCount?: number;
   reviews?: Review[];
   enableUrgency?: boolean;
+  noCareInstructions?: boolean;
   availableSizes?: string[];
   stock?: number;
 }
@@ -118,18 +119,28 @@ export const useStore = create<AppState>()(
         const state = get();
         const activeCoupon = state.appliedCoupon;
         let couponDiscountMultiplier = 0;
-        if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.50;
-        else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") couponDiscountMultiplier = 0.60;
+        let flatDiscount = 0;
+        
+        if (activeCoupon === "VIP50") {
+          couponDiscountMultiplier = 0.50;
+        } else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") {
+          const totalQuantity = state.cart.reduce((total, item) => total + item.quantity, 0);
+          flatDiscount = 200 * totalQuantity;
+        } else if (activeCoupon === "MUKESH150") {
+          flatDiscount = 150;
+        }
         
         const subtotalCart = state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
-        const subtotalMRP = state.cart.reduce((total, item) => total + (item.originalPrice || item.price) * item.quantity, 0);
         
         let finalTotal = subtotalCart;
         if (couponDiscountMultiplier > 0) {
+          const subtotalMRP = state.cart.reduce((total, item) => total + (item.originalPrice || item.price) * item.quantity, 0);
           const priceWithCoupon = Math.floor(subtotalMRP * (1 - couponDiscountMultiplier));
           if (priceWithCoupon < subtotalCart) {
             finalTotal = priceWithCoupon;
           }
+        } else if (flatDiscount > 0) {
+          finalTotal = subtotalCart - flatDiscount;
         }
         return Math.max(0, finalTotal);
       },

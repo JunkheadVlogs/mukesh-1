@@ -89,8 +89,12 @@ export default function Cart() {
 
   const activeCoupon = appliedCoupon;
   let couponDiscountMultiplier = 0;
+  let flatDiscount = 0;
   if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.50;
-  else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") couponDiscountMultiplier = 0.60;
+  else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") {
+    const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+    flatDiscount = 200 * totalQuantity;
+  }
 
   let finalPayable = subtotalCart;
   let finalCouponSavings = 0;
@@ -101,6 +105,9 @@ export default function Cart() {
       finalPayable = priceWithCoupon;
       finalCouponSavings = subtotalCart - priceWithCoupon;
     }
+  } else if (flatDiscount > 0) {
+    finalPayable = subtotalCart - flatDiscount;
+    finalCouponSavings = flatDiscount;
   }
 
   const totalDiscount = productSavings + finalCouponSavings;
@@ -226,7 +233,9 @@ export default function Cart() {
                   <div className="bg-[#F9F7F4] border border-[#8A6A4A]/20 p-3 sm:p-4 rounded-sm flex flex-col items-center text-center">
                     <span className="text-[11px] sm:text-[12px] uppercase tracking-[1px] font-bold text-[#8A6A4A] flex items-center gap-1.5 mb-1"><ShieldCheck size={14} /> Coupon Applied</span>
                     <span className="font-serif text-base sm:text-lg text-primary-950 font-bold mb-0.5">{appliedCoupon}</span>
-                    <span className="text-[10px] sm:text-[11px] text-primary-950/60 font-medium mb-2.5 uppercase tracking-wider">{couponDiscountMultiplier * 100}% OFF Applied Successfully</span>
+                    <span className="text-[10px] sm:text-[11px] text-primary-950/60 font-medium mb-2.5 uppercase tracking-wider">
+                      {flatDiscount > 0 ? "Extra VIP Member Discount Applied" : `${couponDiscountMultiplier * 100}% OFF Applied Successfully`}
+                    </span>
                     <span className="text-[12px] font-bold text-[#4CAF50] bg-[#4CAF50]/10 px-3 py-1 rounded-sm w-full">You Saved {formatPrice(totalDiscount)}</span>
                     <button onClick={handleRemoveCoupon} className="mt-2 text-[9px] uppercase font-bold text-primary-950/40 hover:text-red-500 transition-colors tracking-widest underline underline-offset-4">
                       Remove Coupon
@@ -270,7 +279,7 @@ export default function Cart() {
                 </div>
                 {finalCouponSavings > 0 && (
                   <div className="flex justify-between text-[11.5px] sm:text-xs md:text-sm text-[#4CAF50] font-medium">
-                    <span>Coupon Savings</span>
+                    <span>{flatDiscount > 0 ? "VIP Discount" : "Coupon Savings"}</span>
                     <span className="font-bold">-{formatPrice(finalCouponSavings)}</span>
                   </div>
                 )}

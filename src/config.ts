@@ -1,8 +1,20 @@
 
 const BASE_URL = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
 
+const getValidApiUrl = () => {
+  const url1 = import.meta.env.VITE_API_URL;
+  if (url1 && !url1.startsWith('AIzaSy') && url1.length < 100) {
+    return url1;
+  }
+  const url2 = import.meta.env.VITE_API_BASE_URL;
+  if (url2 && !url2.startsWith('AIzaSy') && url2.length < 100) {
+    return url2;
+  }
+  return '';
+};
+
 export const CONFIG = {
-  API_BASE_URL: import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || BASE_URL || '',
+  API_BASE_URL: getValidApiUrl() || BASE_URL || '',
   STORE_NAME: import.meta.env.VITE_SITE_NAME || 'Mukesh Saree Centre',
   STORE_EMAIL: 'info@mukeshsarees.com',
   STORE_PHONE: import.meta.env.VITE_STORE_PHONE || '+91 7020664641',
@@ -30,7 +42,7 @@ export async function submitToGoogleSheets(data: any) {
     
     // Direct Fallback to Google Apps Script bypassing Node backend entirely
     try {
-      const GOOGLE_SCRIPT_URL = import.meta.env.VITE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
+      const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL || import.meta.env.VITE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",

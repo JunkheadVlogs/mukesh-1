@@ -2669,5 +2669,289 @@ Upgrade your ethnic wardrobe with this elegant Red Soft Linen Saree featuring st
 • 👜 Perfect for Office, Casual & Festive Wear
 • 🌈 Available in 3 Beautiful Colors`,
     rating: 4.8,
+  },
+  {
+    id: "p66",
+    sku: "SAR-FND-WHT-066",
+    name: "White Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    tagline: "Bollywood Glam Look in Minutes!",
+    slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    price: 1299,
+    originalPrice: 2599,
+    image: "https://mukeshsarees.com/product/fendy-chiffon-white/fendy-chiffon-saree.webp",
+    images: [
+      "https://mukeshsarees.com/product/fendy-chiffon-white/fendy-chiffon-saree.webp",
+      "https://mukeshsarees.com/product/fendy-chiffon-white/Back-pose.webp",
+      "https://mukeshsarees.com/product/fendy-chiffon-white/Half-front.webp"
+    ],
+    stock: 15,
+    category: "Sarees",
+    fabric: "Premium Fendy Space Silk",
+    color: "White",
+    isNew: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/fendy-chiffon-saree.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Navy-blue.webp" },
+      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Pink.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Royal-blue.webp" },
+      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/rust-brown.webp" },
+      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Wine_red.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+
+**HIGHLIGHTS:**
+• ✨ Premium Fendy Space Silk Fabric
+• 💎 Elegant Sequin Embroidery Work
+• 👑 Heavy Gold Fancy Fringes Lace Border
+• 💃 Bollywood Inspired Designer Look
+• 🎉 Perfect for Party, Wedding & Festival Wear
+• 🧵 Comes with Contrast Matching Unstitched Blouse Piece
+• 🌟 Soft, Stylish & Easy to Drape
+
+**FABRIC FEATURES:**
+• Luxurious soft feel of premium Space Silk with elegant natural drape
+• Subtle sequin embroidery and a beautiful designer gold fancy fringes lace border for heavy party look
+• Perfect body-hugging silhouette that's easy to drape for a classy, stylish look
+
+**STYLING TIP:**
+Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, statement chandelier earrings, matching heels, and elegant makeup for the perfect Bollywood-inspired diva ensemble.`,
+    rating: 4.9,
+  },
+  {
+    id: "p67",
+    sku: "SAR-FND-NVY-067",
+    name: "Navy Blue Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    tagline: "Bollywood Glam Look in Minutes!",
+    slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    price: 1299,
+    originalPrice: 2599,
+    image: "https://mukeshsarees.com/product/fendy-chiffon-white/Navy-blue.webp",
+    images: [
+      "https://mukeshsarees.com/product/fendy-chiffon-white/Navy-blue.webp"
+    ],
+    stock: 15,
+    category: "Sarees",
+    fabric: "Premium Fendy Space Silk",
+    color: "Navy Blue",
+    isVariant: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/fendy-chiffon-saree.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Navy-blue.webp" },
+      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Pink.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Royal-blue.webp" },
+      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/rust-brown.webp" },
+      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Wine_red.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+
+**HIGHLIGHTS:**
+• ✨ Premium Fendy Space Silk Fabric
+• 💎 Elegant Sequin Embroidery Work
+• 👑 Heavy Gold Fancy Fringes Lace Border
+• 💃 Bollywood Inspired Designer Look
+• 🎉 Perfect for Party, Wedding & Festival Wear
+• 🧵 Comes with Contrast Matching Unstitched Blouse Piece
+• 🌟 Soft, Stylish & Easy to Drape
+
+**FABRIC FEATURES:**
+• Luxurious soft feel of premium Space Silk with elegant natural drape
+• Subtle sequin embroidery and a beautiful designer gold fancy fringes lace border for heavy party look
+• Perfect body-hugging silhouette that's easy to drape for a classy, stylish look
+
+**STYLING TIP:**
+Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, statement chandelier earrings, matching heels, and elegant makeup for the perfect Bollywood-inspired diva ensemble.`,
+    rating: 4.9,
+  },
+  {
+    id: "p68",
+    sku: "SAR-FND-PNK-068",
+    name: "Pink Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    tagline: "Bollywood Glam Look in Minutes!",
+    slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    price: 1299,
+    originalPrice: 2599,
+    image: "https://mukeshsarees.com/product/fendy-chiffon-white/Pink.webp",
+    images: [
+      "https://mukeshsarees.com/product/fendy-chiffon-white/Pink.webp"
+    ],
+    stock: 15,
+    category: "Sarees",
+    fabric: "Premium Fendy Space Silk",
+    color: "Pink",
+    isVariant: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/fendy-chiffon-saree.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Navy-blue.webp" },
+      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Pink.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Royal-blue.webp" },
+      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/rust-brown.webp" },
+      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Wine_red.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+
+**HIGHLIGHTS:**
+• ✨ Premium Fendy Space Silk Fabric
+• 💎 Elegant Sequin Embroidery Work
+• 👑 Heavy Gold Fancy Fringes Lace Border
+• 💃 Bollywood Inspired Designer Look
+• 🎉 Perfect for Party, Wedding & Festival Wear
+• 🧵 Comes with Contrast Matching Unstitched Blouse Piece
+• 🌟 Soft, Stylish & Easy to Drape
+
+**FABRIC FEATURES:**
+• Luxurious soft feel of premium Space Silk with elegant natural drape
+• Subtle sequin embroidery and a beautiful designer gold fancy fringes lace border for heavy party look
+• Perfect body-hugging silhouette that's easy to drape for a classy, stylish look
+
+**STYLING TIP:**
+Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, statement chandelier earrings, matching heels, and elegant makeup for the perfect Bollywood-inspired diva ensemble.`,
+    rating: 4.9,
+  },
+  {
+    id: "p69",
+    sku: "SAR-FND-RYL-069",
+    name: "Royal Blue Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    tagline: "Bollywood Glam Look in Minutes!",
+    slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    price: 1299,
+    originalPrice: 2599,
+    image: "https://mukeshsarees.com/product/fendy-chiffon-white/Royal-blue.webp",
+    images: [
+      "https://mukeshsarees.com/product/fendy-chiffon-white/Royal-blue.webp"
+    ],
+    stock: 15,
+    category: "Sarees",
+    fabric: "Premium Fendy Space Silk",
+    color: "Royal Blue",
+    isVariant: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/fendy-chiffon-saree.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Navy-blue.webp" },
+      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Pink.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Royal-blue.webp" },
+      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/rust-brown.webp" },
+      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Wine_red.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+
+**HIGHLIGHTS:**
+• ✨ Premium Fendy Space Silk Fabric
+• 💎 Elegant Sequin Embroidery Work
+• 👑 Heavy Gold Fancy Fringes Lace Border
+• 💃 Bollywood Inspired Designer Look
+• 🎉 Perfect for Party, Wedding & Festival Wear
+• 🧵 Comes with Contrast Matching Unstitched Blouse Piece
+• 🌟 Soft, Stylish & Easy to Drape
+
+**FABRIC FEATURES:**
+• Luxurious soft feel of premium Space Silk with elegant natural drape
+• Subtle sequin embroidery and a beautiful designer gold fancy fringes lace border for heavy party look
+• Perfect body-hugging silhouette that's easy to drape for a classy, stylish look
+
+**STYLING TIP:**
+Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, statement chandelier earrings, matching heels, and elegant makeup for the perfect Bollywood-inspired diva ensemble.`,
+    rating: 4.9,
+  },
+  {
+    id: "p70",
+    sku: "SAR-FND-BRN-070",
+    name: "Rust Brown Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    tagline: "Bollywood Glam Look in Minutes!",
+    slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    price: 1299,
+    originalPrice: 2599,
+    image: "https://mukeshsarees.com/product/fendy-chiffon-white/rust-brown.webp",
+    images: [
+      "https://mukeshsarees.com/product/fendy-chiffon-white/rust-brown.webp"
+    ],
+    stock: 15,
+    category: "Sarees",
+    fabric: "Premium Fendy Space Silk",
+    color: "Rust Brown",
+    isVariant: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/fendy-chiffon-saree.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Navy-blue.webp" },
+      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Pink.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Royal-blue.webp" },
+      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/rust-brown.webp" },
+      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Wine_red.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+
+**HIGHLIGHTS:**
+• ✨ Premium Fendy Space Silk Fabric
+• 💎 Elegant Sequin Embroidery Work
+• 👑 Heavy Gold Fancy Fringes Lace Border
+• 💃 Bollywood Inspired Designer Look
+• 🎉 Perfect for Party, Wedding & Festival Wear
+• 🧵 Comes with Contrast Matching Unstitched Blouse Piece
+• 🌟 Soft, Stylish & Easy to Drape
+
+**FABRIC FEATURES:**
+• Luxurious soft feel of premium Space Silk with elegant natural drape
+• Subtle sequin embroidery and a beautiful designer gold fancy fringes lace border for heavy party look
+• Perfect body-hugging silhouette that's easy to drape for a classy, stylish look
+
+**STYLING TIP:**
+Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, statement chandelier earrings, matching heels, and elegant makeup for the perfect Bollywood-inspired diva ensemble.`,
+    rating: 4.9,
+  },
+  {
+    id: "p71",
+    sku: "SAR-FND-WNE-071",
+    name: "Wine Red Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    tagline: "Bollywood Glam Look in Minutes!",
+    slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    price: 1299,
+    originalPrice: 2599,
+    image: "https://mukeshsarees.com/product/fendy-chiffon-white/Wine_red.webp",
+    images: [
+      "https://mukeshsarees.com/product/fendy-chiffon-white/Wine_red.webp"
+    ],
+    stock: 15,
+    category: "Sarees",
+    fabric: "Premium Fendy Space Silk",
+    color: "Wine Red",
+    isVariant: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/fendy-chiffon-saree.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Navy-blue.webp" },
+      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Pink.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Royal-blue.webp" },
+      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/rust-brown.webp" },
+      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/product/fendy-chiffon-white/Wine_red.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+
+**HIGHLIGHTS:**
+• ✨ Premium Fendy Space Silk Fabric
+• 💎 Elegant Sequin Embroidery Work
+• 👑 Heavy Gold Fancy Fringes Lace Border
+• 💃 Bollywood Inspired Designer Look
+• 🎉 Perfect for Party, Wedding & Festival Wear
+• 🧵 Comes with Contrast Matching Unstitched Blouse Piece
+• 🌟 Soft, Stylish & Easy to Drape
+
+**FABRIC FEATURES:**
+• Luxurious soft feel of premium Space Silk with elegant natural drape
+• Subtle sequin embroidery and a beautiful designer gold fancy fringes lace border for heavy party look
+• Perfect body-hugging silhouette that's easy to drape for a classy, stylish look
+
+**STYLING TIP:**
+Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, statement chandelier earrings, matching heels, and elegant makeup for the perfect Bollywood-inspired diva ensemble.`,
+    rating: 4.9,
   }
 ];

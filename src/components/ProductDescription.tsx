@@ -267,11 +267,15 @@ export function ProductDescription({
           },
         ]
       : []),
-    {
-      title: "CARE INSTRUCTIONS",
-      content: finalCare,
-      isOpenDefault: false,
-    },
+    ...(!product?.noCareInstructions
+      ? [
+          {
+            title: "CARE INSTRUCTIONS",
+            content: finalCare,
+            isOpenDefault: false,
+          },
+        ]
+      : []),
   ];
 
   return (

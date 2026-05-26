@@ -71,17 +71,394 @@ export default function ThankYou() {
   
   const printableCustomer = customer || {
     fullName: "Valued Saree Club Member",
-    mobileNumber: "+91 9910006733",
+    mobileNumber: "+91 9170206646",
     email: "info.mukeshsareecentre@gmail.com",
-    streetAddress: "M-20, Main Market, Part 1",
-    city: "New Delhi",
-    state: "Delhi",
-    zipCode: "110048",
+    streetAddress: "Jagannath Road, Gandhibagh",
+    city: "Nagpur",
+    state: "Maharashtra",
+    zipCode: "440002",
     paymentMethod: "cod"
   };
 
+  const handleDownloadOnly = () => {
+    const esc = (str: string) => str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;") : "";
+    
+    // Build cart items rows
+    const itemsHtml = printableCart.map((item: any) => {
+      const priceVal = item.price || 0;
+      const qtyVal = item.quantity || 1;
+      const totalVal = priceVal * qtyVal;
+      const sizeText = item.size ? `Size: ${item.size}` : "Size: Free Size";
+      const colorText = item.color ? ` &middot; Color: ${item.color}` : "";
+      const imgTag = item.image ? `<img src="${esc(item.image)}" style="width: 44px; height: 58px; object-fit: cover; border: 1px solid rgba(0,0,0,0.06); border-radius: 2px;" />` : '';
+      
+      return `
+        <tr>
+          <td style="padding: 12px 10px; border-bottom: 1px solid rgba(26,10,0,0.05); display: flex; align-items: center; gap: 12px;">
+            ${imgTag}
+            <div>
+              <p style="margin: 0; font-weight: 500; font-size: 13px; color: #1A0A00;">${esc(item.name)}</p>
+              <p style="margin: 4px 0 0 0; font-size: 10px; color: rgba(26,10,0,0.5); text-transform: uppercase; letter-spacing: 0.5px;">${sizeText}${colorText}</p>
+            </div>
+          </td>
+          <td style="padding: 12px 10px; text-align: center; border-bottom: 1px solid rgba(26,10,0,0.05); color: #1A0A00;">${qtyVal}</td>
+          <td style="padding: 12px 10px; text-align: right; border-bottom: 1px solid rgba(26,10,0,0.05); color: #1A0A00;">₹${priceVal.toLocaleString("en-IN")}</td>
+          <td style="padding: 12px 10px; text-align: right; border-bottom: 1px solid rgba(26,10,0,0.05); font-weight: 600; color: #1A0A00;">₹${totalVal.toLocaleString("en-IN")}</td>
+        </tr>
+      `;
+    }).join("");
+
+    const paymentMethodText = printableCustomer.paymentMethod === 'cod' ? 'Cash On Delivery (COD)' : 'Prepaid (Online)';
+
+    const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice ${esc(orderId)} - Mukesh Saree Centre</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap');
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background-color: #FAF4EB;
+      color: #1A0A00;
+      margin: 0;
+      padding: 30px 15px;
+    }
+    .invoice-container {
+      max-width: 750px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 35px;
+      border: 1px solid rgba(26,10,0,0.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      border-radius: 2px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(26,10,0,0.1);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 550px) {
+      .header {
+        flex-direction: column;
+        gap: 16px;
+      }
+      .meta-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+    }
+    .store-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: #1A0A00;
+      margin: 0;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    .store-subtitle {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #8A6A4A;
+      margin: 6px 0;
+      font-weight: 600;
+    }
+    .store-address {
+      font-size: 12px;
+      color: rgba(26,10,0,0.6);
+      margin: 4px 0 0 0;
+    }
+    .receipt-badge {
+      display: inline-block;
+      background-color: rgba(138,106,74,0.08);
+      color: #8A6A4A;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 8px;
+    }
+    .inv-num-label {
+      font-size: 11px;
+      color: rgba(26,10,0,0.4);
+      margin: 0;
+    }
+    .inv-num-val {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 2px 0 0 0;
+      font-family: monospace;
+      color: #1A0A00;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .col-left {
+      border-left: 2px solid #8A6A4A;
+      padding-left: 15px;
+    }
+    .col-right {
+      border-left: 2px solid rgba(26,10,0,0.1);
+      padding-left: 15px;
+      background-color: rgba(250,246,240,0.45);
+      padding: 12px 15px;
+      border-radius: 2px;
+    }
+    .section-title {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(26,10,0,0.4);
+      margin: 0 0 8px 0;
+      font-weight: 700;
+    }
+    .cust-name {
+      font-weight: 600;
+      font-size: 13.5px;
+      margin: 0 0 4px 0;
+    }
+    .cust-address {
+      font-size: 12px;
+      color: rgba(26,10,0,0.7);
+      line-height: 1.45;
+      margin: 0 0 8px 0;
+    }
+    .cust-detail {
+      font-size: 12px;
+      color: rgba(26,10,0,0.8);
+      margin: 2px 0;
+    }
+    .order-info-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .order-info-row:last-child {
+      margin-bottom: 0;
+    }
+    .info-label {
+      color: rgba(26,10,0,0.5);
+    }
+    .info-val {
+      font-weight: 500;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+    }
+    th {
+      background-color: rgba(250,246,240,0.8);
+      border-bottom: 1px solid rgba(26,10,0,0.1);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(26,10,0,0.6);
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .pricing-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+    }
+    .pricing-table {
+      width: 280px;
+      font-size: 12px;
+    }
+    .pricing-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .pricing-divider {
+      height: 1px;
+      background-color: rgba(26,10,0,0.1);
+      margin: 6px 0;
+    }
+    .total-row {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1A0A00;
+    }
+    .total-price {
+      color: #8A6A4A;
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+    }
+    .footer {
+      border-top: 1px solid rgba(26,10,0,0.1);
+      padding-top: 15px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(26,10,0,0.4);
+    }
+    .btn-print-box {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .btn-print-action {
+      background-color: #2D452F;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    @media print {
+      body {
+        background-color: #ffffff;
+        padding: 0;
+      }
+      .invoice-container {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      .btn-print-box {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="btn-print-box">
+    <button class="btn-print-action" onclick="window.print()">Print This Invoice</button>
+  </div>
+  <div class="invoice-container">
+    <div class="header">
+      <div>
+        <h1 class="store-title">MUKESH SAREE CENTRE</h1>
+        <p class="store-subtitle">Heritage Artistry & Organic Silks</p>
+        <p class="store-address">Jagannath Road, Gandhibagh, Nagpur – 440002</p>
+      </div>
+      <div style="text-align: right;">
+        <span class="receipt-badge">Official Receipt</span>
+        <p class="inv-num-label">Invoice Number</p>
+        <p class="inv-num-val">${esc(orderId)}</p>
+      </div>
+    </div>
+
+    <div class="meta-grid">
+      <div class="col-left">
+        <h3 class="section-title">Customer & Delivery Address</h3>
+        <p class="cust-name">${esc(printableCustomer.fullName)}</p>
+        <p class="cust-address">
+          ${esc(printableCustomer.streetAddress)}<br>
+          ${esc(printableCustomer.city)}, ${esc(printableCustomer.state)} - ${esc(printableCustomer.zipCode)}
+        </p>
+        <p class="cust-detail">Phone: ${esc(printableCustomer.mobileNumber)}</p>
+        ${printableCustomer.email ? `<p class="cust-detail">Email: ${esc(printableCustomer.email)}</p>` : ''}
+      </div>
+      <div class="col-right">
+        <h3 class="section-title">Order Information</h3>
+        <div class="order-info-row">
+          <span class="info-label">Date:</span>
+          <span class="info-val">${esc(orderDate)}</span>
+        </div>
+        <div class="order-info-row">
+          <span class="info-label">Payment Method:</span>
+          <span class="info-val" style="text-transform: uppercase;">${esc(paymentMethodText)}</span>
+        </div>
+        <div class="order-info-row">
+          <span class="info-label">Order Status:</span>
+          <span class="info-val" style="color: #8A6A4A;">Processing Dispatch</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="section-title" style="margin-bottom: 10px;">Item Details</h3>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50%;">Product Description</th>
+          <th style="text-align: center; width: 10%;">Qty</th>
+          <th style="text-align: right; width: 20%;">Price</th>
+          <th style="text-align: right; width: 20%;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${itemsHtml}
+      </tbody>
+    </table>
+
+    <div class="pricing-container">
+      <div class="pricing-table">
+        <div class="pricing-row">
+          <span style="color: rgba(26,10,0,0.6);">Subtotal</span>
+          <span>₹${printableSubtotal.toLocaleString("en-IN")}</span>
+        </div>
+        ${printableDiscount > 0 ? `
+        <div class="pricing-row" style="color: #2D452F; font-weight: 500;">
+          <span>Coupon Discount</span>
+          <span>-₹${printableDiscount.toLocaleString("en-IN")}</span>
+        </div>
+        ` : ''}
+        <div class="pricing-row">
+          <span style="color: rgba(26,10,0,0.6);">Shipping Fee</span>
+          <span style="color: #2D452F; font-weight: 500;">FREE</span>
+        </div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-row total-row">
+          <span>Grand Total</span>
+          <span class="total-price">₹${printableTotal.toLocaleString("en-IN")}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p style="font-weight: 500; margin-bottom: 4px;">Thank you for patronizing classic handlooms & luxury silks.</p>
+      <p style="margin: 0 0 4px 0;">This is a computer-generated billing receipt and does not require a physical signature.</p>
+      <p style="margin: 0;">For return info or support: info@mukeshsarees.com · www.mukeshsarees.com</p>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      setTimeout(function() {
+        window.print();
+      }, 300);
+    };
+  </script>
+</body>
+</html>`;
+
+    const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `MSC_Invoice_${orderId}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const handlePrint = () => {
-    window.print();
+    // 1. Try printing directly in case not sandboxed
+    try {
+      window.focus();
+      window.print();
+    } catch (e) {
+      console.log("Direct print blocked by sandbox environment, using fallback.", e);
+    }
+    // 2. Always trigger download of the fully designed print-ready HTML Invoice
+    handleDownloadOnly();
   };
 
   const hasTracked = useRef(false);
@@ -96,7 +473,7 @@ export default function ThankYou() {
   }, [displayTotal, cart, orderId]);
 
   return (
-    <div className="bg-[#FAF6F0] min-h-screen py-6 md:py-12 px-4 relative overflow-hidden">
+    <div className="bg-[#FAF6F0] min-h-screen py-4 md:py-8 px-4 relative overflow-hidden">
       <SEO
         title="Order Confirmed | Mukesh Saree Centre"
         description="Your boutique order has been confirmed successfully."
@@ -126,24 +503,24 @@ export default function ThankYou() {
         ))}
       </div>
 
-      <div className="max-w-4xl mx-auto z-10 relative">
+      <div className="max-w-3xl mx-auto z-10 relative">
         
         {/* SUCCESS HEADER - HIDDEN ON PRINT */}
-        <div className="no-print text-center mb-8 md:mb-10">
+        <div className="no-print text-center mb-6 md:mb-8">
           <motion.div 
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="w-16 h-16 md:w-20 md:h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5 border border-green-200 shadow-sm"
+            className="w-12 h-12 md:w-14 md:h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3.5 border border-green-200 shadow-sm"
           >
-            <CheckCircle2 size={36} className="text-green-500" strokeWidth={1.5} />
+            <CheckCircle2 size={24} className="text-green-500" strokeWidth={1.5} />
           </motion.div>
           
           <motion.h1 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-2xl md:text-4xl font-serif text-[#1A0A00] mb-3"
+            className="text-xl md:text-2xl font-serif text-[#1A0A00] tracking-wide mb-2 font-medium"
           >
             Order Confirmed
           </motion.h1>
@@ -152,7 +529,7 @@ export default function ThankYou() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-[#1A0A00]/70 max-w-md mx-auto text-sm md:text-base leading-relaxed mb-6"
+            className="text-[#1A0A00]/70 max-w-md mx-auto text-xs sm:text-sm leading-relaxed mb-4"
           >
             Thank you for shopping at Mukesh Saree Centre! Your payment and order details have been secured. We are now preparing your heritage sarees for delivery.
           </motion.p>
@@ -161,7 +538,7 @@ export default function ThankYou() {
              initial={{ y: 20, opacity: 0 }}
              animate={{ y: 0, opacity: 1 }}
              transition={{ delay: 0.25 }}
-             className="inline-block bg-white border border-[#2D452F]/15 text-[#2D452F] text-xs sm:text-sm px-5 py-2 rounded-full font-medium shadow-sm mb-4"
+             className="inline-block bg-white border border-[#2D452F]/15 text-[#2D452F] text-[11px] sm:text-xs px-4 py-1.5 rounded-full font-medium shadow-sm mb-2"
           >
              Estimated Dispatch: <strong className="font-semibold">3-5 Business Days</strong>
           </motion.div>
@@ -198,14 +575,14 @@ export default function ThankYou() {
         </div>
 
         {/* PRINTABLE BOUTIQUE INVOICE CARD */}
-        <div id="msc-invoice" className="print-invoice-page bg-white p-6 md:p-10 border border-[#1A0A00]/5 sm:rounded-sm shadow-xl shadow-black/[0.015] font-sans text-left">
+        <div id="msc-invoice" className="print-invoice-page bg-white p-4 sm:p-6 md:p-8 border border-[#1A0A00]/5 sm:rounded-sm shadow-xl shadow-black/[0.015] font-sans text-left">
           
           {/* Invoice Header */}
           <div className="print-invoice-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[#1A0A00]/10 pb-6 mb-8">
             <div>
               <h2 className="font-serif text-2xl md:text-3xl text-[#1A0A00] tracking-wide font-medium">MUKESH SAREE CENTRE</h2>
               <p className="text-[10px] md:text-xs uppercase tracking-widest text-amber-800 font-semibold mt-1">Heritage Artistry & Organic Silks</p>
-              <p className="text-xs text-[#1A0A00]/60 mt-1 max-w-sm">M-24, Saree Market Chambers, Chandni Chowk, New Delhi, 110006</p>
+              <p className="text-xs text-[#1A0A00]/60 mt-1 max-w-sm">Jagannath Road, Gandhibagh, Nagpur – 440002</p>
             </div>
             <div className="text-left md:text-right">
               <span className="inline-block bg-amber-500/10 text-amber-800 text-[10px] sm:text-xs uppercase tracking-widest font-semibold px-3 py-1 rounded-sm mb-2">
@@ -217,7 +594,7 @@ export default function ThankYou() {
           </div>
 
           {/* Metadata Grid */}
-          <div className="print-grid grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12 mb-8 text-xs md:text-sm">
+          <div className="print-grid grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 text-xs md:text-sm">
             <div className="border-l-2 border-amber-800 pl-4">
               <h3 className="text-[10px] uppercase tracking-widest text-[#1A0A00]/40 font-bold mb-2">Customer & Delivery Address</h3>
               <p className="font-semibold text-[#1A0A00] mb-1">{printableCustomer.fullName}</p>
@@ -267,25 +644,25 @@ export default function ThankYou() {
               <tbody className="divide-y divide-[#1A0A00]/5">
                 {printableCart.map((item: any, idx: number) => (
                   <tr key={idx} className="print-avoid-break">
-                    <td className="py-4 px-3 flex items-center gap-4">
+                    <td className="py-2.5 px-2 flex items-center gap-3">
                       {item.image && (
                         <img 
                           src={item.image} 
                           alt={item.name} 
-                          className="print-product-img w-10 h-13 object-cover border border-black/5 rounded-sm flex-shrink-0"
+                          className="print-product-img w-10 h-14 object-cover border border-black/5 rounded-sm flex-shrink-0"
                           referrerPolicy="no-referrer"
                         />
                       )}
                       <div>
-                        <p className="font-semibold text-[#1A0A00]">{item.name}</p>
-                        <p className="text-[10px] text-[#1A0A00]/50 mt-0.5 uppercase tracking-wider">
+                        <p className="font-medium text-[#1A0A00] text-xs sm:text-sm">{item.name}</p>
+                        <p className="text-[9px] sm:text-[10px] text-[#1A0A00]/50 mt-0.5 uppercase tracking-wider">
                           {item.size ? `Size: ${item.size}` : "Size: Free Size"} {item.color ? `· Color: ${item.color}` : ""}
                         </p>
                       </div>
                     </td>
-                    <td className="py-4 px-3 text-center text-[#1A0A00] font-medium">{item.quantity || 1}</td>
-                    <td className="py-4 px-3 text-right text-[#1A0A00]">₹{(item.price || 0).toLocaleString("en-IN")}</td>
-                    <td className="py-4 px-3 text-right text-[#1A0A00] font-semibold">₹{((item.price || 0) * (item.quantity || 1)).toLocaleString("en-IN")}</td>
+                    <td className="py-2.5 px-2 text-center text-[#1A0A00] font-medium">{item.quantity || 1}</td>
+                    <td className="py-2.5 px-2 text-right text-[#1A0A00]">₹{(item.price || 0).toLocaleString("en-IN")}</td>
+                    <td className="py-2.5 px-2 text-right text-[#1A0A00] font-semibold">₹{((item.price || 0) * (item.quantity || 1)).toLocaleString("en-IN")}</td>
                   </tr>
                 ))}
               </tbody>

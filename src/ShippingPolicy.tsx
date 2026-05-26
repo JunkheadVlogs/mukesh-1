@@ -1,5 +1,5 @@
 import { SEO } from './components/SEO';
-import { Truck, Clock, MapPin } from 'lucide-react';
+import { Truck, Clock, MapPin, Coins } from 'lucide-react';
 
 export default function ShippingPolicy() {
   return (
@@ -7,7 +7,7 @@ export default function ShippingPolicy() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         <SEO 
           title="Shipping & Delivery Policy | Mukesh Saree Centre" 
-          description="Learn about our free shipping across India, delivery timelines, and order tracking." 
+          description="Learn about our free shipping across India, Cash on Delivery (COD) terms, and dispatch timelines." 
           url="/shipping-policy"
         />
         
@@ -24,7 +24,17 @@ export default function ShippingPolicy() {
               <h2 className="text-lg font-serif">Standard Delivery</h2>
             </div>
             <p>
-              Free Shipping Available on All Orders Across India. Cash on Delivery (COD) and Prepaid Orders Supported.
+              We are pleased to offer complimentary shipping on all orders throughout India. We support both secure prepaid payment options and Cash on Delivery (COD) for your convenience.
+            </p>
+          </div>
+
+          <div className="space-y-2 pt-4 border-t border-black/5">
+            <div className="flex items-center gap-3 text-primary-950">
+              <Coins size={20} className="text-gold-500" />
+              <h2 className="text-lg font-serif">Cash on Delivery (COD) Policy</h2>
+            </div>
+            <p className="text-[#2C241B] font-medium bg-amber-50/40 p-3 rounded-sm border border-amber-100/60">
+              For Cash on Delivery orders, please keep the exact order amount ready at the time of delivery. Our delivery partners may not always carry change, so exact change is appreciated. The delivery amount will be confirmed via SMS/WhatsApp before dispatch.
             </p>
           </div>
 
@@ -34,24 +44,24 @@ export default function ShippingPolicy() {
               <h2 className="text-lg font-serif">Dispatch Timelines</h2>
             </div>
             <p>
-              Our ready-to-wear collections and unstitched selections are typically processed and dispatched from our boutique within 24 to 48 hours. Please allow additional time during peak festive seasons.
+              Our exclusive collections and premium selections are typically processed and dispatched from our boutique within 24 to 48 hours. Please allow moderate additional processing time during peak festive seasons.
             </p>
           </div>
           
           <div className="space-y-2 pt-4 border-t border-black/5">
             <div className="flex items-center gap-3 text-primary-950">
               <MapPin size={20} className="text-gold-500" />
-              <h2 className="text-lg font-serif">Transit Time</h2>
+              <h2 className="text-lg font-serif">Transit & Delivery Time</h2>
             </div>
             <p>
-              Once dispatched, standard deliveries within India take 3 to 7 business days depending on your location. Tier 1 cities generally experience swifter delivery times.
+              Once dispatched, standard deliveries within India take 3 to 7 business days depending on your location. Metro regions and Tier 1 cities generally experience swifter delivery times.
             </p>
           </div>
 
           <div className="space-y-2 pt-4 border-t border-black/5">
             <h3 className="text-lg font-serif text-primary-950">Order Tracking</h3>
             <p>
-              Upon dispatch, a personalized tracking link will be shared via email and SMS, allowing you to monitor the journey of your acquisition.
+              Upon dispatch, a personalized tracking link will be shared via email, SMS, and WhatsApp, allowing you to seamlessly monitor the journey of your premium order.
             </p>
           </div>
         </div>
@@ -59,11 +69,11 @@ export default function ShippingPolicy() {
         <div className="mt-4 bg-white rounded-sm border border-black/5 p-5 md:p-6 shadow-sm text-center">
           <h3 className="text-xl md:text-2xl font-serif text-primary-950 mb-1.5">Returns & Exchanges</h3>
           <p className="text-[14px] text-primary-950/60 mb-4 max-w-md mx-auto">
-            If you face any issues with your delivery or wish to initiate a return, please reach out to us on WhatsApp.
+            If you face any issues with your delivery or wish to initiate an exchange or return, please reach out to us directly on WhatsApp.
           </p>
 
           <a 
-            href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '917020664641'}?text=Hello Mukesh Saree Centre, I would like to request a return/exchange for my order.`}
+            href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '917020664641'}?text=Hello Mukesh Saree Centre, I would like to request assistance with my order delivery/return.`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white font-medium text-[14px] rounded-md py-3.5 transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-sm max-w-sm mx-auto"

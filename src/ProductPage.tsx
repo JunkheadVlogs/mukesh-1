@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
 import { ProductDescription } from "./components/ProductDescription";
 import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
@@ -32,7 +33,8 @@ import {
   getProductReviewStats,
   getImageAlt,
 } from "./utils";
-import { CONFIG } from "./config";
+import { CONFIG, submitToGoogleSheets } from "./config";
+import { sendOrderToSheets } from "./utils/googleSheets";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { ProductCard } from "./components/ProductCard";
 import { SEO, cleanSEOText, cleanDescriptionForOG } from "./components/SEO";
@@ -50,6 +52,54 @@ export default function ProductPage() {
   const product = products.find((p) => p.slug === slug);
   const { addToCart, toggleWishlist, wishlist } = useStore();
 
+  const VALID_COUPONS: Record<string, { discount: number; flat: number; label: string }> = {
+    'VIPCLUB60': { discount: 0, flat: 200, label: 'VIPCLUB Member Discount — EXTRA ₹200 OFF' },
+    'VIBCLUB60': { discount: 0, flat: 200, label: 'VIPCLUB Member Discount — EXTRA ₹200 OFF' },
+    'VIP50': { discount: 0.50, flat: 0, label: 'VIP50 — 50% OFF' },
+  };
+
+  const storeCoupon = useStore((state) => state.appliedCoupon);
+  const [couponInput, setCouponInput] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(storeCoupon);
+  const [couponMsg, setCouponMsg] = useState('');
+  const [couponError, setCouponError] = useState(false);
+
+  useEffect(() => {
+    const mappedCoupon = storeCoupon ? storeCoupon.trim().toUpperCase() : '';
+    if (mappedCoupon && VALID_COUPONS[mappedCoupon]) {
+      setAppliedCoupon(mappedCoupon);
+      setCouponMsg(VALID_COUPONS[mappedCoupon].label);
+      setCouponInput(mappedCoupon);
+    } else if (!storeCoupon) {
+      setAppliedCoupon(null);
+      setCouponMsg('');
+      setCouponInput('');
+    }
+  }, [storeCoupon]);
+
+  const applyCoupon = () => {
+    const code = couponInput.trim().toUpperCase();
+    if (VALID_COUPONS[code]) {
+      setAppliedCoupon(code);
+      setCouponError(false);
+      setCouponMsg(VALID_COUPONS[code].label);
+      useStore.getState().applyCoupon(code); // Update global store
+    } else {
+      setCouponError(true);
+      setAppliedCoupon(null);
+      setCouponMsg('');
+      useStore.getState().applyCoupon(null);
+    }
+  };
+
+  const salePrice = product ? product.price : 0;
+  const mrpPrice = product ? (product.originalPrice || product.price) : 0;
+  const currentCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : '';
+  const discountRate = currentCoupon && VALID_COUPONS[currentCoupon] ? VALID_COUPONS[currentCoupon].discount : 0;
+  const flatAmount = currentCoupon && VALID_COUPONS[currentCoupon] ? VALID_COUPONS[currentCoupon].flat : 0;
+  const finalPrice = Math.max(0, Math.round(salePrice * (1 - discountRate)) - flatAmount);
+  const savedAmount = Math.round(salePrice * discountRate) + flatAmount;
+
   const stats = useMemo(
     () =>
       product
@@ -58,7 +108,10 @@ export default function ProductPage() {
     [product?.id],
   );
 
-  const [selectedSize, setSelectedSize] = useState<string>("");
+  const isSaree = product ? product.category.toLowerCase().includes("saree") : false;
+  const isCoOrdSet = product ? (product.category === "Co-Ord Sets" || product.category.toLowerCase().includes("co-ord")) : false;
+  const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Free Size'].filter(s => !(isCoOrdSet && s === 'Free Size'));
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [isAdded, setIsAdded] = useState(false);
   const [showAddedToast, setShowAddedToast] = useState<{
     visible: boolean;
@@ -149,7 +202,7 @@ export default function ProductPage() {
     setStockError(false);
     setIsLightboxOpen(false);
     setIsZoomed(false);
-    setSelectedSize("");
+    setSelectedSize(null);
     setQuantity(1);
   }
 
@@ -200,10 +253,33 @@ export default function ProductPage() {
     };
   }, []);
 
+  // Dynamic Razorpay SDK dynamic loading
+  useEffect(() => {
+    if (!document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  // Quick Checkout States
+  const [showQuickCheckout, setShowQuickCheckout] = useState(false);
+  const [checkoutForm, setCheckoutForm] = useState({
+    fullName: "",
+    mobileNumber: "",
+    streetAddress: "",
+    zipCode: "",
+    city: "",
+    email: "",
+  });
+  const [checkoutErrors, setCheckoutErrors] = useState<Record<string, string>>({});
+  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
+
   const handleBuyNow = () => {
     if (isOutOfStock) return;
 
-    if (isCoOrd && !selectedSize) {
+    if (!isSaree && !selectedSize) {
       setSizeError(true);
       sizeSectionRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -213,12 +289,230 @@ export default function ProductPage() {
     }
 
     setSizeError(false);
-    // Add product to cart directly without triggering the added toast or animations
-    addToCart(product, isCoOrd ? selectedSize : undefined, quantity);
-    trackAddToCart(product, quantity);
+    
+    // Auto-fill form from previous successful submissions if present
+    try {
+      const stored = localStorage.getItem('customer_checkout_info');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setCheckoutForm({
+          fullName: parsed.name || "",
+          mobileNumber: parsed.phone || "",
+          streetAddress: parsed.address || parsed.streetAddress || "",
+          zipCode: parsed.zip || parsed.zipCode || "",
+          city: parsed.city || "",
+          email: parsed.email || "",
+        });
+      }
+    } catch (e) {
+      console.warn("Storage fetch failed", e);
+    }
+    
+    setShowQuickCheckout(true);
+  };
 
-    // Redirect to checkout instantly
-    navigate("/checkout");
+  const handleBuyNowPayment = async (method: "online" | "cod") => {
+    const errors: Record<string, string> = {};
+    if (!checkoutForm.fullName.trim()) errors.fullName = "Full name is required";
+    if (!/^\d{10}$/.test(checkoutForm.mobileNumber.trim())) {
+      errors.mobileNumber = "Enter a valid 10-digit mobile number";
+    }
+    if (!checkoutForm.streetAddress.trim()) errors.streetAddress = "Delivery address is required";
+    if (!/^\d{6}$/.test(checkoutForm.zipCode.trim())) errors.zipCode = "Enter a 6-digit PIN code";
+    if (!checkoutForm.city.trim()) errors.city = "City is required";
+
+    if (Object.keys(errors).length > 0) {
+      setCheckoutErrors(errors);
+      return;
+    }
+
+    setCheckoutErrors({});
+    setIsSubmittingOrder(true);
+
+    // Save client data for future quick auto-fills
+    try {
+      localStorage.setItem('customer_checkout_info', JSON.stringify({
+        email: checkoutForm.email || "",
+        phone: checkoutForm.mobileNumber,
+        name: checkoutForm.fullName,
+        city: checkoutForm.city,
+        zip: checkoutForm.zipCode,
+        address: checkoutForm.streetAddress
+      }));
+    } catch (err) {
+      console.warn("Storage write failed", err);
+    }
+
+    const totalAmount = finalPrice * quantity;
+    const newOrderId = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
+
+    const finalizeBuyNowOrder = async (
+      status: string,
+      paymentId: string = "N/A"
+    ) => {
+      const istTime = new Date().toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
+      });
+
+      const googleSheetsData = {
+        orderId: newOrderId,
+        firstName: checkoutForm.fullName,
+        mobileNumber: checkoutForm.mobileNumber,
+        email: checkoutForm.email || "N/A",
+        streetAddress: checkoutForm.streetAddress,
+        city: checkoutForm.city,
+        zipCode: checkoutForm.zipCode,
+        productName: product.name,
+        totalAmount: totalAmount.toString(),
+        size: selectedSize || "Standard",
+        sku: product.sku || "N/A",
+        color: product.color || "N/A",
+        paymentStatus: status,
+        paymentId: paymentId,
+        timestamp: istTime,
+      };
+
+      try {
+        await submitToGoogleSheets(googleSheetsData);
+      } catch (err) {
+        console.warn("Sheets submission failed, continuing anyway:", err);
+      }
+
+      // ALSO POST to Google Sheets Apps Script URL directly
+      const sheetPayload = {
+        type: 'order' as const,
+        firstName: checkoutForm.fullName,
+        phone: checkoutForm.mobileNumber,
+        email: checkoutForm.email || "N/A",
+        address: checkoutForm.streetAddress,
+        city: checkoutForm.city,
+        zip: checkoutForm.zipCode,
+        productName: product.name,
+        amount: totalAmount,
+        size: selectedSize || "Standard",
+        sku: product.sku || "N/A",
+        color: product.color || "N/A",
+        couponUsed: appliedCoupon || 'None',
+        source: 'Direct Order',
+        paymentMethod: method === 'cod' ? 'COD' : 'Razorpay Online',
+        status: method === 'cod' ? 'Pending COD' : 'Paid ✅',
+        orderId: newOrderId,
+        paymentId: paymentId
+      };
+
+      try {
+        await sendOrderToSheets(sheetPayload);
+      } catch (sheetErr) {
+        console.warn("Direct Google Apps Script sheet POST failed:", sheetErr);
+      }
+
+      setIsSubmittingOrder(false);
+      setShowQuickCheckout(false);
+
+      navigate("/thank-you", {
+        state: { 
+          orderId: newOrderId, 
+          total: totalAmount, 
+          cart: [{
+            ...product,
+            quantity: quantity,
+            size: selectedSize || "Standard"
+          }],
+          customer: {
+            fullName: checkoutForm.fullName,
+            mobileNumber: checkoutForm.mobileNumber,
+            email: checkoutForm.email || "",
+            streetAddress: checkoutForm.streetAddress,
+            city: checkoutForm.city,
+            state: "India",
+            zipCode: checkoutForm.zipCode,
+            paymentMethod: method
+          }
+        },
+        replace: true,
+      });
+    };
+
+    if (method === "cod") {
+      await finalizeBuyNowOrder("Cash on Delivery");
+    } else {
+      try {
+        const orderDataResult = await fetch(`${CONFIG.API_BASE_URL}/api/create-razorpay-order`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            amount: totalAmount * 100,
+            currency: "INR",
+            receipt: product.id,
+            notes: { size: selectedSize, product: product.name }
+          })
+        });
+
+        if (!orderDataResult.ok) {
+          throw new Error("Unable to create payment order on our servers.");
+        }
+
+        const data = await orderDataResult.json();
+
+        if (!(window as any).Razorpay) {
+          const loaded = await new Promise((resolve) => {
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+            script.async = true;
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+          });
+          if (!loaded) {
+            throw new Error("Razorpay SDK failed to load. Please try again.");
+          }
+        }
+
+        const options = {
+          key: data.key || import.meta.env.VITE_RAZORPAY_KEY_ID,
+          amount: data.amount,
+          currency: data.currency || "INR",
+          order_id: data.orderId || data.id,
+          name: "Mukesh Saree Centre",
+          description: product.name,
+          image: product.image,
+          prefill: {
+            name: checkoutForm.fullName,
+            email: checkoutForm.email || "",
+            contact: checkoutForm.mobileNumber
+          },
+          theme: { color: "#C8A96E" },
+          handler: async (response: any) => {
+            try {
+              await fetch(`${CONFIG.API_BASE_URL}/api/verify-payment`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(response)
+              });
+            } catch (err) {
+              console.warn("Payment verify call failed, continuing...");
+            }
+            await finalizeBuyNowOrder("Online Paid", response.razorpay_payment_id || "Paid");
+          },
+          modal: {
+            ondismiss: () => {
+              setIsSubmittingOrder(false);
+            }
+          }
+        };
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
+      } catch (err: any) {
+        console.error("Razorpay initiation failed:", err);
+        setCheckoutErrors({
+          general: err?.message || "There was a problem initiating payment. Please choose Cash on Delivery or try again."
+        });
+        setIsSubmittingOrder(false);
+      }
+    }
   };
 
   if (!product) {
@@ -271,7 +565,7 @@ export default function ProductPage() {
   };
 
   const handleAddToCart = (): boolean => {
-    if (isCoOrd && !selectedSize) {
+    if (!isSaree && !selectedSize) {
       setSizeError(true);
       sizeSectionRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -281,7 +575,7 @@ export default function ProductPage() {
     }
 
     setSizeError(false);
-    addToCart(product, isCoOrd ? selectedSize : undefined, quantity);
+    addToCart(product, isSaree ? undefined : (selectedSize || undefined), quantity);
     trackAddToCart(product, quantity);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
@@ -289,7 +583,7 @@ export default function ProductPage() {
     setShowAddedToast({
       visible: true,
       quantity,
-      size: isCoOrd ? selectedSize : undefined,
+      size: isSaree ? undefined : (selectedSize || undefined),
     });
     if (toastTimeoutRef.current) {
       clearTimeout(toastTimeoutRef.current);
@@ -322,7 +616,7 @@ export default function ProductPage() {
     img.startsWith("http") ? img : `https://mukeshsarees.com${img.startsWith("/") ? "" : "/"}${img}`
   );
 
-  const productSchema = {
+  const detailedProductSchema = {
     "@context": "https://schema.org/",
     "@type": "Product",
     name: product.name,
@@ -394,8 +688,39 @@ export default function ProductPage() {
     },
   };
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "image": (product as any).imageUrl || product.image,
+    "description": product.description,
+    "brand": { "@type": "Brand", "name": "Mukesh Saree Centre" },
+    "offers": {
+      "@type": "Offer",
+      "price": product.price,
+      "priceCurrency": "INR",
+      "availability": "https://schema.org/InStock",
+      "seller": { "@type": "Organization", "name": "Mukesh Saree Centre" }
+    }
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://mukeshsarees.com" },
+      { "@type": "ListItem", "position": 2, "name": "Shop", "item": "https://mukeshsarees.com/shop" },
+      { "@type": "ListItem", "position": 3, "name": product.category, "item": `https://mukeshsarees.com/shop?category=${product.category}` },
+      { "@type": "ListItem", "position": 4, "name": product.name, "item": window.location.href }
+    ]
+  };
+
   return (
     <div className="bg-primary-50 product-page-content">
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+      </Helmet>
       <SEO
         title={`${product.color} ${product.fabric} ${product.category} — Buy Online at ₹${product.price} | Mukesh Saree Centre`}
         description={cleanDescriptionForOG(product.description) + '. COD available. Free shipping ₹999+.'}
@@ -408,7 +733,7 @@ export default function ProductPage() {
           availability: "in stock",
           condition: "new",
         }}
-        schema={productSchema}
+        schema={detailedProductSchema}
       />
 
       <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0 md:pt-2">
@@ -615,28 +940,60 @@ export default function ProductPage() {
 
               {/* Product Pricing and Share */}
               <div className="flex items-center justify-between w-full mb-2 pb-2 border-b border-[var(--color-border)] relative">
-                <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-                  <div className="flex items-end gap-2 md:gap-3 flex-nowrap overflow-hidden">
-                    <span className="text-[24px] md:text-[28px] font-normal text-[var(--color-dark)] font-serif whitespace-nowrap leading-none tracking-wide">
-                      {formatPrice(product.price)}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-[14px] md:text-[16px] text-[var(--color-muted)] line-through font-light whitespace-nowrap flex-shrink-0 leading-none mb-1">
-                        MRP {formatPrice(product.originalPrice)}
+                <div className="flex flex-col items-start gap-1">
+                  <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                    {appliedCoupon ? (
+                      <div className="flex flex-wrap items-end gap-1.5 md:gap-2">
+                        {product.originalPrice && (
+                          <span className="text-[14px] md:text-[16px] text-[var(--color-muted)] line-through font-light whitespace-nowrap flex-shrink-0 leading-none mb-1">
+                            MRP {formatPrice(product.originalPrice)}
+                          </span>
+                        )}
+                        {flatAmount > 0 && (
+                          <span className="text-[12px] md:text-[13px] text-[var(--color-muted)] font-medium bg-[#F9F7F4] border border-[#8A6A4A]/10 px-1.5 py-0.5 rounded-sm whitespace-nowrap leading-none mb-1">
+                            Sale Price {formatPrice(salePrice)}
+                          </span>
+                        )}
+                        <span className="text-[26px] md:text-[30px] font-bold text-[#E8B84B] font-serif whitespace-nowrap leading-none tracking-wide">
+                          {formatPrice(finalPrice)}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-end gap-2 md:gap-3 flex-nowrap overflow-hidden">
+                        <span className="text-[24px] md:text-[28px] font-normal text-[var(--color-dark)] font-serif whitespace-nowrap leading-none tracking-wide">
+                          {formatPrice(product.price)}
+                        </span>
+                        {product.originalPrice && (
+                          <span className="text-[14px] md:text-[16px] text-[var(--color-muted)] line-through font-light whitespace-nowrap flex-shrink-0 leading-none mb-1">
+                            MRP {formatPrice(product.originalPrice)}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    
+                    {appliedCoupon ? (
+                      <span className="text-[10px] md:text-[11px] font-bold text-[#3ECF6A] bg-[#E8F8EE] px-2 py-0.5 mt-0.5 rounded-sm whitespace-nowrap tracking-wider uppercase">
+                        {flatAmount > 0 ? "Extra VIP Discount Applied" : `${discountRate * 100}% OFF Applied`}
                       </span>
+                    ) : (
+                      product.originalPrice &&
+                      product.originalPrice > product.price && (
+                        <span className="text-[10px] md:text-[11px] font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] px-2 py-0.5 mt-0.5 rounded-sm whitespace-nowrap tracking-wide">
+                          {Math.round(
+                            ((product.originalPrice - product.price) /
+                              product.originalPrice) *
+                              100,
+                          )}
+                          % OFF
+                        </span>
+                      )
                     )}
                   </div>
-                  {product.originalPrice &&
-                    product.originalPrice > product.price && (
-                      <span className="text-[10px] md:text-[11px] font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] px-2 py-0.5 mt-0.5 rounded-sm whitespace-nowrap tracking-wide">
-                        {Math.round(
-                          ((product.originalPrice - product.price) /
-                            product.originalPrice) *
-                            100,
-                        )}
-                        % OFF
-                      </span>
-                    )}
+                  {appliedCoupon && (
+                    <span className="text-[11.5px] text-[#3ECF6A] font-medium italic mt-0.5">
+                      🎉 Extra savings of {formatPrice(savedAmount)} with Coupon code applied!
+                    </span>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -746,38 +1103,30 @@ export default function ProductPage() {
               )}
 
               {/* Size Selection */}
-              {isCoOrd && (
-                <section ref={sizeSectionRef} className="mb-2">
-                  <div className="flex justify-between items-center mb-1">
-                    <h3 className="text-[10px] sm:text-[10.5px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-medium">
-                      Select Size
-                    </h3>
-                    <button
-                      onClick={() => setIsSizeGuideOpen(true)}
-                      className="text-[9.5px] sm:text-[10px] uppercase font-medium text-[var(--color-dark)]/80 hover:text-[var(--color-dark)] underline decoration-[var(--color-border)] underline-offset-4 hover:decoration-[var(--color-dark)] transition-colors tracking-[0.08em]"
-                    >
-                      Size Guide
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {sizes.map((size) => (
+              {!isSaree && (
+                <section ref={sizeSectionRef} className="mb-4">
+                  <div className="size-selector">
+                    <div className="flex justify-between items-center mb-1">
+                      <p className="text-[10.5px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-medium">
+                        Select Size: {sizeError && <span style={{color:'red'}} className="font-semibold ml-1">Please select a size</span>}
+                      </p>
                       <button
-                        key={size}
-                        onClick={() => {
-                          setSelectedSize(size);
-                          setSizeError(false);
-                        }}
-                        className={`h-[38px] sm:h-[40px] min-w-[44px] sm:min-w-[48px] px-3 border text-[11px] sm:text-[12px] tracking-wider transition-all rounded-sm font-medium ${selectedSize === size ? "border-[var(--color-dark)] bg-[var(--color-dark)] text-white" : "border-[var(--color-border)] text-[var(--color-dark)] hover:border-[var(--color-dark)] bg-transparent hover:border-[var(--color-dark)]"}`}
+                        onClick={() => setIsSizeGuideOpen(true)}
+                        className="text-[9.5px] sm:text-[10px] uppercase font-medium text-[var(--color-dark)]/80 hover:text-[var(--color-dark)] underline decoration-[var(--color-border)] underline-offset-4 hover:decoration-[var(--color-dark)] transition-colors tracking-[0.08em]"
                       >
-                        {size}
+                        Size Guide
                       </button>
-                    ))}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {SIZES.map(s => (
+                        <button key={s}
+                          className={`h-[38px] sm:h-[40px] px-3 border text-[11px] sm:text-[12px] tracking-wider transition-all rounded-sm font-medium ${selectedSize === s ? 'size-btn active border-[var(--color-dark)] bg-[var(--color-dark)] text-white' : 'size-btn border-[var(--color-border)] text-[var(--color-dark)] hover:border-[var(--color-dark)] bg-transparent hover:border-[var(--color-dark)]'}`}
+                          onClick={() => { setSelectedSize(s); setSizeError(false); }}>
+                          {s}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  {sizeError && (
-                    <p className="text-[var(--color-terracotta)] text-[11px] font-medium uppercase tracking-[0.1em] mt-3">
-                      Please select your size
-                    </p>
-                  )}
                 </section>
               )}
 
@@ -808,6 +1157,32 @@ export default function ProductPage() {
                         <span className="text-xl leading-none select-none">+</span>
                       </button>
                     </div>
+                  </div>
+
+                  {/* Promo Code section */}
+                  <div className="border border-[#e5e5e5]/60 p-3.5 rounded-sm my-2 bg-[#FAF9F6] w-full">
+                    <h3 className="text-[10px] uppercase tracking-[0.12em] font-medium text-[var(--color-muted)] mb-2 text-left">PROMO CODE</h3>
+                    <div className="flex items-center gap-[10px] w-full">
+                      <input 
+                        type="text" 
+                        placeholder="ENTER COUPON (e.g. VIPCLUB60)" 
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value)}
+                        className="flex-grow flex-shrink basis-0 min-w-0 flex-1 bg-white border border-[#D1D5DB] px-3 py-1.5 text-xs focus:outline-none focus:border-[var(--color-gold-dark)] rounded-sm text-left uppercase"
+                      />
+                      <button 
+                        onClick={applyCoupon}
+                        className="bg-[var(--color-dark)] text-white hover:bg-opacity-90 px-4 py-1.5 text-xs tracking-wider rounded-sm text-center whitespace-nowrap shrink-0 flex-shrink-0"
+                      >
+                        APPLY
+                      </button>
+                    </div>
+                    {couponMsg && (
+                      <p className="text-[#3ECF6A] text-[11px] mt-2 text-left font-medium">✓ {couponMsg}</p>
+                    )}
+                    {couponError && (
+                      <p className="text-[var(--color-terracotta)] text-[11px] mt-2 text-left font-medium">✗ Invalid or expired coupon code</p>
+                    )}
                   </div>
 
                   <div className="product-actions">
@@ -1221,6 +1596,259 @@ export default function ProductPage() {
           </div>
         </div>
       )}
+
+      {/* Quick Checkout Modal */}
+      <AnimatePresence>
+        {showQuickCheckout && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
+            onClick={() => setShowQuickCheckout(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              transition={{ type: "spring", duration: 0.5, bounce: 0.15 }}
+              className="bg-white rounded-lg shadow-xl w-full max-w-sm overflow-hidden relative border border-[#2C241B]/10 my-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="bg-[#FAF9F5] border-b border-[#2C241B]/10 px-6 py-4 flex items-center justify-between">
+                <div>
+                  <h3 className="font-serif text-base text-[#2C241B] tracking-wide font-medium">⚡ Express Checkout</h3>
+                  <p className="text-[9px] uppercase tracking-[1.5px] text-[#2C241B]/60 mt-0.5">Complete Your Order in 1 Minute</p>
+                </div>
+                <button
+                  onClick={() => setShowQuickCheckout(false)}
+                  className="text-[#2C241B]/60 hover:text-[#2C241B] transition-colors p-1"
+                  aria-label="Close Checkout"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Order Summary Mini-Section */}
+              <div className="px-6 py-4 bg-[#F5F2EA]/30 border-b border-[#2C241B]/10 flex items-center gap-4">
+                <img
+                  src={optimizeImage(product.image, 100)}
+                  alt={product.name}
+                  className="w-14 h-18 object-cover object-top rounded border border-[#2C241B]/10 animate-fade-in"
+                />
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-serif text-xs text-[#2C241B] line-clamp-1">{product.name}</h4>
+                  <p className="text-[11px] text-[#2C241B]/60 mt-1">
+                    {selectedSize ? `Size: ${selectedSize}` : "Size: Free Size/Standard"} • Qty: {quantity}
+                  </p>
+                  <p className="text-sm font-semibold text-[#2C241B] mt-1">{formatPrice(product.price * quantity)}</p>
+                </div>
+              </div>
+
+              {/* Shipping Form */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
+                className="px-6 py-4 space-y-3.5"
+              >
+                {/* Full Name */}
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[1.2px] font-semibold text-[#2C241B] mb-1">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={checkoutForm.fullName}
+                    onChange={(e) => {
+                      setCheckoutForm({ ...checkoutForm, fullName: e.target.value });
+                      if (checkoutErrors.fullName) {
+                        const { fullName, ...rest } = checkoutErrors;
+                        setCheckoutErrors(rest);
+                      }
+                    }}
+                    placeholder="Enter your full name"
+                    className="w-full h-10 px-3 bg-[#FAF9F5] border border-[#2C241B]/15 rounded-[3px] focus:outline-none focus:border-[#2C241B] text-xs text-[#2C241B] placeholder-[#2C241B]/40"
+                  />
+                  {checkoutErrors.fullName && (
+                    <p className="text-[11px] text-red-600 mt-0.5">{checkoutErrors.fullName}</p>
+                  )}
+                </div>
+
+                {/* Mobile Number */}
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[1.2px] font-semibold text-[#2C241B] mb-1">
+                    Mobile Number *
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#2C241B]/50 font-medium select-none">
+                      +91
+                    </span>
+                    <input
+                      type="tel"
+                      required
+                      pattern="[0-9]{10}"
+                      maxLength={10}
+                      value={checkoutForm.mobileNumber}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "");
+                        setCheckoutForm({ ...checkoutForm, mobileNumber: val });
+                        if (checkoutErrors.mobileNumber) {
+                          const { mobileNumber, ...rest } = checkoutErrors;
+                          setCheckoutErrors(rest);
+                        }
+                      }}
+                      placeholder="10-digit mobile number"
+                      className="w-full h-10 pl-11 pr-3 bg-[#FAF9F5] border border-[#2C241B]/15 rounded-[3px] focus:outline-none focus:border-[#2C241B] text-xs text-[#2C241B] placeholder-[#2C241B]/40"
+                    />
+                  </div>
+                  {checkoutErrors.mobileNumber && (
+                    <p className="text-[11px] text-red-600 mt-0.5">{checkoutErrors.mobileNumber}</p>
+                  )}
+                </div>
+
+                {/* Email (Optional) */}
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[1.2px] font-semibold text-[#2C241B] mb-1">
+                    Email Address <span className="text-[#2C241B]/45 font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    type="email"
+                    value={checkoutForm.email}
+                    onChange={(e) => setCheckoutForm({ ...checkoutForm, email: e.target.value })}
+                    placeholder="name@email.com"
+                    className="w-full h-10 px-3 bg-[#FAF9F5] border border-[#2C241B]/15 rounded-[3px] focus:outline-none focus:border-[#2C241B] text-xs text-[#2C241B] placeholder-[#2C241B]/40"
+                  />
+                </div>
+
+                {/* Delivery Address */}
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[1.2px] font-semibold text-[#2C241B] mb-1">
+                    Delivery Address *
+                  </label>
+                  <textarea
+                    required
+                    value={checkoutForm.streetAddress}
+                    onChange={(e) => {
+                      setCheckoutForm({ ...checkoutForm, streetAddress: e.target.value });
+                      if (checkoutErrors.streetAddress) {
+                        const { streetAddress, ...rest } = checkoutErrors;
+                        setCheckoutErrors(rest);
+                      }
+                    }}
+                    rows={2}
+                    placeholder="House/Plot No, Street Name, Area, Landmark"
+                    className="w-full py-1.5 px-3 bg-[#FAF9F5] border border-[#2C241B]/15 rounded-[3px] focus:outline-none focus:border-[#2C241B] text-xs text-[#2C241B] placeholder-[#2C241B]/40 resize-none"
+                  />
+                  {checkoutErrors.streetAddress && (
+                    <p className="text-[11px] text-red-600 mt-0.5">{checkoutErrors.streetAddress}</p>
+                  )}
+                </div>
+
+                {/* PIN Code & City */}
+                <div className="grid grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-[1.2px] font-semibold text-[#2C241B] mb-1">
+                      PIN Code *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      maxLength={6}
+                      value={checkoutForm.zipCode}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "");
+                        setCheckoutForm({ ...checkoutForm, zipCode: val });
+                        if (checkoutErrors.zipCode) {
+                          const { zipCode, ...rest } = checkoutErrors;
+                          setCheckoutErrors(rest);
+                        }
+                      }}
+                      placeholder="6-digit PIN"
+                      className="w-full h-10 px-3 bg-[#FAF9F5] border border-[#2C241B]/15 rounded-[3px] focus:outline-none focus:border-[#2C241B] text-xs text-[#2C241B] placeholder-[#2C241B]/40"
+                    />
+                    {checkoutErrors.zipCode && (
+                      <p className="text-[11px] text-red-600 mt-0.5">{checkoutErrors.zipCode}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-[1.2px] font-semibold text-[#2C241B] mb-1">
+                      City *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={checkoutForm.city}
+                      onChange={(e) => {
+                        setCheckoutForm({ ...checkoutForm, city: e.target.value });
+                        if (checkoutErrors.city) {
+                          const { city, ...rest } = checkoutErrors;
+                          setCheckoutErrors(rest);
+                        }
+                      }}
+                      placeholder="e.g. Nagpur"
+                      className="w-full h-10 px-3 bg-[#FAF9F5] border border-[#2C241B]/15 rounded-[3px] focus:outline-none focus:border-[#2C241B] text-xs text-[#2C241B] placeholder-[#2C241B]/40"
+                    />
+                    {checkoutErrors.city && (
+                      <p className="text-[11px] text-red-600 mt-0.5">{checkoutErrors.city}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* General errors */}
+                {checkoutErrors.general && (
+                  <div className="bg-red-50 text-red-700 text-xs p-3 rounded border border-red-100 font-medium">
+                    {checkoutErrors.general}
+                  </div>
+                )}
+
+                {/* Multi-payment Action Buttons */}
+                <div className="grid grid-cols-1 gap-2 pt-1.5">
+                  <button
+                    type="button"
+                    disabled={isSubmittingOrder}
+                    onClick={() => handleBuyNowPayment("online")}
+                    className="w-full h-[45px] bg-white border border-[#C8A96E] hover:bg-[#C8A96E]/5 text-[#2C241B] tracking-[1.5px] font-bold text-[10px] uppercase transition-all rounded-[3px] active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm"
+                  >
+                    {isSubmittingOrder ? (
+                      <span className="flex items-center gap-2 text-[11px]">
+                        <svg className="animate-spin h-3.5 w-3.5 text-[#C8A96E]" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Initiating UPI/Card...
+                      </span>
+                    ) : (
+                      `Pay Online — ${formatPrice(product.price * quantity)}`
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={isSubmittingOrder}
+                    onClick={() => handleBuyNowPayment("cod")}
+                    className="w-full h-[45px] bg-[#2C241B] text-white hover:bg-[#43382c] tracking-[1.5px] font-bold text-[10px] uppercase transition-all rounded-[3px] active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm"
+                  >
+                    {isSubmittingOrder ? (
+                      <span className="flex items-center gap-2 text-[11px]">
+                        <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Placing Order...
+                      </span>
+                    ) : (
+                      "Order via Cash on Delivery"
+                    )}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

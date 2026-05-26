@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useSearchParams, Link } from "react-router";
 import { Filter, ChevronDown, Eye, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
@@ -15,8 +15,10 @@ import { SEO } from "./components/SEO";
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryFilter = searchParams.get("category");
-  const fabricFilter = searchParams.get("fabric")?.split(",") || [];
-  const colorFilter = searchParams.get("color")?.split(",") || [];
+  const fabricParam = searchParams.get("fabric") || "";
+  const colorParam = searchParams.get("color") || "";
+  const fabricFilter = useMemo(() => fabricParam ? fabricParam.split(",") : [], [fabricParam]);
+  const colorFilter = useMemo(() => colorParam ? colorParam.split(",") : [], [colorParam]);
   const priceRangeFilter = searchParams.get("priceRange");
   const sortParam = searchParams.get("sort");
   const searchQuery = searchParams.get("search") || searchParams.get("q");
@@ -27,6 +29,10 @@ export default function Shop() {
   );
   const [isLoading, setIsLoading] = useState(true);
   const { addToCart } = useStore();
+
+  const [page, setPage] = useState(1);
+  const [isBatchLoading, setIsBatchLoading] = useState(false);
+  const PER_PAGE = 12;
 
   useEffect(() => {
     // Beautiful, super-snappy initial skeleton load on mount
@@ -118,12 +124,30 @@ export default function Shop() {
     return result;
   }, [
     categoryFilter,
-    fabricFilter,
-    colorFilter,
+    fabricParam,
+    colorParam,
     sortParam,
     searchQuery,
     priceRangeFilter,
   ]);
+
+  // Reset page when filters or search query change
+  useEffect(() => {
+    setPage(1);
+  }, [categoryFilter, fabricParam, colorParam, priceRangeFilter, sortParam, searchQuery]);
+
+  const visible = useMemo(() => {
+    return filteredAndSortedProducts.slice(0, page * PER_PAGE);
+  }, [filteredAndSortedProducts, page]);
+
+  const loadNextPage = () => {
+    if (isBatchLoading || visible.length >= filteredAndSortedProducts.length) return;
+    setIsBatchLoading(true);
+    setTimeout(() => {
+      setPage((prev) => prev + 1);
+      setIsBatchLoading(false);
+    }, 350);
+  };
 
   const handleCategoryChange = (cat: string | null) => {
     const newParams = new URLSearchParams(searchParams);
@@ -389,14 +413,35 @@ export default function Shop() {
                 ))}
               </div>
             ) : filteredAndSortedProducts.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2.5 gap-y-4 sm:gap-6 md:gap-8">
-                {filteredAndSortedProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onQuickView={setQuickViewProduct}
-                  />
-                ))}
+              <div className="flex flex-col items-center w-full">
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2.5 gap-y-4 sm:gap-6 md:gap-8 w-full">
+                  {visible.map((product, idx) => (
+                    <ProductCard
+                      key={product.id}
+                      idx={idx}
+                      product={product}
+                      onQuickView={setQuickViewProduct}
+                    />
+                  ))}
+                  {isBatchLoading && (
+                    [...Array(4)].map((_, i) => (
+                      <ProductCardSkeleton key={`batch-skeleton-${i}`} />
+                    ))
+                  )}
+                </div>
+                
+                {visible.length < filteredAndSortedProducts.length && (
+                  <div className="mt-12 flex flex-col items-center justify-center gap-4 w-full">
+                    {!isBatchLoading && (
+                      <button
+                        onClick={loadNextPage}
+                        className="bg-white border border-[#2C241B]/15 text-[#2C241B] px-8 py-3.5 text-[11px] uppercase tracking-[2px] font-bold hover:bg-primary-950 hover:text-white transition-all rounded-[4px] shadow-sm active:scale-[0.98]"
+                      >
+                        Load More Products
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             ) : (
               <div className="space-y-12">

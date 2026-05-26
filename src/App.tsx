@@ -8,20 +8,33 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import Layout from './Layout';
 import Home from './Home';
 import { ExitIntentPopup } from './components/ExitIntentPopup';
+import { useExitIntent } from './hooks/useExitIntent';
 import { trackWhatsAppClick } from './tracking';
 
-const Shop = lazy(() => import('./Shop'));
-const Wishlist = lazy(() => import('./Wishlist'));
-const ProductPage = lazy(() => import('./ProductPage'));
-const Cart = lazy(() => import('./Cart'));
-const Checkout = lazy(() => import('./Checkout'));
-const ThankYou = lazy(() => import('./ThankYou'));
+const lazyRetry = (importFn: () => Promise<any>) => {
+  return lazy(async () => {
+    try {
+      return await importFn();
+    } catch (error) {
+      console.error("Dynamic import failed, reloading page to fetch latest version...", error);
+      window.location.reload();
+      return new Promise(() => {}); // prevent rendering empty component while page reloads
+    }
+  });
+};
+
+const Shop = lazyRetry(() => import('./Shop'));
+const Wishlist = lazyRetry(() => import('./Wishlist'));
+const ProductPage = lazyRetry(() => import('./ProductPage'));
+const Cart = lazyRetry(() => import('./Cart'));
+const Checkout = lazyRetry(() => import('./Checkout'));
+import ThankYou from './ThankYou';
 import Contact from './Contact';
 import Terms from './Terms';
 import ShippingPolicy from './ShippingPolicy';
 import ReturnPolicy from './ReturnPolicy';
 
-import { CONFIG } from "./config";
+import { CONFIG, submitToGoogleSheets } from "./config";
 
 function LoadingScreen() {
   const [logoError, setLogoError] = useState(false);
@@ -46,9 +59,63 @@ function LoadingScreen() {
 }
 
 export default function App() {
+  const { triggered, dismiss } = useExitIntent({ delay: 5000, sensitivity: 20 });
   // Version 1.0.1 - Cache Bust
   console.log("[DEBUG] BASE_URL:", import.meta.env.BASE_URL);
   console.log("[DEBUG] CONFIG API_BASE_URL:", CONFIG.API_BASE_URL);
+
+  // Dynamically load Google Tag Manager at runtime for extreme performance
+  useEffect(() => {
+    const gtmId = import.meta.env.VITE_GTM_ID;
+    if (gtmId && gtmId !== '%VITE_GTM_ID%' && !gtmId.startsWith('%')) {
+      const injectGTM = () => {
+        // Prevent duplicate injection
+        if ((window as any)._gtm_loaded) return;
+        (window as any)._gtm_loaded = true;
+
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({
+          'gtm.start': new Date().getTime(),
+          event: 'gtm.js'
+        });
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
+        
+        const firstScript = document.getElementsByTagName('script')[0];
+        if (firstScript && firstScript.parentNode) {
+          firstScript.parentNode.insertBefore(script, firstScript);
+        } else {
+          document.head.appendChild(script);
+        }
+      };
+
+      // Defer loading slightly to prevent render-blocking on mobile
+      if (document.readyState === 'complete') {
+        const deferTimer = setTimeout(() => {
+          if ('requestIdleCallback' in window) {
+            (window as any).requestIdleCallback(() => injectGTM());
+          } else {
+            injectGTM();
+          }
+        }, 800);
+        return () => clearTimeout(deferTimer);
+      } else {
+        const handleWindowLoad = () => {
+          setTimeout(() => {
+            if ('requestIdleCallback' in window) {
+              (window as any).requestIdleCallback(() => injectGTM());
+            } else {
+              injectGTM();
+            }
+          }, 800);
+        };
+        window.addEventListener('load', handleWindowLoad);
+        return () => window.removeEventListener('load', handleWindowLoad);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
@@ -61,9 +128,69 @@ export default function App() {
     return () => document.removeEventListener('click', handleGlobalClick);
   }, []);
 
+  const handleSubmitLead = async (name: string, phone: string) => {
+    const isMobileDevice = window.innerWidth <= 768;
+    const deviceType = isMobileDevice ? 'Mobile' : 'Desktop';
+    const viewedProduct = window.location.pathname.includes('/product/') 
+      ? window.location.pathname.split('/').pop() || 'N/A' 
+      : 'N/A';
+
+    const payload = {
+      firstName: name,
+      mobileNumber: phone,
+      productViewed: viewedProduct,
+      pageUrl: window.location.href,
+      date: new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }),
+      time: new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" }),
+      deviceType: deviceType,
+      source: "Popup",
+      leadSource: "Exit Intent Popup"
+    };
+
+    // Fire Meta & GA4 Events
+    if ((window as any).fbq) {
+      (window as any).fbq('track', 'Lead', {
+        content_name: 'Exit Intent Coupon',
+        currency: 'INR',
+        value: 60
+      });
+      (window as any).fbq('track', 'CompleteRegistration', {
+        content_name: 'VIP Coupon Signup'
+      });
+    }
+    
+    if ((window as any).gtag) {
+      (window as any).gtag('event', 'generate_lead', {
+        currency: 'INR',
+        value: 60,
+        lead_type: 'Exit Intent'
+      });
+    }
+
+    await submitToGoogleSheets(payload);
+
+    // Trigger serverless Firebase save + Interakt WhatsApp send pipeline
+    try {
+      const apiBase = CONFIG.API_BASE_URL || '';
+      await fetch(`${apiBase}/api/capture-lead`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          phone: phone,
+          source: "Exit Intent Popup",
+          page: window.location.href
+        })
+      }).catch(err => console.warn("Firestore Lead Capture API check failed:", err));
+    } catch (leadErr) {
+      console.error("Failed to send lead to serverless pipeline:", leadErr);
+    }
+  };
+
   return (
     <BrowserRouter>
-      <ExitIntentPopup />
+      {triggered && <ExitIntentPopup onDismiss={dismiss} onSubmit={handleSubmitLead} />}
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           <Route path="/" element={<Layout />}>

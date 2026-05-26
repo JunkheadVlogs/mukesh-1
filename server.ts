@@ -29,7 +29,7 @@ const __dirname = _dirname;
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.use((req, res, next) => {
   console.log(`[REQUEST] ${req.method} ${req.url}`);
@@ -92,10 +92,98 @@ try {
 // API Routes
 const apiRouter = express.Router();
 
+// ==== capture lead to firestore and trigger whatsapp via interakt ====
+apiRouter.post("/capture-lead", async (req, res) => {
+  try {
+    const { phone, source, page } = req.body;
+
+    if (!phone) {
+      return res.status(400).json({ success: false, error: "Missing required WhatsApp phone number" });
+    }
+
+    const cleanPhone = phone.toString().replace(/\D/g, '');
+    const finalPhone = cleanPhone.length === 12 && cleanPhone.startsWith('91') ? cleanPhone.substring(2) : cleanPhone;
+
+    console.log(`[ROUTE-CAPTURE-LEAD] Processing lead: +91${finalPhone}`);
+
+    // Lazy load firebase-admin to prevent startup crashes if key is empty/absent
+    let firestoreSaved = false;
+    const serviceAccountStr = process.env.FIREBASE_SERVICE_ACCOUNT;
+    if (serviceAccountStr) {
+      try {
+        const admin = await import("firebase-admin");
+        if (!admin.default.apps.length) {
+          const serviceAccount = JSON.parse(serviceAccountStr);
+          admin.default.initializeApp({
+            credential: admin.default.credential.cert(serviceAccount)
+          });
+        }
+        await admin.default.firestore().collection('exit_intent_leads').add({
+          phone: `+91${finalPhone}`,
+          source: source || 'Exit Intent Popup',
+          page: page || 'N/A',
+          capturedAt: new Date().toISOString(),
+          discountCode: 'MUKESH150',
+          converted: false
+        });
+        firestoreSaved = true;
+        console.log('[ROUTE-CAPTURE-LEAD] Save to Firestore successful.');
+      } catch (dbErr) {
+        console.error('[ROUTE-CAPTURE-LEAD] Error saving to Firestore:', dbErr);
+      }
+    } else {
+      console.warn('[ROUTE-CAPTURE-LEAD] FIREBASE_SERVICE_ACCOUNT not configured, skipping Firestore.');
+    }
+
+    // Trigger Interakt WA Template
+    let whatsappSent = false;
+    const interaktKey = process.env.INTERAKT_API_KEY;
+    if (interaktKey) {
+      try {
+        const response = await fetch('https://api.interakt.ai/v1/public/message/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${interaktKey}`
+          },
+          body: JSON.stringify({
+            countryCode: '+91',
+            phoneNumber: finalPhone,
+            callbackData: 'exit_intent',
+            type: 'Template',
+            template: {
+              name: 'exit_intent_discount',
+              languageCode: 'en',
+              bodyValues: ['MUKESH150', '₹150', '24 hours']
+            }
+          })
+        });
+        console.log(`[ROUTE-CAPTURE-LEAD] Interakt response status: ${response.status}`);
+        whatsappSent = response.ok;
+      } catch (waErr) {
+        console.error('[ROUTE-CAPTURE-LEAD] Error triggering Interakt:', waErr);
+      }
+    } else {
+      console.warn('[ROUTE-CAPTURE-LEAD] INTERAKT_API_KEY not configured, skipping WhatsApp sending.');
+    }
+
+    res.json({
+      success: true,
+      firestoreSaved,
+      whatsappSent,
+      message: 'Lead captured successfully'
+    });
+
+  } catch (err: any) {
+    console.error("[ROUTE-CAPTURE-LEAD] Error processing capture lead:", err);
+    res.status(500).json({ success: false, error: err?.message || 'Internal server error' });
+  }
+});
+
 // ==== google sheets submission proxy ====
 apiRouter.post("/submit-order", async (req, res) => {
   try {
-    const rawUrl = process.env.VITE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
+    const rawUrl = process.env.VITE_GOOGLE_SHEETS_URL || process.env.VITE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
     const urlStr = rawUrl.trim().replace(/^['"]|['"]$/g, '');
     console.log(`[PROXY] Submitting order to Google Sheets... (${req.body.orderId || 'no-id'})`);
     
@@ -166,6 +254,50 @@ apiRouter.post("/submit-order", async (req, res) => {
 });
 
 // ==== razorpay order creation ====
+apiRouter.post('/create-razorpay-order', async (req, res) => {
+  try {
+    let currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "").trim();
+    let currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "").trim();
+    
+    if (!currentKeyId || currentKeyId === 'rzp_live_Slf11Odg572QOq') {
+      currentKeyId = "rzp_live_So7zJe4qbXm4LY";
+      currentKeySecret = "z245tbFDtCZmJ7Wztx2XSHrG";
+    }
+    
+    if (!currentKeyId || !currentKeySecret) {
+      return res.status(500).json({ success: false, error: "Razorpay not initialized (Missing API Keys)" });
+    }
+    
+    const rzp = new Razorpay({
+      key_id: currentKeyId,
+      key_secret: currentKeySecret,
+    });
+    
+    const rawAmount = req.body.amount;
+    const isAlreadyPaise = req.body.isPaise || (rawAmount > 50000);
+    const finalAmount = isAlreadyPaise ? Math.round(rawAmount) : Math.round(rawAmount * 100);
+
+    const options = {
+      amount: finalAmount,
+      currency: req.body.currency || 'INR',
+      receipt: req.body.receipt || `receipt_${Date.now()}`,
+      notes: req.body.notes || {}
+    };
+
+    const order = await rzp.orders.create(options);
+    
+    res.json({
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      key: currentKeyId
+    });
+  } catch (err: any) {
+    console.error("[RAZORPAY] Create Razorpay Order Error:", err);
+    res.status(500).json({ success: false, error: err?.message || "Failed to create order" });
+  }
+});
+
 apiRouter.post('/create-order', async (req, res) => {
   try {
     // Always initialize with latest process.env in case it was updated
@@ -735,6 +867,11 @@ async function setupServer() {
           return res.status(404).send('Not built yet.');
         }
         let html = fs.readFileSync(indexPath, 'utf-8');
+        // Substitute %VITE_...% style placeholders with process.env properties for runtime environment injection
+        html = html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
+          const val = process.env[`VITE_${key}`];
+          return val !== undefined ? val : match;
+        });
         html = injectOGTags(html, req.path, req.originalUrl);
         
         // Prevent caching of HTML to ensure social crawlers see the latest tags

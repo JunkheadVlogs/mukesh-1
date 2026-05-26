@@ -15,6 +15,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { CONFIG, submitToGoogleSheets } from "./config";
+import { sendOrderToSheets } from "./utils/googleSheets";
 import { trackInitiateCheckout, updateTrackerUserData } from "./tracking";
 
 const loadRazorpay = () => {
@@ -70,9 +71,12 @@ export default function Checkout() {
 
   const activeCoupon = appliedCoupon;
   let couponDiscountMultiplier = 0;
+  let flatDiscount = 0;
   if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.5;
-  else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60")
-    couponDiscountMultiplier = 0.6;
+  else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") {
+    const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+    flatDiscount = 200 * totalQuantity;
+  }
 
   let finalPayable = subtotalCart;
   let finalCouponSavings = 0;
@@ -85,6 +89,9 @@ export default function Checkout() {
       finalPayable = priceWithCoupon;
       finalCouponSavings = subtotalCart - priceWithCoupon;
     }
+  } else if (flatDiscount > 0) {
+    finalPayable = subtotalCart - flatDiscount;
+    finalCouponSavings = flatDiscount;
   }
 
   const totalDiscount = productSavings + finalCouponSavings;
@@ -94,7 +101,7 @@ export default function Checkout() {
     const code = couponInput.trim().toUpperCase();
     if (!code) return;
 
-    if (code === "VIP50" || code === "VIPCLUB60") {
+    if (code === "VIP50" || code === "VIPCLUB60" || code === "VIBCLUB60") {
       applyCoupon(code);
       setCouponError("");
     } else {
@@ -194,18 +201,28 @@ export default function Checkout() {
             timeZone: "Asia/Kolkata",
           });
           const googleSheetsData = {
+            type: 'order' as const,
             orderId: newOrderId,
             firstName: fullName,
+            customerName: fullName, // backup mapping
+            phone: mobileNumber, // for Apps Script "data.phone" compatibility
             mobileNumber: mobileNumber,
             email: email || "N/A",
+            address: streetAddress, // for Apps Script "data.address" compatibility
             streetAddress: streetAddress,
             city: city,
+            zip: zipCode, // for Apps Script "data.zip" compatibility
             zipCode: zipCode,
             productName: productName,
+            amount: total, // for Apps Script "data.amount" compatibility
             totalAmount: total.toString(),
             size: size,
             sku: sku,
             color: color,
+            couponUsed: activeCoupon || 'None',
+            source: 'Cart Checkout',
+            paymentMethod: paymentMethod === 'cod' ? 'COD' : 'Razorpay Online',
+            status: status,
             paymentStatus: status,
             paymentId: paymentId,
             timestamp: istTime,
@@ -213,9 +230,13 @@ export default function Checkout() {
 
           // Race with 1600ms timeout so customers on slow mobile networks are not left waiting
           const submitPromise = submitToGoogleSheets(googleSheetsData);
+          const directSubmitPromise = sendOrderToSheets(googleSheetsData);
           const timeoutPromise = new Promise((resolve) => setTimeout(() => resolve({ status: "timeout" }), 1600));
 
-          await Promise.race([submitPromise, timeoutPromise]).catch((err) => {
+          await Promise.race([
+            Promise.allSettled([submitPromise, directSubmitPromise]),
+            timeoutPromise
+          ]).catch((err) => {
             console.warn("Google Sheet submission errored, passing to next step:", err);
           });
 
@@ -878,7 +899,7 @@ export default function Checkout() {
                             ✓ Coupon Applied: {appliedCoupon}
                           </span>
                           <span className="text-[8px] sm:text-[8.5px] text-[#4CAF50] font-bold uppercase tracking-wider mt-0.5">
-                            {couponDiscountMultiplier * 100}% OFF Applied Successfully
+                            {flatDiscount > 0 ? "Extra VIP Member Discount Applied" : `${couponDiscountMultiplier * 100}% OFF Applied Successfully`}
                           </span>
                         </div>
                       </div>
@@ -904,7 +925,7 @@ export default function Checkout() {
                   </div>
                   {finalCouponSavings > 0 && (
                     <div className="flex justify-between items-center text-[#4CAF50]">
-                      <span>Coupon Savings</span>
+                      <span>{flatDiscount > 0 ? "VIP Discount" : "Coupon Savings"}</span>
                       <span className="font-bold">
                         -{formatPrice(finalCouponSavings)}
                       </span>

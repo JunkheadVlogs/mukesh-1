@@ -28,6 +28,25 @@ export function ProductCard({
 
   const stats = useMemo(() => getProductReviewStats(product), [product.id]);
 
+  const displayName = useMemo(() => {
+    let name = product.name || "";
+    if (product.category) {
+      const category = product.category.trim();
+      const prefixes = [
+        `${category} — `,
+        `${category} - `,
+        `${category}: `,
+        `${category} `,
+      ];
+      for (const prefix of prefixes) {
+        if (name.toLowerCase().startsWith(prefix.toLowerCase())) {
+          return name.slice(prefix.length).trim();
+        }
+      }
+    }
+    return name;
+  }, [product.name, product.category]);
+
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     addToCart(product, product.category === "Co-Ord Sets" ? "M" : undefined, 1);
@@ -48,7 +67,9 @@ export function ProductCard({
             srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w`}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             alt={getImageAlt(product)}
-            priority={idx < 4}
+            priority={false}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover object-top transform-gpu transition-all duration-700 ease-out group-hover:scale-105"
           />
         </Link>
@@ -120,7 +141,7 @@ export function ProductCard({
           </div>
           <h3 className="font-serif text-[#2C241B] tracking-wide group-hover:text-gold-600 transition-colors w-full truncate text-[14px] md:text-[15px] leading-[1.35] font-medium px-1 mb-2.5">
             <Link to={`/product/${product.slug}`} title={product.name}>
-              {product.name}
+              {displayName}
             </Link>
           </h3>
 

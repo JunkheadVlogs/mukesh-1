@@ -65,13 +65,13 @@ export default function Layout() {
   const getWhatsAppPosition = () => {
     if (hasStickyBar) {
       if (isDeepScrolled) {
-        return "bottom-[calc(140px+env(safe-area-inset-bottom))] md:bottom-[84px]";
+        return "bottom-[calc(115px+env(safe-area-inset-bottom))] md:bottom-[84px]";
       } else {
-        return "bottom-[calc(80px+env(safe-area-inset-bottom))] md:bottom-[24px]";
+        return "bottom-[calc(65px+env(safe-area-inset-bottom))] md:bottom-[24px]";
       }
     } else {
       if (isDeepScrolled) {
-        return "bottom-[calc(80px+env(safe-area-inset-bottom))] md:bottom-[84px]";
+        return "bottom-[calc(70px+env(safe-area-inset-bottom))] md:bottom-[84px]";
       } else {
         return "bottom-[calc(20px+env(safe-area-inset-bottom))] md:bottom-[24px]";
       }
@@ -80,7 +80,7 @@ export default function Layout() {
 
   const getScrollToTopPosition = () => {
     if (hasStickyBar) {
-      return "bottom-[calc(80px+env(safe-area-inset-bottom))] md:bottom-[24px]";
+      return "bottom-[calc(65px+env(safe-area-inset-bottom))] md:bottom-[24px]";
     } else {
       return "bottom-[calc(20px+env(safe-area-inset-bottom))] md:bottom-[24px]";
     }
@@ -1265,10 +1265,10 @@ export default function Layout() {
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             onClick={scrollToTop}
-            className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#FAF8F4] text-[#2b2b2b] border border-[#C8A96B]/35 flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:border-[#C8A96B] hover:text-[#C8A96B] hover:scale-110 active:scale-95 transition-all duration-300 pointer-events-auto cursor-pointer ${getScrollToTopPosition()}`}
+            className={`fixed right-4 z-[997] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#FAF8F4] text-[#2b2b2b] border border-[#C8A96B]/35 flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:border-[#C8A96B] hover:text-[#C8A96B] hover:scale-110 active:scale-95 transition-all duration-300 pointer-events-auto cursor-pointer ${getScrollToTopPosition()}`}
             aria-label="Scroll to top"
           >
-            <ArrowUp size={20} strokeWidth={2} />
+            <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
           </motion.button>
         )}
       </AnimatePresence>
@@ -1278,10 +1278,10 @@ export default function Layout() {
         href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}
         target="_blank"
         rel="noopener noreferrer"
-        className={`fixed right-4 z-[997] w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_6px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_8px_25px_rgba(37,211,102,0.4)] hover:scale-110 active:scale-95 transition-all duration-300 ${getWhatsAppPosition()}`}
+        className={`fixed right-4 z-[997] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_6px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_8px_25px_rgba(37,211,102,0.4)] hover:scale-110 active:scale-95 transition-all duration-300 ${getWhatsAppPosition()}`}
         aria-label="Contact on WhatsApp"
       >
-        <MessageCircle size={24} strokeWidth={1.5} />
+        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />
       </a>
     </div>
   );

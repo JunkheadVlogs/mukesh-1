@@ -50,8 +50,8 @@ export default function QuickViewModal({
 
   if (!product) return null;
 
-  const isCoOrd = product.category === "Co-Ord Sets";
-  const sizes = product.availableSizes || ["M", "L", "XL", "XXL", "XXXL"];
+  const isCoOrd = product.category === "Co-Ord Sets" || product.category.toLowerCase().includes("co-ord");
+  const sizes = (product.availableSizes || ["M", "L", "XL", "XXL", "XXXL"]).filter(s => s !== "Free Size");
   const productImages =
     product.images && product.images.length > 0
       ? [...product.images]

@@ -5,9 +5,22 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd(), '');
+  
   return {
     root: '.',
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(), 
+      tailwindcss(),
+      {
+        name: 'html-transform',
+        transformIndexHtml(html) {
+          return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
+            const val = env[`VITE_${key}`] || process.env[`VITE_${key}`];
+            return val !== undefined ? val : match;
+          });
+        }
+      }
+    ],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
       __META_PIXEL_ID__: JSON.stringify(env.VITE_META_PIXEL_ID),
