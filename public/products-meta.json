@@ -238,13 +238,6 @@
     "price": "699"
   },
   {
-    "name": "Blush Botanical Fusion Linen Saree",
-    "slug": "blush-botanical-fusion-linen-saree",
-    "description": "DESCRIPTION: Discover soft vintage-style charm with this beautiful blushing-floral linen saree. The soft blush pink and pastel beige background is a b",
-    "image": "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
-    "price": "699"
-  },
-  {
     "name": "Tropical Ivory Ethnic Fusion Linen Saree",
     "slug": "tropical-ivory-ethnic-fusion-linen-saree",
     "description": "DESCRIPTION: Experience the perfect harmony of nature and geometry with this Tropical Ivory Ethnic Fusion Linen Saree. Featuring artistic palm tree mo",
@@ -425,5 +418,47 @@
     "description": "DESCRIPTION: Upgrade your ethnic wardrobe with this elegant Red Soft Linen Saree featuring stylish digital elephant print and artistic designer border",
     "image": "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500",
     "price": "699"
+  },
+  {
+    "name": "White Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    "slug": "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
+    "image": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format",
+    "price": "1299"
+  },
+  {
+    "name": "Navy Blue Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    "slug": "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
+    "image": "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format",
+    "price": "1299"
+  },
+  {
+    "name": "Pink Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    "slug": "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
+    "image": "https://images.unsplash.com/photo-1583391265517-35bbadd9e20a?auto=format",
+    "price": "1299"
+  },
+  {
+    "name": "Royal Blue Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    "slug": "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
+    "image": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format",
+    "price": "1299"
+  },
+  {
+    "name": "Rust Brown Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    "slug": "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
+    "image": "https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format",
+    "price": "1299"
+  },
+  {
+    "name": "Wine Red Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    "slug": "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
+    "image": "https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?auto=format",
+    "price": "1299"
   }
 ]

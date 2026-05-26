@@ -76,14 +76,19 @@ export function OptimizedImage({ src, width = 600, height, alt, className, srcSe
     );
   }
 
-  const webpUrl = currentSrc.startsWith('http') ? currentSrc : optimizeImage(currentSrc, width, 'webp');
-  const jpgUrl = currentSrc.startsWith('http') ? currentSrc : optimizeImage(currentSrc, width, 'jpg');
+  const isDirectBypass = currentSrc.startsWith('http') && 
+                         !currentSrc.includes('drive.google.com') && 
+                         !currentSrc.includes('googleusercontent.com') &&
+                         !currentSrc.includes('mukeshsarees.com');
+
+  const webpUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'webp');
+  const jpgUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'jpg');
 
   // Generate responsive srcSet if not provided and it's not a direct fallback CDN URL
   let generatedSrcSetWebp = srcSet;
   let generatedSrcSetJpg = srcSet;
   
-  if (!srcSet && !currentSrc.startsWith('http')) {
+  if (!srcSet && !isDirectBypass) {
     generatedSrcSetWebp = `${optimizeImage(currentSrc, 400, 'webp')} 400w, ${optimizeImage(currentSrc, 800, 'webp')} 800w, ${optimizeImage(currentSrc, 1200, 'webp')} 1200w`;
     generatedSrcSetJpg = `${optimizeImage(currentSrc, 400, 'jpg')} 400w, ${optimizeImage(currentSrc, 800, 'jpg')} 800w, ${optimizeImage(currentSrc, 1200, 'jpg')} 1200w`;
   }

@@ -92,6 +92,58 @@ try {
 // API Routes
 const apiRouter = express.Router();
 
+// ==== secure server-side proxy for Google Drive images to bypass referrer/hotlink blocks ====
+apiRouter.get("/drive-proxy", async (req, res) => {
+  try {
+    const { id, w } = req.query;
+    if (!id || typeof id !== "string") {
+      return res.status(400).send("Parameter id is required");
+    }
+
+    const fileId = id.trim();
+    const width = w && typeof w === "string" ? parseInt(w, 10) : 1000;
+    
+    // First, try loading from Google CDN lh3 with size suffix
+    const driveUrl = `https://lh3.googleusercontent.com/d/${fileId}=w${width}`;
+    
+    console.log(`[DRIVE-PROXY] Proxying Google Drive ID: ${fileId} (width: ${width})`);
+    
+    const response = await fetch(driveUrl, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      }
+    });
+
+    if (!response.ok) {
+      console.warn(`[DRIVE-PROXY] Direct Google CDN fetch failed with status: ${response.status}. Fetching fallback thumbnail...`);
+      // Fallback: try the thumbnail service
+      const fallbackUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w${width}`;
+      const fallbackResponse = await fetch(fallbackUrl, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+      });
+      if (!fallbackResponse.ok) {
+        console.error(`[DRIVE-PROXY] All fallbacks failed for file ID: ${fileId}. Status: ${fallbackResponse.status}`);
+        return res.status(fallbackResponse.status).send(`Failed to fetch from Google Drive: ${fallbackResponse.statusText}`);
+      }
+      
+      const buffer = await fallbackResponse.arrayBuffer();
+      res.setHeader("Content-Type", fallbackResponse.headers.get("content-type") || "image/jpeg");
+      res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      return res.send(Buffer.from(buffer));
+    }
+
+    const buffer = await response.arrayBuffer();
+    res.setHeader("Content-Type", response.headers.get("content-type") || "image/jpeg");
+    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+    res.send(Buffer.from(buffer));
+  } catch (error: any) {
+    console.error(`[DRIVE-PROXY] Error occurred:`, error);
+    res.status(500).send(`Server error: ${error.message}`);
+  }
+});
+
 // ==== capture lead to firestore and trigger whatsapp via interakt ====
 apiRouter.post("/capture-lead", async (req, res) => {
   try {

@@ -111,10 +111,23 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     return url;
   }
   
-  if (url.includes('drive.google.com/thumbnail')) {
-    // Get a high-res version from Drive then optimize via wsrv.nl (Cloudflare) for webp caching
-    const targetUrl = url.replace(/sz=w\d+/, 'sz=w2000');
-    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=${width}&output=${format}&q=80&we`;
+  if (url.includes('drive.google.com') || url.includes('googleusercontent.com')) {
+    // Extract the raw file ID from the Google Drive URL
+    let driveId = '';
+    const idMatch = url.match(/[?&]id=([^&]+)/);
+    if (idMatch) {
+      driveId = idMatch[1];
+    } else {
+      const dMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (dMatch) {
+        driveId = dMatch[1];
+      }
+    }
+    
+    if (driveId) {
+      // route via our secure server-side proxy which handles Google Drive CORS and CDN streaming
+      return `/api/drive-proxy?id=${driveId}&w=${width}`;
+    }
   }
   
   if (url.includes('images.unsplash.com')) {
@@ -144,7 +157,12 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     }
   }
 
-  if (absoluteUrl.startsWith('http') && !absoluteUrl.includes('localhost') && !absoluteUrl.includes('127.0.0.1') && !absoluteUrl.includes('3000') && !absoluteUrl.includes('run.app')) {
+  if (absoluteUrl.startsWith('http') && 
+      !absoluteUrl.includes('localhost') && 
+      !absoluteUrl.includes('127.0.0.1') && 
+      !absoluteUrl.includes('3000') && 
+      !absoluteUrl.includes('run.app') &&
+      !absoluteUrl.includes('mukeshsarees.com')) {
      return `https://wsrv.nl/?url=${encodeURIComponent(absoluteUrl)}&w=${width}&output=${format}&q=80&we`;
   }
   

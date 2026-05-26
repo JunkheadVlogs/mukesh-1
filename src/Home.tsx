@@ -391,7 +391,7 @@ export default function Home() {
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="https://mukeshsarees.com/home%20Page%20Images/best-co-ord-set-shop-in-nagpur-category-image.webp"
+                  src="/images/category_coord_sets.webp"
                   width={800}
                   alt="Co-Ord Sets"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
@@ -423,7 +423,7 @@ export default function Home() {
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="https://mukeshsarees.com/home%20Page%20Images/saree_category_backgroung_image.webp"
+                  src="/images/category_sarees.webp"
                   width={800}
                   alt="Sarees"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"

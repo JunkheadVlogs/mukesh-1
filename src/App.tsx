@@ -4,30 +4,18 @@
  */
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Layout from './Layout';
 import Home from './Home';
 import { ExitIntentPopup } from './components/ExitIntentPopup';
 import { useExitIntent } from './hooks/useExitIntent';
 import { trackWhatsAppClick } from './tracking';
 
-const lazyRetry = (importFn: () => Promise<any>) => {
-  return lazy(async () => {
-    try {
-      return await importFn();
-    } catch (error) {
-      console.error("Dynamic import failed, reloading page to fetch latest version...", error);
-      window.location.reload();
-      return new Promise(() => {}); // prevent rendering empty component while page reloads
-    }
-  });
-};
-
-const Shop = lazyRetry(() => import('./Shop'));
-const Wishlist = lazyRetry(() => import('./Wishlist'));
-const ProductPage = lazyRetry(() => import('./ProductPage'));
-const Cart = lazyRetry(() => import('./Cart'));
-const Checkout = lazyRetry(() => import('./Checkout'));
+import Shop from './Shop';
+import Wishlist from './Wishlist';
+import ProductPage from './ProductPage';
+import Cart from './Cart';
+import Checkout from './Checkout';
 import ThankYou from './ThankYou';
 import Contact from './Contact';
 import Terms from './Terms';
