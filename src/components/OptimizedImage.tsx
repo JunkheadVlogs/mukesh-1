@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { optimizeImage } from '../utils';
 
 const LOCAL_IMAGE_FALLBACKS: Record<string, string> = {
-  'main_shop_entrance.webp': 'https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1IFI6HR5__1CmmWFj2SOU9dRZkJL3oSRU&output=webp&q=85',
-  'billing_counter.webp': 'https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1BkjTW2c9Lp0KUQH337w7boQtrXmrnHDl&output=webp&q=85',
-  'saree_section.webp': 'https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1ANZwb_MyHYzwJE8otCzY2DiwvkU_N7T4&output=webp&q=85',
-  'lehenga_section.webp': 'https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1gjPnofLFUOXMAbD4gowCAi_3ie36HJmp&output=webp&q=85',
-  'logo.webp': 'https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1QDVfG-lK8wmYw_Wfz62Yb745gR40foRw&output=webp&q=85',
-  'hero_exhibition.webp': 'https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1tucc1ZblHYQt5suadHkwZl-3BzyzAuIA&output=webp&q=85',
-  'category_coord_sets.webp': 'https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1lSuvWpjCmEyPWtWlDOmlJPAP9oaBaW6c&output=webp&q=85',
-  'category_sarees.webp': 'https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1oU1UYZS8CU3OOa-3CNyc3cQlyAS0AfJ_&output=webp&q=85',
+  'main_shop_entrance.webp': 'https://mukeshsarees.com/home%20Page%20Images/shop-main-enterence.webp',
+  'billing_counter.webp': 'https://mukeshsarees.com/home%20Page%20Images/billing-counter.webp',
+  'saree_section.webp': 'https://mukeshsarees.com/home%20Page%20Images/saree_section.webp',
+  'lehenga_section.webp': 'https://mukeshsarees.com/home%20Page%20Images/lehenga-section.webp',
+  'logo.webp': 'https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp',
+  'hero_exhibition.webp': 'https://mukeshsarees.com/home%20Page%20Images/hero-image-best-saree-shop-nagpur.webp',
+  'category_coord_sets.webp': 'https://mukeshsarees.com/home%20Page%20Images/best-co-ord-set-shop-in-nagpur-category-image.webp',
+  'category_sarees.webp': 'https://mukeshsarees.com/home%20Page%20Images/saree_category_backgroung_image.webp',
 };
 
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {

@@ -208,19 +208,19 @@ export default function Home() {
 
   const shopImages = [
     {
-      url: "/images/main_shop_entrance.webp",
+      url: "https://mukeshsarees.com/home%20Page%20Images/shop-main-enterence.webp",
       label: "Main Shop Entrance",
     },
     {
-      url: "/images/billing_counter.webp",
+      url: "https://mukeshsarees.com/home%20Page%20Images/billing-counter.webp",
       label: "Billing Counter",
     },
     {
-      url: "/images/saree_section.webp",
+      url: "https://mukeshsarees.com/home%20Page%20Images/saree_section.webp",
       label: "Saree Section",
     },
     {
-      url: "/images/lehenga_section.webp",
+      url: "https://mukeshsarees.com/home%20Page%20Images/lehenga-section.webp",
       label: "Lehenga Section",
     },
   ];
@@ -252,7 +252,7 @@ export default function Home() {
           "@type": "ClothingStore",
           name: "Mukesh Saree Centre",
           url: "https://mukeshsarees.com",
-          logo: "https://mukeshsarees.com/images/logo.webp",
+          logo: "https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp",
           foundingDate: "1978",
           address: {
             "@type": "PostalAddress",
@@ -278,7 +278,7 @@ export default function Home() {
           style={{ y: heroImageY }}
         >
           <OptimizedImage
-            src="https://lh3.googleusercontent.com/d/1tucc1ZblHYQt5suadHkwZl-3BzyzAuIA"
+            src="https://mukeshsarees.com/home%20Page%20Images/hero-image-best-saree-shop-nagpur.webp"
             width={1600}
             height={1000}
             alt="Hero Exhibition"
@@ -391,7 +391,7 @@ export default function Home() {
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="https://lh3.googleusercontent.com/d/1lSuvWpjCmEyPWtWlDOmlJPAP9oaBaW6c"
+                  src="https://mukeshsarees.com/home%20Page%20Images/best-co-ord-set-shop-in-nagpur-category-image.webp"
                   width={800}
                   alt="Co-Ord Sets"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
@@ -423,7 +423,7 @@ export default function Home() {
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="https://lh3.googleusercontent.com/d/1oU1UYZS8CU3OOa-3CNyc3cQlyAS0AfJ_"
+                  src="https://mukeshsarees.com/home%20Page%20Images/saree_category_backgroung_image.webp"
                   width={800}
                   alt="Sarees"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"

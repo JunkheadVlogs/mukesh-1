@@ -690,7 +690,7 @@ export default function Layout() {
             >
               {!logoError ? (
                 <img
-                  src="/images/logo.webp"
+                  src="https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp"
                   alt="Mukesh Saree Centre Logo"
                   style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
                   className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain transition-all duration-500 group-hover:opacity-80 drop-shadow-sm m-0 p-0 block header-logo"

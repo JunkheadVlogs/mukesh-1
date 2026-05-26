@@ -364,7 +364,7 @@ export default function Checkout() {
               currency: order.currency || 'INR',
               name: 'Mukesh Saree Centre',
               description: orderDetails.items[0]?.name || 'Luxury Saree Order',
-              image: 'https://mukeshsarees.com/images/logo.webp',
+              image: 'https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp',
               order_id: order.orderId || order.id,         // REQUIRED — from server
               prefill: {
                 name: orderDetails.customer.name,

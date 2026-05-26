@@ -30,7 +30,7 @@ function LoadingScreen() {
       <div className="flex flex-col items-center space-y-4">
          {!logoError ? (
            <img 
-             src="/images/logo.webp" 
+             src="https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp" 
              alt="Mukesh Saree Centre Logo" 
              className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block header-logo" 
              onError={() => setLogoError(true)} 
