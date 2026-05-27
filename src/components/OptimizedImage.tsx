@@ -12,6 +12,63 @@ const LOCAL_IMAGE_FALLBACKS: Record<string, string> = {
   'category_sarees.webp': 'https://mukeshsarees.com/home%20Page%20Images/saree_category_backgroung_image.webp',
 };
 
+function getCandidateUrls(src: string): string[] {
+  if (!src) return [];
+  const candidates: string[] = [src];
+
+  if (src.includes('drive.google.com') || src.includes('googleusercontent.com')) {
+    return candidates;
+  }
+
+  const parts = src.split('/');
+  const filename = parts.pop() || '';
+  const folder = parts.pop() || '';
+
+  if (filename && folder && folder !== 'images' && folder !== 'product' && folder !== 'products') {
+    const paths = [
+      `/images/${folder}/${filename}`,
+      `/images/product/${folder}/${filename}`,
+      `/images/${filename}`,
+      `/wp-content/uploads/${folder}/${filename}`,
+      `/wp-content/uploads/${filename}`,
+      `/${folder}/${filename}`,
+      `https://mukeshsarees.com/images/${folder}/${filename}`,
+      `https://mukeshsarees.com/images/product/${folder}/${filename}`,
+      `https://mukeshsarees.com/wp-content/uploads/${folder}/${filename}`,
+      `https://mukeshsarees.com/${folder}/${filename}`,
+    ];
+    for (const p of paths) {
+      if (!candidates.includes(p)) {
+        candidates.push(p);
+      }
+    }
+  } else if (filename) {
+    const paths = [
+      `/images/${filename}`,
+      `https://mukeshsarees.com/images/${filename}`,
+      `/images/fendy-chiffon-white/${filename}`,
+      `https://mukeshsarees.com/images/fendy-chiffon-white/${filename}`,
+    ];
+    for (const p of paths) {
+      if (!candidates.includes(p)) {
+        candidates.push(p);
+      }
+    }
+  }
+
+  if (filename && LOCAL_IMAGE_FALLBACKS[filename]) {
+    candidates.push(LOCAL_IMAGE_FALLBACKS[filename]);
+  }
+
+  // Silk background safety fallback
+  const fallbackUnsplash = 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=45';
+  if (!candidates.includes(fallbackUnsplash)) {
+    candidates.push(fallbackUnsplash);
+  }
+
+  return candidates;
+}
+
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   width?: number;
@@ -25,39 +82,56 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
 
 export function OptimizedImage({ src, width = 600, height, alt, className, srcSet, sizes, priority = false, onError, ...props }: OptimizedImageProps) {
   const calculatedHeight = height || Math.round(width * 1.33333);
-  const [currentSrc, setCurrentSrc] = useState(src);
-  const [fallbackCount, setFallbackCount] = useState(0);
+  
+  const [candidates, setCandidates] = useState<string[]>([]);
+  const [candidateIndex, setCandidateIndex] = useState(0);
 
   useEffect(() => {
-    setCurrentSrc(src);
-    setFallbackCount(0);
+    const list = getCandidateUrls(src);
+    setCandidates(list);
+    setCandidateIndex(0);
   }, [src]);
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const filename = src.split('/').pop() || '';
-    if (fallbackCount === 0) {
-      setFallbackCount(1);
-      if (LOCAL_IMAGE_FALLBACKS[filename]) {
-        console.log(`Image load failed for ${src}, falling back to premium cloud CDN...`);
-        setCurrentSrc(LOCAL_IMAGE_FALLBACKS[filename]);
-        return;
-      }
-    }
-    
-    if (fallbackCount < 2) {
-      setFallbackCount(2);
-      console.warn(`Fallback image failed or not found for ${src}, using luxury silk placeholder...`);
-      // Premium silk/saree styled luxury background placeholder
-      setCurrentSrc('https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=45');
-    }
+  const currentSrc = candidates[candidateIndex] || src;
 
-    if (onError) {
-      onError(e);
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    if (candidateIndex < candidates.length - 1) {
+      console.log(`OptimizedImage Error loading ${currentSrc}. Trying fallback candidate: ${candidates[candidateIndex + 1]}`);
+      setCandidateIndex((prev) => prev + 1);
+    } else {
+      console.warn(`All OptimizedImage candidates failed to load for ${src}.`);
+      if (onError) {
+        onError(e);
+      }
     }
   };
 
-  // If the image is/was a local static asset (and hasn't errored to fallback), bypass CDN/Optimizations.
-  if (currentSrc.startsWith('/') && fallbackCount === 0) {
+  const isGoogleDrive = currentSrc.includes('drive.google.com') || currentSrc.includes('googleusercontent.com');
+  const isRelative = currentSrc.startsWith('/');
+
+  // Google Drive optimization
+  if (isGoogleDrive) {
+    const optimizedDriveUrl = optimizeImage(currentSrc, width);
+    return (
+      <img
+        src={optimizedDriveUrl}
+        alt={alt}
+        width={width}
+        height={calculatedHeight}
+        className={className}
+        loading={priority ? undefined : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        referrerPolicy="no-referrer"
+        decoding={priority ? "sync" : "async"}
+        style={{ background: '#F5F0E8', objectFit: 'cover', ...(props.style || {}) }}
+        onError={handleImageError}
+        {...props}
+      />
+    );
+  }
+
+  // Relative paths render directly
+  if (isRelative) {
     return (
       <img
         src={currentSrc}
@@ -76,6 +150,7 @@ export function OptimizedImage({ src, width = 600, height, alt, className, srcSe
     );
   }
 
+  // External / Bypass logic
   const isDirectBypass = currentSrc.startsWith('http') && 
                          !currentSrc.includes('drive.google.com') && 
                          !currentSrc.includes('googleusercontent.com') &&
@@ -84,7 +159,6 @@ export function OptimizedImage({ src, width = 600, height, alt, className, srcSe
   const webpUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'webp');
   const jpgUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'jpg');
 
-  // Generate responsive srcSet if not provided and it's not a direct fallback CDN URL
   let generatedSrcSetWebp = srcSet;
   let generatedSrcSetJpg = srcSet;
   
