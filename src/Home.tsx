@@ -423,7 +423,7 @@ export default function Home() {
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="https://mukeshsarees.com/home%20Page%20Images/saree_category_backgroung_image.webp"
+                  src="https://mukeshsarees.com/home%20Page%20Images/saree_category_background_image.webp"
                   width={800}
                   alt="Sarees"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
