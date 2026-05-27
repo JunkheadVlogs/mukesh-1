@@ -85,7 +85,7 @@ export async function sendExitLeadToSheets({ name, phone }: ExitLeadData): Promi
         type: 'exit_lead',
         name,
         phone: phone.startsWith('+91') ? phone : '+91' + phone,
-        couponCode: 'VIPCLUB60',
+        couponCode: 'VIP50',
         page: window.location.pathname,
         device,
       })

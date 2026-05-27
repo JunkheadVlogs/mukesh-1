@@ -57,51 +57,35 @@ export default function Checkout() {
     }
   }, [appliedCoupon]);
 
-  const subtotalCart = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0,
-  );
   const subtotalMRP = cart.reduce(
-    (total, item) => total + (item.originalPrice || item.price) * item.quantity,
+    (total, item) => total + (item.originalPrice || item.price * 2) * item.quantity,
     0,
   );
 
-  const productSavings = subtotalMRP - subtotalCart;
   const shipping = 0;
+  const activeCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
 
-  const activeCoupon = appliedCoupon;
-  let couponDiscountMultiplier = 0;
-  let flatDiscount = 0;
-  if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.5;
-  else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") {
-    const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-    flatDiscount = 200 * totalQuantity;
-  }
-
-  let finalPayable = subtotalCart;
-  let finalCouponSavings = 0;
-
-  if (couponDiscountMultiplier > 0) {
-    const priceWithCoupon = Math.floor(
-      subtotalMRP * (1 - couponDiscountMultiplier),
-    );
-    if (priceWithCoupon < subtotalCart) {
-      finalPayable = priceWithCoupon;
-      finalCouponSavings = subtotalCart - priceWithCoupon;
+  const total = cart.reduce((sum, item) => {
+    const mrp = item.originalPrice || item.price * 2;
+    let discountRate = 0.0;
+    if (activeCoupon === "VIP50") {
+      discountRate = 0.50;
+    } else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") {
+      discountRate = 0.60;
     }
-  } else if (flatDiscount > 0) {
-    finalPayable = subtotalCart - flatDiscount;
-    finalCouponSavings = flatDiscount;
-  }
+    const calculatedPrice = mrp - Math.round(mrp * discountRate);
+    return sum + calculatedPrice * item.quantity;
+  }, 0);
 
-  const totalDiscount = productSavings + finalCouponSavings;
-  const total = Math.max(0, finalPayable);
+  const displayDiscountPercent = (activeCoupon === "VIP50") ? 50 : (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 60 : 0;
 
-  const handleApplyCoupon = () => {
+  const handleApplyCoupon = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     const code = couponInput.trim().toUpperCase();
     if (!code) return;
 
     if (code === "VIP50" || code === "VIPCLUB60" || code === "VIBCLUB60") {
+      sessionStorage.removeItem('coupon_removed');
       applyCoupon(code);
       setCouponError("");
     } else {
@@ -110,6 +94,7 @@ export default function Checkout() {
   };
 
   const handleRemoveCoupon = () => {
+    sessionStorage.setItem('coupon_removed', 'true');
     applyCoupon(null);
   };
 
@@ -857,39 +842,66 @@ export default function Checkout() {
               </h2>
 
               <div className="space-y-2.5 mb-3.5 max-h-[35vh] overflow-y-auto pr-1 sm:pr-2 no-scrollbar">
-                {cart.map((item) => (
-                  <div
-                    key={`${item.id}-${item.size}`}
-                    className="flex gap-2.5 sm:gap-4 items-center"
-                  >
-                    <div className="w-[56px] h-[72px] sm:w-16 sm:h-20 bg-primary-50 rounded-sm relative overflow-hidden flex-shrink-0 border border-black/5">
-                      <OptimizedImage
-                        src={item.image}
-                        alt={getImageAlt(item)}
-                        width={200}
-                        className="w-full h-full object-cover object-top will-change-transform transform-gpu"
-                      />
-                      <div className="absolute top-1 right-1 bg-gold-500 text-white text-[9px] w-4.5 h-4.5 sm:w-5 sm:h-5 flex items-center justify-center rounded-full font-bold shadow-sm">
-                        {item.quantity}
+                {cart.map((item) => {
+                  const mrp = item.originalPrice || item.price * 2;
+                  const discountRate = (activeCoupon === "VIP50") ? 0.50 : (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.0;
+                  const calculatedPrice = mrp - Math.round(mrp * discountRate);
+                  return (
+                    <div
+                      key={`${item.id}-${item.size}`}
+                      className="flex gap-2.5 sm:gap-4 items-center"
+                    >
+                      <div className="w-[56px] h-[72px] sm:w-16 sm:h-20 bg-primary-50 rounded-sm relative overflow-hidden flex-shrink-0 border border-black/5">
+                        <OptimizedImage
+                          src={item.image}
+                          alt={getImageAlt(item)}
+                          width={200}
+                          className="w-full h-full object-cover object-top will-change-transform transform-gpu"
+                        />
+                        <div className="absolute top-1 right-1 bg-gold-500 text-white text-[9px] w-4.5 h-4.5 sm:w-5 sm:h-5 flex items-center justify-center rounded-full font-bold shadow-sm">
+                          {item.quantity}
+                        </div>
+                      </div>
+                      <div className="flex flex-col justify-center gap-0.5">
+                        <p className="text-[12px] sm:text-sm font-medium text-primary-950 leading-tight line-clamp-2">
+                          {item.name}
+                        </p>
+                        <p className="text-[8.5px] sm:text-[10px] uppercase text-gold-600 font-bold tracking-wider">
+                          Size: {item.size || "Standard"}
+                        </p>
+                        <p className="text-[12px] sm:text-sm font-bold text-primary-950">
+                          {formatPrice(calculatedPrice * item.quantity)}
+                        </p>
                       </div>
                     </div>
-                    <div className="flex flex-col justify-center gap-0.5">
-                      <p className="text-[12px] sm:text-sm font-medium text-primary-950 leading-tight line-clamp-2">
-                        {item.name}
-                      </p>
-                      <p className="text-[8.5px] sm:text-[10px] uppercase text-gold-600 font-bold tracking-wider">
-                        Size: {item.size || "Standard"}
-                      </p>
-                      <p className="text-[12px] sm:text-sm font-bold text-primary-950">
-                        {formatPrice(item.price)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="space-y-2.5 pt-2.5 sm:pt-5 border-t border-black/5">
-                {appliedCoupon && (
+                {!appliedCoupon ? (
+                  <div className="mb-3 pb-3 border-b border-black/5">
+                    <div className="flex gap-2 items-stretch w-full">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value)}
+                        placeholder="ENTER COUPON CODE"
+                        className="flex-grow min-w-0 bg-[#F9F7F4] border border-black/10 rounded-sm px-3 text-[10px] sm:text-[10.5px] text-primary-950 placeholder:text-primary-950/40 focus:outline-none focus:border-gold-500 uppercase font-medium tracking-wide h-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleApplyCoupon()}
+                        className="bg-primary-950 hover:bg-black text-[10px] sm:text-[10.5px] font-sans text-white px-4 font-bold uppercase tracking-wider rounded-sm shrink-0 flex items-center justify-center transition-colors h-10"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                    {couponError && (
+                      <p className="text-red-500 text-[9px] font-bold uppercase tracking-wider mt-1.5 text-left">{couponError}</p>
+                    )}
+                  </div>
+                ) : (
                   <div className="mb-2.5 sm:mb-4 pb-2.5 sm:pb-4 border-b border-black/5">
                     <div className="bg-[#F9F7F4] border border-[#8A6A4A]/15 px-3 py-2 sm:py-2.5 rounded-sm flex items-center justify-between gap-3 text-left">
                       <div className="flex items-center gap-1.5 min-w-0">
@@ -899,41 +911,52 @@ export default function Checkout() {
                             ✓ Coupon Applied: {appliedCoupon}
                           </span>
                           <span className="text-[8px] sm:text-[8.5px] text-[#4CAF50] font-bold uppercase tracking-wider mt-0.5">
-                            {flatDiscount > 0 ? "Extra VIP Member Discount Applied" : `${couponDiscountMultiplier * 100}% OFF Applied Successfully`}
+                            {(activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? "60% OFF ON MRP SUCCESSFULLY APPLIED" : "50% OFF ON MRP SUCCESSFULLY APPLIED"}
                           </span>
                         </div>
                       </div>
-                      <div className="text-[9.5px] sm:text-[11px] font-bold text-[#4CAF50] font-sans flex-shrink-0">
-                        -{formatPrice(finalCouponSavings)}
+                      <div className="flex-shrink-0">
+                        <button
+                          type="button"
+                          onClick={handleRemoveCoupon}
+                          className="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline cursor-pointer"
+                        >
+                          Remove
+                        </button>
                       </div>
                     </div>
                   </div>
                 )}
 
-                <div className="space-y-2 text-[11px] sm:text-xs font-medium text-primary-950/60 font-sans">
-                  <div className="flex justify-between items-center text-primary-950/60">
+                <div className="space-y-2.5 text-[11px] sm:text-xs font-medium text-primary-950/60 font-sans text-left">
+                  <div className="flex justify-between items-center">
                     <span>MRP Total</span>
-                    <span className="text-primary-950/40 line-through">
+                    <span className="text-primary-950 font-bold">
                       {formatPrice(subtotalMRP)}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center text-gold-700">
-                    <span>Product Discount</span>
-                    <span className="font-bold">
-                      -{formatPrice(productSavings)}
-                    </span>
-                  </div>
-                  {finalCouponSavings > 0 && (
-                    <div className="flex justify-between items-center text-[#4CAF50]">
-                      <span>{flatDiscount > 0 ? "VIP Discount" : "Coupon Savings"}</span>
-                      <span className="font-bold">
-                        -{formatPrice(finalCouponSavings)}
-                      </span>
+
+                  {activeCoupon === "VIP50" && (
+                    <div className="flex justify-between items-center text-[#1E7E34]">
+                      <span>VIP50 Applied</span>
+                      <span className="font-bold">-{formatPrice(Math.round(subtotalMRP * 0.50))}</span>
                     </div>
                   )}
+
+                  {(activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") && (
+                    <div className="flex justify-between items-center text-[#1E7E34]">
+                      <span>VIPCLUB60 Applied</span>
+                      <span className="font-bold">-{formatPrice(Math.round(subtotalMRP * 0.60))}</span>
+                    </div>
+                  )}
+
                   <div className="flex justify-between items-center">
                     <span>Shipping</span>
-                    <span className="text-gold-700 font-bold">FREE</span>
+                    <span className="text-[#1E7E34] font-bold">FREE</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>GST & All Taxes Included</span>
+                    <span className="text-[#2C241B]/45 font-medium">Included</span>
                   </div>
                 </div>
 

@@ -82,44 +82,24 @@ export default function Cart() {
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
 
-  const subtotalCart = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  const subtotalMRP = cart.reduce((total, item) => total + (item.originalPrice || item.price) * item.quantity, 0);
-  
-  const productSavings = subtotalMRP - subtotalCart;
+  const subtotalMRP = cart.reduce((total, item) => total + (item.originalPrice || item.price * 2) * item.quantity, 0);
+  const activeCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
 
-  const activeCoupon = appliedCoupon;
-  let couponDiscountMultiplier = 0;
-  let flatDiscount = 0;
-  if (activeCoupon === "VIP50") couponDiscountMultiplier = 0.50;
-  else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") {
-    const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-    flatDiscount = 200 * totalQuantity;
+  let discountAmount = 0;
+  if (activeCoupon === "VIP50") {
+    discountAmount = Math.round(subtotalMRP * 0.50);
+  } else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") {
+    discountAmount = Math.round(subtotalMRP * 0.60);
   }
+  const total = subtotalMRP - discountAmount;
 
-  let finalPayable = subtotalCart;
-  let finalCouponSavings = 0;
-
-  if (couponDiscountMultiplier > 0) {
-    const priceWithCoupon = Math.floor(subtotalMRP * (1 - couponDiscountMultiplier));
-    if (priceWithCoupon < subtotalCart) {
-      finalPayable = priceWithCoupon;
-      finalCouponSavings = subtotalCart - priceWithCoupon;
-    }
-  } else if (flatDiscount > 0) {
-    finalPayable = subtotalCart - flatDiscount;
-    finalCouponSavings = flatDiscount;
-  }
-
-  const totalDiscount = productSavings + finalCouponSavings;
-  const shipping = 0;
-  const total = Math.max(0, finalPayable);
-  
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
     const code = couponCode.trim().toUpperCase();
     if (!code) return;
 
-    if (code === "VIP50" || code === "VIPCLUB60") {
+    if (code === "VIP50" || code === "VIPCLUB60" || code === "VIBCLUB60") {
+      sessionStorage.removeItem('coupon_removed');
       useStore.getState().applyCoupon(code);
       setCouponCode("");
       setCouponError("");
@@ -129,6 +109,7 @@ export default function Cart() {
   };
 
   const handleRemoveCoupon = () => {
+    sessionStorage.setItem('coupon_removed', 'true');
     useStore.getState().applyCoupon(null);
   };
 
@@ -149,8 +130,11 @@ export default function Cart() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 lg:gap-12">
           <div className="lg:col-span-8 space-y-3.5 sm:space-y-6 md:space-y-8">
             {cart.map((item) => {
-              const itemTotal = item.price * item.quantity;
-              const itemMRP = (item.originalPrice || item.price) * item.quantity;
+              const mrp = item.originalPrice || item.price * 2;
+              const discountRate = (activeCoupon === "VIP50") ? 0.50 : (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.0;
+              const calculatedPrice = mrp - Math.round(mrp * discountRate);
+              const itemTotal = calculatedPrice * item.quantity;
+              const itemMRP = mrp * item.quantity;
               return (
                 <div
                   key={`${item.id}-${item.size}`}
@@ -228,31 +212,37 @@ export default function Cart() {
             <div className="bg-white p-4 sm:p-5 md:p-8 pt-2 sm:pt-2.5 md:pt-6 border border-black/5 rounded-sm shadow-xl shadow-black/[0.01] lg:sticky lg:top-32">
               <h2 className="text-base sm:text-lg md:text-xl font-serif text-primary-950 mb-3 sm:mb-4 md:mb-6 font-medium">Order Summary</h2>
               
-              {appliedCoupon && (
-                <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-black/5">
-                  <div className="bg-[#F9F7F4] border border-[#8A6A4A]/20 p-3 sm:p-4 rounded-sm flex flex-col items-center text-center">
-                    <span className="text-[11px] sm:text-[12px] uppercase tracking-[1px] font-bold text-[#8A6A4A] flex items-center gap-1.5 mb-1"><ShieldCheck size={14} /> Coupon Applied</span>
-                    <span className="font-serif text-base sm:text-lg text-primary-950 font-bold mb-0.5">{appliedCoupon}</span>
-                    <span className="text-[10px] sm:text-[11px] text-primary-950/60 font-medium mb-2.5 uppercase tracking-wider">
-                      {flatDiscount > 0 ? "Extra VIP Member Discount Applied" : `${couponDiscountMultiplier * 100}% OFF Applied Successfully`}
-                    </span>
-                    <span className="text-[12px] font-bold text-[#4CAF50] bg-[#4CAF50]/10 px-3 py-1 rounded-sm w-full">You Saved {formatPrice(totalDiscount)}</span>
-                    <button onClick={handleRemoveCoupon} className="mt-2 text-[9px] uppercase font-bold text-primary-950/40 hover:text-red-500 transition-colors tracking-widest underline underline-offset-4">
-                      Remove Coupon
+              {appliedCoupon ? (
+                <div className="mb-3 sm:mb-4 pb-3 sm:pb-3.5 border-b border-black/5">
+                  <div className="bg-[#FAF9F6] border border-[#8A6A4A]/20 px-3 py-2.5 rounded-sm flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 min-w-0 text-left">
+                      <ShieldCheck size={14} className="text-[#8A6A4A] shrink-0" />
+                      <div className="min-w-0">
+                        <span className="block text-[11px] font-bold text-primary-950 uppercase tracking-wider truncate">
+                          ✓ {appliedCoupon} APPLIED
+                        </span>
+                        <span className="block text-[9px] text-[#4CAF50] font-bold uppercase tracking-wider mt-0.5">
+                          {activeCoupon === "VIP50" ? "50% OFF ON MRP SUCCESSFULLY APPLIED" : "60% OFF ON MRP SUCCESSFULLY APPLIED"}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleRemoveCoupon}
+                      className="text-[9.5px] uppercase font-bold text-red-500 hover:underline tracking-wider select-none shrink-0"
+                    >
+                      Remove
                     </button>
                   </div>
                 </div>
-              )}
-
-              {!appliedCoupon && (
+              ) : (
                 <div className="mb-2 sm:mb-3 pb-2 sm:pb-3 border-b border-black/5">
-                  <form onSubmit={handleApplyCoupon} className="flex items-stretch gap-2 w-full max-w-[280px] sm:max-w-[325px]">
+                  <form onSubmit={handleApplyCoupon} className="flex items-stretch gap-2 w-full">
                      <input
                        type="text"
                        value={couponCode}
                        onChange={(e) => setCouponCode(e.target.value)}
                        placeholder="ENTER COUPON CODE"
-                       className="flex-1 min-w-0 bg-[#F9F7F4] border border-black/10 rounded-sm px-3 h-9 sm:h-10 text-[9.5px] sm:text-[10.5px] text-primary-950 placeholder:text-primary-950/40 focus:outline-none focus:border-gold-500 uppercase font-medium tracking-wide"
+                       className="flex-grow min-w-0 bg-[#F9F7F4] border border-black/10 rounded-sm px-3 h-9 sm:h-10 text-[9.5px] sm:text-[10.5px] text-primary-950 placeholder:text-primary-950/40 focus:outline-none focus:border-gold-500 uppercase font-medium tracking-wide"
                      />
                      <button 
                        type="submit" 
@@ -261,34 +251,42 @@ export default function Cart() {
                        Apply
                      </button>
                     </form>
-                   {couponError && (
-                     <p className="text-red-500 text-[9px] font-bold uppercase tracking-wider mt-1">{couponError}</p>
-                   )}
-                   <p className="text-[8.5px] uppercase font-medium text-primary-950/40 mt-1 tracking-wider">Only one coupon can be applied per order.</p>
+                    {couponError && (
+                      <p className="text-red-500 text-[9px] font-bold uppercase tracking-wider mt-1">{couponError}</p>
+                    )}
+                    <p className="text-[8.5px] uppercase font-medium text-primary-950/40 mt-1 tracking-wider">Only one coupon can be applied per order.</p>
                 </div>
               )}
 
-              <div className="space-y-2 sm:space-y-3.5 mb-4 sm:mb-6">
-                <div className="flex justify-between text-[11.5px] sm:text-xs md:text-sm text-primary-950/60 font-medium">
+              <div className="space-y-2.5 sm:space-y-3.5 mb-4 sm:mb-6 text-[11.5px] sm:text-xs md:text-sm font-medium text-primary-950/60 font-sans text-left">
+                <div className="flex justify-between">
                   <span>MRP Total</span>
-                  <span className="text-primary-950/40 line-through">{formatPrice(subtotalMRP)}</span>
+                  <span className="text-primary-950 font-bold">{formatPrice(subtotalMRP)}</span>
                 </div>
-                <div className="flex justify-between text-[11.5px] sm:text-xs md:text-sm text-[#8A6A4A] font-medium">
-                  <span>Product Discount</span>
-                  <span className="font-bold">-{formatPrice(productSavings)}</span>
-                </div>
-                {finalCouponSavings > 0 && (
-                  <div className="flex justify-between text-[11.5px] sm:text-xs md:text-sm text-[#4CAF50] font-medium">
-                    <span>{flatDiscount > 0 ? "VIP Discount" : "Coupon Savings"}</span>
-                    <span className="font-bold">-{formatPrice(finalCouponSavings)}</span>
+                
+                {activeCoupon === "VIP50" && (
+                  <div className="flex justify-between text-[#1E7E34]">
+                    <span>VIP50 Applied</span>
+                    <span className="font-bold">-{formatPrice(discountAmount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-[11.5px] sm:text-xs md:text-sm text-primary-950/60 font-medium">
+                {(activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") && (
+                  <div className="flex justify-between text-[#1E7E34]">
+                    <span>VIPCLUB60 Applied</span>
+                    <span className="font-bold">-{formatPrice(discountAmount)}</span>
+                  </div>
+                )}
+
+                <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span className="text-[#8A6A4A] font-bold">FREE</span>
+                  <span className="text-[#1E7E34] font-bold">FREE</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>GST & All Taxes Included</span>
+                  <span className="text-[#2C241B]/45 font-medium">Included</span>
                 </div>
                 <div className="pt-2.5 sm:pt-4 border-t border-black/5 flex justify-between items-center gap-2">
-                  <span className="text-sm sm:text-base md:text-lg font-medium text-primary-950">Subtotal (to pay)</span>
+                  <span className="text-sm sm:text-base md:text-lg font-serif text-primary-950 font-normal">Grand Total</span>
                   <span className="text-base sm:text-xl md:text-2xl font-bold text-primary-950">{formatPrice(total)}</span>
                 </div>
               </div>

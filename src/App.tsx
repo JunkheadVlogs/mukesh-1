@@ -10,6 +10,7 @@ import Home from './Home';
 import { ExitIntentPopup } from './components/ExitIntentPopup';
 import { useExitIntent } from './hooks/useExitIntent';
 import { trackWhatsAppClick } from './tracking';
+import { useStore } from './store';
 
 import Shop from './Shop';
 import Wishlist from './Wishlist';
@@ -114,6 +115,22 @@ export default function App() {
     };
     document.addEventListener('click', handleGlobalClick);
     return () => document.removeEventListener('click', handleGlobalClick);
+  }, []);
+
+  // Auto-apply VIP50 by default unless explicitly removed in sessionStorage
+  useEffect(() => {
+    const checkCoupon = () => {
+      const store = useStore.getState();
+      const removedInSession = sessionStorage.getItem('coupon_removed') === 'true';
+      if (!store.appliedCoupon && !removedInSession) {
+        store.applyCoupon('VIP50');
+      }
+    };
+    checkCoupon();
+    const unsubscribe = useStore.subscribe(() => {
+      checkCoupon();
+    });
+    return () => unsubscribe();
   }, []);
 
   const handleSubmitLead = async (name: string, phone: string) => {

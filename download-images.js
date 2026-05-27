@@ -29,10 +29,6 @@ const IMAGES_TO_DOWNLOAD = [
   {
     name: 'category_coord_sets.webp',
     url: 'https://lh3.googleusercontent.com/d/1lSuvWpjCmEyPWtWlDOmlJPAP9oaBaW6c'
-  },
-  {
-    name: 'category_sarees.webp',
-    url: 'https://lh3.googleusercontent.com/d/1oU1UYZS8CU3OOa-3CNyc3cQlyAS0AfJ_'
   }
 ];
 

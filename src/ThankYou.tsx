@@ -11,6 +11,7 @@ export default function ThankYou() {
   const stateTotal = location.state?.total;
   const stateCart = location.state?.cart;
   const stateCustomer = location.state?.customer;
+  const stateCoupon = location.state?.couponUsed;
 
   // Sync to/from localStorage for absolute persistence on browser refreshes or direct entry
   useEffect(() => {
@@ -26,10 +27,14 @@ export default function ThankYou() {
     if (stateCustomer) {
       localStorage.setItem("msc_last_order_customer", JSON.stringify(stateCustomer));
     }
-  }, [stateOrderId, stateTotal, stateCart, stateCustomer]);
+    if (stateCoupon) {
+      localStorage.setItem("msc_last_order_coupon", stateCoupon);
+    }
+  }, [stateOrderId, stateTotal, stateCart, stateCustomer, stateCoupon]);
 
   // Retrieve state with robust, fail-safe backups
   const orderId = stateOrderId || localStorage.getItem("msc_last_order_id") || `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
+  const couponUsed = stateCoupon || localStorage.getItem("msc_last_order_coupon") || "VIP50";
   
   const rawSavedTotal = localStorage.getItem("msc_last_order_total");
   const total = stateTotal !== undefined ? stateTotal : (rawSavedTotal ? parseFloat(rawSavedTotal) : 0);
@@ -47,9 +52,24 @@ export default function ThankYou() {
   });
 
   // Calculate prices cleanly
-  const subtotal = cart.reduce((acc: number, item: any) => acc + (item.price * (item.quantity || 1)), 0);
-  const displayTotal = total || subtotal || 0;
-  const discountAmount = subtotal > displayTotal ? (subtotal - displayTotal) : 0;
+  const subtotalMRP = cart.reduce((acc: number, item: any) => acc + ((item.originalPrice || item.price * 2) * (item.quantity || 1)), 0);
+  const activeCouponOnPage = couponUsed ? couponUsed.trim().toUpperCase() : "VIP50";
+
+  const calculatedTotal = cart.reduce((acc: number, item: any) => {
+    const mrp = item.originalPrice || item.price * 2;
+    let discountRate = 0.0;
+    if (activeCouponOnPage === "VIP50") {
+      discountRate = 0.50;
+    } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") {
+      discountRate = 0.60;
+    }
+    const calculatedPrice = mrp - Math.round(mrp * discountRate);
+    return acc + calculatedPrice * (item.quantity || 1);
+  }, 0);
+
+  const subtotal = subtotalMRP;
+  const displayTotal = total || calculatedTotal || Math.round(subtotalMRP * 0.5);
+  const discountAmount = subtotal - displayTotal;
 
   // Render mock values to guarantee a premium visual preview when entered empty/direct
   const isDemo = cart.length === 0;
@@ -85,7 +105,15 @@ export default function ThankYou() {
     
     // Build cart items rows
     const itemsHtml = printableCart.map((item: any) => {
-      const priceVal = item.price || 0;
+      const mrp = item.originalPrice || item.price * 2;
+      let discountRate = 0.0;
+      if (activeCouponOnPage === "VIP50") {
+        discountRate = 0.50;
+      } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") {
+        discountRate = 0.60;
+      }
+      const calculatedPrice = mrp - Math.round(mrp * discountRate);
+      const priceVal = calculatedPrice;
       const qtyVal = item.quantity || 1;
       const totalVal = priceVal * qtyVal;
       const sizeText = item.size ? `Size: ${item.size}` : "Size: Free Size";
@@ -109,6 +137,23 @@ export default function ThankYou() {
     }).join("");
 
     const paymentMethodText = printableCustomer.paymentMethod === 'cod' ? 'Cash On Delivery (COD)' : 'Prepaid (Online)';
+
+    let couponRowHtml = '';
+    if (activeCouponOnPage === "VIP50") {
+      couponRowHtml = `
+        <div class="pricing-row" style="color: #2D452F; font-weight: 500;">
+          <span>VIP50 Coupon Applied</span>
+          <span>-₹${printableDiscount.toLocaleString("en-IN")}</span>
+        </div>
+      `;
+    } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") {
+      couponRowHtml = `
+        <div class="pricing-row" style="color: #2D452F; font-weight: 500;">
+          <span>VIPCLUB60 Coupon Applied</span>
+          <span>-₹${printableDiscount.toLocaleString("en-IN")}</span>
+        </div>
+      `;
+    }
 
     const htmlContent = `<!DOCTYPE html>
 <html lang="en">
@@ -400,18 +445,17 @@ export default function ThankYou() {
     <div class="pricing-container">
       <div class="pricing-table">
         <div class="pricing-row">
-          <span style="color: rgba(26,10,0,0.6);">Subtotal</span>
+          <span style="color: rgba(26,10,0,0.6);">MRP Total</span>
           <span>₹${printableSubtotal.toLocaleString("en-IN")}</span>
         </div>
-        ${printableDiscount > 0 ? `
-        <div class="pricing-row" style="color: #2D452F; font-weight: 500;">
-          <span>Coupon Discount</span>
-          <span>-₹${printableDiscount.toLocaleString("en-IN")}</span>
-        </div>
-        ` : ''}
+        ${couponRowHtml}
         <div class="pricing-row">
           <span style="color: rgba(26,10,0,0.6);">Shipping Fee</span>
           <span style="color: #2D452F; font-weight: 500;">FREE</span>
+        </div>
+        <div class="pricing-row">
+          <span style="color: rgba(26,10,0,0.6);">GST & All Taxes Included</span>
+          <span style="color: rgba(26,10,0,0.46);">Included</span>
         </div>
         <div class="pricing-divider"></div>
         <div class="pricing-row total-row">
@@ -642,29 +686,39 @@ export default function ThankYou() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#1A0A00]/5">
-                {printableCart.map((item: any, idx: number) => (
-                  <tr key={idx} className="print-avoid-break">
-                    <td className="py-2.5 px-2 flex items-center gap-3">
-                      {item.image && (
-                        <img 
-                          src={item.image} 
-                          alt={item.name} 
-                          className="print-product-img w-10 h-14 object-cover border border-black/5 rounded-sm flex-shrink-0"
-                          referrerPolicy="no-referrer"
-                        />
-                      )}
-                      <div>
-                        <p className="font-medium text-[#1A0A00] text-xs sm:text-sm">{item.name}</p>
-                        <p className="text-[9px] sm:text-[10px] text-[#1A0A00]/50 mt-0.5 uppercase tracking-wider">
-                          {item.size ? `Size: ${item.size}` : "Size: Free Size"} {item.color ? `· Color: ${item.color}` : ""}
-                        </p>
-                      </div>
-                    </td>
-                    <td className="py-2.5 px-2 text-center text-[#1A0A00] font-medium">{item.quantity || 1}</td>
-                    <td className="py-2.5 px-2 text-right text-[#1A0A00]">₹{(item.price || 0).toLocaleString("en-IN")}</td>
-                    <td className="py-2.5 px-2 text-right text-[#1A0A00] font-semibold">₹{((item.price || 0) * (item.quantity || 1)).toLocaleString("en-IN")}</td>
-                  </tr>
-                ))}
+                {printableCart.map((item: any, idx: number) => {
+                  const mrp = item.originalPrice || item.price * 2;
+                  let discountRate = 0.0;
+                  if (activeCouponOnPage === "VIP50") {
+                    discountRate = 0.50;
+                  } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") {
+                    discountRate = 0.60;
+                  }
+                  const calculatedPrice = mrp - Math.round(mrp * discountRate);
+                  return (
+                    <tr key={idx} className="print-avoid-break">
+                      <td className="py-2.5 px-2 flex items-center gap-3">
+                        {item.image && (
+                          <img 
+                            src={item.image} 
+                            alt={item.name} 
+                            className="print-product-img w-10 h-14 object-cover border border-black/5 rounded-sm flex-shrink-0"
+                            referrerPolicy="no-referrer"
+                          />
+                        )}
+                        <div>
+                          <p className="font-medium text-[#1A0A00] text-xs sm:text-sm">{item.name}</p>
+                          <p className="text-[9px] sm:text-[10px] text-[#1A0A00]/50 mt-0.5 uppercase tracking-wider">
+                            {item.size ? `Size: ${item.size}` : "Size: Free Size"} {item.color ? `· Color: ${item.color}` : ""}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="py-2.5 px-2 text-center text-[#1A0A00] font-medium">{item.quantity || 1}</td>
+                      <td className="py-2.5 px-2 text-right text-[#1A0A00]">₹{calculatedPrice.toLocaleString("en-IN")}</td>
+                      <td className="py-2.5 px-2 text-right text-[#1A0A00] font-semibold">₹{(calculatedPrice * (item.quantity || 1)).toLocaleString("en-IN")}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -672,23 +726,29 @@ export default function ThankYou() {
           {/* Pricing breakdown */}
           <div className="flex justify-end mb-8 print-avoid-break">
             <div className="w-full sm:w-80 space-y-2.5 text-xs md:text-sm">
-              <div className="flex justify-between text-[#1A0A00]/60">
-                <span>Subtotal</span>
-                <span>₹{printableSubtotal.toLocaleString("en-IN")}</span>
+              <div className="flex justify-between">
+                <span>MRP Total</span>
+                <span className="font-bold">₹{printableSubtotal.toLocaleString("en-IN")}</span>
               </div>
-              {printableDiscount > 0 && (
-                <div className="flex justify-between text-green-700 font-medium">
-                  <span>Coupon Discount</span>
-                  <span>-₹{printableDiscount.toLocaleString("en-IN")}</span>
+              {activeCouponOnPage === "VIP50" && (
+                <div className="flex justify-between text-[#1E7E34]">
+                  <span>VIP50 Applied</span>
+                  <span className="font-bold">-₹{printableDiscount.toLocaleString("en-IN")}</span>
                 </div>
               )}
-              <div className="flex justify-between text-[#1A0A00]/60">
+              {(activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") && (
+                <div className="flex justify-between text-[#1E7E34]">
+                  <span>VIPCLUB60 Applied</span>
+                  <span className="font-bold">-₹{printableDiscount.toLocaleString("en-IN")}</span>
+                </div>
+              )}
+              <div className="flex justify-between">
                 <span>Shipping Fee</span>
-                <span className="text-[#2D452F] font-medium">FREE</span>
+                <span className="text-[#1E7E34] font-bold">FREE</span>
               </div>
-              <div className="flex justify-between text-[#1A0A00]/60">
-                <span>Tax GST (Incl. of all taxes)</span>
-                <span>₹0.00</span>
+              <div className="flex justify-between">
+                <span>GST & All Taxes Included</span>
+                <span className="text-[#1A0A00]/50">Included</span>
               </div>
               <div className="h-px bg-[#1A0A00]/10 my-1"></div>
               <div className="flex justify-between text-base font-bold text-[#1A0A00]">

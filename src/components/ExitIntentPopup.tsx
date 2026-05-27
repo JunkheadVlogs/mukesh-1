@@ -99,7 +99,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
         (window as any).gtag('event', 'view_promotion', {
           promotions: [
             {
-              promotion_id: 'VIPCLUB60',
+              promotion_id: 'VIP50',
               promotion_name: 'Exit Intent Discount'
             }
           ]
@@ -183,7 +183,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
       }
 
       await onSubmit(trimmedName, trimmedPhone);
-      applyCoupon('VIPCLUB60');
+      applyCoupon('VIP50');
       setSuccessStorage();
       setStage('revealed');
     } catch (err: any) {
@@ -196,12 +196,12 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
 
   const handleCopyCode = () => {
     if (navigator.clipboard) {
-      navigator.clipboard.writeText('VIPCLUB60').then(() => {
+      navigator.clipboard.writeText('VIP50').then(() => {
         setCopied(true);
       }).catch(() => {
         // Fallback
         const textArea = document.createElement("textarea");
-        textArea.value = 'VIPCLUB60';
+        textArea.value = 'VIP50';
         document.body.appendChild(textArea);
         textArea.select();
         document.execCommand('copy');
@@ -210,7 +210,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
       });
     } else {
       const textArea = document.createElement("textarea");
-      textArea.value = 'VIPCLUB60';
+      textArea.value = 'VIP50';
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand('copy');
@@ -225,7 +225,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
       (window as any).gtag('event', 'select_promotion', {
         promotions: [
           {
-            promotion_id: 'VIPCLUB60',
+            promotion_id: 'VIP50',
             promotion_name: 'Exit Intent Discount'
           }
         ]
@@ -291,7 +291,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
           <div className="flex flex-col text-center w-full">
             {/* Red urgency banner at top */}
             <div className="bg-[#FF3B30] text-white font-sans font-extrabold text-[11px] sm:text-xs py-2 px-4 uppercase tracking-widest text-center shadow-inner select-none">
-              ⚡ You're about to miss 60% OFF!
+              ⚡ You're about to miss 50% OFF!
             </div>
 
             <div className="p-6 sm:p-8 flex flex-col items-center">
@@ -302,7 +302,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
 
               {/* Sub-headline */}
               <p className="text-neutral-350 font-sans text-xs sm:text-[13px] mb-5 leading-relaxed max-w-[320px]">
-                Enter your details below to unlock an exclusive 60% discount
+                Enter your details below to unlock an exclusive 50% discount
               </p>
 
               <form onSubmit={handleUnlock} className="w-full flex flex-col text-left space-y-3.5">
@@ -355,7 +355,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                     </svg>
                   ) : (
-                    '🎁 Unlock My 60% Off Code'
+                    '🎁 Unlock My 50% Off Code'
                   )}
                 </button>
               </form>
@@ -391,7 +391,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
 
             {/* Sub-text */}
             <p className="text-neutral-350 font-sans text-xs sm:text-[13px] mb-4 leading-relaxed">
-              Use this code at checkout for 60% off ALL products:
+              Use this code at checkout to get 50% OFF on original MRP:
             </p>
 
             {/* THE COUPON BOX */}
@@ -407,11 +407,11 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
               <div className="absolute -right-3.5 top-1/2 -translate-y-1/2 w-7 h-7 bg-[#0F0A00] rounded-full border-l border-[#E8B84B]/30" />
               
               <div className="flex justify-between items-center px-2.5">
-                <span className="font-mono text-xl sm:text-2xl font-black text-[#E8B84B] tracking-wider select-all">
-                  🎁 VIPCLUB60
+                <span className="font-mono text-lg sm:text-xl font-black text-[#E8B84B] tracking-wider select-all">
+                  🎁 VIP50
                 </span>
-                <span className="bg-[#FF3B30] text-white font-extrabold text-[10px] sm:text-xs px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md">
-                  60% OFF
+                <span className="bg-[#FF3B30] text-white font-extrabold text-[9px] sm:text-xs px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md">
+                  50% OFF
                 </span>
               </div>
               <p className="text-[10px] sm:text-[11px] text-[#E8B84B]/60 tracking-widest font-serif font-medium uppercase mt-2">
@@ -437,7 +437,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
               onClick={handleClose}
               className="w-full bg-[#E8B84B] hover:bg-[#F2C968] text-black font-extrabold py-3.5 px-6 rounded-[10px] text-sm sm:text-base tracking-wide uppercase transition-all active:scale-[0.98] cursor-pointer shadow-lg"
             >
-              Shop Now & Save 60% →
+              Shop Now & Save 50% →
             </button>
 
             {/* WhatsApp confirmation note */}

@@ -52,12 +52,6 @@ export default function ProductPage() {
   const product = products.find((p) => p.slug === slug);
   const { addToCart, toggleWishlist, wishlist } = useStore();
 
-  const VALID_COUPONS: Record<string, { discount: number; flat: number; label: string }> = {
-    'VIPCLUB60': { discount: 0, flat: 200, label: 'VIPCLUB Member Discount — EXTRA ₹200 OFF' },
-    'VIBCLUB60': { discount: 0, flat: 200, label: 'VIPCLUB Member Discount — EXTRA ₹200 OFF' },
-    'VIP50': { discount: 0.50, flat: 0, label: 'VIP50 — 50% OFF' },
-  };
-
   const storeCoupon = useStore((state) => state.appliedCoupon);
   const [couponInput, setCouponInput] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(storeCoupon);
@@ -66,9 +60,9 @@ export default function ProductPage() {
 
   useEffect(() => {
     const mappedCoupon = storeCoupon ? storeCoupon.trim().toUpperCase() : '';
-    if (mappedCoupon && VALID_COUPONS[mappedCoupon]) {
+    if (mappedCoupon && (mappedCoupon === 'VIP50' || mappedCoupon === 'VIPCLUB60' || mappedCoupon === 'VIBCLUB60')) {
       setAppliedCoupon(mappedCoupon);
-      setCouponMsg(VALID_COUPONS[mappedCoupon].label);
+      setCouponMsg(mappedCoupon === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
       setCouponInput(mappedCoupon);
     } else if (!storeCoupon) {
       setAppliedCoupon(null);
@@ -79,10 +73,11 @@ export default function ProductPage() {
 
   const applyCoupon = () => {
     const code = couponInput.trim().toUpperCase();
-    if (VALID_COUPONS[code]) {
+    if (code === 'VIP50' || code === 'VIPCLUB60' || code === 'VIBCLUB60') {
+      sessionStorage.removeItem('coupon_removed');
       setAppliedCoupon(code);
       setCouponError(false);
-      setCouponMsg(VALID_COUPONS[code].label);
+      setCouponMsg(code === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
       useStore.getState().applyCoupon(code); // Update global store
     } else {
       setCouponError(true);
@@ -92,13 +87,11 @@ export default function ProductPage() {
     }
   };
 
-  const salePrice = product ? product.price : 0;
-  const mrpPrice = product ? (product.originalPrice || product.price) : 0;
-  const currentCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : '';
-  const discountRate = currentCoupon && VALID_COUPONS[currentCoupon] ? VALID_COUPONS[currentCoupon].discount : 0;
-  const flatAmount = currentCoupon && VALID_COUPONS[currentCoupon] ? VALID_COUPONS[currentCoupon].flat : 0;
-  const finalPrice = Math.max(0, Math.round(salePrice * (1 - discountRate)) - flatAmount);
-  const savedAmount = Math.round(salePrice * discountRate) + flatAmount;
+  const mrpPrice = product ? (product.originalPrice || product.price * 2) : 0;
+  const currentCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
+  const discountRate = currentCoupon === 'VIP50' ? 0.50 : (currentCoupon === 'VIPCLUB60' || currentCoupon === 'VIBCLUB60') ? 0.60 : 0.0;
+  const finalPrice = mrpPrice - Math.round(mrpPrice * discountRate);
+  const savedAmount = mrpPrice - finalPrice;
 
   const stats = useMemo(
     () =>
@@ -277,6 +270,7 @@ export default function ProductPage() {
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
 
   const handleBuyNow = () => {
+    if (!product) return;
     if (isOutOfStock) return;
 
     if (!isSaree && !selectedSize) {
@@ -290,25 +284,11 @@ export default function ProductPage() {
 
     setSizeError(false);
     
-    // Auto-fill form from previous successful submissions if present
-    try {
-      const stored = localStorage.getItem('customer_checkout_info');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        setCheckoutForm({
-          fullName: parsed.name || "",
-          mobileNumber: parsed.phone || "",
-          streetAddress: parsed.address || parsed.streetAddress || "",
-          zipCode: parsed.zip || parsed.zipCode || "",
-          city: parsed.city || "",
-          email: parsed.email || "",
-        });
-      }
-    } catch (e) {
-      console.warn("Storage fetch failed", e);
-    }
+    // Add product to cart with selected size and quantity
+    addToCart(product, isSaree ? undefined : (selectedSize || undefined), quantity);
     
-    setShowQuickCheckout(true);
+    // Navigate straight to the cart page
+    navigate("/cart");
   };
 
   const handleBuyNowPayment = async (method: "online" | "cod") => {
@@ -413,6 +393,7 @@ export default function ProductPage() {
         state: { 
           orderId: newOrderId, 
           total: totalAmount, 
+          couponUsed: appliedCoupon || "VIP50",
           cart: [{
             ...product,
             quantity: quantity,
@@ -942,58 +923,29 @@ export default function ProductPage() {
               <div className="flex items-center justify-between w-full mb-2 pb-2 border-b border-[var(--color-border)] relative">
                 <div className="flex flex-col items-start gap-1">
                   <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-                    {appliedCoupon ? (
-                      <div className="flex flex-wrap items-end gap-1.5 md:gap-2">
-                        {product.originalPrice && (
-                          <span className="text-[14px] md:text-[16px] text-[var(--color-muted)] line-through font-light whitespace-nowrap flex-shrink-0 leading-none mb-1">
-                            MRP {formatPrice(product.originalPrice)}
-                          </span>
-                        )}
-                        {flatAmount > 0 && (
-                          <span className="text-[12px] md:text-[13px] text-[var(--color-muted)] font-medium bg-[#F9F7F4] border border-[#8A6A4A]/10 px-1.5 py-0.5 rounded-sm whitespace-nowrap leading-none mb-1">
-                            Sale Price {formatPrice(salePrice)}
-                          </span>
-                        )}
-                        <span className="text-[26px] md:text-[30px] font-bold text-[#E8B84B] font-serif whitespace-nowrap leading-none tracking-wide">
-                          {formatPrice(finalPrice)}
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="flex items-end gap-2 md:gap-3 flex-nowrap overflow-hidden">
-                        <span className="text-[24px] md:text-[28px] font-normal text-[var(--color-dark)] font-serif whitespace-nowrap leading-none tracking-wide">
-                          {formatPrice(product.price)}
-                        </span>
-                        {product.originalPrice && (
-                          <span className="text-[14px] md:text-[16px] text-[var(--color-muted)] line-through font-light whitespace-nowrap flex-shrink-0 leading-none mb-1">
-                            MRP {formatPrice(product.originalPrice)}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                    
-                    {appliedCoupon ? (
-                      <span className="text-[10px] md:text-[11px] font-bold text-[#3ECF6A] bg-[#E8F8EE] px-2 py-0.5 mt-0.5 rounded-sm whitespace-nowrap tracking-wider uppercase">
-                        {flatAmount > 0 ? "Extra VIP Discount Applied" : `${discountRate * 100}% OFF Applied`}
+                    <div className="flex items-end gap-2 md:gap-3 flex-nowrap overflow-hidden">
+                      <span className="text-[24px] md:text-[28px] font-normal text-[var(--color-dark)] font-serif whitespace-nowrap leading-none tracking-wide">
+                        {formatPrice(product.price)}
                       </span>
-                    ) : (
-                      product.originalPrice &&
-                      product.originalPrice > product.price && (
-                        <span className="text-[10px] md:text-[11px] font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] px-2 py-0.5 mt-0.5 rounded-sm whitespace-nowrap tracking-wide">
-                          {Math.round(
-                            ((product.originalPrice - product.price) /
-                              product.originalPrice) *
-                              100,
-                          )}
-                          % OFF
+                      {product.originalPrice && (
+                        <span className="text-[14px] md:text-[16px] text-[var(--color-muted)] line-through font-light whitespace-nowrap flex-shrink-0 leading-none mb-1">
+                          MRP {formatPrice(product.originalPrice)}
                         </span>
-                      )
+                      )}
+                    </div>
+                    
+                    {product.originalPrice &&
+                    product.originalPrice > product.price && (
+                      <span className="text-[10px] md:text-[11px] font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] px-2 py-0.5 mt-0.5 rounded-sm whitespace-nowrap tracking-wide">
+                        {Math.round(
+                          ((product.originalPrice - product.price) /
+                            product.originalPrice) *
+                            100,
+                        )}
+                        % OFF
+                      </span>
                     )}
                   </div>
-                  {appliedCoupon && (
-                    <span className="text-[11.5px] text-[#3ECF6A] font-medium italic mt-0.5">
-                      🎉 Extra savings of {formatPrice(savedAmount)} with Coupon code applied!
-                    </span>
-                  )}
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -1157,32 +1109,6 @@ export default function ProductPage() {
                         <span className="text-xl leading-none select-none">+</span>
                       </button>
                     </div>
-                  </div>
-
-                  {/* Promo Code section */}
-                  <div className="border border-[#e5e5e5]/60 p-3.5 rounded-sm my-2 bg-[#FAF9F6] w-full">
-                    <h3 className="text-[10px] uppercase tracking-[0.12em] font-medium text-[var(--color-muted)] mb-2 text-left">PROMO CODE</h3>
-                    <div className="flex items-center gap-[10px] w-full">
-                      <input 
-                        type="text" 
-                        placeholder="ENTER COUPON (e.g. VIPCLUB60)" 
-                        value={couponInput}
-                        onChange={(e) => setCouponInput(e.target.value)}
-                        className="flex-grow flex-shrink basis-0 min-w-0 flex-1 bg-white border border-[#D1D5DB] px-3 py-1.5 text-xs focus:outline-none focus:border-[var(--color-gold-dark)] rounded-sm text-left uppercase"
-                      />
-                      <button 
-                        onClick={applyCoupon}
-                        className="bg-[var(--color-dark)] text-white hover:bg-opacity-90 px-4 py-1.5 text-xs tracking-wider rounded-sm text-center whitespace-nowrap shrink-0 flex-shrink-0"
-                      >
-                        APPLY
-                      </button>
-                    </div>
-                    {couponMsg && (
-                      <p className="text-[#3ECF6A] text-[11px] mt-2 text-left font-medium">✓ {couponMsg}</p>
-                    )}
-                    {couponError && (
-                      <p className="text-[var(--color-terracotta)] text-[11px] mt-2 text-left font-medium">✗ Invalid or expired coupon code</p>
-                    )}
                   </div>
 
                   <div className="product-actions">
@@ -1642,7 +1568,7 @@ export default function ProductPage() {
                   <p className="text-[11px] text-[#2C241B]/60 mt-1">
                     {selectedSize ? `Size: ${selectedSize}` : "Size: Free Size/Standard"} • Qty: {quantity}
                   </p>
-                  <p className="text-sm font-semibold text-[#2C241B] mt-1">{formatPrice(product.price * quantity)}</p>
+                  <p className="text-sm font-semibold text-[#2C241B] mt-1">{formatPrice(finalPrice * quantity)}</p>
                 </div>
               </div>
 
@@ -1797,6 +1723,95 @@ export default function ProductPage() {
                   </div>
                 </div>
 
+                {/* Promo Code Section */}
+                <div className="border border-[#2C241B]/10 p-3 rounded-[3px] bg-[#FDFDFB] text-left">
+                  <span className="block text-[10px] uppercase tracking-[1.2px] font-semibold text-[#2C241B] mb-2">
+                    Promo Code
+                  </span>
+                  
+                  {!appliedCoupon ? (
+                    <div className="flex gap-2 items-stretch w-full">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value)}
+                        placeholder="ENTER COUPON CODE"
+                        className="flex-grow min-w-0 bg-[#FAF9F5] border border-[#2C241B]/15 rounded-[3px] px-3 text-[10px] text-[#2C241B] placeholder-[#2C241B]/40 focus:outline-none focus:border-[#2C241B] uppercase font-medium tracking-wide h-9"
+                      />
+                      <button
+                        type="button"
+                        onClick={applyCoupon}
+                        className="bg-[#2C241B] hover:bg-black text-[10px] text-white px-4 font-bold uppercase tracking-wider rounded-[3px] shrink-0 flex items-center justify-center transition-colors h-9"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between gap-2.5 bg-[#E8F8EE] border border-[#3ECF6A]/20 px-2.5 py-1.5 rounded-[3px]">
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-[10px] font-bold text-[#1E7E34] truncate">
+                          ✓ Applied: {appliedCoupon}
+                        </span>
+                        <span className="text-[8px] text-[#1E7E34] font-medium uppercase tracking-wide animate-fade-in text-left">
+                          {(currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") ? "60% OFF ON MRP SUCCESSFULLY APPLIED" : "50% OFF ON MRP SUCCESSFULLY APPLIED"}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          sessionStorage.setItem('coupon_removed', 'true');
+                          useStore.getState().applyCoupon(null);
+                          setAppliedCoupon(null);
+                          setCouponInput("");
+                          setCouponMsg("");
+                          setCouponError(false);
+                        }}
+                        className="text-[9px] font-bold text-red-600 uppercase tracking-wider hover:underline"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+                  {couponError && (
+                    <p className="text-red-600 text-[10px] mt-1 text-left font-medium">✗ Invalid Coupon Code</p>
+                  )}
+                </div>
+
+                {/* Pricing Summary Breakdown (Identical to Add to Cart / Cart Page) */}
+                <div className="space-y-2 border-t border-[#2C241B]/10 pt-3 text-[11px] font-medium text-[#2C241B]/70 font-sans text-left">
+                  <div className="flex justify-between">
+                    <span>MRP Total</span>
+                    <span className="text-[#2C241B] font-bold">{formatPrice(mrpPrice * quantity)}</span>
+                  </div>
+
+                  {currentCoupon === "VIP50" && (
+                    <div className="flex justify-between text-[#1E7E34]">
+                      <span>VIP50 Applied</span>
+                      <span className="font-bold">-{formatPrice(Math.round(mrpPrice * 0.50) * quantity)}</span>
+                    </div>
+                  )}
+
+                  {(currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") && (
+                    <div className="flex justify-between text-[#1E7E34]">
+                      <span>VIPCLUB60 Applied</span>
+                      <span className="font-bold">-{formatPrice(Math.round(mrpPrice * 0.60) * quantity)}</span>
+                    </div>
+                  )}
+
+                  <div className="flex justify-between">
+                    <span>Shipping</span>
+                    <span className="text-[#1E7E34] font-bold">FREE</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>GST & All Taxes Included</span>
+                    <span className="text-[#2C241B]/45 font-medium">Included</span>
+                  </div>
+                  <div className="pt-2 border-t border-[#2C241B]/10 flex justify-between items-center gap-2">
+                    <span className="text-[11px] font-serif text-[#2C241B] font-normal">Grand Total</span>
+                    <span className="text-sm font-bold text-[#2C241B]">{formatPrice(finalPrice * quantity)}</span>
+                  </div>
+                </div>
+
                 {/* General errors */}
                 {checkoutErrors.general && (
                   <div className="bg-red-50 text-red-700 text-xs p-3 rounded border border-red-100 font-medium">
@@ -1821,7 +1836,7 @@ export default function ProductPage() {
                         Initiating UPI/Card...
                       </span>
                     ) : (
-                      `Pay Online — ${formatPrice(product.price * quantity)}`
+                      `Pay Online — ${formatPrice(finalPrice * quantity)}`
                     )}
                   </button>
 

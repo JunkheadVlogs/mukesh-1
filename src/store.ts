@@ -73,7 +73,7 @@ export const useStore = create<AppState>()(
     (set, get) => ({
       cart: [],
       wishlist: [],
-      appliedCoupon: null,
+      appliedCoupon: 'VIP50',
       addToCart: (product, size, quantity = 1) => {
         set((state) => {
           const newState = { appliedCoupon: state.appliedCoupon, cart: state.cart };
@@ -107,7 +107,7 @@ export const useStore = create<AppState>()(
           ),
         }));
       },
-      clearCart: () => set({ cart: [], appliedCoupon: null }),
+      clearCart: () => set({ cart: [], appliedCoupon: 'VIP50' }),
       toggleWishlist: (productId) => {
         set((state) => ({
           wishlist: state.wishlist.includes(productId)
@@ -117,32 +117,21 @@ export const useStore = create<AppState>()(
       },
       cartTotal: () => {
         const state = get();
-        const activeCoupon = state.appliedCoupon;
-        let couponDiscountMultiplier = 0;
-        let flatDiscount = 0;
+        const activeCoupon = state.appliedCoupon ? state.appliedCoupon.trim().toUpperCase() : null;
         
-        if (activeCoupon === "VIP50") {
-          couponDiscountMultiplier = 0.50;
-        } else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") {
-          const totalQuantity = state.cart.reduce((total, item) => total + item.quantity, 0);
-          flatDiscount = 200 * totalQuantity;
-        } else if (activeCoupon === "MUKESH150") {
-          flatDiscount = 150;
-        }
-        
-        const subtotalCart = state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
-        
-        let finalTotal = subtotalCart;
-        if (couponDiscountMultiplier > 0) {
-          const subtotalMRP = state.cart.reduce((total, item) => total + (item.originalPrice || item.price) * item.quantity, 0);
-          const priceWithCoupon = Math.floor(subtotalMRP * (1 - couponDiscountMultiplier));
-          if (priceWithCoupon < subtotalCart) {
-            finalTotal = priceWithCoupon;
+        return state.cart.reduce((total, item) => {
+          const mrp = item.originalPrice || item.price * 2;
+          let discountRate = 0.0;
+          if (activeCoupon === 'VIP50') {
+            discountRate = 0.50;
+          } else if (activeCoupon === 'VIPCLUB60' || activeCoupon === 'VIBCLUB60') {
+            discountRate = 0.60;
           }
-        } else if (flatDiscount > 0) {
-          finalTotal = subtotalCart - flatDiscount;
-        }
-        return Math.max(0, finalTotal);
+          
+          // Compute item price as MRP minus the relative discount
+          const calculatedPrice = mrp - Math.round(mrp * discountRate);
+          return total + calculatedPrice * item.quantity;
+        }, 0);
       },
       applyCoupon: (code) => set({ appliedCoupon: code }),
     }),

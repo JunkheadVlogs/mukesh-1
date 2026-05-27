@@ -125,8 +125,9 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     }
     
     if (driveId) {
-      // route via our secure server-side proxy which handles Google Drive CORS and CDN streaming
-      return `/api/drive-proxy?id=${driveId}&w=${width}`;
+      // Convert Google Drive sharing/source links into standard direct image preview/thumbnail URLs
+      // This is fast, highly cached, and bypasses CORS/referrer restrictions on any hosting environment
+      return `https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`;
     }
   }
   
