@@ -65,28 +65,24 @@ export default function Checkout() {
   const shipping = 0;
   const activeCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
 
+  const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
+
   const total = cart.reduce((sum, item) => {
     const mrp = item.originalPrice || item.price * 2;
-    let discountRate = 0.0;
-    if (activeCoupon === "VIP50") {
-      discountRate = 0.50;
-    } else if (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") {
-      discountRate = 0.60;
-    }
     const calculatedPrice = mrp - Math.round(mrp * discountRate);
     return sum + calculatedPrice * item.quantity;
   }, 0);
 
-  const displayDiscountPercent = (activeCoupon === "VIP50") ? 50 : (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 60 : 0;
+  const displayDiscountPercent = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 60 : 50;
 
   const handleApplyCoupon = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const code = couponInput.trim().toUpperCase();
     if (!code) return;
 
-    if (code === "VIP50" || code === "VIPCLUB60" || code === "VIBCLUB60") {
+    if (code === "VIP50" || code === "VIPCLUB65" || code === "VIPCLUB60" || code === "VIBCLUB60") {
       sessionStorage.removeItem('coupon_removed');
-      applyCoupon(code);
+      applyCoupon(code === "VIBCLUB60" ? "VIPCLUB60" : code);
       setCouponError("");
     } else {
       setCouponError("Invalid Coupon Code");
@@ -844,7 +840,7 @@ export default function Checkout() {
               <div className="space-y-2.5 mb-3.5 max-h-[35vh] overflow-y-auto pr-1 sm:pr-2 no-scrollbar">
                 {cart.map((item) => {
                   const mrp = item.originalPrice || item.price * 2;
-                  const discountRate = (activeCoupon === "VIP50") ? 0.50 : (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.0;
+                  const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
                   const calculatedPrice = mrp - Math.round(mrp * discountRate);
                   return (
                     <div
@@ -881,6 +877,9 @@ export default function Checkout() {
               <div className="space-y-2.5 pt-2.5 sm:pt-5 border-t border-black/5">
                 {!appliedCoupon ? (
                   <div className="mb-3 pb-3 border-b border-black/5">
+                    <div className="text-[9.5px] font-bold text-emerald-600 mb-2 uppercase tracking-wide text-left">
+                      ✨ DEFAULT 50% OFF AUTO-APPLIED! ENTER VIPCLUB60 TO UPGRADE:
+                    </div>
                     <div className="flex gap-2 items-stretch w-full">
                       <input
                         type="text"
@@ -936,7 +935,7 @@ export default function Checkout() {
                     </span>
                   </div>
 
-                  {activeCoupon === "VIP50" && (
+                  {(activeCoupon === "VIP50" || !activeCoupon) && (
                     <div className="flex justify-between items-center text-[#1E7E34]">
                       <span>VIP50 Applied</span>
                       <span className="font-bold">-{formatPrice(Math.round(subtotalMRP * 0.50))}</span>

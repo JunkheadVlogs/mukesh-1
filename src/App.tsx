@@ -119,18 +119,11 @@ export default function App() {
 
   // Auto-apply VIP50 by default unless explicitly removed in sessionStorage
   useEffect(() => {
-    const checkCoupon = () => {
-      const store = useStore.getState();
-      const removedInSession = sessionStorage.getItem('coupon_removed') === 'true';
-      if (!store.appliedCoupon && !removedInSession) {
-        store.applyCoupon('VIP50');
-      }
-    };
-    checkCoupon();
-    const unsubscribe = useStore.subscribe(() => {
-      checkCoupon();
-    });
-    return () => unsubscribe();
+    const store = useStore.getState();
+    const removedInSession = sessionStorage.getItem('coupon_removed') === 'true';
+    if (!store.appliedCoupon && !removedInSession) {
+      store.applyCoupon('VIP50');
+    }
   }, []);
 
   const handleSubmitLead = async (name: string, phone: string) => {

@@ -117,17 +117,11 @@ export const useStore = create<AppState>()(
       },
       cartTotal: () => {
         const state = get();
-        const activeCoupon = state.appliedCoupon ? state.appliedCoupon.trim().toUpperCase() : null;
+        const activeCoupon = state.appliedCoupon ? state.appliedCoupon.trim().toUpperCase() : 'VIP50';
+        const discountRate = (activeCoupon === 'VIPCLUB60' || activeCoupon === 'VIBCLUB60') ? 0.60 : 0.50;
         
         return state.cart.reduce((total, item) => {
           const mrp = item.originalPrice || item.price * 2;
-          let discountRate = 0.0;
-          if (activeCoupon === 'VIP50') {
-            discountRate = 0.50;
-          } else if (activeCoupon === 'VIPCLUB60' || activeCoupon === 'VIBCLUB60') {
-            discountRate = 0.60;
-          }
-          
           // Compute item price as MRP minus the relative discount
           const calculatedPrice = mrp - Math.round(mrp * discountRate);
           return total + calculatedPrice * item.quantity;
