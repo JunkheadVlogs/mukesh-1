@@ -54,7 +54,22 @@ export default function Layout() {
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const { scrollY } = useScroll();
+  const [logoSrc, setLogoSrc] = useState("/images/logo.webp");
+  const [logoRetryStep, setLogoRetryStep] = useState(0);
   const [logoError, setLogoError] = useState(false);
+
+  const handleLogoError = () => {
+    if (logoRetryStep === 0) {
+      setLogoSrc("https://mukeshsarees.com/images/logo.webp");
+      setLogoRetryStep(1);
+    } else if (logoRetryStep === 1) {
+      setLogoSrc("https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp");
+      setLogoRetryStep(2);
+    } else {
+      setLogoError(true);
+    }
+  };
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDeepScrolled, setIsDeepScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
@@ -690,11 +705,11 @@ export default function Layout() {
             >
               {!logoError ? (
                 <img
-                  src="https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp"
+                  src={logoSrc}
                   alt="Mukesh Saree Centre Logo"
                   style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
                   className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain transition-all duration-500 group-hover:opacity-80 drop-shadow-sm m-0 p-0 block header-logo"
-                  onError={() => setLogoError(true)}
+                  onError={handleLogoError}
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center">

@@ -96,7 +96,15 @@ export function SEO({
 
   let displayImage = absoluteImage;
   if (isProductType && absoluteImage) {
-    displayImage = `https://wsrv.nl/?url=${encodeURIComponent(absoluteImage)}&w=800&h=800&fit=contain&bg=ffffff&output=jpg`;
+    const isGoogle = absoluteImage.includes('drive.google.com') || 
+                     absoluteImage.includes('googleusercontent.com') ||
+                     absoluteImage.includes('drive.usercontent.google.com') ||
+                     absoluteImage.includes('lh3.googleusercontent.com');
+    if (isGoogle) {
+      displayImage = absoluteImage;
+    } else {
+      displayImage = `https://wsrv.nl/?url=${encodeURIComponent(absoluteImage)}&w=800&h=800&fit=contain&bg=ffffff&output=jpg`;
+    }
   }
 
   return (

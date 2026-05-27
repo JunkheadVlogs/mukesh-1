@@ -2,36 +2,70 @@ import { useState, useEffect } from 'react';
 import { optimizeImage } from '../utils';
 
 const LOCAL_IMAGE_FALLBACKS: Record<string, string> = {
-  'main_shop_entrance.webp': 'https://mukeshsarees.com/home%20Page%20Images/shop-main-enterence.webp',
-  'billing_counter.webp': 'https://mukeshsarees.com/home%20Page%20Images/billing-counter.webp',
-  'saree_section.webp': 'https://mukeshsarees.com/home%20Page%20Images/saree_section.webp',
-  'lehenga_section.webp': 'https://mukeshsarees.com/home%20Page%20Images/lehenga-section.webp',
-  'logo.webp': 'https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp',
-  'hero_exhibition.webp': 'https://mukeshsarees.com/home%20Page%20Images/hero-image-best-saree-shop-nagpur.webp',
-  'category_coord_sets.webp': 'https://mukeshsarees.com/home%20Page%20Images/best-co-ord-set-shop-in-nagpur-category-image.webp',
-  'category_sarees.webp': 'https://mukeshsarees.com/home%20Page%20Images/saree_category_background_image.webp',
-  'saree_category_backgroung_image.webp': 'https://mukeshsarees.com/home%20Page%20Images/saree_category_background_image.webp',
-  'saree_category_background_image.webp': 'https://mukeshsarees.com/home%20Page%20Images/saree_category_background_image.webp',
-  'best-saree-shop-in-nagpur-logo.webp': 'https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp',
-  'hero-image-best-saree-shop-nagpur.webp': 'https://mukeshsarees.com/home%20Page%20Images/hero-image-best-saree-shop-nagpur.webp',
-  'best-co-ord-set-shop-in-nagpur-category-image.webp': 'https://mukeshsarees.com/home%20Page%20Images/best-co-ord-set-shop-in-nagpur-category-image.webp',
-  'shop-main-enterence.webp': 'https://mukeshsarees.com/home%20Page%20Images/shop-main-enterence.webp',
+  'main_shop_entrance.webp': 'https://mukeshsarees.com/images/mainshop.webp',
+  'billing_counter.webp': 'https://mukeshsarees.com/images/billingcounter.webp',
+  'saree_section.webp': 'https://mukeshsarees.com/images/sareesection.webp',
+  'lehenga_section.webp': 'https://mukeshsarees.com/images/lehenga.webp',
+  'logo.webp': 'https://mukeshsarees.com/images/logo.webp',
+  'hero_exhibition.webp': 'https://mukeshsarees.com/images/hero.webp',
+  'category_coord_sets.webp': 'https://mukeshsarees.com/images/coordset.webp',
+  'category_sarees.webp': 'https://mukeshsarees.com/images/saree-bg.webp',
+  'saree_category_backgroung_image.webp': 'https://mukeshsarees.com/images/saree-bg.webp',
+  'saree_category_background_image.webp': 'https://mukeshsarees.com/images/saree-bg.webp',
+  'saree_category_background.webp': 'https://mukeshsarees.com/images/saree-bg.webp',
+  'best-saree-shop-in-nagpur-logo.webp': 'https://mukeshsarees.com/images/logo.webp',
+  'hero-image-best-saree-shop-nagpur.webp': 'https://mukeshsarees.com/images/hero.webp',
+  'best-co-ord-set-shop-in-nagpur-category-image.webp': 'https://mukeshsarees.com/images/coordset.webp',
+  'shop-main-enterence.webp': 'https://mukeshsarees.com/images/mainshop.webp',
 };
+
+/**
+ * Robustly extracts the Google Drive File ID from Google Drive URLs.
+ */
+function extractGoogleDriveId(url: string): string | null {
+  if (!url) return null;
+  
+  // Match "/d/FILE_ID" (most common format for view/share links)
+  const dMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (dMatch && dMatch[1]) {
+    return dMatch[1];
+  }
+  
+  // Match "id=FILE_ID" (common for uc, open, or download endpoints)
+  const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) || url.match(/id%3D([a-zA-Z0-9_-]+)/);
+  if (idMatch && idMatch[1]) {
+    return idMatch[1];
+  }
+  
+  // Match "lh3.googleusercontent.com/d/FILE_ID" or similar googleusercontent patterns
+  const lhMatch = url.match(/googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
+  if (lhMatch && lhMatch[1]) {
+    return lhMatch[1];
+  }
+  
+  return null;
+}
 
 /**
  * Sanitizes and properly URL encodes any image URL.
  * Replaces unencoded spaces specifically with %20.
- * Translates localhost paths to the live Hostinger domain.
+ * Translates localhost paths to relative paths so they resolve correctly in dev.
  */
 function sanitizeUrl(url: string): string {
   if (!url) return '';
   
-  // Replace localhost references with the live Hostinger domain
-  let clean = url.replace(/http:\/\/localhost:\d+/g, 'https://mukeshsarees.com');
-  clean = clean.replace(/https:\/\/localhost:\d+/g, 'https://mukeshsarees.com');
-  clean = clean.replace(/localhost:\d+/g, 'mukeshsarees.com');
+  // Replace localhost and sandbox references with relative paths
+  let clean = url.replace(/https?:\/\/localhost(:\d+)?/g, '');
+  clean = clean.replace(/localhost(:\d+)?/g, '');
   
-  // Re-encode spaces cleanly to %20 without double encoding
+  // Ensure relative or local-looking paths are kept clean as relative paths starting with /
+  if (clean.startsWith('/') || clean.startsWith('images/') || clean.startsWith('home')) {
+    if (!clean.startsWith('/')) {
+      clean = '/' + clean;
+    }
+  }
+
+  // Re-encode spaces cleanly to %20 without double-encoding
   try {
     const decoded = decodeURIComponent(clean);
     clean = decoded.replace(/ /g, '%20');
@@ -44,101 +78,81 @@ function sanitizeUrl(url: string): string {
 
 /**
  * Generates an ordered list of candidate URLs for the image.
- * If Hostinger locations fail, standard fallbacks are tested, ending with high quality placeholder backups.
+ * Evaluates source dynamically to form a robust list of fallback candidate solutions.
  */
-function getCandidateUrls(src: string): string[] {
+function getCandidateUrls(src: string, width: number = 800): string[] {
   if (!src) return [];
   
   const sanitized = sanitizeUrl(src);
-  const candidates: string[] = [sanitized];
+  const candidates: string[] = [];
 
-  // Look for Google Drive parameters
-  let driveId = '';
-  const idMatch = sanitized.match(/[?&]id=([^&]+)/);
-  if (idMatch) {
-    driveId = idMatch[1];
+  // Determine if it is a Google Drive asset
+  const isDrive = sanitized.includes('drive.google.com') || 
+                  sanitized.includes('googleusercontent.com') || 
+                  sanitized.includes('lh3.googleusercontent.com') || 
+                  sanitized.includes('drive.usercontent.google.com');
+
+  const driveId = extractGoogleDriveId(sanitized);
+
+  if (isDrive && driveId) {
+    // 1. High-speed, dynamically compressed CDN webp url using the reliable export option (Option A + speed)
+    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&fit=contain&output=webp`);
+    
+    // 2. High-speed, lightweight pre-resized Google Drive thumbnail (also super fast!)
+    candidates.push(`https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`);
+    
+    // 3. Direct Export Link (Option A recommended format - always works for public Google Drive items as fallback)
+    candidates.push(`https://drive.google.com/uc?export=view&id=${driveId}`);
+    
+    // 4. Simple layout query parameter alternative
+    candidates.push(`https://drive.google.com/uc?id=${driveId}`);
+    
+    // 5. WSRV Proxy fallback using thumbnail link
+    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D${driveId}%26sz%3Dw${width}&w=${width}&fit=contain&output=webp`);
+
+    // 6. Original sanitized input
+    if (!candidates.includes(sanitized)) {
+      candidates.push(sanitized);
+    }
   } else {
-    const dMatch = sanitized.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if (dMatch) {
-      driveId = dMatch[1];
+    // Hostinger or general local image asset path
+    candidates.push(sanitized);
+
+    // Get filename to see if we have predefined mapping in LOCAL_IMAGE_FALLBACKS
+    const parts = sanitized.split('/');
+    let filename = parts.pop() || '';
+    if (filename.includes('?')) {
+      filename = filename.split('?')[0];
     }
-  }
-
-  // Extract filename and folder structures
-  const parts = sanitized.split('/');
-  let filename = parts.pop() || '';
-  if (filename.includes('?')) {
-    filename = filename.split('?')[0];
-  }
-  const folder = parts.pop() || '';
-
-  // 1. If we have a Google Drive ID, generate equivalent Hostinger direct URLs first
-  // to satisfy "Remove all Google Drive image dependency" whilst retaining fallback compatibility
-  if (driveId) {
-    const hostingerDriveFallbacks = [
-      `https://mukeshsarees.com/home%20Page%20Images/${driveId}.webp`,
-      `https://mukeshsarees.com/images/${driveId}.webp`,
-      `https://mukeshsarees.com/product/${driveId}.webp`,
-      `https://mukeshsarees.com/home%20Page%20Images/${driveId}.jpg`,
-      `https://mukeshsarees.com/images/${driveId}.jpg`,
-      `https://mukeshsarees.com/product/${driveId}.jpg`,
-      `/images/${driveId}.webp`,
-      `/images/product/${driveId}.webp`,
-    ];
-
-    for (const path of hostingerDriveFallbacks) {
-      if (!candidates.includes(path)) {
-        // Put hostinger candidates FIRST to favor Hostinger Direct over Google Drive
-        candidates.unshift(path);
+    
+    // Check if we have explicitly mapped fallback for this filename
+    if (filename && LOCAL_IMAGE_FALLBACKS[filename]) {
+      const mapped = LOCAL_IMAGE_FALLBACKS[filename];
+      if (!candidates.includes(mapped)) {
+        candidates.push(mapped); // Try the mapped main Hostinger URL if original fails
       }
     }
 
-    // Google Drive direct thumbnail link as last resort alternative
-    const driveThumbnail = `https://drive.google.com/thumbnail?id=${driveId}&sz=w800`;
-    if (!candidates.includes(driveThumbnail)) {
-      candidates.push(driveThumbnail);
-    }
-  }
+    // Add generic paths as backup search candidates on Hostinger domain
+    if (filename) {
+      const genericHostingerPaths = [
+        `https://mukeshsarees.com/images/Products/${filename}`,
+        `/images/Products/${filename}`,
+        `https://mukeshsarees.com/home%20Page%20Images/${filename}`,
+        `/images/${filename}`,
+        `https://mukeshsarees.com/images/${filename}`,
+      ];
 
-  // 2. Map explicitly defined local fallbacks
-  if (filename && LOCAL_IMAGE_FALLBACKS[filename]) {
-    const mapped = LOCAL_IMAGE_FALLBACKS[filename];
-    if (!candidates.includes(mapped)) {
-      candidates.unshift(mapped); // Try the mapped main Hostinger URL first
-    }
-  }
-
-  // 3. Inject standard search paths (both Hostinger live direct & local public assets)
-  if (filename && folder && folder !== 'images' && folder !== 'product' && folder !== 'products' && folder !== 'home%20Page%20Images') {
-    const hostingerPaths = [
-      `https://mukeshsarees.com/home%20Page%20Images/${filename}`,
-      `https://mukeshsarees.com/images/${folder}/${filename}`,
-      `https://mukeshsarees.com/product/${folder}/${filename}`,
-      `https://mukeshsarees.com/${folder}/${filename}`,
-      `/images/${folder}/${filename}`,
-    ];
-    for (const p of hostingerPaths) {
-      const sp = sanitizeUrl(p);
-      if (!candidates.includes(sp)) {
-        candidates.push(sp);
-      }
-    }
-  } else if (filename) {
-    const hostingerPaths = [
-      `https://mukeshsarees.com/home%20Page%20Images/${filename}`,
-      `https://mukeshsarees.com/images/${filename}`,
-      `https://mukeshsarees.com/product/${filename}`,
-      `/images/${filename}`,
-    ];
-    for (const p of hostingerPaths) {
-      const sp = sanitizeUrl(p);
-      if (!candidates.includes(sp)) {
-        candidates.push(sp);
+      for (const p of genericHostingerPaths) {
+        const sp = sanitizeUrl(p);
+        if (!candidates.includes(sp)) {
+          candidates.push(sp);
+        }
       }
     }
   }
 
-  // 4. Elegant premium Unsplash placeholder as final resource fallback
+  // Unsplash fallback placeholder as final backup if everything fails
   const fallbackUnsplash = 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=45';
   if (!candidates.includes(fallbackUnsplash)) {
     candidates.push(fallbackUnsplash);
@@ -172,33 +186,46 @@ export function OptimizedImage({
 }: OptimizedImageProps) {
   const calculatedHeight = height || Math.round(width * 1.33333);
   
-  const [candidates, setCandidates] = useState<string[]>([]);
+  // Derived state: calculate candidates list synchronously on render
+  const candidates = getCandidateUrls(src, width);
+
+  // Use synchronous state tracking to reset states on source changed
+  const [prevSrc, setPrevSrc] = useState(src);
   const [candidateIndex, setCandidateIndex] = useState(0);
+  const [retryCount, setRetryCount] = useState(0);
   const [hasFailedAll, setHasFailedAll] = useState(false);
 
-  useEffect(() => {
-    const list = getCandidateUrls(src);
-    setCandidates(list);
+  if (src !== prevSrc) {
+    setPrevSrc(src);
     setCandidateIndex(0);
+    setRetryCount(0);
     setHasFailedAll(false);
-  }, [src]);
+  }
 
   const currentSrc = candidates[candidateIndex] || sanitizeUrl(src);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    if (candidateIndex < candidates.length - 1) {
-      console.log(`OptimizedImage loading fallback candidate for [${alt}]: ${candidates[candidateIndex + 1]}`);
-      setCandidateIndex((prev) => prev + 1);
+    if (retryCount < 1) {
+      // Retry once for the current candidate URL
+      console.log(`Image failed to load: ${currentSrc}. Retrying once...`);
+      setRetryCount((prev) => prev + 1);
     } else {
-      console.warn(`All image candidates failed to load for [${alt}]. Triggering emergency brand card placeholder.`);
-      setHasFailedAll(true);
-      if (onError) {
-        onError(e);
+      // Already tried. Reset retry count and advance to the next candidate URL
+      setRetryCount(0);
+      if (candidateIndex < candidates.length - 1) {
+        console.log(`Fallback retry also failed. Loading candidate ${candidateIndex + 1} for [${alt}]: ${candidates[candidateIndex + 1]}`);
+        setCandidateIndex((prev) => prev + 1);
+      } else {
+        console.warn(`All image candidates and retries failed to load for [${alt}]. Triggering emergency boutique brand card.`);
+        setHasFailedAll(true);
+        if (onError) {
+          onError(e);
+        }
       }
     }
   };
 
-  // If even the unspash fallback failed, display a gorgeous boutique brand card placeholder
+  // If all candidates and retries failed, display a gorgeous boutique brand card placeholder
   if (hasFailedAll) {
     return (
       <div 
@@ -221,39 +248,19 @@ export function OptimizedImage({
     );
   }
 
-  const isGoogleDrive = currentSrc.includes('drive.google.com') || currentSrc.includes('googleusercontent.com');
+  const isGoogleDrive = (currentSrc.includes('drive.google.com') || currentSrc.includes('googleusercontent.com')) && !currentSrc.includes('wsrv.nl');
   const isRelative = currentSrc.startsWith('/');
 
-  // Google Drive optimization proxy if needed
-  if (isGoogleDrive) {
-    const optimizedDriveUrl = optimizeImage(currentSrc, width);
+  // Google Drive logic or relative references loading directly with the specific custom key to force refresh
+  if (isGoogleDrive || isRelative) {
     return (
       <img
-        src={optimizedDriveUrl}
-        alt={alt}
-        width={width}
-        height={calculatedHeight}
-        className={className}
-        loading={priority ? undefined : "lazy"}
-        fetchPriority={priority ? "high" : "auto"}
-        referrerPolicy="no-referrer"
-        decoding={priority ? "sync" : "async"}
-        style={{ background: '#F5F0E8', objectFit: 'cover', ...(props.style || {}) }}
-        onError={handleImageError}
-        {...props}
-      />
-    );
-  }
-
-  // Relative paths render directly
-  if (isRelative) {
-    return (
-      <img
+        key={`${currentSrc}-${retryCount}`}
         src={currentSrc}
         alt={alt}
         width={width}
         height={calculatedHeight}
-        className={className}
+        className={`${className || ''}`}
         loading={priority ? undefined : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"
@@ -265,11 +272,12 @@ export function OptimizedImage({
     );
   }
 
-  // Custom live Hostinger links / external bypass optimization logic
-  const isDirectBypass = currentSrc.startsWith('http') && 
-                         !currentSrc.includes('drive.google.com') && 
-                         !currentSrc.includes('googleusercontent.com') &&
-                         !currentSrc.includes('mukeshsarees.com');
+  // Custom live Hostinger links or external bypass optimization logic
+  const isDirectBypass = (currentSrc.startsWith('http') && 
+                          !currentSrc.includes('drive.google.com') && 
+                          !currentSrc.includes('googleusercontent.com') &&
+                          !currentSrc.includes('mukeshsarees.com')) ||
+                         currentSrc.includes('wsrv.nl');
 
   const webpUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'webp');
   const jpgUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'jpg');
@@ -278,13 +286,13 @@ export function OptimizedImage({
   let generatedSrcSetJpg = srcSet;
   
   if (!srcSet && !isDirectBypass) {
-    generatedSrcSetWebp = `${optimizeImage(currentSrc, 400, 'webp')} 400w, ${optimizeImage(currentSrc, 800, 'webp')} 800w, ${optimizeImage(currentSrc, 1200, 'webp')} 1200w`;
-    generatedSrcSetJpg = `${optimizeImage(currentSrc, 400, 'jpg')} 400w, ${optimizeImage(currentSrc, 800, 'jpg')} 800w, ${optimizeImage(currentSrc, 1200, 'jpg')} 1200w`;
+    generatedSrcSetWebp = `${optimizeImage(currentSrc, 400, 'webp')} 400w, ${optimizeImage(currentSrc, 400, 'webp')} 400w, ${optimizeImage(currentSrc, 800, 'webp')} 800w`;
+    generatedSrcSetJpg = `${optimizeImage(currentSrc, 400, 'jpg')} 400w, ${optimizeImage(currentSrc, 400, 'jpg')} 400w, ${optimizeImage(currentSrc, 800, 'jpg')} 800w`;
   }
   const defaultSizes = sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw";
 
   return (
-    <picture key={currentSrc} className="contents">
+    <picture key={`${currentSrc}-${retryCount}`} className="contents">
       {generatedSrcSetWebp && <source srcSet={generatedSrcSetWebp} sizes={defaultSizes} type="image/webp" />}
       <img
         src={jpgUrl}
@@ -293,7 +301,7 @@ export function OptimizedImage({
         alt={alt}
         width={width}
         height={calculatedHeight}
-        className={className}
+        className={`${className || ''}`}
         loading={priority ? undefined : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"

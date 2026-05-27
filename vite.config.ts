@@ -6,8 +6,28 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd(), '');
   
+  // Robust default fallbacks for analytics, tracking, domain verification and site routing.
+  // This satisfies Cause B by hardcoding fallbacks in vite.config.ts define block 
+  // while keeping them fully overridable when .env or environment variables are supplied.
+  const fallbacks: Record<string, string> = {
+    VITE_META_PIXEL_ID: '3834311026859384',
+    VITE_FB_DOMAIN_VERIFY: 'your_fb_domain_verify_token',
+    VITE_GTM_ID: 'GTM-WMG3G6SM',
+    VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
+    VITE_PINTEREST_TAG: 'your_pinterest_tag_id',
+    VITE_PINTEREST_DOMAIN: 'your_pinterest_domain_verify',
+    VITE_RAZORPAY_KEY_ID: 'rzp_live_your_razorpay_id',
+    VITE_WHATSAPP_NUMBER: '917020664641',
+    VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
+    VITE_GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
+    VITE_SITE_URL: 'https://mukeshsarees.com',
+    VITE_SITE_NAME: 'Mukesh Saree Centre',
+    VITE_STORE_PHONE: '+91 7020664641',
+  };
+
   return {
     root: '.',
+    base: '/',
     plugins: [
       react(), 
       tailwindcss(),
@@ -15,20 +35,42 @@ export default defineConfig(({mode}) => {
         name: 'html-transform',
         transformIndexHtml(html) {
           return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
-            const val = env[`VITE_${key}`] || process.env[`VITE_${key}`];
-            return val !== undefined ? val : match;
+            const val = env[`VITE_${key}`] || process.env[`VITE_${key}`] || fallbacks[`VITE_${key}`];
+            if (val !== undefined && val !== null) {
+              const strVal = String(val).trim();
+              if (strVal.startsWith('your_') || strVal.includes('YOUR_SCRIPT_ID') || strVal === 'your_fb_domain_verify_token' || strVal === 'your_pinterest_domain_verify') {
+                return '';
+              }
+              return strVal;
+            }
+            return '';
           });
         }
       }
     ],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-      __META_PIXEL_ID__: JSON.stringify(env.VITE_META_PIXEL_ID),
-      __GTM_ID__: JSON.stringify(env.VITE_GTM_ID),
-      __RAZORPAY_KEY__: JSON.stringify(env.VITE_RAZORPAY_KEY_ID),
-      __WHATSAPP_NUMBER__: JSON.stringify(env.VITE_WHATSAPP_NUMBER),
-      __SHEETS_URL__: JSON.stringify(env.VITE_SHEETS_WEBHOOK_URL),
-      __SITE_URL__: JSON.stringify(env.VITE_SITE_URL),
+      __META_PIXEL_ID__: JSON.stringify(env.VITE_META_PIXEL_ID || fallbacks.VITE_META_PIXEL_ID),
+      __GTM_ID__: JSON.stringify(env.VITE_GTM_ID || fallbacks.VITE_GTM_ID),
+      __RAZORPAY_KEY__: JSON.stringify(env.VITE_RAZORPAY_KEY_ID || fallbacks.VITE_RAZORPAY_KEY_ID),
+      __WHATSAPP_NUMBER__: JSON.stringify(env.VITE_WHATSAPP_NUMBER || fallbacks.VITE_WHATSAPP_NUMBER),
+      __SHEETS_URL__: JSON.stringify(env.VITE_SHEETS_WEBHOOK_URL || fallbacks.VITE_SHEETS_WEBHOOK_URL),
+      __SITE_URL__: JSON.stringify(env.VITE_SITE_URL || fallbacks.VITE_SITE_URL),
+      
+      // Explicitly define client-side import.meta.env variables so they compile statically of fallback defaults
+      'import.meta.env.VITE_META_PIXEL_ID': JSON.stringify(env.VITE_META_PIXEL_ID || fallbacks.VITE_META_PIXEL_ID),
+      'import.meta.env.VITE_FB_DOMAIN_VERIFY': JSON.stringify(env.VITE_FB_DOMAIN_VERIFY || fallbacks.VITE_FB_DOMAIN_VERIFY),
+      'import.meta.env.VITE_GTM_ID': JSON.stringify(env.VITE_GTM_ID || fallbacks.VITE_GTM_ID),
+      'import.meta.env.VITE_GA4_ID': JSON.stringify(env.VITE_GA4_ID || fallbacks.VITE_GA4_ID),
+      'import.meta.env.VITE_PINTEREST_TAG': JSON.stringify(env.VITE_PINTEREST_TAG || fallbacks.VITE_PINTEREST_TAG),
+      'import.meta.env.VITE_PINTEREST_DOMAIN': JSON.stringify(env.VITE_PINTEREST_DOMAIN || fallbacks.VITE_PINTEREST_DOMAIN),
+      'import.meta.env.VITE_RAZORPAY_KEY_ID': JSON.stringify(env.VITE_RAZORPAY_KEY_ID || fallbacks.VITE_RAZORPAY_KEY_ID),
+      'import.meta.env.VITE_WHATSAPP_NUMBER': JSON.stringify(env.VITE_WHATSAPP_NUMBER || fallbacks.VITE_WHATSAPP_NUMBER),
+      'import.meta.env.VITE_SHEETS_WEBHOOK_URL': JSON.stringify(env.VITE_SHEETS_WEBHOOK_URL || fallbacks.VITE_SHEETS_WEBHOOK_URL),
+      'import.meta.env.VITE_GOOGLE_SHEETS_URL': JSON.stringify(env.VITE_GOOGLE_SHEETS_URL || fallbacks.VITE_GOOGLE_SHEETS_URL),
+      'import.meta.env.VITE_SITE_URL': JSON.stringify(env.VITE_SITE_URL || fallbacks.VITE_SITE_URL),
+      'import.meta.env.VITE_SITE_NAME': JSON.stringify(env.VITE_SITE_NAME || fallbacks.VITE_SITE_NAME),
+      'import.meta.env.VITE_STORE_PHONE': JSON.stringify(env.VITE_STORE_PHONE || fallbacks.VITE_STORE_PHONE),
     },
     build: {
       outDir: 'dist',

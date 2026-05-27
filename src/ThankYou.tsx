@@ -4,6 +4,7 @@ import { CheckCircle2, Printer, MapPin, Phone, Mail, Calendar, CreditCard, Shopp
 import { SEO } from "./components/SEO";
 import { useEffect, useRef } from "react";
 import { trackPurchase } from "./tracking";
+import { OptimizedImage } from "./components/OptimizedImage";
 
 export default function ThankYou() {
   const location = useLocation();
@@ -699,11 +700,11 @@ export default function ThankYou() {
                     <tr key={idx} className="print-avoid-break">
                       <td className="py-2.5 px-2 flex items-center gap-3">
                         {item.image && (
-                          <img 
+                          <OptimizedImage 
                             src={item.image} 
                             alt={item.name} 
+                            width={100}
                             className="print-product-img w-10 h-14 object-cover border border-black/5 rounded-sm flex-shrink-0"
-                            referrerPolicy="no-referrer"
                           />
                         )}
                         <div>

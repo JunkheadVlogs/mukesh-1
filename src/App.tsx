@@ -26,16 +26,31 @@ import ReturnPolicy from './ReturnPolicy';
 import { CONFIG, submitToGoogleSheets } from "./config";
 
 function LoadingScreen() {
+  const [logoSrc, setLogoSrc] = useState("/images/logo.webp");
+  const [retryStep, setRetryStep] = useState(0);
   const [logoError, setLogoError] = useState(false);
+
+  const handleLogoError = () => {
+    if (retryStep === 0) {
+      setLogoSrc("https://mukeshsarees.com/images/logo.webp");
+      setRetryStep(1);
+    } else if (retryStep === 1) {
+      setLogoSrc("https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp");
+      setRetryStep(2);
+    } else {
+      setLogoError(true);
+    }
+  };
+
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-ivory space-y-12">
       <div className="flex flex-col items-center space-y-4">
          {!logoError ? (
            <img 
-             src="https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp" 
+             src={logoSrc} 
              alt="Mukesh Saree Centre Logo" 
              className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block header-logo" 
-             onError={() => setLogoError(true)} 
+             onError={handleLogoError} 
            />
          ) : (
            <span className="text-xl font-serif text-onyx tracking-[12px] uppercase block">MUKESH</span>

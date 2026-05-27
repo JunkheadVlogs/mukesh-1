@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router";
+import { OptimizedImage } from "./OptimizedImage";
 
 interface LookReel {
   id: string;
@@ -270,11 +271,12 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
           videoReadyToFade ? "opacity-0 scale-105 pointer-events-none" : "opacity-100"
         }`}
       >
-        <img
+        <OptimizedImage
           src={reel.poster}
           alt={reel.title}
+          width={600}
+          height={800}
           className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.04]"
-          loading="lazy"
         />
       </div>
 

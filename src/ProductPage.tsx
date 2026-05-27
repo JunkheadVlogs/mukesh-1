@@ -1558,8 +1558,9 @@ export default function ProductPage() {
 
               {/* Order Summary Mini-Section */}
               <div className="px-6 py-4 bg-[#F5F2EA]/30 border-b border-[#2C241B]/10 flex items-center gap-4">
-                <img
-                  src={optimizeImage(product.image, 100)}
+                <OptimizedImage
+                  src={product.image}
+                  width={100}
                   alt={product.name}
                   className="w-14 h-18 object-cover object-top rounded border border-[#2C241B]/10 animate-fade-in"
                 />

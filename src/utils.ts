@@ -111,24 +111,39 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     return url;
   }
   
-  if (url.includes('drive.google.com') || url.includes('googleusercontent.com')) {
-    // Extract the raw file ID from the Google Drive URL
+  if (url.includes('wsrv.nl')) {
+    return url;
+  }
+  
+  const isGoogle = url.includes('drive.google.com') || 
+                   url.includes('googleusercontent.com') ||
+                   url.includes('drive.usercontent.google.com') ||
+                   url.includes('lh3.googleusercontent.com');
+
+  if (isGoogle) {
+    // Extract the raw file ID from the Google Drive URL robustly
     let driveId = '';
-    const idMatch = url.match(/[?&]id=([^&]+)/);
-    if (idMatch) {
+    const dMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) || url.match(/id%3D([a-zA-Z0-9_-]+)/);
+    const lhMatch = url.match(/googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
+
+    if (dMatch && dMatch[1]) {
+      driveId = dMatch[1];
+    } else if (idMatch && idMatch[1]) {
       driveId = idMatch[1];
-    } else {
-      const dMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if (dMatch) {
-        driveId = dMatch[1];
-      }
+    } else if (lhMatch && lhMatch[1]) {
+      driveId = lhMatch[1];
+    }
+
+    if (driveId) {
+      // Use wsrv.nl to dynamically compress and resize the Google Drive target image.
+      // export=view is highly reliable, and wsrv.nl creates highly optimized, small webp/jpg files with CDN caching.
+      const outputFormat = format === 'jpg' ? 'jpg' : 'webp';
+      return `https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&fit=contain&output=${outputFormat}`;
     }
     
-    if (driveId) {
-      // Convert Google Drive sharing/source links into standard direct image preview/thumbnail URLs
-      // This is fast, highly cached, and bypasses CORS/referrer restrictions on any hosting environment
-      return `https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`;
-    }
+    // Safety guarantee: Do not let any Google URL fall through to the wsrv.nl proxy block
+    return url;
   }
   
   if (url.includes('images.unsplash.com')) {

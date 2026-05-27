@@ -8,13 +8,18 @@
       
       // Lazily load GA4 after page load to prevent render-blocking and speed up mobile first paint
       window.addEventListener('load', function() {
+        const gaId = "%VITE_GA4_ID%";
+        if (!gaId || gaId.startsWith('%VITE_') || gaId.includes('your_ga4_measurement_id')) {
+          console.warn("GA4 Measurement ID not configured. Skipping initialization.");
+          return;
+        }
         const gaScript = document.createElement('script');
-        gaScript.src = "https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_ID%";
+        gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
         gaScript.defer = true;
         document.head.appendChild(gaScript);
         
         gtag('js', new Date());
-        gtag('config', '%VITE_GA4_ID%');
+        gtag('config', gaId);
       });
     </script>
     <meta charset="UTF-8">
