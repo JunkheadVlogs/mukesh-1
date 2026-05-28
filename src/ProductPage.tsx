@@ -775,25 +775,14 @@ export default function ProductPage() {
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
-        <meta property="og:image" content={getWhatsAppSafeImageUrl(product.image)} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:secure_url" content={getWhatsAppSafeImageUrl(product.image)} />
-        <meta property="og:image:type" content="image/jpeg" />
-        <meta name="twitter:image" content={getWhatsAppSafeImageUrl(product.image)} />
       </Helmet>
       <SEO
-        title={`${product.color} ${product.fabric} ${product.category} — Buy Online at ₹${product.price} | Mukesh Saree Centre`}
-        description={`₹${product.price} | ${product.name} — ${product.description.slice(0, 120)}... COD available. Free shipping. Shop at Mukesh Saree Centre, Nagpur since 1978.`}
-        image={getWhatsAppSafeImageUrl(product.image)}
+        title={`${product.name} – Mukesh Saree Centre`}
+        description={product.description}
+        image={product.image}
         url={`/product/${product.slug}`}
-        type="og:product"
-        product={{
-          price: product.price,
-          currency: "INR",
-          availability: "in stock",
-          condition: "new",
-        }}
+        type="product"
+        product={product}
         schema={detailedProductSchema}
       />
 

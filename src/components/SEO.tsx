@@ -11,10 +11,63 @@ interface SEOProps {
     currency?: string;
     availability?: string;
     condition?: string;
+    color?: string;
+    fabric?: string;
+    category?: string;
+    [key: string]: any;
   };
   schema?: Record<string, any>;
   imageWidth?: string;
   imageHeight?: string;
+}
+
+export function getWhatsAppSafeDescription(text: string, productContext?: any): string {
+  if (!text) return "Shop premium Indian ethnic wear, sarees, and co-ord sets at Mukesh Saree Centre.";
+  
+  // Clean HTML, Markdown, and other clutter
+  let clean = text
+    .replace(/<[^>]*>?/gm, " ")
+    .replace(/\*\*(DESCRIPTION|HIGHLIGHTS|FABRIC DETAILS|SIZE & FIT|STYLING|CARE INSTRUCTIONS|WASH CARE|FABRIC):\*\*/gi, "")
+    .replace(/\*\*[A-Z\s&_:\-]+\:\*\*/gi, " ")
+    .replace(/\*\*[A-Z\s&_:\-]+\*\*/gi, " ")
+    .replace(/^[•\-\*\s]+/gm, " ")
+    .replace(/\*/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Extract first complete sentence (must end with . or ! or ?)
+  const sentenceEndRegex = /[.!?](?=\s|$)/;
+  const match = clean.match(sentenceEndRegex);
+  
+  let sentence = "";
+  if (match && match.index !== undefined) {
+    sentence = clean.slice(0, match.index + 1).trim();
+  } else {
+    sentence = clean;
+  }
+
+  // If sentence is empty or too short (less than 20 chars), design an elegant fallback based on product context
+  if (sentence.length < 20 && productContext) {
+    const color = productContext.color || "";
+    const fabric = productContext.fabric || "";
+    const category = productContext.category || "ensemble";
+    sentence = `This elegant ${color} ${fabric} ${category} is beautifully crafted to elevate your ethnic style.`;
+  } else if (sentence.length < 20) {
+    sentence = "Experience premium comfort and elegance with our handpicked Indian ethnic wear collection.";
+  }
+
+  // Ensure it doesn't exceed 60 words and has no truncation mid-sentence
+  const words = sentence.split(/\s+/);
+  if (words.length > 60) {
+    sentence = words.slice(0, 60).join(" ");
+  }
+
+  // Ensure proper sentence termination
+  if (!/[.!?]$/.test(sentence)) {
+    sentence += ".";
+  }
+
+  return sentence;
 }
 
 export function cleanDescriptionForOG(rawDesc: string): string {
@@ -83,11 +136,16 @@ export function SEO({
   const absoluteUrl = url.startsWith("http") ? url : `${siteUrl}${url}`;
   const absoluteImage = image?.startsWith("http") ? image : `${siteUrl}${image}`;
 
+  const isProductType = type === "product" || type === "og:product";
+  const finalType = isProductType ? "product" : type;
+
   // Clean the description to prevent markdown/asterisks or tags appearing in SEO/og:description tags
-  const cleanDescriptionText = cleanSEOText(description);
+  // For products, leverage the getWhatsAppSafeDescription to make sure it is exactly ONE clean sentence (max 60 words, no truncation)
+  const cleanDescriptionText = isProductType 
+    ? getWhatsAppSafeDescription(description, product) 
+    : cleanSEOText(description);
 
   // Default to 1200x630 for landscape social card presentation (ideal for WhatsApp/Instagram/Facebook crop alignment without letterbox bars)
-  const isProductType = type === "product" || type === "og:product";
   const defaultWidth = "1200";
   const defaultHeight = "630";
 
@@ -96,15 +154,29 @@ export function SEO({
 
   let displayImage = absoluteImage;
   if (absoluteImage) {
-    const isGoogle = absoluteImage.includes('drive.google.com') || 
-                     absoluteImage.includes('googleusercontent.com') ||
-                     absoluteImage.includes('drive.usercontent.google.com') ||
-                     absoluteImage.includes('lh3.googleusercontent.com');
-    const isWsrv = absoluteImage.includes('wsrv.nl');
-    if (isGoogle || isWsrv) {
-      displayImage = absoluteImage;
+    // Standardize all image URLs to a perfect 1200x630 landscape JPG cover crop using wsrv.nl.
+    // This fully resolves the "too tall/portrait and slim" problem on WhatsApp when sharing.
+    let targetUrl = absoluteImage;
+    if (absoluteImage.includes('drive.google.com')) {
+      const driveIdMatch = absoluteImage.match(/[?&]id=([^&]+)/);
+      if (driveIdMatch) {
+        const fileId = driveIdMatch[1];
+        targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+      }
+    } else if (absoluteImage.includes('lh3.googleusercontent.com')) {
+      targetUrl = absoluteImage.split('=')[0]; // strip existing resize parameters
+    }
+    
+    // Check if wsrv is already wrapping this URL
+    if (targetUrl.includes('wsrv.nl')) {
+      // Just make sure it uses 1200x630 cover crop
+      displayImage = targetUrl
+        .replace(/w=\d+/, 'w=1200')
+        .replace(/h=\d+/, 'h=630')
+        .replace(/fit=[a-z]+/, 'fit=cover')
+        .replace('output=webp', 'output=jpg');
     } else {
-      displayImage = `https://wsrv.nl/?url=${encodeURIComponent(absoluteImage)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
+      displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
     }
   }
 
@@ -116,7 +188,7 @@ export function SEO({
       <link rel="canonical" href={absoluteUrl} />
 
       {/* Open Graph / Facebook / WhatsApp */}
-      <meta property="og:type" content={type} />
+      <meta property="og:type" content={finalType} />
       <meta property="og:url" content={absoluteUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={cleanDescriptionText} />

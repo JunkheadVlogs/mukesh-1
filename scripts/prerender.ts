@@ -20,33 +20,78 @@ function cleanDescriptionForPrerender(rawDesc: string): string {
   return text.trim();
 }
 
+function getWhatsAppSafePrerenderDescription(text: string, productContext?: any): string {
+  if (!text) return "Shop premium Indian ethnic wear, sarees, and co-ord sets at Mukesh Saree Centre.";
+  
+  // Clean HTML, Markdown, and other clutter
+  let clean = text
+    .replace(/<[^>]*>?/gm, " ")
+    .replace(/\*\*(DESCRIPTION|HIGHLIGHTS|FABRIC DETAILS|SIZE & FIT|STYLING|CARE INSTRUCTIONS|WASH CARE|FABRIC):\*\*/gi, "")
+    .replace(/\*\*[A-Z\s&_:\-]+\:\*\*/gi, " ")
+    .replace(/\*\*[A-Z\s&_:\-]+\*\*/gi, " ")
+    .replace(/^[•\-\*\s]+/gm, " ")
+    .replace(/\*/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Extract first complete sentence (must end with . or ! or ?)
+  const sentenceEndRegex = /[.!?](?=\s|$)/;
+  const match = clean.match(sentenceEndRegex);
+  
+  let sentence = "";
+  if (match && match.index !== undefined) {
+    sentence = clean.slice(0, match.index + 1).trim();
+  } else {
+    sentence = clean;
+  }
+
+  // If sentence is empty or too short (less than 20 chars), design an elegant fallback based on product context
+  if (sentence.length < 20 && productContext) {
+    const color = productContext.color || "";
+    const fabric = productContext.fabric || "";
+    const category = productContext.category || "ensemble";
+    sentence = `This elegant ${color} ${fabric} ${category} is beautifully crafted to elevate your ethnic style.`;
+  } else if (sentence.length < 20) {
+    sentence = "Experience premium comfort and elegance with our handpicked Indian ethnic wear collection.";
+  }
+
+  // Ensure it doesn't exceed 60 words and has no truncation mid-sentence
+  const words = sentence.split(/\s+/);
+  if (words.length > 60) {
+    sentence = words.slice(0, 60).join(" ");
+  }
+
+  // Ensure proper sentence termination
+  if (!/[.!?]$/.test(sentence)) {
+    sentence += ".";
+  }
+
+  return sentence;
+}
+
 function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string {
   if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
   
-  // If already a clean URL (Cloudinary, direct hosting), use as-is
-  if (imageUrl.includes('cloudinary.com') || imageUrl.includes('mukeshsarees.com/images')) {
-    return imageUrl;
+  let targetUrl = imageUrl;
+  if (imageUrl.includes('drive.google.com')) {
+    const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
+    if (driveIdMatch) {
+      const fileId = driveIdMatch[1];
+      targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    }
+  } else if (imageUrl.includes('lh3.googleusercontent.com')) {
+    targetUrl = imageUrl.split('=')[0]; // strip existing params
   }
   
-  // For Google Drive URLs — extract the file ID and use the direct export URL
-  const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
-  if (driveIdMatch) {
-    const fileId = driveIdMatch[1];
-    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+  if (targetUrl.includes('wsrv.nl')) {
+    return targetUrl
+      .replace(/w=\d+/, 'w=1200')
+      .replace(/h=\d+/, 'h=630')
+      .replace(/fit=[a-z]+/, 'fit=cover')
+      .replace('output=webp', 'output=jpg');
+  } else {
+    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
   }
-  
-  // For lh3.googleusercontent.com URLs
-  if (imageUrl.includes('lh3.googleusercontent.com')) {
-    const cleanUrl = imageUrl.split('=')[0];
-    return `${cleanUrl}=w1200-h630`;
-  }
-  
-  // Fallback to wsrv with better params for WhatsApp
-  if (imageUrl.includes('wsrv.nl') || imageUrl.includes('drive.google.com')) {
-    return imageUrl.replace('output=webp', 'output=jpg').replace('w=600', 'w=1200').replace('w=800', 'w=11200' /* fixed */).replace('w=11200', 'w=1200');
-  }
-  
-  return imageUrl;
 }
 
 function sanitize(text: string): string {
@@ -536,19 +581,19 @@ async function runPrerender() {
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
     const wsrvImgLandscape = getWhatsAppSafePrerenderImageUrl(p.image);
-    const cleanDesc = cleanDescriptionForPrerender(p.description || "");
-    const prodDesc = `₹${p.price} | ${p.name} — ${cleanDesc.slice(0, 120)}... COD available. Free shipping. Shop at Mukesh Saree Centre, Nagpur since 1978.`;
+    const prodDesc = getWhatsAppSafePrerenderDescription(p.description || "", p);
+    const pageTitle = `${p.name} – Mukesh Saree Centre`;
     
     let prodHtml = baseHtml
       .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${productBody}</div>`)
-      .replace(/<title>.*?<\/title>/, `<title>${sanitize(p.name)} | Buy Online at ₹${p.price} — Mukesh Saree Centre</title>`)
+      .replace(/<title>.*?<\/title>/, `<title>${sanitize(pageTitle)}</title>`)
       .replace(
         /<meta name="description" content=".*?"\s*\/>/,
         `<meta name="description" content="${sanitize(prodDesc)}" />`
       );
-
+ 
     const dynamicTags = `<!-- Dynamic OG Tags -->
-    <meta property="og:title" content="${sanitize(p.name)} | Mukesh Saree Centre" />
+    <meta property="og:title" content="${sanitize(pageTitle)}" />
     <meta property="og:description" content="${sanitize(prodDesc)}" />
     <meta property="og:image" content="${wsrvImgLandscape}" />
     <meta property="og:url" content="${originalUrl}" />
@@ -558,7 +603,7 @@ async function runPrerender() {
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${sanitize(p.name)}" />
+    <meta name="twitter:title" content="${sanitize(pageTitle)}" />
     <meta name="twitter:description" content="${sanitize(prodDesc)}" />
     <meta name="twitter:image" content="${wsrvImgLandscape}" />
     <link rel="canonical" href="${originalUrl}" />

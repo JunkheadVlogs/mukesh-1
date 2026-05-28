@@ -721,22 +721,76 @@ try {
 
 const getWhatsAppSafeServerImageUrl = (imageUrl) => {
   if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
-  if (imageUrl.includes('cloudinary.com') || imageUrl.includes('mukeshsarees.com/images')) {
-    return imageUrl;
+  
+  let targetUrl = imageUrl;
+  if (imageUrl.includes('drive.google.com')) {
+    const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
+    if (driveIdMatch) {
+      const fileId = driveIdMatch[1];
+      targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    }
+  } else if (imageUrl.includes('lh3.googleusercontent.com')) {
+    targetUrl = imageUrl.split('=')[0]; // strip existing params
   }
-  const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
-  if (driveIdMatch) {
-    const fileId = driveIdMatch[1];
-    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+  
+  if (targetUrl.includes('wsrv.nl')) {
+    return targetUrl
+      .replace(/w=\d+/, 'w=1200')
+      .replace(/h=\d+/, 'h=630')
+      .replace(/fit=[a-z]+/, 'fit=cover')
+      .replace('output=webp', 'output=jpg');
+  } else {
+    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
   }
-  if (imageUrl.includes('lh3.googleusercontent.com')) {
-    const cleanUrl = imageUrl.split('=')[0];
-    return `${cleanUrl}=w1200-h630`;
+};
+
+const getWhatsAppSafeServerDescription = (text, productContext) => {
+  if (!text) return "Shop premium Indian ethnic wear, sarees, and co-ord sets at Mukesh Saree Centre.";
+  
+  // Clean HTML, Markdown, and other clutter
+  let clean = text
+    .replace(/<[^>]*>?/gm, " ")
+    .replace(/\*\*(DESCRIPTION|HIGHLIGHTS|FABRIC DETAILS|SIZE & FIT|STYLING|CARE INSTRUCTIONS|WASH CARE|FABRIC):\*\*/gi, "")
+    .replace(/\*\*[A-Z\s&_:\-]+\:\*\*/gi, " ")
+    .replace(/\*\*[A-Z\s&_:\-]+\*\*/gi, " ")
+    .replace(/^[•\-\*\s]+/gm, " ")
+    .replace(/\*/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Extract first complete sentence (must end with . or ! or ?)
+  const sentenceEndRegex = /[.!?](?=\s|$)/;
+  const match = clean.match(sentenceEndRegex);
+  
+  let sentence = "";
+  if (match && match.index !== undefined) {
+    sentence = clean.slice(0, match.index + 1).trim();
+  } else {
+    sentence = clean;
   }
-  if (imageUrl.includes('wsrv.nl') || imageUrl.includes('drive.google.com')) {
-    return imageUrl.replace('output=webp', 'output=jpg').replace('w=600', 'w=1200').replace('w=800', 'w=1200');
+
+  // If sentence is empty or too short (less than 20 chars), design an elegant fallback based on product context
+  if (sentence.length < 20 && productContext) {
+    const color = productContext.color || "";
+    const fabric = productContext.fabric || "";
+    const category = productContext.category || "ensemble";
+    sentence = `This elegant ${color} ${fabric} ${category} is beautifully crafted to elevate your ethnic style.`;
+  } else if (sentence.length < 20) {
+    sentence = "Experience premium comfort and elegance with our handpicked Indian ethnic wear collection.";
   }
-  return imageUrl;
+
+  // Ensure it doesn't exceed 60 words and has no truncation mid-sentence
+  const words = sentence.split(/\s+/);
+  if (words.length > 60) {
+    sentence = words.slice(0, 60).join(" ");
+  }
+
+  // Ensure proper sentence termination
+  if (!/[.!?]$/.test(sentence)) {
+    sentence += ".";
+  }
+
+  return sentence;
 };
 
 const injectOGTags = (html, reqPath, originalUrl) => {
@@ -755,9 +809,8 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     const slug = productMatch[1].trim().toLowerCase();
     const prod = preParsedProducts.find(p => p.slug && p.slug.trim().toLowerCase() === slug);
     if (prod) {
-      ogTitle = prod.name;
-      const baseDesc = (prod.description || "").replace(/<[^>]*>?/gm, '').trim();
-      ogDesc = `₹${prod.price || "999"} | ${prod.name} — ${baseDesc.slice(0, 120)}... COD available. Free shipping. Shop at Mukesh Saree Centre, Nagpur since 1978.`;
+      ogTitle = `${prod.name} – Mukesh Saree Centre`;
+      ogDesc = getWhatsAppSafeServerDescription(prod.description, prod);
  
       // Convert Google Drive or local product images to a beautiful landscape cover image
       ogImg = getWhatsAppSafeServerImageUrl(prod.image || defaultBannerUrl);
