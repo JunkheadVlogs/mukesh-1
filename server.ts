@@ -723,9 +723,9 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   let ogTitle = "Mukesh Saree Centre – Premium Silk Sarees Since 1978";
   let ogDesc = "Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1978.";
   
-  const defaultBannerUrl = "https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me";
+  const defaultBannerUrl = "https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469";
   // Fallback banner optimized to 1200x630 landscape JPG for standard page sharing
-  let ogImg = `https://wsrv.nl/?url=${encodeURIComponent(defaultBannerUrl)}&w=1200&h=630&fit=contain&output=jpg`;
+  let ogImg = `https://wsrv.nl/?url=${encodeURIComponent(defaultBannerUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
   let ogUrl = "https://mukeshsarees.com" + originalUrl;
   let price = "";
   let isProduct = false;
@@ -743,15 +743,31 @@ const injectOGTags = (html, reqPath, originalUrl) => {
         ogDesc = ogDesc.substring(0, 197) + "...";
       }
 
-      // Convert Google Drive or local product images to a square, fast-loading JPG image for WhatsApp compatibility
+      // Convert Google Drive or local product images to a beautiful landscape cover image
       const rawProdImg = prod.image || defaultBannerUrl;
-      ogImg = `https://wsrv.nl/?url=${encodeURIComponent(rawProdImg)}&w=800&h=800&fit=contain&output=jpg`;
+      ogImg = `https://wsrv.nl/?url=${encodeURIComponent(rawProdImg)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
       price = prod.price || "0";
       isProduct = true;
     }
   } else if (reqPath.startsWith('/shop')) {
-    ogTitle = "Shop Our Collection — Mukesh Saree Centre";
-    ogDesc = "Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre Nagpur. Cash on Delivery (COD) and free shipping available.";
+    const categoryMatch = originalUrl.match(/[?&]category=([^&]+)/);
+    const category = categoryMatch ? decodeURIComponent(categoryMatch[1]) : "";
+    if (category) {
+      ogTitle = `Buy ${category} Online — Mukesh Saree Centre`;
+      ogDesc = `Explore our collection of 100+ handpicked ${category.toLowerCase()} — Banarasi silk, pure cotton, georgette, and designer wear. COD available. Free shipping.`;
+      
+      const categoryOgImages = {
+        'Sarees': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
+        'Linen Sarees': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
+        'Co-Ord Sets': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
+        'Lehengas': 'https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691'
+      };
+      const catImg = categoryOgImages[category] || defaultBannerUrl;
+      ogImg = `https://wsrv.nl/?url=${encodeURIComponent(catImg)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
+    } else {
+      ogTitle = "Shop Our Collection — Mukesh Saree Centre";
+      ogDesc = "Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre Nagpur. Cash on Delivery (COD) and free shipping available.";
+    }
   }
 
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
@@ -763,8 +779,9 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta property="og:url" content="${ogUrl}" />
      <meta property="og:type" content="${isProduct ? 'product' : 'website'}" />
      <meta property="og:site_name" content="Mukesh Saree Centre" />
-     <meta property="og:image:width" content="800" />
-     <meta property="og:image:height" content="800" />
+     <meta property="og:image:width" content="1200" />
+     <meta property="og:image:height" content="630" />
+     <meta property="og:image:type" content="image/jpeg" />
      <meta name="twitter:card" content="summary_large_image" />
      <meta name="twitter:title" content="${ogTitle}" />
      <meta name="twitter:description" content="${ogDesc}" />

@@ -704,7 +704,8 @@ export default function ThankYou() {
                             src={item.image} 
                             alt={item.name} 
                             width={100}
-                            className="print-product-img w-10 h-14 object-cover border border-black/5 rounded-sm flex-shrink-0"
+                            className="print-product-img w-10 h-14 object-contain object-center border border-black/5 rounded-sm flex-shrink-0"
+                            style={{ backgroundColor: '#FAF8F5' }}
                           />
                         )}
                         <div>

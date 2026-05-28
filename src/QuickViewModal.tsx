@@ -102,12 +102,12 @@ export default function QuickViewModal({
             </button>
 
             {/* Gallery Left */}
-            <div className="w-full md:w-1/2 bg-primary-100 relative aspect-square md:aspect-auto overflow-hidden">
+            <div className="w-full md:w-1/2 relative aspect-square md:aspect-auto overflow-hidden flex items-center justify-center p-0" style={{ backgroundColor: '#FAF8F5' }}>
                <OptimizedImage
                   src={productImages[activeImageIndex]}
                   width={800}
                   alt={getImageAlt(product)}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-contain object-center"
                 />
                 
                 {productImages.length > 1 && (

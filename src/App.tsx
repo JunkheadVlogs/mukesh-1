@@ -26,16 +26,16 @@ import ReturnPolicy from './ReturnPolicy';
 import { CONFIG, submitToGoogleSheets } from "./config";
 
 function LoadingScreen() {
-  const [logoSrc, setLogoSrc] = useState("/images/logo.webp");
+  const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
   const [retryStep, setRetryStep] = useState(0);
   const [logoError, setLogoError] = useState(false);
 
   const handleLogoError = () => {
     if (retryStep === 0) {
-      setLogoSrc("https://mukeshsarees.com/images/logo.webp");
+      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
       setRetryStep(1);
     } else if (retryStep === 1) {
-      setLogoSrc("https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp");
+      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
       setRetryStep(2);
     } else {
       setLogoError(true);

@@ -259,16 +259,17 @@ async function runPrerender() {
   const homeOgTags = `<!-- Dynamic OG Tags -->
   <meta property="og:title" content="Mukesh Saree Centre — Premium Indian Ethnic Wear Since 1978" />
   <meta property="og:description" content="Shop premium luxury sarees and co-ord sets online from Nagpur since 1978. Authentic fabric collections, Cash on Delivery, free shipping across India." />
-  <meta property="og:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me")}&w=1200&h=630&fit=contain&output=jpg" />
+  <meta property="og:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
   <meta property="og:url" content="https://mukeshsarees.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Mukesh Saree Centre" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mukesh Saree Centre — Premium Indian Ethnic Wear Since 1978" />
   <meta name="twitter:description" content="Shop premium luxury sarees and co-ord sets online from Nagpur since 1978." />
-  <meta name="twitter:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me")}&w=1200&h=630&fit=contain&output=jpg" />
+  <meta name="twitter:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
   <link rel="canonical" href="https://mukeshsarees.com/" />
   <!-- End Dynamic OG Tags -->`;
 
@@ -336,16 +337,17 @@ async function runPrerender() {
   const shopOgTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="Shop Our Collection — Mukesh Saree Centre" />
     <meta property="og:description" content="Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre Nagpur. Cash on Delivery (COD) and free shipping available." />
-    <meta property="og:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me")}&w=1200&h=630&fit=contain&output=jpg" />
+    <meta property="og:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
     <meta property="og:url" content="https://mukeshsarees.com/shop" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Shop Our Collection — Mukesh Saree Centre" />
     <meta name="twitter:description" content="Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre Nagpur." />
-    <meta name="twitter:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me")}&w=1200&h=630&fit=contain&output=jpg" />
+    <meta name="twitter:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
     <link rel="canonical" href="https://mukeshsarees.com/shop" />
     <!-- End Dynamic OG Tags -->`;
 
@@ -440,7 +442,7 @@ async function runPrerender() {
       }
     };
 
-    const wsrvImgMain = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=600&fit=contain&output=webp`;
+    const wsrvImgMain = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=800&output=webp&q=85`;
 
     // Dynamic clean structured product layout
     const productBody = `
@@ -460,7 +462,7 @@ async function runPrerender() {
             <!-- Gallery placeholder -->
             <div>
               <div style="aspect-ratio: 3/4; border-radius: 4px; overflow: hidden; background: white; border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center;">
-                <img src="${wsrvImgMain}" alt="${sanitize(p.name)}" style="width: 100%; height: 100%; object-fit: cover;" />
+                <img src="${wsrvImgMain}" alt="${sanitize(p.name)}" style="width: 100%; height: 100%; object-fit: contain; object-position: center;" />
               </div>
             </div>
 
@@ -512,23 +514,24 @@ async function runPrerender() {
       );
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
-    const wsrvImgSquare = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=800&h=800&fit=contain&bg=ffffff&output=jpg`;
+    const wsrvImgLandscape = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
     const cleanDesc = cleanDescriptionForPrerender(p.description || "");
     const prodDesc = `₹${p.price || "999"} | Mukesh Saree Centre — ${cleanDesc}`.substring(0, 197) + "...";
     
     const dynamicTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="${sanitize(p.name)} | Mukesh Saree Centre" />
     <meta property="og:description" content="${sanitize(prodDesc)}" />
-    <meta property="og:image" content="${wsrvImgSquare}" />
+    <meta property="og:image" content="${wsrvImgLandscape}" />
     <meta property="og:url" content="${originalUrl}" />
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
-    <meta property="og:image:width" content="800" />
-    <meta property="og:image:height" content="800" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${sanitize(p.name)}" />
     <meta name="twitter:description" content="${sanitize(prodDesc)}" />
-    <meta name="twitter:image" content="${wsrvImgSquare}" />
+    <meta name="twitter:image" content="${wsrvImgLandscape}" />
     <link rel="canonical" href="${originalUrl}" />
     <!-- End Dynamic OG Tags -->`;
 
@@ -670,16 +673,17 @@ async function runPrerender() {
     const pageOgTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="${page.title}" />
     <meta property="og:description" content="${page.desc}" />
-    <meta property="og:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me")}&w=1200&h=630&fit=contain&output=jpg" />
+    <meta property="og:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
     <meta property="og:url" content="https://mukeshsarees.com/${page.dir}" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${page.title}" />
     <meta name="twitter:description" content="${page.desc}" />
-    <meta name="twitter:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://lh3.googleusercontent.com/d/1NmruXVYozTPtYyuyipddgCODomwUd2me")}&w=1200&h=630&fit=contain&output=jpg" />
+    <meta name="twitter:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
     <link rel="canonical" href="https://mukeshsarees.com/${page.dir}" />
     <!-- End Dynamic OG Tags -->`;
 

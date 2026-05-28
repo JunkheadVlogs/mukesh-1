@@ -207,6 +207,17 @@ export default function Shop() {
   ];
   const uniqueColors = Array.from(new Set(products.map((p) => p.color)));
 
+  const categoryOgImages: Record<string, string> = {
+    "Sarees": "https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790",
+    "Linen Sarees": "https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790",
+    "Co-Ord Sets": "https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090",
+    "Lehengas": "https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691",
+    "default": "https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469",
+  };
+
+  const activeCategory = categoryFilter || "default";
+  const ogImageUrl = categoryOgImages[activeCategory] || categoryOgImages.default;
+
   return (
     <div className="bg-[var(--color-bg)]">
       <SEO
@@ -220,6 +231,7 @@ export default function Shop() {
             ? `Explore our collection of 100+ handpicked ${categoryFilter.toLowerCase()} — Banarasi silk, pure cotton, georgette, and designer wear. COD available. Free shipping. Shop at Mukesh Saree Centre.`
             : `Explore our collection of 100+ handpicked sarees — Banarasi silk, pure cotton, georgette, and designer sarees. COD available. Free shipping. Shop at Mukesh Saree Centre.`
         }
+        image={ogImageUrl}
         url={
           searchQuery
             ? `/shop?search=${encodeURIComponent(searchQuery)}`

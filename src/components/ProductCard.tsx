@@ -58,7 +58,8 @@ export function ProductCard({
   return (
     <div className="group flex flex-col h-full bg-white rounded-[18px] md:rounded-[24px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden hover:-translate-y-1 transform-gpu">
       <div
-        className="relative aspect-[3/4] w-full overflow-hidden bg-primary-50 flex items-center justify-center p-0 flex-shrink-0"
+        className="relative aspect-[3/4] w-full overflow-hidden flex items-center justify-center p-0 flex-shrink-0"
+        style={{ backgroundColor: '#FAF8F5' }}
       >
         <Link to={`/product/${product.slug}`} className="block h-full w-full">
           <OptimizedImage
@@ -70,28 +71,30 @@ export function ProductCard({
             priority={false}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover object-top transform-gpu transition-all duration-700 ease-out group-hover:scale-105"
+            className="w-full h-full object-contain object-center transform-gpu transition-all duration-700 ease-out group-hover:scale-105"
           />
         </Link>
 
-        {/* Floating Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
-          {product.isNew && (
-            <span className="bg-white/95 backdrop-blur-md text-primary-950 border border-white/50 text-[9px] uppercase font-semibold px-3 py-1 tracking-[1px] rounded-md shadow-[0_2px_10px_rgba(0,0,0,0.05)] w-max">
-              NEW
-            </span>
-          )}
-          {product.isTrending && (
-            <span className="bg-white/95 backdrop-blur-md text-primary-950 border border-white/50 text-[9px] uppercase font-semibold px-3 py-1 tracking-[1px] rounded-md shadow-[0_2px_10px_rgba(0,0,0,0.05)] w-max">
-              TRENDING
-            </span>
-          )}
-          {product.isBestSelling && (
-            <span className="bg-white/95 backdrop-blur-md text-primary-950 border border-white/50 text-[9px] uppercase font-semibold px-3 py-1 tracking-[1px] rounded-md shadow-[0_2px_10px_rgba(0,0,0,0.05)] w-max">
-              BEST SELLER
-            </span>
-          )}
-        </div>
+        {/* Floating Badges — non-intrusive bottom-left, semi-transparent */}
+        {((product as any).badge || product.isTrending || product.isNew || product.isBestSelling) && (
+          <span style={{
+            position: 'absolute',
+            bottom: '12px',
+            left: '12px',
+            backgroundColor: 'rgba(26,10,0,0.75)',
+            color: '#f0b429',
+            fontSize: '9px',
+            fontWeight: '700',
+            letterSpacing: '1.5px',
+            padding: '4px 10px',
+            borderRadius: '4px',
+            textTransform: 'uppercase',
+            backdropFilter: 'blur(4px)',
+            zIndex: 10
+          }}>
+            {(product as any).badge || (product.isTrending ? "TRENDING" : product.isNew ? "NEW" : "BEST SELLER")}
+          </span>
+        )}
 
         {/* Hover Action Overlay */}
         <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-400 hidden lg:flex gap-2">
@@ -139,9 +142,22 @@ export function ProductCard({
           <div className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-[#8C8276] font-medium w-full mb-1.5">
             {product.category}
           </div>
-          <h3 className="font-serif text-[#2C241B] tracking-wide group-hover:text-gold-600 transition-colors w-full truncate text-[14px] md:text-[15px] leading-[1.35] font-medium px-1 mb-2.5">
-            <Link to={`/product/${product.slug}`} title={product.name}>
-              {displayName}
+          <h3 className="line-clamp-2 leading-snug mb-2.5 w-full text-center px-1"
+            style={{
+              fontSize: '13px',
+              fontWeight: '600',
+              color: '#1a1a1a',
+              lineHeight: '1.35',
+              minHeight: '2.4em',
+              whiteSpace: 'normal',
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              textOverflow: 'ellipsis'
+            }}>
+            <Link to={`/product/${product.slug}`} title={product.name} className="hover:text-gold-600 transition-colors duration-200">
+              {product.name}
             </Link>
           </h3>
 

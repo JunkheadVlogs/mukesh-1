@@ -2,21 +2,36 @@ import { useState, useEffect } from 'react';
 import { optimizeImage } from '../utils';
 
 const LOCAL_IMAGE_FALLBACKS: Record<string, string> = {
-  'main_shop_entrance.webp': 'https://mukeshsarees.com/images/mainshop.webp',
-  'billing_counter.webp': 'https://mukeshsarees.com/images/billingcounter.webp',
-  'saree_section.webp': 'https://mukeshsarees.com/images/sareesection.webp',
-  'lehenga_section.webp': 'https://mukeshsarees.com/images/lehenga.webp',
-  'logo.webp': 'https://mukeshsarees.com/images/logo.webp',
-  'hero_exhibition.webp': 'https://mukeshsarees.com/images/hero.webp',
-  'category_coord_sets.webp': 'https://mukeshsarees.com/images/coordset.webp',
-  'category_sarees.webp': 'https://mukeshsarees.com/images/saree-bg.webp',
-  'saree_category_backgroung_image.webp': 'https://mukeshsarees.com/images/saree-bg.webp',
-  'saree_category_background_image.webp': 'https://mukeshsarees.com/images/saree-bg.webp',
-  'saree_category_background.webp': 'https://mukeshsarees.com/images/saree-bg.webp',
-  'best-saree-shop-in-nagpur-logo.webp': 'https://mukeshsarees.com/images/logo.webp',
-  'hero-image-best-saree-shop-nagpur.webp': 'https://mukeshsarees.com/images/hero.webp',
-  'best-co-ord-set-shop-in-nagpur-category-image.webp': 'https://mukeshsarees.com/images/coordset.webp',
-  'shop-main-enterence.webp': 'https://mukeshsarees.com/images/mainshop.webp',
+  'mainshop.webp': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
+  'mainshop.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
+  'billingcounter.webp': 'https://ik.imagekit.io/tus1loev9/homepage/billingcounter.webp?updatedAt=1779907894357',
+  'billingcounter.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/billingcounter.webp?updatedAt=1779907894357',
+  'sareesection.webp': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695',
+  'sareesection.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695',
+  'lehenga.webp': 'https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691',
+  'lehenga.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691',
+  'logo.webp': 'https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217',
+  'logo.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217',
+  'hero.webp': 'https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469',
+  'hero.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469',
+  'coordset.webp': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
+  'coordset.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
+  'saree-bg.webp': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
+  'saree-bg.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
+  'main_shop_entrance.webp': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
+  'billing_counter.webp': 'https://ik.imagekit.io/tus1loev9/homepage/billingcounter.webp?updatedAt=1779907894357',
+  'saree_section.webp': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695',
+  'lehenga_section.webp': 'https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691',
+  'hero_exhibition.webp': 'https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469',
+  'category_coord_sets.webp': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
+  'category_sarees.webp': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695',
+  'saree_category_backgroung_image.webp': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
+  'saree_category_background_image.webp': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
+  'saree_category_background.webp': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
+  'best-saree-shop-in-nagpur-logo.webp': 'https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217',
+  'hero-image-best-saree-shop-nagpur.webp': 'https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469',
+  'best-co-ord-set-shop-in-nagpur-category-image.webp': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
+  'shop-main-enterence.webp': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
 };
 
 /**
@@ -96,7 +111,7 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
 
   if (isDrive && driveId) {
     // 1. High-speed, dynamically compressed CDN webp url using the reliable export option (Option A + speed)
-    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&fit=contain&output=webp`);
+    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&output=webp&q=85`);
     
     // 2. High-speed, lightweight pre-resized Google Drive thumbnail (also super fast!)
     candidates.push(`https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`);
@@ -108,7 +123,7 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
     candidates.push(`https://drive.google.com/uc?id=${driveId}`);
     
     // 5. WSRV Proxy fallback using thumbnail link
-    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D${driveId}%26sz%3Dw${width}&w=${width}&fit=contain&output=webp`);
+    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D${driveId}%26sz%3Dw${width}&w=${width}&output=webp&q=85`);
 
     // 6. Original sanitized input
     if (!candidates.includes(sanitized)) {
@@ -135,18 +150,46 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
 
     // Add generic paths as backup search candidates on Hostinger domain
     if (filename) {
-      const genericHostingerPaths = [
-        `https://mukeshsarees.com/images/Products/${filename}`,
-        `/images/Products/${filename}`,
-        `https://mukeshsarees.com/home%20Page%20Images/${filename}`,
-        `/images/${filename}`,
-        `https://mukeshsarees.com/images/${filename}`,
-      ];
+      let rawName = filename;
+      try {
+        rawName = decodeURIComponent(filename);
+      } catch (e) {}
 
-      for (const p of genericHostingerPaths) {
-        const sp = sanitizeUrl(p);
-        if (!candidates.includes(sp)) {
-          candidates.push(sp);
+      // Apply Image File Rules:
+      // 1. Lowercase filenames.
+      // 2. Remove spaces, brackets (), underscores _, and special characters.
+      const cleanedBase = rawName
+        .toLowerCase()
+        .replace(/[\s\(_\)]/g, '')
+        .replace(/[^a-z0-9\.\-]/g, '');
+
+      // 3. Prefer JPG format over WEBP
+      const jpgName = cleanedBase.replace(/\.(webp|png|jpeg|gif)$/i, '.jpg');
+      const webpName = cleanedBase.replace(/\.(jpg|png|jpeg|gif)$/i, '.webp');
+
+      const filenamesToTry = [jpgName];
+      if (webpName !== jpgName) {
+        filenamesToTry.push(webpName);
+      }
+      if (cleanedBase !== jpgName && cleanedBase !== webpName) {
+        filenamesToTry.push(cleanedBase);
+      }
+
+      for (const fn of filenamesToTry) {
+        const genericHostingerPaths = [
+          `https://mukeshsarees.com/assets/product/fendy/${fn}`,
+          `https://mukeshsarees.com/assets/homepage/${fn}`,
+          `/assets/product/fendy/${fn}`,
+          `/assets/homepage/${fn}`,
+          `/images/${fn}`,
+          `https://mukeshsarees.com/images/${fn}`,
+        ];
+
+        for (const p of genericHostingerPaths) {
+          const sp = sanitizeUrl(p);
+          if (!candidates.includes(sp)) {
+            candidates.push(sp);
+          }
         }
       }
     }
@@ -174,7 +217,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
 
 export function OptimizedImage({ 
   src, 
-  width = 600, 
+  width = 800, 
   height, 
   alt, 
   className, 
@@ -186,6 +229,28 @@ export function OptimizedImage({
 }: OptimizedImageProps) {
   const calculatedHeight = height || Math.round(width * 1.33333);
   
+  // Apply SEO optimized alt text rules:
+  // - End with " - Mukesh Saree Centre Nagpur"
+  // - Keep under 125 characters
+  let processedAlt = (alt || "").trim();
+  const suffix = " - Mukesh Saree Centre Nagpur";
+  
+  // Strip any old suffix formats containing Mukesh Saree Centre or duplicates
+  processedAlt = processedAlt.replace(/\s*[—\-\u2014]\s*Mukesh Saree Centre.*$/gi, "");
+  processedAlt = processedAlt.trim();
+
+  if (!processedAlt) {
+    processedAlt = "Exclusive Elegant Traditional Wear";
+  }
+
+  // Ensure overall length doesn't exceed 125 characters including the suffix
+  const maxBaseLen = 125 - suffix.length;
+  if (processedAlt.length > maxBaseLen) {
+    processedAlt = processedAlt.substring(0, maxBaseLen).trim().replace(/[\s,\-_|]+$/, "");
+  }
+  
+  const finalAlt = processedAlt + suffix;
+
   // Derived state: calculate candidates list synchronously on render
   const candidates = getCandidateUrls(src, width);
 
@@ -213,10 +278,10 @@ export function OptimizedImage({
       // Already tried. Reset retry count and advance to the next candidate URL
       setRetryCount(0);
       if (candidateIndex < candidates.length - 1) {
-        console.log(`Fallback retry also failed. Loading candidate ${candidateIndex + 1} for [${alt}]: ${candidates[candidateIndex + 1]}`);
+        console.log(`Fallback retry also failed. Loading candidate ${candidateIndex + 1} for [${finalAlt}]: ${candidates[candidateIndex + 1]}`);
         setCandidateIndex((prev) => prev + 1);
       } else {
-        console.warn(`All image candidates and retries failed to load for [${alt}]. Triggering emergency boutique brand card.`);
+        console.warn(`All image candidates and retries failed to load for [${finalAlt}]. Triggering emergency boutique brand card.`);
         setHasFailedAll(true);
         if (onError) {
           onError(e);
@@ -241,7 +306,7 @@ export function OptimizedImage({
           MUKESH SAREE CENTRE
         </span>
         <span className="text-[10px] text-white/50 tracking-widest uppercase block max-w-[85%] mx-auto">
-          {alt || 'Exclusive Designer Wear'}
+          {finalAlt}
         </span>
         <div className="w-8 h-[1px] bg-[#D4AF37]/40 mt-3"></div>
       </div>
@@ -257,7 +322,7 @@ export function OptimizedImage({
       <img
         key={`${currentSrc}-${retryCount}`}
         src={currentSrc}
-        alt={alt}
+        alt={finalAlt}
         width={width}
         height={calculatedHeight}
         className={`${className || ''}`}
@@ -298,7 +363,7 @@ export function OptimizedImage({
         src={jpgUrl}
         srcSet={generatedSrcSetJpg}
         sizes={generatedSrcSetJpg ? defaultSizes : undefined}
-        alt={alt}
+        alt={finalAlt}
         width={width}
         height={calculatedHeight}
         className={`${className || ''}`}

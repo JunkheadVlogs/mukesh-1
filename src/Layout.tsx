@@ -54,16 +54,16 @@ export default function Layout() {
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const { scrollY } = useScroll();
-  const [logoSrc, setLogoSrc] = useState("/images/logo.webp");
+  const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
   const [logoRetryStep, setLogoRetryStep] = useState(0);
   const [logoError, setLogoError] = useState(false);
 
   const handleLogoError = () => {
     if (logoRetryStep === 0) {
-      setLogoSrc("https://mukeshsarees.com/images/logo.webp");
+      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
       setLogoRetryStep(1);
     } else if (logoRetryStep === 1) {
-      setLogoSrc("https://mukeshsarees.com/home%20Page%20Images/best-saree-shop-in-nagpur-logo.webp");
+      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
       setLogoRetryStep(2);
     } else {
       setLogoError(true);
@@ -433,12 +433,12 @@ export default function Layout() {
                               className="group flex flex-row md:flex-col items-center md:items-stretch gap-4 md:gap-3 p-3 md:p-2 bg-white hover:bg-[#FAF6F0]/40 border border-[#C8A96B]/10 hover:border-gold-500 rounded-xl transition-all duration-300 shadow-[0_2px_8px_rgba(200,169,107,0.02)] hover:shadow-[0_6px_18px_rgba(200,169,107,0.06)]"
                             >
                               {/* Product Crop Frame */}
-                              <div className="w-16 h-20 md:w-full md:h-auto md:aspect-[3/4] bg-[#F9F7F5] overflow-hidden rounded-lg flex-shrink-0 border border-black/[0.02]">
+                              <div className="w-16 h-20 md:w-full md:h-auto md:aspect-[3/4] overflow-hidden rounded-lg flex-shrink-0 border border-black/[0.02] flex items-center justify-center p-0" style={{ backgroundColor: '#FAF8F5' }}>
                                 <OptimizedImage
                                   src={product.image}
                                   width={180}
                                   alt={getImageAlt(product)}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                                  className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                                 />
                               </div>
                               

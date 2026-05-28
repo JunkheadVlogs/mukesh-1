@@ -136,12 +136,12 @@ export default function Cart() {
                   key={`${item.id}-${item.size}`}
                   className="flex flex-row gap-3 sm:gap-4 md:gap-6 pb-3.5 sm:pb-6 md:pb-8 border-b border-black/5 last:border-0"
                 >
-                  <div className="w-20 sm:w-32 aspect-[3/4] flex-shrink-0 bg-white rounded-sm overflow-hidden border border-black/5 shadow-sm">
+                  <div className="w-20 sm:w-32 aspect-[3/4] flex-shrink-0 rounded-sm overflow-hidden border border-black/5 shadow-sm flex items-center justify-center p-0" style={{ backgroundColor: '#FAF8F5' }}>
                     <OptimizedImage
                       src={item.image}
                       width={400}
                       alt={getImageAlt(item)}
-                      className="w-full h-full object-cover object-top will-change-transform transform-gpu"
+                      className="w-full h-full object-contain object-center will-change-transform transform-gpu"
                     />
                   </div>
                   <div className="flex-grow flex flex-col justify-between py-0.5">

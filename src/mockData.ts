@@ -2678,12 +2678,12 @@ Upgrade your ethnic wardrobe with this elegant Red Soft Linen Saree featuring st
     slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     price: 1299,
     originalPrice: 2599,
-    image: "https://mukeshsarees.com/images/products/fendy%20white/main-image.webp",
+    image: "https://ik.imagekit.io/tus1loev9/product/fendy/mainimage.webp",
     images: [
-      "https://mukeshsarees.com/images/products/fendy%20white/main-image.webp",
-      "https://mukeshsarees.com/images/products/fendy%20white/orignal.webp",
-      "https://mukeshsarees.com/images/products/fendy%20white/back-side.webp",
-      "https://mukeshsarees.com/images/products/fendy%20white/half-pose.webp"
+      "https://ik.imagekit.io/tus1loev9/product/fendy/mainimage.webp",
+      "https://ik.imagekit.io/tus1loev9/product/fendy/halfpose.webp",
+      "https://ik.imagekit.io/tus1loev9/product/fendy/backpose.webp",
+      "https://ik.imagekit.io/tus1loev9/product/fendy/orignal.webp"
     ],
     stock: 15,
     category: "Sarees",
@@ -2692,12 +2692,12 @@ Upgrade your ethnic wardrobe with this elegant Red Soft Linen Saree featuring st
     isNew: true,
     noCareInstructions: true,
     colorVariants: [
-      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/main-image.webp" },
-      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Navy-blue.webp" },
-      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rani.webp" },
-      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/royal-blue.webp" },
-      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rust-brown.webp" },
-      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Rani-red.webp" }
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/mainimage.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/Navyblue.webp" },
+      { color: "Rani", slug: "rani-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/rani.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/royalblue.webp" },
+      { color: "Copper Brown", slug: "copper-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/copperbrown.webp" },
+      { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
 Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
@@ -2728,9 +2728,9 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
     slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     price: 1299,
     originalPrice: 2599,
-    image: "https://mukeshsarees.com/images/products/fendy%20white/Navy-blue.webp",
+    image: "https://ik.imagekit.io/tus1loev9/product/fendy/Navyblue.webp",
     images: [
-      "https://mukeshsarees.com/images/products/fendy%20white/Navy-blue.webp"
+      "https://ik.imagekit.io/tus1loev9/product/fendy/Navyblue.webp"
     ],
     stock: 15,
     category: "Sarees",
@@ -2739,12 +2739,12 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
     isVariant: true,
     noCareInstructions: true,
     colorVariants: [
-      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/main-image.webp" },
-      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Navy-blue.webp" },
-      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rani.webp" },
-      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/royal-blue.webp" },
-      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rust-brown.webp" },
-      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Rani-red.webp" }
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/mainimage.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/Navyblue.webp" },
+      { color: "Rani", slug: "rani-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/rani.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/royalblue.webp" },
+      { color: "Copper Brown", slug: "copper-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/copperbrown.webp" },
+      { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
 Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
@@ -2770,28 +2770,28 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
   {
     id: "p68",
     sku: "SAR-FND-PNK-068",
-    name: "Pink Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    name: "Rani Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
     tagline: "Bollywood Glam Look in Minutes!",
-    slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    slug: "rani-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     price: 1299,
     originalPrice: 2599,
-    image: "https://mukeshsarees.com/images/products/fendy%20white/rani.webp",
+    image: "https://ik.imagekit.io/tus1loev9/product/fendy/rani.webp",
     images: [
-      "https://mukeshsarees.com/images/products/fendy%20white/rani.webp"
+      "https://ik.imagekit.io/tus1loev9/product/fendy/rani.webp"
     ],
     stock: 15,
     category: "Sarees",
     fabric: "Premium Fendy Space Silk",
-    color: "Pink",
+    color: "Rani",
     isVariant: true,
     noCareInstructions: true,
     colorVariants: [
-      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/main-image.webp" },
-      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Navy-blue.webp" },
-      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rani.webp" },
-      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/royal-blue.webp" },
-      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rust-brown.webp" },
-      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Rani-red.webp" }
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/mainimage.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/Navyblue.webp" },
+      { color: "Rani", slug: "rani-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/rani.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/royalblue.webp" },
+      { color: "Copper Brown", slug: "copper-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/copperbrown.webp" },
+      { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
 Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
@@ -2822,9 +2822,9 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
     slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     price: 1299,
     originalPrice: 2599,
-    image: "https://mukeshsarees.com/images/products/fendy%20white/royal-blue.webp",
+    image: "https://ik.imagekit.io/tus1loev9/product/fendy/royalblue.webp",
     images: [
-      "https://mukeshsarees.com/images/products/fendy%20white/royal-blue.webp"
+      "https://ik.imagekit.io/tus1loev9/product/fendy/royalblue.webp"
     ],
     stock: 15,
     category: "Sarees",
@@ -2833,12 +2833,12 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
     isVariant: true,
     noCareInstructions: true,
     colorVariants: [
-      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/main-image.webp" },
-      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Navy-blue.webp" },
-      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rani.webp" },
-      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/royal-blue.webp" },
-      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rust-brown.webp" },
-      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Rani-red.webp" }
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/mainimage.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/Navyblue.webp" },
+      { color: "Rani", slug: "rani-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/rani.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/royalblue.webp" },
+      { color: "Copper Brown", slug: "copper-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/copperbrown.webp" },
+      { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
 Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
@@ -2864,28 +2864,28 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
   {
     id: "p70",
     sku: "SAR-FND-BRN-070",
-    name: "Rust Brown Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    name: "Copper Brown Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
     tagline: "Bollywood Glam Look in Minutes!",
-    slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    slug: "copper-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     price: 1299,
     originalPrice: 2599,
-    image: "https://mukeshsarees.com/images/products/fendy%20white/rust-brown.webp",
+    image: "https://ik.imagekit.io/tus1loev9/product/fendy/copperbrown.webp",
     images: [
-      "https://mukeshsarees.com/images/products/fendy%20white/rust-brown.webp"
+      "https://ik.imagekit.io/tus1loev9/product/fendy/copperbrown.webp"
     ],
     stock: 15,
     category: "Sarees",
     fabric: "Premium Fendy Space Silk",
-    color: "Rust Brown",
+    color: "Copper Brown",
     isVariant: true,
     noCareInstructions: true,
     colorVariants: [
-      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/main-image.webp" },
-      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Navy-blue.webp" },
-      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rani.webp" },
-      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/royal-blue.webp" },
-      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rust-brown.webp" },
-      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Rani-red.webp" }
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/mainimage.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/Navyblue.webp" },
+      { color: "Rani", slug: "rani-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/rani.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/royalblue.webp" },
+      { color: "Copper Brown", slug: "copper-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/copperbrown.webp" },
+      { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
 Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
@@ -2911,28 +2911,28 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
   {
     id: "p71",
     sku: "SAR-FND-WNE-071",
-    name: "Wine Red Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    name: "Rani Red Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
     tagline: "Bollywood Glam Look in Minutes!",
-    slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     price: 1299,
     originalPrice: 2599,
-    image: "https://mukeshsarees.com/images/products/fendy%20white/Rani-red.webp",
+    image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp",
     images: [
-      "https://mukeshsarees.com/images/products/fendy%20white/Rani-red.webp"
+      "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp"
     ],
     stock: 15,
     category: "Sarees",
     fabric: "Premium Fendy Space Silk",
-    color: "Wine Red",
+    color: "Rani Red",
     isVariant: true,
     noCareInstructions: true,
     colorVariants: [
-      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/main-image.webp" },
-      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Navy-blue.webp" },
-      { color: "Pink", slug: "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rani.webp" },
-      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/royal-blue.webp" },
-      { color: "Rust Brown", slug: "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/rust-brown.webp" },
-      { color: "Wine Red", slug: "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://mukeshsarees.com/images/products/fendy%20white/Rani-red.webp" }
+      { color: "White", slug: "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/mainimage.webp" },
+      { color: "Navy Blue", slug: "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/Navyblue.webp" },
+      { color: "Rani", slug: "rani-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/rani.webp" },
+      { color: "Royal Blue", slug: "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/royalblue.webp" },
+      { color: "Copper Brown", slug: "copper-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/copperbrown.webp" },
+      { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
 Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨

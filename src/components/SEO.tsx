@@ -86,24 +86,25 @@ export function SEO({
   // Clean the description to prevent markdown/asterisks or tags appearing in SEO/og:description tags
   const cleanDescriptionText = cleanSEOText(description);
 
-  // Default to 800 for square image presentation (ideal for WhatsApp/Instagram/Facebook crop alignment without black bars)
+  // Default to 1200x630 for landscape social card presentation (ideal for WhatsApp/Instagram/Facebook crop alignment without letterbox bars)
   const isProductType = type === "product" || type === "og:product";
-  const defaultWidth = isProductType ? "800" : "1200";
-  const defaultHeight = isProductType ? "800" : "630";
+  const defaultWidth = "1200";
+  const defaultHeight = "630";
 
   const finalImageWidth = imageWidth || defaultWidth;
   const finalImageHeight = imageHeight || defaultHeight;
 
   let displayImage = absoluteImage;
-  if (isProductType && absoluteImage) {
+  if (absoluteImage) {
     const isGoogle = absoluteImage.includes('drive.google.com') || 
                      absoluteImage.includes('googleusercontent.com') ||
                      absoluteImage.includes('drive.usercontent.google.com') ||
                      absoluteImage.includes('lh3.googleusercontent.com');
-    if (isGoogle) {
+    const isWsrv = absoluteImage.includes('wsrv.nl');
+    if (isGoogle || isWsrv) {
       displayImage = absoluteImage;
     } else {
-      displayImage = `https://wsrv.nl/?url=${encodeURIComponent(absoluteImage)}&w=800&h=800&fit=contain&bg=ffffff&output=jpg`;
+      displayImage = `https://wsrv.nl/?url=${encodeURIComponent(absoluteImage)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
     }
   }
 
@@ -122,6 +123,7 @@ export function SEO({
       <meta property="og:image" content={displayImage} />
       <meta property="og:image:width" content={finalImageWidth} />
       <meta property="og:image:height" content={finalImageHeight} />
+      <meta property="og:image:type" content="image/jpeg" />
       <meta property="og:site_name" content="Mukesh Saree Centre" />
 
       {/* Twitter */}

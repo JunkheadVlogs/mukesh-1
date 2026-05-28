@@ -758,8 +758,8 @@ export default function ProductPage() {
           {/* Gallery Section */}
           <div className="w-full lg:w-7/12 space-y-3 md:space-y-4">
             <div
-              className="bg-[#FAF8F5] lg:rounded-2xl overflow-hidden relative cursor-zoom-in group w-full flex items-center justify-center aspect-[4/5] sm:aspect-[3/4] lg:aspect-auto lg:min-h-[700px] touch-pan-y"
-              style={{ touchAction: 'pan-y pinch-zoom' }}
+              className="relative cursor-zoom-in group w-full max-w-[600px] lg:max-w-none mx-auto rounded-xl overflow-hidden flex items-center justify-center touch-pan-y"
+              style={{ touchAction: 'pan-y pinch-zoom', backgroundColor: '#FAF8F5' }}
               onClick={() => setIsLightboxOpen(true)}
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
@@ -767,11 +767,10 @@ export default function ProductPage() {
             >
               <OptimizedImage
                 src={productImages[activeImageIndex]}
-                width={1000}
-                height={1500}
+                width={800}
                 alt={getImageAlt(product)}
                 priority={true}
-                className="absolute lg:relative inset-0 w-full h-full lg:h-auto object-contain object-center transition-transform duration-700 transform-gpu group-hover:scale-[1.02] max-h-[75vh] lg:max-h-none"
+                className="w-full h-auto block transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
               />
               <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-[var(--color-bg)]/90 backdrop-blur-md text-[var(--color-dark)] text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-medium px-4 py-2 shadow-sm pointer-events-none z-10 transition-opacity rounded-sm">
                 50% OFF

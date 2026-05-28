@@ -7,34 +7,61 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getImageAlt(product: Partial<Product>) {
-  if (!product) return "Mukesh Saree Centre";
-  const parts = [];
-  if (product.color) parts.push(product.color);
-  if (product.fabric) parts.push(product.fabric);
+  if (!product) return "Exclusive Traditional Wear - Mukesh Saree Centre Nagpur";
   
-  if (product.category === 'Co-Ord Sets' && product.name?.toLowerCase().includes('suit')) {
-    parts.push('Suit');
-  } else if (product.category) {
-    if (product.category.toLowerCase() === 'co-ord sets') parts.push('Co-Ord Set');
-    else if (product.category.toLowerCase() === 'sarees') parts.push('Saree');
-    else if (product.category.toLowerCase() === 'lehengas') parts.push('Lehenga');
-    else parts.push(product.category);
-  }
-  
-  let occasion = '';
-  const desc = product.description?.toLowerCase() || '';
-  if (desc.includes('brid') || desc.includes('wedding')) occasion = 'for Wedding';
-  else if (desc.includes('festiv')) occasion = 'for Festive Wear';
-  else if (desc.includes('party')) occasion = 'for Party Wear';
-  else if (desc.includes('office') || desc.includes('work') || desc.includes('formal')) occasion = 'for Office Wear';
-  else if (desc.includes('casual') || desc.includes('daily') || desc.includes('everyday')) occasion = 'for Daily Wear';
+  const suffix = " - Mukesh Saree Centre Nagpur";
+  const maxLength = 125;
+  const maxBaseLength = maxLength - suffix.length; // 94 characters
 
-  let text = parts.join(' ').trim();
-  if (occasion) {
-    text += ` ${occasion}`;
+  const name = (product.name || "").trim();
+  const color = (product.color || "").trim();
+  const fabric = (product.fabric || "").trim();
+  const category = (product.category || "").trim();
+
+  let base = "";
+  const parts: string[] = [];
+
+  // Start with Color if available and not already in name
+  if (color && !name.toLowerCase().includes(color.toLowerCase())) {
+    parts.push(color);
+  }
+
+  // Add Fabric type if available and not already in name
+  if (fabric && !name.toLowerCase().includes(fabric.toLowerCase())) {
+    parts.push(fabric);
+  }
+
+  // Add Category if name doesn't already contain it, or name doesn't contain category singulars
+  let categoryDisplay = category;
+  if (category.toLowerCase() === "sarees") {
+    categoryDisplay = "Saree";
+  } else if (category.toLowerCase() === "co-ord sets") {
+    categoryDisplay = "Co-Ord Set";
+  } else if (category.toLowerCase() === "lehengas") {
+    categoryDisplay = "Lehenga";
+  }
+
+  // Let's make sure the name is cleanly formatted and included
+  parts.push(name);
+
+  base = parts.join(" ").replace(/\s+/g, " ").trim();
+  
+  if (!base) {
+    base = [color, fabric, categoryDisplay].filter(Boolean).join(" ").trim();
   }
   
-  return text ? `${text} — Mukesh Saree Centre` : `${product.name} — Mukesh Saree Centre`;
+  if (!base) {
+    base = "Exclusive Elegant Traditional Wear";
+  }
+
+  // Ensure base length fits under maxBaseLength
+  if (base.length > maxBaseLength) {
+    base = base.substring(0, maxBaseLength).trim();
+    // remove any trailing comma/space/dash
+    base = base.replace(/[\s,\-_|]+$/, "");
+  }
+
+  return base + suffix;
 }
 
 export function formatPrice(price: number) {
@@ -139,7 +166,7 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
       // Use wsrv.nl to dynamically compress and resize the Google Drive target image.
       // export=view is highly reliable, and wsrv.nl creates highly optimized, small webp/jpg files with CDN caching.
       const outputFormat = format === 'jpg' ? 'jpg' : 'webp';
-      return `https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&fit=contain&output=${outputFormat}`;
+      return `https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&output=${outputFormat}&q=85`;
     }
     
     // Safety guarantee: Do not let any Google URL fall through to the wsrv.nl proxy block

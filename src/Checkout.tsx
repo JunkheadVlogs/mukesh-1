@@ -366,7 +366,7 @@ export default function Checkout() {
               currency: order.currency || 'INR',
               name: 'Mukesh Saree Centre',
               description: orderDetails.items[0]?.name || 'Luxury Saree Order',
-              image: 'https://mukeshsarees.com/images/logo.webp',
+              image: 'https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217',
               order_id: order.orderId || order.id,         // REQUIRED — from server
               prefill: {
                 name: orderDetails.customer.name,
@@ -847,12 +847,12 @@ export default function Checkout() {
                       key={`${item.id}-${item.size}`}
                       className="flex gap-2.5 sm:gap-4 items-center"
                     >
-                      <div className="w-[56px] h-[72px] sm:w-16 sm:h-20 bg-primary-50 rounded-sm relative overflow-hidden flex-shrink-0 border border-black/5">
+                      <div className="w-[56px] h-[72px] sm:w-16 sm:h-20 rounded-sm relative overflow-hidden flex-shrink-0 border border-black/5 flex items-center justify-center p-0" style={{ backgroundColor: '#FAF8F5' }}>
                         <OptimizedImage
                           src={item.image}
                           alt={getImageAlt(item)}
                           width={200}
-                          className="w-full h-full object-cover object-top will-change-transform transform-gpu"
+                          className="w-full h-full object-contain object-center will-change-transform transform-gpu"
                         />
                         <div className="absolute top-1 right-1 bg-gold-500 text-white text-[9px] w-4.5 h-4.5 sm:w-5 sm:h-5 flex items-center justify-center rounded-full font-bold shadow-sm">
                           {item.quantity}
