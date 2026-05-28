@@ -44,7 +44,7 @@ export default function Contact() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <SEO 
           title="Contact Us | Mukesh Saree Centre" 
-          description="Need assistance? Reach out to Mukesh Saree Centre. Our team is here to help with your orders, product inquiries, or general feedback. Get in touch now." 
+          description="Contact Mukesh Saree Centre, Gandhibagh Nagpur. Call +91 7020664641. Open 11:30AM–9:30PM (closed Mondays). Bridal saree bookings, custom orders welcome." 
           url="/contact"
         />
         

@@ -8,7 +8,7 @@ export default function ReturnPolicy() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         <SEO 
           title="Returns & Exchanges | Mukesh Saree Centre" 
-          description="Review our policies for complimentary returns and exchanges on luxury ethnic wear at Mukesh Saree Centre." 
+          description="Mukesh Saree Centre return policy — 7-day returns on all products. Refund via UPI/Bank Transfer within 3-5 business days. Easy hassle-free process." 
           url="/return-policy"
         />
         

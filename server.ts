@@ -719,13 +719,33 @@ try {
   console.log("Could not load products-meta.json for OG tags", e);
 }
 
+const getWhatsAppSafeServerImageUrl = (imageUrl) => {
+  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  if (imageUrl.includes('cloudinary.com') || imageUrl.includes('mukeshsarees.com/images')) {
+    return imageUrl;
+  }
+  const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
+  if (driveIdMatch) {
+    const fileId = driveIdMatch[1];
+    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+  }
+  if (imageUrl.includes('lh3.googleusercontent.com')) {
+    const cleanUrl = imageUrl.split('=')[0];
+    return `${cleanUrl}=w1200-h630`;
+  }
+  if (imageUrl.includes('wsrv.nl') || imageUrl.includes('drive.google.com')) {
+    return imageUrl.replace('output=webp', 'output=jpg').replace('w=600', 'w=1200').replace('w=800', 'w=1200');
+  }
+  return imageUrl;
+};
+
 const injectOGTags = (html, reqPath, originalUrl) => {
   let ogTitle = "Mukesh Saree Centre – Premium Silk Sarees Since 1978";
-  let ogDesc = "Shop luxury silk sarees and co-ord sets at Mukesh Saree Centre. Premium fabrics, trusted since 1978.";
+  let ogDesc = "Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles.";
   
-  const defaultBannerUrl = "https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469";
+  const defaultBannerUrl = "https://mukeshsarees.com/images/og-home.jpg";
   // Fallback banner optimized to 1200x630 landscape JPG for standard page sharing
-  let ogImg = `https://wsrv.nl/?url=${encodeURIComponent(defaultBannerUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
+  let ogImg = defaultBannerUrl;
   let ogUrl = "https://mukeshsarees.com" + originalUrl;
   let price = "";
   let isProduct = false;
@@ -736,38 +756,24 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     const prod = preParsedProducts.find(p => p.slug && p.slug.trim().toLowerCase() === slug);
     if (prod) {
       ogTitle = prod.name;
-      // Format description specifically for WhatsApp with Price and Branding first, as requested
       const baseDesc = (prod.description || "").replace(/<[^>]*>?/gm, '').trim();
-      ogDesc = `₹${prod.price || "999"} | Mukesh Saree Centre\n\n${baseDesc}`;
-      if (ogDesc.length > 200) {
-        ogDesc = ogDesc.substring(0, 197) + "...";
-      }
-
+      ogDesc = `₹${prod.price || "999"} | ${prod.name} — ${baseDesc.slice(0, 120)}... COD available. Free shipping. Shop at Mukesh Saree Centre, Nagpur since 1978.`;
+ 
       // Convert Google Drive or local product images to a beautiful landscape cover image
-      const rawProdImg = prod.image || defaultBannerUrl;
-      ogImg = `https://wsrv.nl/?url=${encodeURIComponent(rawProdImg)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
+      ogImg = getWhatsAppSafeServerImageUrl(prod.image || defaultBannerUrl);
       price = prod.price || "0";
       isProduct = true;
     }
   } else if (reqPath.startsWith('/shop')) {
-    const categoryMatch = originalUrl.match(/[?&]category=([^&]+)/);
-    const category = categoryMatch ? decodeURIComponent(categoryMatch[1]) : "";
-    if (category) {
-      ogTitle = `Buy ${category} Online — Mukesh Saree Centre`;
-      ogDesc = `Explore our collection of 100+ handpicked ${category.toLowerCase()} — Banarasi silk, pure cotton, georgette, and designer wear. COD available. Free shipping.`;
-      
-      const categoryOgImages = {
-        'Sarees': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
-        'Linen Sarees': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
-        'Co-Ord Sets': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
-        'Lehengas': 'https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691'
-      };
-      const catImg = categoryOgImages[category] || defaultBannerUrl;
-      ogImg = `https://wsrv.nl/?url=${encodeURIComponent(catImg)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
-    } else {
-      ogTitle = "Shop Our Collection — Mukesh Saree Centre";
-      ogDesc = "Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre Nagpur. Cash on Delivery (COD) and free shipping available.";
-    }
+    ogTitle = "Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre";
+    ogDesc = "Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978.";
+    ogImg = defaultBannerUrl;
+  } else if (reqPath.startsWith('/contact')) {
+    ogTitle = "Contact Us";
+    ogDesc = "Contact Mukesh Saree Centre, Gandhibagh Nagpur. Call +91 7020664641. Open 11:30AM–9:30PM (closed Mondays). Bridal saree bookings, custom orders welcome.";
+  } else if (reqPath.startsWith('/return-policy')) {
+    ogTitle = "Returns & Exchanges";
+    ogDesc = "Mukesh Saree Centre return policy — 7-day returns on all products. Refund via UPI/Bank Transfer within 3-5 business days. Easy hassle-free process.";
   }
 
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;

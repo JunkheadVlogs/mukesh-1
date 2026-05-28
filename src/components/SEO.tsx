@@ -71,7 +71,7 @@ export function cleanSEOText(text: string): string {
 export function SEO({
   title,
   description,
-  image = "https://mukeshsarees.com/images/og-homepage.jpg",
+  image = "https://mukeshsarees.com/images/og-home.jpg",
   url = "https://mukeshsarees.com",
   type = "website",
   product,

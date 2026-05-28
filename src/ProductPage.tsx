@@ -46,6 +46,71 @@ import {
 import { ProductReviews } from "./components/ProductReviews";
 import { TrustBadges } from "./components/TrustBadges";
 
+const getImageSrc = (rawImageUrl: any): string => {
+  if (!rawImageUrl) return '';
+  let url = String(rawImageUrl);
+  // If image URL already contains wsrv.nl parameters, strip them first
+  if (url.includes('wsrv.nl')) {
+    try {
+      const parsedUrl = new URL(url);
+      const urlParam = parsedUrl.searchParams.get('url');
+      if (urlParam) {
+        url = urlParam;
+      }
+    } catch (e) {
+      const match = url.match(/[?&]url=([^&]+)/);
+      if (match && match[1]) {
+        url = decodeURIComponent(match[1]);
+      }
+    }
+  }
+
+  // Then rebuild like this:
+  // For ImageKit images — use directly with webp conversion
+  if (url.includes('imagekit.io') || url.includes('ik.imagekit')) {
+    return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&output=webp&q=85`;
+  }
+  // For Google Drive thumbnail images — NO fit parameter
+  if (url.includes('drive.google.com')) {
+    const driveId = url.match(/id=([^&]+)/)?.[1];
+    return `https://wsrv.nl/?url=${encodeURIComponent(`https://drive.google.com/thumbnail?id=${driveId}&sz=w800`)}&w=800&output=webp&q=85`;
+  }
+  // Fallback
+  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&output=webp&q=85`;
+};
+
+const getWhatsAppSafeImageUrl = (imageUrl: string | undefined): string => {
+  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  
+  // If already a clean URL (Cloudinary, direct hosting), use as-is
+  if (imageUrl.includes('cloudinary.com') || imageUrl.includes('mukeshsarees.com/images')) {
+    return imageUrl;
+  }
+  
+  // For Google Drive URLs — extract the file ID and use the direct export URL
+  // Direct export URLs work better for WhatsApp crawlers than thumbnail URLs
+  const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
+  if (driveIdMatch) {
+    const fileId = driveIdMatch[1];
+    // Use the direct download/view URL format which WhatsApp handles better:
+    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+  }
+  
+  // For lh3.googleusercontent.com URLs (already processed Drive images)
+  if (imageUrl.includes('lh3.googleusercontent.com')) {
+    // These can be resized by appending =w1200-h630 at the end
+    const cleanUrl = imageUrl.split('=')[0]; // remove any existing size params
+    return `${cleanUrl}=w1200-h630`;
+  }
+  
+  // Fallback to wsrv with better params for WhatsApp
+  if (imageUrl.includes('wsrv.nl') || imageUrl.includes('drive.google.com')) {
+    return imageUrl.replace('output=webp', 'output=jpg').replace('w=600', 'w=1200').replace('w=800', 'w=1200');
+  }
+  
+  return imageUrl;
+};
+
 export default function ProductPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -105,6 +170,20 @@ export default function ProductPage() {
   const isCoOrdSet = product ? (product.category === "Co-Ord Sets" || product.category.toLowerCase().includes("co-ord")) : false;
   const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Free Size'].filter(s => !(isCoOrdSet && s === 'Free Size'));
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [form, setForm] = useState<{ name: string; phone: string; address: string; size: string | null }>({
+    name: '',
+    phone: '',
+    address: '',
+    size: null
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    setForm(prev => ({ ...prev, size: selectedSize }));
+  }, [selectedSize]);
+
   const [isAdded, setIsAdded] = useState(false);
   const [showAddedToast, setShowAddedToast] = useState<{
     visible: boolean;
@@ -283,12 +362,7 @@ export default function ProductPage() {
     }
 
     setSizeError(false);
-    
-    // Add product to cart with selected size and quantity
-    addToCart(product, isSaree ? undefined : (selectedSize || undefined), quantity);
-    
-    // Navigate straight to the cart page
-    navigate("/cart");
+    setShowCheckout(true);
   };
 
   const handleBuyNowPayment = async (method: "online" | "cod") => {
@@ -701,11 +775,17 @@ export default function ProductPage() {
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+        <meta property="og:image" content={getWhatsAppSafeImageUrl(product.image)} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:secure_url" content={getWhatsAppSafeImageUrl(product.image)} />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta name="twitter:image" content={getWhatsAppSafeImageUrl(product.image)} />
       </Helmet>
       <SEO
         title={`${product.color} ${product.fabric} ${product.category} — Buy Online at ₹${product.price} | Mukesh Saree Centre`}
-        description={cleanDescriptionForOG(product.description) + '. COD available. Free shipping ₹999+.'}
-        image={product.image}
+        description={`₹${product.price} | ${product.name} — ${product.description.slice(0, 120)}... COD available. Free shipping. Shop at Mukesh Saree Centre, Nagpur since 1978.`}
+        image={getWhatsAppSafeImageUrl(product.image)}
         url={`/product/${product.slug}`}
         type="og:product"
         product={{
@@ -758,19 +838,29 @@ export default function ProductPage() {
           {/* Gallery Section */}
           <div className="w-full lg:w-7/12 space-y-3 md:space-y-4">
             <div
-              className="relative cursor-zoom-in group w-full max-w-[600px] lg:max-w-none mx-auto rounded-xl overflow-hidden flex items-center justify-center touch-pan-y"
-              style={{ touchAction: 'pan-y pinch-zoom', backgroundColor: '#FAF8F5' }}
+              className="relative cursor-zoom-in group mx-auto touch-pan-y"
+              style={{
+                touchAction: 'pan-y pinch-zoom',
+                width: '100%',
+                backgroundColor: '#f5f0e8',
+                borderRadius: '12px',
+                overflow: 'hidden'
+              }}
               onClick={() => setIsLightboxOpen(true)}
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
             >
-              <OptimizedImage
-                src={productImages[activeImageIndex]}
-                width={800}
+              <img
+                src={getImageSrc(productImages[activeImageIndex])}
                 alt={getImageAlt(product)}
-                priority={true}
-                className="w-full h-auto block transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  objectFit: 'contain'
+                }}
+                className="transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
               />
               <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-[var(--color-bg)]/90 backdrop-blur-md text-[var(--color-dark)] text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-medium px-4 py-2 shadow-sm pointer-events-none z-10 transition-opacity rounded-sm">
                 50% OFF
@@ -1128,7 +1218,7 @@ export default function ProductPage() {
                       data-action="buy-now"
                       id="buy-now"
                     >
-                      Buy Now
+                      Buy Now — COD Available 🛍️
                     </button>
                   </div>
 
@@ -1213,12 +1303,12 @@ export default function ProductPage() {
                 return scoreB - scoreA;
               })
               .slice(0, 8)
-              .map((p) => (
+              .map((p, index) => (
                 <div
                   key={p.id}
                   className="w-full"
                 >
-                  <ProductCard product={p} />
+                  <ProductCard product={p} priority={index < 4} />
                 </div>
               ))}
           </div>
@@ -1515,7 +1605,7 @@ export default function ProductPage() {
                 onClick={handleBuyNow}
                 className="flex-[1.2] bg-[var(--color-dark)] border border-[var(--color-dark)] rounded-sm text-white text-[10px] sm:text-[11px] uppercase tracking-[0.12em] font-medium active:opacity-90 transition-opacity min-w-0 shadow-sm"
               >
-                Buy Now
+                Buy Now — COD 🛍️
               </button>
             )}
           </div>
@@ -1864,6 +1954,78 @@ export default function ProductPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {showCheckout && (
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.7)',zIndex:9999,
+          display:'flex',alignItems:'flex-end'}} onClick={()=>setShowCheckout(false)}>
+          <div style={{background:'#fff',width:'100%',borderRadius:'20px 20px 0 0',
+            padding:'24px 20px 40px', maxWidth:'500px', margin:'0 auto', position:'relative', fontFamily:'sans-serif'}} onClick={e=>e.stopPropagation()}>
+            
+            {/* Small drag bar to look like native bottom sheet */}
+            <div style={{ width: '40px', height: '4px', background: '#e0e0e0', borderRadius: '2px', margin: '0 auto 16px', cursor: 'pointer' }} onClick={() => setShowCheckout(false)} />
+            
+            {/* Close button */}
+            <button onClick={() => setShowCheckout(false)} style={{ position: 'absolute', right: '20px', top: '20px', border: 'none', background: 'none', fontSize: '20px', cursor: 'pointer', color: '#888' }}>✕</button>
+
+            {submitted ? (
+              <div style={{textAlign:'center',padding:'20px 0'}}>
+                <div style={{fontSize:'48px'}}>✅</div>
+                <h3 style={{ fontFamily: 'serif', fontSize: '20px', color: '#1A0A00', marginTop: '12px' }}>Order Placed!</h3>
+                <p style={{ color: '#555', fontSize: '14px', marginTop: '8px' }}>We'll call you within 24 hours to confirm your COD order.</p>
+              </div>
+            ) : (
+              <>
+                <h3 style={{marginBottom:'16px', fontFamily: 'serif', fontSize: '18px', color: '#1A0A00', paddingRight: '24px'}}>Place COD Order — {product?.name}</h3>
+                <p style={{color:'#c8960a',fontWeight:'700',marginBottom:'16px', fontSize: '15px'}}>
+                  ₹{finalPrice} — Cash on Delivery
+                </p>
+                <input placeholder="Full Name *" value={form.name}
+                  onChange={e=>setForm({...form,name:e.target.value})}
+                  style={{width:'100%',padding:'12px',border:'1px solid #ddd',
+                    borderRadius:'8px',marginBottom:'12px',fontSize:'14px', outline: 'none'}} />
+                <input placeholder="WhatsApp Number * (10 digits)" 
+                  value={form.phone} type="tel"
+                  onChange={e=>setForm({...form,phone:e.target.value.replace(/\D/g,'').slice(0,10)})}
+                  style={{width:'100%',padding:'12px',border:'1px solid #ddd',
+                    borderRadius:'8px',marginBottom:'12px',fontSize:'14px', outline: 'none'}} />
+                <input placeholder="Delivery Address *"
+                  value={form.address||''}
+                  onChange={e=>setForm({...form,address:e.target.value})}
+                  style={{width:'100%',padding:'12px',border:'1px solid #ddd',
+                    borderRadius:'8px',marginBottom:'16px',fontSize:'14px', outline: 'none'}} />
+                <button disabled={submitting}
+                  onClick={async()=>{
+                    if(!form.name.trim()||!form.phone.trim()||!form.address.trim()) return alert('Fill all fields')
+                    if(form.phone.trim().length !== 10) return alert('Enter a valid 10-digit phone number')
+                    setSubmitting(true)
+                    try {
+                      await fetch(import.meta.env.VITE_SHEETS_WEBHOOK_URL || '', {
+                        method:'POST', mode:'no-cors',
+                        headers:{'Content-Type':'application/json'},
+                        body: JSON.stringify({
+                          name: form.name, phone: form.phone,
+                          address: form.address, size: selectedSize || 'Standard',
+                          product: product?.name, amount: finalPrice,
+                          type: 'COD_ORDER',
+                          timestamp: new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})
+                        })
+                      });
+                    } catch (err) {
+                      console.error("Sheets webhook failed:", err);
+                    }
+                    setSubmitting(false)
+                    setSubmitted(true)
+                  }}
+                  style={{width:'100%',background:'#1A0A00',color:'#f0b429',
+                    padding:'14px',borderRadius:'8px',fontWeight:'700',
+                    fontSize:'15px',border:'none',cursor:'pointer'}}>
+                  {submitting ? 'Placing Order...' : 'Confirm COD Order →'}
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

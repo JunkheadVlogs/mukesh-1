@@ -548,7 +548,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
   {
     id: "p16",
     sku: "CRD-COT-PNK-001",
-    name: "Soft Blush Pink Cotton Co-Ord Set Embroidered",
+    name: "Soft Blush Pink Co-Ord Set — Delicate Floral Embroidery",
     tagline: "Subtle Elegance & Everyday Comfort",
     slug: "soft-blush-pink-cotton-coord-set-delicate-embroidery",
     price: 999,
@@ -597,7 +597,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
   {
     id: "p17",
     sku: "CRD-COT-PNK-002",
-    name: "Soft Blush Pink Cotton Co-Ord Set Embroidered",
+    name: "Soft Blush Pink Co-Ord Set — Multicolor Embroidery",
     tagline: "Vibrant Charm & Everyday Comfort",
     slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery",
     price: 999,
@@ -647,7 +647,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
   {
     id: "p18",
     sku: "CRD-COT-PNK-003",
-    name: "Soft Blush Pink Cotton Co-Ord Set Embroidered",
+    name: "Soft Blush Pink Co-Ord Set — Multicolor Embroidery Vol. 2",
     tagline: "Vibrant Detailing & Premium Comfort",
     slug: "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2",
     price: 999,
@@ -924,7 +924,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
   {
     id: "p24",
     sku: "SAR-GEO-GRN-002",
-    name: "Elegant Green Georgette Saree",
+    name: "Elegant Green Georgette Saree — Pink Foil Border",
     slug: "elegant-green-georgette-saree-foil-design-pink-border",
     price: 749,
     originalPrice: 1499,

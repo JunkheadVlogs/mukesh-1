@@ -199,7 +199,7 @@ export default function Wishlist() {
                   className="group"
                 >
                   <div className="relative group" key={product.id}>
-                    <ProductCard product={product} />
+                    <ProductCard product={product} priority={idx < 4} />
                     {!isSharedView && (
                       <button
                         onClick={() => toggleWishlist(product.id)}

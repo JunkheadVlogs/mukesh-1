@@ -20,6 +20,35 @@ function cleanDescriptionForPrerender(rawDesc: string): string {
   return text.trim();
 }
 
+function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string {
+  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  
+  // If already a clean URL (Cloudinary, direct hosting), use as-is
+  if (imageUrl.includes('cloudinary.com') || imageUrl.includes('mukeshsarees.com/images')) {
+    return imageUrl;
+  }
+  
+  // For Google Drive URLs — extract the file ID and use the direct export URL
+  const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
+  if (driveIdMatch) {
+    const fileId = driveIdMatch[1];
+    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+  }
+  
+  // For lh3.googleusercontent.com URLs
+  if (imageUrl.includes('lh3.googleusercontent.com')) {
+    const cleanUrl = imageUrl.split('=')[0];
+    return `${cleanUrl}=w1200-h630`;
+  }
+  
+  // Fallback to wsrv with better params for WhatsApp
+  if (imageUrl.includes('wsrv.nl') || imageUrl.includes('drive.google.com')) {
+    return imageUrl.replace('output=webp', 'output=jpg').replace('w=600', 'w=1200').replace('w=800', 'w=11200' /* fixed */).replace('w=11200', 'w=1200');
+  }
+  
+  return imageUrl;
+}
+
 function sanitize(text: string): string {
   if (!text) return "";
   return text
@@ -169,7 +198,7 @@ async function runPrerender() {
     "name": "Mukesh Saree Centre",
     "url": "https://mukeshsarees.com",
     "logo": "https://mukeshsarees.com/images/logo.webp",
-    "description": "Premium luxury sarees and co-ord sets online from Nagpur since 1978. Authentic fabric collections, Cash on Delivery, free shipping across India.",
+    "description": "Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles.",
     "foundingDate": "1978",
     "address": {
       "@type": "PostalAddress",
@@ -258,8 +287,8 @@ async function runPrerender() {
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
   const homeOgTags = `<!-- Dynamic OG Tags -->
   <meta property="og:title" content="Mukesh Saree Centre — Premium Indian Ethnic Wear Since 1978" />
-  <meta property="og:description" content="Shop premium luxury sarees and co-ord sets online from Nagpur since 1978. Authentic fabric collections, Cash on Delivery, free shipping across India." />
-  <meta property="og:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+  <meta property="og:description" content="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles." />
+  <meta property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
   <meta property="og:url" content="https://mukeshsarees.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Mukesh Saree Centre" />
@@ -268,8 +297,8 @@ async function runPrerender() {
   <meta property="og:image:type" content="image/jpeg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mukesh Saree Centre — Premium Indian Ethnic Wear Since 1978" />
-  <meta name="twitter:description" content="Shop premium luxury sarees and co-ord sets online from Nagpur since 1978." />
-  <meta name="twitter:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+  <meta name="twitter:description" content="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles." />
+  <meta name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
   <link rel="canonical" href="https://mukeshsarees.com/" />
   <!-- End Dynamic OG Tags -->`;
 
@@ -287,7 +316,7 @@ async function runPrerender() {
     "@type": "CollectionPage",
     "name": "Shop Premium Indian Ethnic Wear — Mukesh Saree Centre",
     "url": "https://mukeshsarees.com/shop",
-    "description": "Explore our full catalog of silk sarees, high-density linen drapes, luxury co-ord sets, and wedding lehengas at Mukesh Saree Centre.",
+    "description": "Browse 100+ premium sarees, linen sarees and cotton co-ord sets at Mukesh Saree Centre. All at 50% OFF. Cash on Delivery available across India.",
     "breadcrumb": {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -331,13 +360,13 @@ async function runPrerender() {
     .replace(/<title>.*?<\/title>/, "<title>Shop Premium Indian Ethnic Ensembles | Mukesh Saree Centre</title>")
     .replace(
       /<meta name="description" content=".*?"\s*\/>/,
-      `<meta name="description" content="Shop luxury Banarasi silk sarees, premium georgette, and linen co-ord sets on the Mukesh Saree Centre catalog. Secure Cash on Delivery nationwide." />`
+      `<meta name="description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978." />`
     );
 
   const shopOgTags = `<!-- Dynamic OG Tags -->
-    <meta property="og:title" content="Shop Our Collection — Mukesh Saree Centre" />
-    <meta property="og:description" content="Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre Nagpur. Cash on Delivery (COD) and free shipping available." />
-    <meta property="og:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+    <meta property="og:title" content="Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre" />
+    <meta property="og:description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978." />
+    <meta property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
     <meta property="og:url" content="https://mukeshsarees.com/shop" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
@@ -345,9 +374,9 @@ async function runPrerender() {
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Shop Our Collection — Mukesh Saree Centre" />
-    <meta name="twitter:description" content="Browse the latest trends in sarees and co-ord sets at Mukesh Saree Centre Nagpur." />
-    <meta name="twitter:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+    <meta name="twitter:title" content="Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre" />
+    <meta name="twitter:description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978." />
+    <meta name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
     <link rel="canonical" href="https://mukeshsarees.com/shop" />
     <!-- End Dynamic OG Tags -->`;
 
@@ -505,19 +534,19 @@ async function runPrerender() {
       </div>
     `;
 
+    const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
+    const wsrvImgLandscape = getWhatsAppSafePrerenderImageUrl(p.image);
+    const cleanDesc = cleanDescriptionForPrerender(p.description || "");
+    const prodDesc = `₹${p.price} | ${p.name} — ${cleanDesc.slice(0, 120)}... COD available. Free shipping. Shop at Mukesh Saree Centre, Nagpur since 1978.`;
+    
     let prodHtml = baseHtml
       .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${productBody}</div>`)
       .replace(/<title>.*?<\/title>/, `<title>${sanitize(p.name)} | Buy Online at ₹${p.price} — Mukesh Saree Centre</title>`)
       .replace(
         /<meta name="description" content=".*?"\s*\/>/,
-        `<meta name="description" content="Shop ${sanitize(p.name)} online at Mukesh Saree Centre. Priced at ₹${p.price}. Highest quality ${sanitize(p.fabric || "textile")}, cash on delivery available across India." />`
+        `<meta name="description" content="${sanitize(prodDesc)}" />`
       );
 
-    const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
-    const wsrvImgLandscape = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
-    const cleanDesc = cleanDescriptionForPrerender(p.description || "");
-    const prodDesc = `₹${p.price || "999"} | Mukesh Saree Centre — ${cleanDesc}`.substring(0, 197) + "...";
-    
     const dynamicTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="${sanitize(p.name)} | Mukesh Saree Centre" />
     <meta property="og:description" content="${sanitize(prodDesc)}" />
@@ -554,7 +583,7 @@ async function runPrerender() {
     {
       dir: "contact",
       title: "Contact Boutique — Mukesh Saree Centre, Gandhibagh, Nagpur",
-      desc: "Get in touch with Mukesh Saree Centre. Located in Gandhibagh, Nagpur. Phone: +91 7020664641. Premium customer support for sales, custom requests, and order inquiries.",
+      desc: "Contact Mukesh Saree Centre, Gandhibagh Nagpur. Call +91 7020664641. Open 11:30AM–9:30PM (closed Mondays). Bridal saree bookings, custom orders welcome.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
@@ -612,7 +641,7 @@ async function runPrerender() {
     {
       dir: "return-policy",
       title: "Returns & Refund Policy — Mukesh Saree Centre",
-      desc: "Understand our return criteria. We strive for total satisfaction with our handpicked sarees, co-ord sets, and designer outfits.",
+      desc: "Mukesh Saree Centre return policy — 7-day returns on all products. Refund via UPI/Bank Transfer within 3-5 business days. Easy hassle-free process.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
@@ -673,7 +702,7 @@ async function runPrerender() {
     const pageOgTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="${page.title}" />
     <meta property="og:description" content="${page.desc}" />
-    <meta property="og:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+    <meta property="og:image" content="https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
     <meta property="og:url" content="https://mukeshsarees.com/${page.dir}" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
@@ -683,7 +712,7 @@ async function runPrerender() {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${page.title}" />
     <meta name="twitter:description" content="${page.desc}" />
-    <meta name="twitter:image" content="https://wsrv.nl/?url=${encodeURIComponent("https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469")}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+    <meta name="twitter:image" content="https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
     <link rel="canonical" href="https://mukeshsarees.com/${page.dir}" />
     <!-- End Dynamic OG Tags -->`;
 

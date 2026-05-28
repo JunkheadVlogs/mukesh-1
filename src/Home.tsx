@@ -245,7 +245,8 @@ export default function Home() {
     <div className="flex flex-col">
       <SEO
         title="Mukesh Saree Centre — Buy Sarees, Lehengas & Ethnic Wear Online | Since 1978"
-        description="Shop premium Indian ethnic wear at Mukesh Saree Centre, Nagpur. Authentic sarees, designer lehengas, readymade suits. COD available. Free shipping on all orders. Trusted since 1978."
+        description="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles."
+        image="https://mukeshsarees.com/images/og-home.jpg"
         url="/"
         schema={{
           "@context": "https://schema.org",
@@ -471,8 +472,8 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-4 md:gap-8 w-full mx-auto">
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
-              : trendingProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+              : trendingProducts.map((product, index) => (
+                  <ProductCard key={product.id} product={product} priority={index < 4} />
                 ))}
           </div>
           <div className="text-center mt-3 md:mt-4">
@@ -567,8 +568,8 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-4 md:gap-8 w-full mx-auto">
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
-              : newArrivals.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+              : newArrivals.map((product, index) => (
+                  <ProductCard key={product.id} product={product} priority={index < 4} />
                 ))}
           </div>
           <div className="text-center mt-4 md:mt-6">

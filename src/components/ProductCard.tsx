@@ -15,12 +15,14 @@ import { OptimizedImage } from "./OptimizedImage";
 interface ProductCardProps {
   product: Product;
   idx?: number;
+  priority?: boolean;
   onQuickView?: (product: Product) => void;
 }
 
 export function ProductCard({
   product,
   idx = 0,
+  priority = false,
   onQuickView,
 }: ProductCardProps) {
   const [isAdded, setIsAdded] = useState(false);
@@ -64,12 +66,13 @@ export function ProductCard({
         <Link to={`/product/${product.slug}`} className="block h-full w-full">
           <OptimizedImage
             src={product.image}
-            width={idx < 4 ? 400 : 300}
+            width={400}
+            height={500}
             srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w`}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             alt={getImageAlt(product)}
-            priority={false}
-            loading="lazy"
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
             decoding="async"
             className="w-full h-full object-contain object-center transform-gpu transition-all duration-700 ease-out group-hover:scale-105"
           />

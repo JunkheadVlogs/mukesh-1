@@ -224,6 +224,8 @@ export function OptimizedImage({
   srcSet, 
   sizes, 
   priority = false, 
+  loading,
+  decoding,
   onError, 
   ...props 
 }: OptimizedImageProps) {
@@ -326,10 +328,10 @@ export function OptimizedImage({
         width={width}
         height={calculatedHeight}
         className={`${className || ''}`}
-        loading={priority ? undefined : "lazy"}
+        loading={loading !== undefined ? loading : (priority ? undefined : "lazy")}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"
-        decoding={priority ? "sync" : "async"}
+        decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}
         style={{ background: '#F5F0E8', objectFit: 'cover', ...(props.style || {}) }}
         onError={handleImageError}
         {...props}
@@ -367,10 +369,10 @@ export function OptimizedImage({
         width={width}
         height={calculatedHeight}
         className={`${className || ''}`}
-        loading={priority ? undefined : "lazy"}
+        loading={loading !== undefined ? loading : (priority ? undefined : "lazy")}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"
-        decoding={priority ? "sync" : "async"}
+        decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}
         style={{ background: '#F5F0E8', objectFit: 'cover', ...(props.style || {}) }}
         onError={handleImageError}
         {...props}

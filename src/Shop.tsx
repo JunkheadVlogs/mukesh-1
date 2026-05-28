@@ -212,7 +212,7 @@ export default function Shop() {
     "Linen Sarees": "https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790",
     "Co-Ord Sets": "https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090",
     "Lehengas": "https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691",
-    "default": "https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469",
+    "default": "https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85",
   };
 
   const activeCategory = categoryFilter || "default";
@@ -221,17 +221,9 @@ export default function Shop() {
   return (
     <div className="bg-[var(--color-bg)]">
       <SEO
-        title={
-          categoryFilter
-            ? `Buy ${categoryFilter} Online — Silk, Banarasi, Georgette, Cotton | Mukesh Saree Centre`
-            : `Buy Sarees Online — Silk, Banarasi, Georgette, Cotton Sarees | Mukesh Saree Centre`
-        }
-        description={
-          categoryFilter
-            ? `Explore our collection of 100+ handpicked ${categoryFilter.toLowerCase()} — Banarasi silk, pure cotton, georgette, and designer wear. COD available. Free shipping. Shop at Mukesh Saree Centre.`
-            : `Explore our collection of 100+ handpicked sarees — Banarasi silk, pure cotton, georgette, and designer sarees. COD available. Free shipping. Shop at Mukesh Saree Centre.`
-        }
-        image={ogImageUrl}
+        title="Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre"
+        description="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978."
+        image="https://mukeshsarees.com/images/og-home.jpg"
         url={
           searchQuery
             ? `/shop?search=${encodeURIComponent(searchQuery)}`
@@ -431,6 +423,7 @@ export default function Shop() {
                     <ProductCard
                       key={product.id}
                       idx={idx}
+                      priority={idx < 4}
                       product={product}
                       onQuickView={setQuickViewProduct}
                     />
@@ -482,9 +475,11 @@ export default function Shop() {
                     {products
                       .filter((p) => !p.isVariant && (p.isBestSelling || p.isTrending || p.isNew))
                       .slice(0, 4)
-                      .map((product) => (
+                      .map((product, idx) => (
                         <ProductCard
                           key={product.id}
+                          idx={idx}
+                          priority={idx < 4}
                           product={product}
                           onQuickView={setQuickViewProduct}
                         />
