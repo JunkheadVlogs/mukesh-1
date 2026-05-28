@@ -160,13 +160,29 @@
       const SHEET_URL = "https://script.google.com/macros/s/AKfycbzlyTIEbgAvjptwh6SRVYC2mzqUnjs9J_qhgTuM5sBXwWM6JMl9-cCCGiGyOGeEt_o/exec";
       const COOLDOWN_HOURS = 24;
 
+      const memoryFallback = {};
+      function safeGetItem(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (e) {
+          return memoryFallback[key] || null;
+        }
+      }
+      function safeSetItem(key, val) {
+        try {
+          localStorage.setItem(key, val);
+        } catch (e) {
+          memoryFallback[key] = String(val);
+        }
+      }
+
       function shouldShow() {
         if (!COOLDOWN_HOURS) return true;
-        const last = localStorage.getItem("eiShown");
+        const last = safeGetItem("eiShown");
         if (!last) return true;
         return (Date.now() - parseInt(last)) > COOLDOWN_HOURS * 3600000;
       }
-      function markShown() { localStorage.setItem("eiShown", Date.now()); }
+      function markShown() { safeSetItem("eiShown", Date.now()); }
 
       // ── Modal HTML ──
       const modal = document.createElement("div");

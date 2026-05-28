@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { safeLocalStorage } from './utils/safeStorage';
 
 export interface Review {
   id: string;
@@ -131,6 +132,7 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'mukesh-saree-storage',
+      storage: createJSONStorage(() => safeLocalStorage),
     }
   )
 );

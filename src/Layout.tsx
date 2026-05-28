@@ -227,14 +227,18 @@ export default function Layout() {
     setRecentSearches((prev) => {
       const filtered = prev.filter((s) => s.toLowerCase() !== trimmed.toLowerCase());
       const updated = [trimmed, ...filtered].slice(0, 6);
-      localStorage.setItem("msc_recent_searches", JSON.stringify(updated));
+      try {
+        localStorage.setItem("msc_recent_searches", JSON.stringify(updated));
+      } catch (e) {}
       return updated;
     });
   };
 
   const clearRecentSearches = () => {
     setRecentSearches([]);
-    localStorage.removeItem("msc_recent_searches");
+    try {
+      localStorage.removeItem("msc_recent_searches");
+    } catch (e) {}
   };
 
   // Close menus on route change

@@ -139,7 +139,9 @@ export default function ProductPage() {
   const applyCoupon = () => {
     const code = couponInput.trim().toUpperCase();
     if (code === 'VIP50' || code === 'VIPCLUB60' || code === 'VIBCLUB60') {
-      sessionStorage.removeItem('coupon_removed');
+      try {
+        sessionStorage.removeItem('coupon_removed');
+      } catch (e) {}
       setAppliedCoupon(code);
       setCouponError(false);
       setCouponMsg(code === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
@@ -1840,7 +1842,9 @@ export default function ProductPage() {
                       <button
                         type="button"
                         onClick={() => {
-                          sessionStorage.setItem('coupon_removed', 'true');
+                          try {
+                            sessionStorage.setItem('coupon_removed', 'true');
+                          } catch (e) {}
                           useStore.getState().applyCoupon(null);
                           setAppliedCoupon(null);
                           setCouponInput("");

@@ -81,7 +81,9 @@ export default function Checkout() {
     if (!code) return;
 
     if (code === "VIP50" || code === "VIPCLUB65" || code === "VIPCLUB60" || code === "VIBCLUB60") {
-      sessionStorage.removeItem('coupon_removed');
+      try {
+        sessionStorage.removeItem('coupon_removed');
+      } catch (e) {}
       applyCoupon(code === "VIBCLUB60" ? "VIPCLUB60" : code);
       setCouponError("");
     } else {
@@ -90,7 +92,9 @@ export default function Checkout() {
   };
 
   const handleRemoveCoupon = () => {
-    sessionStorage.setItem('coupon_removed', 'true');
+    try {
+      sessionStorage.setItem('coupon_removed', 'true');
+    } catch (e) {}
     applyCoupon(null);
   };
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useStore } from '../store';
+import { safeLocalStorage, safeSessionStorage } from '../utils/safeStorage';
 
 export interface ExitIntentPopupProps {
   onDismiss: () => void;
@@ -44,7 +45,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
   const applyCoupon = useStore((state) => state.applyCoupon);
   const [isVisible, setIsVisible] = useState(false);
   const [hasShown, setHasShown] = useState(() => {
-    return sessionStorage.getItem('exitPopupShown') === 'true' || sessionStorage.getItem('exit_intent_shown') === '1';
+    return safeSessionStorage.getItem('exitPopupShown') === 'true' || safeSessionStorage.getItem('exit_intent_shown') === '1';
   });
 
   const [stage, setStage] = useState<'capture' | 'revealed'>('capture');
@@ -56,9 +57,9 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
 
   const checkShouldShow = () => {
     if (hasShown) return false;
-    if (sessionStorage.getItem('exitPopupShown') === 'true' || sessionStorage.getItem('exit_intent_shown') === '1') return false;
+    if (safeSessionStorage.getItem('exitPopupShown') === 'true' || safeSessionStorage.getItem('exit_intent_shown') === '1') return false;
     
-    const hasPurchased = localStorage.getItem('hasPurchased');
+    const hasPurchased = safeLocalStorage.getItem('hasPurchased');
     if (hasPurchased === 'true') return false;
 
     // Do not show on thank you pages
@@ -75,7 +76,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
       return true;
     }
 
-    const submitted = localStorage.getItem('exitIntentSubmittedTime');
+    const submitted = safeLocalStorage.getItem('exitIntentSubmittedTime');
     const now = Date.now();
     const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
     
@@ -88,8 +89,8 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
     if (checkShouldShow()) {
       setIsVisible(true);
       setHasShown(true);
-      sessionStorage.setItem('exitPopupShown', 'true');
-      sessionStorage.setItem('exit_intent_shown', '1');
+      safeSessionStorage.setItem('exitPopupShown', 'true');
+      safeSessionStorage.setItem('exit_intent_shown', '1');
       
       // Track impressions
       if ((window as any).fbq) {
@@ -127,8 +128,8 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
   }, [isVisible]);
 
   const setSuccessStorage = () => {
-    localStorage.setItem('exitIntentSubmittedTime', Date.now().toString());
-    localStorage.setItem('exitIntentSubmitted', 'true');
+    safeLocalStorage.setItem('exitIntentSubmittedTime', Date.now().toString());
+    safeLocalStorage.setItem('exitIntentSubmitted', 'true');
   };
 
   const handleClose = () => {

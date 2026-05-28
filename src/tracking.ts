@@ -1,3 +1,24 @@
+// Safe in-memory fallback for localStorage in sandboxed iframes
+const memoryStorage: Record<string, string> = {};
+const localStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) return null;
+      return window.localStorage.getItem(key);
+    } catch (e) {
+      return memoryStorage[key] || null;
+    }
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) return;
+      window.localStorage.setItem(key, value);
+    } catch (e) {
+      memoryStorage[key] = String(value);
+    }
+  }
+};
+
 const getCookie = (name: string): string | null => {
   if (typeof document === "undefined") return null;
   const value = `; ${document.cookie}`;

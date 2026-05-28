@@ -11,6 +11,7 @@ import { ExitIntentPopup } from './components/ExitIntentPopup';
 import { useExitIntent } from './hooks/useExitIntent';
 import { trackWhatsAppClick } from './tracking';
 import { useStore } from './store';
+import { safeSessionStorage } from './utils/safeStorage';
 
 import Shop from './Shop';
 import Wishlist from './Wishlist';
@@ -135,7 +136,7 @@ export default function App() {
   // Auto-apply VIP50 by default unless explicitly removed in sessionStorage
   useEffect(() => {
     const store = useStore.getState();
-    const removedInSession = sessionStorage.getItem('coupon_removed') === 'true';
+    const removedInSession = safeSessionStorage.getItem('coupon_removed') === 'true';
     if (!store.appliedCoupon && !removedInSession) {
       store.applyCoupon('VIP50');
     }

@@ -6,6 +6,27 @@ import { useEffect, useRef } from "react";
 import { trackPurchase } from "./tracking";
 import { OptimizedImage } from "./components/OptimizedImage";
 
+// Safe in-memory fallback for localStorage in sandboxed iframes
+const memoryStorage: Record<string, string> = {};
+const localStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) return null;
+      return window.localStorage.getItem(key);
+    } catch (e) {
+      return memoryStorage[key] || null;
+    }
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) return;
+      window.localStorage.setItem(key, value);
+    } catch (e) {
+      memoryStorage[key] = String(value);
+    }
+  }
+};
+
 export default function ThankYou() {
   const location = useLocation();
   const stateOrderId = location.state?.orderId;

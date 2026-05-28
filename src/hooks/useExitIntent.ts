@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { safeSessionStorage } from '../utils/safeStorage';
 
 interface UseExitIntentOptions {
   delay?: number;
@@ -11,7 +12,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
 
   useEffect(() => {
     // Check if already shown this session
-    const shown = sessionStorage.getItem('exit_intent_shown');
+    const shown = safeSessionStorage.getItem('exit_intent_shown');
     if (shown) {
       setHasShown(true);
       return;
@@ -26,7 +27,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
       if (e.clientY < sensitivity) {
         setTriggered(true);
         setHasShown(true);
-        sessionStorage.setItem('exit_intent_shown', '1');
+        safeSessionStorage.setItem('exit_intent_shown', '1');
       }
     };
 
@@ -39,7 +40,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
       if (diff > 80 && currentY < 200) { // Fast scroll up near top
         setTriggered(true);
         setHasShown(true);
-        sessionStorage.setItem('exit_intent_shown', '1');
+        safeSessionStorage.setItem('exit_intent_shown', '1');
       }
       lastScrollY = currentY;
     };
@@ -49,7 +50,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
       if (!hasShown) {
         setTriggered(true);
         setHasShown(true);
-        sessionStorage.setItem('exit_intent_shown', '1');
+        safeSessionStorage.setItem('exit_intent_shown', '1');
       }
     }, 45000);
 
@@ -65,7 +66,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
 
   const dismiss = () => {
     setTriggered(false);
-    sessionStorage.setItem('exit_intent_shown', '1');
+    safeSessionStorage.setItem('exit_intent_shown', '1');
   };
 
   return { triggered, dismiss };
