@@ -77,21 +77,21 @@
     "price": "999"
   },
   {
-    "name": "Soft Blush Pink Cotton Co-Ord Set Embroidered",
+    "name": "Soft Blush Pink Co-Ord Set — Delicate Floral Embroidery",
     "slug": "soft-blush-pink-cotton-coord-set-delicate-embroidery",
     "description": "DESCRIPTION: Elevate your everyday wardrobe with this sophisticated Soft Blush Pink Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric",
     "image": "https://drive.google.com/thumbnail?id=1GQSTuioaQUwqW5dZ44_S5yLjk6ysO-IP&sz=w500",
     "price": "999"
   },
   {
-    "name": "Soft Blush Pink Cotton Co-Ord Set Embroidered",
+    "name": "Soft Blush Pink Co-Ord Set — Multicolor Embroidery",
     "slug": "soft-blush-pink-cotton-coord-set-multicolor-embroidery",
     "description": "DESCRIPTION: Elevate your everyday wardrobe with this sophisticated Soft Blush Pink Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric",
     "image": "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w500",
     "price": "999"
   },
   {
-    "name": "Soft Blush Pink Cotton Co-Ord Set Embroidered",
+    "name": "Soft Blush Pink Co-Ord Set — Multicolor Embroidery Vol. 2",
     "slug": "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2",
     "description": "DESCRIPTION: Elevate your everyday wardrobe with this sophisticated Soft Blush Pink Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric",
     "image": "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w500",
@@ -133,7 +133,7 @@
     "price": "749"
   },
   {
-    "name": "Elegant Green Georgette Saree",
+    "name": "Elegant Green Georgette Saree — Pink Foil Border",
     "slug": "elegant-green-georgette-saree-foil-design-pink-border",
     "description": "DESCRIPTION: Experience the perfect blend of comfort and elegance with this luxury Elegant Green Georgette Saree. Handcrafted to ensure a graceful dra",
     "image": "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
@@ -423,42 +423,42 @@
     "name": "White Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
     "slug": "white-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
-    "image": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format",
+    "image": "https://ik.imagekit.io/tus1loev9/product/fendy/mainimage.webp",
     "price": "1299"
   },
   {
     "name": "Navy Blue Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
     "slug": "navy-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
-    "image": "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format",
+    "image": "https://ik.imagekit.io/tus1loev9/product/fendy/Navyblue.webp",
     "price": "1299"
   },
   {
-    "name": "Pink Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
-    "slug": "pink-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    "name": "Rani Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    "slug": "rani-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
-    "image": "https://images.unsplash.com/photo-1583391265517-35bbadd9e20a?auto=format",
+    "image": "https://ik.imagekit.io/tus1loev9/product/fendy/rani.webp",
     "price": "1299"
   },
   {
     "name": "Royal Blue Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
     "slug": "royal-blue-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
-    "image": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format",
+    "image": "https://ik.imagekit.io/tus1loev9/product/fendy/royalblue.webp",
     "price": "1299"
   },
   {
-    "name": "Rust Brown Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
-    "slug": "rust-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    "name": "Copper Brown Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    "slug": "copper-brown-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
-    "image": "https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format",
+    "image": "https://ik.imagekit.io/tus1loev9/product/fendy/copperbrown.webp",
     "price": "1299"
   },
   {
-    "name": "Wine Red Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
-    "slug": "wine-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
+    "name": "Rani Red Fendy Space Silk Saree – Bollywood Glam Look in Minutes!",
+    "slug": "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes",
     "description": "DESCRIPTION: Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes",
-    "image": "https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?auto=format",
+    "image": "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp",
     "price": "1299"
   }
 ]

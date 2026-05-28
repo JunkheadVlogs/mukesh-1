@@ -137,7 +137,7 @@ function getHeaderHtml(): string {
         <a href="/" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Home</a>
         <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
         <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
-        <a href="/shop?category=Co-Ord Sets" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Co-Ord Sets</a>
+        <a href="/shop?category=Co-Ord-Sets" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Co-Ord Sets</a>
         <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
       </nav>
     </header>
@@ -158,7 +158,7 @@ function getFooterHtml(): string {
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2.2;">
             <li><a href="/shop?category=Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Classic Silk Sarees</a></li>
             <li><a href="/shop?category=Linen Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Premium Linen Sarees</a></li>
-            <li><a href="/shop?category=Co-Ord Sets" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Cotton Co-Ord Sets</a></li>
+            <li><a href="/shop?category=Co-Ord-Sets" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Cotton Co-Ord Sets</a></li>
             <li><a href="/shop?category=Lehengas" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Bridal & Designer Lehengas</a></li>
           </ul>
         </div>
@@ -288,7 +288,7 @@ async function runPrerender() {
             <h3 style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Designer Sarees</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Pure Silks & Linens</span>
           </a>
-          <a href="/shop?category=Co-Ord Sets" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+          <a href="/shop?category=Co-Ord-Sets" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
             <h3 style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Co-Ord Sets</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Luxe Cotton & Linen Pairs</span>
           </a>
@@ -771,35 +771,39 @@ async function runPrerender() {
   console.log("[PRERENDER] Compiling sitemap.xml and robots.txt into output folder...");
   
   const robotsCompiled = `User-agent: *
-Disallow: /api/
-Allow: /
-
-User-agent: WhatsApp
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: Twitterbot
 Allow: /
 
 Sitemap: https://mukeshsarees.com/sitemap.xml`;
 
-  // Dynamic Sitemap links builder
-  let sitemapLines = [
-    '<url><loc>https://mukeshsarees.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>',
-    '<url><loc>https://mukeshsarees.com/shop</loc><changefreq>daily</changefreq><priority>0.82</priority></url>',
-    '<url><loc>https://mukeshsarees.com/contact</loc><changefreq>monthly</changefreq><priority>0.50</priority></url>',
-    '<url><loc>https://mukeshsarees.com/shipping-policy</loc><changefreq>monthly</changefreq><priority>0.40</priority></url>',
-    '<url><loc>https://mukeshsarees.com/return-policy</loc><changefreq>monthly</changefreq><priority>0.40</priority></url>',
-    '<url><loc>https://mukeshsarees.com/terms</loc><changefreq>monthly</changefreq><priority>0.30</priority></url>'
+  // Dynamic Sitemap links builder with the exact requested URLs and configurations
+  const sitemapRoutes = [
+    { path: "/", changefreq: "daily", priority: "1.0" },
+    { path: "/shop", changefreq: "weekly", priority: "0.9" },
+    { path: "/shop?category=Sarees", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop?category=Co-Ord-Sets", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop?category=Lehengas", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop?category=Kurtas", changefreq: "weekly", priority: "0.8" },
+    { path: "/product/premium-pure-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/pure-beige-cotton-floral-coord-set", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/pure-cotton-floral-coord-set-white", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/premium-pure-cotton-coord-set-grey", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/elegant-forest-green-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
+    { path: "/contact", changefreq: "monthly", priority: "0.5" },
+    { path: "/shipping-policy", changefreq: "yearly", priority: "0.4" },
+    { path: "/return-policy", changefreq: "yearly", priority: "0.4" },
+    { path: "/terms", changefreq: "yearly", priority: "0.3" }
   ];
 
-  for (const p of products) {
-    if (p.slug) {
-      sitemapLines.push(`<url><loc>https://mukeshsarees.com/product/${p.slug}</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>`);
-    }
-  }
+  let sitemapLines = sitemapRoutes.map(route => 
+    `  <url>
+    <loc>https://mukeshsarees.com${route.path}</loc>
+    <changefreq>${route.changefreq}</changefreq>
+    <priority>${route.priority}</priority>
+  </url>`
+  );
 
   const sitemapCompiled = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

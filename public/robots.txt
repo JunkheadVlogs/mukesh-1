@@ -1,14 +1,4 @@
 User-agent: *
-Disallow: /api/
-Allow: /
-
-User-agent: WhatsApp
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: Twitterbot
 Allow: /
 
 Sitemap: https://mukeshsarees.com/sitemap.xml

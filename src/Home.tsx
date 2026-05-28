@@ -387,7 +387,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
             <Link
-              to="/shop?category=Co-Ord Sets"
+              to="/shop?category=Co-Ord-Sets"
               className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-2xl"
             >
               <div className="absolute inset-0">

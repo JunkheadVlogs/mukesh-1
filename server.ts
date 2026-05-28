@@ -76,14 +76,14 @@ app.use((req, res, next) => {
   next();
 });
 
-const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID;
-const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
+const RAZORPAY_KEY_ID = (process.env.RAZORPAY_KEY_ID || "rzp_live_So7zJe4qbXm4LY").trim();
+const RAZORPAY_KEY_SECRET = (process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG").trim();
 
 let razorpay = null;
 try {
   razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
+    key_id: RAZORPAY_KEY_ID,
+    key_secret: RAZORPAY_KEY_SECRET,
   });
 } catch (e) {
   console.log("Could not initialize razorpay", e);
@@ -308,16 +308,16 @@ apiRouter.post("/submit-order", async (req, res) => {
 // ==== razorpay order creation ====
 apiRouter.post('/create-razorpay-order', async (req, res) => {
   try {
-    let currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "").trim();
-    let currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "").trim();
+    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_So7zJe4qbXm4LY").trim();
+    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG").trim();
     
-    if (!currentKeyId || currentKeyId === 'rzp_live_Slf11Odg572QOq') {
-      currentKeyId = "rzp_live_So7zJe4qbXm4LY";
-      currentKeySecret = "z245tbFDtCZmJ7Wztx2XSHrG";
-    }
-    
+    // Log configuration details safely for debugging
+    const keyMode = currentKeyId.startsWith("rzp_test_") ? "TEST MODE" : "LIVE MODE";
+    console.log(`[RAZORPAY DEBUG] Mode: ${keyMode} | Key ID: ${currentKeyId ? `${currentKeyId.substring(0, 8)}...` : "UNDEFINED"} | Secret: ${currentKeySecret ? "DEFINED" : "UNDEFINED"}`);
+
     if (!currentKeyId || !currentKeySecret) {
-      return res.status(500).json({ success: false, error: "Razorpay not initialized (Missing API Keys)" });
+      console.error("[RAZORPAY ERROR] Missing RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET in environment variables.");
+      return res.status(500).json({ success: false, error: "Razorpay not initialized (Missing API Keys in Hostinger / Environment Configuration)" });
     }
     
     const rzp = new Razorpay({
@@ -326,8 +326,17 @@ apiRouter.post('/create-razorpay-order', async (req, res) => {
     });
     
     const rawAmount = req.body.amount;
-    const isAlreadyPaise = req.body.isPaise || (rawAmount > 50000);
-    const finalAmount = isAlreadyPaise ? Math.round(rawAmount) : Math.round(rawAmount * 100);
+    if (rawAmount === undefined || rawAmount === null || isNaN(Number(rawAmount))) {
+      return res.status(400).json({ success: false, error: "Invalid amount specified. Amount must be a valid number." });
+    }
+
+    const isAlreadyPaise = req.body.isPaise || (Number(rawAmount) > 50000);
+    let finalAmount = isAlreadyPaise ? Math.round(Number(rawAmount)) : Math.round(Number(rawAmount) * 100);
+
+    // Guarantee amount is positive integer and minimum is 100 paise (= ₹1)
+    if (finalAmount < 100) {
+      finalAmount = 100;
+    }
 
     const options = {
       amount: finalAmount,
@@ -336,7 +345,9 @@ apiRouter.post('/create-razorpay-order', async (req, res) => {
       notes: req.body.notes || {}
     };
 
+    console.log(`[RAZORPAY DEBUG] Creating order with options:`, JSON.stringify(options));
     const order = await rzp.orders.create(options);
+    console.log(`[RAZORPAY DEBUG] Order created successfully:`, order.id);
     
     res.json({
       orderId: order.id,
@@ -345,25 +356,30 @@ apiRouter.post('/create-razorpay-order', async (req, res) => {
       key: currentKeyId
     });
   } catch (err: any) {
-    console.error("[RAZORPAY] Create Razorpay Order Error:", err);
-    res.status(500).json({ success: false, error: err?.message || "Failed to create order" });
+    console.error("[RAZORPAY ERROR] Detailed Razorpay Error (create-razorpay-order):", {
+      message: err?.message,
+      statusCode: err?.statusCode,
+      errorDetails: err?.error,
+      fullError: err
+    });
+    res.status(500).json({ 
+      success: false, 
+      error: err?.error?.description || err?.message || "Failed to create order" 
+    });
   }
 });
 
 apiRouter.post('/create-order', async (req, res) => {
   try {
-    // Always initialize with latest process.env in case it was updated
-    let currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "").trim();
-    let currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "").trim();
+    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_So7zJe4qbXm4LY").trim();
+    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG").trim();
     
-    // Fallback to the working keys from test-rzp-again.js if current ones are empty or the known broken ones
-    if (!currentKeyId || currentKeyId === 'rzp_live_Slf11Odg572QOq') {
-      currentKeyId = "rzp_live_So7zJe4qbXm4LY";
-      currentKeySecret = "z245tbFDtCZmJ7Wztx2XSHrG";
-    }
-    
+    const keyMode = currentKeyId.startsWith("rzp_test_") ? "TEST MODE" : "LIVE MODE";
+    console.log(`[RAZORPAY DEBUG] Mode: ${keyMode} | Key ID: ${currentKeyId ? `${currentKeyId.substring(0, 8)}...` : "UNDEFINED"} | Secret: ${currentKeySecret ? "DEFINED" : "UNDEFINED"}`);
+
     if (!currentKeyId || !currentKeySecret) {
-      return res.status(500).json({ success: false, error: "Razorpay not initialized (Missing API Keys)" });
+      console.error("[RAZORPAY ERROR] Missing RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET in environment variables.");
+      return res.status(500).json({ success: false, error: "Razorpay not initialized (Missing API Keys in Hostinger / Environment Configuration)" });
     }
     
     // Create a new instance dynamically so it reflects any live env updates
@@ -372,10 +388,18 @@ apiRouter.post('/create-order', async (req, res) => {
       key_secret: currentKeySecret,
     });
     
-    // Support pre-multiplied paise or raw rupees
     const rawAmount = req.body.amount;
-    const isAlreadyPaise = req.body.isPaise || (rawAmount > 50000);
-    const finalAmount = isAlreadyPaise ? Math.round(rawAmount) : Math.round(rawAmount * 100);
+    if (rawAmount === undefined || rawAmount === null || isNaN(Number(rawAmount))) {
+      return res.status(400).json({ success: false, error: "Invalid amount specified. Amount must be a valid number." });
+    }
+
+    const isAlreadyPaise = req.body.isPaise || (Number(rawAmount) > 50000);
+    // Guarantee integer paise, minimum rupee 1
+    let finalAmount = isAlreadyPaise ? Math.round(Number(rawAmount)) : Math.round(Number(rawAmount) * 100);
+
+    if (finalAmount < 100) {
+      finalAmount = 100;
+    }
 
     const options = {
       amount: finalAmount,
@@ -384,15 +408,23 @@ apiRouter.post('/create-order', async (req, res) => {
       notes: req.body.notes || {}
     };
 
+    console.log(`[RAZORPAY DEBUG] Creating order with options:`, JSON.stringify(options));
     const order = await rzp.orders.create(options);
+    console.log(`[RAZORPAY DEBUG] Order created successfully:`, order.id);
     
     // Return key back to prevent client/server key mismatch
     res.json({
       ...order,
+      orderId: order.id,
       key: currentKeyId
     });
   } catch (err: any) {
-    console.error("[RAZORPAY] Create Order Error:", err);
+    console.error("[RAZORPAY ERROR] Detailed Razorpay Error (create-order):", {
+      message: err?.message,
+      statusCode: err?.statusCode,
+      errorDetails: err?.error,
+      fullError: err
+    });
     const errorMessage = err?.error?.description || err?.message || "Failed to create order";
     res.status(500).json({
       success: false,
@@ -407,11 +439,12 @@ apiRouter.post("/verify-payment", (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     
-    let currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "").trim();
-    let currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "").trim();
+    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_So7zJe4qbXm4LY").trim();
+    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG").trim();
     
-    if (!currentKeySecret || !currentKeyId || currentKeyId === 'rzp_live_Slf11Odg572QOq') {
-      currentKeySecret = "z245tbFDtCZmJ7Wztx2XSHrG";
+    if (!currentKeySecret) {
+      console.error("[RAZORPAY ERROR] Missing RAZORPAY_KEY_SECRET for payment verification");
+      return res.status(500).json({ success: false, error: "Razorpay Key Secret not configured" });
     }
 
     const expectedSign = crypto.createHmac("sha256", currentKeySecret)
@@ -421,6 +454,7 @@ apiRouter.post("/verify-payment", (req, res) => {
     if (razorpay_signature === expectedSign) {
       res.json({ success: true, message: "Payment verified successfully" });
     } else {
+      console.error("[RAZORPAY ERROR] Signature verification failed. Expected vs Received mismatch.");
       res.status(400).json({ success: false, error: "Invalid signature verified" });
     }
   } catch (error) {
@@ -895,15 +929,26 @@ const injectOGTags = (html, reqPath, originalUrl) => {
 
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain');
-  res.send(`User-agent: *\nDisallow: /api/\nAllow: /\n\nUser-agent: WhatsApp\nAllow: /\n\nUser-agent: facebookexternalhit\nAllow: /\n\nUser-agent: Twitterbot\nAllow: /\n\nSitemap: https://mukeshsarees.com/sitemap.xml`);
+  res.send(`User-agent: *
+Allow: /
+
+Sitemap: https://mukeshsarees.com/sitemap.xml`);
 });
 
 app.get('/sitemap.xml', (req, res) => {
   res.type('application/xml');
   res.send(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://mukeshsarees.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-<url><loc>https://mukeshsarees.com/shop</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url>
+    <loc>https://mukeshsarees.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/shop</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>`);
 });
 

@@ -11,38 +11,37 @@ async function generateSitemap() {
   // Base domain
   const DOMAIN = "https://mukeshsarees.com";
 
-  // Static routes
-  const staticRoutes = [
+  // Static and dynamic routes as requested by the user
+  const routes = [
     { path: "/", changefreq: "daily", priority: "1.0" },
-    { path: "/shop", changefreq: "daily", priority: "0.82" },
-    { path: "/contact", changefreq: "monthly", priority: "0.50" },
-    { path: "/shipping-policy", changefreq: "monthly", priority: "0.40" },
-    { path: "/return-policy", changefreq: "monthly", priority: "0.40" },
-    { path: "/terms", changefreq: "monthly", priority: "0.30" }
+    { path: "/shop", changefreq: "weekly", priority: "0.9" },
+    { path: "/shop?category=Sarees", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop?category=Co-Ord-Sets", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop?category=Lehengas", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop?category=Kurtas", changefreq: "weekly", priority: "0.8" },
+    { path: "/product/premium-pure-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/pure-beige-cotton-floral-coord-set", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/pure-cotton-floral-coord-set-white", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/premium-pure-cotton-coord-set-grey", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/elegant-forest-green-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
+    { path: "/contact", changefreq: "monthly", priority: "0.5" },
+    { path: "/shipping-policy", changefreq: "yearly", priority: "0.4" },
+    { path: "/return-policy", changefreq: "yearly", priority: "0.4" },
+    { path: "/terms", changefreq: "yearly", priority: "0.3" }
   ];
 
   const sitemapLines: string[] = [];
 
-  // 1. Add static pages
-  for (const route of staticRoutes) {
+  // Add all pages to sitemap
+  for (const route of routes) {
     sitemapLines.push(`  <url>
     <loc>${DOMAIN}${route.path}</loc>
     <changefreq>${route.changefreq}</changefreq>
     <priority>${route.priority}</priority>
   </url>`);
-  }
-
-  // 2. Add dynamic products with slugs
-  for (const product of products) {
-    if (product.slug) {
-      // Escape any dynamic XML special characters safely
-      const escapedSlug = encodeURIComponent(product.slug);
-      sitemapLines.push(`  <url>
-    <loc>${DOMAIN}/product/${escapedSlug}</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>`);
-    }
   }
 
   // 3. Compile everything together

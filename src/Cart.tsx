@@ -59,7 +59,7 @@ export default function Cart() {
               <span className="text-[10px] uppercase font-medium text-primary-950/40 tracking-widest flex items-center gap-1 group-hover:text-gold-500 transition-colors">Shop Now <ArrowRight size={12} /></span>
             </Link>
             <Link 
-              to="/shop?category=Co-Ord Sets" 
+              to="/shop?category=Co-Ord-Sets" 
               className="px-6 py-4 bg-white border border-black/5 hover:border-gold-500/50 rounded-sm hover:shadow-lg transition-all duration-300 group flex flex-col items-center gap-2 sm:col-span-2 md:col-span-1 transform hover:-translate-y-1"
             >
               <span className="text-sm font-bold uppercase tracking-wider text-primary-950 group-hover:text-gold-600 transition-colors">Co-Ord Sets</span>

@@ -14,7 +14,8 @@ import { SEO } from "./components/SEO";
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const categoryFilter = searchParams.get("category");
+  const rawCategoryFilter = searchParams.get("category");
+  const categoryFilter = rawCategoryFilter === "Co-Ord-Sets" ? "Co-Ord Sets" : rawCategoryFilter;
   const fabricParam = searchParams.get("fabric") || "";
   const colorParam = searchParams.get("color") || "";
   const fabricFilter = useMemo(() => fabricParam ? fabricParam.split(",") : [], [fabricParam]);
@@ -152,7 +153,7 @@ export default function Shop() {
   const handleCategoryChange = (cat: string | null) => {
     const newParams = new URLSearchParams(searchParams);
     if (cat) {
-      newParams.set("category", cat);
+      newParams.set("category", cat === "Co-Ord Sets" ? "Co-Ord-Sets" : cat);
     } else {
       newParams.delete("category");
     }
@@ -228,7 +229,7 @@ export default function Shop() {
           searchQuery
             ? `/shop?search=${encodeURIComponent(searchQuery)}`
             : categoryFilter
-              ? `/shop?category=${encodeURIComponent(categoryFilter)}`
+              ? `/shop?category=${encodeURIComponent(categoryFilter === "Co-Ord Sets" ? "Co-Ord-Sets" : categoryFilter)}`
               : `/shop`
         }
       />

@@ -679,7 +679,7 @@ export default function Layout() {
                       — Linen Sarees
                     </Link>
                     <Link
-                      to="/shop?category=Co-Ord Sets"
+                      to="/shop?category=Co-Ord-Sets"
                       className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
                     >
                       Co-Ord Sets
@@ -883,7 +883,7 @@ export default function Layout() {
                               </Link>
 
                               <Link
-                                to="/shop?category=Co-Ord Sets"
+                                to="/shop?category=Co-Ord-Sets"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="text-[12px] tracking-[1.2px] uppercase font-bold py-1.5 transition-colors flex items-center justify-between last:border-0 text-neutral-900 hover:text-gold-600"
                               >
@@ -1089,7 +1089,7 @@ export default function Layout() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?category=Co-Ord Sets" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/shop?category=Co-Ord-Sets" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Co-Ord Sets
                     </Link>
                   </li>

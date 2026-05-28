@@ -362,7 +362,9 @@ export default function ProductPage() {
     }
 
     setSizeError(false);
-    setShowCheckout(true);
+    addToCart(product, isSaree ? undefined : (selectedSize || undefined), quantity);
+    trackAddToCart(product, quantity);
+    navigate("/cart");
   };
 
   const handleBuyNowPayment = async (method: "online" | "cod") => {

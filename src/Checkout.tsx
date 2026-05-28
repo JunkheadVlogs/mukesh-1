@@ -348,16 +348,12 @@ export default function Checkout() {
             }
 
             // Key selection logic
-            let rzpKey = (
-              order.key ||
+            const rzpKey = (
               import.meta.env.VITE_RAZORPAY_KEY_ID ||
-              import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
+              order.key ||
               CONFIG.RAZORPAY_KEY_ID ||
               ""
             ).trim();
-            if (!rzpKey || rzpKey === "rzp_live_Slf11Odg572QOq") {
-              rzpKey = "rzp_live_So7zJe4qbXm4LY";
-            }
 
             // Step 3: Open Razorpay modal
             const options = {
