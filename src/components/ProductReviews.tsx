@@ -4,6 +4,7 @@ import { Product, Review } from "../store";
 import { Star, ShieldCheck, ChevronDown, X, Camera, Image as ImageIcon, Loader2, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { getProductReviewStats, getSeededRandom } from "../utils";
+import { safeLocalStorage } from "../utils/safeStorage";
 
 interface ProductReviewsProps {
   product: Product;
@@ -298,7 +299,7 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
 
   const [localReviews, setLocalReviews] = useState<EnhancedReview[]>(() => {
     try {
-      const saved = localStorage.getItem(`reviews-${product.id}`);
+      const saved = safeLocalStorage.getItem(`reviews-${product.id}`);
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -308,9 +309,9 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
   const localReviewsLength = localReviews.length;
   useEffect(() => {
     try {
-      localStorage.setItem(`reviews-${product.id}`, JSON.stringify(localReviews));
+      safeLocalStorage.setItem(`reviews-${product.id}`, JSON.stringify(localReviews));
     } catch (e) {
-      console.error("Failed to save reviews to localStorage", e);
+      console.error("Failed to save reviews to safeLocalStorage", e);
     }
   }, [localReviewsLength, product.id]);
 

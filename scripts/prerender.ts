@@ -460,7 +460,7 @@ async function runPrerender() {
           "@type": "ListItem",
           "position": 3,
           "name": p.category,
-          "item": `https://mukeshsarees.com/shop?category=${encodeURIComponent(p.category)}`
+          "item": `https://mukeshsarees.com/shop?category=${encodeURIComponent(p.category === "Co-Ord Sets" ? "Co-Ord-Sets" : p.category)}`
         },
         {
           "@type": "ListItem",
@@ -528,7 +528,7 @@ async function runPrerender() {
           <nav style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; margin-bottom: 24px;">
             <a href="/" style="color: inherit; text-decoration: none;">Home</a> / 
             <a href="/shop" style="color: inherit; text-decoration: none;">Shop</a> / 
-            <a href="/shop?category=${encodeURIComponent(p.category)}" style="color: inherit; text-decoration: none;">${sanitize(p.category)}</a> / 
+            <a href="/shop?category=${encodeURIComponent(p.category === "Co-Ord Sets" ? "Co-Ord-Sets" : p.category)}" style="color: inherit; text-decoration: none;">${sanitize(p.category)}</a> / 
             <span style="color: #1a0a00; font-weight: bold;">${sanitize(p.name)}</span>
           </nav>
 
