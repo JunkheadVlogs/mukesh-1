@@ -124,7 +124,7 @@ export const LiveViewerCounter: React.FC<Props> = ({ productId, category }) => {
   if (!currentMessage) return null;
 
   return (
-    <div className="inline-flex items-center min-h-[20px] mt-1 sm:mt-2 mb-0 sm:mb-0.5 select-none">
+    <div className="inline-flex items-center min-h-[20px] select-none">
       <AnimatePresence mode="wait">
         <motion.div
           key={`${productId}_${currentIndex}`}
@@ -132,7 +132,7 @@ export const LiveViewerCounter: React.FC<Props> = ({ productId, category }) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="inline-flex items-center gap-1.5 bg-[#FAF6F0] border border-[#C8A96B]/25 rounded-full px-3.5 py-1 text-[10.5px] sm:text-[11px] font-medium tracking-wide text-[#2b2b2b] shadow-[0_2px_8px_rgba(200,169,107,0.06)] hover:scale-[1.01] hover:border-[#C8A96B]/40 hover:shadow-[0_4px_12px_rgba(200,169,107,0.1)] transition-all duration-300 cursor-default"
+          className="urgency-badge inline-flex items-center gap-1.5 bg-[#FAF6F0] border border-[#C8A96B]/25 rounded-full px-3.5 py-1 text-[10.5px] sm:text-[11px] font-medium tracking-wide text-[#2b2b2b] shadow-[0_2px_8px_rgba(200,169,107,0.06)] hover:scale-[1.01] hover:border-[#C8A96B]/40 hover:shadow-[0_4px_12px_rgba(200,169,107,0.1)] transition-all duration-300 cursor-default"
         >
           <span className="text-[12px] leading-none filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.08)]">
             {currentMessage.icon}

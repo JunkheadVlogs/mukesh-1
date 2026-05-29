@@ -5,6 +5,8 @@ import { SEO } from "./components/SEO";
 import { useEffect, useRef } from "react";
 import { trackPurchase } from "./tracking";
 import { OptimizedImage } from "./components/OptimizedImage";
+import { submitToGoogleSheets } from "./config";
+import { sendOrderToSheets } from "./utils/googleSheets";
 
 // Safe in-memory fallback for localStorage in sandboxed iframes
 const memoryStorage: Record<string, string> = {};
@@ -92,6 +94,83 @@ export default function ThankYou() {
   const subtotal = subtotalMRP;
   const displayTotal = total || calculatedTotal || Math.round(subtotalMRP * 0.5);
   const discountAmount = subtotal - displayTotal;
+
+  const queryParams = new URLSearchParams(location.search);
+  const isPaidOnline = 
+    queryParams.get("success") === "true" || 
+    queryParams.get("payment") === "success" || 
+    queryParams.has("razorpay_payment_id") ||
+    localStorage.getItem("msc_last_order_payment_status") === "Paid";
+
+  // Check if they paid successfully via Razorpay Payment Handle
+  useEffect(() => {
+    const isSuccessfulPayment = 
+      queryParams.get("success") === "true" || 
+      queryParams.get("payment") === "success" ||
+      queryParams.has("razorpay_payment_id") ||
+      queryParams.has("razorpay_payment_link_id");
+
+    if (isSuccessfulPayment && orderId) {
+      const hasBeenMarkedPaid = localStorage.getItem(`msc_paid_submitted_${orderId}`);
+      if (!hasBeenMarkedPaid) {
+        // Mark as Paid on checkout backup log
+        localStorage.setItem("msc_last_order_payment_status", "Paid");
+        
+        const updateSheetsData = async () => {
+          try {
+            const istTime = new Date().toLocaleString("en-IN", {
+              timeZone: "Asia/Kolkata",
+            });
+            const savedCustomer = customer || (rawSavedCustomer ? JSON.parse(rawSavedCustomer) : null);
+            const savedCart = cart || (rawSavedCart ? JSON.parse(rawSavedCart) : []);
+
+            const productName = savedCart.map((i: any) => i.name).join(", ");
+            const size = savedCart.map((i: any) => i.size || "Standard").join(", ");
+            const sku = savedCart.map((i: any) => i.sku || "N/A").join(", ");
+            const color = savedCart.map((i: any) => i.color || "N/A").join(", ");
+
+            const googleSheetsData = {
+              type: 'order' as const,
+              orderId: orderId,
+              firstName: savedCustomer?.fullName || "Valued Customer",
+              customerName: savedCustomer?.fullName || "Valued Customer",
+              phone: savedCustomer?.mobileNumber || "N/A",
+              mobileNumber: savedCustomer?.mobileNumber || "N/A",
+              email: savedCustomer?.email || "N/A",
+              address: savedCustomer?.streetAddress || "N/A",
+              streetAddress: savedCustomer?.streetAddress || "N/A",
+              city: savedCustomer?.city || "N/A",
+              zip: savedCustomer?.zipCode || "N/A",
+              zipCode: savedCustomer?.zipCode || "N/A",
+              productName: productName,
+              amount: total || displayTotal,
+              totalAmount: (total || displayTotal).toString(),
+              size: size,
+              sku: sku,
+              color: color,
+              couponUsed: couponUsed || 'None',
+              source: 'Payment Handle Return',
+              paymentMethod: 'Pay Online (Razorpay Handle)',
+              status: 'Confirmed',         // Order Status = Confirmed
+              paymentStatus: 'Paid',       // Payment Status = Paid
+              paymentId: queryParams.get("razorpay_payment_id") || 'Paid via Handle',
+              timestamp: istTime,
+            };
+
+            await Promise.any([
+              submitToGoogleSheets(googleSheetsData),
+              sendOrderToSheets(googleSheetsData)
+            ]).catch(err => console.warn("Background sheet update failed:", err));
+
+            localStorage.setItem(`msc_paid_submitted_${orderId}`, "true");
+          } catch (err) {
+            console.error("Error setting order status to paid in sheets:", err);
+          }
+        };
+        updateSheetsData();
+      }
+    }
+  }, [orderId, customer, cart, displayTotal, couponUsed, rawSavedCustomer, rawSavedCart]);
 
   // Render mock values to guarantee a premium visual preview when entered empty/direct
   const isDemo = cart.length === 0;
@@ -640,6 +719,61 @@ export default function ThankYou() {
           </div>
         </div>
 
+        {/* PAYMENT STATUS BANNERS */}
+        {isPaidOnline && (
+          <motion.div
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="no-print mb-6 p-4 sm:p-5 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 border border-emerald-500/20 rounded-sm text-emerald-800 text-left flex items-start gap-3.5 shadow-sm bg-white"
+          >
+            <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0 text-emerald-600">
+              <CheckCircle2 size={18} strokeWidth={2} />
+            </div>
+            <div className="flex-grow space-y-1">
+              <h4 className="text-sm font-bold text-emerald-950 font-serif leading-none">
+                Payment Confirmed Successfully
+              </h4>
+              <p className="text-xs text-emerald-900/80 leading-relaxed font-sans">
+                Thank you! Your payment of <strong>₹{displayTotal.toLocaleString("en-IN")}</strong> via Razorpay Online has been received and verified. Your order is <strong>Confirmed</strong> and your payment status is <strong>Paid</strong>.
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {!isPaidOnline && printableCustomer.paymentMethod !== 'cod' && (
+          <motion.div
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="no-print mb-6 p-4 sm:p-5 bg-gradient-to-r from-amber-50/50 to-orange-50/50 border border-amber-500/20 rounded-sm text-amber-800 text-left flex items-start gap-3.5 shadow-sm bg-white"
+          >
+            <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0 text-amber-600">
+              <CheckCircle2 size={16} className="text-amber-600 animate-pulse" />
+            </div>
+            <div className="flex-grow space-y-2">
+              <h4 className="text-sm font-bold text-amber-950 font-serif leading-none">
+                Online Payment Pending
+              </h4>
+              <p className="text-xs text-amber-950/80 leading-relaxed font-sans">
+                Your order is currently booked as <strong>Pending Payment</strong>. If you closed the payment window or encountered an issue, please click below to complete your payment of <strong>₹{displayTotal.toLocaleString("en-IN")}</strong> via Razorpay.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
+                <a
+                  href={`https://razorpay.me/@Mukeshsareecentre/${displayTotal}?amount=${displayTotal}`}
+                  className="inline-flex items-center justify-center bg-amber-800 hover:bg-amber-900 text-white rounded-sm py-2 px-4.5 font-bold text-[10px] uppercase tracking-widest shadow-md transition-colors"
+                >
+                  💳 Complete Online Payment
+                </a>
+                <Link
+                  to="/thank-you?success=true"
+                  className="inline-flex items-center justify-center border border-amber-700/20 bg-white hover:bg-amber-500/5 text-amber-900 rounded-sm py-2 px-4.5 font-bold text-[10px] uppercase tracking-widest transition-colors"
+                >
+                  ✓ Click if already paid
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* PRINTABLE BOUTIQUE INVOICE CARD */}
         <div id="msc-invoice" className="print-invoice-page bg-white p-4 sm:p-6 md:p-8 border border-[#1A0A00]/5 sm:rounded-sm shadow-xl shadow-black/[0.015] font-sans text-left">
           
@@ -689,7 +823,13 @@ export default function ThankYou() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#1A0A00]/50 flex items-center gap-1.5"><ShoppingBag size={13} /> Order Status:</span>
-                  <span className="font-medium text-amber-800">Processing Dispatch</span>
+                  <span className="font-semibold text-amber-800 font-sans">Confirmed</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#1A0A00]/50 flex items-center gap-1.5"><CheckCircle2 size={13} /> Payment Status:</span>
+                  <span className="font-semibold text-amber-800 font-sans">
+                    {isPaidOnline ? "Paid [Online] ✅" : (printableCustomer.paymentMethod === 'cod' ? "Pending [COD]" : "Pending Online ⏳")}
+                  </span>
                 </div>
               </div>
             </div>

@@ -1,6 +1,48 @@
 import fs from "fs";
 import path from "path";
 import { products } from "../src/mockData.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+function replaceEnvPlaceholders(html: string): string {
+  const fallbacks: Record<string, string> = {
+    VITE_META_PIXEL_ID: '3834311026859384',
+    VITE_FB_DOMAIN_VERIFY: 'your_fb_domain_verify_token',
+    VITE_GTM_ID: 'GTM-WMG3G6SM',
+    VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
+    VITE_PINTEREST_TAG: 'your_pinterest_tag_id',
+    VITE_PINTEREST_DOMAIN: '5099ed06768c1b801e53b45489b5bf2d',
+    VITE_RAZORPAY_KEY_ID: 'rzp_live_SvAvyQnxCNWCIP',
+    VITE_WHATSAPP_NUMBER: '917020664641',
+    VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
+    VITE_GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
+    VITE_SITE_URL: 'https://mukeshsarees.com',
+    VITE_SITE_NAME: 'Mukesh Saree Centre',
+    VITE_STORE_PHONE: '+91 7020664641',
+  };
+
+  return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
+    const envKey = `VITE_${key}`;
+    const val = process.env[envKey] || fallbacks[envKey];
+    if (val !== undefined && val !== null) {
+      const strVal = String(val).trim();
+      if (
+        strVal.startsWith('your_') ||
+        strVal.includes('YOUR_SCRIPT_ID') ||
+        strVal === 'your_fb_domain_verify_token' ||
+        strVal === 'your_pinterest_domain_verify' ||
+        strVal === 'your_gtm_id' ||
+        strVal === 'your_pinterest_tag_id' ||
+        strVal === 'your_ga4_measurement_id'
+      ) {
+        return '';
+      }
+      return strVal;
+    }
+    return '';
+  });
+}
 
 // Helper to sanitize text for meta/JSON attributes
 function cleanDescriptionForPrerender(rawDesc: string): string {
@@ -94,31 +136,29 @@ function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string 
   }
 }
 
-function getPortraitPrerenderImageUrl(imageUrl: string | undefined): string {
+function getSquarePrerenderImageUrl(imageUrl: string | undefined): string {
   if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
   
   let targetUrl = imageUrl;
-  if (imageUrl.includes('drive.google.com')) {
-    const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
+  
+  if (imageUrl.includes('wsrv.nl')) {
+    const match = imageUrl.match(/[?&]url=([^&]+)/);
+    if (match) {
+      targetUrl = decodeURIComponent(match[1]);
+    }
+  }
+
+  if (targetUrl.includes('drive.google.com')) {
+    const driveIdMatch = targetUrl.match(/[?&]id=([^&]+)/);
     if (driveIdMatch) {
       const fileId = driveIdMatch[1];
       targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
     }
-  } else if (imageUrl.includes('lh3.googleusercontent.com')) {
-    targetUrl = imageUrl.split('=')[0]; // strip existing params
+  } else if (targetUrl.includes('lh3.googleusercontent.com')) {
+    targetUrl = targetUrl.split('=')[0]; // strip existing params
   }
   
-  if (targetUrl.includes('wsrv.nl')) {
-    return targetUrl
-      .replace(/w=\d+/, 'w=630')
-      .replace(/h=\d+/, 'h=1200')
-      .replace(/fit=[a-z]+/, 'fit=contain')
-      .replace(/bg=[a-zA-Z0-9]+/, 'bg=fafafa')
-      .replace('output=jpg', 'output=webp')
-      .replace('output=jpeg', 'output=webp');
-  } else {
-    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=630&h=1200&fit=contain&bg=fafafa&output=webp&q=85`;
-  }
+  return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=1200&fit=contain&cbg=ffffff&output=jpg&q=90`;
 }
 
 function sanitize(text: string): string {
@@ -160,8 +200,7 @@ function getHeaderHtml(): string {
           <img src="/images/logo.webp" alt="Mukesh Saree Centre Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
         </a>
       </div>
-      <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
-        <a href="/" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Home</a>
+      <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
         <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
         <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
         <a href="/shop?category=Co-Ord-Sets" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Co-Ord Sets</a>
@@ -216,14 +255,13 @@ function getFooterHtml(): string {
 function getProductCardHtml(p: any): string {
   const wsrvImg = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=500&fit=contain&output=webp`;
   return `
-    <div style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
+    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
       <a href="/product/${p.slug}" style="text-decoration: none; color: inherit; display: block;">
-        <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
           <img src="${wsrvImg}" alt="${sanitize(p.name)}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
         </div>
         <div style="padding: 16px; text-align: left;">
-          <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; font-weight: 500;">${sanitize(p.category)}</span>
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 6px 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">${sanitize(p.name)}</h3>
+          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">${sanitize(p.name)}</h3>
           <div style="display: flex; align-items: baseline; gap: 8px;">
             <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹${p.price}</span>
             ${p.originalPrice ? `<span style="font-size: 12px; text-decoration: line-through; color: #999;">₹${p.originalPrice}</span>` : ""}
@@ -247,8 +285,9 @@ async function runPrerender() {
     process.exit(1);
   }
 
-  const baseHtml = fs.readFileSync(baseHtmlPath, "utf-8");
-  console.log(`[PRERENDER] Loaded base HTML of length ${baseHtml.length} bytes.`);
+  const rawBaseHtml = fs.readFileSync(baseHtmlPath, "utf-8");
+  const baseHtml = replaceEnvPlaceholders(rawBaseHtml);
+  console.log(`[PRERENDER] Loaded raw base HTML and replaced placeholders.`);
 
   // Setup dynamic routing directory write-helper
   const writePage = (dirName: string, htmlContent: string) => {
@@ -256,7 +295,8 @@ async function runPrerender() {
     if (!fs.existsSync(fullDir)) {
       fs.mkdirSync(fullDir, { recursive: true });
     }
-    fs.writeFileSync(path.join(fullDir, "index.html"), htmlContent);
+    const processedHtml = replaceEnvPlaceholders(htmlContent);
+    fs.writeFileSync(path.join(fullDir, "index.html"), processedHtml);
   };
 
   // 1. GENERATE HOMEPAGE (dist/index.html Overwrite)
@@ -310,21 +350,21 @@ async function runPrerender() {
       <!-- Category Links -->
       <section style="max-width: 1200px; margin: 60px auto; padding: 0 24px;">
         <h2 style="font-family: 'Playfair Display', serif; text-align: center; font-size: 28px; margin-bottom: 40px; color: #1a0a00;">Browse By Collection</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;">
-          <a href="/shop?category=Sarees" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
-            <h3 style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Designer Sarees</h3>
+        <div class="collection-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;">
+          <a class="collection-card" href="/shop?category=Sarees" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Designer Sarees</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Pure Silks & Linens</span>
           </a>
-          <a href="/shop?category=Co-Ord-Sets" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
-            <h3 style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Co-Ord Sets</h3>
+          <a class="collection-card" href="/shop?category=Co-Ord-Sets" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Co-Ord Sets</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Luxe Cotton & Linen Pairs</span>
           </a>
-          <a href="/shop?category=Lehengas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
-            <h3 style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Lehengas</h3>
+          <a class="collection-card" href="/shop?category=Lehengas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Lehengas</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Grand Wedding Attire</span>
           </a>
-          <a href="/shop?category=Kurtas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
-            <h3 style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Kurtas & Suits</h3>
+          <a class="collection-card" href="/shop?category=Kurtas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Kurtas & Suits</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Comfortable Everyday Elegance</span>
           </a>
         </div>
@@ -377,7 +417,7 @@ async function runPrerender() {
   updatedHomeHtml = updatedHomeHtml.replace(defaultOgBlockRegex, homeOgTags);
   updatedHomeHtml = updatedHomeHtml.replace("</head>", `<script type="application/ld+json">${JSON.stringify(homeSchema)}</script></head>`);
 
-  fs.writeFileSync(baseHtmlPath, updatedHomeHtml);
+  fs.writeFileSync(baseHtmlPath, replaceEnvPlaceholders(updatedHomeHtml));
   console.log("[PRERENDER] Index.html updated successfully with homepage static HTML.");
 
 
@@ -607,9 +647,11 @@ async function runPrerender() {
     `;
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
-    const wsrvImgPortrait = getPortraitPrerenderImageUrl(p.image);
-    const prodDesc = getWhatsAppSafePrerenderDescription(p.description || "", p);
-    const pageTitle = `${p.name} – Mukesh Saree Centre`;
+    const wsrvImgSquare = getSquarePrerenderImageUrl(p.image);
+    const shortDesc = getWhatsAppSafePrerenderDescription(p.description || "", p).replace(/\|/g, "").trim();
+    const mrpPart = p.originalPrice ? ` (MRP ₹${p.originalPrice})` : "";
+    const prodDesc = `✨ ${shortDesc} | 💰 ₹${p.price}${mrpPart} | 🚚 Free Shipping | Cash on Delivery Available`;
+    const pageTitle = `${p.name} – ₹${p.price} | Mukesh Saree Centre`;
     
     let prodHtml = baseHtml
       .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${productBody}</div>`)
@@ -622,17 +664,17 @@ async function runPrerender() {
     const dynamicTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="${sanitize(pageTitle)}" />
     <meta property="og:description" content="${sanitize(prodDesc)}" />
-    <meta property="og:image" content="${wsrvImgPortrait}" />
+    <meta property="og:image" content="${wsrvImgSquare}" />
     <meta property="og:url" content="${originalUrl}" />
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
-    <meta property="og:image:width" content="630" />
+    <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="1200" />
-    <meta property="og:image:type" content="image/webp" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${sanitize(pageTitle)}" />
     <meta name="twitter:description" content="${sanitize(prodDesc)}" />
-    <meta name="twitter:image" content="${wsrvImgPortrait}" />
+    <meta name="twitter:image" content="${wsrvImgSquare}" />
     <link rel="canonical" href="${originalUrl}" />
     <!-- End Dynamic OG Tags -->`;
 

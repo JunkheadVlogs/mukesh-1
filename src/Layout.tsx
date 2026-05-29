@@ -18,6 +18,7 @@ import {
   Sparkles,
   Mail,
   Phone,
+  Home,
 } from "lucide-react";
 import { useStore } from "./store";
 import { useState, useEffect, useRef, Suspense } from "react";
@@ -605,29 +606,37 @@ export default function Layout() {
         )}
       </AnimatePresence>
 
-      {/* Navigation */}
-      <header
+      {/* Navigation Wrapper */}
+      <div
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ease-in-out will-change-transform transform-gpu ${
           isHidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
-        } ${!isTransparent && isScrolled ? "border-b border-[#2B2B2B]/5" : "border-b-0"} h-[85px] md:h-[95px] flex flex-col`}
-        style={headerStyle}
+        }`}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={announcements[announcementIndex]}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.5 }}
-            className="absolute top-0 left-0 w-full bg-[#2B2B2B] text-[#C8A96B] text-center px-4 text-[9px] sm:text-[10px] font-medium tracking-[2px] md:tracking-[3px] uppercase flex items-center justify-center z-[60] h-[26px]"
-          >
-            <span>{announcements[announcementIndex]}</span>
-          </motion.div>
-        </AnimatePresence>
+        {/* Dynamic Announcement Bar */}
+        <div className="announcement-bar bg-[#2B2B2B] text-[#C8A96B] w-full flex items-center justify-center z-50">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={announcements[announcementIndex]}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.5 }}
+            >
+              <span>{announcements[announcementIndex]}</span>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-        <div className="w-full px-4 md:px-8 max-w-7xl mx-auto h-[59px] md:h-[69px] mt-[26px] flex items-center justify-between">
-          {/* Left Section: Hamburger on Mobile, Nav Links on Desktop */}
-          <div className="flex items-center flex-1 h-full">
+        {/* Site Header */}
+        <header
+          className={`site-header w-full relative transition-all duration-300 ${
+            !isTransparent && isScrolled ? "border-b border-[#2B2B2B]/5" : "border-b-0"
+          } flex items-center justify-between`}
+          style={headerStyle}
+        >
+
+        {/* Left Section: Hamburger on Mobile, Nav Links on Desktop */}
+        <div className="flex items-center flex-1 h-full z-10 px-4 md:pl-8">
             <div className="md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -643,65 +652,36 @@ export default function Layout() {
               </button>
             </div>
 
-            <nav className="hidden md:flex space-x-8 items-center h-full">
+            <nav className="hidden md:flex space-x-6 items-center h-full">
               <Link
-                to="/"
-                onClick={scrollToTop}
-                className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
+                to="/shop"
+                className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
-                Home
+                Shop
               </Link>
-              <div className="relative group h-full flex items-center">
-                <Link
-                  to="/shop"
-                  className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} group-hover:text-gold-500 transition-colors py-4 flex items-center pr-2`}
-                >
-                  Shop{" "}
-                  <ChevronDown
-                    size={14}
-                    className="ml-1 opacity-70 group-hover:rotate-180 transition-transform duration-300"
-                  />
-                </Link>
-                <div className="absolute top-full left-0 mt-0 w-48 bg-white border border-black/5 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-50">
-                  <div className="py-2 flex flex-col">
-                    <Link
-                      to="/shop"
-                      className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
-                    >
-                      All Products
-                    </Link>
-                    <Link
-                      to="/shop?category=Sarees"
-                      className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
-                    >
-                      Sarees
-                    </Link>
-                    <Link
-                      to="/shop?category=Linen Sarees"
-                      className="px-8 py-2 text-[10px] tracking-[1.5px] uppercase font-medium text-primary-950/70 hover:bg-gold-50 hover:text-gold-600 transition-colors pl-10"
-                    >
-                      — Linen Sarees
-                    </Link>
-                    <Link
-                      to="/shop?category=Co-Ord-Sets"
-                      className="px-6 py-2.5 text-[11px] tracking-[1.5px] uppercase font-medium text-primary-950 hover:bg-gold-50 hover:text-gold-600 transition-colors"
-                    >
-                      Co-Ord Sets
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              <Link
+                to="/shop?category=Sarees"
+                className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
+              >
+                Sarees
+              </Link>
+              <Link
+                to="/shop?category=Co-Ord-Sets"
+                className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
+              >
+                Co-Ord Sets
+              </Link>
               <Link
                 to="/contact"
-                className={`text-[11px] tracking-[2px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
+                className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
-                Contact Us
+                Contact
               </Link>
             </nav>
           </div>
 
           {/* Center Section: Logo */}
-          <div className="flex-shrink-0 flex flex-col items-center justify-center m-0 p-0">
+          <div className="header-logo z-0">
             <Link
               to="/"
               onClick={scrollToTop}
@@ -712,17 +692,17 @@ export default function Layout() {
                   src={logoSrc}
                   alt="Mukesh Saree Centre Logo"
                   style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
-                  className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain transition-all duration-500 group-hover:opacity-80 drop-shadow-sm m-0 p-0 block header-logo"
+                  className="logo transition-all duration-500 group-hover:opacity-80 m-0 p-0 block"
                   onError={handleLogoError}
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center">
-                  <span className={`text-[17px] md:text-2xl font-serif font-semibold tracking-[4px] md:tracking-[8px] uppercase text-center leading-none transition-all ${textColor} group-hover:opacity-70`}>
+                  <span className={`text-[24px] md:text-3.5xl font-serif font-bold tracking-[5px] md:tracking-[8px] uppercase text-center leading-none transition-all ${textColor} group-hover:opacity-70`}>
                     MUKESH
                   </span>
-                  <div className="flex items-center gap-2 md:gap-3 w-full mt-1.5 md:mt-2 px-1 opacity-90">
+                  <div className="flex items-center gap-2 md:gap-3 w-full mt-1.5 md:mt-2 px-1 opacity-95">
                     <div className={`h-[1px] flex-1 ${borderColor} transition-colors`}></div>
-                    <span className={`text-[8px] md:text-[10px] font-sans font-medium tracking-[4px] md:tracking-[6px] uppercase ${textColor} transition-colors whitespace-nowrap`}>
+                    <span className={`text-[10px] md:text-[12px] font-sans font-bold tracking-[4px] md:tracking-[6px] uppercase ${textColor} transition-colors whitespace-nowrap`}>
                       Saree Centre
                     </span>
                     <div className={`h-[1px] flex-1 ${borderColor} transition-colors`}></div>
@@ -732,7 +712,7 @@ export default function Layout() {
             </Link>
           </div>
 
-          <div className="flex items-center justify-end space-x-1 sm:space-x-4 md:space-x-6 flex-1">
+          <div className="flex items-center justify-end space-x-1 sm:space-x-4 md:space-x-6 flex-1 z-10 px-4 md:pr-8">
             <button
               onClick={() => setIsSearchOpen(true)}
               className={`${iconColor} hover:text-gold-200 transition-all h-11 w-11 flex items-center justify-center`}
@@ -774,8 +754,8 @@ export default function Layout() {
               </AnimatePresence>
             </Link>
           </div>
-        </div>
-      </header>
+        </header>
+      </div>
 
       <AnimatePresence>
         {isMobileMenuOpen && (
@@ -824,84 +804,40 @@ export default function Layout() {
 
               {/* 2. Scrollable Section with Balanced, Compact Spacing - Entire Content Flows Naturally */}
               <div className="flex-1 overflow-y-auto px-5 py-2 flex flex-col justify-start space-y-2.5 scrollbar-thin bg-[#FAF8F4]">
-                <div className="space-y-2">
-                  <nav className="flex flex-col space-y-1">
-                    {/* SHOP (WITH PREMIUM ACCORDION DROPDOWN) */}
-                    <div className="py-0">
-                      <button
-                        onClick={() => setIsMobileShopOpen(!isMobileShopOpen)}
-                        className="w-full flex items-center justify-between py-1 text-[13px] font-sans font-extrabold tracking-[1.5px] uppercase text-neutral-950 hover:text-gold-600 transition-colors cursor-pointer outline-none"
-                      >
-                        <span className="text-neutral-950 font-black">Shop Collections</span>
-                        <ChevronDown
-                          size={15}
-                          strokeWidth={2.5}
-                          className={`text-neutral-950 transition-transform duration-300 ${isMobileShopOpen ? "rotate-180 text-gold-600" : ""}`}
-                        />
-                      </button>
-
-                      <AnimatePresence initial={false}>
-                        {isMobileShopOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.22, ease: "easeInOut" }}
-                            className="overflow-hidden"
-                          >
-                            <div className="py-0.5 mt-1 flex flex-col space-y-0.5 bg-white rounded-md px-3 py-1 border border-[#C8A96B]/20 shadow-xs">
-                              <Link
-                                to="/shop"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="text-[12px] tracking-[1.2px] uppercase font-bold py-1.5 transition-colors flex items-center justify-between border-b border-neutral-100 last:border-0 text-neutral-900 hover:text-gold-600"
-                              >
-                                <span className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-gold-600" />
-                                  <span className="text-neutral-950 font-black">All Products</span>
-                                </span>
-                                <ChevronRight size={10} className="text-[#C8A96B]" />
-                              </Link>
-                              
-                              <Link
-                                to="/shop?category=Sarees"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="text-[12px] tracking-[1.2px] uppercase font-bold py-1.5 transition-colors flex items-center justify-between border-b border-neutral-100 last:border-0 text-neutral-900 hover:text-gold-600"
-                              >
-                                <span className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-gold-600" />
-                                  <span className="text-neutral-950 font-black">Sarees</span>
-                                </span>
-                                <ChevronRight size={10} className="text-[#C8A96B]" />
-                              </Link>
-
-                              <Link
-                                to="/shop?category=Linen Sarees"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="text-[12px] tracking-[1.2px] uppercase font-bold py-1.5 transition-colors flex items-center justify-between border-b border-neutral-100 last:border-0 text-neutral-900 hover:text-gold-600"
-                              >
-                                <span className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-gold-600" />
-                                  <span className="text-neutral-950 font-black">Linen Sarees</span>
-                                </span>
-                                <ChevronRight size={10} className="text-[#C8A96B]" />
-                              </Link>
-
-                              <Link
-                                to="/shop?category=Co-Ord-Sets"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="text-[12px] tracking-[1.2px] uppercase font-bold py-1.5 transition-colors flex items-center justify-between last:border-0 text-neutral-900 hover:text-gold-600"
-                              >
-                                <span className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-gold-600" />
-                                  <span className="text-neutral-950 font-black">Co-Ord Sets</span>
-                                </span>
-                                <ChevronRight size={10} className="text-[#C8A96B]" />
-                              </Link>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
+                <div className="space-y-4">
+                  <nav className="flex flex-col space-y-4 py-2">
+                    <Link
+                      to="/shop"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-[13px] tracking-[1.5px] uppercase font-bold text-neutral-950 hover:text-gold-600 transition-colors py-1 flex items-center justify-between border-b border-[#C8A96B]/10 pb-2"
+                    >
+                      <span className="text-neutral-950 font-extrabold">Shop</span>
+                      <ChevronRight size={14} className="text-[#C8A96B]" />
+                    </Link>
+                    <Link
+                      to="/shop?category=Sarees"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-[13px] tracking-[1.5px] uppercase font-bold text-neutral-950 hover:text-gold-600 transition-colors py-1 flex items-center justify-between border-b border-[#C8A96B]/10 pb-2"
+                    >
+                      <span className="text-neutral-950 font-extrabold">Sarees</span>
+                      <ChevronRight size={14} className="text-[#C8A96B]" />
+                    </Link>
+                    <Link
+                      to="/shop?category=Co-Ord-Sets"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-[13px] tracking-[1.5px] uppercase font-bold text-neutral-950 hover:text-gold-600 transition-colors py-1 flex items-center justify-between border-b border-[#C8A96B]/10 pb-2"
+                    >
+                      <span className="text-neutral-950 font-extrabold">Co-Ord Sets</span>
+                      <ChevronRight size={14} className="text-[#C8A96B]" />
+                    </Link>
+                    <Link
+                      to="/contact"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-[13px] tracking-[1.5px] uppercase font-bold text-neutral-950 hover:text-gold-600 transition-colors py-1 flex items-center justify-between border-b border-[#C8A96B]/10 pb-2"
+                    >
+                      <span className="text-neutral-950 font-extrabold">Contact</span>
+                      <ChevronRight size={14} className="text-[#C8A96B]" />
+                    </Link>
                   </nav>
 
                   {/* INTEGRATED PREMIUM SEARCH BAR TRIGGER */}
@@ -994,7 +930,7 @@ export default function Layout() {
 
       {/* Main Content */}
       <main
-        className={`flex-grow flex flex-col ${!isHomePage ? "pt-[85px] md:pt-[95px]" : ""}`}
+        className={`flex-grow flex flex-col ${!isHomePage ? "pt-[106px] md:pt-[126px]" : ""}`}
       >
         <Suspense fallback={
           <div className="flex-grow min-h-[50vh] flex flex-col items-center justify-center bg-[#FAF8F4] space-y-4">
@@ -1007,10 +943,13 @@ export default function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#111111] text-neutral-300 pt-3 pb-2.5 md:pt-14 md:pb-12 border-t border-[#C8A96B]/25">
+      <footer className="bg-[#111111] text-neutral-300 pt-8 pb-8 md:pt-14 md:pb-12 border-t border-[#C8A96B]/25">
         <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
           
-          {/* Newsletter Section */}
+          {/* Full Footer Content */}
+          <div className="footer-full">
+            
+            {/* Newsletter Section */}
           <div className="mb-2 md:mb-12 border-b border-white/10 pb-2 md:pb-10">
             <div className="max-w-xl mx-auto text-center">
               <h3 
@@ -1271,6 +1210,7 @@ export default function Layout() {
             </p>
           </div>
 
+          </div> {/* End of footer-full */}
         </div>
       </footer>
 

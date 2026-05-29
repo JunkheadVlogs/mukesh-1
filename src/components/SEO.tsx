@@ -149,35 +149,72 @@ export function SEO({
   const defaultWidth = "1200";
   const defaultHeight = "630";
 
-  const finalImageWidth = isProductType ? "630" : (imageWidth || defaultWidth);
-  const finalImageHeight = isProductType ? "1200" : (imageHeight || defaultHeight);
-
+  let displayTitle = title;
+  let finalDescriptionText = cleanDescriptionText;
   let displayImage = absoluteImage;
-  if (absoluteImage) {
+  let finalImageWidth = imageWidth || defaultWidth;
+  let finalImageHeight = imageHeight || defaultHeight;
+  let imageType = "image/jpeg";
+
+  if (isProductType && product) {
+    const pPrice = product.price || "";
+    const pOriginalPrice = product.originalPrice || "";
+    const pName = product.name || title.replace(" – Mukesh Saree Centre", "");
+
+    // Exact requested format: PRODUCT_NAME – ₹PRICE | Mukesh Saree Centre
+    displayTitle = `${pName} – ₹${pPrice} | Mukesh Saree Centre`;
+
+    // Exact requested format: ✨ PRODUCT_SHORT_DESCRIPTION | 💰 ₹PRICE (MRP ₹ORIGINAL_PRICE) | 🚚 Free Shipping | Cash on Delivery Available
+    const cleanShortDesc = cleanDescriptionText.replace(/\|/g, "").trim();
+    const mrpPart = pOriginalPrice ? ` (MRP ₹${pOriginalPrice})` : "";
+    finalDescriptionText = `✨ ${cleanShortDesc} | 💰 ₹${pPrice}${mrpPart} | 🚚 Free Shipping | Cash on Delivery Available`;
+
+    // Un-wrap if already wrapped in wsrv
     let targetUrl = absoluteImage;
-    if (absoluteImage.includes('drive.google.com')) {
-      const driveIdMatch = absoluteImage.match(/[?&]id=([^&]+)/);
+    if (absoluteImage.includes('wsrv.nl')) {
+      try {
+        const urlObj = new URL(absoluteImage);
+        const originUrl = urlObj.searchParams.get('url');
+        if (originUrl) {
+          targetUrl = originUrl;
+        }
+      } catch (e) {
+        const match = absoluteImage.match(/[?&]url=([^&]+)/);
+        if (match) {
+          targetUrl = decodeURIComponent(match[1]);
+        }
+      }
+    }
+
+    if (targetUrl.includes('drive.google.com')) {
+      const driveIdMatch = targetUrl.match(/[?&]id=([^&]+)/);
       if (driveIdMatch) {
         const fileId = driveIdMatch[1];
         targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
       }
-    } else if (absoluteImage.includes('lh3.googleusercontent.com')) {
-      targetUrl = absoluteImage.split('=')[0]; // strip existing resize parameters
+    } else if (targetUrl.includes('lh3.googleusercontent.com')) {
+      targetUrl = targetUrl.split('=')[0]; // strip existing params
     }
-    
-    if (isProductType) {
-      if (targetUrl.includes('wsrv.nl')) {
-        displayImage = targetUrl
-          .replace(/w=\d+/, 'w=630')
-          .replace(/h=\d+/, 'h=1200')
-          .replace(/fit=[a-z]+/, 'fit=contain')
-          .replace(/bg=[a-zA-Z0-9]+/, 'bg=fafafa')
-          .replace('output=jpg', 'output=webp')
-          .replace('output=jpeg', 'output=webp');
-      } else {
-        displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=630&h=1200&fit=contain&bg=fafafa&output=webp&q=85`;
+
+    // Exact requested format: https://wsrv.nl/?url=PRODUCT_IMAGE_URL&w=1200&h=1200&fit=contain&cbg=ffffff&output=jpg&q=90
+    displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=1200&fit=contain&cbg=ffffff&output=jpg&q=90`;
+    finalImageWidth = "1200";
+    finalImageHeight = "1200";
+    imageType = "image/jpeg";
+  } else {
+    // Standard logic
+    if (absoluteImage) {
+      let targetUrl = absoluteImage;
+      if (absoluteImage.includes('drive.google.com')) {
+        const driveIdMatch = absoluteImage.match(/[?&]id=([^&]+)/);
+        if (driveIdMatch) {
+          const fileId = driveIdMatch[1];
+          targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+        }
+      } else if (absoluteImage.includes('lh3.googleusercontent.com')) {
+        targetUrl = absoluteImage.split('=')[0]; // strip existing resize parameters
       }
-    } else {
+      
       // Check if wsrv is already wrapping this URL
       if (targetUrl.includes('wsrv.nl')) {
         // Just make sure it uses 1200x630 cover crop
@@ -190,31 +227,34 @@ export function SEO({
         displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
       }
     }
+    finalImageWidth = imageWidth || defaultWidth;
+    finalImageHeight = imageHeight || defaultHeight;
+    imageType = "image/jpeg";
   }
 
   return (
     <Helmet>
-      <title>{title}</title>
-      <meta name="title" content={title} />
-      <meta name="description" content={cleanDescriptionText} />
+      <title>{displayTitle}</title>
+      <meta name="title" content={displayTitle} />
+      <meta name="description" content={finalDescriptionText} />
       <link rel="canonical" href={absoluteUrl} />
 
       {/* Open Graph / Facebook / WhatsApp */}
       <meta property="og:type" content={finalType} />
       <meta property="og:url" content={absoluteUrl} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={cleanDescriptionText} />
+      <meta property="og:title" content={displayTitle} />
+      <meta property="og:description" content={finalDescriptionText} />
       <meta property="og:image" content={displayImage} />
       <meta property="og:image:width" content={finalImageWidth} />
       <meta property="og:image:height" content={finalImageHeight} />
-      <meta property="og:image:type" content={isProductType ? "image/webp" : "image/jpeg"} />
+      <meta property="og:image:type" content={imageType} />
       <meta property="og:site_name" content="Mukesh Saree Centre" />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={absoluteUrl} />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={cleanDescriptionText} />
+      <meta name="twitter:title" content={displayTitle} />
+      <meta name="twitter:description" content={finalDescriptionText} />
       <meta name="twitter:image" content={displayImage} />
 
       {/* Product Specific */}

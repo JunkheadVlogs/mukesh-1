@@ -11,7 +11,7 @@ async function generateSitemap() {
   // Base domain
   const DOMAIN = "https://mukeshsarees.com";
 
-  // Static and dynamic routes as requested by the user
+  // Static routes
   const routes = [
     { path: "/", changefreq: "daily", priority: "1.0" },
     { path: "/shop", changefreq: "weekly", priority: "0.9" },
@@ -19,19 +19,25 @@ async function generateSitemap() {
     { path: "/shop?category=Co-Ord-Sets", changefreq: "weekly", priority: "0.8" },
     { path: "/shop?category=Lehengas", changefreq: "weekly", priority: "0.8" },
     { path: "/shop?category=Kurtas", changefreq: "weekly", priority: "0.8" },
-    { path: "/product/premium-pure-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/pure-beige-cotton-floral-coord-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/pure-cotton-floral-coord-set-white", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/premium-pure-cotton-coord-set-grey", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/elegant-forest-green-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
     { path: "/contact", changefreq: "monthly", priority: "0.5" },
     { path: "/shipping-policy", changefreq: "yearly", priority: "0.4" },
     { path: "/return-policy", changefreq: "yearly", priority: "0.4" },
-    { path: "/terms", changefreq: "yearly", priority: "0.3" }
+    { path: "/terms", changefreq: "yearly", priority: "0.3" },
+    { path: "/wishlist", changefreq: "monthly", priority: "0.5" }
   ];
+
+  // Dynamic product URLs from mockData
+  const seenSlugs = new Set<string>();
+  for (const product of products) {
+    if (product && product.slug && !seenSlugs.has(product.slug)) {
+      seenSlugs.add(product.slug);
+      routes.push({
+        path: `/product/${product.slug}`,
+        changefreq: "weekly",
+        priority: "0.8"
+      });
+    }
+  }
 
   const sitemapLines: string[] = [];
 

@@ -466,7 +466,7 @@ apiRouter.post("/verify-payment", (req, res) => {
 });
 
 // ==== Meta Conversions API (CAPI) ====
-apiRouter.post("/meta-capi", async (req, res) => {
+apiRouter.post(["/meta-capi", "/sys-metric"], async (req, res) => {
   const { event_name, event_id, value, currency, content_ids, contents, num_items, user_data: clientUserData, event_source_url } = req.body;
   const PIXEL_ID = process.env.META_PIXEL_ID;
   const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
@@ -780,31 +780,29 @@ const getWhatsAppSafeServerImageUrl = (imageUrl) => {
   }
 };
 
-const getPortraitServerImageUrl = (imageUrl) => {
+const getSquareServerImageUrl = (imageUrl) => {
   if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
   
   let targetUrl = imageUrl;
-  if (imageUrl.includes('drive.google.com')) {
-    const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
+  
+  if (imageUrl.includes('wsrv.nl')) {
+    const match = imageUrl.match(/[?&]url=([^&]+)/);
+    if (match) {
+      targetUrl = decodeURIComponent(match[1]);
+    }
+  }
+
+  if (targetUrl.includes('drive.google.com')) {
+    const driveIdMatch = targetUrl.match(/[?&]id=([^&]+)/);
     if (driveIdMatch) {
       const fileId = driveIdMatch[1];
       targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
     }
-  } else if (imageUrl.includes('lh3.googleusercontent.com')) {
-    targetUrl = imageUrl.split('=')[0]; // strip existing params
+  } else if (targetUrl.includes('lh3.googleusercontent.com')) {
+    targetUrl = targetUrl.split('=')[0]; // strip existing params
   }
   
-  if (targetUrl.includes('wsrv.nl')) {
-    return targetUrl
-      .replace(/w=\d+/, 'w=630')
-      .replace(/h=\d+/, 'h=1200')
-      .replace(/fit=[a-z]+/, 'fit=contain')
-      .replace(/bg=[a-zA-Z0-9]+/, 'bg=fafafa')
-      .replace('output=jpg', 'output=webp')
-      .replace('output=jpeg', 'output=webp');
-  } else {
-    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=630&h=1200&fit=contain&bg=fafafa&output=webp&q=85`;
-  }
+  return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=1200&fit=contain&cbg=ffffff&output=jpg&q=90`;
 };
 
 const getWhatsAppSafeServerDescription = (text, productContext) => {
@@ -872,11 +870,17 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     const slug = productMatch[1].trim().toLowerCase();
     const prod = preParsedProducts.find(p => p.slug && p.slug.trim().toLowerCase() === slug);
     if (prod) {
-      ogTitle = `${prod.name} – Mukesh Saree Centre`;
-      ogDesc = getWhatsAppSafeServerDescription(prod.description, prod);
+      ogTitle = `${prod.name} – ₹${prod.price || "0"} | Mukesh Saree Centre`;
+      
+      const rawShortDesc = getWhatsAppSafeServerDescription(prod.description, prod);
+      const cleanShortDesc = rawShortDesc.replace(/\|/g, "").trim();
+      const mrpValue = prod.originalPrice || "";
+      const mrpPart = mrpValue ? ` (MRP ₹${mrpValue})` : "";
+      
+      ogDesc = `✨ ${cleanShortDesc} | 💰 ₹${prod.price || "0"}${mrpPart} | 🚚 Free Shipping | Cash on Delivery Available`;
  
-      // Convert to beautiful portrait format for products to show tall and full on WhatsApp
-      ogImg = getPortraitServerImageUrl(prod.image || defaultBannerUrl);
+      // Convert to beautiful square contain format for products to show perfectly on WhatsApp
+      ogImg = getSquareServerImageUrl(prod.image || defaultBannerUrl);
       price = prod.price || "0";
       isProduct = true;
     }
@@ -901,9 +905,9 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta property="og:url" content="${ogUrl}" />
      <meta property="og:type" content="${isProduct ? 'product' : 'website'}" />
      <meta property="og:site_name" content="Mukesh Saree Centre" />
-     <meta property="og:image:width" content="${isProduct ? '630' : '1200'}" />
+     <meta property="og:image:width" content="${isProduct ? '1200' : '1200'}" />
      <meta property="og:image:height" content="${isProduct ? '1200' : '630'}" />
-     <meta property="og:image:type" content="${isProduct ? 'image/webp' : 'image/jpeg'}" />
+     <meta property="og:image:type" content="${isProduct ? 'image/jpeg' : 'image/jpeg'}" />
      <meta name="twitter:card" content="summary_large_image" />
      <meta name="twitter:title" content="${ogTitle}" />
      <meta name="twitter:description" content="${ogDesc}" />
@@ -916,7 +920,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   // Replace standard title tag
   injectedHtml = injectedHtml.replace(
     /<title>.*?<\/title>/,
-    `<title>${ogTitle} — Mukesh Saree Centre</title>`
+    `<title>${ogTitle}</title>`
   );
 
   // Replace standard meta description
@@ -966,6 +970,13 @@ Sitemap: https://mukeshsarees.com/sitemap.xml`);
 
 app.get('/sitemap.xml', (req, res) => {
   res.type('application/xml');
+  const sitemapPath = path.join(process.cwd(), 'dist', 'sitemap.xml');
+  const publicSitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
+  if (fs.existsSync(sitemapPath)) {
+    return res.sendFile(sitemapPath);
+  } else if (fs.existsSync(publicSitemapPath)) {
+    return res.sendFile(publicSitemapPath);
+  }
   res.send(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -1070,9 +1081,41 @@ async function setupServer() {
         }
         let html = fs.readFileSync(indexPath, 'utf-8');
         // Substitute %VITE_...% style placeholders with process.env properties for runtime environment injection
+        const fallbacks = {
+          VITE_META_PIXEL_ID: '3834311026859384',
+          VITE_FB_DOMAIN_VERIFY: '',
+          VITE_GTM_ID: 'GTM-WMG3G6SM',
+          VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
+          VITE_PINTEREST_TAG: '',
+          VITE_PINTEREST_DOMAIN: '5099ed06768c1b801e53b45489b5bf2d',
+          VITE_RAZORPAY_KEY_ID: 'rzp_live_SvAvyQnxCNWCIP',
+          VITE_WHATSAPP_NUMBER: '917020664641',
+          VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
+          VITE_GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
+          VITE_SITE_URL: 'https://mukeshsarees.com',
+          VITE_SITE_NAME: 'Mukesh Saree Centre',
+          VITE_STORE_PHONE: '+91 7020664641',
+        };
+
         html = html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
-          const val = process.env[`VITE_${key}`];
-          return val !== undefined ? val : match;
+          const envKey = `VITE_${key}`;
+          const val = process.env[envKey] !== undefined ? process.env[envKey] : (fallbacks[envKey] !== undefined ? fallbacks[envKey] : match);
+          if (val !== undefined && val !== null) {
+            const strVal = String(val).trim();
+            if (
+              strVal.startsWith('your_') ||
+              strVal.includes('YOUR_SCRIPT_ID') ||
+              strVal === 'your_fb_domain_verify_token' ||
+              strVal === 'your_pinterest_domain_verify' ||
+              strVal === 'your_gtm_id' ||
+              strVal === 'your_pinterest_tag_id' ||
+              strVal === 'your_ga4_measurement_id'
+            ) {
+              return '';
+            }
+            return strVal;
+          }
+          return '';
         });
         html = injectOGTags(html, req.path, req.originalUrl);
         

@@ -24,7 +24,7 @@ import Terms from './Terms';
 import ShippingPolicy from './ShippingPolicy';
 import ReturnPolicy from './ReturnPolicy';
 
-import { CONFIG, submitToGoogleSheets } from "./config";
+import { CONFIG, submitToGoogleSheets, getApiUrl } from "./config";
 
 function LoadingScreen() {
   const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
@@ -185,8 +185,7 @@ export default function App() {
 
     // Trigger serverless Firebase save + Interakt WhatsApp send pipeline
     try {
-      const apiBase = CONFIG.API_BASE_URL || '';
-      await fetch(`${apiBase}/api/capture-lead`, {
+      await fetch(getApiUrl("api/capture-lead"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -29,7 +29,7 @@ export const products: Product[] = [
     isNew: true,
 
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Cocoa Brown Cotton Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+This beautiful Cocoa Brown Cotton Co-Ord Set is meticulously fashioned from premium long-staple 100% pure cotton fabric, offering a soothing, exceptionally soft matte finish, showcasing a lightweight texture of pure quality. Adorned with subtle, clean-finished self-toned micro-piping and custom hand-stitched detailing near the neckline, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for high-profile corporate daytime presentations, casual boardrooms, or a chic weekend brunch, while its innovative easy-care finish keeps the garment virtually crease-free throughout long hours of wear for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -80,7 +80,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated White & Pink Cotton Floral Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+Imbued with boutique elegance, this sophisticated White & Pink Cotton Floral Co-Ord Set is made from refined slub-textured premium organic cotton, designed to provide ultra-breathable cooling comfort and natural ease that offers high tactile comfort and a graceful frame. The design spotlights stunning, high-definition watercolor floral vines printed in rich contrasting pastel shades, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for laid-back daytime business meetings, sophisticated gallery walks, or cozy family lunches, and is distinguished by the fact that designed with a proprietary comfort-stretch drape that ensures flawless ease of motion and absolute comfort.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -129,7 +129,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     color: "Beige",
     
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Beige Cotton Floral Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Beige Cotton Floral Co-Ord Set beautifully crafted in lightweight structural combed pure cotton, engineered for exceptional shape retention and gentle all-day softness. Highlighted by delicate traditional miniature hand-block floral boots that are spread elegantly across the fabric, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that hand-knotted edge tassels and reinforced flatlock seams guarantee exceptional heirloom durability, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -179,7 +179,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated White Cotton Floral Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+Understated luxury meets tradition in this bespoke White Cotton Floral Co-Ord Set, woven carefully with richly woven high-density organic cotton, providing structured drape elegance with a fresh, airy feel for maximum breathability. The drape is elegantly elevated by exquisite contemporary leaf motifs screen printed with organic vegetable dyes for a handcrafted look, evoking an aura of premium handcrafted couture. Perfect for wearing to chic airport looks, elevated working days, or an interactive cultural panel discussion, it features the outstanding benefit that provides a completely non-slippery textured grip, allowing you to move with supreme confidence and grace.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -227,7 +227,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isNew: true,
 
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Grey Cotton Embroidered Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+This beautiful Grey Cotton Embroidered Co-Ord Set is meticulously fashioned from exceptionally soft-washed mercerized pure cotton, showcasing a subtle luxurious luster and smooth touch, showcasing a lightweight texture of pure quality. Adorned with impeccable tonal threadwork embroidery with delicate classic button trims along the front placard, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for formal daytime business seminars, elegance garden lunches, and high-end boutique openings, while the ultra-lightweight fabric acts as a natural thermoregulator to keep you fresh and comfortable for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -273,7 +273,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Embrace weightless beauty with this flowing Sunshine Yellow Chiffon Saree. The delicate fabric drapes gracefully, making every movement a statement of premium elegance.
+Imbued with boutique elegance, this sophisticated Sunshine Yellow Chiffon Saree is made from an ultra-delicate and gossamer premium-grade Chiffon that floats weightlessly around the silhouette that offers high tactile comfort and a graceful frame. The design spotlights a beautiful solid sunny drape accented by an exquisite gold-threaded lace border and hand-tied pallu tassels, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for glamorous sangeet dance nights, high-end evening reception dinners, or grand festive galas, and is distinguished by the fact that its exceptionally low density allows it to be folded compactly while draping smoothly in seconds.
 
 **HIGHLIGHTS:**
 • Flowy and graceful
@@ -322,7 +322,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isNew: true,
     isTrending: false,
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Black Khadi Cotton Saree. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+For your next laid-back daytime business meetings, sophisticated gallery walks, or cozy family lunches, opt for this premium Black Khadi Cotton Saree beautifully crafted in traditional hand-spun Khadi Cotton weave, offering rich rustic textures and an incredibly breathable structure. Highlighted by vibrant multicolor contrast geometric stripes on the pallu and a sleek solid border, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that its naturally textured grip holds pleats firmly in place without the need for safety pins, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -372,7 +372,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     color: "Forest Green",
     
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Elegant Forest Green Cotton Co-Ord Set. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+Understated luxury meets tradition in this bespoke Elegant Forest Green Cotton Co-Ord Set, woven carefully with pure organic cotton fabric engineered with a lightweight breathable weave and structural longevity for maximum breathability. The drape is elegantly elevated by gorgeous tone-on-tone fine needlework motifs that outline the sleek keyhole neckline beautifully, evoking an aura of premium handcrafted couture. Perfect for wearing to exclusive corporate lunches, professional conferences, or casual elegant dinner dates, it features the outstanding benefit that featuring a perfectly balanced weight distribution that naturally stays in place without constant adjustment.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -420,7 +420,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Royal Plum Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+This beautiful Royal Plum Cotton Co-Ord Set Embroidered is meticulously fashioned from luxuriously soft, premium-weight cotton with a structured handle that hugs your silhouette beautifully, showcasing a lightweight texture of pure quality. Adorned with exquisite hand-guided floral embroidery and a modern geometric threadwork border design, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for high-profile corporate daytime presentations, casual boardrooms, or a chic weekend brunch, while its incredibly compact packing density makes it an essential chic option for destination weeding wardrobes for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -469,7 +469,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isNew: true,
 
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Elegant Teal Green Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+Imbued with boutique elegance, this sophisticated Elegant Teal Green Cotton Co-Ord Set Embroidered is made from breathable premium pure cotton showing a refined slub texture and soft-washed comfort that offers high tactile comfort and a graceful frame. The design spotlights gorgeous modern abstract floral block printing accented with a fine geometric border motif, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for laid-back daytime business meetings, sophisticated gallery walks, or cozy family lunches, and is distinguished by the fact that fully handcrafted utilizing eco-friendly, hypoallergenic color dyes that are exceptionally gentle on the skin.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -519,7 +519,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Wine Berry Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Wine Berry Cotton Co-Ord Set Embroidered beautifully crafted in high-grade premium organic cotton presenting a lightweight, breezy handle with natural thermoregulating fibers. Highlighted by dainty, hand-finished lace overlays and custom-tailored coordinating side-slits, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that the elegant fabric finish prevents linting and color fading, preserving its rich boutique look for years to come, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -568,7 +568,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     color: "Blush Pink",
     
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Soft Blush Pink Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+Understated luxury meets tradition in this bespoke Soft Blush Pink Co-Ord Set — Delicate Floral Embroidery, woven carefully with premium structured cotton weave that blends daily comfort with clean, modern structural lines for maximum breathability. The drape is elegantly elevated by chic, clean-cut modern design highlights with subtle contrasting shoulder and hem embroidery lines, evoking an aura of premium handcrafted couture. Perfect for wearing to chic airport looks, elevated working days, or an interactive cultural panel discussion, it features the outstanding benefit that accentuated with custom-milled reinforcing weaves that prevent tearing and offer long-lasting durability.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -618,7 +618,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Soft Blush Pink Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+This beautiful Soft Blush Pink Co-Ord Set — Multicolor Embroidery is meticulously fashioned from premium long-staple 100% pure cotton fabric, offering a soothing, exceptionally soft matte finish, showcasing a lightweight texture of pure quality. Adorned with subtle, clean-finished self-toned micro-piping and custom hand-stitched detailing near the neckline, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for formal daytime business seminars, elegance garden lunches, and high-end boutique openings, while its innovative easy-care finish keeps the garment virtually crease-free throughout long hours of wear for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -667,7 +667,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isNew: true,
 
     description: `**DESCRIPTION:**
-Elevate your everyday wardrobe with this sophisticated Soft Blush Pink Cotton Co-Ord Set Embroidered. Featuring premium breathable fabric that delivers all-day comfort without compromising on style.
+Imbued with boutique elegance, this sophisticated Soft Blush Pink Co-Ord Set — Multicolor Embroidery Vol. 2 is made from refined slub-textured premium organic cotton, designed to provide ultra-breathable cooling comfort and natural ease that offers high tactile comfort and a graceful frame. The design spotlights stunning, high-definition watercolor floral vines printed in rich contrasting pastel shades, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for traditional morning prayer ceremonies, cultural panel events, or elegant family get-togethers, and is distinguished by the fact that designed with a proprietary comfort-stretch drape that ensures flawless ease of motion and absolute comfort.
 
 **HIGHLIGHTS:**
 • Breathable weave
@@ -712,7 +712,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Capture the essence of spring with this stunning Off-White Linen Saree. Adorned with delicate digital floral prints in blush pink and mustard yellow, it's a masterpiece of subtle grace. The lightweight fabric ensures you stay cool and comfortable while looking effortlessly chic.
+For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Summer Bouquet Linen Saree beautifully crafted in premium-grade natural linen offering an exceptionally cool feel and a fluid, non-stiff drape. Highlighted by delicate paisley woven borders and artistic botanical leaf silhouettes on the drape, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that hand-knotted edge tassels and reinforced flatlock seams guarantee exceptional heirloom durability, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Premium Digital Floral Print
@@ -755,7 +755,7 @@ Perfect for:
     color: "Yellow with Floral accents",
     
     description: `**DESCRIPTION:**
-Brighten up any occasion with our Golden Sunshine Linen Saree. This vibrant piece features artistic floral accents on a cheery yellow base, creating a look that's both modern and traditionally rooted. The breathable linen fabric makes it your best companion for summer festivities.
+Understated luxury meets tradition in this bespoke Golden Sunshine Linen Saree, woven carefully with handloaded premium natural linen woven from the finest organic flax fibers for maximum breathability. The drape is elegantly elevated by delicate watercolor garden peonies and contrasting botanical vine prints across the body, evoking an aura of premium handcrafted couture. Perfect for wearing to exclusive corporate lunches, professional conferences, or casual elegant dinner dates, it features the outstanding benefit that provides a completely non-slippery textured grip, allowing you to move with supreme confidence and grace.
 
 **HIGHLIGHTS:**
 • Vibrant Yellow Hue
@@ -798,7 +798,7 @@ Ideal for:
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and elegance with this luxury Festive Yellow Georgette Saree. Handcrafted to ensure a graceful drape and premium feel across all occasions.
+This beautiful Festive Yellow Georgette Saree is meticulously fashioned from supremely fluid, high-twist premium georgette fabric that cascades into clean, body-accentuating pleats, showcasing a lightweight texture of pure quality. Adorned with stunning emerald-green contrasting borders and running floral gold-weave borders, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for regal wedding afterparties, ceremonial family gatherings, and high-fashion evening receptions, while the highly resilient georgette fibers naturally fight wrinkles, keeping your look pristine all night long for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Soft breathable fabric
@@ -845,7 +845,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isNew: true,
 
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and elegance with this luxury Elegant Green Georgette Saree. Handcrafted to ensure a graceful drape and premium feel across all occasions.
+Imbued with boutique elegance, this sophisticated Elegant Green Georgette Saree is made from sheer, featherlight georgette weave featuring a subtle, understated drape and non-slippery textured grip that offers high tactile comfort and a graceful frame. The design spotlights intricate deep-red thread accents and elegant gold-weave motifs across the drape, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for dazzling festive celebrations, cocktail parties, and spectacular traditional holiday dinners, and is distinguished by the fact that the highly resilient georgette fibers naturally fight wrinkles, keeping your look pristine all night long.
 
 **HIGHLIGHTS:**
 • Soft breathable fabric
@@ -892,7 +892,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and elegance with this luxury Stunning Red Georgette Saree. Handcrafted to ensure a graceful drape and premium feel across all occasions.
+For your next contemporary wedding bashes, upscale festive card parties, and grand evening functions, opt for this premium Stunning Red Georgette Saree beautifully crafted in luxurious crinkle-finished premium georgette, designed to catch the light beautifully during evening movements. Highlighted by vibrant festive solid red palette highlighted by subtle golden zari piping along the outer borders, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that the highly resilient georgette fibers naturally fight wrinkles, keeping your look pristine all night long, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Soft breathable fabric
@@ -938,7 +938,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     color: "Rich Green with Bright Pink Border",
     
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and elegance with this luxury Elegant Green Georgette Saree. Handcrafted to ensure a graceful drape and premium feel across all occasions.
+Understated luxury meets tradition in this bespoke Elegant Green Georgette Saree — Pink Foil Border, woven carefully with highly durable, breathable georgette fabric offering an exceptionally smooth, uniform drape and luxurious fall for maximum breathability. The drape is elegantly elevated by brilliant pink foil borders and delicate linear metallic highlight lines, evoking an aura of premium handcrafted couture. Perfect for wearing to traditional wedding ceremonies, auspicious festive gatherings, and luxurious evening celebrations, it features the outstanding benefit that the highly resilient georgette fibers naturally fight wrinkles, keeping your look pristine all night long.
 
 **HIGHLIGHTS:**
 • Soft breathable fabric
@@ -995,7 +995,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Embrace the calm of lavender with this exquisitely printed Linen Saree. Featuring a rich floral pattern across the length, this saree balances a dreamy aesthetic with the grounded comfort of high-grade linen. A must-have for the woman who values artistic expression and comfort.
+This beautiful Lavender Fields Floral Linen Saree is meticulously fashioned from artisanal slub linen offering exceptional breathability and a cooling sensation in warm climates, showcasing a lightweight texture of pure quality. Adorned with whimsical handcrafted bird and foliage motifs screen-printed with rich dye detailing, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for formal daytime business seminars, elegance garden lunches, and high-end boutique openings, while its incredibly compact packing density makes it an essential chic option for destination weeding wardrobes for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Intricate Floral Pattern
@@ -1047,7 +1047,7 @@ Suggested occasions:
     isNew: true,
 
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and style with this premium Pink Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
+Imbued with boutique elegance, this sophisticated Pink Floral Linen Saree is made from select high-twist pure linen yarn with a lightweight, relaxed feel perfect for tropical comfort that offers high tactile comfort and a graceful frame. The design spotlights bold abstract contrasting tie-dye shibori patterns and hand-tied tassel fringes, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for traditional morning prayer ceremonies, cultural panel events, or elegant family get-togethers, and is distinguished by the fact that fully handcrafted utilizing eco-friendly, hypoallergenic color dyes that are exceptionally gentle on the skin.
 
 **HIGHLIGHTS:**
 • Breathable and lightweight
@@ -1102,7 +1102,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and style with this premium Peach Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
+For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Peach Floral Linen Saree beautifully crafted in premium combed natural flax linen showcasing a fine cellular weave and rich tactile grip. Highlighted by delicate rose-petal scatter printing and elegant multi-colored border stripes, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that the elegant fabric finish prevents linting and color fading, preserving its rich boutique look for years to come, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Breathable and lightweight
@@ -1158,7 +1158,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     ],
     
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and style with this premium Rani Pink Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
+Understated luxury meets tradition in this bespoke Rani Pink Floral Linen Saree, woven carefully with luxurious linen-cotton slub presenting an elegant drape and a subtle, sophisticated natural texture for maximum breathability. The drape is elegantly elevated by traditional folk-art narratives of elephants and dancers printed in classic earthy tones, evoking an aura of premium handcrafted couture. Perfect for wearing to exclusive corporate lunches, professional conferences, or casual elegant dinner dates, it features the outstanding benefit that accentuated with custom-milled reinforcing weaves that prevent tearing and offer long-lasting durability.
 
 **HIGHLIGHTS:**
 • Breathable and lightweight
@@ -1213,7 +1213,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and style with this premium Lime Green Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
+This beautiful Lime Green Floral Linen Saree is meticulously fashioned from breathable natural linen weave pre-washed for exceptionally soft touch and graceful drape, showcasing a lightweight texture of pure quality. Adorned with scenic garden illustrations and delicate blossom trails on a beautifully finished base, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for high-profile corporate daytime presentations, casual boardrooms, or a chic weekend brunch, while its innovative easy-care finish keeps the garment virtually crease-free throughout long hours of wear for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Breathable and lightweight
@@ -1268,7 +1268,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isNew: true,
 
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and style with this premium Sky Blue Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
+Imbued with boutique elegance, this sophisticated Sky Blue Floral Linen Saree is made from hand-loomed organic linen characterized by high moisture-wicking and a light breezy feel that offers high tactile comfort and a graceful frame. The design spotlights sophisticated geometric checkerboards and fine hand-woven metallic zari border lines, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for laid-back daytime business meetings, sophisticated gallery walks, or cozy family lunches, and is distinguished by the fact that designed with a proprietary comfort-stretch drape that ensures flawless ease of motion and absolute comfort.
 
 **HIGHLIGHTS:**
 • Breathable and lightweight
@@ -1316,7 +1316,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isTrending: true,
 
     description: `**DESCRIPTION:**
-A vision of purity and freshness, this White Pure Linen Saree features a striking Aqua Green border. The contrast is sharp and sophisticated, perfect for a smart, contemporary look. the pure linen fabric offers an unmatched structure and breathability.
+For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Aqua Breeze Pure Linen Saree beautifully crafted in premium light-weave linen displaying an authentic hand-spun structure and elegant fall. Highlighted by impeccable silver stripe weaving and vertical metallic accents that catch the light beautifully, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that hand-knotted edge tassels and reinforced flatlock seams guarantee exceptional heirloom durability, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Contrast Aqua Green Border
@@ -1360,7 +1360,7 @@ Recommended for:
     color: "White with Pink Floral Print",
     
     description: `**DESCRIPTION:**
-Delicacy redefined. This White Pure Linen Saree is punctuated with graceful pink floral prints that look like scattered petals. It's the perfect choice for an understated yet unmistakably feminine look that transitions perfectly from day to night.
+Understated luxury meets tradition in this bespoke Rose Petal White Linen Saree, woven carefully with refined flax linen fabric with a lightweight, airy touch and a sophisticated structured drape for maximum breathability. The drape is elegantly elevated by exquisite peacock and floral artistic print layouts highlighted by elegant border details, evoking an aura of premium handcrafted couture. Perfect for wearing to chic airport looks, elevated working days, or an interactive cultural panel discussion, it features the outstanding benefit that provides a completely non-slippery textured grip, allowing you to move with supreme confidence and grace.
 
 **HIGHLIGHTS:**
 • Graceful Pink Floral Print
@@ -1396,7 +1396,7 @@ Delicacy redefined. This White Pure Linen Saree is punctuated with graceful pink
       { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500" }
     ],
     description: `**DESCRIPTION:**
-Upgrade your ethnic wardrobe with this elegant Blue Soft Linen Saree featuring stylish digital elephant print and artistic designer border ✨ Crafted from soft breathable linen fabric, this saree offers lightweight comfort and graceful drape for all-day wear. The rich blue shade with colorful artistic patterns gives a classy modern ethnic look perfect for festive wear, office wear, casual outings and family gatherings 🌿 Easy to drape and comfortable to carry all day. Available in 3 beautiful colors.
+This beautiful Blue Soft Linen Saree with Digital Elephant Print is meticulously fashioned from soft-washed natural slub linen combining a breezy open weave with a premium luxurious handle, showcasing a lightweight texture of pure quality. Adorned with colorful, spectacular digital elephant drawings and artistic geometric tribal border printing, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for formal daytime business seminars, elegance garden lunches, and high-end boutique openings, while the ultra-lightweight fabric acts as a natural thermoregulator to keep you fresh and comfortable for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • 🌿 Fabric: Soft Breathable Linen
@@ -1434,7 +1434,7 @@ Upgrade your ethnic wardrobe with this elegant Blue Soft Linen Saree featuring s
       { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500" }
     ],
     description: `**DESCRIPTION:**
-Bring a touch of summer to your wardrobe with the Daffodil White Floral Linen Saree. The bright yellow floral prints on the pristine white base create a refreshing and joyful look. Perfect for daytime events where you want to stand out with understated elegance.
+Imbued with boutique elegance, this sophisticated Daffodil White Floral Linen Saree is made from premium-grade natural linen offering an exceptionally cool feel and a fluid, non-stiff drape that offers high tactile comfort and a graceful frame. The design spotlights delicate paisley woven borders and artistic botanical leaf silhouettes on the drape, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for traditional morning prayer ceremonies, cultural panel events, or elegant family get-togethers, and is distinguished by the fact that requires absolutely no starching or heavy maintenance to maintain its pristine, fall-prone fluid drape.
 
 **HIGHLIGHTS:**
 • Bright Yellow Floral Print
@@ -1468,7 +1468,7 @@ Bring a touch of summer to your wardrobe with the Daffodil White Floral Linen Sa
       { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500" }
     ],
     description: `**DESCRIPTION:**
-The Marigold White Floral Linen Saree is a celebration of color and comfort. The vibrant orange floral motifs add a energetic pop to the soft white linen, making it an ideal choice for festive mornings or professional settings that allow for a splash of color.
+For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Marigold White Floral Linen Saree beautifully crafted in handloaded premium natural linen woven from the finest organic flax fibers. Highlighted by delicate watercolor garden peonies and contrasting botanical vine prints across the body, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that engineered with smart-crease properties to stay flawless from busy morning hours to cozy evening settings, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Energetic Orange Florals
@@ -1501,7 +1501,7 @@ The Marigold White Floral Linen Saree is a celebration of color and comfort. The
       { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500" }
     ],
     description: `**DESCRIPTION:**
-Experience the perfect blend of comfort and style with this Elegant White & Pink Floral Linen Saree. Crafted from exceptionally soft, breathable linen, this saree ensures you stay effortlessly elegant all day long.
+Understated luxury meets tradition in this bespoke Elegant White & Pink Floral Linen Saree, woven carefully with breathable and crisp natural linen-cotton blend that softens beautifully with every wear for maximum breathability. The drape is elegantly elevated by stunning hand-screened watercolor-style botanical scroll patterns and floral leaf designs, evoking an aura of premium handcrafted couture. Perfect for wearing to exclusive corporate lunches, professional conferences, or casual elegant dinner dates, it features the outstanding benefit that featuring a perfectly balanced weight distribution that naturally stays in place without constant adjustment.
 
 **HIGHLIGHTS:**
 • Breathable and lightweight
@@ -1548,7 +1548,7 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Experience the perfect blend of tradition and modernity with this Contemporary Ethnic Linen Saree. Featuring abstract zig-zag woven designs and soft textured brushstroke effects, this piece is inspired by handloom artistry. The ivory base is beautifully contrasted by an elegant solid sage grey woven border adorned with fine ethnic circular and zig-zag motifs. The pallu is a masterpiece of rich multicolor traditional tribal artwork and intricate floral motifs.
+This beautiful Contemporary Tribal Art Ivory Linen Saree is meticulously fashioned from premium-grade linen displaying characteristic slub textures and a cooling open-weave structure, showcasing a lightweight texture of pure quality. Adorned with intricate tribal-inspired geometric line prints combined with a contrasting solid border, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for high-profile corporate daytime presentations, casual boardrooms, or a chic weekend brunch, while its incredibly compact packing density makes it an essential chic option for destination weeding wardrobes for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Abstract Zig-Zag & Tribal Geometric Patterns
@@ -1600,7 +1600,7 @@ Ideal for:
     isNew: true,
 
     description: `**DESCRIPTION:**
-Embrace modern artistry with this bold tie-dye / shibori-inspired linen saree. Featuring an abstract chevron and zigzag geometric wave pattern in soft ivory white across a deep purple / plum tone base. The rich solid purple border offers a subtle woven texture, perfectly framing this vibrant piece for a contemporary ethnic appeal.
+Imbued with boutique elegance, this sophisticated Plum Shibori Chevron Linen Saree is made from incredibly soft finished, lightweight linen weave that drapes flawlessly without starching that offers high tactile comfort and a graceful frame. The design spotlights contemporary tie-dye shibori chevron patterns and gorgeous hand-tied contrast tassels, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for laid-back daytime business meetings, sophisticated gallery walks, or cozy family lunches, and is distinguished by the fact that fully handcrafted utilizing eco-friendly, hypoallergenic color dyes that are exceptionally gentle on the skin.
 
 **HIGHLIGHTS:**
 • Hand-Dyed Tie-Dye / Shibori-Inspired Geometric Waves
@@ -1645,7 +1645,7 @@ Ideal for:
     color: "Ivory White with Charcoal Grey Motifs",
     
     description: `**DESCRIPTION:**
-Experience the perfect harmony of nature and geometry with this Tropical Ivory Ethnic Fusion Linen Saree. Featuring artistic palm tree motifs paired with bold zig-zag geometric woven-inspired patterns, this saree is a masterpiece of minimal contemporary design. The layered charcoal and ash grey border provides a clean, modern striped finish to this sophisticated monochrome piece.
+For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Tropical Ivory Ethnic Fusion Linen Saree beautifully crafted in pure organic linen featuring a luxurious, rich handle and a beautifully structured fluid fall. Highlighted by exquisite hand-illustrated floral vines and an artistic floral patch design on the pallu, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that the elegant fabric finish prevents linting and color fading, preserving its rich boutique look for years to come, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Artistic Tropical Palm tree Motifs
@@ -1691,7 +1691,7 @@ Ideal for:
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-The Silver Mist Floral Linen Saree is the epitome of understated grace. The sophisticated grey base is enhanced with subtle floral details, making it a perfect choice for the modern woman who values minimal yet impactful design. Breathable and lightweight for all-day elegance.
+Understated luxury meets tradition in this bespoke Silver Mist Floral Linen Saree, woven carefully with artisanal slub linen offering exceptional breathability and a cooling sensation in warm climates for maximum breathability. The drape is elegantly elevated by whimsical handcrafted bird and foliage motifs screen-printed with rich dye detailing, evoking an aura of premium handcrafted couture. Perfect for wearing to chic airport looks, elevated working days, or an interactive cultural panel discussion, it features the outstanding benefit that accentuated with custom-milled reinforcing weaves that prevent tearing and offer long-lasting durability.
 
 **HIGHLIGHTS:**
 • Sophisticated Grey Base
@@ -1720,7 +1720,7 @@ The Silver Mist Floral Linen Saree is the epitome of understated grace. The soph
     isNew: true,
 
     description: `**DESCRIPTION:**
-Radiate a beautiful design with this premium Ivory Linen saree. Adorned with scattered maroon tribal geometric motifs and artistic woven-style prints, this piece is a beautiful work of handloom design. The ivory cream base is beautifully contrasted by a rich double-layered maroon and pink tribal border, while the heavy geometric pallu adds a bold, traditional-inspired silhouette.
+This beautiful Ivory Linen Saree with Maroon Tribal Geometric Border and Ethnic Woven Pallu is meticulously fashioned from select high-twist pure linen yarn with a lightweight, relaxed feel perfect for tropical comfort, showcasing a lightweight texture of pure quality. Adorned with intricate tribal geometric lines and subtle woven metallic block designs, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for formal daytime business seminars, elegance garden lunches, and high-end boutique openings, while its innovative easy-care finish keeps the garment virtually crease-free throughout long hours of wear for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Scattered Tribal Geometric Motifs
@@ -1770,7 +1770,7 @@ Ideal for:
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Celebrate the colors of nature with the Sunshine Harvest Saree. The blend of yellow and green floral prints on a breathable linen base creates a look that is as vibrant as it is comfortable. Ideal for making a cheerful statement at any outdoor gathering or festive event.
+Imbued with boutique elegance, this sophisticated Sunshine Harvest Yellow & Green Saree is made from premium combed natural flax linen showcasing a fine cellular weave and rich tactile grip that offers high tactile comfort and a graceful frame. The design spotlights delicate rose-petal scatter printing and elegant multi-colored border stripes, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for traditional morning prayer ceremonies, cultural panel events, or elegant family get-togethers, and is distinguished by the fact that designed with a proprietary comfort-stretch drape that ensures flawless ease of motion and absolute comfort.
 
 **HIGHLIGHTS:**
 • Yellow & Green Color Play
@@ -1795,7 +1795,7 @@ Celebrate the colors of nature with the Sunshine Harvest Saree. The blend of yel
     color: "Blue & White Floral",
     
     description: `**DESCRIPTION:**
-The Cerulean Classic Saree brings together the timeless combination of blue and white. With its elegant floral prints and high-quality linen fabric, this saree offers a look that is both traditional and modern. Perfect for those who appreciate classic styles with a contemporary twist.
+For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Cerulean Classic Blue & White Saree beautifully crafted in luxurious linen-cotton slub presenting an elegant drape and a subtle, sophisticated natural texture. Highlighted by traditional folk-art narratives of elephants and dancers printed in classic earthy tones, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that hand-knotted edge tassels and reinforced flatlock seams guarantee exceptional heirloom durability, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Classic Blue & White Palette
@@ -1824,7 +1824,7 @@ The Cerulean Classic Saree brings together the timeless combination of blue and 
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Enjoy beautiful traditional designs with this premium Madhubani-inspired contemporary ethnic saree. Featuring rich all-over traditional folk motifs and intricate hand-drawn style ethnic patterns, this saree is a tribute to symmetrical folk artistry. The soft blush beige base is accented by a multi-layer woven border and a heavy artistic traditional pallu, creating a sophisticated silhouette of handcrafted design and premium quality.
+Understated luxury meets tradition in this bespoke Madhubani Art Blush Linen Saree with Folk-Art Detail, woven carefully with breathable natural linen weave pre-washed for exceptionally soft touch and graceful drape for maximum breathability. The drape is elegantly elevated by scenic garden illustrations and delicate blossom trails on a beautifully finished base, evoking an aura of premium handcrafted couture. Perfect for wearing to exclusive corporate lunches, professional conferences, or casual elegant dinner dates, it features the outstanding benefit that provides a completely non-slippery textured grip, allowing you to move with supreme confidence and grace.
 
 **HIGHLIGHTS:**
 • Madhubani-Inspired Folk Motifs & Geometric Artwork
@@ -1876,7 +1876,7 @@ Perfect for:
     isNew: true,
 
     description: `**DESCRIPTION:**
-Redefine contemporary elegance with this Abstract Charcoal Artistic Linen Saree. Featuring a bold modern abstract design with layered brushstroke effects and subtle geometric patterns, this piece is a masterpiece of monochrome ethnic styling. The soft charcoal grey base is accented by smoky ash tones and charcoal grey woven-look borders, providing a sophisticated, minimal luxury aesthetic perfect for the modern workspace or an artistic gathering.
+This beautiful Abstract Charcoal Artistic Linen Saree is meticulously fashioned from hand-loomed organic linen characterized by high moisture-wicking and a light breezy feel, showcasing a lightweight texture of pure quality. Adorned with sophisticated geometric checkerboards and fine hand-woven metallic zari border lines, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for high-profile corporate daytime presentations, casual boardrooms, or a chic weekend brunch, while the ultra-lightweight fabric acts as a natural thermoregulator to keep you fresh and comfortable for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Bold Modern Abstract Artistic Design
@@ -1923,7 +1923,7 @@ Ideal for:
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Experience the beauty of nature with this floral garden-inspired contemporary linen saree. Featuring soft floral motifs scattered across the body and a nature-inspired scenic artwork on the pallu, this piece beautifully blends flower illustrations with a clean, beautiful handcrafted design. Crafted for the modern woman, it offers a regular fit and look that speaks of beautiful traditional art and modern design.
+Imbued with boutique elegance, this sophisticated Elegant Floral Garden-Inspired Ivory Linen Saree is made from premium light-weave linen displaying an authentic hand-spun structure and elegant fall that offers high tactile comfort and a graceful frame. The design spotlights impeccable silver stripe weaving and vertical metallic accents that catch the light beautifully, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for laid-back daytime business meetings, sophisticated gallery walks, or cozy family lunches, and is distinguished by the fact that requires absolutely no starching or heavy maintenance to maintain its pristine, fall-prone fluid drape.
 
 **HIGHLIGHTS:**
 • Nature-Inspired Scenic Garden Artwork on Pallu
@@ -1973,7 +1973,7 @@ Ideal for:
     color: "Sea Green Botanical",
     
     description: `**DESCRIPTION:**
-Dive into nature with this Sea Green Botanical Linen Saree. The botanical prints are lush and detailed, reflecting an organic beauty that perfectly complements the natural texture of the linen fabric. Refreshing, cool, and undeniably elegant.
+For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Enchanted Garden Sea Green Saree beautifully crafted in refined flax linen fabric with a lightweight, airy touch and a sophisticated structured drape. Highlighted by exquisite peacock and floral artistic print layouts highlighted by elegant border details, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that engineered with smart-crease properties to stay flawless from busy morning hours to cozy evening settings, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Lush Botanical Prints
@@ -2002,7 +2002,7 @@ Dive into nature with this Sea Green Botanical Linen Saree. The botanical prints
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Elevate your ethnic wardrobe with this Elegant Floral Contemporary Linen Saree. Featuring an all-over floral vine and leaf motif with artistic botanical scroll patterns, this piece is a masterpiece of soft botanical ethnic artwork. The ice blue base is beautifully contrasted by a soft sea green woven border and an ornamental pallu featuring decorative floral medallions, merging traditional charm with a graceful luxury aesthetic.
+Understated luxury meets tradition in this bespoke Ice Blue Botanical Floral Linen Saree, woven carefully with soft-washed natural slub linen combining a breezy open weave with a premium luxurious handle for maximum breathability. The drape is elegantly elevated by vibrant multicolor traditional vines and intricate mandala woven pallu-end decorations, evoking an aura of premium handcrafted couture. Perfect for wearing to chic airport looks, elevated working days, or an interactive cultural panel discussion, it features the outstanding benefit that featuring a perfectly balanced weight distribution that naturally stays in place without constant adjustment.
 
 **HIGHLIGHTS:**
 • All-Over Floral Vine & Leaf Motifs
@@ -2054,9 +2054,7 @@ Perfect for:
     isNew: true,
 
     description: `**DESCRIPTION:**
-This elegant linen saree features a soothing beige and ash grey base with beautifully woven pastel floral vine patterns in subtle peach, ivory, mustard, and muted blue tones. The saree is enhanced with artistic tribal-inspired geometric borders and intricate woven detailing on the pallu, giving it a sophisticated handcrafted look.
-
-Made from soft breathable linen fabric, this saree offers a lightweight feel with a smooth texture that ensures all-day comfort. The easy-to-drape fabric creates graceful pleats and a naturally elegant fall, making it perfect for festive gatherings, office wear, casual elegance, and cultural occasions.
+This beautiful Elegant Beige & Grey Linen Saree with Pastel Tribal Floral Weaving is meticulously fashioned from premium-grade natural linen offering an exceptionally cool feel and a fluid, non-stiff drape, showcasing a lightweight texture of pure quality. Adorned with delicate paisley woven borders and artistic botanical leaf silhouettes on the drape, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for formal daytime business seminars, elegance garden lunches, and high-end boutique openings, while its incredibly compact packing density makes it an essential chic option for destination weeding wardrobes for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Soft Beige and Ash Grey Dual-Tone Color Combination
@@ -2092,9 +2090,7 @@ Made from soft breathable linen fabric, this saree offers a lightweight feel wit
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Enhance your ethnic wardrobe with this graceful off white linen saree featuring delicate steel blue and ash grey woven floral paisley motifs throughout the drape. The saree showcases intricate traditional patterns blended with elegant geometric border detailing, creating a timeless sophisticated look. The beautifully designed pallu with artistic floral and paisley weaving adds a rich handcrafted appeal perfect for both festive and elegant everyday styling.
-
-Crafted from soft breathable linen fabric, this saree offers a lightweight texture with a smooth comfortable feel for all-day wear. The easy-to-drape fabric ensures graceful pleats and a naturally elegant fall, making it ideal for office wear, festive occasions, family gatherings, and cultural events.
+Imbued with boutique elegance, this sophisticated Elegant Off White & Steel Blue Linen Saree with Floral Paisley Weaving is made from handloaded premium natural linen woven from the finest organic flax fibers that offers high tactile comfort and a graceful frame. The design spotlights traditional royal paisley woven borders combined with delicate leafy vine prints, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for traditional morning prayer ceremonies, cultural panel events, or elegant family get-togethers, and is distinguished by the fact that fully handcrafted utilizing eco-friendly, hypoallergenic color dyes that are exceptionally gentle on the skin.
 
 **HIGHLIGHTS:**
 • Elegant Off White and Steel Blue Color Combination
@@ -2130,9 +2126,7 @@ Crafted from soft breathable linen fabric, this saree offers a lightweight textu
     color: "Mist Grey with Soft Pink Accents",
     
     description: `**DESCRIPTION:**
-Add timeless elegance to your ethnic collection with this beautiful mist grey linen saree featuring delicate woven geometric motifs in soft pink and charcoal tones. The saree showcases subtle all-over woven detailing paired with an artistic ethnic pallu adorned with intricate diamond and floral-inspired geometric patterns, creating a graceful contemporary traditional look.
-
-Crafted from soft breathable linen fabric, this saree offers a lightweight texture with exceptional comfort for all-day wear. The easy-to-drape fabric ensures smooth pleats and a naturally elegant fall, making it perfect for office wear, festive occasions, casual gatherings, and sophisticated everyday styling.
+For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Elegant Mist Grey Linen Saree with Pink Geometric Woven Design beautifully crafted in breathable and crisp natural linen-cotton blend that softens beautifully with every wear. Highlighted by intricate tribal geometric lines and subtle woven metallic block designs, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that the elegant fabric finish prevents linting and color fading, preserving its rich boutique look for years to come, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Elegant Mist Grey Color with Soft Pink Accents
@@ -2169,9 +2163,7 @@ Crafted from soft breathable linen fabric, this saree offers a lightweight textu
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Elevate your ethnic style with this graceful wine mauve linen saree featuring elegant white floral woven patterns across the drape. The saree showcases beautifully detailed botanical motifs paired with a richly designed traditional pallu featuring intricate mandala and striped woven detailing, creating a sophisticated artistic look. The soft contrast border enhances the overall elegance and gives the saree a timeless premium appeal.
-
-Crafted from soft breathable linen fabric, this saree offers a lightweight feel with exceptional comfort for all-day wear. The easy-to-drape texture creates smooth pleats and a graceful fall, making it perfect for festive occasions, office wear, casual gatherings, and elegant day celebrations.
+Understated luxury meets tradition in this bespoke Elegant Wine Mauve Linen Saree with Floral Woven Design, woven carefully with premium-grade linen displaying characteristic slub textures and a cooling open-weave structure for maximum breathability. The drape is elegantly elevated by intricate tribal-inspired geometric line prints combined with a contrasting solid border, evoking an aura of premium handcrafted couture. Perfect for wearing to exclusive corporate lunches, professional conferences, or casual elegant dinner dates, it features the outstanding benefit that accentuated with custom-milled reinforcing weaves that prevent tearing and offer long-lasting durability.
 
 **HIGHLIGHTS:**
 • Rich Wine Mauve Color with Soft Blush Pink Accents
@@ -2207,9 +2199,7 @@ Crafted from soft breathable linen fabric, this saree offers a lightweight feel 
     isNew: true,
 
     description: `**DESCRIPTION:**
-Bring timeless elegance to your ethnic collection with this stunning beige linen saree beautifully enhanced with rich royal blue borders and artistic peacock floral prints. The saree features graceful peacock motifs blended with vibrant floral artwork, creating a luxurious traditional yet contemporary appeal. The intricately designed paisley floral pallu adds a statement handcrafted look, making this saree perfect for festive and elegant occasions.
-
-Crafted from soft breathable linen fabric, this saree offers a lightweight texture with superior comfort for all-day wear. The easy-to-drape fabric ensures smooth pleats and a graceful flow, making it ideal for festive gatherings, cultural events, office wear, and sophisticated celebrations.
+This beautiful Elegant Beige & Royal Blue Linen Saree with Peacock Floral Artistic Print is meticulously fashioned from incredibly soft finished, lightweight linen weave that drapes flawlessly without starching, showcasing a lightweight texture of pure quality. Adorned with graceful regal peacock illustrations amidst floral paths printed in premium vibrant colors, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for high-profile corporate daytime presentations, casual boardrooms, or a chic weekend brunch, while its innovative easy-care finish keeps the garment virtually crease-free throughout long hours of wear for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Elegant Beige Base with Royal Blue Border Detailing
@@ -2245,9 +2235,7 @@ Crafted from soft breathable linen fabric, this saree offers a lightweight textu
     isTrending: true,
 
     description: `**DESCRIPTION:**
-Add graceful charm to your ethnic wardrobe with this elegant blush pink linen saree featuring shimmering silver woven stripe patterns throughout the drape. The saree is beautifully enhanced with artistic tribal-inspired woven detailing on the pallu, creating a sophisticated blend of modern elegance and traditional craftsmanship. The soft pastel tone paired with subtle sheen gives this saree a refined and luxurious appeal.
-
-Crafted from soft breathable linen fabric, this saree offers a lightweight texture with superior comfort for all-day wear. The easy-to-drape fabric creates smooth pleats and a naturally graceful fall, making it perfect for festive occasions, office wear, casual gatherings, and elegant celebrations.
+Imbued with boutique elegance, this sophisticated Elegant Blush Pink Linen Saree with Silver Stripe Weaving is made from pure organic linen featuring a luxurious, rich handle and a beautifully structured fluid fall that offers high tactile comfort and a graceful frame. The design spotlights intricate tribal geometric lines and subtle woven metallic block designs, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for laid-back daytime business meetings, sophisticated gallery walks, or cozy family lunches, and is distinguished by the fact that designed with a proprietary comfort-stretch drape that ensures flawless ease of motion and absolute comfort.
 
 **HIGHLIGHTS:**
 • Elegant Blush Pink Color with Silver Woven Stripes
@@ -2282,9 +2270,7 @@ Crafted from soft breathable linen fabric, this saree offers a lightweight textu
     color: "Charcoal Grey & Maroon",
     
     description: `**DESCRIPTION:**
-Enhance your ethnic elegance with this stunning charcoal grey linen saree featuring intricate rustic floral woven motifs in rich maroon and antique gold tones. The saree showcases beautifully detailed traditional floral vines paired with an artistic ethnic pallu featuring geometric and ornamental woven patterns, creating a timeless sophisticated appeal. The contrast woven borders add a luxurious handcrafted finish perfect for festive and graceful occasions.
-
-Crafted from soft breathable linen fabric, this saree offers a lightweight and airy texture for superior all-day comfort. The easy-to-drape fabric creates smooth pleats and a graceful fall, making it ideal for festive celebrations, office wear, family gatherings, and elegant traditional styling.
+For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Elegant Charcoal Grey Linen Saree with Rustic Floral Woven Design beautifully crafted in artisanal slub linen offering exceptional breathability and a cooling sensation in warm climates. Highlighted by whimsical handcrafted bird and foliage motifs screen-printed with rich dye detailing, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that hand-knotted edge tassels and reinforced flatlock seams guarantee exceptional heirloom durability, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • Elegant Charcoal Grey Base with Maroon Floral Weaving
@@ -2320,9 +2306,7 @@ Crafted from soft breathable linen fabric, this saree offers a lightweight and a
     isBestSelling: true,
 
     description: `**DESCRIPTION:**
-Add timeless sophistication to your ethnic wardrobe with this elegant rust brown linen saree beautifully paired with slate grey woven borders and pallu detailing. The saree features delicate traditional motifs and fine woven stripe patterns throughout the drape, creating a graceful handcrafted appeal. The richly designed geometric and floral woven pallu adds a luxurious ethnic touch, making this saree perfect for elegant festive styling and cultural occasions.
-
-Crafted from soft breathable linen fabric, this saree offers a lightweight and airy texture for superior comfort throughout the day. The easy-to-drape fabric creates smooth pleats and a naturally graceful fall, making it ideal for festive celebrations, office wear, family gatherings, and traditional events.
+Understated luxury meets tradition in this bespoke Elegant Rust Brown & Slate Grey Linen Saree with Traditional Woven Design, woven carefully with select high-twist pure linen yarn with a lightweight, relaxed feel perfect for tropical comfort for maximum breathability. The drape is elegantly elevated by bold abstract contrasting tie-dye shibori patterns and hand-tied tassel fringes, evoking an aura of premium handcrafted couture. Perfect for wearing to chic airport looks, elevated working days, or an interactive cultural panel discussion, it features the outstanding benefit that provides a completely non-slippery textured grip, allowing you to move with supreme confidence and grace.
 
 **HIGHLIGHTS:**
 • Elegant Rust Brown and Slate Grey Color Combination
@@ -2357,9 +2341,7 @@ Crafted from soft breathable linen fabric, this saree offers a lightweight and a
     color: "Beige Cream",
     isNew: true,
     description: `**DESCRIPTION:**
-Bring effortless elegance to your wardrobe with this soft and breathable beige cream linen saree, designed for all-day comfort and graceful style. Crafted in lightweight linen fabric, this saree features vibrant floral prints in mustard yellow and pink tones beautifully spread across a subtle cream base. The multicolor vertical stripe detailing adds a modern artistic touch, while the golden border enhances its premium festive appeal.
-
-The fabric feels soft on the skin and offers a naturally airy texture, making it perfect for summer wear, casual outings, office wear, family gatherings, and daily elegance. Its lightweight drape gives a classy flow and comfortable fit throughout the day.
+This beautiful Beige Cream Floral Printed Linen Saree is meticulously fashioned from premium combed natural flax linen showcasing a fine cellular weave and rich tactile grip, showcasing a lightweight texture of pure quality. Adorned with delicate rose-petal scatter printing and elegant multi-colored border stripes, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for formal daytime business seminars, elegance garden lunches, and high-end boutique openings, while the ultra-lightweight fabric acts as a natural thermoregulator to keep you fresh and comfortable for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • Soft & breathable linen fabric
@@ -2398,9 +2380,7 @@ Pair it with pearl jewelry or minimal golden accessories for a classy and elegan
     color: "Beige Cream",
     isNew: true,
     description: `**DESCRIPTION:**
-Add timeless charm to your collection with this elegant beige linen saree featuring delicate multicolor floral vine prints and artistic floral patch designs on the pallu. Crafted from soft and breathable linen fabric, this saree offers a lightweight feel with a graceful drape, making it ideal for everyday elegance and special occasions alike.
-
-The soothing beige cream shade gives a classy and minimal look, while the subtle floral detailing adds feminine beauty and sophistication. The rich floral printed pallu in vibrant orange, pink, and green tones enhances the saree with a modern ethnic touch. Finished with a sleek golden border, this saree perfectly blends comfort with graceful style.
+Imbued with boutique elegance, this sophisticated Elegant Beige Floral Printed Linen Saree is made from luxurious linen-cotton slub presenting an elegant drape and a subtle, sophisticated natural texture that offers high tactile comfort and a graceful frame. The design spotlights traditional folk-art narratives of elephants and dancers printed in classic earthy tones, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for traditional morning prayer ceremonies, cultural panel events, or elegant family get-togethers, and is distinguished by the fact that requires absolutely no starching or heavy maintenance to maintain its pristine, fall-prone fluid drape.
 
 **HIGHLIGHTS:**
 • Premium soft linen fabric
@@ -2445,7 +2425,7 @@ Style it with oxidised earrings or minimal gold jewelry along with heels for a c
     color: "Gold & Multicolor Floral",
     isNew: true,
     description: `**DESCRIPTION:**
-Upgrade your ethnic collection with this beautiful Tissue Cotton Saree featuring elegant digital floral prints 🌼 Soft, lightweight and graceful drape makes it perfect for festive wear, family functions, parties and traditional occasions. Comes with matching blouse piece for a complete stylish look ✨
+For your next dazzling festive celebrations, cocktail parties, and spectacular traditional holiday dinners, opt for this premium Tissue Cotton Digital Floral Print Saree with Blouse Piece beautifully crafted in shimmering golden-threaded Tissue Cotton fabric, merging lightweight comfort with a celebratory metallic luster. Highlighted by vibrant multi-hued digital floral prints that seem to bloom radiantly under the evening lights, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that and highlights a light, crisp structure that retains its theatrical puff and flares spectacularly, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • 🌸 Fabric: Tissue Cotton
@@ -2486,7 +2466,7 @@ Style this majestic digital floral printed saree with elegant minimal jewelry an
     color: "Beige / Cream",
     isNew: true,
     description: `**DESCRIPTION:**
-Add an artistic ethnic charm to your wardrobe with this elegant Linen Saree featuring beautiful Warli Digital Print and stylish Mirror Work ✨ The soothing beige shade with tribal-inspired border design gives a classy traditional look perfect for festive wear, office wear, casual outings and cultural events. Comes with matching blouse piece and decorative tassels for a graceful finish 🌸
+Understated luxury meets tradition in this bespoke Linen Saree with Warli Digital Print & Mirror Work, woven carefully with hand-loomed organic linen characterized by high moisture-wicking and a light breezy feel for maximum breathability. The drape is elegantly elevated by enchanting Warli tribal dance stick-figures in ivory white printed with high-contrast precision, evoking an aura of premium handcrafted couture. Perfect for wearing to exclusive corporate lunches, professional conferences, or casual elegant dinner dates, it features the outstanding benefit that featuring a perfectly balanced weight distribution that naturally stays in place without constant adjustment.
 
 **HIGHLIGHTS:**
 • 🌿 Fabric: Linen
@@ -2529,7 +2509,7 @@ Pair it with the matching black blouse piece and silver oxidised tribal jewelry 
     color: "Chiku / Beige",
     isNew: true,
     description: `**DESCRIPTION:**
-Add elegance to your ethnic wardrobe with this beautiful Chiku Linen Saree featuring graceful bird digital prints and stylish foil line border detailing ✨ The soft earthy tone with artistic nature-inspired design gives a classy and sophisticated look perfect for festive wear, office wear, casual outings and family gatherings 🌿 Comes with matching printed blouse piece for a complete stylish appearance.
+This beautiful Chiku Linen Saree with Bird Digital Print & Foil Border is meticulously fashioned from premium light-weave linen displaying an authentic hand-spun structure and elegant fall, showcasing a lightweight texture of pure quality. Adorned with delicate nature-inspired bird prints and subtle gold-toned outline detailing across the pallu, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for high-profile corporate daytime presentations, casual boardrooms, or a chic weekend brunch, while its incredibly compact packing density makes it an essential chic option for destination weeding wardrobes for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • 🌿 Fabric: Linen
@@ -2570,7 +2550,7 @@ Style this nature-inspired bird print saree with minimal gold-toned stud earring
     color: "White / Off White",
     isNew: true,
     description: `**DESCRIPTION:**
-Enhance your ethnic collection with this graceful Soft Linen Saree featuring beautiful elephant digital prints and stylish tribal border detailing ✨ The elegant white shade combined with artistic traditional motifs gives a classy and cultural look perfect for festive wear, office wear, casual outings and traditional occasions 🌿 Crafted in soft breathable linen fabric for all-day comfort and elegant drape. Comes with matching blouse piece for a complete ethnic look.
+Imbued with boutique elegance, this sophisticated Soft Linen Saree with Elephant Digital Print & Tribal Border is made from refined flax linen fabric with a lightweight, airy touch and a sophisticated structured drape that offers high tactile comfort and a graceful frame. The design spotlights colorful, spectacular digital elephant drawings and artistic geometric tribal border printing, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for laid-back daytime business meetings, sophisticated gallery walks, or cozy family lunches, and is distinguished by the fact that fully handcrafted utilizing eco-friendly, hypoallergenic color dyes that are exceptionally gentle on the skin.
 
 **HIGHLIGHTS:**
 • 🌿 Fabric: Soft Linen
@@ -2617,7 +2597,7 @@ Style this beautiful white elephant tribal digital print saree with a high-contr
       { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500" }
     ],
     description: `**DESCRIPTION:**
-Upgrade your ethnic wardrobe with this elegant White Soft Linen Saree featuring stylish digital elephant print and artistic designer border ✨ Crafted from soft breathable linen fabric, this saree offers lightweight comfort and graceful drape for all-day wear. The ivory white shade with colorful artistic patterns gives a classy modern ethnic look perfect for festive wear, office wear, casual outings and family gatherings 🌿 Easy to drape and comfortable to carry all day. Available in 3 beautiful colors.
+For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium White Soft Linen Saree with Digital Elephant Print beautifully crafted in soft-washed natural slub linen combining a breezy open weave with a premium luxurious handle. Highlighted by colorful, spectacular digital elephant drawings and artistic geometric tribal border printing, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that the elegant fabric finish prevents linting and color fading, preserving its rich boutique look for years to come, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • 🌿 Fabric: Soft Breathable Linen
@@ -2655,7 +2635,7 @@ Upgrade your ethnic wardrobe with this elegant White Soft Linen Saree featuring 
       { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500" }
     ],
     description: `**DESCRIPTION:**
-Upgrade your ethnic wardrobe with this elegant Red Soft Linen Saree featuring stylish digital elephant print and artistic designer border ✨ Crafted from soft breathable linen fabric, this saree offers lightweight comfort and graceful drape for all-day wear. The vibrant red shade with colorful artistic patterns gives a classy modern ethnic look perfect for festive wear, office wear, casual outings and family gatherings 🌿 Easy to drape and comfortable to carry all day. Available in 3 beautiful colors.
+Understated luxury meets tradition in this bespoke Red Soft Linen Saree with Digital Elephant Print, woven carefully with premium-grade natural linen offering an exceptionally cool feel and a fluid, non-stiff drape for maximum breathability. The drape is elegantly elevated by colorful, spectacular digital elephant drawings and artistic geometric tribal border printing, evoking an aura of premium handcrafted couture. Perfect for wearing to chic airport looks, elevated working days, or an interactive cultural panel discussion, it features the outstanding benefit that accentuated with custom-milled reinforcing weaves that prevent tearing and offer long-lasting durability.
 
 **HIGHLIGHTS:**
 • 🌿 Fabric: Soft Breathable Linen
@@ -2700,7 +2680,7 @@ Upgrade your ethnic wardrobe with this elegant Red Soft Linen Saree featuring st
       { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
-Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+This beautiful White Fendy Space Silk Saree – Bollywood Glam Look in Minutes! is meticulously fashioned from illustrious and high-shine Fendy Space Silk with a rich, multi-dimensional satin sheen and sleek hand-feel, showcasing a lightweight texture of pure quality. Adorned with elaborate micro-sequin shadow embroidery and a heavy gold fancy fringes lace border for heavy glamour, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for glamorous sangeet dance nights, high-end evening reception dinners, or grand festive galas, while it incorporates a soft body-contouring technology that stays perfectly in place and resists slipping for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • ✨ Premium Fendy Space Silk Fabric
@@ -2747,7 +2727,7 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
       { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
-Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+Imbued with boutique elegance, this sophisticated Navy Blue Fendy Space Silk Saree – Bollywood Glam Look in Minutes! is made from premium-grade, supple Fendy Space Silk featuring an exceptionally smooth texture and modern liquid drape that offers high tactile comfort and a graceful frame. The design spotlights spectacular tonal gold and silver sequin embroidery with a luxurious designer fringes lace border, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for regal wedding afterparties, ceremonial family gatherings, and high-fashion evening receptions, and is distinguished by the fact that it incorporates a soft body-contouring technology that stays perfectly in place and resists slipping.
 
 **HIGHLIGHTS:**
 • ✨ Premium Fendy Space Silk Fabric
@@ -2794,7 +2774,7 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
       { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
-Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+For your next dazzling festive celebrations, cocktail parties, and spectacular traditional holiday dinners, opt for this premium Rani Fendy Space Silk Saree – Bollywood Glam Look in Minutes! beautifully crafted in luxurious Fendy Space Silk fabric designed with a heavy, substantial flow that drapes like liquid gold. Highlighted by exquisite handcrafted rani-pink sequin embroidery with an ultra-rich golden fringes lace work, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that it incorporates a soft body-contouring technology that stays perfectly in place and resists slipping, keeping you stress-free and elegant.
 
 **HIGHLIGHTS:**
 • ✨ Premium Fendy Space Silk Fabric
@@ -2841,7 +2821,7 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
       { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
-Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+Understated luxury meets tradition in this bespoke Royal Blue Fendy Space Silk Saree – Bollywood Glam Look in Minutes!, woven carefully with premium Space Silk characterized by high-density fibers that offer a structured, dramatic body-hugging silhouette for maximum breathability. The drape is elegantly elevated by twinkling royal-blue sequin work paired with high-contrast golden zari lace borders, evoking an aura of premium handcrafted couture. Perfect for wearing to contemporary wedding bashes, upscale festive card parties, and grand evening functions, it features the outstanding benefit that it incorporates a soft body-contouring technology that stays perfectly in place and resists slipping.
 
 **HIGHLIGHTS:**
 • ✨ Premium Fendy Space Silk Fabric
@@ -2888,7 +2868,7 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
       { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
-Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+This beautiful Copper Brown Fendy Space Silk Saree – Bollywood Glam Look in Minutes! is meticulously fashioned from gleaming Fendy Space Silk weaving, bringing a radiant luminous shine that enhances the body's natural movement, showcasing a lightweight texture of pure quality. Adorned with subtle metallic copper sequin embroidery and an ornate heavy gold fringes trim for rich appeal, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for traditional wedding ceremonies, auspicious festive gatherings, and luxurious evening celebrations, while it incorporates a soft body-contouring technology that stays perfectly in place and resists slipping for a truly delightful wearing experience.
 
 **HIGHLIGHTS:**
 • ✨ Premium Fendy Space Silk Fabric
@@ -2935,7 +2915,7 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
       { color: "Rani Red", slug: "rani-red-fendy-space-silk-saree-bollywood-glam-look-in-minutes", image: "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp" }
     ],
     description: `**DESCRIPTION:**
-Make a grand style statement with this premium Fendy Space Silk Saree featuring elegant sequin embroidery and a heavy gold fancy fringes lace border. Paired with a beautiful contrast matching unstitched blouse piece, this Bollywood style saree is perfect for weddings, parties and festive occasions, giving you a rich glamorous look with effortless elegance ✨
+Imbued with boutique elegance, this sophisticated Rani Red Fendy Space Silk Saree – Bollywood Glam Look in Minutes! is made from soft, premium-combed Space Silk offering a magnificent luxury handle and rich, light-catching sheen that offers high tactile comfort and a graceful frame. The design spotlights striking vermillion-red sequin embroidery and a majestic glittering gold fringes lace border, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for glamorous sangeet dance nights, high-end evening reception dinners, or grand festive galas, and is distinguished by the fact that it incorporates a soft body-contouring technology that stays perfectly in place and resists slipping.
 
 **HIGHLIGHTS:**
 • ✨ Premium Fendy Space Silk Fabric

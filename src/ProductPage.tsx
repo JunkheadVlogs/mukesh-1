@@ -33,7 +33,7 @@ import {
   getProductReviewStats,
   getImageAlt,
 } from "./utils";
-import { CONFIG, submitToGoogleSheets } from "./config";
+import { CONFIG, submitToGoogleSheets, getApiUrl } from "./config";
 import { sendOrderToSheets } from "./utils/googleSheets";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { ProductCard } from "./components/ProductCard";
@@ -496,7 +496,7 @@ export default function ProductPage() {
       await finalizeBuyNowOrder("Cash on Delivery");
     } else {
       try {
-        const orderDataResult = await fetch(`${CONFIG.API_BASE_URL}/api/create-razorpay-order`, {
+        const orderDataResult = await fetch(getApiUrl("api/create-razorpay-order"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -545,7 +545,7 @@ export default function ProductPage() {
           theme: { color: "#C8A96E" },
           handler: async (response: any) => {
             try {
-              await fetch(`${CONFIG.API_BASE_URL}/api/verify-payment`, {
+              await fetch(getApiUrl("api/verify-payment"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(response)
@@ -748,18 +748,26 @@ export default function ProductPage() {
   };
 
   const productSchema = {
-    "@context": "https://schema.org",
+    "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.name,
-    "image": (product as any).imageUrl || product.image,
-    "description": product.description,
+    "image": product.image.startsWith("http") ? product.image : `https://mukeshsarees.com${product.image.startsWith("/") ? "" : "/"}${product.image}`,
+    "description": cleanSEOText(product.description).substring(0, 300),
     "brand": { "@type": "Brand", "name": "Mukesh Saree Centre" },
     "offers": {
       "@type": "Offer",
-      "price": product.price,
+      "price": product.price.toString(),
       "priceCurrency": "INR",
-      "availability": "https://schema.org/InStock",
-      "seller": { "@type": "Organization", "name": "Mukesh Saree Centre" }
+      "availability": isOutOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Mukesh Saree Centre"
+      }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": stats.rating.toString(),
+      "reviewCount": stats.reviewCount.toString()
     }
   };
 
@@ -969,30 +977,35 @@ export default function ProductPage() {
                   {product.name}
                 </h1>
 
-                {/* Rating Summary Snippet */}
-                <a
-                  href="#reviews"
-                  className="flex items-center gap-1.5 mt-1 sm:mt-1.5 hover:opacity-80 transition-opacity"
-                >
-                  <div className="flex items-center gap-[2px]">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-[10px] h-[10px] sm:w-[11px] sm:h-[11px] ${
-                          stats.rating >= i + 1
-                            ? "fill-[#F4B63D] text-[#F4B63D]"
-                            : stats.rating >= i + 0.5
-                              ? "fill-[#F4B63D] text-[#F4B63D] opacity-50"
-                              : "fill-[#E6DEC8] text-[#E6DEC8]"
-                        }`}
-                      />
-                    ))}
+                {/* Rating & Urgency Badge Row */}
+                <div className="ratings-badge-row flex flex-row items-center gap-2 sm:gap-3 flex-nowrap w-full overflow-visible mt-1 sm:mt-1.5 select-none text-left">
+                  <a
+                    href="#reviews"
+                    className="flex items-center gap-1.5 hover:opacity-80 transition-opacity flex-shrink-0"
+                  >
+                    <div className="flex items-center gap-[2px] rating-stars">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-[10px] h-[10px] sm:w-[11px] sm:h-[11px] ${
+                            stats.rating >= i + 1
+                              ? "fill-[#F4B63D] text-[#F4B63D]"
+                              : stats.rating >= i + 0.5
+                                ? "fill-[#F4B63D] text-[#F4B63D] opacity-50"
+                                : "fill-[#E6DEC8] text-[#E6DEC8]"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-[11px] sm:text-[12px] text-[#9CA3AF] font-medium leading-none hover:underline underline-offset-4 decoration-[#9CA3AF] whitespace-nowrap">
+                      ({product.reviewsCount || stats.reviewCount})
+                    </span>
+                  </a>
+                  <span className="text-[#9CA3AF] text-[11px] sm:text-[12px] font-light flex-shrink-0 px-0.5 select-none opacity-60">|</span>
+                  <div className="flex-shrink-0">
+                    <LiveViewerCounter productId={product.id} category={product.category} />
                   </div>
-                  <span className="text-[11px] sm:text-[12px] text-[#9CA3AF] font-medium leading-none hover:underline underline-offset-4 decoration-[#9CA3AF]">
-                    ({product.reviewsCount || stats.reviewCount})
-                  </span>
-                </a>
-                <LiveViewerCounter productId={product.id} category={product.category} />
+                </div>
               </header>
 
               {/* Product Pricing and Share */}
@@ -1055,55 +1068,57 @@ export default function ProductPage() {
               </div>
 
               {/* Product Specifications - Clean Minimal List */}
-              <section className="flex flex-col gap-1.5 py-0.5 mb-2 mt-0.5 text-[13px] md:text-[14px]">
-                <div className="grid grid-cols-[90px_1fr] items-baseline">
-                  <span className="text-[var(--color-muted)] font-light tracking-wide uppercase text-[10px]">
-                    Fabric
-                  </span>
-                  <span className="text-[var(--color-dark)]">
-                    {product.fabric}
-                  </span>
-                </div>
+              <table className="product-details-table w-full mb-3 border-collapse">
+                <tbody>
+                  <tr className="border-none">
+                    <td className="product-details-label font-light uppercase">
+                      Fabric
+                    </td>
+                    <td className="text-[var(--color-dark)] align-middle">
+                      {product.fabric}
+                    </td>
+                  </tr>
 
-                {product.category.toLowerCase().includes("saree") && (
-                  <>
-                    <div className="grid grid-cols-[90px_1fr] items-baseline">
-                      <span className="text-[var(--color-muted)] font-light tracking-wide uppercase text-[10px]">
-                        Dimensions
-                      </span>
-                      <span className="text-[var(--color-dark)]">
-                        5.50 Meters
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-[90px_1fr] items-baseline">
-                      <span className="text-[var(--color-muted)] font-light tracking-wide uppercase text-[10px]">
-                        Blouse
-                      </span>
-                      <span className="text-[var(--color-dark)]">
-                        1 Meter (Unstitched)
-                      </span>
-                    </div>
-                  </>
-                )}
+                  {product.category.toLowerCase().includes("saree") && (
+                    <>
+                      <tr className="border-none">
+                        <td className="product-details-label font-light uppercase">
+                          Dimensions
+                        </td>
+                        <td className="text-[var(--color-dark)] align-middle">
+                          5.50 Meters
+                        </td>
+                      </tr>
+                      <tr className="border-none">
+                        <td className="product-details-label font-light uppercase">
+                          Blouse
+                        </td>
+                        <td className="text-[var(--color-dark)] align-middle">
+                          1 Meter (Unstitched)
+                        </td>
+                      </tr>
+                    </>
+                  )}
 
-                <div className="grid grid-cols-[90px_1fr] items-baseline">
-                  <span className="text-[var(--color-muted)] font-light tracking-wide uppercase text-[10px]">
-                    Color
-                  </span>
-                  <span className="text-[var(--color-dark)]">
-                    {product.color}
-                  </span>
-                </div>
+                  <tr className="border-none">
+                    <td className="product-details-label font-light uppercase">
+                      Color
+                    </td>
+                    <td className="text-[var(--color-dark)] align-middle">
+                      {product.color}
+                    </td>
+                  </tr>
 
-                {!product.category.toLowerCase().includes("saree") && (
-                  <div className="grid grid-cols-[90px_1fr] items-baseline">
-                    <span className="text-[var(--color-muted)] font-light tracking-wide uppercase text-[10px]">
-                      Style
-                    </span>
-                    <span className="text-[var(--color-dark)]">Premium</span>
-                  </div>
-                )}
-              </section>
+                  {!product.category.toLowerCase().includes("saree") && (
+                    <tr className="border-none">
+                      <td className="product-details-label font-light uppercase">
+                        Style
+                      </td>
+                      <td className="text-[var(--color-dark)] align-middle">Premium</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
 
               {/* Color Variants */}
               {product.colorVariants && product.colorVariants.length > 0 && (

@@ -220,7 +220,7 @@ export default function Shop() {
   const ogImageUrl = categoryOgImages[activeCategory] || categoryOgImages.default;
 
   return (
-    <div className="bg-[var(--color-bg)]">
+    <div className="shop-page bg-[var(--color-bg)]">
       <SEO
         title="Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre"
         description="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978."
@@ -235,26 +235,52 @@ export default function Shop() {
       />
 
       <div
-        className="max-w-[1600px] mx-auto px-4 sm:px-10 lg:px-12 pt-1.5 sm:pt-6 md:pt-10 pb-8 mt-0 w-full"
+        className="max-w-[1600px] mx-auto px-4 sm:px-10 lg:px-12 pt-[8px] sm:pt-6 md:pt-10 pb-8 mt-0 w-full"
         style={{ minHeight: "auto" }}
       >
         <header
-          className="mb-4 sm:mb-6 md:mb-12 border-b border-[var(--color-border)] pb-3 sm:pb-4 md:pb-6"
+          className="mb-2 sm:mb-6 border-b border-[var(--color-border)] pb-2"
           style={{ overflow: "visible" }}
         >
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 md:gap-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-2.5 md:gap-6">
             <div>
               <h1
-                className="text-xl sm:text-3xl md:text-5xl font-serif text-[var(--color-dark)] font-normal tracking-wide"
+                className="text-[18px] sm:text-3xl md:text-5xl font-serif text-[var(--color-dark)] font-normal tracking-wide"
                 style={{ lineHeight: 1.2 }}
               >
                 {searchQuery
                   ? `Results for "${searchQuery}"`
                   : categoryFilter || "Shop All"}
               </h1>
-              <p className="text-[var(--color-dark)]/50 text-[12px] md:text-[14px] mt-1 sm:mt-1.5 md:mt-2 font-body tracking-wider font-light">
+              <p className="text-[var(--color-dark)]/50 text-[11px] sm:text-[12px] md:text-[14px] mt-0.5 sm:mt-1 md:mt-1.5 font-body tracking-wider font-light">
                 {filteredAndSortedProducts.length} items found
               </p>
+
+              {/* Category Filter Pills Row (Mobile-optimized scrollable row) */}
+              <div className="flex gap-2 overflow-x-auto py-2.5 mt-2 select-none -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto">
+                {[
+                  { label: "All", value: null },
+                  { label: "Co-Ord Sets", value: "Co-Ord Sets" },
+                  { label: "Sarees", value: "Sarees" },
+                  { label: "Linen Sarees", value: "Linen Sarees" },
+                  { label: "Lehengas", value: "Lehengas" }
+                ].map((pill) => {
+                  const isActive = (!pill.value && !categoryFilter) || (categoryFilter === pill.value);
+                  return (
+                    <button
+                      key={pill.label || "all"}
+                      onClick={() => handleCategoryChange(pill.value)}
+                      className={`px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border duration-200 cursor-pointer ${
+                        isActive
+                          ? "bg-gold-500 border-gold-500 text-white shadow-sm"
+                          : "bg-white border-black/5 text-[#2b2b2b]/70 hover:text-[#2b2b2b] hover:border-black/20"
+                      }`}
+                    >
+                      {pill.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="flex flex-row items-center gap-2 sm:gap-4 w-full md:w-auto mt-1 sm:mt-2 md:mt-0">
@@ -412,20 +438,22 @@ export default function Shop() {
           {/* Product Grid */}
           <main className="flex-1">
             {isLoading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2.5 gap-y-4 sm:gap-6 md:gap-8">
+              <div className="product-grid">
                 {[...Array(8)].map((_, i) => (
                   <ProductCardSkeleton key={i} />
                 ))}
               </div>
             ) : filteredAndSortedProducts.length > 0 ? (
               <div className="flex flex-col items-center w-full">
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2.5 gap-y-4 sm:gap-6 md:gap-8 w-full">
+                <div className="product-grid w-full">
                   {visible.map((product, idx) => (
                     <ProductCard
                       key={product.id}
                       idx={idx}
-                      priority={idx < 4}
+                      priority={false}
                       product={product}
+                      hideCategory={true}
+                      hideRating={true}
                       onQuickView={setQuickViewProduct}
                     />
                   ))}
@@ -472,7 +500,7 @@ export default function Shop() {
                   <h4 className="text-xs uppercase tracking-[2px] font-bold text-primary-950/40 mb-6 text-center">
                     Discover Our Bestselling Masterpieces
                   </h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-2.5 gap-y-4 sm:gap-6 md:gap-8">
+                  <div className="product-grid">
                     {products
                       .filter((p) => !p.isVariant && (p.isBestSelling || p.isTrending || p.isNew))
                       .slice(0, 4)
@@ -480,8 +508,10 @@ export default function Shop() {
                         <ProductCard
                           key={product.id}
                           idx={idx}
-                          priority={idx < 4}
+                          priority={false}
                           product={product}
+                          hideCategory={true}
+                          hideRating={true}
                           onQuickView={setQuickViewProduct}
                         />
                       ))}

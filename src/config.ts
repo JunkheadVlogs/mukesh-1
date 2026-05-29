@@ -22,9 +22,34 @@ export const CONFIG = {
   RAZORPAY_KEY_ID: import.meta.env.VITE_RAZORPAY_KEY_ID, // STRICTLY KEY_ID NO SECRET
 };
 
+export function getApiUrl(endpoint: string): string {
+  const base = CONFIG.API_BASE_URL || "";
+  const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+
+  if (base.startsWith("http://") || base.startsWith("https://")) {
+    const cleanBase = base.endsWith("/") ? base.slice(0, -1) : base;
+    
+    // Safety check: if current page is loaded securely over HTTPS but base is an HTTP localhost url,
+    // fallback to window.location.origin to prevent mixed content blocking and relative routing failures on the container
+    if (typeof window !== "undefined") {
+      if (window.location.protocol === "https:" && cleanBase.startsWith("http://localhost")) {
+        return `${window.location.origin}${cleanEndpoint}`;
+      }
+    }
+    return `${cleanBase}${cleanEndpoint}`;
+  }
+
+  const cleanBase = base ? (base.endsWith("/") ? base.slice(0, -1) : base) : "";
+  
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}${cleanBase}${cleanEndpoint}`;
+  }
+  return `${cleanBase}${cleanEndpoint}`;
+}
+
 export async function submitToGoogleSheets(data: any) {
   try {
-    const response = await fetch(`${CONFIG.API_BASE_URL}/api/submit-order`, {
+    const response = await fetch(getApiUrl("api/submit-order"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

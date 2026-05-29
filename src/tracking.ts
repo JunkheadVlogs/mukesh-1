@@ -1,3 +1,5 @@
+import { CONFIG, getApiUrl } from "./config";
+
 // Safe in-memory fallback for localStorage in sandboxed iframes
 const memoryStorage: Record<string, string> = {};
 const localStorage = {
@@ -167,7 +169,7 @@ export const trackPageView = (path: string) => {
     } catch (e) {}
 
     // Server-Side Conversions API PageView Trigger
-    fetch("/api/meta-capi", {
+    fetch(getApiUrl("api/sys-metric"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -233,7 +235,7 @@ export const trackViewContent = (product: any) => {
     const extId = getExternalId();
 
     // Server CAPI Post (Task #8)
-    fetch("/api/meta-capi", {
+    fetch(getApiUrl("api/sys-metric"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -308,7 +310,7 @@ export const trackAddToCart = (product: any, quantity: number = 1) => {
     const extId = getExternalId();
 
     // Server CAPI Post (Task #8)
-    fetch("/api/meta-capi", {
+    fetch(getApiUrl("api/sys-metric"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -389,7 +391,7 @@ export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
     } catch (e) {}
 
     // Server CAPI Post (Task #8)
-    fetch("/api/meta-capi", {
+    fetch(getApiUrl("api/sys-metric"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -486,7 +488,7 @@ export const trackPurchase = (totalValue: number, items: any[], transactionId: s
     } catch (e) {}
 
     // Server CAPI Post (Task #8 & #9)
-    fetch('/api/meta-capi', {
+    fetch(getApiUrl("api/sys-metric"), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
