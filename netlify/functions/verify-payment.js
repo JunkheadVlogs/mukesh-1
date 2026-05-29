@@ -23,7 +23,7 @@ exports.handler = async (event) => {
     
     // Consistent fallback if secret isn't provided or is empty
     if (!secret) {
-      secret = "z245tbFDtCZmJ7Wztx2XSHrG";
+      secret = "Xl5dAr611y4jLqhVfUQ6xa7k";
     }
 
     const expectedSignature = crypto

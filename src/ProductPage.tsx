@@ -831,7 +831,7 @@ export default function ProductPage() {
           {/* Gallery Section */}
           <div className="w-full lg:w-7/12 space-y-3 md:space-y-4">
             <div
-              className="relative cursor-zoom-in group mx-auto touch-pan-y"
+              className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y"
               style={{
                 touchAction: 'pan-y pinch-zoom',
                 width: '100%',
@@ -847,13 +847,7 @@ export default function ProductPage() {
               <img
                 src={getImageSrc(productImages[activeImageIndex])}
                 alt={getImageAlt(product)}
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  display: 'block',
-                  objectFit: 'contain'
-                }}
-                className="transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
+                className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
               />
               <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-[var(--color-bg)]/90 backdrop-blur-md text-[var(--color-dark)] text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-medium px-4 py-2 shadow-sm pointer-events-none z-10 transition-opacity rounded-sm">
                 50% OFF

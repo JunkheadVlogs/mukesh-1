@@ -76,8 +76,8 @@ app.use((req, res, next) => {
   next();
 });
 
-const RAZORPAY_KEY_ID = (process.env.RAZORPAY_KEY_ID || "rzp_live_So7zJe4qbXm4LY").trim();
-const RAZORPAY_KEY_SECRET = (process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG").trim();
+const RAZORPAY_KEY_ID = (process.env.RAZORPAY_KEY_ID || "rzp_live_SvAvyQnxCNWCIP").trim();
+const RAZORPAY_KEY_SECRET = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
 
 let razorpay = null;
 try {
@@ -308,8 +308,8 @@ apiRouter.post("/submit-order", async (req, res) => {
 // ==== razorpay order creation ====
 apiRouter.post('/create-razorpay-order', async (req, res) => {
   try {
-    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_So7zJe4qbXm4LY").trim();
-    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG").trim();
+    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SvAvyQnxCNWCIP").trim();
+    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
     
     // Log configuration details safely for debugging
     const keyMode = currentKeyId.startsWith("rzp_test_") ? "TEST MODE" : "LIVE MODE";
@@ -356,6 +356,7 @@ apiRouter.post('/create-razorpay-order', async (req, res) => {
       key: currentKeyId
     });
   } catch (err: any) {
+    console.error('Razorpay error:', err?.message, err?.statusCode, err?.error);
     console.error("[RAZORPAY ERROR] Detailed Razorpay Error (create-razorpay-order):", {
       message: err?.message,
       statusCode: err?.statusCode,
@@ -371,8 +372,8 @@ apiRouter.post('/create-razorpay-order', async (req, res) => {
 
 apiRouter.post('/create-order', async (req, res) => {
   try {
-    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_So7zJe4qbXm4LY").trim();
-    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG").trim();
+    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SvAvyQnxCNWCIP").trim();
+    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
     
     const keyMode = currentKeyId.startsWith("rzp_test_") ? "TEST MODE" : "LIVE MODE";
     console.log(`[RAZORPAY DEBUG] Mode: ${keyMode} | Key ID: ${currentKeyId ? `${currentKeyId.substring(0, 8)}...` : "UNDEFINED"} | Secret: ${currentKeySecret ? "DEFINED" : "UNDEFINED"}`);
@@ -419,6 +420,7 @@ apiRouter.post('/create-order', async (req, res) => {
       key: currentKeyId
     });
   } catch (err: any) {
+    console.error('Razorpay error:', err?.message, err?.statusCode, err?.error);
     console.error("[RAZORPAY ERROR] Detailed Razorpay Error (create-order):", {
       message: err?.message,
       statusCode: err?.statusCode,
@@ -439,8 +441,8 @@ apiRouter.post("/verify-payment", (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     
-    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_So7zJe4qbXm4LY").trim();
-    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "z245tbFDtCZmJ7Wztx2XSHrG").trim();
+    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SvAvyQnxCNWCIP").trim();
+    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
     
     if (!currentKeySecret) {
       console.error("[RAZORPAY ERROR] Missing RAZORPAY_KEY_SECRET for payment verification");

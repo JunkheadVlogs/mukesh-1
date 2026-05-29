@@ -292,8 +292,46 @@ nav a:hover {
 }
 
 /* Bug Fix overrides */
-.product-image-main {
+.product-image-main,
+.product-main-img,
+.gallery-main img,
+[class*="product-image"] img,
+[class*="main-image"] img {
+  max-height: 60vh;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #fafafa;
+}
+
+.gallery-main,
+.product-image-container,
+[class*="product-image-container"] {
+  max-height: 60vh;
   width: 100%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .product-image-main,
+  .product-main-img,
+  .gallery-main img,
+  [class*="product-image"] img,
+  [class*="main-image"] img {
+    max-height: 500px !important;
+    object-fit: contain !important;
+  }
+  .gallery-main,
+  .product-image-container,
+  [class*="product-image-container"] {
+    max-height: 500px;
+    height: 500px;
+  }
 }
 
 .product-gallery img {
