@@ -94,6 +94,33 @@ function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string 
   }
 }
 
+function getPortraitPrerenderImageUrl(imageUrl: string | undefined): string {
+  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  
+  let targetUrl = imageUrl;
+  if (imageUrl.includes('drive.google.com')) {
+    const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
+    if (driveIdMatch) {
+      const fileId = driveIdMatch[1];
+      targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    }
+  } else if (imageUrl.includes('lh3.googleusercontent.com')) {
+    targetUrl = imageUrl.split('=')[0]; // strip existing params
+  }
+  
+  if (targetUrl.includes('wsrv.nl')) {
+    return targetUrl
+      .replace(/w=\d+/, 'w=630')
+      .replace(/h=\d+/, 'h=1200')
+      .replace(/fit=[a-z]+/, 'fit=contain')
+      .replace(/bg=[a-zA-Z0-9]+/, 'bg=fafafa')
+      .replace('output=jpg', 'output=webp')
+      .replace('output=jpeg', 'output=webp');
+  } else {
+    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=630&h=1200&fit=contain&bg=fafafa&output=webp&q=85`;
+  }
+}
+
 function sanitize(text: string): string {
   if (!text) return "";
   return text
@@ -580,7 +607,7 @@ async function runPrerender() {
     `;
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
-    const wsrvImgLandscape = getWhatsAppSafePrerenderImageUrl(p.image);
+    const wsrvImgPortrait = getPortraitPrerenderImageUrl(p.image);
     const prodDesc = getWhatsAppSafePrerenderDescription(p.description || "", p);
     const pageTitle = `${p.name} – Mukesh Saree Centre`;
     
@@ -595,17 +622,17 @@ async function runPrerender() {
     const dynamicTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="${sanitize(pageTitle)}" />
     <meta property="og:description" content="${sanitize(prodDesc)}" />
-    <meta property="og:image" content="${wsrvImgLandscape}" />
+    <meta property="og:image" content="${wsrvImgPortrait}" />
     <meta property="og:url" content="${originalUrl}" />
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="630" />
+    <meta property="og:image:height" content="1200" />
+    <meta property="og:image:type" content="image/webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${sanitize(pageTitle)}" />
     <meta name="twitter:description" content="${sanitize(prodDesc)}" />
-    <meta name="twitter:image" content="${wsrvImgLandscape}" />
+    <meta name="twitter:image" content="${wsrvImgPortrait}" />
     <link rel="canonical" href="${originalUrl}" />
     <!-- End Dynamic OG Tags -->`;
 

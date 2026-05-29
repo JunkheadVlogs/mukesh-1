@@ -149,13 +149,11 @@ export function SEO({
   const defaultWidth = "1200";
   const defaultHeight = "630";
 
-  const finalImageWidth = imageWidth || defaultWidth;
-  const finalImageHeight = imageHeight || defaultHeight;
+  const finalImageWidth = isProductType ? "630" : (imageWidth || defaultWidth);
+  const finalImageHeight = isProductType ? "1200" : (imageHeight || defaultHeight);
 
   let displayImage = absoluteImage;
   if (absoluteImage) {
-    // Standardize all image URLs to a perfect 1200x630 landscape JPG cover crop using wsrv.nl.
-    // This fully resolves the "too tall/portrait and slim" problem on WhatsApp when sharing.
     let targetUrl = absoluteImage;
     if (absoluteImage.includes('drive.google.com')) {
       const driveIdMatch = absoluteImage.match(/[?&]id=([^&]+)/);
@@ -167,16 +165,30 @@ export function SEO({
       targetUrl = absoluteImage.split('=')[0]; // strip existing resize parameters
     }
     
-    // Check if wsrv is already wrapping this URL
-    if (targetUrl.includes('wsrv.nl')) {
-      // Just make sure it uses 1200x630 cover crop
-      displayImage = targetUrl
-        .replace(/w=\d+/, 'w=1200')
-        .replace(/h=\d+/, 'h=630')
-        .replace(/fit=[a-z]+/, 'fit=cover')
-        .replace('output=webp', 'output=jpg');
+    if (isProductType) {
+      if (targetUrl.includes('wsrv.nl')) {
+        displayImage = targetUrl
+          .replace(/w=\d+/, 'w=630')
+          .replace(/h=\d+/, 'h=1200')
+          .replace(/fit=[a-z]+/, 'fit=contain')
+          .replace(/bg=[a-zA-Z0-9]+/, 'bg=fafafa')
+          .replace('output=jpg', 'output=webp')
+          .replace('output=jpeg', 'output=webp');
+      } else {
+        displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=630&h=1200&fit=contain&bg=fafafa&output=webp&q=85`;
+      }
     } else {
-      displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
+      // Check if wsrv is already wrapping this URL
+      if (targetUrl.includes('wsrv.nl')) {
+        // Just make sure it uses 1200x630 cover crop
+        displayImage = targetUrl
+          .replace(/w=\d+/, 'w=1200')
+          .replace(/h=\d+/, 'h=630')
+          .replace(/fit=[a-z]+/, 'fit=cover')
+          .replace('output=webp', 'output=jpg');
+      } else {
+        displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
+      }
     }
   }
 
@@ -195,7 +207,7 @@ export function SEO({
       <meta property="og:image" content={displayImage} />
       <meta property="og:image:width" content={finalImageWidth} />
       <meta property="og:image:height" content={finalImageHeight} />
-      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:type" content={isProductType ? "image/webp" : "image/jpeg"} />
       <meta property="og:site_name" content="Mukesh Saree Centre" />
 
       {/* Twitter */}

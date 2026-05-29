@@ -780,6 +780,33 @@ const getWhatsAppSafeServerImageUrl = (imageUrl) => {
   }
 };
 
+const getPortraitServerImageUrl = (imageUrl) => {
+  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  
+  let targetUrl = imageUrl;
+  if (imageUrl.includes('drive.google.com')) {
+    const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
+    if (driveIdMatch) {
+      const fileId = driveIdMatch[1];
+      targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    }
+  } else if (imageUrl.includes('lh3.googleusercontent.com')) {
+    targetUrl = imageUrl.split('=')[0]; // strip existing params
+  }
+  
+  if (targetUrl.includes('wsrv.nl')) {
+    return targetUrl
+      .replace(/w=\d+/, 'w=630')
+      .replace(/h=\d+/, 'h=1200')
+      .replace(/fit=[a-z]+/, 'fit=contain')
+      .replace(/bg=[a-zA-Z0-9]+/, 'bg=fafafa')
+      .replace('output=jpg', 'output=webp')
+      .replace('output=jpeg', 'output=webp');
+  } else {
+    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=630&h=1200&fit=contain&bg=fafafa&output=webp&q=85`;
+  }
+};
+
 const getWhatsAppSafeServerDescription = (text, productContext) => {
   if (!text) return "Shop premium Indian ethnic wear, sarees, and co-ord sets at Mukesh Saree Centre.";
   
@@ -848,8 +875,8 @@ const injectOGTags = (html, reqPath, originalUrl) => {
       ogTitle = `${prod.name} – Mukesh Saree Centre`;
       ogDesc = getWhatsAppSafeServerDescription(prod.description, prod);
  
-      // Convert Google Drive or local product images to a beautiful landscape cover image
-      ogImg = getWhatsAppSafeServerImageUrl(prod.image || defaultBannerUrl);
+      // Convert to beautiful portrait format for products to show tall and full on WhatsApp
+      ogImg = getPortraitServerImageUrl(prod.image || defaultBannerUrl);
       price = prod.price || "0";
       isProduct = true;
     }
@@ -874,9 +901,9 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta property="og:url" content="${ogUrl}" />
      <meta property="og:type" content="${isProduct ? 'product' : 'website'}" />
      <meta property="og:site_name" content="Mukesh Saree Centre" />
-     <meta property="og:image:width" content="1200" />
-     <meta property="og:image:height" content="630" />
-     <meta property="og:image:type" content="image/jpeg" />
+     <meta property="og:image:width" content="${isProduct ? '630' : '1200'}" />
+     <meta property="og:image:height" content="${isProduct ? '1200' : '630'}" />
+     <meta property="og:image:type" content="${isProduct ? 'image/webp' : 'image/jpeg'}" />
      <meta name="twitter:card" content="summary_large_image" />
      <meta name="twitter:title" content="${ogTitle}" />
      <meta name="twitter:description" content="${ogDesc}" />

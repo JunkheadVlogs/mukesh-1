@@ -15,7 +15,7 @@ export default defineConfig(({mode}) => {
     VITE_GTM_ID: 'GTM-WMG3G6SM',
     VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
     VITE_PINTEREST_TAG: 'your_pinterest_tag_id',
-    VITE_PINTEREST_DOMAIN: 'your_pinterest_domain_verify',
+    VITE_PINTEREST_DOMAIN: '5099ed06768c1b801e53b45489b5bf2d',
     VITE_RAZORPAY_KEY_ID: 'rzp_live_SvAvyQnxCNWCIP',
     VITE_WHATSAPP_NUMBER: '917020664641',
     VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
