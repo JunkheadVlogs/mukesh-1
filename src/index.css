@@ -1252,7 +1252,8 @@ nav.main-nav {
 .nav-logo {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%) !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1278,6 +1279,49 @@ nav.main-nav {
     height: 100px; /* Made desktop header slightly taller for elegant presentation */
   }
 }
+
+/* 🛍️ PROBLEM 1 — Header & Logo Specific Overrides */
+img[alt="Mukesh Saree Centre Logo"] {
+  height: 44px !important;
+  width: auto !important;
+  min-width: 120px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+header, .header, nav, .site-header, nav.main-nav {
+  min-height: 60px !important;
+  height: 60px !important;
+}
+
+/* 🛍️ PROBLEM 2 — Category Filter Pills Horizontal Scroll & No Crop */
+.filter-pills-container,
+.category-filters {
+  display: flex !important;
+  flex-direction: row !important;
+  overflow-x: auto !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  scroll-snap-type: x mandatory !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+}
+
+.filter-pills-container::-webkit-scrollbar,
+.category-filters::-webkit-scrollbar {
+  display: none !important;
+}
+
+.filter-pill,
+.category-pill {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+  border-radius: 20px !important;
+  scroll-snap-align: start !important;
+}
+
 
 
 

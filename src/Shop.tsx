@@ -245,19 +245,21 @@ export default function Shop() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-2.5 md:gap-6">
             <div>
               <h1
-                className="text-[18px] sm:text-3xl md:text-5xl font-serif text-[var(--color-dark)] font-normal tracking-wide"
+                className="text-[18px] sm:text-2xl md:text-3.5xl lg:text-4xl font-serif text-[var(--color-dark)] font-normal tracking-wide flex items-baseline flex-wrap gap-2 sm:gap-3"
                 style={{ lineHeight: 1.2 }}
               >
-                {searchQuery
-                  ? `Results for "${searchQuery}"`
-                  : categoryFilter || "Shop All"}
+                <span>
+                  {searchQuery
+                    ? `Results for "${searchQuery}"`
+                    : categoryFilter || "Shop All"}
+                </span>
+                <span className="text-[10px] sm:text-[11px] md:text-xs font-sans text-[var(--color-dark)]/40 tracking-wider font-light uppercase whitespace-nowrap">
+                  ({filteredAndSortedProducts.length} items found)
+                </span>
               </h1>
-              <p className="text-[var(--color-dark)]/50 text-[11px] sm:text-[12px] md:text-[14px] mt-0.5 sm:mt-1 md:mt-1.5 font-body tracking-wider font-light">
-                {filteredAndSortedProducts.length} items found
-              </p>
 
               {/* Category Filter Pills Row (Mobile-optimized scrollable row) */}
-              <div className="flex gap-2 overflow-x-auto py-2.5 mt-2 select-none -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto">
+              <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto py-2.5 mt-2 select-none -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto">
                 {[
                   { label: "All", value: null },
                   { label: "Co-Ord Sets", value: "Co-Ord Sets" },
@@ -270,10 +272,10 @@ export default function Shop() {
                     <button
                       key={pill.label || "all"}
                       onClick={() => handleCategoryChange(pill.value)}
-                      className={`px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border duration-200 cursor-pointer ${
+                      className={`filter-pill category-pill shrink-0 flex-shrink-0 px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border duration-200 cursor-pointer ${
                         isActive
-                          ? "bg-gold-500 border-gold-500 text-white shadow-sm"
-                          : "bg-white border-black/5 text-[#2b2b2b]/70 hover:text-[#2b2b2b] hover:border-black/20"
+                           ? "bg-gold-500 border-gold-500 text-white shadow-sm"
+                           : "bg-white border-black/5 text-[#2b2b2b]/70 hover:text-[#2b2b2b] hover:border-black/20"
                       }`}
                     >
                       {pill.label}

@@ -930,7 +930,7 @@ export default function Layout() {
 
       {/* Main Content */}
       <main
-        className={`flex-grow flex flex-col ${!isHomePage ? "pt-[106px] md:pt-[126px]" : ""}`}
+        className={`flex-grow flex flex-col ${!isHomePage ? "pt-[84px]" : ""}`}
       >
         <Suspense fallback={
           <div className="flex-grow min-h-[50vh] flex flex-col items-center justify-center bg-[#FAF8F4] space-y-4">
