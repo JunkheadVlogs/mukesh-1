@@ -55,16 +55,16 @@ export default function Layout() {
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const { scrollY } = useScroll();
-  const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
+  const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
   const [logoRetryStep, setLogoRetryStep] = useState(0);
   const [logoError, setLogoError] = useState(false);
 
   const handleLogoError = () => {
     if (logoRetryStep === 0) {
-      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
+      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
       setLogoRetryStep(1);
     } else if (logoRetryStep === 1) {
-      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
+      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
       setLogoRetryStep(2);
     } else {
       setLogoError(true);
@@ -681,34 +681,18 @@ export default function Layout() {
           </div>
 
           {/* Center Section: Logo */}
-          <div className="header-logo z-0">
+          <div className="header-logo z-50 pointer-events-auto">
             <Link
               to="/"
               onClick={scrollToTop}
-              className="flex items-center justify-center flex-col group transition-all duration-500 transform m-0 p-0"
+              className="z-50 cursor-pointer flex items-center justify-center flex-col group transition-all duration-500 transform m-0 p-0"
             >
-              {!logoError ? (
-                <img
-                  src={logoSrc}
-                  alt="Mukesh Saree Centre Logo"
-                  style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
-                  className="logo transition-all duration-500 group-hover:opacity-80 m-0 p-0 block"
-                  onError={handleLogoError}
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center">
-                  <span className={`text-[24px] md:text-3.5xl font-serif font-bold tracking-[5px] md:tracking-[8px] uppercase text-center leading-none transition-all ${textColor} group-hover:opacity-70`}>
-                    MUKESH
-                  </span>
-                  <div className="flex items-center gap-2 md:gap-3 w-full mt-1.5 md:mt-2 px-1 opacity-95">
-                    <div className={`h-[1px] flex-1 ${borderColor} transition-colors`}></div>
-                    <span className={`text-[10px] md:text-[12px] font-sans font-bold tracking-[4px] md:tracking-[6px] uppercase ${textColor} transition-colors whitespace-nowrap`}>
-                      Saree Centre
-                    </span>
-                    <div className={`h-[1px] flex-1 ${borderColor} transition-colors`}></div>
-                  </div>
-                </div>
-              )}
+              <img
+                src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png"
+                alt="Mukesh Saree Centre Logo"
+                style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
+                className="transition-all duration-500 group-hover:opacity-80 m-0 p-0 h-[48px] md:h-[52px] w-auto object-contain"
+              />
             </Link>
           </div>
 
@@ -778,149 +762,256 @@ export default function Layout() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-0 z-[9999] w-full h-full overflow-y-auto md:hidden shadow-none flex flex-col bg-[#FAF8F4]"
+              className="fixed inset-0 z-[9999] w-full h-full md:hidden bg-[#FAF8F4] overflow-y-auto"
               style={{ backgroundColor: "#FAF8F4", opacity: 1, visibility: "visible" }}
             >
-              {/* 1. Unifed Unified Header Area */}
-              <div className="h-[60px] px-5 border-b border-[#C8A96B]/20 flex items-center justify-between flex-shrink-0 bg-[#FAF8F4]">
-                <div className="flex flex-col">
-                  <span className="text-xs font-serif font-extrabold tracking-[0.22em] uppercase text-neutral-950 leading-none">
-                    MUKESH
-                  </span>
-                  <span className="text-[7.5px] font-sans font-extrabold tracking-[0.22em] uppercase text-gold-600 mt-1">
-                    SAREE CENTRE
-                  </span>
+              <div style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                height: "auto",
+                paddingBottom: "24px"
+              }}>
+                {/* Header */}
+                <div style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "16px 20px",
+                  borderBottom: "1px solid #eee"
+                }}>
+                  <img 
+                    src={logoSrc} 
+                    alt="Mukesh Saree Centre Logo"
+                    style={{ height: "44px", width: "auto", objectFit: "contain" }}
+                  />
+                  <button 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      border: "none",
+                      background: "transparent",
+                      fontSize: "20px",
+                      fontWeight: "300",
+                      cursor: "pointer",
+                      padding: "8px",
+                      color: "#000",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                    aria-label="Close menu"
+                  >
+                    ✕
+                  </button>
                 </div>
 
-                {/* Elegant Circular Close Touch Trigger */}
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-8 h-8 rounded-full border border-black/10 hover:border-[#C8A96B]/50 flex items-center justify-center text-neutral-950 active:scale-95 transition-all cursor-pointer outline-none bg-[#FAF8F4]"
-                  aria-label="Close menu"
-                >
-                  <X size={14} strokeWidth={2.5} className="text-neutral-950" />
-                </button>
-              </div>
+                {/* Nav Links */}
+                <div style={{
+                  display: "flex",
+                  flexDirection: "column"
+                }}>
+                  <Link 
+                    to="/shop" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      padding: "16px 20px",
+                      fontSize: "16px",
+                      fontWeight: "700",
+                      borderBottom: "1px solid #eee",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      color: "#000",
+                      textDecoration: "none"
+                    }}
+                  >
+                    <span>Shop</span> <span>›</span>
+                  </Link>
 
-              {/* 2. Scrollable Section with Balanced, Compact Spacing - Entire Content Flows Naturally */}
-              <div className="flex-1 overflow-y-auto px-5 py-2 flex flex-col justify-start space-y-2.5 scrollbar-thin bg-[#FAF8F4]">
-                <div className="space-y-4">
-                  <nav className="flex flex-col space-y-4 py-2">
-                    <Link
-                      to="/shop"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-[13px] tracking-[1.5px] uppercase font-bold text-neutral-950 hover:text-gold-600 transition-colors py-1 flex items-center justify-between border-b border-[#C8A96B]/10 pb-2"
-                    >
-                      <span className="text-neutral-950 font-extrabold">Shop</span>
-                      <ChevronRight size={14} className="text-[#C8A96B]" />
-                    </Link>
-                    <Link
-                      to="/shop?category=Sarees"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-[13px] tracking-[1.5px] uppercase font-bold text-neutral-950 hover:text-gold-600 transition-colors py-1 flex items-center justify-between border-b border-[#C8A96B]/10 pb-2"
-                    >
-                      <span className="text-neutral-950 font-extrabold">Sarees</span>
-                      <ChevronRight size={14} className="text-[#C8A96B]" />
-                    </Link>
-                    <Link
-                      to="/shop?category=Co-Ord-Sets"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-[13px] tracking-[1.5px] uppercase font-bold text-neutral-950 hover:text-gold-600 transition-colors py-1 flex items-center justify-between border-b border-[#C8A96B]/10 pb-2"
-                    >
-                      <span className="text-neutral-950 font-extrabold">Co-Ord Sets</span>
-                      <ChevronRight size={14} className="text-[#C8A96B]" />
-                    </Link>
-                    <Link
-                      to="/contact"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-[13px] tracking-[1.5px] uppercase font-bold text-neutral-950 hover:text-gold-600 transition-colors py-1 flex items-center justify-between border-b border-[#C8A96B]/10 pb-2"
-                    >
-                      <span className="text-neutral-950 font-extrabold">Contact</span>
-                      <ChevronRight size={14} className="text-[#C8A96B]" />
-                    </Link>
-                  </nav>
+                  <Link 
+                    to="/shop?category=Sarees" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      padding: "16px 20px",
+                      fontSize: "16px",
+                      fontWeight: "700",
+                      borderBottom: "1px solid #eee",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      color: "#000",
+                      textDecoration: "none"
+                    }}
+                  >
+                    <span>Sarees</span> <span>›</span>
+                  </Link>
 
-                  {/* INTEGRATED PREMIUM SEARCH BAR TRIGGER */}
-                  <div className="pt-0">
-                    <button
-                      onClick={() => {
-                        setIsMobileMenuOpen(false);
-                        setIsSearchOpen(true);
-                      }}
-                      className="w-full h-10 px-3.5 rounded-md border border-[#C8A96B]/30 hover:border-gold-500 transition-all flex items-center gap-2.5 text-left active:scale-[0.98] bg-white text-neutral-950 font-extrabold"
-                    >
-                      <Search size={14} strokeWidth={2.5} className="text-[#C8A96B] flex-shrink-0" />
-                      <span className="text-[10.5px] tracking-[1.5px] uppercase font-bold text-neutral-950">
-                        Search Collections...
-                      </span>
-                    </button>
+                  <Link 
+                    to="/shop?category=Co-Ord-Sets" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      padding: "16px 20px",
+                      fontSize: "16px",
+                      fontWeight: "700",
+                      borderBottom: "1px solid #eee",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      color: "#000",
+                      textDecoration: "none"
+                    }}
+                  >
+                    <span>Co-Ord Sets</span> <span>›</span>
+                  </Link>
+
+                  <Link 
+                    to="/contact" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      padding: "16px 20px",
+                      fontSize: "16px",
+                      fontWeight: "700",
+                      borderBottom: "1px solid #eee",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      color: "#000",
+                      textDecoration: "none"
+                    }}
+                  >
+                    <span>Contact</span> <span>›</span>
+                  </Link>
+                </div>
+
+                {/* Customer Assistance */}
+                <div style={{
+                  margin: "16px",
+                  padding: "16px",
+                  backgroundColor: "#FAF0E6",
+                  borderRadius: "8px"
+                }}>
+                  <p style={{
+                    fontSize: "11px",
+                    fontWeight: "700",
+                    color: "#c8963e",
+                    letterSpacing: "0.1em",
+                    marginBottom: "12px",
+                    marginTop: "0px"
+                  }}>CUSTOMER ASSISTANCE</p>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '10px'
+                  }}>
+                    <Mail style={{
+                      width: '16px',
+                      height: '16px',
+                      flexShrink: 0,
+                      color: '#C8A96B'
+                    }} />
+                    <a href="mailto:info@mukeshsarees.com" style={{ color: "#000", textDecoration: "none", fontSize: "14px" }}>info@mukeshsarees.com</a>
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <Phone style={{
+                      width: '16px',
+                      height: '16px',
+                      flexShrink: 0,
+                      color: '#C8A96B'
+                    }} />
+                    <a href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`} target="_blank" rel="noopener noreferrer" style={{ color: "#000", textDecoration: "none", fontSize: "14px" }}>{CONFIG.STORE_PHONE}</a>
                   </div>
                 </div>
 
-                {/* 3. Bottom Client Support & Social Integration info panel */}
-                <div className="mt-6 pt-2 border-t border-[#C8A96B]/15 space-y-2">
-                  <div className="space-y-1 bg-[#F7F4EF]/80 px-3 py-2 rounded-md border border-[#C8A96B]/15 shadow-3xs">
-                    <span className="text-[7.5px] font-sans font-extrabold tracking-[2px] text-amber-900 uppercase block leading-none mb-1">
-                      Customer Assistance
-                    </span>
-                    <a
-                      href="mailto:info@mukeshsarees.com"
-                      className="text-[10px] tracking-wider text-neutral-950 hover:text-gold-600 font-bold transition-colors flex items-center gap-1.5 font-sans break-all"
-                    >
-                      <Mail size={10} className="text-[#C8A96B] flex-shrink-0" />
-                      <span className="text-neutral-900">info@mukeshsarees.com</span>
-                    </a>
-                    <a
-                      href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[10px] tracking-wider text-[#111111] hover:text-gold-600 font-bold transition-colors flex items-center gap-1.5 font-sans"
-                    >
-                      <Phone size={10} className="text-[#C8A96B] flex-shrink-0" />
-                      <span className="text-neutral-900">{CONFIG.STORE_PHONE}</span>
-                    </a>
-                  </div>
+                {/* Social Icons Row */}
+                <div style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "12px",
+                  padding: "8px 20px 16px",
+                  alignItems: "center"
+                }}>
+                  <a 
+                    href="https://www.instagram.com/mukeshsarees_nagpur"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      width: "44px",
+                      height: "44px",
+                      borderRadius: "50%",
+                      border: "1px solid #eee",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#fff"
+                    }}
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={18} className="text-neutral-800" />
+                  </a>
+                  <a 
+                    href="https://www.facebook.com/Mukeshsareesindia/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      width: "44px",
+                      height: "44px",
+                      borderRadius: "50%",
+                      border: "1px solid #eee",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#fff"
+                    }}
+                    aria-label="Facebook"
+                  >
+                    <Facebook size={18} className="text-neutral-800" />
+                  </a>
+                  <a 
+                    href="https://youtube.com/@mukeshsarees"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      width: "44px",
+                      height: "44px",
+                      borderRadius: "50%",
+                      border: "1px solid #eee",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#fff"
+                    }}
+                    aria-label="YouTube"
+                  >
+                    <Youtube size={18} className="text-neutral-800" />
+                  </a>
+                </div>
 
-                  {/* Luxury Rounded Social Icons Row */}
-                  <div className="flex items-center justify-start space-x-3 pt-0.5">
-                    <a
-                      href="https://www.instagram.com/mukeshsarees_nagpur"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-6.5 h-6.5 rounded-full bg-white border border-[#C8A96B]/20 flex items-center justify-center text-[#2b2b2b] hover:border-gold-500 hover:text-gold-500 hover:scale-105 transition-all shadow-3xs"
-                      aria-label="Instagram"
-                    >
-                      <Instagram size={11} strokeWidth={2} />
-                    </a>
-                    <a
-                      href="https://www.facebook.com/Mukeshsareesindia/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-6.5 h-6.5 rounded-full bg-white border border-[#C8A96B]/20 flex items-center justify-center text-[#2b2b2b] hover:border-gold-500 hover:text-gold-500 hover:scale-105 transition-all shadow-3xs"
-                      aria-label="Facebook"
-                    >
-                      <Facebook size={11} strokeWidth={2} />
-                    </a>
-                    <a
-                      href="https://youtube.com/@mukeshsarees"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-6.5 h-6.5 rounded-full bg-white border border-[#C8A96B]/20 flex items-center justify-center text-[#2b2b2b] hover:border-gold-500 hover:text-gold-500 hover:scale-105 transition-all shadow-3xs"
-                      aria-label="YouTube"
-                    >
-                      <Youtube size={11} strokeWidth={2} />
-                    </a>
-                  </div>
-
-                  {/* Signature Branding Stamp */}
-                  <div className="pt-2 text-center border-t border-[#C8A96B]/15">
-                    <span className="text-[8px] font-sans font-extrabold tracking-[2px] text-neutral-950 uppercase block">
-                      Mukesh Saree Centre
-                    </span>
-                    <span className="text-[7px] font-sans font-bold tracking-[1.5px] text-gold-600 uppercase block mt-0.5">
-                      Nagpur, India • Est. 1978
-                    </span>
-                  </div>
+                {/* Footer text */}
+                <div style={{
+                  textAlign: "center",
+                  padding: "8px 20px 24px"
+                }}>
+                  <p style={{
+                    fontSize: "13px",
+                    fontWeight: "700",
+                    letterSpacing: "0.1em",
+                    margin: "0 0 4px 0",
+                    color: "#000"
+                  }}>MUKESH SAREE CENTRE</p>
+                  <p style={{
+                    fontSize: "11px",
+                    color: "#c8963e",
+                    letterSpacing: "0.08em",
+                    margin: "0"
+                  }}>NAGPUR, INDIA • EST. 1978</p>
                 </div>
               </div>
             </motion.div>

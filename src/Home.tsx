@@ -278,13 +278,23 @@ export default function Home() {
           className="absolute inset-0 w-full h-full z-0 overflow-hidden"
           style={{ y: heroImageY }}
         >
+          {/* Mobile Hero Image (hidden on desktop) */}
           <OptimizedImage
             src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469"
+            width={768}
+            height={1000}
+            alt="Best Saree Shop in Nagpur Hero Exhibition"
+            priority={true}
+            className="block md:hidden w-full h-full object-cover object-[72%_bottom] opacity-100 transition-opacity duration-700"
+          />
+          {/* Desktop Hero Image (hidden on mobile) */}
+          <OptimizedImage
+            src="https://ik.imagekit.io/tus1loev9/homepage/file_00000000ed047207b71708f1c9bb76b7.webp"
             width={1600}
             height={1000}
             alt="Best Saree Shop in Nagpur Hero Exhibition"
             priority={true}
-            className="w-full h-full object-cover object-[72%_bottom] md:object-bottom opacity-100 transition-opacity duration-700"
+            className="hidden md:block w-full h-full object-cover object-bottom opacity-100 transition-opacity duration-700"
           />
         </motion.div>
 

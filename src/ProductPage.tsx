@@ -933,52 +933,115 @@ export default function ProductPage() {
           </div>
 
           {/* Details Section */}
-          <div className="w-full lg:w-5/12 px-5 md:px-0">
+          <div className="w-full lg:w-5/12 px-0">
             <div className="lg:sticky lg:top-32 lg:pb-12">
-              <header className="flex flex-col items-start text-left mt-0 mb-1 lg:mb-2">
-                <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
-                  <span className="text-[10px] uppercase tracking-[3px] font-bold text-[#8A6A4A]/70">
+              <header className="product-info-section flex flex-col items-start text-left mt-0 mb-1">
+                {/* SKU + Category row compact */}
+                <div className="product-meta-row select-none">
+                  <span className="category">
                     {product.category}
                   </span>
                   {product.sku && (
                     <>
-                      <span className="opacity-20 text-[10px]">|</span>
-                      <span className="text-[10px] uppercase tracking-[1.5px] font-bold text-primary-950/40">
+                      <span className="separator">|</span>
+                      <span className="sku">
                         SKU: {product.sku}
                       </span>
                     </>
                   )}
                   {product.isNew && (
-                    <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-[var(--color-dark)] leading-none">
-                      NEW
-                    </span>
+                    <>
+                      <span className="separator">|</span>
+                      <span className="trending-tag">
+                        NEW
+                      </span>
+                    </>
                   )}
                   {product.isTrending && (
-                    <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-[var(--color-gold-dark)] leading-none">
-                      TRENDING
-                    </span>
+                    <>
+                      <span className="separator">|</span>
+                      <span className="trending-tag">
+                        TRENDING
+                      </span>
+                    </>
                   )}
                   {product.isBestSelling && (
-                    <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-[var(--color-dark)] leading-none">
-                      BEST SELLER
-                    </span>
+                    <>
+                      <span className="separator">|</span>
+                      <span className="trending-tag">
+                        BEST SELLER
+                      </span>
+                    </>
                   )}
                 </div>
 
                 <h1
-                  className="font-serif text-[var(--color-dark)] font-normal product-title w-full mt-1 overflow-visible break-words whitespace-normal"
+                  className="product-title font-serif text-[var(--color-dark)] font-normal"
                   title={product.name}
-                  style={{
-                    fontSize: "clamp(19px, 4.5vw, 28px)",
-                    lineHeight: 1.25,
-                    letterSpacing: "-0.01em",
-                  }}
                 >
                   {product.name}
                 </h1>
 
-                {/* Rating & Urgency Badge Row */}
-                <div className="ratings-badge-row flex flex-row items-center gap-2 sm:gap-3 flex-nowrap w-full overflow-visible mt-1 sm:mt-1.5 select-none text-left">
+              </header>
+
+              {/* Product Info Section wrapping clean, non-overlapping rows */}
+              <div className="product-info-section px-0 py-2 border-b border-[var(--color-border)] mb-4">
+                {/* ROW 1 — Price + Share + WhatsApp all on ONE single line */}
+                <div className="price-action-row price-section">
+                  <div className="price-group">
+                    <span className="price-main text-[var(--color-dark)] font-serif leading-none tracking-wide text-[22px]">
+                      {formatPrice(product.price)}
+                    </span>
+                    {product.originalPrice && (
+                      <span className="price-mrp line-through font-light leading-none">
+                        MRP {formatPrice(product.originalPrice)}
+                      </span>
+                    )}
+                    {product.originalPrice &&
+                    product.originalPrice > product.price && (
+                      <span className="price-off-badge font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] tracking-wide">
+                        {Math.round(
+                          ((product.originalPrice - product.price) /
+                            product.originalPrice) *
+                            100,
+                        )}
+                        % OFF
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="buttons-group">
+                    <button
+                      onClick={handleShare}
+                      className="share-btn border border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface)] text-[var(--color-dark)] transition-colors"
+                      aria-label="Share product"
+                      title="Share product link"
+                    >
+                      <Share2 size={16} strokeWidth={1.5} />
+                    </button>
+
+                    <a
+                      href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                        `✨ *${product.name}*\n` +
+                        `💰 ₹${product.price}${((product as any).mrp || product.originalPrice) ? ` (MRP ₹${(product as any).mrp || product.originalPrice})` : ''}\n` +
+                        `${cleanDescriptionForOG(product.description)}\n\n` +
+                        `🛒 Order here: https://mukeshsarees.com/product/${product.slug}`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="whatsapp-btn border border-[#25D366]/30 bg-transparent hover:bg-[#25D366]/10 text-[#25D366] transition-colors"
+                      aria-label="Share on WhatsApp"
+                      title="Share on WhatsApp"
+                    >
+                      <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+
+                {/* ROW 2 — Ratings + urgency badge */}
+                <div className="rating-badge-row rating-section badge-section">
                   <a
                     href="#reviews"
                     className="flex items-center gap-1.5 hover:opacity-80 transition-opacity flex-shrink-0"
@@ -1006,123 +1069,66 @@ export default function ProductPage() {
                     <LiveViewerCounter productId={product.id} category={product.category} />
                   </div>
                 </div>
-              </header>
-
-              {/* Product Pricing and Share */}
-              <div className="flex items-center justify-between w-full mb-2 pb-2 border-b border-[var(--color-border)] relative">
-                <div className="flex flex-col items-start gap-1">
-                  <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-                    <div className="flex items-end gap-2 md:gap-3 flex-nowrap overflow-hidden">
-                      <span className="text-[24px] md:text-[28px] font-normal text-[var(--color-dark)] font-serif whitespace-nowrap leading-none tracking-wide">
-                        {formatPrice(product.price)}
-                      </span>
-                      {product.originalPrice && (
-                        <span className="text-[14px] md:text-[16px] text-[var(--color-muted)] line-through font-light whitespace-nowrap flex-shrink-0 leading-none mb-1">
-                          MRP {formatPrice(product.originalPrice)}
-                        </span>
-                      )}
-                    </div>
-                    
-                    {product.originalPrice &&
-                    product.originalPrice > product.price && (
-                      <span className="text-[10px] md:text-[11px] font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] px-2 py-0.5 mt-0.5 rounded-sm whitespace-nowrap tracking-wide">
-                        {Math.round(
-                          ((product.originalPrice - product.price) /
-                            product.originalPrice) *
-                            100,
-                        )}
-                        % OFF
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleShare}
-                    className="flex items-center justify-center w-9 h-9 rounded-full border border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface)] transition-colors text-[var(--color-dark)]"
-                    aria-label="Share product"
-                    title="Share product link"
-                  >
-                    <Share2 size={16} strokeWidth={1.5} />
-                  </button>
-
-                  <a
-                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                      `✨ *${product.name}*\n` +
-                      `💰 ₹${product.price}${((product as any).mrp || product.originalPrice) ? ` (MRP ₹${(product as any).mrp || product.originalPrice})` : ''}\n` +
-                      `${cleanDescriptionForOG(product.description)}\n\n` +
-                      `🛒 Order here: https://mukeshsarees.com/product/${product.slug}`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-9 h-9 rounded-full border border-[#25D366]/30 bg-transparent hover:bg-[#25D366]/10 transition-colors text-[#25D366]"
-                    aria-label="Share on WhatsApp"
-                    title="Share on WhatsApp"
-                  >
-                    <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                    </svg>
-                  </a>
-                </div>
               </div>
 
               {/* Product Specifications - Clean Minimal List */}
-              <table className="product-details-table w-full mb-3 border-collapse">
-                <tbody>
-                  <tr className="border-none">
-                    <td className="product-details-label font-light uppercase">
-                      Fabric
-                    </td>
-                    <td className="text-[var(--color-dark)] align-middle">
-                      {product.fabric}
-                    </td>
-                  </tr>
-
-                  {product.category.toLowerCase().includes("saree") && (
-                    <>
-                      <tr className="border-none">
-                        <td className="product-details-label font-light uppercase">
-                          Dimensions
-                        </td>
-                        <td className="text-[var(--color-dark)] align-middle">
-                          5.50 Meters
-                        </td>
-                      </tr>
-                      <tr className="border-none">
-                        <td className="product-details-label font-light uppercase">
-                          Blouse
-                        </td>
-                        <td className="text-[var(--color-dark)] align-middle">
-                          1 Meter (Unstitched)
-                        </td>
-                      </tr>
-                    </>
-                  )}
-
-                  <tr className="border-none">
-                    <td className="product-details-label font-light uppercase">
-                      Color
-                    </td>
-                    <td className="text-[var(--color-dark)] align-middle">
-                      {product.color}
-                    </td>
-                  </tr>
-
-                  {!product.category.toLowerCase().includes("saree") && (
+              <div className="product-info">
+                <table className="product-details-table w-full mb-3 border-collapse">
+                  <tbody>
                     <tr className="border-none">
                       <td className="product-details-label font-light uppercase">
-                        Style
+                        Fabric
                       </td>
-                      <td className="text-[var(--color-dark)] align-middle">Premium</td>
+                      <td className="text-[var(--color-dark)] align-middle">
+                        {product.fabric}
+                      </td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+
+                    {product.category.toLowerCase().includes("saree") && (
+                      <>
+                        <tr className="border-none">
+                          <td className="product-details-label font-light uppercase">
+                            Dimensions
+                          </td>
+                          <td className="text-[var(--color-dark)] align-middle">
+                            5.50 Meters
+                          </td>
+                        </tr>
+                        <tr className="border-none">
+                          <td className="product-details-label font-light uppercase">
+                            Blouse
+                          </td>
+                          <td className="text-[var(--color-dark)] align-middle">
+                            1 Meter (Unstitched)
+                          </td>
+                        </tr>
+                      </>
+                    )}
+
+                    <tr className="border-none">
+                      <td className="product-details-label font-light uppercase">
+                        Color
+                      </td>
+                      <td className="text-[var(--color-dark)] align-middle">
+                        {product.color}
+                      </td>
+                    </tr>
+
+                    {!product.category.toLowerCase().includes("saree") && (
+                      <tr className="border-none">
+                        <td className="product-details-label font-light uppercase">
+                          Style
+                        </td>
+                        <td className="text-[var(--color-dark)] align-middle">Premium</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
 
               {/* Color Variants */}
               {product.colorVariants && product.colorVariants.length > 0 && (
-                <section className="mb-2.5">
+                <section className="product-info mb-2.5">
                   <h3 className="text-[11px] uppercase tracking-[0.15em] text-[var(--color-muted)] font-medium mb-2">
                     Color Options
                   </h3>
@@ -1147,7 +1153,7 @@ export default function ProductPage() {
 
               {/* Size Selection */}
               {!isSaree && (
-                <section ref={sizeSectionRef} className="mb-4">
+                <section ref={sizeSectionRef} className="product-info mb-4">
                   <div className="size-selector">
                     <div className="flex justify-between items-center mb-1">
                       <p className="text-[10.5px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-medium">
@@ -1173,10 +1179,12 @@ export default function ProductPage() {
                 </section>
               )}
 
-              <LowStockMessage productId={product.id} />
+              <div className="product-info">
+                <LowStockMessage productId={product.id} />
+              </div>
 
               {/* Actions */}
-              <section className="w-full mt-1 relative">
+              <section className="product-info w-full mt-1 relative">
                 <div className="flex flex-col gap-2 w-full">
                   {/* Quantity selector */}
                   <div className="flex items-center gap-3 mb-1">
@@ -1238,18 +1246,18 @@ export default function ProductPage() {
                     </svg>
                     Order on WhatsApp
                   </a>
-                  
+
                   <CartActivityMessage productId={product.id} />
                 </div>
               </section>
 
               {/* Support & Trust Badges - Clean Unified Section */}
-              <section className="pt-1 mt-1 border-t border-[var(--color-border)] mb-0">
+              <section className="product-info pt-1 mt-1 border-t border-[var(--color-border)] mb-0">
                 <TrustBadges compact={true} />
               </section>
 
               {/* Description */}
-              <section className="pt-1 border-t border-[var(--color-border)] mt-1">
+              <section className="product-info pt-1 border-t border-[var(--color-border)] mt-1">
                 <ProductDescription description={product.description} product={product} />
               </section>
             </div>

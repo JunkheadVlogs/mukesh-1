@@ -188,7 +188,7 @@ export const trackPageView = (path: string) => {
           zp: storedUserData.zip || undefined
         }
       })
-    }).catch(err => console.error("[CAPI PageView Error]", err));
+    }).catch(err => console.warn("[CAPI PageView Error]", err));
 
     // Browser Multi-Channel Meta Pixel trigger
     if ((window as any).fbq) {
@@ -251,7 +251,7 @@ export const trackViewContent = (product: any) => {
         event_source_url: window.location.href,
         user_data: { fbp, fbc, external_id: extId }
       })
-    }).catch(err => console.error("[CAPI ViewContent Error]", err));
+    }).catch(err => console.warn("[CAPI ViewContent Error]", err));
 
     // Meta Pixel (Deduplicated via eventID matches)
     if ((window as any).fbq) {
@@ -326,7 +326,7 @@ export const trackAddToCart = (product: any, quantity: number = 1) => {
         event_source_url: window.location.href,
         user_data: { fbp, fbc, external_id: extId }
       })
-    }).catch(err => console.error("[CAPI AddToCart Error]", err));
+    }).catch(err => console.warn("[CAPI AddToCart Error]", err));
 
     // Meta Pixel
     if ((window as any).fbq) {
@@ -417,7 +417,7 @@ export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
           zp: storedUserData.zip || undefined
         }
       })
-    }).catch(err => console.error("[CAPI InitiateCheckout Error]", err));
+    }).catch(err => console.warn("[CAPI InitiateCheckout Error]", err));
 
     // Meta Pixel
     if ((window as any).fbq) {
@@ -514,7 +514,7 @@ export const trackPurchase = (totalValue: number, items: any[], transactionId: s
           zp: storedUserData.zip || undefined
         }
       })
-    }).catch(err => console.error('Meta CAPI Purchase error:', err));
+    }).catch(err => console.warn('Meta CAPI Purchase error:', err));
     
     // Meta Pixel
     if ((window as any).fbq) {

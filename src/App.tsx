@@ -27,16 +27,16 @@ import ReturnPolicy from './ReturnPolicy';
 import { CONFIG, submitToGoogleSheets, getApiUrl } from "./config";
 
 function LoadingScreen() {
-  const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
+  const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
   const [retryStep, setRetryStep] = useState(0);
   const [logoError, setLogoError] = useState(false);
 
   const handleLogoError = () => {
     if (retryStep === 0) {
-      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
+      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
       setRetryStep(1);
     } else if (retryStep === 1) {
-      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217");
+      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
       setRetryStep(2);
     } else {
       setLogoError(true);
@@ -46,16 +46,11 @@ function LoadingScreen() {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-ivory space-y-12">
       <div className="flex flex-col items-center space-y-4">
-         {!logoError ? (
-           <img 
-             src={logoSrc} 
-             alt="Mukesh Saree Centre Logo" 
-             className="w-auto h-auto min-w-[160px] max-w-[180px] md:min-w-[200px] md:max-w-[230px] lg:max-w-[250px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block header-logo" 
-             onError={handleLogoError} 
-           />
-         ) : (
-           <span className="text-xl font-serif text-onyx tracking-[12px] uppercase block">MUKESH</span>
-         )}
+         <img 
+           src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png" 
+           alt="Mukesh Saree Centre Logo" 
+           className="w-auto h-[260px] md:h-[350px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block" 
+         />
          <div className="w-12 h-[1px] bg-gold-500 animate-pulse"></div>
       </div>
       <div className="text-[10px] uppercase tracking-[6px] text-onyx/20 font-bold animate-pulse italic">The Selection is Loading</div>

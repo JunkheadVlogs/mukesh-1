@@ -235,82 +235,122 @@ export default function Shop() {
       />
 
       <div
-        className="max-w-[1600px] mx-auto px-4 sm:px-10 lg:px-12 pt-[8px] sm:pt-6 md:pt-10 pb-8 mt-0 w-full"
+        className="shop-container max-w-[1600px] mx-auto pt-[8px] sm:pt-6 md:pt-10 pb-8 mt-0 w-full"
         style={{ minHeight: "auto" }}
       >
-        <header
-          className="mb-2 sm:mb-6 border-b border-[var(--color-border)] pb-2"
-          style={{ overflow: "visible" }}
-        >
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-2.5 md:gap-6">
-            <div>
-              <h1
-                className="text-[18px] sm:text-2xl md:text-3.5xl lg:text-4xl font-serif text-[var(--color-dark)] font-normal tracking-wide flex items-baseline flex-wrap gap-2 sm:gap-3"
-                style={{ lineHeight: 1.2 }}
-              >
-                <span>
-                  {searchQuery
-                    ? `Results for "${searchQuery}"`
-                    : categoryFilter || "Shop All"}
-                </span>
-                <span className="text-[10px] sm:text-[11px] md:text-xs font-sans text-[var(--color-dark)]/40 tracking-wider font-light uppercase whitespace-nowrap">
-                  ({filteredAndSortedProducts.length} items found)
-                </span>
-              </h1>
+        {/* ROW 1: Shop All Heading */}
+        <div style={{ margin: "8px 0", padding: "0 8px" }}>
+          <h1
+            className="font-serif text-[var(--color-dark)] tracking-wide flex items-baseline gap-2"
+            style={{ fontSize: "18px", margin: "0", lineHeight: "1.2", fontWeight: "normal" }}
+          >
+            <span>
+              {searchQuery
+                ? `Results for "${searchQuery}"`
+                : categoryFilter || "Shop All"}
+            </span>
+            <span className="text-[12px] font-sans text-neutral-500 tracking-wider font-normal lowercase normal-case whitespace-nowrap">
+              ({filteredAndSortedProducts.length} items)
+            </span>
+          </h1>
+        </div>
 
-              {/* Category Filter Pills Row (Mobile-optimized scrollable row) */}
-              <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto py-2.5 mt-2 select-none -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto">
-                {[
-                  { label: "All", value: null },
-                  { label: "Co-Ord Sets", value: "Co-Ord Sets" },
-                  { label: "Sarees", value: "Sarees" },
-                  { label: "Linen Sarees", value: "Linen Sarees" },
-                  { label: "Lehengas", value: "Lehengas" }
-                ].map((pill) => {
-                  const isActive = (!pill.value && !categoryFilter) || (categoryFilter === pill.value);
-                  return (
-                    <button
-                      key={pill.label || "all"}
-                      onClick={() => handleCategoryChange(pill.value)}
-                      className={`filter-pill category-pill shrink-0 flex-shrink-0 px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border duration-200 cursor-pointer ${
-                        isActive
-                           ? "bg-gold-500 border-gold-500 text-white shadow-sm"
-                           : "bg-white border-black/5 text-[#2b2b2b]/70 hover:text-[#2b2b2b] hover:border-black/20"
-                      }`}
-                    >
-                      {pill.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+        {/* ROW 2: Filters and Sort by Buttons */}
+        <div className="controls-bar flex flex-row items-center gap-2" style={{ display: "flex", flexDirection: "row", gap: "8px", alignItems: "center", margin: "0 0 6px 0", width: "100%" }}>
+          <button
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+            className="lg:hidden flex items-center gap-1.5 bg-white cursor-pointer select-none"
+            style={{
+              width: "fit-content",
+              height: "28px",
+              fontSize: "11px",
+              padding: "0 10px",
+              border: "1px solid #ddd",
+              borderRadius: "20px",
+              boxShadow: "none",
+              backgroundColor: "#fff",
+              fontWeight: "normal",
+              color: "#333",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <Filter size={10} strokeWidth={1.5} /> Filters
+          </button>
 
-            <div className="flex flex-row items-center gap-2 sm:gap-4 w-full md:w-auto mt-1 sm:mt-2 md:mt-0">
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="lg:hidden flex-1 md:flex-none flex justify-center items-center gap-2 bg-white border border-black/5 px-3 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider rounded-sm shadow-sm"
-              >
-                <Filter size={14} /> Filters
-              </button>
-
-              <div className="relative group flex-1 md:flex-none">
-                <select
-                  className="w-full bg-white border border-black/5 px-3 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider rounded-sm shadow-sm outline-none cursor-pointer focus:ring-1 focus:ring-gold-500 appearance-none min-w-[130px] md:min-w-[160px]"
-                  value={sortParam || ""}
-                  onChange={handleSortChange}
-                >
-                  <option value="">Sort By</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="new">Newest First</option>
-                  <option value="trending">Trending Now</option>
-                  <option value="best-selling">Best Sellers</option>
-                </select>
-                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary-950/20 pointer-events-none" />
-              </div>
-            </div>
+          <div className="relative" style={{ display: "flex", alignItems: "center", width: "fit-content" }}>
+            <select
+              className="bg-white cursor-pointer appearance-none outline-none select-none"
+              style={{
+                width: "fit-content",
+                minWidth: "90px",
+                height: "28px",
+                fontSize: "11px",
+                padding: "0 20px 0 10px",
+                border: "1px solid #ddd",
+                borderRadius: "20px",
+                boxShadow: "none",
+                backgroundColor: "#fff",
+                fontWeight: "normal",
+                color: "#333"
+              }}
+              value={sortParam || ""}
+              onChange={handleSortChange}
+            >
+              <option value="">Sort By</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="new">Newest First</option>
+              <option value="trending">Trending Now</option>
+              <option value="best-selling">Best Sellers</option>
+            </select>
+            <ChevronDown 
+              className="absolute pointer-events-none text-neutral-400" 
+              size={11} 
+              style={{
+                right: "8px",
+                top: "50%",
+                transform: "translateY(-50%)"
+              }}
+            />
           </div>
-        </header>
+        </div>
+
+        {/* ROW 3: Category Filter Pills Row (Sticky and Mobile-optimized scrollable row) */}
+        <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto select-none scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto sticky top-[91px] z-40 bg-[#FAF7F2] border-b border-gray-100/80" style={{ marginBottom: "6px", marginTop: "0", paddingTop: "4px", paddingBottom: "4px" }}>
+          {[
+            { label: "All", value: null },
+            { label: "Co-Ord Sets", value: "Co-Ord Sets" },
+            { label: "Sarees", value: "Sarees" },
+            { label: "Linen Sarees", value: "Linen Sarees" },
+            { label: "Lehengas", value: "Lehengas" }
+          ].map((pill) => {
+            const isActive = (!pill.value && !categoryFilter) || (categoryFilter === pill.value);
+            return (
+              <button
+                key={pill.label || "all"}
+                onClick={() => handleCategoryChange(pill.value)}
+                className={`filter-pill category-pill shrink-0 flex-shrink-0 rounded-full font-normal uppercase tracking-wider whitespace-nowrap transition-all border duration-200 cursor-pointer ${
+                  isActive
+                     ? "bg-gold-500 border-gold-500 text-white shadow-sm font-medium"
+                     : "bg-white border-black/5 text-[#2b2b2b]/70 hover:text-[#2b2b2b] hover:border-black/20"
+                }`}
+                style={{
+                  height: "28px",
+                  fontSize: "11px",
+                  padding: "0 12px",
+                  borderRadius: "20px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                {pill.label}
+              </button>
+            );
+          })}
+        </div>
 
         <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-12">
           {/* Mobile Filter Backdrop */}
