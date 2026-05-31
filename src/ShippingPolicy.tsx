@@ -1,5 +1,6 @@
 import { SEO } from './components/SEO';
 import { Truck, Clock, MapPin, Coins } from 'lucide-react';
+import { getWhatsAppNumber } from './config';
 
 export default function ShippingPolicy() {
   return (
@@ -73,7 +74,7 @@ export default function ShippingPolicy() {
           </p>
 
           <a 
-            href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '917020664641'}?text=Hello Mukesh Saree Centre, I would like to request assistance with my order delivery/return.`}
+            href={`https://wa.me/${getWhatsAppNumber()}?text=Hello Mukesh Saree Centre, I would like to request assistance with my order delivery/return.`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white font-medium text-[14px] rounded-md py-3.5 transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-sm max-w-sm mx-auto"

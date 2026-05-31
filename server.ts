@@ -1076,10 +1076,34 @@ async function setupServer() {
       }
 
       try {
-        if (!fs.existsSync(indexPath)) {
+        const isBot = (req as any).isBot;
+        let selectedIndexPath = indexPath;
+
+        if (!isBot) {
+          // For human users, use the clean React shell index-clean.html to ensure zero flickers or layout/hydration mismatches
+          const cleanPath = path.join(distPath, 'index-clean.html');
+          if (fs.existsSync(cleanPath)) {
+            selectedIndexPath = cleanPath;
+          }
+        } else {
+          // For SEO crawler bots, serve the correct pre-rendered page if exists
+          const cleanReqPath = req.path.replace(/^\/+|\/+$/g, '');
+          if (cleanReqPath) {
+            const specificPrerenderedPath = path.join(distPath, cleanReqPath, 'index.html');
+            if (fs.existsSync(specificPrerenderedPath)) {
+              selectedIndexPath = specificPrerenderedPath;
+            }
+          }
+        }
+
+        if (!fs.existsSync(selectedIndexPath)) {
+          selectedIndexPath = indexPath;
+        }
+
+        if (!fs.existsSync(selectedIndexPath)) {
           return res.status(404).send('Not built yet.');
         }
-        let html = fs.readFileSync(indexPath, 'utf-8');
+        let html = fs.readFileSync(selectedIndexPath, 'utf-8');
         // Substitute %VITE_...% style placeholders with process.env properties for runtime environment injection
         const fallbacks = {
           VITE_META_PIXEL_ID: '3834311026859384',

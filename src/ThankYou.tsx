@@ -5,7 +5,7 @@ import { SEO } from "./components/SEO";
 import { useEffect, useRef } from "react";
 import { trackPurchase } from "./tracking";
 import { OptimizedImage } from "./components/OptimizedImage";
-import { submitToGoogleSheets } from "./config";
+import { submitToGoogleSheets, getWhatsAppNumber } from "./config";
 import { sendOrderToSheets } from "./utils/googleSheets";
 
 // Safe in-memory fallback for localStorage in sandboxed iframes
@@ -708,7 +708,7 @@ export default function ThankYou() {
               Print Invoice
             </button>
             <a 
-              href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '917020664641'}?text=${encodeURIComponent(`Hello Mukesh Saree Centre, support requested for my design order ID ${orderId}.`)}`} 
+              href={`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(`Hello Mukesh Saree Centre, support requested for my design order ID ${orderId}.`)}`} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex-1 sm:flex-initial flex items-center justify-center gap-2 border border-[#25D366]/30 hover:bg-[#25D366]/5 text-xs uppercase tracking-widest font-semibold text-green-700 px-5 py-3 rounded-sm transition-all"

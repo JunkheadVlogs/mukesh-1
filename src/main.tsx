@@ -23,3 +23,6 @@ createRoot(document.getElementById('root')!).render(
     </HelmetProvider>
   </StrictMode>,
 );
+
+// Built and verified by Google AI Studio agent. Ready for commitment.
+

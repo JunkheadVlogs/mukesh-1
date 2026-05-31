@@ -163,7 +163,7 @@ export default function QuickViewModal({
                         <button
                           key={size}
                           onClick={() => { setSelectedSize(size); setSizeError(false); }}
-                          className={`h-10 min-w-[50px] border-2 text-[11px] font-bold tracking-widest transition-all rounded-sm
+                          className={`h-[32px] sm:h-[34px] min-w-[34px] sm:min-w-[36px] px-2.5 border text-[11px] font-semibold tracking-wider transition-all rounded-sm
                             ${selectedSize === size ? "border-primary-950 bg-primary-950 text-white" : "border-black/5 text-primary-950/60 hover:border-black/20"}`}
                         >
                           {size}

@@ -14,7 +14,7 @@ import {
   Truck,
   ShieldCheck,
 } from "lucide-react";
-import { CONFIG, submitToGoogleSheets } from "./config";
+import { CONFIG, submitToGoogleSheets, getWhatsAppNumber } from "./config";
 import { sendOrderToSheets } from "./utils/googleSheets";
 import { trackInitiateCheckout, updateTrackerUserData } from "./tracking";
 
@@ -585,19 +585,14 @@ export default function Checkout() {
                   Payment Method
                 </h2>
                 <div className="flex flex-col gap-2 md:gap-3">
+                  {/* Cash on Delivery */}
                   <div
-                    className="payment-option transition-all p-2.5 sm:p-4 rounded-sm cursor-pointer"
-                    style={{
-                      border:
-                        paymentMethod === "cod"
-                          ? "2px solid #C9A84C"
-                          : "1px solid rgba(0,0,0,0.1)",
-                      background:
-                        paymentMethod === "cod"
-                          ? "#FFFDF8"
-                          : "rgba(250, 246, 240, 0.2)",
-                    }}
                     onClick={() => setPaymentMethod("cod")}
+                    className="payment-option transition-all p-2.5 sm:p-4 rounded-sm cursor-pointer hover:border-gold-500/40"
+                    style={{
+                      border: paymentMethod === "cod" ? "2px solid #C9A84C" : "1px solid rgba(0, 0, 0, 0.1)",
+                      background: paymentMethod === "cod" ? "#FFFDF8" : "transparent",
+                    }}
                   >
                     <label className="flex items-center gap-2.5 sm:gap-3 cursor-pointer m-0 w-full select-none">
                       <input
@@ -615,7 +610,7 @@ export default function Checkout() {
                       />
                       <div className="flex-grow">
                         <strong className="text-[13px] sm:text-[15px] font-bold text-[#1A0A00] block leading-snug">
-                          💵 Cash on Delivery
+                          💵 Cash on Delivery (COD)
                         </strong>
                         <div className="text-[11px] sm:text-[13px] text-[#6B5F4A] mt-0.5 leading-tight">
                           Pay when your order arrives. 100% safe.
@@ -624,19 +619,14 @@ export default function Checkout() {
                     </label>
                   </div>
 
+                  {/* Razorpay Online Payment */}
                   <div
-                    className="payment-option transition-all p-2.5 sm:p-4 rounded-sm cursor-pointer"
-                    style={{
-                      border:
-                        paymentMethod === "online"
-                          ? "2px solid #C9A84C"
-                          : "1px solid rgba(0,0,0,0.1)",
-                      background:
-                        paymentMethod === "online"
-                          ? "#FFFDF8"
-                          : "rgba(250, 246, 240, 0.2)",
-                    }}
                     onClick={() => setPaymentMethod("online")}
+                    className="payment-option transition-all p-2.5 sm:p-4 rounded-sm cursor-pointer hover:border-gold-500/40"
+                    style={{
+                      border: paymentMethod === "online" ? "2px solid #C9A84C" : "1px solid rgba(0, 0, 0, 0.1)",
+                      background: paymentMethod === "online" ? "#FFFDF8" : "transparent",
+                    }}
                   >
                     <label className="flex items-center gap-2.5 sm:gap-3 cursor-pointer m-0 w-full select-none">
                       <input
@@ -654,10 +644,10 @@ export default function Checkout() {
                       />
                       <div className="flex-grow">
                         <strong className="text-[13px] sm:text-[15px] font-bold text-[#1A0A00] block leading-snug">
-                          💳 Pay Online
+                          💳 Pay Online (UPI, Cards, Wallets via Razorpay)
                         </strong>
                         <div className="text-[11px] sm:text-[13px] text-[#6B5F4A] mt-0.5 leading-tight">
-                          UPI, Credit/Debit Cards, Netbanking.
+                          Pay securely via UPI, Cards, NetBanking, or Wallets.
                         </div>
                       </div>
                     </label>
@@ -677,7 +667,7 @@ export default function Checkout() {
                         Don't worry — you can still order via WhatsApp instantly! We will complete your order manually.
                       </p>
                       <a
-                        href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '917020664641'}?text=${encodeURIComponent(
+                        href={`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(
                           `Hi! I wanted to place an order on your website but encountered an error: "${submitError}". Could you please help me complete my order?`
                         )}`}
                         target="_blank"
@@ -702,7 +692,7 @@ export default function Checkout() {
                     </>
                   ) : (
                     <>
-                      Place Order <ArrowRight size={16} className="-mt-0.5" />
+                      {paymentMethod === "online" ? "Proceed to Pay" : "Place Order"} <ArrowRight size={16} className="-mt-0.5" />
                     </>
                   )}
                 </button>

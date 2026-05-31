@@ -25,7 +25,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import type { FormEvent } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { products } from "./mockData";
-import { CONFIG } from "./config";
+import { CONFIG, getWhatsAppNumber } from "./config";
 import { formatPrice, getImageAlt } from "./utils";
 import { searchProducts } from "./services/search";
 import { OptimizedImage } from "./components/OptimizedImage";
@@ -812,6 +812,24 @@ export default function Layout() {
                   flexDirection: "column"
                 }}>
                   <Link 
+                    to="/" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      padding: "16px 20px",
+                      fontSize: "16px",
+                      fontWeight: "700",
+                      borderBottom: "1px solid #eee",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      color: "#000",
+                      textDecoration: "none"
+                    }}
+                  >
+                    <span>Home</span> <span>›</span>
+                  </Link>
+
+                  <Link 
                     to="/shop" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
@@ -899,34 +917,11 @@ export default function Layout() {
                     marginBottom: "12px",
                     marginTop: "0px"
                   }}>CUSTOMER ASSISTANCE</p>
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginBottom: '10px'
-                  }}>
-                    <Mail style={{
-                      width: '16px',
-                      height: '16px',
-                      flexShrink: 0,
-                      color: '#C8A96B'
-                    }} />
-                    <a href="mailto:info@mukeshsarees.com" style={{ color: "#000", textDecoration: "none", fontSize: "14px" }}>info@mukeshsarees.com</a>
+                  <div className="contact-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+                    <a href="mailto:info@mukeshsarees.com" style={{ display: "inline-block", fontSize: "14px", color: "#000000", textDecoration: "none", margin: 0 }}>info@mukeshsarees.com</a>
                   </div>
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}>
-                    <Phone style={{
-                      width: '16px',
-                      height: '16px',
-                      flexShrink: 0,
-                      color: '#C8A96B'
-                    }} />
-                    <a href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`} target="_blank" rel="noopener noreferrer" style={{ color: "#000", textDecoration: "none", fontSize: "14px" }}>{CONFIG.STORE_PHONE}</a>
+                  <div className="contact-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "12px" }}>
+                    <a href="tel:+917020664641" style={{ display: "inline-block", fontSize: "14px", color: "#000000", textDecoration: "none", margin: 0 }}>+91 7020664641</a>
                   </div>
                 </div>
 
@@ -1232,7 +1227,7 @@ export default function Layout() {
                       WHATSAPP SUPPORT
                     </h5>
                     <a
-                      href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}
+                      href={`https://wa.me/${getWhatsAppNumber()}?text=Hi!%20I%20Need%20Help.`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[11.5px] min-[370px]:text-[12px] md:text-[12.5px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors font-semibold tracking-wider whitespace-nowrap block py-0.5 md:py-0.5"
@@ -1325,7 +1320,7 @@ export default function Layout() {
 
       <a
         id="whatsapp-float"
-        href={`https://wa.me/${CONFIG.STORE_PHONE.replace(/[^0-9]/g, "")}?text=Hi!%20I%20Need%20Help.`}
+        href={`https://wa.me/${getWhatsAppNumber()}?text=Hi!%20I%20Need%20Help.`}
         target="_blank"
         rel="noopener noreferrer"
         className={`fixed right-4 z-[997] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_6px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_8px_25px_rgba(37,211,102,0.4)] hover:scale-110 active:scale-95 transition-all duration-300 ${getWhatsAppPosition()}`}

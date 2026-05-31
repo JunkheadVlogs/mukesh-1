@@ -33,7 +33,7 @@ import {
   getProductReviewStats,
   getImageAlt,
 } from "./utils";
-import { CONFIG, submitToGoogleSheets, getApiUrl } from "./config";
+import { CONFIG, submitToGoogleSheets, getApiUrl, getWhatsAppNumber } from "./config";
 import { sendOrderToSheets } from "./utils/googleSheets";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { ProductCard } from "./components/ProductCard";
@@ -1169,7 +1169,7 @@ export default function ProductPage() {
                     <div className="flex flex-wrap gap-2">
                       {SIZES.map(s => (
                         <button key={s}
-                          className={`h-[38px] sm:h-[40px] px-3 border text-[11px] sm:text-[12px] tracking-wider transition-all rounded-sm font-medium ${selectedSize === s ? 'size-btn active border-[var(--color-dark)] bg-[var(--color-dark)] text-white' : 'size-btn border-[var(--color-border)] text-[var(--color-dark)] hover:border-[var(--color-dark)] bg-transparent hover:border-[var(--color-dark)]'}`}
+                          className={`h-[32px] sm:h-[34px] min-w-[34px] sm:min-w-[36px] px-2.5 border text-[11px] sm:text-[11px] tracking-wider transition-all rounded-sm font-medium ${selectedSize === s ? 'size-btn active border-[var(--color-dark)] bg-[var(--color-dark)] text-white' : 'size-btn border-[var(--color-border)] text-[var(--color-dark)] hover:border-[var(--color-dark)] bg-transparent hover:border-[var(--color-dark)]'}`}
                           onClick={() => { setSelectedSize(s); setSizeError(false); }}>
                           {s}
                         </button>
@@ -1233,7 +1233,7 @@ export default function ProductPage() {
                   </div>
 
                   <a
-                    href={`https://wa.me/919910006733?text=${encodeURIComponent(
+                    href={`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(
                       `Hi Mukesh Saree Centre, I want to order:\n\n*Product:* ${product.name}\n${selectedSize ? `*Size:* ${selectedSize}\n` : ""}*Link:* ${window.location.href}`
                     )}`}
                     target="_blank"
@@ -1922,42 +1922,31 @@ export default function ProductPage() {
                 )}
 
                 {/* Multi-payment Action Buttons */}
-                <div className="grid grid-cols-1 gap-2 pt-1.5">
-                  <button
-                    type="button"
-                    disabled={isSubmittingOrder}
-                    onClick={() => handleBuyNowPayment("online")}
-                    className="w-full h-[45px] bg-white border border-[#C8A96E] hover:bg-[#C8A96E]/5 text-[#2C241B] tracking-[1.5px] font-bold text-[10px] uppercase transition-all rounded-[3px] active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm"
-                  >
-                    {isSubmittingOrder ? (
-                      <span className="flex items-center gap-2 text-[11px]">
-                        <svg className="animate-spin h-3.5 w-3.5 text-[#C8A96E]" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Initiating UPI/Card...
-                      </span>
-                    ) : (
-                      `Pay Online — ${formatPrice(finalPrice * quantity)}`
-                    )}
-                  </button>
-
+                <div className="grid grid-cols-2 gap-2 pt-1.5 font-sans">
                   <button
                     type="button"
                     disabled={isSubmittingOrder}
                     onClick={() => handleBuyNowPayment("cod")}
-                    className="w-full h-[45px] bg-[#2C241B] text-white hover:bg-[#43382c] tracking-[1.5px] font-bold text-[10px] uppercase transition-all rounded-[3px] active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm"
+                    className="w-full h-[45px] bg-[#2C241B]/10 hover:bg-[#2C241B]/15 text-[#2C241B] tracking-[1.5px] font-bold text-[10px] uppercase transition-all rounded-[3px] active:scale-[0.99] flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50 border border-[#2C241B]/15"
+                  >
+                    {isSubmittingOrder ? "..." : "Cash on Delivery"}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isSubmittingOrder}
+                    onClick={() => handleBuyNowPayment("online")}
+                    className="w-full h-[45px] bg-[#C9A84C] text-white hover:bg-[#b0913c] tracking-[1.5px] font-bold text-[10px] uppercase transition-all rounded-[3px] active:scale-[0.99] flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50 shadow-sm"
                   >
                     {isSubmittingOrder ? (
-                      <span className="flex items-center gap-2 text-[11px]">
-                        <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                      <span className="flex items-center gap-1.5 text-[9px] lowercase font-normal">
+                        <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Placing Order...
+                        opening razorpay...
                       </span>
                     ) : (
-                      "Order via Cash on Delivery"
+                      "Pay Online (UPI/Cards)"
                     )}
                   </button>
                 </div>

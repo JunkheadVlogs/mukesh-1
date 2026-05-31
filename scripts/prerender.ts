@@ -286,6 +286,10 @@ async function runPrerender() {
   }
 
   const rawBaseHtml = fs.readFileSync(baseHtmlPath, "utf-8");
+  const cleanHtmlPath = path.join(distPath, "index-clean.html");
+  fs.writeFileSync(cleanHtmlPath, rawBaseHtml);
+  console.log(`[PRERENDER] Saved original clean index.html to ${cleanHtmlPath}`);
+  
   const baseHtml = replaceEnvPlaceholders(rawBaseHtml);
   console.log(`[PRERENDER] Loaded raw base HTML and replaced placeholders.`);
 
@@ -393,8 +397,7 @@ async function runPrerender() {
   `;
 
   // Inject into index.html for Root and Schema
-  let updatedHomeHtml = baseHtml
-    .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${homepageBody}</div>`);
+  let updatedHomeHtml = baseHtml;
 
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
   const homeOgTags = `<!-- Dynamic OG Tags -->
@@ -468,7 +471,6 @@ async function runPrerender() {
   `;
 
   let shopHtml = baseHtml
-    .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${shopBody}</div>`)
     .replace(/<title>.*?<\/title>/, "<title>Shop Premium Indian Ethnic Ensembles | Mukesh Saree Centre</title>")
     .replace(
       /<meta name="description" content=".*?"\s*\/>/,
@@ -501,7 +503,7 @@ async function runPrerender() {
 
   // 3. GENERATE PRODUCT PAGES (dist/product/[slug]/index.html)
   console.log("[PRERENDER] Processing product pages...");
-  for (const p of products) {
+  for (const p of products.slice(0, 5)) {
     if (!p.slug) continue;
 
     console.log(`[PRERENDER] Generating product: ${p.name} (/product/${p.slug})`);
@@ -654,7 +656,6 @@ async function runPrerender() {
     const pageTitle = `${p.name} – ₹${p.price} | Mukesh Saree Centre`;
     
     let prodHtml = baseHtml
-      .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${productBody}</div>`)
       .replace(/<title>.*?<\/title>/, `<title>${sanitize(pageTitle)}</title>`)
       .replace(
         /<meta name="description" content=".*?"\s*\/>/,
@@ -809,7 +810,6 @@ async function runPrerender() {
   console.log("[PRERENDER] Compiling static policies...");
   for (const page of staticPages) {
     let phtml = baseHtml
-      .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${page.body}</div>`)
       .replace(/<title>.*?<\/title>/, `<title>${page.title}</title>`)
       .replace(/<meta name="description" content=".*?"\s*\/>/, `<meta name="description" content="${page.desc}" />`);
 

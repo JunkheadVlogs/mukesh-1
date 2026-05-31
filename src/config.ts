@@ -22,6 +22,24 @@ export const CONFIG = {
   RAZORPAY_KEY_ID: import.meta.env.VITE_RAZORPAY_KEY_ID, // STRICTLY KEY_ID NO SECRET
 };
 
+export function getWhatsAppNumber(): string {
+  const envNum = import.meta.env.VITE_WHATSAPP_NUMBER;
+  if (envNum && typeof envNum === 'string') {
+    const digits = envNum.replace(/[^0-9]/g, '');
+    if (digits.length >= 10 && !envNum.includes('your_') && !envNum.includes('placeholder')) {
+      return digits;
+    }
+  }
+  const storePhone = CONFIG.STORE_PHONE;
+  if (storePhone && typeof storePhone === 'string') {
+    const digits = storePhone.replace(/[^0-9]/g, '');
+    if (digits.length >= 10 && !storePhone.includes('your_') && !storePhone.includes('placeholder')) {
+      return digits;
+    }
+  }
+  return '917020664641';
+}
+
 export function getApiUrl(endpoint: string): string {
   const base = CONFIG.API_BASE_URL || "";
   const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
