@@ -364,9 +364,7 @@ export default function ProductPage() {
     }
 
     setSizeError(false);
-    addToCart(product, isSaree ? undefined : (selectedSize || undefined), quantity);
-    trackAddToCart(product, quantity);
-    navigate("/cart");
+    setShowQuickCheckout(true);
   };
 
   const handleBuyNowPayment = async (method: "online" | "cod") => {
@@ -496,24 +494,11 @@ export default function ProductPage() {
       await finalizeBuyNowOrder("Cash on Delivery");
     } else {
       try {
-        const orderDataResult = await fetch(getApiUrl("api/create-razorpay-order"), {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            amount: totalAmount * 100,
-            currency: "INR",
-            receipt: product.id,
-            notes: { size: selectedSize, product: product.name }
-          })
-        });
-
-        if (!orderDataResult.ok) {
-          throw new Error("Unable to create payment order on our servers.");
+        const key = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p";
+        
+        if (!key) {
+          throw new Error("Online payment configuration is missing. Please choose Cash on Delivery or contact support.");
         }
-
-        const data = await orderDataResult.json();
 
         if (!(window as any).Razorpay) {
           const loaded = await new Promise((resolve) => {
@@ -530,39 +515,48 @@ export default function ProductPage() {
         }
 
         const options = {
-          key: data.key || import.meta.env.VITE_RAZORPAY_KEY_ID,
-          amount: data.amount,
-          currency: data.currency || "INR",
-          order_id: data.orderId || data.id,
+          key: key,
+          amount: totalAmount * 100,
+          currency: "INR",
           name: "Mukesh Saree Centre",
-          description: product.name,
-          image: product.image,
+          description: `${product.name} | Size: ${selectedSize || "Standard"}`,
+          image: product.image.startsWith("http") ? product.image : `https://mukeshsarees.com${product.image.startsWith("/") ? "" : "/"}${product.image}`,
           prefill: {
             name: checkoutForm.fullName,
             email: checkoutForm.email || "",
             contact: checkoutForm.mobileNumber
           },
           theme: { color: "#C8A96E" },
+          notes: {
+            product_name: product.name,
+            size: selectedSize || "Standard",
+            coupon_used: appliedCoupon || "None"
+          },
           handler: async (response: any) => {
-            try {
-              await fetch(getApiUrl("api/verify-payment"), {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(response)
-              });
-            } catch (err) {
-              console.warn("Payment verify call failed, continuing...");
-            }
+            console.log("Payment successful:", response.razorpay_payment_id);
             await finalizeBuyNowOrder("Online Paid", response.razorpay_payment_id || "Paid");
           },
           modal: {
             ondismiss: () => {
               setIsSubmittingOrder(false);
-            }
+              console.log("Payment modal closed by user");
+            },
+            escape: true,
+            backdropclose: false
           }
         };
 
         const rzp = new (window as any).Razorpay(options);
+        
+        rzp.on("payment.failed", function(response: any) {
+          console.error("Payment failed:", response.error);
+          alert(
+            "Payment failed: " + (response.error.description || "Unknown error") + 
+            "\n\nPlease try again or use Cash on Delivery."
+          );
+          setIsSubmittingOrder(false);
+        });
+
         rzp.open();
       } catch (err: any) {
         console.error("Razorpay initiation failed:", err);
@@ -835,9 +829,9 @@ export default function ProductPage() {
           </nav>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-5 lg:gap-12 xl:gap-16">
+        <div className="flex flex-col lg:flex-row gap-2 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
-          <div className="w-full lg:w-7/12 space-y-3 md:space-y-4">
+          <div className="w-full lg:w-7/12 space-y-2 md:space-y-4">
             <div
               className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y"
               style={{
@@ -857,9 +851,6 @@ export default function ProductPage() {
                 alt={getImageAlt(product)}
                 className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
               />
-              <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-[var(--color-bg)]/90 backdrop-blur-md text-[var(--color-dark)] text-[10px] md:text-[11px] uppercase tracking-[0.15em] font-medium px-4 py-2 shadow-sm pointer-events-none z-10 transition-opacity rounded-sm">
-                50% OFF
-              </div>
               <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-[var(--color-bg)]/90 backdrop-blur-md p-3 shadow-sm text-[var(--color-dark)]/70 opacity-0 group-hover:opacity-100 transition-all z-10 hidden md:block rounded-full hover:text-[var(--color-dark)]">
                 <Maximize2 size={20} strokeWidth={1.5} />
               </div>
@@ -876,8 +867,9 @@ export default function ProductPage() {
                     aria-label="Previous Image"
                   >
                     <ChevronLeft
-                      size={18}
-                      className="md:w-5 md:h-5 ml-[-1px] md:ml-[-2px] stroke-[1.5]"
+                      size={20}
+                      className="text-primary-950"
+                      strokeWidth={1.5}
                     />
                   </button>
                   <button
@@ -889,8 +881,9 @@ export default function ProductPage() {
                     aria-label="Next Image"
                   >
                     <ChevronRight
-                      size={18}
-                      className="md:w-5 md:h-5 mr-[-1px] md:mr-[-2px] stroke-[1.5]"
+                      size={20}
+                      className="text-primary-950"
+                      strokeWidth={1.5}
                     />
                   </button>
                 </>
@@ -909,7 +902,7 @@ export default function ProductPage() {
 
             {productImages.length > 1 && (
               <div 
-                className="flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 py-2 touch-pan-x touch-pan-y"
+                className="flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 pt-1 pb-1 md:py-2 touch-pan-x touch-pan-y"
                 style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
               >
                 {productImages.map((img, idx) => (
@@ -1072,7 +1065,7 @@ export default function ProductPage() {
               </div>
 
               {/* Product Specifications - Clean Minimal List */}
-              <div className="product-info">
+              <div className="product-info product-specs-container">
                 <table className="product-details-table w-full mb-3 border-collapse">
                   <tbody>
                     <tr className="border-none">
@@ -1187,7 +1180,7 @@ export default function ProductPage() {
               <section className="product-info w-full mt-1 relative">
                 <div className="flex flex-col gap-2 w-full">
                   {/* Quantity selector */}
-                  <div className="flex items-center gap-3 mb-1">
+                  <div className="qty-selector-row flex items-center gap-3 mb-1">
                     <span className="text-[10px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-medium">Quantity:</span>
                     <div className="flex items-center justify-between px-1.5 border border-[var(--color-border)] bg-transparent w-24 h-[40px] rounded-sm">
                       <button

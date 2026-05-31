@@ -758,10 +758,13 @@ video::-webkit-media-controls-fullscreen-button {
   white-space: nowrap;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
-  padding: 2px 16px; /* Extremely tight mobile breadcrumb spacing */
+  padding: 1px 16px !important; /* Extremely tight mobile breadcrumb spacing */
   align-items: center;
   display: flex !important;
   width: 100%;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  min-height: 0px !important;
 }
 
 .breadcrumb-wrapper::-webkit-scrollbar {
@@ -770,10 +773,10 @@ video::-webkit-media-controls-fullscreen-button {
 
 @media (min-width: 768px) {
   .breadcrumb-wrapper {
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
     overflow-x: visible;
   }
 }
@@ -792,6 +795,9 @@ video::-webkit-media-controls-fullscreen-button {
   white-space: nowrap !important;
   min-width: max-content !important;
   flex-shrink: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: normal !important;
 }
 
 @media (min-width: 768px) {
@@ -809,6 +815,9 @@ video::-webkit-media-controls-fullscreen-button {
   white-space: nowrap !important;
   display: inline-flex !important;
   align-items: center !important;
+  min-height: 0px !important;
+  min-width: 0px !important;
+  padding: 4px 0 !important;
 }
 
 .breadcrumb a:hover {
@@ -825,6 +834,8 @@ video::-webkit-media-controls-fullscreen-button {
   align-items: center !important;
   justify-content: center !important;
   height: auto !important;
+  min-height: 0px !important;
+  min-width: 0px !important;
   vertical-align: middle !important;
   line-height: 1 !important;
 }
@@ -838,6 +849,7 @@ video::-webkit-media-controls-fullscreen-button {
   font-weight: 600 !important;
   flex-shrink: 0 !important;
   min-width: 0 !important;
+  min-height: 0px !important;
   display: inline-flex !important;
   align-items: center !important;
 }
@@ -1621,7 +1633,7 @@ nav, nav.main-nav {
   align-items: center !important;
   justify-content: flex-start !important;
   gap: 12px !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 8px !important;
 }
 
 .contact-row:last-child {
@@ -1646,6 +1658,98 @@ nav, nav.main-nav {
   vertical-align: middle !important;
   line-height: 1 !important;
   margin: 0 !important;
+}
+
+/* 🌟 Compact mobile layout spacing for Single Product Page */
+@media (max-width: 767px) {
+  /* Reduce space between image gallery and product title/header */
+  .lg\:sticky {
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+  }
+
+  /* 1. Header containing SKU + Category and Product Title */
+  header.product-info-section {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .product-meta-row {
+    margin-top: 0px !important;
+    margin-bottom: 2px !important;
+    gap: 4px !important;
+  }
+
+  /* 2. Product Title */
+  .product-title {
+    font-size: 16px !important;
+    margin-top: 2px !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* 3. Product Info Block containing Price and Ratings rows */
+  div.product-info-section {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    margin-top: 0px !important;
+    margin-bottom: 6px !important;
+    border-bottom: 1px solid var(--color-border) !important;
+  }
+
+  /* 4. Price and buttons group row */
+  .price-action-row {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* 5. Rating and live viewer counter row */
+  .rating-badge-row {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* 6. Product Specifications Container and Table */
+  .product-specs-container {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    margin-top: 0px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .product-specs-container .product-details-table {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .product-specs-container .product-details-table tr td {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+
+  /* 7. Color variants and sizes sections */
+  section.product-info {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+  }
+
+  section.product-info .size-selector {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* 8. Low Stock Message and Quantity selector spacing */
+  .qty-selector-row {
+    margin-top: 2px !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* 9. CTA Buttons row spacing */
+  .product-actions {
+    margin-top: 4px !important;
+    margin-bottom: 2px !important;
+  }
 }
 
 

@@ -917,13 +917,13 @@ export default function Layout() {
                     marginBottom: "12px",
                     marginTop: "0px"
                   }}>CUSTOMER ASSISTANCE</p>
-                  <div className="contact-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
-                    <Mail size={18} style={{ display: "inline-block", flexShrink: 0, color: "#C8A96B" }} />
-                    <a href="mailto:info@mukeshsarees.com" style={{ display: "inline-block", fontSize: "14px", color: "#000000", textDecoration: "none", margin: 0 }}>info@mukeshsarees.com</a>
+                  <div className="contact-row">
+                    <Mail size={18} />
+                    <a href="mailto:info@mukeshsarees.com">info@mukeshsarees.com</a>
                   </div>
-                  <div className="contact-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
-                    <Phone size={18} style={{ display: "inline-block", flexShrink: 0, color: "#C8A96B" }} />
-                    <a href="tel:+917020664641" style={{ display: "inline-block", fontSize: "14px", color: "#000000", textDecoration: "none", margin: 0 }}>+91 7020664641</a>
+                  <div className="contact-row">
+                    <Phone size={18} />
+                    <a href="tel:+917020664641">+91 7020664641</a>
                   </div>
                 </div>
 

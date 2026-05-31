@@ -24,6 +24,7 @@
   </FilesMatch>
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
+  Header set X-Robots-Tag "index, follow"
 </IfModule>
 
 RewriteEngine On
@@ -32,10 +33,31 @@ RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# If the requested filename exists as a file or directory, serve it directly
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+# Prevent direct access to raw development files / source code
+RewriteRule ^src/ - [F,L]
+RewriteRule ^scripts/ - [F,L]
+RewriteRule \.(tsx|ts|json|config|env|rules|gs|example)$ - [F,L]
+RewriteRule ^(package\.json|package-lock\.json|tsconfig\.json|vite\.config\.ts|server\.ts|AGENTS\.md|DEPLOYMENT\.md|nginx\.conf)$ - [F,L]
 
-# Otherwise, redirect to index.html for React Router to handle client-side
-RewriteRule ^ index.html [L]
+# Redirect root domain to dist/index.html
+RewriteCond %{REQUEST_URI} ^/$ [NC]
+RewriteRule ^$ dist/index.html [L]
+
+# Serve pre-rendered folders if they exist
+# e.g., if requesting /shop and /dist/shop/index.html exists, serve /dist/shop/index.html
+RewriteCond %{DOCUMENT_ROOT}/dist/$1/index.html -f
+RewriteRule ^([^/]+)/?$ dist/$1/index.html [L]
+
+# Serve pre-rendered product pages
+# e.g., if requesting /product/some-slug and /dist/product/some-slug/index.html exists, serve it
+RewriteCond %{DOCUMENT_ROOT}/dist/product/$1/index.html -f
+RewriteRule ^product/([^/]+)/?$ dist/product/$1/index.html [L]
+
+# General file rewrite map to dist
+# If the requested path exists inside "dist" as a file, rewrite to parse it from dist
+RewriteCond %{DOCUMENT_ROOT}/dist/$1 -f
+RewriteRule ^(.*)$ dist/$1 [L]
+
+# SPA Rewrite: Default all other routes (not existing as files/directories) to dist/index.html
+RewriteCond %{REQUEST_URI} !^/dist/
+RewriteRule ^(.*)$ dist/index.html [L]
