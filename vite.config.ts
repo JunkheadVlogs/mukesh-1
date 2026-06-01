@@ -16,7 +16,7 @@ export default defineConfig(({mode}) => {
     VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
     VITE_PINTEREST_TAG: 'your_pinterest_tag_id',
     VITE_PINTEREST_DOMAIN: '5099ed06768c1b801e53b45489b5bf2d',
-    VITE_RAZORPAY_KEY_ID: 'rzp_live_SvAvyQnxCNWCIP',
+    VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',
     VITE_WHATSAPP_NUMBER: '917020664641',
     VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
     VITE_GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
@@ -35,10 +35,23 @@ export default defineConfig(({mode}) => {
         name: 'html-transform',
         transformIndexHtml(html) {
           return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
-            const val = env[`VITE_${key}`] || process.env[`VITE_${key}`] || fallbacks[`VITE_${key}`];
+            const envKey = `VITE_${key}`;
+            let val = env[envKey] || process.env[envKey];
+            if (key === 'GA4_ID' && !val) {
+              val = env.VITE_GA_MEASUREMENT_ID || process.env.VITE_GA_MEASUREMENT_ID || env.VITE_GA4_ID || process.env.VITE_GA4_ID;
+            }
+            if (val === undefined) {
+              val = fallbacks[envKey];
+            }
             if (val !== undefined && val !== null) {
               const strVal = String(val).trim();
-              if (strVal.startsWith('your_') || strVal.includes('YOUR_SCRIPT_ID') || strVal === 'your_fb_domain_verify_token' || strVal === 'your_pinterest_domain_verify') {
+              if (
+                strVal.startsWith('your_') || 
+                strVal.includes('YOUR_SCRIPT_ID') || 
+                strVal === 'your_fb_domain_verify_token' || 
+                strVal === 'your_pinterest_domain_verify' ||
+                strVal === 'G_GA4_MEASUREMENT_ID'
+              ) {
                 return '';
               }
               return strVal;
@@ -61,7 +74,7 @@ export default defineConfig(({mode}) => {
       'import.meta.env.VITE_META_PIXEL_ID': JSON.stringify(env.VITE_META_PIXEL_ID || fallbacks.VITE_META_PIXEL_ID),
       'import.meta.env.VITE_FB_DOMAIN_VERIFY': JSON.stringify(env.VITE_FB_DOMAIN_VERIFY || fallbacks.VITE_FB_DOMAIN_VERIFY),
       'import.meta.env.VITE_GTM_ID': JSON.stringify(env.VITE_GTM_ID || fallbacks.VITE_GTM_ID),
-      'import.meta.env.VITE_GA4_ID': JSON.stringify(env.VITE_GA4_ID || fallbacks.VITE_GA4_ID),
+      'import.meta.env.VITE_GA4_ID': JSON.stringify(env.VITE_GA_MEASUREMENT_ID || env.VITE_GA4_ID || fallbacks.VITE_GA4_ID),
       'import.meta.env.VITE_PINTEREST_TAG': JSON.stringify(env.VITE_PINTEREST_TAG || fallbacks.VITE_PINTEREST_TAG),
       'import.meta.env.VITE_PINTEREST_DOMAIN': JSON.stringify(env.VITE_PINTEREST_DOMAIN || fallbacks.VITE_PINTEREST_DOMAIN),
       'import.meta.env.VITE_RAZORPAY_KEY_ID': JSON.stringify(env.VITE_RAZORPAY_KEY_ID || fallbacks.VITE_RAZORPAY_KEY_ID),

@@ -76,7 +76,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const RAZORPAY_KEY_ID = (process.env.RAZORPAY_KEY_ID || "rzp_live_SvAvyQnxCNWCIP").trim();
+const RAZORPAY_KEY_ID = (process.env.RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p").trim();
 const RAZORPAY_KEY_SECRET = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
 
 let razorpay = null;
@@ -308,7 +308,7 @@ apiRouter.post("/submit-order", async (req, res) => {
 // ==== razorpay order creation ====
 apiRouter.post('/create-razorpay-order', async (req, res) => {
   try {
-    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SvAvyQnxCNWCIP").trim();
+    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p").trim();
     const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
     
     // Log configuration details safely for debugging
@@ -372,7 +372,7 @@ apiRouter.post('/create-razorpay-order', async (req, res) => {
 
 apiRouter.post('/create-order', async (req, res) => {
   try {
-    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SvAvyQnxCNWCIP").trim();
+    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p").trim();
     const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
     
     const keyMode = currentKeyId.startsWith("rzp_test_") ? "TEST MODE" : "LIVE MODE";
@@ -441,7 +441,7 @@ apiRouter.post("/verify-payment", (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     
-    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SvAvyQnxCNWCIP").trim();
+    const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p").trim();
     const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
     
     if (!currentKeySecret) {
@@ -1112,7 +1112,7 @@ async function setupServer() {
           VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
           VITE_PINTEREST_TAG: '',
           VITE_PINTEREST_DOMAIN: '5099ed06768c1b801e53b45489b5bf2d',
-          VITE_RAZORPAY_KEY_ID: 'rzp_live_SvAvyQnxCNWCIP',
+          VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',
           VITE_WHATSAPP_NUMBER: '917020664641',
           VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
           VITE_GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
@@ -1123,7 +1123,13 @@ async function setupServer() {
 
         html = html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
           const envKey = `VITE_${key}`;
-          const val = process.env[envKey] !== undefined ? process.env[envKey] : (fallbacks[envKey] !== undefined ? fallbacks[envKey] : match);
+          let val = process.env[envKey];
+          if (key === 'GA4_ID' && !val) {
+            val = process.env.VITE_GA_MEASUREMENT_ID || process.env.VITE_GA4_ID;
+          }
+          if (val === undefined) {
+            val = fallbacks[envKey];
+          }
           if (val !== undefined && val !== null) {
             const strVal = String(val).trim();
             if (
@@ -1133,7 +1139,8 @@ async function setupServer() {
               strVal === 'your_pinterest_domain_verify' ||
               strVal === 'your_gtm_id' ||
               strVal === 'your_pinterest_tag_id' ||
-              strVal === 'your_ga4_measurement_id'
+              strVal === 'your_ga4_measurement_id' ||
+              strVal === 'G_GA4_MEASUREMENT_ID'
             ) {
               return '';
             }

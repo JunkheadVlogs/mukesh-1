@@ -244,8 +244,8 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <SEO
-        title="Mukesh Saree Centre — Buy Sarees, Lehengas & Ethnic Wear Online | Since 1978"
-        description="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles."
+        title="Malvika Sarees | Mukesh Saree Centre - Nagpur Saree Shop"
+        description="Visit Malvika Sarees (Mukesh Saree Centre) in Nagpur for the latest Paithani, pure silk, and bridal sarees. Best saree showroom to buy sarees online."
         image="https://mukeshsarees.com/images/og-home.jpg"
         url="/"
         schema={{
@@ -289,7 +289,7 @@ export default function Home() {
           />
           {/* Desktop Hero Image (hidden on mobile) */}
           <OptimizedImage
-            src="https://ik.imagekit.io/tus1loev9/homepage/file_00000000ed047207b71708f1c9bb76b7.webp"
+            src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp"
             width={1600}
             height={1000}
             alt="Best Saree Shop in Nagpur Hero Exhibition"

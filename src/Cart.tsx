@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { SEO } from "./components/SEO";
 import { useStore } from "./store";
+import { trackRemoveFromCart } from "./tracking";
 import { formatPrice, optimizeImage, getImageAlt } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { Trash2, Plus, Minus, ArrowRight, ShieldCheck, Truck, ShoppingBag } from "lucide-react";
@@ -195,7 +196,10 @@ export default function Cart() {
                         </button>
                       </div>
                       <button
-                        onClick={() => removeFromCart(item.id, item.size)}
+                        onClick={() => {
+                          trackRemoveFromCart(item, item.quantity);
+                          removeFromCart(item.id, item.size);
+                        }}
                         className="text-[9px] sm:text-[10px] uppercase tracking-[2px] text-primary-950/50 hover:text-red-600 flex items-center gap-1.5 md:gap-2 transition-all font-bold h-[28px] sm:h-[34px]"
                       >
                         <Trash2 size={13} strokeWidth={2.2} /> <span className="hidden sm:inline">Remove</span>

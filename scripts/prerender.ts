@@ -13,7 +13,7 @@ function replaceEnvPlaceholders(html: string): string {
     VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
     VITE_PINTEREST_TAG: 'your_pinterest_tag_id',
     VITE_PINTEREST_DOMAIN: '5099ed06768c1b801e53b45489b5bf2d',
-    VITE_RAZORPAY_KEY_ID: 'rzp_live_SvAvyQnxCNWCIP',
+    VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',
     VITE_WHATSAPP_NUMBER: '917020664641',
     VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
     VITE_GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
@@ -24,7 +24,13 @@ function replaceEnvPlaceholders(html: string): string {
 
   return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
     const envKey = `VITE_${key}`;
-    const val = process.env[envKey] || fallbacks[envKey];
+    let val = process.env[envKey];
+    if (key === 'GA4_ID' && !val) {
+      val = process.env.VITE_GA_MEASUREMENT_ID || process.env.VITE_GA4_ID;
+    }
+    if (val === undefined) {
+      val = fallbacks[envKey];
+    }
     if (val !== undefined && val !== null) {
       const strVal = String(val).trim();
       if (
@@ -34,7 +40,8 @@ function replaceEnvPlaceholders(html: string): string {
         strVal === 'your_pinterest_domain_verify' ||
         strVal === 'your_gtm_id' ||
         strVal === 'your_pinterest_tag_id' ||
-        strVal === 'your_ga4_measurement_id'
+        strVal === 'your_ga4_measurement_id' ||
+        strVal === 'G_GA4_MEASUREMENT_ID'
       ) {
         return '';
       }

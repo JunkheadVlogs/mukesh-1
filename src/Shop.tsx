@@ -11,6 +11,7 @@ import { ProductCardSkeleton } from "./components/ProductCardSkeleton";
 import { Product, useStore } from "./store";
 import QuickViewModal from "./QuickViewModal";
 import { SEO } from "./components/SEO";
+import { trackViewItemList } from "./tracking";
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -136,6 +137,13 @@ export default function Shop() {
   useEffect(() => {
     setPage(1);
   }, [categoryFilter, fabricParam, colorParam, priceRangeFilter, sortParam, searchQuery]);
+
+  // Trigger ecommerce view_item_list when filtered results change
+  useEffect(() => {
+    if (filteredAndSortedProducts.length > 0) {
+      trackViewItemList(filteredAndSortedProducts, categoryFilter || "All Collections");
+    }
+  }, [filteredAndSortedProducts, categoryFilter]);
 
   const visible = useMemo(() => {
     return filteredAndSortedProducts.slice(0, page * PER_PAGE);

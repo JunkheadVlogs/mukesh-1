@@ -344,9 +344,9 @@ export default function Checkout() {
             });
           }
 
-          // Smoothly redirect to Razorpay handle with pre-filled amount
+          // Smoothly redirect to Razorpay handle
           setIsSubmitting(false);
-          const razorpayUrl = `https://razorpay.me/@Mukeshsareecentre/${total}?amount=${total}`;
+          const razorpayUrl = `https://razorpay.me/@Mukeshsareecentre`;
           window.location.href = razorpayUrl;
         } catch (err: any) {
           console.error("Online payment redirection failed:", err);

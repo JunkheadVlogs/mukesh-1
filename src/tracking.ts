@@ -562,3 +562,82 @@ export const trackPurchase = (totalValue: number, items: any[], transactionId: s
     });
   }
 };
+
+export const trackRemoveFromCart = (product: any, quantity: number = 1) => {
+  if (typeof window !== "undefined") {
+    const productPrice = parseFloat(product.price) || 0;
+    const valueNum = productPrice * quantity;
+    const pId = product.sku || product.id || product.slug;
+
+    // Google Tag Manager / GA4 DataLayer
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({ ecommerce: null }); // Clear previous
+    (window as any).dataLayer.push({
+      event: 'remove_from_cart',
+      ecommerce: {
+        currency: 'INR',
+        value: valueNum,
+        items: [{
+          item_id: pId,
+          item_name: product.name,
+          item_category: product.category || 'Sarees',
+          price: productPrice,
+          quantity: quantity
+        }]
+      }
+    });
+
+    if ((window as any).fbq) {
+      (window as any).fbq('trackCustom', 'RemoveFromCart', {
+        content_ids: [pId],
+        content_name: product.name,
+        content_type: 'product',
+        value: valueNum,
+        currency: 'INR'
+      });
+    }
+  }
+};
+
+export const trackViewItemList = (productsList: any[], categoryName?: string) => {
+  if (typeof window !== "undefined" && productsList.length > 0) {
+    const itemsData = productsList.slice(0, 12).map((p, idx) => ({
+      item_id: p.sku || p.id || p.slug,
+      item_name: p.name,
+      item_category: p.category || categoryName || 'Collection',
+      price: parseFloat(p.price) || 0,
+      index: idx
+    }));
+
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({ ecommerce: null }); // Clear previous
+    (window as any).dataLayer.push({
+      event: 'view_item_list',
+      ecommerce: {
+        item_list_name: categoryName || 'Shop Collection',
+        items: itemsData
+      }
+    });
+  }
+};
+
+export const trackSelectItem = (product: any) => {
+  if (typeof window !== "undefined") {
+    const pId = product.sku || product.id || product.slug;
+    const productPrice = parseFloat(product.price) || 0;
+
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({ ecommerce: null }); // Clear previous
+    (window as any).dataLayer.push({
+      event: 'select_item',
+      ecommerce: {
+        items: [{
+          item_id: pId,
+          item_name: product.name,
+          item_category: product.category,
+          price: productPrice
+        }]
+      }
+    });
+  }
+};
