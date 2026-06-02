@@ -1,6 +1,6 @@
 {
-  "name": "Mukeshsarees",
-  "description": "Premium sarees, lehengas, co-ord sets, and traditional Indian ethnic wear storefront with Razorpay and Google Sheets checkout integration.",
+  "name": "Mukesh Saree Centre",
+  "description": "Premium ecommerce website for Mukesh Saree Centre, specializing in luxury sarees and co-ord sets.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
