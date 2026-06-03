@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MapPin, Phone, Mail, Award } from 'lucide-react';
 import { SEO } from './components/SEO';
+import { CONFIG, getWhatsAppNumber } from './config';
 
 export default function Contact() {
   const [name, setName] = useState('');
@@ -65,7 +66,7 @@ export default function Contact() {
                   <div>
                      <h3 className="text-[12px] uppercase tracking-wider font-semibold text-primary-950 mb-1">Address</h3>
                      <p className="text-[14px] text-primary-950/70 leading-relaxed font-light">
-                        Jagnath Road, Nagpur, Maharashtra
+                        {CONFIG.STORE_ADDRESS}
                      </p>
                      <a 
                         href="https://share.google/n9O7GlYck8DrF7u2J" 
@@ -82,7 +83,9 @@ export default function Contact() {
                   <Phone className="text-gold-500 mt-1 flex-shrink-0" size={18} />
                   <div>
                      <h3 className="text-[12px] uppercase tracking-wider font-semibold text-primary-950 mb-1">Contact</h3>
-                     <p className="text-[14px] text-primary-950/70 font-light">+91 70206 64641</p>
+                     <a href={`tel:${CONFIG.STORE_PHONE.replace(/[^0-9+]/g, '')}`} className="text-[14px] text-primary-950/70 font-light hover:text-gold-600 transition-colors block">
+                       {CONFIG.STORE_PHONE}
+                     </a>
                      <p className="text-[11px] text-primary-950/40 font-light mt-0.5">Available 10:30 AM — 9:00 PM IST</p>
                   </div>
                </div>
@@ -91,7 +94,9 @@ export default function Contact() {
                   <Mail className="text-gold-500 mt-1 flex-shrink-0" size={18} />
                   <div>
                      <h3 className="text-[12px] uppercase tracking-wider font-semibold text-primary-950 mb-1">Email</h3>
-                     <p className="text-[14px] text-primary-950/70 font-light">info@mukeshsarees.com</p>
+                     <a href={`mailto:${CONFIG.STORE_EMAIL}`} className="text-[14px] text-primary-950/70 font-light hover:text-gold-600 transition-colors block">
+                       {CONFIG.STORE_EMAIL}
+                     </a>
                   </div>
                </div>
             </div>

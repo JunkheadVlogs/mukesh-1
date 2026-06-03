@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { optimizeImage } from '../utils';
+
+const PLACEHOLDER_1X1 = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
 const LOCAL_IMAGE_FALLBACKS: Record<string, string> = {
   'mainshop.webp': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
@@ -251,9 +253,7 @@ export function OptimizedImage({
     processedAlt = processedAlt.substring(0, maxBaseLen).trim().replace(/[\s,\-_|]+$/, "");
   }
   
-  const finalAlt = processedAlt + suffix;
-
-  // Derived state: calculate candidates list synchronously on render
+  const finalAlt = processedAlt + suffix;  // Derived state: calculate candidates list synchronously on render
   const candidates = getCandidateUrls(src, width);
 
   // Use synchronous state tracking to reset states on source changed
@@ -262,11 +262,47 @@ export function OptimizedImage({
   const [retryCount, setRetryCount] = useState(0);
   const [hasFailedAll, setHasFailedAll] = useState(false);
 
+  // Intersection Observer implementation
+  const imageRef = useRef<HTMLImageElement | null>(null);
+  const [isInView, setIsInView] = useState(priority);
+
+  useEffect(() => {
+    if (priority || isInView) return;
+
+    if (typeof window === 'undefined' || !window.IntersectionObserver) {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: '200px', // Preload images 200px before they enter the viewport
+        threshold: 0.01
+      }
+    );
+
+    const el = imageRef.current;
+    if (el) {
+      observer.observe(el);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [priority, isInView]);
+
   if (src !== prevSrc) {
     setPrevSrc(src);
     setCandidateIndex(0);
     setRetryCount(0);
     setHasFailedAll(false);
+    setIsInView(priority);
   }
 
   const currentSrc = candidates[candidateIndex] || sanitizeUrl(src);
@@ -322,12 +358,13 @@ export function OptimizedImage({
   if (isGoogleDrive || isRelative) {
     return (
       <img
+        ref={imageRef}
         key={`${currentSrc}-${retryCount}`}
-        src={currentSrc}
+        src={isInView ? currentSrc : PLACEHOLDER_1X1}
         alt={finalAlt}
         width={width}
         height={calculatedHeight}
-        className={`${className || ''}`}
+        className={`${className || ''} ${!isInView ? 'animate-pulse' : ''}`}
         loading={loading !== undefined ? loading : (priority ? undefined : "lazy")}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"
@@ -344,7 +381,7 @@ export function OptimizedImage({
                           !currentSrc.includes('drive.google.com') && 
                           !currentSrc.includes('googleusercontent.com') &&
                           !currentSrc.includes('mukeshsarees.com')) ||
-                         currentSrc.includes('wsrv.nl');
+                          currentSrc.includes('wsrv.nl');
 
   const webpUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'webp');
   const jpgUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'jpg');
@@ -360,15 +397,16 @@ export function OptimizedImage({
 
   return (
     <picture key={`${currentSrc}-${retryCount}`} className="contents">
-      {generatedSrcSetWebp && <source srcSet={generatedSrcSetWebp} sizes={defaultSizes} type="image/webp" />}
+      {isInView && generatedSrcSetWebp && <source srcSet={generatedSrcSetWebp} sizes={defaultSizes} type="image/webp" />}
       <img
-        src={jpgUrl}
-        srcSet={generatedSrcSetJpg}
-        sizes={generatedSrcSetJpg ? defaultSizes : undefined}
+        ref={imageRef}
+        src={isInView ? jpgUrl : PLACEHOLDER_1X1}
+        srcSet={isInView ? generatedSrcSetJpg : undefined}
+        sizes={isInView && generatedSrcSetJpg ? defaultSizes : undefined}
         alt={finalAlt}
         width={width}
         height={calculatedHeight}
-        className={`${className || ''}`}
+        className={`${className || ''} ${!isInView ? 'animate-pulse' : ''}`}
         loading={loading !== undefined ? loading : (priority ? undefined : "lazy")}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"

@@ -5,14 +5,16 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+process.env.VITE_FB_DOMAIN_VERIFY = 'kjvbvikfmctlsdfygll3tadkpzty8a';
+
 function replaceEnvPlaceholders(html: string): string {
   const fallbacks: Record<string, string> = {
     VITE_META_PIXEL_ID: '3834311026859384',
-    VITE_FB_DOMAIN_VERIFY: 'your_fb_domain_verify_token',
-    VITE_GTM_ID: 'GTM-WMG3G6SM',
-    VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
-    VITE_PINTEREST_TAG: 'your_pinterest_tag_id',
-    VITE_PINTEREST_DOMAIN: '5099ed06768c1b801e53b45489b5bf2d',
+    VITE_FB_DOMAIN_VERIFY: 'kjvbvikfmctlsdfygll3tadkpzty8a',
+    VITE_GTM_ID: '',
+    VITE_GA4_ID: '',
+    VITE_PINTEREST_TAG: '',
+    VITE_PINTEREST_DOMAIN: '',
     VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',
     VITE_WHATSAPP_NUMBER: '917020664641',
     VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
@@ -25,6 +27,9 @@ function replaceEnvPlaceholders(html: string): string {
   return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
     const envKey = `VITE_${key}`;
     let val = process.env[envKey];
+    if (envKey === 'VITE_FB_DOMAIN_VERIFY') {
+      val = 'kjvbvikfmctlsdfygll3tadkpzty8a';
+    }
     if (key === 'GA4_ID' && !val) {
       val = process.env.VITE_GA_MEASUREMENT_ID || process.env.VITE_GA4_ID;
     }
@@ -728,33 +733,34 @@ async function runPrerender() {
     },
     {
       dir: "shipping-policy",
-      title: "Shipping & Delivery Policy — Cash on Delivery | Mukesh Saree Centre",
-      desc: "Read our comprehensive shipping guidelines. We offer free shipping across India for order baskets above ₹999. Reliable dispatch from Nagpur with Cash on Delivery support.",
+      title: "Shipping & Delivery Policy | Mukesh Saree Centre",
+      desc: "Learn about our free shipping across India, delivery timelines, trusted courier partners, COD availability, and order tracking.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
             <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shipping & Delivery Policy</h1>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
-              <p style="margin-top: 0;">At Mukesh Saree Centre, we strive to deliver your orders promptly and in pristine condition. Here's a summary of our delivery operations:</p>
+              <p style="margin-top: 0;">Experience premium delivery services across India. We ensure your ethnic wear reaches you safely, promptly, and in pristine condition.</p>
               
-              <h3>1. Shipping Rates</h3>
+              <h3 style="margin-top: 24px;">1. Dispatch & Delivery Timelines</h3>
               <ul>
-                <li>Free standard shipping on all orders valued above ₹999 across India.</li>
-                <li>Flat delivery charges of ₹70 apply to orders below ₹999.</li>
+                <li><strong>Dispatch Time:</strong> Orders are carefully packed and dispatched within 24 to 48 hours.</li>
+                <li><strong>Delivery Time:</strong> Standard deliveries generally take 3 to 7 business days post-dispatch.</li>
+                <li><strong>Metro Regions:</strong> Deliveries to Tier 1 cities experience expedited delivery times (2-4 Days).</li>
               </ul>
 
-              <h3>2. Processing and Dispatch</h3>
-              <p>All items on the website are ready-to-dispatch. We usually dispatch orders within 1-2 business days from Nagpur. Customized tailoring or finishing may require an additional 2 days.</p>
+              <h3 style="margin-top: 24px;">2. Trusted Courier Partners</h3>
+              <p>We work with India's premier logistics providers: Delhivery, BlueDart, Amazon Shipping, Xpressbees, and DTDC.</p>
 
-              <h3>3. Delivery Timelines</h3>
+              <h3 style="margin-top: 24px;">3. Shipping Costs & Cash on Delivery (COD)</h3>
               <ul>
-                <li>Metro Cities: 3 to 5 business days after dispatch.</li>
-                <li>Rest of India: 5 to 7 business days depending on carrier networks.</li>
+                <li><strong>Free Shipping:</strong> 100% Free Shipping on all orders across India.</li>
+                <li><strong>COD Availability:</strong> Supported across 25,000+ pincodes in India. Serviceability is verified at checkout.</li>
               </ul>
 
-              <h3>4. Cash on Delivery (COD) Availability</h3>
-              <p>To ensure security and trust, we offer Cash on Delivery across most pin codes in India. Please prepare high-exact cash denomination at dynamic arrival.</p>
+              <h3 style="margin-top: 24px;">4. Order Tracking Information</h3>
+              <p>Immediately upon dispatch, a unique airway bill (AWB) number and live tracking link will be shared via Email and WhatsApp.</p>
             </div>
           </main>
           ${getFooterHtml()}
@@ -789,24 +795,24 @@ async function runPrerender() {
     },
     {
       dir: "terms",
-      title: "Terms of Service — Mukesh Saree Centre",
-      desc: "Review terms and legal conditions of our online e-commerce boutique store. Handpicked premium ethnic apparel sales since 1978.",
+      title: "Terms & Conditions | Mukesh Saree Centre",
+      desc: "Review the terms and conditions for Mukesh Saree Centre. Understanding our guidelines, policies, and terms ensures a transparent and smooth shopping experience.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
             <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Terms & Conditions</h1>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
-              <p style="margin-top: 0;">Welcome to Mukesh Saree Centre (https://mukeshsarees.com). By browsing this digital platform or buying items, you align with these terms & conditions:</p>
+              <p style="margin-top: 0; font-style: italic; border-left: 4px solid #F1E5C1; padding-left: 12px;">"Welcome to Mukesh Saree Centre. By accessing our website, placing an order, or using our services, you agree to comply with and be bound by the following legally protected terms and conditions."</p>
               
-              <h3>1. Accuracy of Content</h3>
-              <p>We try to display item colors, textures, and details as accurately as possible. Slight photographic shading variations are expected on client screens and should be accepted.</p>
+              <h3 style="margin-top: 24px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;">1. Acceptance of Terms & Eligibility</h3>
+              <p>By using mukeshsarees.com, you confirm that you have read, understood, and agreed to these Terms & Conditions. You must be at least 18 years of age (or shopping under parental supervision) to make purchases. We reserve the right to refuse service to anyone at our sole discretion.</p>
 
-              <h3>2. Commercial Pricing</h3>
-              <p>All items are printed in INR currency inclusive of basic showroom taxes. Shipping is free above ₹999 value.</p>
+              <h3 style="margin-top: 24px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;">2. Privacy, Product Disclaimers, and Order Policies</h3>
+              <p>We strive to accurately represent product color and detail; however, variations may exist based on device displays. Once dispatched, orders cannot be cancelled. We utilize Razorpay for safe, secure online billing. For our detailed logistics outlines, refer to our Shipping Policy and Refund Rules.</p>
 
-              <h3>3. Intellectual Property</h3>
-              <p>All visual graphic designs, photography, site elements, layout structures, and logo properties belong to Mukesh Saree Centre and cannot be replicated without consent.</p>
+              <h3 style="margin-top: 24px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;">3. Intellectual Property Rights</h3>
+              <p>Content including images, text, user interfaces, branding, and graphics remain the exclusive, licensed property of Mukesh Saree Centre under Indian copyright laws. Unlawful extraction or usage of this material without written consent is strictly prohibited.</p>
             </div>
           </main>
           ${getFooterHtml()}

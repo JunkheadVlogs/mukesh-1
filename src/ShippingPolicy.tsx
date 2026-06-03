@@ -1,97 +1,190 @@
 import { SEO } from './components/SEO';
-import { Truck, Clock, MapPin, Coins } from 'lucide-react';
-import { getWhatsAppNumber } from './config';
+import { Truck, Clock, MapPin, Coins, Package, Info, Search, HelpCircle } from 'lucide-react';
+import { Link } from 'react-router';
 import { Breadcrumbs } from './components/Breadcrumbs';
 
 export default function ShippingPolicy() {
   return (
     <div className="bg-primary-50 min-h-screen">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
         <SEO 
           title="Shipping & Delivery Policy | Mukesh Saree Centre" 
-          description="Learn about our free shipping across India, Cash on Delivery (COD) terms, and dispatch timelines." 
+          description="Learn about our free shipping across India, delivery timelines, trusted courier partners, COD availability, and order tracking." 
           url="/shipping-policy"
         />
         
-        <div className="mb-4">
+        <div className="mb-6">
           <Breadcrumbs />
         </div>
 
-        <div className="text-center mb-4 md:mb-5">
-          <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-2">Shipping & Delivery</h1>
-          <div className="w-12 h-[1px] bg-gold-200 mx-auto"></div>
-        </div>
-
-        <div className="bg-white rounded-sm border border-black/5 p-5 md:p-6 shadow-sm space-y-4 text-[14px] leading-relaxed text-primary-950/70">
-          
-          <div className="space-y-2">
-            <div className="flex items-center gap-3 text-primary-950">
-              <Truck size={20} className="text-gold-500" />
-              <h2 className="text-lg font-serif">Standard Delivery</h2>
-            </div>
-            <p>
-              We are pleased to offer complimentary shipping on all orders throughout India. We support both secure prepaid payment options and Cash on Delivery (COD) for your convenience.
-            </p>
-          </div>
-
-          <div className="space-y-2 pt-4 border-t border-black/5">
-            <div className="flex items-center gap-3 text-primary-950">
-              <Coins size={20} className="text-gold-500" />
-              <h2 className="text-lg font-serif">Cash on Delivery (COD) Policy</h2>
-            </div>
-            <p className="text-[#2C241B] font-medium bg-amber-50/40 p-3 rounded-sm border border-amber-100/60">
-              For Cash on Delivery orders, please keep the exact order amount ready at the time of delivery. Our delivery partners may not always carry change, so exact change is appreciated. The delivery amount will be confirmed via SMS/WhatsApp before dispatch.
-            </p>
-          </div>
-
-          <div className="space-y-2 pt-4 border-t border-black/5">
-            <div className="flex items-center gap-3 text-primary-950">
-              <Clock size={20} className="text-gold-500" />
-              <h2 className="text-lg font-serif">Dispatch Timelines</h2>
-            </div>
-            <p>
-              Our exclusive collections and premium selections are typically processed and dispatched from our boutique within 24 to 48 hours. Please allow moderate additional processing time during peak festive seasons.
-            </p>
-          </div>
-          
-          <div className="space-y-2 pt-4 border-t border-black/5">
-            <div className="flex items-center gap-3 text-primary-950">
-              <MapPin size={20} className="text-gold-500" />
-              <h2 className="text-lg font-serif">Transit & Delivery Time</h2>
-            </div>
-            <p>
-              Once dispatched, standard deliveries within India take 3 to 7 business days depending on your location. Metro regions and Tier 1 cities generally experience swifter delivery times.
-            </p>
-          </div>
-
-          <div className="space-y-2 pt-4 border-t border-black/5">
-            <h3 className="text-lg font-serif text-primary-950">Order Tracking</h3>
-            <p>
-              Upon dispatch, a personalized tracking link will be shared via email, SMS, and WhatsApp, allowing you to seamlessly monitor the journey of your premium order.
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-4 bg-white rounded-sm border border-black/5 p-5 md:p-6 shadow-sm text-center">
-          <h3 className="text-xl md:text-2xl font-serif text-primary-950 mb-1.5">Returns & Exchanges</h3>
-          <p className="text-[14px] text-primary-950/60 mb-4 max-w-md mx-auto">
-            If you face any issues with your delivery or wish to initiate an exchange or return, please reach out to us directly on WhatsApp.
+        <div className="text-center mb-8 md:mb-10">
+          <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-3">Shipping & Delivery Policy</h1>
+          <div className="w-16 h-[2px] bg-gold-200 mx-auto"></div>
+          <p className="mt-4 text-primary-950/70 text-sm max-w-2xl mx-auto">
+            Experience premium delivery services across India. We ensure your ethnic wear reaches you safely, promptly, and in pristine condition.
           </p>
-
-          <a 
-            href={`https://wa.me/${getWhatsAppNumber()}?text=Hello Mukesh Saree Centre, I would like to request assistance with my order delivery/return.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white font-medium text-[14px] rounded-md py-3.5 transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-sm max-w-sm mx-auto"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-              <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.48 2 2 6.48 2 12C2 13.91 2.54 15.69 3.46 17.18L2 22L6.96 20.66C8.42 21.52 10.15 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C10.37 20 8.84 19.6 7.51 18.9L4.1 19.82L5.05 16.5C4.28 15.19 3.84 13.65 3.84 12C3.84 7.5 7.5 3.84 12 3.84C16.5 3.84 20.16 7.5 20.16 12C20.16 16.5 16.5 20 12 20ZM16.29 14.89C16.03 14.76 14.75 14.13 14.51 14.04C14.28 13.96 14.11 13.92 13.94 14.17C13.77 14.43 13.27 15.02 13.12 15.2C12.96 15.37 12.8 15.39 12.54 15.26C12.28 15.13 11.45 14.86 10.46 13.98C9.69 13.3 9.17 12.44 9.02 12.18C8.86 11.92 9.01 11.78 9.14 11.65C9.25 11.53 9.4 11.35 9.53 11.2C9.66 11.05 9.7 10.95 9.79 10.77C9.88 10.6 9.83 10.45 9.77 10.32C9.7 10.19 9.19 8.92 8.98 8.4C8.77 7.89 8.56 7.96 8.41 7.95C8.26 7.94 8.09 7.94 7.92 7.94C7.75 7.94 7.48 8.01 7.24 8.27C7.01 8.53 6.35 9.14 6.35 10.37C6.35 11.61 7.28 12.8 7.41 12.97C7.54 13.14 9.15 15.65 11.61 16.71C12.19 16.96 12.65 17.11 13.0 17.22C13.58 17.41 14.12 17.38 14.54 17.31C15 17.22 16.03 16.67 16.24 16.06C16.45 15.45 16.45 14.93 16.38 14.82C16.31 14.7 16.14 14.63 15.88 14.5L16.29 14.89Z" />
-            </svg>
-            Request Return on WhatsApp
-          </a>
         </div>
 
+        <div className="bg-white rounded-sm border border-black/5 p-6 md:p-8 shadow-sm space-y-10 text-[14px] leading-relaxed text-primary-950/80">
+          
+          {/* Delivery Timelines */}
+          <section className="space-y-4">
+            <div className="flex items-center gap-3 text-primary-950 border-b border-black/5 pb-2">
+               <Clock size={22} className="text-gold-500" />
+               <h2 className="text-xl font-serif">1. Dispatch & Delivery Timelines</h2>
+            </div>
+            <p>
+              We process orders promptly to ensure quick delivery. Please note our typical timelines:
+            </p>
+            <ul className="space-y-2 ml-2 list-none">
+              <li className="flex items-start gap-2">
+                <span className="text-gold-500 mt-0.5">•</span>
+                <div>
+                  <span className="font-semibold text-primary-950">Dispatch Time:</span> Orders are carefully packed and dispatched from our boutique within <strong>24 to 48 hours</strong> of order placement.
+                </div>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-gold-500 mt-0.5">•</span>
+                <div>
+                  <span className="font-semibold text-primary-950">Delivery Time:</span> Standard deliveries across India generally take <strong>3 to 7 business days</strong> post-dispatch.
+                </div>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-gold-500 mt-0.5">•</span>
+                <div>
+                  <span className="font-semibold text-primary-950">Metro Regions:</span> Deliveries to Tier 1 cities and metro regions frequently experience expedited delivery times (2-4 Days).
+                </div>
+              </li>
+            </ul>
+            <p className="text-[13px] text-primary-950/60 mt-2 bg-primary-50 p-3 rounded-sm border border-primary-100 flex items-start gap-2">
+              <Info size={16} className="text-gold-600 mt-0.5 shrink-0" />
+              <span>Please note that customized items (like sarees with Fall and Pico) may require an additional 1-2 business days for processing before dispatch.</span>
+            </p>
+          </section>
+
+          {/* Trusted Shipping Partners */}
+          <section className="space-y-4">
+            <div className="flex items-center gap-3 text-primary-950 border-b border-black/5 pb-2">
+               <Package size={22} className="text-gold-500" />
+               <h2 className="text-xl font-serif">2. Trusted Courier Partners</h2>
+            </div>
+            <p>
+              To guarantee secure and reliable transit, we have partnered with India's premier logistics providers. Depending on your region, your package will be delivered by one of our trusted partners:
+            </p>
+            <ul className="space-y-2 ml-2 list-none font-medium text-primary-950">
+              <li className="flex items-center gap-2">
+                <span className="text-gold-500">•</span> Delhivery
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gold-500">•</span> BlueDart
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gold-500">•</span> Amazon Shipping
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gold-500">•</span> Xpressbees
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gold-500">•</span> DTDC
+              </li>
+            </ul>
+          </section>
+
+          {/* Shipping Costs and COD */}
+          <section className="space-y-4">
+            <div className="flex items-center gap-3 text-primary-950 border-b border-black/5 pb-2">
+               <Coins size={22} className="text-gold-500" />
+               <h2 className="text-xl font-serif">3. Shipping Costs & Cash on Delivery (COD)</h2>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-6 pt-2">
+              <div className="border border-black/5 rounded-sm p-5 bg-gray-50/50">
+                <h3 className="font-semibold text-primary-950 mb-2 flex items-center gap-2">
+                  <Truck size={18} className="text-gold-600" /> Free Shipping
+                </h3>
+                <p className="text-[13px]">We are proud to offer <strong>100% Free Shipping</strong> on all prepaid and COD orders across India, with no minimum order value required.</p>
+              </div>
+              <div className="border border-black/5 rounded-sm p-5 bg-amber-50/30">
+                <h3 className="font-semibold text-primary-950 mb-2 flex items-center gap-2">
+                  <MapPin size={18} className="text-gold-600" /> COD Availability
+                </h3>
+                <p className="text-[13px]">Cash on Delivery is supported across 25,000+ pincodes in India. Serviceability for your specific pincode is dynamically verified during the checkout process.</p>
+              </div>
+            </div>
+            <p className="text-[13px] text-[#2C241B] font-medium bg-amber-50/60 p-3 rounded-sm border border-amber-100">
+              <strong>COD Note:</strong> For Cash on Delivery orders, our delivery partners may not always carry change. We kindly request keeping the exact order amount ready at the time of delivery.
+            </p>
+          </section>
+
+          {/* Order Tracking */}
+          <section className="space-y-4">
+            <div className="flex items-center gap-3 text-primary-950 border-b border-black/5 pb-2">
+               <Search size={22} className="text-gold-500" />
+               <h2 className="text-xl font-serif">4. Order Tracking Information</h2>
+            </div>
+            <p>
+              We ensure complete transparency regarding your package's journey:
+            </p>
+            <ul className="space-y-2 ml-2 list-none">
+              <li className="flex items-start gap-2">
+                <span className="text-gold-500 mt-0.5">•</span>
+                <span><strong>Tracking Link:</strong> Immediately upon dispatch, a unique airway bill (AWB) number and a live tracking link will be shared via Email and SMS/WhatsApp.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-gold-500 mt-0.5">•</span>
+                <span><strong>Live Status:</strong> You can trace the package across multiple transit states directly through the provided courier link.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-gold-500 mt-0.5">•</span>
+                <span><strong>Status Updates:</strong> Real-time delivery statuses (such as Out for Delivery) will be communicated to you by the courier partner.</span>
+              </li>
+            </ul>
+          </section>
+
+          {/* Frequently Asked Questions */}
+          <section className="space-y-5 bg-primary-50 p-6 md:p-8 rounded-sm">
+            <div className="flex items-center gap-3 text-primary-950 mb-2">
+               <HelpCircle size={22} className="text-gold-500" />
+               <h2 className="text-xl font-serif">Frequently Asked Questions</h2>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-semibold text-primary-950 text-[14px]">Do you ship internationally?</h3>
+                <p className="mt-1 text-[13px]">Currently, we ship exclusively within India. We plan to expand our services globally in the near future.</p>
+              </div>
+              
+              <div>
+                <h3 className="font-semibold text-primary-950 text-[14px]">What if my package is delayed?</h3>
+                <p className="mt-1 text-[13px]">While 95% of our deliveries happen within the stipulated time frame, unforeseen circumstances (weather, logistical issues) can occasionally cause delays. Rest assured, your package is fully insured up to delivery. You can contact support for updates if the status hasn't changed for over 48 hours.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-primary-950 text-[14px]">What should I do if my package arrives damaged?</h3>
+                <p className="mt-1 text-[13px]">Please refuse delivery if the external packaging appears tampered with or severely damaged. If you discover damage upon opening, kindly record a seamless unboxing video and notify us within 48 hours to arrange a swift replacement.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Support CTA */}
+          <div className="pt-6">
+            <div className="bg-primary-950 text-white p-6 md:p-8 text-center rounded-sm">
+              <h3 className="text-xl font-serif mb-3">Need Logistics Assistance?</h3>
+              <p className="text-white/80 mb-6 text-sm max-w-lg mx-auto leading-relaxed">
+                If you have faced any anomalies during delivery or need real-time tracking updates, our support executives are here to assist.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link to="/contact" className="inline-block bg-white text-primary-950 px-8 py-3 text-[12px] uppercase tracking-widest font-bold hover:bg-gold-50 transition-colors w-full sm:w-auto text-center">
+                  CONTACT SUPPORT
+                </Link>
+                <a href="mailto:info.mukeshsareecentre@gmail.com" className="inline-block border border-gold-500 text-gold-400 px-8 py-3 text-[12px] uppercase tracking-widest font-bold hover:bg-gold-500 hover:text-white transition-colors w-full sm:w-auto text-center">
+                  EMAIL US
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+

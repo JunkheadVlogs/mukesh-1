@@ -319,6 +319,11 @@ export default function Cart() {
                       <span className="text-[9.5px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.1em] font-medium text-[var(--color-dark)] opacity-80 group-hover:opacity-100 transition-opacity">Verified Quality Check</span>
                     </div>
                   </div>
+                  <div className="flex justify-between items-center group">
+                    <Link to="/return-policy" className="flex items-center gap-2 mt-1 -ml-0.5 px-0.5 hover:opacity-80 transition-opacity">
+                      <span className="text-[9.5px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.1em] font-medium text-gold-600 underline underline-offset-4 decoration-gold-600/30">7-Day Easy Returns Policy</span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>

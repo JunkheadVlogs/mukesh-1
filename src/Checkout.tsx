@@ -13,6 +13,9 @@ import {
   ArrowRight,
   Truck,
   ShieldCheck,
+  Phone,
+  MessageCircle,
+  Clock,
 } from "lucide-react";
 import { CONFIG, submitToGoogleSheets, getWhatsAppNumber } from "./config";
 import { sendOrderToSheets } from "./utils/googleSheets";
@@ -40,6 +43,8 @@ export default function Checkout() {
   const [pinCode, setPinCode] = useState("");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState("");
+  const [isConsentChecked, setIsConsentChecked] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const isOrderSubmitted = useRef(false);
 
   useEffect(() => {
@@ -101,6 +106,12 @@ export default function Checkout() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting || isOrderSubmitted.current) return;
+    
+    if (!isConsentChecked) {
+      setConsentError(true);
+      return;
+    }
+    setConsentError(false);
     
     setIsSubmitting(true);
     setSubmitError("");
@@ -684,6 +695,36 @@ export default function Checkout() {
               </section>
 
               <div className="sticky bottom-0 md:static z-20 px-3.5 py-2 md:py-0 md:px-0 -mx-3.5 md:mx-0 bg-primary-50/95 backdrop-blur-md border-t border-black/5 md:border-t-0 md:backdrop-blur-none md:bg-transparent shadow-[0_-8px_20px_rgba(0,0,0,0.03)] md:shadow-none">
+                <div className="mb-4 bg-white/80 md:bg-transparent p-2.5 sm:p-3 rounded-sm border md:border-none border-black/5">
+                  <label className="flex items-start gap-2 sm:gap-3 cursor-pointer group">
+                    <div className="pt-0.5">
+                      <input
+                        type="checkbox"
+                        checked={isConsentChecked}
+                        onChange={(e) => {
+                          setIsConsentChecked(e.target.checked);
+                          if (e.target.checked) setConsentError(false);
+                        }}
+                        className={`w-4 h-4 rounded text-gold-500 focus:ring-gold-500/30 transition-colors ${consentError ? 'border-red-500 bg-red-50' : 'border-black/20'}`}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <p className={`text-[11px] sm:text-[12px] leading-tight ${consentError ? 'text-red-600 font-medium' : 'text-primary-950/80'}`}>
+                        I have read and agree to the{" "}
+                        <Link to="/terms" target="_blank" className="text-gold-600 hover:text-gold-500 underline decoration-gold-600/30 hover:decoration-gold-500 transition-colors">Terms & Conditions</Link>,{" "}
+                        <Link to="/terms" target="_blank" className="text-gold-600 hover:text-gold-500 underline decoration-gold-600/30 hover:decoration-gold-500 transition-colors">Privacy Policy</Link>,{" "}
+                        <Link to="/shipping-policy" target="_blank" className="text-gold-600 hover:text-gold-500 underline decoration-gold-600/30 hover:decoration-gold-500 transition-colors">Shipping Policy</Link>, and{" "}
+                        <Link to="/return-policy" target="_blank" className="text-gold-600 hover:text-gold-500 underline decoration-gold-600/30 hover:decoration-gold-500 transition-colors">Return & Refund Policy</Link>. *
+                      </p>
+                      {consentError && (
+                        <p className="text-[10px] text-red-500 font-bold tracking-wide mt-1 animate-pulse">
+                          ⚠️ You must accept the terms to complete your order
+                        </p>
+                      )}
+                    </div>
+                  </label>
+                </div>
+                
                 {submitError && (
                   <div className="mb-4 p-3.5 sm:p-5 bg-red-50/80 border border-red-200/60 rounded-md shadow-sm">
                     <div className="flex items-start gap-2 text-red-800 text-[11px] sm:text-xs md:text-sm font-semibold leading-relaxed">
@@ -874,17 +915,40 @@ export default function Checkout() {
                     className="text-[var(--color-gold-dark)] opacity-70 group-hover:opacity-100 transition-opacity"
                   />
                   <span className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.1em] font-medium text-[var(--color-dark)] opacity-80 group-hover:opacity-100 transition-opacity">
-                    Secure Encryption
+                    Secure Shopping
                   </span>
                 </div>
                 <div className="flex items-center justify-center gap-2 group cursor-default">
-                  <Truck
+                  <Phone
                     size={13}
                     className="text-[var(--color-gold-dark)] opacity-70 group-hover:opacity-100 transition-opacity"
                   />
                   <span className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.1em] font-medium text-[var(--color-dark)] opacity-80 group-hover:opacity-100 transition-opacity">
-                    Fast Insured Transit
+                    Customer Support Available
                   </span>
+                </div>
+                <div className="flex items-center justify-center gap-2 group cursor-default">
+                  <MessageCircle
+                    size={13}
+                    className="text-[var(--color-gold-dark)] opacity-70 group-hover:opacity-100 transition-opacity"
+                  />
+                  <span className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.1em] font-medium text-[var(--color-dark)] opacity-80 group-hover:opacity-100 transition-opacity">
+                    Easy Contact Options
+                  </span>
+                </div>
+                <div className="flex items-center justify-center gap-2 group cursor-default">
+                  <Clock
+                    size={13}
+                    className="text-[var(--color-gold-dark)] opacity-70 group-hover:opacity-100 transition-opacity"
+                  />
+                  <span className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.1em] font-medium text-[var(--color-dark)] opacity-80 group-hover:opacity-100 transition-opacity">
+                    Fast Response Support
+                  </span>
+                </div>
+                <div className="flex items-center justify-center gap-2 mt-1">
+                  <Link to="/return-policy" className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.1em] font-medium text-gold-600 hover:text-gold-500 underline underline-offset-4 decoration-gold-600/30">
+                    7-Day Easy Returns Policy
+                  </Link>
                 </div>
               </div>
             </div>

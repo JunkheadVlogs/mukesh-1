@@ -10,7 +10,7 @@
   # =========================================================================
   # This serves the SEO/OG tags to bots and normal users alike, while launching the React SPA.
   # If you want to use Option A, make sure the line below is UNCOMMENTED:
-  RewriteRule ^product/([^/]+)/?$ product.php?slug=$1 [QSA,L]
+  RewriteRule ^product/([^/]+)/?$ api/product.php?slug=$1 [QSA,L]
 
   # =========================================================================
   # OPTION C: HYBRID BOT ROUTING (FASTER LOADS FOR CUSTOMERS - BOTS USE PHP)

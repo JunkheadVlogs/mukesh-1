@@ -1,4 +1,5 @@
 import { ShieldCheck, Users, CheckCircle2, Award, Truck } from "lucide-react";
+import { Link } from "react-router";
 
 export function TrustBadges({ compact = false }: { compact?: boolean }) {
   const badges = [
@@ -40,6 +41,13 @@ export function TrustBadges({ compact = false }: { compact?: boolean }) {
             </span>
           </div>
         ))}
+        <div className="pt-2 mt-1 border-t border-black/5">
+           <Link to="/return-policy" className="inline-flex items-center gap-2 group hover:opacity-80 transition-opacity">
+             <span className="text-[11px] font-sans tracking-[0.1em] text-gold-600 underline underline-offset-4 decoration-gold-600/30 group-hover:text-gold-500 font-medium uppercase">
+               7-Day Easy Returns Policy
+             </span>
+           </Link>
+        </div>
       </div>
     );
   }

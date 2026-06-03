@@ -4,18 +4,20 @@ import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
+  process.env.VITE_FB_DOMAIN_VERIFY = 'kjvbvikfmctlsdfygll3tadkpzty8a';
   const env = loadEnv(mode, process.cwd(), '');
+  env.VITE_FB_DOMAIN_VERIFY = 'kjvbvikfmctlsdfygll3tadkpzty8a';
   
   // Robust default fallbacks for analytics, tracking, domain verification and site routing.
   // This satisfies Cause B by hardcoding fallbacks in vite.config.ts define block 
   // while keeping them fully overridable when .env or environment variables are supplied.
   const fallbacks: Record<string, string> = {
     VITE_META_PIXEL_ID: '3834311026859384',
-    VITE_FB_DOMAIN_VERIFY: 'your_fb_domain_verify_token',
-    VITE_GTM_ID: 'GTM-WMG3G6SM',
-    VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
-    VITE_PINTEREST_TAG: 'your_pinterest_tag_id',
-    VITE_PINTEREST_DOMAIN: '5099ed06768c1b801e53b45489b5bf2d',
+    VITE_FB_DOMAIN_VERIFY: 'kjvbvikfmctlsdfygll3tadkpzty8a',
+    VITE_GTM_ID: '',
+    VITE_GA4_ID: '',
+    VITE_PINTEREST_TAG: '',
+    VITE_PINTEREST_DOMAIN: '',
     VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',
     VITE_WHATSAPP_NUMBER: '917020664641',
     VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
@@ -37,6 +39,9 @@ export default defineConfig(({mode}) => {
           return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
             const envKey = `VITE_${key}`;
             let val = env[envKey] || process.env[envKey];
+            if (envKey === 'VITE_FB_DOMAIN_VERIFY') {
+              val = 'kjvbvikfmctlsdfygll3tadkpzty8a';
+            }
             if (key === 'GA4_ID' && !val) {
               val = env.VITE_GA_MEASUREMENT_ID || process.env.VITE_GA_MEASUREMENT_ID || env.VITE_GA4_ID || process.env.VITE_GA4_ID;
             }

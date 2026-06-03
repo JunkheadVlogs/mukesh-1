@@ -28,6 +28,8 @@ const __dirname = _dirname;
 
 dotenv.config();
 
+process.env.VITE_FB_DOMAIN_VERIFY = 'kjvbvikfmctlsdfygll3tadkpzty8a';
+
 const app = express();
 const PORT = 3000;
 
@@ -1107,11 +1109,11 @@ async function setupServer() {
         // Substitute %VITE_...% style placeholders with process.env properties for runtime environment injection
         const fallbacks = {
           VITE_META_PIXEL_ID: '3834311026859384',
-          VITE_FB_DOMAIN_VERIFY: '',
-          VITE_GTM_ID: 'GTM-WMG3G6SM',
-          VITE_GA4_ID: 'G_GA4_MEASUREMENT_ID',
+          VITE_FB_DOMAIN_VERIFY: 'kjvbvikfmctlsdfygll3tadkpzty8a',
+          VITE_GTM_ID: '',
+          VITE_GA4_ID: '',
           VITE_PINTEREST_TAG: '',
-          VITE_PINTEREST_DOMAIN: '5099ed06768c1b801e53b45489b5bf2d',
+          VITE_PINTEREST_DOMAIN: '',
           VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',
           VITE_WHATSAPP_NUMBER: '917020664641',
           VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
@@ -1124,6 +1126,9 @@ async function setupServer() {
         html = html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
           const envKey = `VITE_${key}`;
           let val = process.env[envKey];
+          if (envKey === 'VITE_FB_DOMAIN_VERIFY') {
+            val = 'kjvbvikfmctlsdfygll3tadkpzty8a';
+          }
           if (key === 'GA4_ID' && !val) {
             val = process.env.VITE_GA_MEASUREMENT_ID || process.env.VITE_GA4_ID;
           }
