@@ -2,7 +2,7 @@
 /**
  * Mukesh Saree Centre - Razorpay Order Creation API Endpoint (Standard Clean Path)
  * File: create-order.php
- * Path: public_html/api/create-order.php
+ * Path: public/api/create-order.php
  */
 
 // 1. Include the API credentials config file

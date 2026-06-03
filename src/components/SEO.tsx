@@ -187,10 +187,18 @@ export function SEO({
     }
 
     if (targetUrl.includes('drive.google.com')) {
-      const driveIdMatch = targetUrl.match(/[?&]id=([^&]+)/);
-      if (driveIdMatch) {
-        const fileId = driveIdMatch[1];
-        targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+      let fileId = '';
+      const idMatch = targetUrl.match(/[?&]id=([^&]+)/);
+      if (idMatch) {
+        fileId = idMatch[1];
+      } else {
+        const dMatch = targetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (dMatch) {
+          fileId = dMatch[1];
+        }
+      }
+      if (fileId) {
+        targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
       }
     } else if (targetUrl.includes('lh3.googleusercontent.com')) {
       targetUrl = targetUrl.split('=')[0]; // strip existing params
@@ -206,10 +214,18 @@ export function SEO({
     if (absoluteImage) {
       let targetUrl = absoluteImage;
       if (absoluteImage.includes('drive.google.com')) {
-        const driveIdMatch = absoluteImage.match(/[?&]id=([^&]+)/);
-        if (driveIdMatch) {
-          const fileId = driveIdMatch[1];
-          targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+        let fileId = '';
+        const idMatch = absoluteImage.match(/[?&]id=([^&]+)/);
+        if (idMatch) {
+          fileId = idMatch[1];
+        } else {
+          const dMatch = absoluteImage.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          if (dMatch) {
+            fileId = dMatch[1];
+          }
+        }
+        if (fileId) {
+          targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
         }
       } else if (absoluteImage.includes('lh3.googleusercontent.com')) {
         targetUrl = absoluteImage.split('=')[0]; // strip existing resize parameters

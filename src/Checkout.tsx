@@ -711,8 +711,7 @@ export default function Checkout() {
                     <div className="flex-1">
                       <p className={`text-[11px] sm:text-[12px] leading-tight ${consentError ? 'text-red-600 font-medium' : 'text-primary-950/80'}`}>
                         I have read and agree to the{" "}
-                        <Link to="/terms" target="_blank" className="text-gold-600 hover:text-gold-500 underline decoration-gold-600/30 hover:decoration-gold-500 transition-colors">Terms & Conditions</Link>,{" "}
-                        <Link to="/terms" target="_blank" className="text-gold-600 hover:text-gold-500 underline decoration-gold-600/30 hover:decoration-gold-500 transition-colors">Privacy Policy</Link>,{" "}
+                        <Link to="/terms" target="_blank" className="text-gold-600 hover:text-gold-500 underline decoration-gold-600/30 hover:decoration-gold-500 transition-colors">Terms of Service</Link>,{" "}
                         <Link to="/shipping-policy" target="_blank" className="text-gold-600 hover:text-gold-500 underline decoration-gold-600/30 hover:decoration-gold-500 transition-colors">Shipping Policy</Link>, and{" "}
                         <Link to="/return-policy" target="_blank" className="text-gold-600 hover:text-gold-500 underline decoration-gold-600/30 hover:decoration-gold-500 transition-colors">Return & Refund Policy</Link>. *
                       </p>

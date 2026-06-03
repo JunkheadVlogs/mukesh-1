@@ -496,6 +496,58 @@ apiRouter.post(["/meta-capi", "/sys-metric"], async (req, res) => {
       return crypto.createHash('sha256').update(clean).digest('hex');
     };
 
+    const cleanEmail = (em) => {
+      if (!em) return undefined;
+      const val = em.toString().trim().toLowerCase();
+      if (
+        val === 'info@mukeshsarees.com' ||
+        val === 'test@gmail.com' ||
+        val === 'test@example.com' ||
+        val === 'example@example.com' ||
+        val.includes('mukeshsaree')
+      ) {
+        return undefined;
+      }
+      return val;
+    };
+
+    const cleanPhone = (ph) => {
+      if (!ph) return undefined;
+      let digits = ph.toString().replace(/\D/g, '');
+      if (
+        digits === '9170206646' ||
+        digits === '917020664641' ||
+        digits === '7020664641' ||
+        digits === '1234567890' ||
+        digits === '9999999999' ||
+        digits === '0000000000' ||
+        digits.length < 10
+      ) {
+        return undefined;
+      }
+      if (digits.length === 10) {
+        digits = '91' + digits; // default to India prefix
+      }
+      return digits;
+    };
+
+    let finalSourceUrl = event_source_url || "";
+    if (finalSourceUrl) {
+      try {
+        const parsedUrl = new URL(finalSourceUrl);
+        if (parsedUrl.hostname.includes('run.app') || parsedUrl.hostname.includes('localhost') || parsedUrl.hostname.includes('127.0.0.1')) {
+          parsedUrl.hostname = 'mukeshsarees.com';
+          parsedUrl.protocol = 'https:';
+          parsedUrl.port = '';
+        }
+        finalSourceUrl = parsedUrl.toString();
+      } catch (e) {
+        if (finalSourceUrl.startsWith('/')) {
+          finalSourceUrl = `https://mukeshsarees.com${finalSourceUrl}`;
+        }
+      }
+    }
+
     const providedUserData = clientUserData || {};
     const userDataObj: any = {
       client_ip_address: clientIpAddress,
@@ -517,9 +569,9 @@ apiRouter.post(["/meta-capi", "/sys-metric"], async (req, res) => {
     let finalFbc = providedUserData.fbc || parsedCookies['_fbc'] || null;
 
     // Rescue FB Click ID (fbclid) query parameters from URL to boost match accuracy if cookie is missing
-    if (!finalFbc && event_source_url) {
+    if (!finalFbc && finalSourceUrl) {
       try {
-        const parsedUrl = new URL(event_source_url);
+        const parsedUrl = new URL(finalSourceUrl);
         const fbclid = parsedUrl.searchParams.get('fbclid');
         if (fbclid) {
           finalFbc = `fb.1.${Date.now()}.${fbclid}`;
@@ -534,23 +586,22 @@ apiRouter.post(["/meta-capi", "/sys-metric"], async (req, res) => {
 
     // Handle high-value customer stitch parameters (external_id)
     if (providedUserData.external_id) {
-      const extIdHash = helperHash(providedUserData.external_id);
-      if (extIdHash) userDataObj.external_id = [extIdHash];
+      userDataObj.external_id = providedUserData.external_id.toString().trim();
     }
 
     // Standardize hashing for multiple fields to optimize match quality
-    if (providedUserData.em) {
-      const emHash = helperHash(providedUserData.em);
+    const validatedEmail = cleanEmail(providedUserData.em);
+    if (validatedEmail) {
+      const emHash = helperHash(validatedEmail);
       if (emHash) userDataObj.em = [emHash];
     }
-    if (providedUserData.ph) {
-      let numericPhone = providedUserData.ph.toString().replace(/\D/g, '');
-      if (numericPhone.length === 10) {
-        numericPhone = '91' + numericPhone; // default to India prefix
-      }
-      const phHash = helperHash(numericPhone);
+
+    const validatedPhone = cleanPhone(providedUserData.ph);
+    if (validatedPhone) {
+      const phHash = helperHash(validatedPhone);
       if (phHash) userDataObj.ph = [phHash];
     }
+
     if (providedUserData.fn) {
       const fnHash = helperHash(providedUserData.fn);
       if (fnHash) userDataObj.fn = [fnHash];
@@ -583,7 +634,7 @@ apiRouter.post(["/meta-capi", "/sys-metric"], async (req, res) => {
       event_time: currentTimestamp,
       event_id: event_id,
       action_source: "website",
-      event_source_url: event_source_url || req.headers.referer || "https://mukeshsarees.com/",
+      event_source_url: finalSourceUrl || req.headers.referer || "https://mukeshsarees.com/",
       user_data: userDataObj,
       custom_data: {
         currency: currency || "INR",
@@ -762,10 +813,18 @@ const getWhatsAppSafeServerImageUrl = (imageUrl) => {
   
   let targetUrl = imageUrl;
   if (imageUrl.includes('drive.google.com')) {
-    const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
-    if (driveIdMatch) {
-      const fileId = driveIdMatch[1];
-      targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    let fileId = '';
+    const idMatch = imageUrl.match(/[?&]id=([^&]+)/);
+    if (idMatch) {
+      fileId = idMatch[1];
+    } else {
+      const dMatch = imageUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (dMatch) {
+        fileId = dMatch[1];
+      }
+    }
+    if (fileId) {
+      targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
     }
   } else if (imageUrl.includes('lh3.googleusercontent.com')) {
     targetUrl = imageUrl.split('=')[0]; // strip existing params
@@ -795,10 +854,18 @@ const getSquareServerImageUrl = (imageUrl) => {
   }
 
   if (targetUrl.includes('drive.google.com')) {
-    const driveIdMatch = targetUrl.match(/[?&]id=([^&]+)/);
-    if (driveIdMatch) {
-      const fileId = driveIdMatch[1];
-      targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    let fileId = '';
+    const idMatch = targetUrl.match(/[?&]id=([^&]+)/);
+    if (idMatch) {
+      fileId = idMatch[1];
+    } else {
+      const dMatch = targetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (dMatch) {
+        fileId = dMatch[1];
+      }
+    }
+    if (fileId) {
+      targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
     }
   } else if (targetUrl.includes('lh3.googleusercontent.com')) {
     targetUrl = targetUrl.split('=')[0]; // strip existing params
@@ -881,8 +948,8 @@ const injectOGTags = (html, reqPath, originalUrl) => {
       
       ogDesc = `✨ ${cleanShortDesc} | 💰 ₹${prod.price || "0"}${mrpPart} | 🚚 Free Shipping | Cash on Delivery Available`;
  
-      // Convert to beautiful square contain format for products to show perfectly on WhatsApp
-      ogImg = getSquareServerImageUrl(prod.image || defaultBannerUrl);
+      // Convert to beautiful landscape format for products to show perfectly on WhatsApp, Facebook, and Instagram
+      ogImg = getWhatsAppSafeServerImageUrl(prod.image || defaultBannerUrl);
       price = prod.price || "0";
       isProduct = true;
     }
@@ -904,12 +971,13 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta property="og:title" content="${ogTitle}" />
      <meta property="og:description" content="${ogDesc}" />
      <meta property="og:image" content="${ogImg}" />
+     <meta property="og:image:secure_url" content="${ogImg}" />
      <meta property="og:url" content="${ogUrl}" />
      <meta property="og:type" content="${isProduct ? 'product' : 'website'}" />
      <meta property="og:site_name" content="Mukesh Saree Centre" />
-     <meta property="og:image:width" content="${isProduct ? '1200' : '1200'}" />
-     <meta property="og:image:height" content="${isProduct ? '1200' : '630'}" />
-     <meta property="og:image:type" content="${isProduct ? 'image/jpeg' : 'image/jpeg'}" />
+     <meta property="og:image:width" content="1200" />
+     <meta property="og:image:height" content="630" />
+     <meta property="og:image:type" content="image/jpeg" />
      <meta name="twitter:card" content="summary_large_image" />
      <meta name="twitter:title" content="${ogTitle}" />
      <meta name="twitter:description" content="${ogDesc}" />

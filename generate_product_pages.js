@@ -83,7 +83,7 @@ function runGenerator() {
 
         if (docId) {
           driveWarnings.push({ name: product.name, slug, imageInput });
-          const driveSrc = `https://drive.google.com/uc?export=download&id=${docId}`;
+          const driveSrc = `https://lh3.googleusercontent.com/d/${docId}`;
           ogImageUrl = `https://wsrv.nl/?url=${encodeURIComponent(driveSrc)}&w=1200&h=630&fit=contain&cbg=ffffff&output=jpg&q=90`;
         } else {
           ogImageUrl = imageInput;

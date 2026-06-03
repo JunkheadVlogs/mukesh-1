@@ -193,7 +193,7 @@ export default function ThankYou() {
   const printableCustomer = customer || {
     fullName: "Valued Saree Club Member",
     mobileNumber: "+91 9170206646",
-    email: "info.mukeshsareecentre@gmail.com",
+    email: "info@mukeshsarees.com",
     streetAddress: "Jagannath Road, Gandhibagh",
     city: "Nagpur",
     state: "Maharashtra",

@@ -9,7 +9,7 @@ import Layout from './Layout';
 import Home from './Home';
 import { ExitIntentPopup } from './components/ExitIntentPopup';
 import { useExitIntent } from './hooks/useExitIntent';
-import { trackWhatsAppClick } from './tracking';
+import { trackWhatsAppClick, trackLead } from './tracking';
 import { useStore } from './store';
 import { safeSessionStorage } from './utils/safeStorage';
 
@@ -153,16 +153,19 @@ export default function App() {
       time: new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" }),
       deviceType: deviceType,
       source: "Popup",
-      leadSource: "Exit Intent Popup"
+      leadSource: "Exit Intent Popup",
+      request: 'Exit Intent Discount Coupon VIP50',
+      requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000)
     };
 
     // Fire Meta & GA4 Events
+    try {
+      trackLead({ name, phone });
+    } catch (err) {
+      console.warn("Meta trackLead failed:", err);
+    }
+
     if ((window as any).fbq) {
-      (window as any).fbq('track', 'Lead', {
-        content_name: 'Exit Intent Coupon',
-        currency: 'INR',
-        value: 60
-      });
       (window as any).fbq('track', 'CompleteRegistration', {
         content_name: 'VIP Coupon Signup'
       });

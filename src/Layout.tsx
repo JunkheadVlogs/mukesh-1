@@ -1221,11 +1221,6 @@ export default function Layout() {
                       Terms of Service
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/terms" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
-                      Privacy Policy
-                    </Link>
-                  </li>
                 </ul>
               </div>
             </div>

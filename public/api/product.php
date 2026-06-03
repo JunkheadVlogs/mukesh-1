@@ -2,7 +2,7 @@
 /**
  * Mukesh Saree Centre - Dynamic SEO & Dynamic OG (WhatsApp Preview) Product Router
  * File: product.php
- * Path: public_html/api/product.php
+ * Path: public/api/product.php
  * 
  * This file handles Server-Side Injection of OG image / Metadata for bots and users alike.
  * It serves the SEO/OG tags dynamically while wrapping around the main interactive React SPA.

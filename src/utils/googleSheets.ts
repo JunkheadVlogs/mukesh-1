@@ -40,6 +40,9 @@ const SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL || import.meta.env.VIT
 export interface ExitLeadData {
   name: string;
   phone: string;
+  request?: string;
+  requestId?: string;
+  source?: string;
 }
 
 export interface OrderSheetData {
@@ -68,7 +71,7 @@ export interface OrderSheetData {
 /**
  * Submits exit intent lead capture data to Sheet Tab 1 (Exit Intent Leads)
  */
-export async function sendExitLeadToSheets({ name, phone }: ExitLeadData): Promise<void> {
+export async function sendExitLeadToSheets({ name, phone, request, requestId, source }: ExitLeadData): Promise<void> {
   if (!SHEETS_URL) {
     console.log('Sheets: VITE_GOOGLE_SHEETS_URL is not configured. Skipping submission.');
     return;
@@ -85,9 +88,12 @@ export async function sendExitLeadToSheets({ name, phone }: ExitLeadData): Promi
         type: 'exit_lead',
         name,
         phone: phone.startsWith('+91') ? phone : '+91' + phone,
-        couponCode: 'VIP50',
+        couponCode: source === 'Contact Page' ? 'N/A (Contact Form)' : 'VIP50',
         page: window.location.pathname,
         device,
+        request: request || 'Exit Intent Discount Coupon VIP50',
+        requestId: requestId || ('REQ-' + Math.floor(100000 + Math.random() * 900000)),
+        source: source || 'Exit Intent Popup'
       })
     });
     // Note: no-cors fetch generates an opaque response, meaning we can't inspect the body or status code

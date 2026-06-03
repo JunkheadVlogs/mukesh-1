@@ -93,7 +93,7 @@ export default function Terms() {
             <h2 className="text-xl font-serif mb-2">12. Contact Information</h2>
             <p className="text-white/80">Questions about the Terms & Conditions? We're here to help.</p>
             <p className="text-white/80 mt-2">
-              Email us at: <a href="mailto:info.mukeshsareecentre@gmail.com" className="text-gold-400 hover:text-white transition-colors">info.mukeshsareecentre@gmail.com</a>
+              Email us at: <a href="mailto:info@mukeshsarees.com" className="text-gold-400 hover:text-white transition-colors">info@mukeshsarees.com</a>
             </p>
           </section>
         </div>

@@ -176,7 +176,7 @@ export default function ShippingPolicy() {
                 <Link to="/contact" className="inline-block bg-white text-primary-950 px-8 py-3 text-[12px] uppercase tracking-widest font-bold hover:bg-gold-50 transition-colors w-full sm:w-auto text-center">
                   CONTACT SUPPORT
                 </Link>
-                <a href="mailto:info.mukeshsareecentre@gmail.com" className="inline-block border border-gold-500 text-gold-400 px-8 py-3 text-[12px] uppercase tracking-widest font-bold hover:bg-gold-500 hover:text-white transition-colors w-full sm:w-auto text-center">
+                <a href="mailto:info@mukeshsarees.com" className="inline-block border border-gold-500 text-gold-400 px-8 py-3 text-[12px] uppercase tracking-widest font-bold hover:bg-gold-500 hover:text-white transition-colors w-full sm:w-auto text-center">
                   EMAIL US
                 </a>
               </div>

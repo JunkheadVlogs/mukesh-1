@@ -2,17 +2,23 @@ import { useState } from 'react';
 import { MapPin, Phone, Mail, Award } from 'lucide-react';
 import { SEO } from './components/SEO';
 import { CONFIG, getWhatsAppNumber } from './config';
+import { trackContact } from './tracking';
+import { sendExitLeadToSheets } from './utils/googleSheets';
 
 export default function Contact() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [messageText, setMessageText] = useState('');
   const [error, setError] = useState('');
+  const [requestType, setRequestType] = useState('Saree Customization Inquiry');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [requestId] = useState(() => 'REQ-' + Math.floor(100000 + Math.random() * 900000));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    if (isSubmitting) return;
 
+    setError('');
     const trimmedName = name.trim();
     const trimmedPhone = phone.trim();
     const trimmedMsg = messageText.trim();
@@ -33,9 +39,36 @@ export default function Contact() {
       return;
     }
 
-    // Submit via direct WhatsApp deep-link
+    setIsSubmitting(true);
+
+    // Call Contact event tracking (Pixel and CAPI)
+    try {
+      trackContact({
+        name: trimmedName,
+        phone: trimmedPhone
+      });
+    } catch (trackErr) {
+      console.warn("Contact tracking failed:", trackErr);
+    }
+
+    // Submit details to Google Sheet first (using the exact same endpoint/tab as Exit Intent Details)
+    try {
+      await sendExitLeadToSheets({
+        name: trimmedName,
+        phone: trimmedPhone,
+        request: `[${requestType}] ${trimmedMsg}`,
+        requestId: requestId,
+        source: 'Contact Page'
+      });
+    } catch (sheetErr) {
+      console.warn("Failed sending contact message to Google Sheets:", sheetErr);
+    }
+
+    setIsSubmitting(false);
+
+    // Submit via direct WhatsApp deep-link with detailed Request formatting
     const message = encodeURIComponent(
-      `Hi Mukesh Saree Centre!\nName: ${trimmedName}\nQuery: ${trimmedMsg}`
+      `Hi Mukesh Saree Centre!\n\n*Support Request ID:* ${requestId}\n*Name:* ${trimmedName}\n*Category:* ${requestType}\n*Message:* ${trimmedMsg}`
     );
     window.open(`https://wa.me/917020664641?text=${message}`, '_blank');
   };
@@ -109,6 +142,12 @@ export default function Contact() {
                   </div>
                   
                   <form onSubmit={handleSubmit} className="flex flex-col text-left">
+                    {/* Unique Support Request ID Badge */}
+                    <div className="flex justify-between items-center bg-amber-50/40 border border-amber-500/10 rounded-sm p-3 mb-3.5 select-none hover:bg-amber-50/75 transition-colors">
+                      <span className="text-[10px] uppercase tracking-wider font-semibold text-amber-800 font-sans">Support Request ID</span>
+                      <span className="font-mono text-xs font-bold text-neutral-800 bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/15">{requestId}</span>
+                    </div>
+
                     <input
                       type="text"
                       placeholder="Your Name"
@@ -131,9 +170,26 @@ export default function Contact() {
                       />
                     </div>
 
+                    {/* Request Type Selection */}
+                    <div className="mb-3.5">
+                      <label className="text-[10px] uppercase tracking-wider font-semibold text-primary-950 font-sans mb-1.5 block select-none">Contact Topic / Request</label>
+                      <select
+                        value={requestType}
+                        onChange={e => setRequestType(e.target.value)}
+                        className="w-full px-3 px-2 py-2 bg-neutral-50/50 border border-neutral-200 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all rounded-sm font-sans text-xs sm:text-sm text-neutral-900 shadow-sm cursor-pointer"
+                      >
+                        <option value="Saree Customization Inquiry">Saree Customization Inquiry</option>
+                        <option value="Order Status & Tracking">Order Status &amp; Tracking</option>
+                        <option value="Return / Refund Inquiry">Return / Refund Inquiry</option>
+                        <option value="Bulk / Wholesale Inquiry">Bulk / Wholesale Inquiry</option>
+                        <option value="Product Sizing & Quality Query">Product Sizing &amp; Quality Query</option>
+                        <option value="General Support Inquiry">General Support Inquiry</option>
+                      </select>
+                    </div>
+
                     <div className="relative">
                       <textarea
-                        placeholder="Your Message / Query"
+                        placeholder="Your Message / Query Details"
                         value={messageText}
                         onChange={e => setMessageText(e.target.value.slice(0, 500))}
                         rows={4}
@@ -153,12 +209,20 @@ export default function Contact() {
 
                     <button
                       type="submit"
-                      className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-medium text-[13px] tracking-wide uppercase rounded-sm py-3 transition-transform hover:scale-[1.01] active:scale-[0.99] shadow-sm font-sans cursor-pointer mt-2"
+                      disabled={isSubmitting}
+                      className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-medium text-[13px] tracking-wide uppercase rounded-sm py-3 transition-transform hover:scale-[1.01] active:scale-[0.99] shadow-sm font-sans cursor-pointer mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                      <svg viewBox="0 0 24 24" fill="currentColor" className="w-4.5 h-4.5">
-                        <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.48 2 2 6.48 2 12C2 13.91 2.54 15.69 3.46 17.18L2 22L6.96 20.66C8.42 21.52 10.15 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C10.37 20 8.84 19.6 7.51 18.9L4.1 19.82L5.05 16.5C4.28 15.19 3.84 13.65 3.84 12C3.84 7.5 7.5 3.84 12 3.84C16.5 3.84 20.16 7.5 20.16 12C20.16 16.5 16.5 20 12 20ZM16.29 14.89C16.03 14.76 14.75 14.13 14.51 14.04C14.28 13.96 14.11 13.92 13.94 14.17C13.77 14.43 13.27 15.02 13.12 15.2C12.96 15.37 12.8 15.39 12.54 15.26C12.28 15.13 11.45 14.86 10.46 13.98C9.69 13.3 9.17 12.44 9.02 12.18C8.86 11.92 9.01 11.78 9.14 11.65C9.25 11.53 9.4 11.35 9.53 11.2C9.66 11.05 9.7 10.95 9.79 10.77C9.88 10.6 9.83 10.45 9.77 10.32C9.7 10.19 9.19 8.92 8.98 8.4C8.77 7.89 8.56 7.96 8.41 7.95C8.26 7.94 8.09 7.94 7.92 7.94C7.75 7.94 7.48 8.01 7.24 8.27C7.01 8.53 6.35 9.14 6.35 10.37C6.35 11.61 7.28 12.8 7.41 12.97C7.54 13.14 9.15 15.65 11.61 16.71C12.19 16.96 12.65 17.11 13.0 17.22C13.58 17.41 14.12 17.38 14.54 17.31C15 17.22 16.03 16.67 16.24 16.06C16.45 15.45 16.45 14.93 16.38 14.82C16.31 14.7 16.14 14.63 15.88 14.5L16.29 14.89Z" />
-                      </svg>
-                      Send Message on WhatsApp
+                      {isSubmitting ? (
+                        <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-4.5 h-4.5">
+                          <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.48 2 2 6.48 2 12C2 13.91 2.54 15.69 3.46 17.18L2 22L6.96 20.66C8.42 21.52 10.15 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C10.37 20 8.84 19.6 7.51 18.9L4.1 19.82L5.05 16.5C4.28 15.19 3.84 13.65 3.84 12C3.84 7.5 7.5 3.84 12 3.84C16.5 3.84 20.16 7.5 20.16 12C20.16 16.5 16.5 20 12 20ZM16.29 14.89C16.03 14.76 14.75 14.13 14.51 14.04C14.28 13.96 14.11 13.92 13.94 14.17C13.77 14.43 13.27 15.02 13.12 15.2C12.96 15.37 12.8 15.39 12.54 15.26C12.28 15.13 11.45 14.86 10.46 13.98C9.69 13.3 9.17 12.44 9.02 12.18C8.86 11.92 9.01 11.78 9.14 11.65C9.25 11.53 9.4 11.35 9.53 11.2C9.66 11.05 9.7 10.95 9.79 10.77C9.88 10.6 9.83 10.45 9.77 10.32C9.7 10.19 9.19 8.92 8.98 8.4C8.77 7.89 8.56 7.96 8.41 7.95C8.26 7.94 8.09 7.94 7.92 7.94C7.75 7.94 7.48 8.01 7.24 8.27C7.01 8.53 6.35 9.14 6.35 10.37C6.35 11.61 7.28 12.8 7.41 12.97C7.54 13.14 9.15 15.65 11.61 16.71C12.19 16.96 12.65 17.11 13.0 17.22C13.58 17.41 14.12 17.38 14.54 17.31C15 17.22 16.03 16.67 16.24 16.06C16.45 15.45 16.45 14.93 16.38 14.82C16.31 14.7 16.14 14.63 15.88 14.5L16.29 14.89Z" />
+                        </svg>
+                      )}
+                      {isSubmitting ? 'Submitting query...' : 'Send Message on WhatsApp'}
                     </button>
                   </form>
                 </div>

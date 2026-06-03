@@ -1,13 +1,14 @@
 /**
- * Mukesh Saree Centre - Static Product HTML Page Generator
- * File: scripts/generate-product-pages.js
+ * Mukesh Saree Centre - Static Product HTML Page Generator (generate-og.js)
+ * File: generate-og.js
+ * Path: /generate-og.js
  * 
- * This Node.js script reads 'products.json' (or fallback 'products-meta.json') 
+ * This Node.js script reads 'products-meta.json' or 'src/mockData.ts'
  * and automatically generates directory structures and static index.html files 
  * for each product inside 'public_html/product/[slug]/index.html'.
- * It pre-injects perfectly optimized, WhatsApp-compliant OG tags into the <head> of each pages.
+ * It pre-injects perfectly optimized, WhatsApp-compliant OG tags into the <head> of each page.
  * 
- * Run using: node scripts/generate-product-pages.js
+ * Run using: node generate-og.js
  */
 
 import fs from 'fs';
@@ -17,7 +18,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const rootDir = path.join(__dirname, '..');
+const rootDir = __dirname;
 const publicHtmlDir = path.join(rootDir, 'public_html');
 const templateFile = path.join(publicHtmlDir, 'index.html');
 
@@ -26,12 +27,13 @@ const datasetPaths = [
   path.join(publicHtmlDir, 'products.json'),
   path.join(publicHtmlDir, 'products-meta.json'),
   path.join(rootDir, 'products.json'),
-  path.join(rootDir, 'public', 'products-meta.json')
+  path.join(rootDir, 'public', 'products-meta.json'),
+  path.join(rootDir, 'dist', 'products-meta.json')
 ];
 
-function main() {
+async function main() {
   console.log('==================================================================');
-  console.log('🚀 [GEN-PRODUCTS] Beginning Static HTML Pre-Render Generation...');
+  console.log('🚀 [GEN-OG] Beginning WhatsApp & SEO Static HTML Page Generation...');
   console.log('==================================================================\n');
 
   // 1. Locate and load products database file
@@ -51,22 +53,53 @@ function main() {
     }
   }
 
+  // Fallback: Programmatically import from mockData if JSON files are missing
   if (!productsData || !Array.isArray(productsData)) {
-    console.error('\n❌ [CRITICAL ERROR] Could not locate or parse a valid products JSON catalog.');
-    console.log('Please place either a "products.json" or "products-meta.json" inside your "public_html" directory.');
+    console.log('⚠️ No parsed JSON dataset found. Attempting fallback to mockData.ts...');
+    try {
+      const mockDataBlock = fs.readFileSync(path.join(rootDir, 'src', 'mockData.ts'), 'utf8');
+      // Simple regex parser for mockData structure to extract slug, name, price, image, description
+      const productBlocks = mockDataBlock.split('id:').slice(1);
+      productsData = productBlocks.map(block => {
+        const nameMatch = block.match(/name:\s*["']([^"']+)["']/);
+        const slugMatch = block.match(/slug:\s*["']([^"']+)["']/);
+        const priceMatch = block.match(/price:\s*(\d+)/);
+        const imageMatch = block.match(/image:\s*["']([^"']+)["']/);
+        const descMatch = block.match(/description:\s*`([\s\S]*?)`/);
+
+        return {
+          name: nameMatch ? nameMatch[1] : 'Premium Ethnic Wear',
+          slug: slugMatch ? slugMatch[1] : '',
+          price: priceMatch ? priceMatch[1] : '999',
+          image: imageMatch ? imageMatch[1] : 'https://mukeshsarees.com/images/og-home.jpg',
+          description: descMatch ? descMatch[1].replace(/\*\*.*?:\*\*/g, '').substring(0, 150) : ''
+        };
+      }).filter(p => !!p.slug);
+      
+      console.log(`✅ Loaded ${productsData.length} records dynamically from src/mockData.ts.`);
+    } catch (err) {
+      console.error('❌ Failed to run programmatical fallback:', err.message);
+    }
+  }
+
+  if (!productsData || !Array.isArray(productsData)) {
+    console.error('\n❌ [CRITICAL ERROR] Could not locate or parse a valid products catalog.');
     process.exit(1);
   }
 
-  console.log(`ℹ️ [DB STATS] Successfully loaded ${productsData.length} products to generate.`);
+  // 2. Load the base HTML template (using index.html as fallback for product.html)
+  let baseTemplatePath = path.join(publicHtmlDir, 'product.html');
+  if (!fs.existsSync(baseTemplatePath)) {
+    baseTemplatePath = templateFile;
+  }
 
-  // 2. Load the base HTML template
-  if (!fs.existsSync(templateFile)) {
-    console.error(`\n❌ [CRITICAL ERROR] Base template index.html not found at: ${templateFile}`);
+  if (!fs.existsSync(baseTemplatePath)) {
+    console.error(`\n❌ [CRITICAL ERROR] Base template html not found at: ${baseTemplatePath}`);
     process.exit(1);
   }
 
-  const baseHtmlTemplate = fs.readFileSync(templateFile, 'utf8');
-  console.log(`✅ [FOUND TEMPLATE] Read template file successfully. Size: ${(baseHtmlTemplate.length / 1024).toFixed(2)} KB.`);
+  const baseHtmlTemplate = fs.readFileSync(baseTemplatePath, 'utf8');
+  console.log(`✅ [FOUND TEMPLATE] Read template file successfully: ${path.basename(baseTemplatePath)}. Size: ${(baseHtmlTemplate.length / 1024).toFixed(2)} KB.`);
 
   let successCount = 0;
   let skippedCount = 0;
@@ -80,7 +113,6 @@ function main() {
     const rawDisc = product.description || '';
 
     if (!slug) {
-      console.warn(`⚠️ [SKIP RECORD #${idx + 1}] Product is missing a valid 'slug' field.`);
       skippedCount++;
       return;
     }
@@ -185,19 +217,18 @@ function main() {
 
     fs.writeFileSync(outputFile, targetHtml, 'utf8');
     successCount++;
-    console.log(`   [GEN-PAGE #${successCount}] Created index file: /product/${slug}/index.html`);
   });
 
   // 4. Summarize and issue Google Drive Warnings if applicable
   console.log('\n======================================================');
-  console.log('🎉 [GEN-PRODUCTS] PROCESS COMPLETE!');
+  console.log('🎉 [GEN-OG] STATIC PRE-RENDER ENGINE COMPLETE!');
   console.log('======================================================');
-  console.log(`- Successfully created/rendered product pages: ${successCount}`);
+  console.log(`- Successfully created product directories: ${successCount}`);
   console.log(`- Skipped records: ${skippedCount}`);
   console.log('======================================================\n');
 
   if (googleDriveWarnings.length > 0) {
-    console.log('⚠️ [GOOGLE DRIVE WARNINGS]');
+    console.log('⚠️ [GOOGLE DRIVE WARNINGS / IMAGE VALIDATION]');
     console.log('The following products are using Google Drive links instead of ImageKit direct URLs.');
     console.log('While this script implements a high-performance proxy image overlay (wsrv.nl) for them,');
     console.log('it is STRONGLY recommended to host these images on ImageKit for optimal, instant loading.');
@@ -213,4 +244,6 @@ function main() {
   }
 }
 
-main();
+main().catch(err => {
+  console.error("Fatal generating static files:", err);
+});

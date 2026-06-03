@@ -175,7 +175,10 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
               name: trimmedName,
               phone: trimmedPhone,
               page: window.location.pathname,
-              device: isMobile ? 'Mobile' : 'Desktop'
+              device: isMobile ? 'Mobile' : 'Desktop',
+              request: 'Exit Intent Discount Coupon VIP50',
+              requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000),
+              source: 'Exit Intent Popup'
             })
           });
         } catch (fetchErr) {

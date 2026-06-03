@@ -1,5 +1,47 @@
 import { CONFIG, getApiUrl } from "./config";
 
+// Detect and ignore default placeholders or corporate business contact profiles in general metric tracking
+export const isPlaceholderOrBusinessEmail = (email?: string): boolean => {
+  if (!email) return true;
+  const clean = email.trim().toLowerCase();
+  return (
+    clean === 'info@mukeshsarees.com' ||
+    clean === 'test@gmail.com' ||
+    clean === 'test@example.com' ||
+    clean === 'example@example.com' ||
+    clean.includes('mukeshsaree')
+  );
+};
+
+export const isPlaceholderOrBusinessPhone = (phone?: string): boolean => {
+  if (!phone) return true;
+  const digits = phone.replace(/\D/g, '');
+  return (
+    digits === '9170206646' ||
+    digits === '917020664641' ||
+    digits === '7020664641' ||
+    digits === '1234567890' ||
+    digits === '9999999999' ||
+    digits === '0000000000' ||
+    digits.length < 10
+  );
+};
+
+// Map sandboxed or testing run.app/localhost domains to production home domain for Meta compatibility
+export const getProductionizedUrl = (urlStr: string): string => {
+  try {
+    const url = new URL(urlStr);
+    if (url.hostname.includes('run.app') || url.hostname.includes('localhost') || url.hostname.includes('127.0.0.1')) {
+      url.hostname = 'mukeshsarees.com';
+      url.protocol = 'https:';
+      url.port = '';
+    }
+    return url.toString();
+  } catch (e) {
+    return `https://mukeshsarees.com${urlStr.startsWith('/') ? '' : '/'}${urlStr}`;
+  }
+};
+
 // Safe in-memory fallback for localStorage in sandboxed iframes
 const memoryStorage: Record<string, string> = {};
 const localStorage = {
@@ -82,14 +124,18 @@ if (typeof window !== "undefined") {
     if (pixelId) {
       const extId = getExternalId();
       const initUserData: any = { external_id: extId };
-
+ 
       // Enrich initial loading parameters with stored validated user details if present
       try {
         const info = localStorage.getItem('customer_checkout_info');
         if (info) {
           const stored = JSON.parse(info);
-          if (stored.email) initUserData.em = stored.email;
-          if (stored.phone) initUserData.ph = stored.phone;
+          if (stored.email && !isPlaceholderOrBusinessEmail(stored.email)) {
+            initUserData.em = stored.email;
+          }
+          if (stored.phone && !isPlaceholderOrBusinessPhone(stored.phone)) {
+            initUserData.ph = stored.phone;
+          }
           if (stored.name) {
             initUserData.fn = stored.name.split(' ')[0];
             initUserData.ln = stored.name.split(' ').slice(1).join(' ');
@@ -98,12 +144,12 @@ if (typeof window !== "undefined") {
           if (stored.zip) initUserData.zp = stored.zip;
         }
       } catch (e) {}
-
+ 
       (window as any).fbq("init", pixelId, initUserData);
       console.log(`[Pixel Tracker] Initialized on client with ID: ${pixelId} and matched user data`);
     }
   };
-
+ 
   // Defer initialization to avoid main thread blockage during startup
   const delayInit = () => {
     const run = () => {
@@ -111,14 +157,14 @@ if (typeof window !== "undefined") {
       (window as any)._fbq_initialized = true;
       initMetaPixel();
     };
-
+ 
     // Fallback if no activity is detected within a reasonable timeframe (lab audits)
     if ('requestIdleCallback' in window) {
       window.requestIdleCallback(() => setTimeout(run, 1500));
     } else {
       setTimeout(run, 2000);
     }
-
+ 
     // Trigger on first human interaction
     const triggerEvents = ["mousedown", "keypress", "touchstart", "scroll"];
     const triggerLoader = () => {
@@ -127,10 +173,10 @@ if (typeof window !== "undefined") {
     };
     triggerEvents.forEach((ev) => window.addEventListener(ev, triggerLoader, { passive: true }));
   };
-
+ 
   delayInit();
 }
-
+ 
 // Dynamically updates Meta Pixel user properties matching the active session
 export const updateTrackerUserData = (userData: { email?: string; phone?: string; name?: string; city?: string; zip?: string }) => {
   if (typeof window !== "undefined") {
@@ -138,21 +184,25 @@ export const updateTrackerUserData = (userData: { email?: string; phone?: string
     if (pixelId && (window as any).fbq) {
       const extId = getExternalId();
       const pixelUserData: any = { external_id: extId };
-      if (userData.email) pixelUserData.em = userData.email;
-      if (userData.phone) pixelUserData.ph = userData.phone;
+      if (userData.email && !isPlaceholderOrBusinessEmail(userData.email)) {
+        pixelUserData.em = userData.email;
+      }
+      if (userData.phone && !isPlaceholderOrBusinessPhone(userData.phone)) {
+        pixelUserData.ph = userData.phone;
+      }
       if (userData.name) {
         pixelUserData.fn = userData.name.split(' ')[0];
         pixelUserData.ln = userData.name.split(' ').slice(1).join(' ');
       }
       if (userData.city) pixelUserData.ct = userData.city;
       if (userData.zip) pixelUserData.zp = userData.zip;
-
+ 
       (window as any).fbq("init", pixelId, pixelUserData);
       console.log("[Pixel Tracker] User properties updated dynamically.");
     }
   }
 };
-
+ 
 // Dynamic deduplicated PageView tracking on SPA transitions
 export const trackPageView = (path: string) => {
   if (typeof window !== "undefined") {
@@ -160,7 +210,7 @@ export const trackPageView = (path: string) => {
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
     const extId = getExternalId();
-
+ 
     // Fetch stored user data for PageView tracking
     let storedUserData: any = {};
     try {
@@ -168,6 +218,10 @@ export const trackPageView = (path: string) => {
       if (info) storedUserData = JSON.parse(info);
     } catch (e) {}
 
+    // Ensure we do not send default, mock, placeholder or business email/phone numbers
+    const validEmail = storedUserData.email && !isPlaceholderOrBusinessEmail(storedUserData.email) ? storedUserData.email : undefined;
+    const validPhone = storedUserData.phone && !isPlaceholderOrBusinessPhone(storedUserData.phone) ? storedUserData.phone : undefined;
+ 
     // Server-Side Conversions API PageView Trigger
     fetch(getApiUrl("api/sys-metric"), {
       method: "POST",
@@ -175,13 +229,13 @@ export const trackPageView = (path: string) => {
       body: JSON.stringify({
         event_name: "PageView",
         event_id: eventId,
-        event_source_url: window.location.origin + path,
+        event_source_url: getProductionizedUrl(window.location.origin + path),
         user_data: {
           fbp,
           fbc,
           external_id: extId,
-          em: storedUserData.email || undefined,
-          ph: storedUserData.phone || undefined,
+          em: validEmail,
+          ph: validPhone,
           fn: storedUserData.name ? storedUserData.name.split(' ')[0] : undefined,
           ln: storedUserData.name ? storedUserData.name.split(' ').slice(1).join(' ') : undefined,
           ct: storedUserData.city || undefined,
@@ -189,12 +243,74 @@ export const trackPageView = (path: string) => {
         }
       })
     }).catch(err => console.warn("[CAPI PageView Error]", err));
-
+ 
     // Browser Multi-Channel Meta Pixel trigger
     if ((window as any).fbq) {
       (window as any).fbq('track', 'PageView', {}, { eventID: eventId });
     }
   }
+};
+ 
+interface AdvancedMatchingData {
+  em?: string;
+  ph?: string;
+  fn?: string;
+  ln?: string;
+  ct?: string;
+  st?: string;
+  zp?: string;
+  country?: string;
+}
+ 
+export const getAdvancedMatchingData = (): AdvancedMatchingData => {
+  const data: AdvancedMatchingData = {
+    country: "in" // Default to India
+  };
+  try {
+    const info = localStorage.getItem('customer_checkout_info');
+    if (info) {
+      const stored = JSON.parse(info);
+      if (stored.email && !isPlaceholderOrBusinessEmail(stored.email)) {
+        data.em = stored.email.trim();
+      }
+      if (stored.phone && !isPlaceholderOrBusinessPhone(stored.phone)) {
+        data.ph = stored.phone.trim();
+      }
+      if (stored.name) {
+        const nameParts = stored.name.trim().split(/\s+/);
+        data.fn = nameParts[0] || "";
+        data.ln = nameParts.slice(1).join(" ") || "";
+      }
+      if (stored.city) {
+        data.ct = stored.city.trim();
+        // Fallback for state mapping
+        const cityLower = data.ct.toLowerCase();
+        if (cityLower.includes("nagpur") || cityLower.includes("mumbai") || cityLower.includes("pune") || cityLower.includes("nashik")) {
+          data.st = "maharashtra";
+        } else if (cityLower.includes("delhi")) {
+          data.st = "delhi";
+        } else if (cityLower.includes("bangalore") || cityLower.includes("bengaluru")) {
+          data.st = "karnataka";
+        } else if (cityLower.includes("hyderabad")) {
+          data.st = "telangana";
+        } else if (cityLower.includes("chennai")) {
+          data.st = "tamil nadu";
+        } else if (cityLower.includes("kolkata")) {
+          data.st = "west bengal";
+        } else {
+          data.st = "maharashtra"; // Default state fallback since stores are centered in Nagpur, MH
+        }
+      } else {
+        data.st = "maharashtra"; // Default state fallback
+      }
+      if (stored.zip) data.zp = stored.zip.trim();
+    } else {
+      data.st = "maharashtra";
+    }
+  } catch (e) {
+    console.warn("[Tracking] Error retrieving user matching data:", e);
+  }
+  return data;
 };
 
 export const trackWhatsAppClick = () => {
@@ -233,6 +349,13 @@ export const trackViewContent = (product: any) => {
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
     const extId = getExternalId();
+    const userMatch = getAdvancedMatchingData();
+
+    // Reinit Pixel to boost EMQ before track
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384";
+    if ((window as any).fbq) {
+      (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
+    }
 
     // Server CAPI Post (Task #8)
     fetch(getApiUrl("api/sys-metric"), {
@@ -248,8 +371,8 @@ export const trackViewContent = (product: any) => {
         content_ids: [pId],
         contents: [{ id: pId, quantity: 1 }],
         num_items: 1,
-        event_source_url: window.location.href,
-        user_data: { fbp, fbc, external_id: extId }
+        event_source_url: getProductionizedUrl(window.location.href),
+        user_data: { fbp, fbc, external_id: extId, ...userMatch }
       })
     }).catch(err => console.warn("[CAPI ViewContent Error]", err));
 
@@ -308,6 +431,13 @@ export const trackAddToCart = (product: any, quantity: number = 1) => {
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
     const extId = getExternalId();
+    const userMatch = getAdvancedMatchingData();
+
+    // Reinit Pixel to boost EMQ before track
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384";
+    if ((window as any).fbq) {
+      (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
+    }
 
     // Server CAPI Post (Task #8)
     fetch(getApiUrl("api/sys-metric"), {
@@ -323,8 +453,8 @@ export const trackAddToCart = (product: any, quantity: number = 1) => {
         content_ids: [pId],
         contents: [{ id: pId, quantity: quantity }],
         num_items: quantity,
-        event_source_url: window.location.href,
-        user_data: { fbp, fbc, external_id: extId }
+        event_source_url: getProductionizedUrl(window.location.href),
+        user_data: { fbp, fbc, external_id: extId, ...userMatch }
       })
     }).catch(err => console.warn("[CAPI AddToCart Error]", err));
 
@@ -382,13 +512,13 @@ export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
     const extId = getExternalId();
+    const userMatch = getAdvancedMatchingData();
 
-    // Retrieve local stored client info to upgrade Event Match Quality (Task #9)
-    let storedUserData: any = {};
-    try {
-      const info = localStorage.getItem('customer_checkout_info');
-      if (info) storedUserData = JSON.parse(info);
-    } catch (e) {}
+    // Reinit Pixel to boost EMQ before track
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384";
+    if ((window as any).fbq) {
+      (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
+    }
 
     // Server CAPI Post (Task #8)
     fetch(getApiUrl("api/sys-metric"), {
@@ -404,17 +534,12 @@ export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
         content_ids: itemIds,
         contents: items.map(item => ({ id: item.sku || item.id, quantity: item.quantity || 1 })),
         num_items: items.reduce((total, item) => total + (item.quantity || 1), 0),
-        event_source_url: window.location.href,
+        event_source_url: getProductionizedUrl(window.location.href),
         user_data: {
           fbp,
           fbc,
           external_id: extId,
-          em: storedUserData.email || undefined,
-          ph: storedUserData.phone || undefined,
-          fn: storedUserData.name ? storedUserData.name.split(' ')[0] : undefined,
-          ln: storedUserData.name ? storedUserData.name.split(' ').slice(1).join(' ') : undefined,
-          ct: storedUserData.city || undefined,
-          zp: storedUserData.zip || undefined
+          ...userMatch
         }
       })
     }).catch(err => console.warn("[CAPI InitiateCheckout Error]", err));
@@ -480,12 +605,13 @@ export const trackPurchase = (totalValue: number, items: any[], transactionId: s
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
     const extId = getExternalId();
+    const userMatch = getAdvancedMatchingData();
 
-    let storedUserData: any = {};
-    try {
-      const info = localStorage.getItem('customer_checkout_info');
-      if (info) storedUserData = JSON.parse(info);
-    } catch (e) {}
+    // Reinit Pixel to boost EMQ before track
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384";
+    if ((window as any).fbq) {
+      (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
+    }
 
     // Server CAPI Post (Task #8 & #9)
     fetch(getApiUrl("api/sys-metric"), {
@@ -501,17 +627,12 @@ export const trackPurchase = (totalValue: number, items: any[], transactionId: s
         content_ids: itemIds,
         contents: items.map(item => ({ id: item.sku || item.id, quantity: item.quantity || 1 })),
         num_items: items.length,
-        event_source_url: window.location.href,
+        event_source_url: getProductionizedUrl(window.location.href),
         user_data: {
           fbp,
           fbc,
           external_id: extId,
-          em: storedUserData.email || undefined,
-          ph: storedUserData.phone || undefined,
-          fn: storedUserData.name ? storedUserData.name.split(' ')[0] : undefined,
-          ln: storedUserData.name ? storedUserData.name.split(' ').slice(1).join(' ') : undefined,
-          ct: storedUserData.city || undefined,
-          zp: storedUserData.zip || undefined
+          ...userMatch
         }
       })
     }).catch(err => console.warn('Meta CAPI Purchase error:', err));
@@ -639,5 +760,117 @@ export const trackSelectItem = (product: any) => {
         }]
       }
     });
+  }
+};
+
+export const trackLead = (userData?: { email?: string; phone?: string; name?: string; city?: string; zip?: string }) => {
+  if (typeof window !== "undefined") {
+    if (userData) {
+      try {
+        const existing = localStorage.getItem('customer_checkout_info');
+        const parsed = existing ? JSON.parse(existing) : {};
+        localStorage.setItem('customer_checkout_info', JSON.stringify({
+          ...parsed,
+          email: userData.email || parsed.email || "",
+          phone: userData.phone || parsed.phone || "",
+          name: userData.name || parsed.name || "",
+          city: userData.city || parsed.city || "",
+          zip: userData.zip || parsed.zip || ""
+        }));
+      } catch (e) {}
+    }
+
+    const eventId = `ld_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
+    const extId = getExternalId();
+    const userMatch = getAdvancedMatchingData();
+
+    // Reinit Pixel to boost EMQ before track
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384";
+    if ((window as any).fbq) {
+      (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
+    }
+
+    // Server-Side CAPI
+    fetch(getApiUrl("api/sys-metric"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event_name: "Lead",
+        event_id: eventId,
+        event_source_url: getProductionizedUrl(window.location.href),
+        user_data: {
+          fbp,
+          fbc,
+          external_id: extId,
+          ...userMatch
+        }
+      })
+    }).catch(err => console.warn("[CAPI Lead Error]", err));
+
+    // Pixel track
+    if ((window as any).fbq) {
+      (window as any).fbq('track', 'Lead', {
+        content_name: 'Lead Capture Form',
+        currency: 'INR',
+        value: 60
+      }, { eventID: eventId });
+    }
+  }
+};
+
+export const trackContact = (userData?: { email?: string; phone?: string; name?: string; city?: string; zip?: string }) => {
+  if (typeof window !== "undefined") {
+    if (userData) {
+      try {
+        const existing = localStorage.getItem('customer_checkout_info');
+        const parsed = existing ? JSON.parse(existing) : {};
+        localStorage.setItem('customer_checkout_info', JSON.stringify({
+          ...parsed,
+          email: userData.email || parsed.email || "",
+          phone: userData.phone || parsed.phone || "",
+          name: userData.name || parsed.name || "",
+          city: userData.city || parsed.city || "",
+          zip: userData.zip || parsed.zip || ""
+        }));
+      } catch (e) {}
+    }
+
+    const eventId = `ct_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
+    const extId = getExternalId();
+    const userMatch = getAdvancedMatchingData();
+
+    // Reinit Pixel to boost EMQ before track
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384";
+    if ((window as any).fbq) {
+      (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
+    }
+
+    // Server-Side CAPI
+    fetch(getApiUrl("api/sys-metric"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event_name: "Contact",
+        event_id: eventId,
+        event_source_url: getProductionizedUrl(window.location.href),
+        user_data: {
+          fbp,
+          fbc,
+          external_id: extId,
+          ...userMatch
+        }
+      })
+    }).catch(err => console.warn("[CAPI Contact Error]", err));
+
+    // Pixel track
+    if ((window as any).fbq) {
+      (window as any).fbq('track', 'Contact', {
+        content_name: 'Contact Form Inquiry'
+      }, { eventID: eventId });
+    }
   }
 };

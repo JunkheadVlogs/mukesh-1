@@ -128,10 +128,18 @@ function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string 
   
   let targetUrl = imageUrl;
   if (imageUrl.includes('drive.google.com')) {
-    const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
-    if (driveIdMatch) {
-      const fileId = driveIdMatch[1];
-      targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    let fileId = '';
+    const idMatch = imageUrl.match(/[?&]id=([^&]+)/);
+    if (idMatch) {
+      fileId = idMatch[1];
+    } else {
+      const dMatch = imageUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (dMatch) {
+        fileId = dMatch[1];
+      }
+    }
+    if (fileId) {
+      targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
     }
   } else if (imageUrl.includes('lh3.googleusercontent.com')) {
     targetUrl = imageUrl.split('=')[0]; // strip existing params
@@ -161,10 +169,18 @@ function getSquarePrerenderImageUrl(imageUrl: string | undefined): string {
   }
 
   if (targetUrl.includes('drive.google.com')) {
-    const driveIdMatch = targetUrl.match(/[?&]id=([^&]+)/);
-    if (driveIdMatch) {
-      const fileId = driveIdMatch[1];
-      targetUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    let fileId = '';
+    const idMatch = targetUrl.match(/[?&]id=([^&]+)/);
+    if (idMatch) {
+      fileId = idMatch[1];
+    } else {
+      const dMatch = targetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (dMatch) {
+        fileId = dMatch[1];
+      }
+    }
+    if (fileId) {
+      targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
     }
   } else if (targetUrl.includes('lh3.googleusercontent.com')) {
     targetUrl = targetUrl.split('=')[0]; // strip existing params
@@ -515,7 +531,7 @@ async function runPrerender() {
 
   // 3. GENERATE PRODUCT PAGES (dist/product/[slug]/index.html)
   console.log("[PRERENDER] Processing product pages...");
-  for (const p of products.slice(0, 5)) {
+  for (const p of products) {
     if (p.isHidden) continue;
     if (!p.slug) continue;
 
@@ -662,7 +678,7 @@ async function runPrerender() {
     `;
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
-    const wsrvImgSquare = getSquarePrerenderImageUrl(p.image);
+    const wsrvImgLandscape = getWhatsAppSafePrerenderImageUrl(p.image);
     const shortDesc = getWhatsAppSafePrerenderDescription(p.description || "", p).replace(/\|/g, "").trim();
     const mrpPart = p.originalPrice ? ` (MRP ₹${p.originalPrice})` : "";
     const prodDesc = `✨ ${shortDesc} | 💰 ₹${p.price}${mrpPart} | 🚚 Free Shipping | Cash on Delivery Available`;
@@ -678,17 +694,18 @@ async function runPrerender() {
     const dynamicTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="${sanitize(pageTitle)}" />
     <meta property="og:description" content="${sanitize(prodDesc)}" />
-    <meta property="og:image" content="${wsrvImgSquare}" />
+    <meta property="og:image" content="${wsrvImgLandscape}" />
+    <meta property="og:image:secure_url" content="${wsrvImgLandscape}" />
     <meta property="og:url" content="${originalUrl}" />
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${sanitize(pageTitle)}" />
     <meta name="twitter:description" content="${sanitize(prodDesc)}" />
-    <meta name="twitter:image" content="${wsrvImgSquare}" />
+    <meta name="twitter:image" content="${wsrvImgLandscape}" />
     <link rel="canonical" href="${originalUrl}" />
     <!-- End Dynamic OG Tags -->`;
 

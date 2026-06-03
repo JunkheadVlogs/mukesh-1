@@ -2,7 +2,7 @@
 /**
  * Mukesh Saree Centre - Meta Conversions API (CAPI) & Metric Dispatcher Endpoint
  * File: sys-metric.php
- * Path: public_html/api/sys-metric.php
+ * Path: public/api/sys-metric.php
  */
 
 // 1. Include security credential configurations
@@ -73,57 +73,6 @@ if (empty($pixel_id) || empty($access_token)) {
     exit();
 }
 
-// Helper functions to identify and remove placeholders or business profiles in PHP environment
-function is_placeholder_or_business_email($email) {
-    if (empty($email)) return true;
-    $clean = strtolower(trim(strval($email)));
-    return (
-        $clean === 'info@mukeshsarees.com' ||
-        $clean === 'test@gmail.com' ||
-        $clean === 'test@example.com' ||
-        $clean === 'example@example.com' ||
-        strpos($clean, 'mukeshsaree') !== false
-    );
-}
-
-function is_placeholder_or_business_phone($phone) {
-    if (empty($phone)) return true;
-    $digits = preg_replace('/\D/', '', strval($phone));
-    return (
-        $digits === '9170206646' ||
-        $digits === '917020664641' ||
-        $digits === '7020664641' ||
-        $digits === '1234567890' ||
-        $digits === '9999999999' ||
-        $digits === '0000000000' ||
-        strlen($digits) < 10
-    );
-}
-
-function get_productionized_url($url_str) {
-    if (empty($url_str)) return 'https://mukeshsarees.com/';
-    $parsed = @parse_url($url_str);
-    if ($parsed === false || empty($parsed)) {
-        return $url_str;
-    }
-    $host = isset($parsed['host']) ? $parsed['host'] : '';
-    if (strpos($host, 'run.app') !== false || strpos($host, 'localhost') !== false || $host === '127.0.0.1') {
-        $parsed['host'] = 'mukeshsarees.com';
-        $parsed['scheme'] = 'https';
-        if (isset($parsed['port'])) {
-            unset($parsed['port']);
-        }
-    }
-    // Rebuild URL
-    $scheme   = isset($parsed['scheme']) ? $parsed['scheme'] . '://' : '';
-    $host     = isset($parsed['host']) ? $parsed['host'] : '';
-    $port     = isset($parsed['port']) ? ':' . $parsed['port'] : '';
-    $path     = isset($parsed['path']) ? $parsed['path'] : '';
-    $query    = isset($parsed['query']) ? '?' . $parsed['query'] : '';
-    $fragment = isset($parsed['fragment']) ? '#' . $parsed['fragment'] : '';
-    return "$scheme$host$port$path$query$fragment";
-}
-
 // Helper function to hash user fields with timing-safe SHA-256 for privacy compliance 
 function normalize_and_hash($field_val) {
     if (empty($field_val)) return null;
@@ -145,29 +94,50 @@ $user_data = [
 // Hash any provided contact/identity tracking details
 $client_user_data = isset($data['user_data']) ? $data['user_data'] : [];
 if (is_array($client_user_data)) {
-    if (isset($client_user_data['em']) && !is_placeholder_or_business_email($client_user_data['em'])) {
-        $user_data['em'] = normalize_and_hash($client_user_data['em']);
+    if (isset($client_user_data['em'])) {
+        $em_hash = normalize_and_hash($client_user_data['em']);
+        if ($em_hash) $user_data['em'] = [$em_hash];
     }
-    if (isset($client_user_data['ph']) && !is_placeholder_or_business_phone($client_user_data['ph'])) {
-        $phone_val = $client_user_data['ph'];
-        $numeric_phone = preg_replace('/\D/', '', strval($phone_val));
-        if (strlen($numeric_phone) === 10) {
-            $numeric_phone = '91' . $numeric_phone;
+    if (isset($client_user_data['ph'])) {
+        $phone_clean = preg_replace('/\D/', '', $client_user_data['ph']);
+        if (strlen($phone_clean) === 10) {
+            $phone_clean = '91' . $phone_clean;
         }
-        $user_data['ph'] = normalize_and_hash($numeric_phone);
+        $ph_hash = normalize_and_hash($phone_clean);
+        if ($ph_hash) $user_data['ph'] = [$ph_hash];
     }
-    if (isset($client_user_data['fn'])) $user_data['fn'] = normalize_and_hash($client_user_data['fn']);
-    if (isset($client_user_data['ln'])) $user_data['ln'] = normalize_and_hash($client_user_data['ln']);
-    if (isset($client_user_data['ct'])) $user_data['ct'] = normalize_and_hash($client_user_data['ct']);
-    if (isset($client_user_data['st'])) $user_data['st'] = normalize_and_hash($client_user_data['st']);
-    if (isset($client_user_data['zp'])) $user_data['zp'] = normalize_and_hash($client_user_data['zp']);
-    if (isset($client_user_data['country'])) $user_data['country'] = normalize_and_hash($client_user_data['country']);
+    if (isset($client_user_data['fn'])) {
+        $fn_hash = normalize_and_hash($client_user_data['fn']);
+        if ($fn_hash) $user_data['fn'] = [$fn_hash];
+    }
+    if (isset($client_user_data['ln'])) {
+        $ln_hash = normalize_and_hash($client_user_data['ln']);
+        if ($ln_hash) $user_data['ln'] = [$ln_hash];
+    }
+    if (isset($client_user_data['ct'])) {
+        $ct_hash = normalize_and_hash($client_user_data['ct']);
+        if ($ct_hash) $user_data['ct'] = [$ct_hash];
+    }
+    if (isset($client_user_data['st'])) {
+        $st_hash = normalize_and_hash($client_user_data['st']);
+        if ($st_hash) $user_data['st'] = [$st_hash];
+    }
+    if (isset($client_user_data['zp'])) {
+        $zp_hash = normalize_and_hash($client_user_data['zp']);
+        if ($zp_hash) $user_data['zp'] = [$zp_hash];
+    }
+    if (isset($client_user_data['country'])) {
+        $country_hash = normalize_and_hash($client_user_data['country']);
+        if ($country_hash) $user_data['country'] = [$country_hash];
+    } else {
+        $user_data['country'] = [normalize_and_hash('in')];
+    }
     
     // Cookie trackers
     if (isset($client_user_data['fby'])) $user_data['fby'] = $client_user_data['fby'];
     if (isset($client_user_data['fbc'])) $user_data['fbc'] = $client_user_data['fbc'];
     if (isset($client_user_data['fbp'])) $user_data['fbp'] = $client_user_data['fbp'];
-    if (isset($client_user_data['external_id'])) $user_data['external_id'] = $client_user_data['external_id'];
+    if (isset($client_user_data['external_id'])) $user_data['external_id'] = trim($client_user_data['external_id']);
 }
 
 // Resolve fallback values for cookies if missing
@@ -199,7 +169,7 @@ $facebook_event = [
     "event_name" => $event_name,
     "event_time" => time(),
     "event_id" => $event_id ? $event_id : "evt_" . uniqid(),
-    "event_source_url" => get_productionized_url($event_source_url ? $event_source_url : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '')),
+    "event_source_url" => $event_source_url ? $event_source_url : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''),
     "action_source" => "website",
     "user_data" => $user_data
 ];
