@@ -54,7 +54,17 @@ export default function ThankYou() {
     if (stateCoupon) {
       localStorage.setItem("msc_last_order_coupon", stateCoupon);
     }
-  }, [stateOrderId, stateTotal, stateCart, stateCustomer, stateCoupon]);
+    if (location.state?.paymentStatus === "Paid") {
+      const currentOrderId = stateOrderId || localStorage.getItem("msc_last_order_id");
+      localStorage.setItem("msc_last_order_payment_status", "Paid");
+      if (currentOrderId) {
+        localStorage.setItem(`msc_order_paid_${currentOrderId}`, "true");
+      }
+    }
+    if (location.state?.paymentId) {
+      localStorage.setItem("msc_last_order_payment_id", location.state.paymentId);
+    }
+  }, [stateOrderId, stateTotal, stateCart, stateCustomer, stateCoupon, location.state]);
 
   // Retrieve state with robust, fail-safe backups
   const orderId = stateOrderId || localStorage.getItem("msc_last_order_id") || `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -96,15 +106,38 @@ export default function ThankYou() {
   const discountAmount = subtotal - displayTotal;
 
   const queryParams = new URLSearchParams(location.search);
+  
   const isPaidOnline = 
     queryParams.get("success") === "true" || 
     queryParams.get("payment") === "success" || 
     queryParams.has("razorpay_payment_id") ||
+    location.state?.paymentStatus === "Paid" ||
+    localStorage.getItem(`msc_order_paid_${orderId}`) === "true" ||
     localStorage.getItem("msc_last_order_payment_status") === "Paid";
 
-  // Check if they paid successfully via Razorpay Payment Handle
+  const razorpayPaymentId = 
+    queryParams.get("razorpay_payment_id") || 
+    location.state?.paymentId || 
+    localStorage.getItem("msc_last_order_payment_id") || 
+    "Paid via Razorpay";
+
+  // Force local persistence on checkout complete
+  useEffect(() => {
+    if (isPaidOnline && orderId) {
+      localStorage.setItem("msc_last_order_payment_status", "Paid");
+      localStorage.setItem(`msc_order_paid_${orderId}`, "true");
+      if (location.state?.paymentId) {
+        localStorage.setItem("msc_last_order_payment_id", location.state.paymentId);
+      } else if (queryParams.get("razorpay_payment_id")) {
+        localStorage.setItem("msc_last_order_payment_id", queryParams.get("razorpay_payment_id")!);
+      }
+    }
+  }, [isPaidOnline, orderId, location.state, queryParams]);
+
+  // Check if they paid successfully via Razorpay Payment Handle or inline modal
   useEffect(() => {
     const isSuccessfulPayment = 
+      isPaidOnline ||
       queryParams.get("success") === "true" || 
       queryParams.get("payment") === "success" ||
       queryParams.has("razorpay_payment_id") ||
@@ -113,8 +146,10 @@ export default function ThankYou() {
     if (isSuccessfulPayment && orderId) {
       const hasBeenMarkedPaid = localStorage.getItem(`msc_paid_submitted_${orderId}`);
       if (!hasBeenMarkedPaid) {
+        console.log(`[PAYMENT ACTION LOG] Payment success detected on ThankYou page for Order: ${orderId}. Launching database and spreadsheet sync...`);
         // Mark as Paid on checkout backup log
         localStorage.setItem("msc_last_order_payment_status", "Paid");
+        localStorage.setItem(`msc_order_paid_${orderId}`, "true");
         
         const updateSheetsData = async () => {
           try {
@@ -153,14 +188,16 @@ export default function ThankYou() {
               paymentMethod: 'Pay Online (Razorpay Handle)',
               status: 'Confirmed',         // Order Status = Confirmed
               paymentStatus: 'Paid',       // Payment Status = Paid
-              paymentId: queryParams.get("razorpay_payment_id") || 'Paid via Handle',
+              paymentId: razorpayPaymentId,
               timestamp: istTime,
             };
 
             await Promise.any([
               submitToGoogleSheets(googleSheetsData),
               sendOrderToSheets(googleSheetsData)
-            ]).catch(err => console.warn("Background sheet update failed:", err));
+            ]).then(() => {
+              console.log(`[PAYMENT ACTION LOG] Spreadsheet successfully updated with PAID status. Order: ${orderId}`);
+            }).catch(err => console.warn("Background sheet update failed:", err));
 
             localStorage.setItem(`msc_paid_submitted_${orderId}`, "true");
           } catch (err) {
@@ -170,7 +207,7 @@ export default function ThankYou() {
         updateSheetsData();
       }
     }
-  }, [orderId, customer, cart, displayTotal, couponUsed, rawSavedCustomer, rawSavedCart]);
+  }, [orderId, isPaidOnline, customer, cart, displayTotal, couponUsed, rawSavedCustomer, rawSavedCart, razorpayPaymentId]);
 
   // Render mock values to guarantee a premium visual preview when entered empty/direct
   const isDemo = cart.length === 0;
@@ -650,6 +687,16 @@ export default function ThankYou() {
 
       <div className="max-w-3xl mx-auto z-10 relative">
         
+        {isPaidOnline && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="no-print mb-6 p-4 bg-[#2D452F] text-amber-50 rounded-sm text-center text-xs sm:text-sm font-semibold tracking-wide shadow-md border border-[#2D452F]/20 flex items-center justify-center gap-2 animate-bounce-short"
+          >
+            <span className="text-sm">🎉</span> Your order has been placed successfully and payment has been received.
+          </motion.div>
+        )}
+
         {/* SUCCESS HEADER - HIDDEN ON PRINT */}
         <div className="no-print text-center mb-6 md:mb-8">
           <motion.div 
@@ -724,18 +771,30 @@ export default function ThankYou() {
           <motion.div
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="no-print mb-6 p-4 sm:p-5 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 border border-emerald-500/20 rounded-sm text-emerald-800 text-left flex items-start gap-3.5 shadow-sm bg-white"
+            className="no-print mb-6 p-5 bg-gradient-to-r from-emerald-50/40 to-teal-50/40 border border-emerald-600/20 rounded-sm text-emerald-900 text-left flex items-start gap-3.5 shadow-sm bg-white"
           >
-            <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0 text-emerald-600">
-              <CheckCircle2 size={18} strokeWidth={2} />
+            <div className="w-9 h-9 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0 text-emerald-600">
+              <CheckCircle2 size={20} strokeWidth={2.5} />
             </div>
-            <div className="flex-grow space-y-1">
-              <h4 className="text-sm font-bold text-emerald-950 font-serif leading-none">
-                Payment Confirmed Successfully
+            <div className="flex-grow space-y-2">
+              <h4 className="text-sm font-bold text-emerald-950 font-serif leading-none flex items-center gap-1.5">
+                ✅ Payment Successful
               </h4>
-              <p className="text-xs text-emerald-900/80 leading-relaxed font-sans">
-                Thank you! Your payment of <strong>₹{displayTotal.toLocaleString("en-IN")}</strong> via Razorpay Online has been received and verified. Your order is <strong>Confirmed</strong> and your payment status is <strong>Paid</strong>.
+              <p className="text-xs text-emerald-950/80 leading-relaxed font-sans">
+                Thank you for your payment. Your online transaction has been completely secured and verified.
               </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 pt-2.5 border-t border-emerald-600/10 text-xs font-mono text-emerald-900/95">
+                <div>
+                  <span className="text-emerald-950/50">Order ID:</span> <strong className="font-semibold">{orderId}</strong>
+                </div>
+                <div>
+                  <span className="text-emerald-950/50">Payment ID:</span> <strong className="font-semibold break-all">{razorpayPaymentId}</strong>
+                </div>
+                <div>
+                  <span className="text-emerald-950/50">Payment Status:</span> <strong className="font-semibold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded">Paid</strong>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

@@ -127,7 +127,15 @@ function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string 
   if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
   
   let targetUrl = imageUrl;
-  if (imageUrl.includes('drive.google.com')) {
+  
+  if (imageUrl.includes('wsrv.nl')) {
+    const match = imageUrl.match(/[?&]url=([^&]+)/);
+    if (match) {
+      targetUrl = decodeURIComponent(match[1]);
+    }
+  }
+
+  if (targetUrl.includes('drive.google.com')) {
     let fileId = '';
     const idMatch = imageUrl.match(/[?&]id=([^&]+)/);
     if (idMatch) {
@@ -141,19 +149,11 @@ function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string 
     if (fileId) {
       targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
     }
-  } else if (imageUrl.includes('lh3.googleusercontent.com')) {
-    targetUrl = imageUrl.split('=')[0]; // strip existing params
+  } else if (targetUrl.includes('lh3.googleusercontent.com')) {
+    targetUrl = targetUrl.split('=')[0]; // strip existing params
   }
   
-  if (targetUrl.includes('wsrv.nl')) {
-    return targetUrl
-      .replace(/w=\d+/, 'w=1200')
-      .replace(/h=\d+/, 'h=630')
-      .replace(/fit=[a-z]+/, 'fit=cover')
-      .replace('output=webp', 'output=jpg');
-  } else {
-    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
-  }
+  return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=1200&fit=contain&bg=ffffff&cbg=ffffff&output=jpg&q=90`;
 }
 
 function getSquarePrerenderImageUrl(imageUrl: string | undefined): string {
@@ -700,7 +700,7 @@ async function runPrerender() {
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:height" content="1200" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${sanitize(pageTitle)}" />

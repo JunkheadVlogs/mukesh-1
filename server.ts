@@ -239,6 +239,7 @@ apiRouter.post("/submit-order", async (req, res) => {
   try {
     const rawUrl = process.env.VITE_GOOGLE_SHEETS_URL || process.env.VITE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
     const urlStr = rawUrl.trim().replace(/^['"]|['"]$/g, '');
+    console.log(`[PAYMENT ACTION LOG] [SERVER] Order Submission update. Order ID: ${req.body.orderId || 'no-id'}, Status: ${req.body.status || 'N/A'}, Payment Status: ${req.body.paymentStatus || 'N/A'}`);
     console.log(`[PROXY] Submitting order to Google Sheets... (${req.body.orderId || 'no-id'})`);
     
     const postData = JSON.stringify(req.body);
@@ -378,7 +379,9 @@ apiRouter.post('/create-order', async (req, res) => {
     const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "gswtW1QzFFe7fxP1YJ0EhqRG").trim();
     
     const keyMode = currentKeyId.startsWith("rzp_test_") ? "TEST MODE" : "LIVE MODE";
-    console.log(`[RAZORPAY DEBUG] Mode: ${keyMode} | Key ID: ${currentKeyId ? `${currentKeyId.substring(0, 8)}...` : "UNDEFINED"} | Secret: ${currentKeySecret ? "DEFINED" : "UNDEFINED"}`);
+    const clientOrderId = req.body.notes?.order_id || "N/A";
+    const clientAmount = req.body.amount || "N/A";
+    console.log(`[PAYMENT ACTION LOG] [SERVER] Starting Razorpay order creation. Client Order ID: ${clientOrderId}, Amount: INR ${clientAmount}, Mode: ${keyMode}`);
 
     if (!currentKeyId || !currentKeySecret) {
       console.error("[RAZORPAY ERROR] Missing RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET in environment variables.");
@@ -411,9 +414,9 @@ apiRouter.post('/create-order', async (req, res) => {
       notes: req.body.notes || {}
     };
 
-    console.log(`[RAZORPAY DEBUG] Creating order with options:`, JSON.stringify(options));
+    console.log(`[PAYMENT ACTION LOG] [SERVER] Creating Razorpay order with parameters:`, JSON.stringify(options));
     const order = await rzp.orders.create(options);
-    console.log(`[RAZORPAY DEBUG] Order created successfully:`, order.id);
+    console.log(`[PAYMENT ACTION LOG] [SERVER] Razorpay order created successfully on gateway. Server Order ID: ${order.id}`);
     
     // Return key back to prevent client/server key mismatch
     res.json({
@@ -441,13 +444,15 @@ apiRouter.post('/create-order', async (req, res) => {
 apiRouter.post("/verify-payment", (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    console.log(`[PAYMENT ACTION LOG] [SERVER] Payment verification request received. Razorpay Order ID: ${razorpay_order_id}, Payment ID: ${razorpay_payment_id}`);
+    
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     
     const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p").trim();
     const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "gswtW1QzFFe7fxP1YJ0EhqRG").trim();
     
     if (!currentKeySecret) {
-      console.error("[RAZORPAY ERROR] Missing RAZORPAY_KEY_SECRET for payment verification");
+      console.error("[PAYMENT ACTION LOG] [SERVER] [RAZORPAY ERROR] Missing RAZORPAY_KEY_SECRET for payment verification");
       return res.status(500).json({ success: false, error: "Razorpay Key Secret not configured" });
     }
 
@@ -456,13 +461,14 @@ apiRouter.post("/verify-payment", (req, res) => {
                                .digest("hex");
     
     if (razorpay_signature === expectedSign) {
+      console.log(`[PAYMENT ACTION LOG] [SERVER] Signature matched! Payment ${razorpay_payment_id} successfully verified.`);
       res.json({ success: true, message: "Payment verified successfully" });
     } else {
-      console.error("[RAZORPAY ERROR] Signature verification failed. Expected vs Received mismatch.");
+      console.error("[PAYMENT ACTION LOG] [SERVER] [RAZORPAY ERROR] Signature verification failed. Expected vs Received signature hash mismatch.");
       res.status(400).json({ success: false, error: "Invalid signature verified" });
     }
   } catch (error) {
-    console.error("Signature Verification Error:", error);
+    console.error("[PAYMENT ACTION LOG] [SERVER] Signature verification exception:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 });
@@ -812,13 +818,21 @@ const getWhatsAppSafeServerImageUrl = (imageUrl) => {
   if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
   
   let targetUrl = imageUrl;
-  if (imageUrl.includes('drive.google.com')) {
+  
+  if (imageUrl.includes('wsrv.nl')) {
+    const match = imageUrl.match(/[?&]url=([^&]+)/);
+    if (match) {
+      targetUrl = decodeURIComponent(match[1]);
+    }
+  }
+
+  if (targetUrl.includes('drive.google.com')) {
     let fileId = '';
-    const idMatch = imageUrl.match(/[?&]id=([^&]+)/);
+    const idMatch = targetUrl.match(/[?&]id=([^&]+)/);
     if (idMatch) {
       fileId = idMatch[1];
     } else {
-      const dMatch = imageUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      const dMatch = targetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (dMatch) {
         fileId = dMatch[1];
       }
@@ -826,19 +840,11 @@ const getWhatsAppSafeServerImageUrl = (imageUrl) => {
     if (fileId) {
       targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
     }
-  } else if (imageUrl.includes('lh3.googleusercontent.com')) {
-    targetUrl = imageUrl.split('=')[0]; // strip existing params
+  } else if (targetUrl.includes('lh3.googleusercontent.com')) {
+    targetUrl = targetUrl.split('=')[0]; // strip existing params
   }
   
-  if (targetUrl.includes('wsrv.nl')) {
-    return targetUrl
-      .replace(/w=\d+/, 'w=1200')
-      .replace(/h=\d+/, 'h=630')
-      .replace(/fit=[a-z]+/, 'fit=cover')
-      .replace('output=webp', 'output=jpg');
-  } else {
-    return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
-  }
+  return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=1200&fit=contain&bg=ffffff&cbg=ffffff&output=jpg&q=90`;
 };
 
 const getSquareServerImageUrl = (imageUrl) => {
@@ -976,7 +982,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta property="og:type" content="${isProduct ? 'product' : 'website'}" />
      <meta property="og:site_name" content="Mukesh Saree Centre" />
      <meta property="og:image:width" content="1200" />
-     <meta property="og:image:height" content="630" />
+     <meta property="og:image:height" content="${isProduct ? '1200' : '630'}" />
      <meta property="og:image:type" content="image/jpeg" />
      <meta name="twitter:card" content="summary_large_image" />
      <meta name="twitter:title" content="${ogTitle}" />
