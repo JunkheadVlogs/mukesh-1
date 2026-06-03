@@ -77,7 +77,7 @@ app.use((req, res, next) => {
 });
 
 const RAZORPAY_KEY_ID = (process.env.RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p").trim();
-const RAZORPAY_KEY_SECRET = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
+const RAZORPAY_KEY_SECRET = (process.env.RAZORPAY_KEY_SECRET || "gswtW1QzFFe7fxP1YJ0EhqRG").trim();
 
 let razorpay = null;
 try {
@@ -309,7 +309,7 @@ apiRouter.post("/submit-order", async (req, res) => {
 apiRouter.post('/create-razorpay-order', async (req, res) => {
   try {
     const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p").trim();
-    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
+    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "gswtW1QzFFe7fxP1YJ0EhqRG").trim();
     
     // Log configuration details safely for debugging
     const keyMode = currentKeyId.startsWith("rzp_test_") ? "TEST MODE" : "LIVE MODE";
@@ -373,7 +373,7 @@ apiRouter.post('/create-razorpay-order', async (req, res) => {
 apiRouter.post('/create-order', async (req, res) => {
   try {
     const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p").trim();
-    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
+    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "gswtW1QzFFe7fxP1YJ0EhqRG").trim();
     
     const keyMode = currentKeyId.startsWith("rzp_test_") ? "TEST MODE" : "LIVE MODE";
     console.log(`[RAZORPAY DEBUG] Mode: ${keyMode} | Key ID: ${currentKeyId ? `${currentKeyId.substring(0, 8)}...` : "UNDEFINED"} | Secret: ${currentKeySecret ? "DEFINED" : "UNDEFINED"}`);
@@ -442,7 +442,7 @@ apiRouter.post("/verify-payment", (req, res) => {
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     
     const currentKeyId = (process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p").trim();
-    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "Xl5dAr611y4jLqhVfUQ6xa7k").trim();
+    const currentKeySecret = (process.env.RAZORPAY_KEY_SECRET || "gswtW1QzFFe7fxP1YJ0EhqRG").trim();
     
     if (!currentKeySecret) {
       console.error("[RAZORPAY ERROR] Missing RAZORPAY_KEY_SECRET for payment verification");

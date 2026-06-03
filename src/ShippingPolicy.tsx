@@ -1,6 +1,7 @@
 import { SEO } from './components/SEO';
 import { Truck, Clock, MapPin, Coins } from 'lucide-react';
 import { getWhatsAppNumber } from './config';
+import { Breadcrumbs } from './components/Breadcrumbs';
 
 export default function ShippingPolicy() {
   return (
@@ -12,6 +13,10 @@ export default function ShippingPolicy() {
           url="/shipping-policy"
         />
         
+        <div className="mb-4">
+          <Breadcrumbs />
+        </div>
+
         <div className="text-center mb-4 md:mb-5">
           <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-2">Shipping & Delivery</h1>
           <div className="w-12 h-[1px] bg-gold-200 mx-auto"></div>

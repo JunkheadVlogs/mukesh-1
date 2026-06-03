@@ -12,6 +12,7 @@ import { Product, useStore } from "./store";
 import QuickViewModal from "./QuickViewModal";
 import { SEO } from "./components/SEO";
 import { trackViewItemList } from "./tracking";
+import { Breadcrumbs } from "./components/Breadcrumbs";
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -246,6 +247,9 @@ export default function Shop() {
         className="shop-container max-w-[1600px] mx-auto pt-[8px] sm:pt-6 md:pt-10 pb-8 mt-0 w-full"
         style={{ minHeight: "auto" }}
       >
+        <div className="px-2 md:px-0">
+          <Breadcrumbs />
+        </div>
         {/* ROW 1: Shop All Heading */}
         <div style={{ margin: "8px 0", padding: "0 8px" }}>
           <h1

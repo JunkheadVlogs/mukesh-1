@@ -1,7 +1,30 @@
+# Mukesh Saree Centre - Complete Hostinger Public HTML .htaccess Configuration
+# For URL rewriting, SEO optimizations, security headers, and compression
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
+  # =========================================================================
+  # OPTION A: ROUTE ALL PRODUCT VIEWS THROUGH product.php (BEST MULTIPURPOSE)
+  # =========================================================================
+  # This serves the SEO/OG tags to bots and normal users alike, while launching the React SPA.
+  # If you want to use Option A, make sure the line below is UNCOMMENTED:
+  RewriteRule ^product/([^/]+)/?$ product.php?slug=$1 [QSA,L]
+
+  # =========================================================================
+  # OPTION C: HYBRID BOT ROUTING (FASTER LOADS FOR CUSTOMERS - BOTS USE PHP)
+  # =========================================================================
+  # To use "Option C", comment out the RewriteRule under "Option A", and uncomment the rules below.
+  # This detects bots/scrapers and directs them to product.php, while rendering static HTML for humans.
+  #
+  # RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit|WhatsApp|twitterboot|slackbot|telegrambot|Pinterest|googlebot) [NC]
+  # RewriteRule ^product/([^/]+)/?$ product.php?slug=$1 [QSA,L]
+
+
+  # Default rule to skip rewriting index.html directly
   RewriteRule ^index\.html$ - [L]
+
   # Exclude API routes from redirecting to index.html
   RewriteCond %{REQUEST_URI} !^/api/ [NC]
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -9,12 +32,12 @@
   RewriteRule . /index.html [L]
 </IfModule>
 
-# Enable GZIP Compression
+# Enable high-performance GZIP Compression for fast load times on Hostinger
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript application/json application/vnd.ms-fontobject application/x-font-ttf image/svg+xml
 </IfModule>
 
-# Browser Caching
+# Browser Caching policies for production performance
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/jpeg "access plus 1 year"
@@ -24,11 +47,10 @@
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType text/css "access plus 1 year"
   ExpiresByType application/javascript "access plus 1 year"
-  ExpiresByType application/x-font-woff2 "access plus 1 year"
   ExpiresByType text/html "access plus 1 day"
 </IfModule>
 
-# Security Headers and Cache Control
+# Secure headers to protect customer interactions
 <IfModule mod_headers.c>
   <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
@@ -40,4 +62,6 @@
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
+
+# Restrict critical files from direct browser access
 RewriteRule ^\.builds - [F,L]

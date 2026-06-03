@@ -45,6 +45,7 @@ import {
 } from "./components/UrgencyWidget";
 import { ProductReviews } from "./components/ProductReviews";
 import { TrustBadges } from "./components/TrustBadges";
+import { Breadcrumbs } from "./components/Breadcrumbs";
 
 const getImageSrc = (rawImageUrl: any): string => {
   if (!rawImageUrl) return '';
@@ -494,11 +495,7 @@ export default function ProductPage() {
       await finalizeBuyNowOrder("Cash on Delivery");
     } else {
       try {
-        const key = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_Sw0OjZoidQe04p";
-        
-        if (!key) {
-          throw new Error("Online payment configuration is missing. Please choose Cash on Delivery or contact support.");
-        }
+        setIsSubmittingOrder(true);
 
         if (!(window as any).Razorpay) {
           const loaded = await new Promise((resolve) => {
@@ -510,17 +507,49 @@ export default function ProductPage() {
             document.body.appendChild(script);
           });
           if (!loaded) {
-            throw new Error("Razorpay SDK failed to load. Please try again.");
+            throw new Error("Razorpay SDK failed to load. Please check your internet connection.");
           }
         }
 
+        // Create the order on the backend to get a valid order_id + correct live key
+        const res = await fetch("/api/create-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            amount: totalAmount,
+            notes: {
+              product_name: product.name,
+              size: selectedSize || "Standard",
+              coupon_used: appliedCoupon || "None",
+              customer_name: checkoutForm.fullName,
+              customer_phone: checkoutForm.mobileNumber
+            }
+          })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || "Failed to create payment order on the server. Please choose Cash on Delivery or contact support.");
+        }
+
+        const orderData = await res.json();
+        const serverKey = orderData.key;
+        const serverOrderId = orderData.id || orderData.orderId;
+
+        if (!serverKey) {
+          throw new Error("Razorpay Client Key is not configured on the server.");
+        }
+
         const options = {
-          key: key,
-          amount: totalAmount * 100,
-          currency: "INR",
+          key: serverKey,
+          amount: orderData.amount,
+          currency: orderData.currency || "INR",
           name: "Mukesh Saree Centre",
           description: `${product.name} | Size: ${selectedSize || "Standard"}`,
           image: product.image.startsWith("http") ? product.image : `https://mukeshsarees.com${product.image.startsWith("/") ? "" : "/"}${product.image}`,
+          order_id: serverOrderId,
           prefill: {
             name: checkoutForm.fullName,
             email: checkoutForm.email || "",
@@ -793,41 +822,7 @@ export default function ProductPage() {
       />
 
       <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0 md:pt-2">
-        <div className="breadcrumb-wrapper">
-          <nav className="breadcrumb">
-            <Link
-              to="/"
-            >
-              Home
-            </Link>
-            <span className="separator">/</span>
-            <Link
-              to="/shop"
-            >
-              Shop
-            </Link>
-            <span className="separator">/</span>
-            <Link
-              to={`/shop?category=${product.category === "Linen Sarees" ? "Sarees" : product.category}`}
-            >
-              {product.category === "Linen Sarees" ? "Sarees" : product.category}
-            </Link>
-            {product.category === "Linen Sarees" && (
-              <>
-                <span className="separator">/</span>
-                <Link
-                  to="/shop?category=Linen Sarees"
-                >
-                  Linen Sarees
-                </Link>
-              </>
-            )}
-            <span className="separator">/</span>
-            <span className="current-page">
-              {product.name}
-            </span>
-          </nav>
-        </div>
+        <Breadcrumbs />
 
         <div className="flex flex-col lg:flex-row gap-2 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
@@ -848,7 +843,7 @@ export default function ProductPage() {
             >
               <img
                 src={getImageSrc(productImages[activeImageIndex])}
-                alt={getImageAlt(product)}
+                alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
                 className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
               />
               <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-[var(--color-bg)]/90 backdrop-blur-md p-3 shadow-sm text-[var(--color-dark)]/70 opacity-0 group-hover:opacity-100 transition-all z-10 hidden md:block rounded-full hover:text-[var(--color-dark)]">
@@ -1004,21 +999,9 @@ export default function ProductPage() {
                   </div>
 
                   <div className="buttons-group">
-                    <button
-                      onClick={handleShare}
-                      className="share-btn border border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface)] text-[var(--color-dark)] transition-colors"
-                      aria-label="Share product"
-                      title="Share product link"
-                    >
-                      <Share2 size={16} strokeWidth={1.5} />
-                    </button>
-
                     <a
                       href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                        `✨ *${product.name}*\n` +
-                        `💰 ₹${product.price}${((product as any).mrp || product.originalPrice) ? ` (MRP ₹${(product as any).mrp || product.originalPrice})` : ''}\n` +
-                        `${cleanDescriptionForOG(product.description)}\n\n` +
-                        `🛒 Order here: https://mukeshsarees.com/product/${product.slug}`
+                        `https://mukeshsarees.com/product/${product.slug}`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -1134,7 +1117,7 @@ export default function ProductPage() {
                       >
                         <OptimizedImage
                           src={v.image}
-                          alt={v.color}
+                          alt={`${product.name} in ${v.color} Color option - Mukesh Saree Centre Nagpur`}
                           width={150}
                           className={`w-full h-full object-contain object-center transition-all duration-500 ${v.slug === slug ? "" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"}`}
                         />
@@ -1343,7 +1326,7 @@ export default function ProductPage() {
               <OptimizedImage
                 src={productImages[activeImageIndex]}
                 width={1200}
-                alt={getImageAlt(product)}
+                alt={productImages.length > 1 ? `${getImageAlt(product)} - Fullscreen View ${activeImageIndex + 1} of ${productImages.length}` : `${getImageAlt(product)} - Fullscreen View`}
                 className="w-full h-full max-h-[95vh] md:w-auto md:h-auto md:max-h-[90vh] object-contain object-center md:rounded-sm md:shadow-2xl pointer-events-auto will-change-transform transform-gpu"
                 onClick={(e: any) => e.stopPropagation()}
               />
@@ -1427,7 +1410,7 @@ export default function ProductPage() {
                 <OptimizedImage
                   src={showAddedToast.customImg || product.image}
                   width={100}
-                  alt={getImageAlt(product)}
+                  alt={`${getImageAlt(product)} - Added to Bag Successfully`}
                   className="w-full h-full object-contain object-center will-change-transform transform-gpu"
                 />
               </div>
@@ -1655,7 +1638,7 @@ export default function ProductPage() {
                   <OptimizedImage
                     src={product.image}
                     width={200}
-                    alt={product.name}
+                    alt={`${getImageAlt(product)} - Order Summary`}
                     className="w-full h-full object-cover object-top animate-fade-in"
                   />
                 </div>

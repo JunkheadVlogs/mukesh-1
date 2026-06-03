@@ -1,6 +1,7 @@
 import { SEO } from './components/SEO';
 import { ShieldCheck, RefreshCcw } from 'lucide-react';
 import { Link } from 'react-router';
+import { Breadcrumbs } from './components/Breadcrumbs';
 
 export default function ReturnPolicy() {
   return (
@@ -12,6 +13,10 @@ export default function ReturnPolicy() {
           url="/return-policy"
         />
         
+        <div className="mb-4">
+          <Breadcrumbs />
+        </div>
+
         <div className="text-center mb-4 md:mb-5">
           <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-2">Returns & Exchanges</h1>
           <div className="w-12 h-[1px] bg-gold-200 mx-auto"></div>

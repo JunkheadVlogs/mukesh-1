@@ -273,34 +273,6 @@ export default function Checkout() {
             timeZone: "Asia/Kolkata",
           });
 
-          const googleSheetsData = {
-            type: 'order' as const,
-            orderId: newOrderId,
-            firstName: fullName,
-            customerName: fullName,
-            phone: mobileNumber,
-            mobileNumber: mobileNumber,
-            email: email || "N/A",
-            address: streetAddress,
-            streetAddress: streetAddress,
-            city: city,
-            zip: zipCode,
-            zipCode: zipCode,
-            productName: productName,
-            amount: total,
-            totalAmount: total.toString(),
-            size: size,
-            sku: sku,
-            color: color,
-            couponUsed: activeCoupon || 'None',
-            source: 'Payment Handle Checkout',
-            paymentMethod: 'Pay Online (Razorpay Handle)',
-            status: 'Confirmed',        // Requirement 5: Set Order Status = Confirmed
-            paymentStatus: 'Pending',   // Requirement 7: If payment is cancelled, set Payment Status = Pending
-            paymentId: 'Pending Handle Payment',
-            timestamp: istTime,
-          };
-
           // Save backup state to localStorage for absolute reliability when returning
           localStorage.setItem("msc_last_order_id", newOrderId);
           localStorage.setItem("msc_last_order_total", total.toString());
@@ -318,40 +290,96 @@ export default function Checkout() {
           localStorage.setItem("msc_last_order_coupon", activeCoupon || "None");
           localStorage.setItem("msc_last_order_payment_status", "Pending");
 
-          // Submit order to Google Sheets
-          const submitPromise = submitToGoogleSheets(googleSheetsData);
-          const directSubmitPromise = sendOrderToSheets(googleSheetsData);
-          const timeoutPromise = new Promise((resolve) => setTimeout(() => resolve({ status: "timeout" }), 1600));
+          // Ensure Razorpay script is loaded dynamically
+          const sdkLoaded = await loadRazorpay();
+          if (!sdkLoaded || !(window as any).Razorpay) {
+            throw new Error("Razorpay SDK failed to load. Please check your internet connection and try again.");
+          }
 
-          await Promise.race([
-            Promise.allSettled([submitPromise, directSubmitPromise]),
-            timeoutPromise
-          ]).catch((err) => {
-            console.warn("Google Sheet submission failed on checkout page, continuing to redirect:", err);
+          // Create the order on the server
+          const res = await fetch("/api/create-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              amount: total,
+              notes: {
+                order_id: newOrderId,
+                customer_name: fullName,
+                customer_phone: mobileNumber,
+                items: productName
+              }
+            })
           });
 
-          // Clear the active cart
-          const cartBackup = [...cart];
-          clearCart();
+          if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.error || "Failed to create payment order on the server. Please match server keys or choose Cash on Delivery.");
+          }
 
-          // Fire Meta Pixel Purchase Initiate event if any
+          const orderData = await res.json();
+          const serverKey = orderData.key;
+          const serverOrderId = orderData.id || orderData.orderId;
+
+          if (!serverKey) {
+            throw new Error("Razorpay Client Key is not configured on the server.");
+          }
+
+          // Fire Meta Pixel Initiate Checkout event
           const fbq = (window as any).fbq;
           if (typeof fbq !== 'undefined') {
             fbq('track', 'InitiateCheckout', {
               value: total,
               currency: 'INR',
-              content_ids: cartBackup.map((i: any) => i.id)
+              content_ids: cart.map((i: any) => i.id)
             });
           }
 
-          // Smoothly redirect to Razorpay handle
-          setIsSubmitting(false);
-          const razorpayUrl = `https://razorpay.me/@Mukeshsareecentre`;
-          window.location.href = razorpayUrl;
+          // Initialize Razorpay Options
+          const options = {
+            key: serverKey,
+            amount: orderData.amount,
+            currency: orderData.currency || "INR",
+            name: "Mukesh Saree Centre",
+            description: `Order ${newOrderId}`,
+            order_id: serverOrderId,
+            prefill: {
+              name: fullName,
+              email: email || "",
+              contact: mobileNumber
+            },
+            theme: { color: "#C8A96E" },
+            handler: async (response: any) => {
+              console.log("Online payment successful:", response.razorpay_payment_id);
+              await finalizeOrder(true, "Paid ✅", response.razorpay_payment_id || "Paid");
+            },
+            modal: {
+              ondismiss: () => {
+                setIsSubmitting(false);
+                console.log("Razorpay payment modal dismissed by user");
+              },
+              escape: true,
+              backdropclose: false
+            }
+          };
+
+          const rzp = new (window as any).Razorpay(options);
+          
+          rzp.on("payment.failed", function(response: any) {
+            console.error("Razorpay payment failed:", response.error);
+            alert(
+              "Payment failed: " + (response.error.description || "Unknown error") + 
+              "\n\nPlease try again or choose Cash on Delivery."
+            );
+            setIsSubmitting(false);
+          });
+
+          rzp.open();
         } catch (err: any) {
-          console.error("Online payment redirection failed:", err);
+          console.error("Online payment initialization failed:", err);
           setIsSubmitting(false);
-          setSubmitError("Failed to initiate online payment. Please try again or choose Cash on Delivery.");
+          setSubmitError(err?.message || "Failed to initiate online payment. Please try again or choose Cash on Delivery.");
         }
       } else {
         await finalizeOrder();

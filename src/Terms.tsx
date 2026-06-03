@@ -1,4 +1,5 @@
 import { SEO } from './components/SEO';
+import { Breadcrumbs } from './components/Breadcrumbs';
 
 export default function Terms() {
   return (
@@ -10,6 +11,10 @@ export default function Terms() {
           url="/terms"
         />
         
+        <div className="mb-4">
+          <Breadcrumbs />
+        </div>
+
         <div className="text-center mb-4 md:mb-5">
           <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-2">Terms & Conditions</h1>
           <div className="w-12 h-[1px] bg-gold-200 mx-auto"></div>

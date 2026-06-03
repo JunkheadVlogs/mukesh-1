@@ -196,10 +196,10 @@ export function SEO({
       targetUrl = targetUrl.split('=')[0]; // strip existing params
     }
 
-    // Exact requested format: https://wsrv.nl/?url=PRODUCT_IMAGE_URL&w=1200&h=1200&fit=contain&cbg=ffffff&output=jpg&q=90
-    displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=1200&fit=contain&cbg=ffffff&output=jpg&q=90`;
+    // Optimized 1200x630 format to show the full vertical image without cropping or cutoffs on WhatsApp & social platforms
+    displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=contain&cbg=ffffff&output=jpg&q=90`;
     finalImageWidth = "1200";
-    finalImageHeight = "1200";
+    finalImageHeight = "630";
     imageType = "image/jpeg";
   } else {
     // Standard logic

@@ -460,5 +460,12 @@
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Rani Red Fendy Space Silk Saree – Bollywood Glam Look in Minutes! is made from soft, pr",
     "image": "https://ik.imagekit.io/tus1loev9/product/fendy/ranired.webp",
     "price": "1299"
+  },
+  {
+    "name": "Payment Test Product",
+    "slug": "payment-test-product",
+    "description": "DESCRIPTION: This is a secure, hidden payment testing product configured specifically for live environment transaction validation, gateway handshake v",
+    "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
+    "price": "1"
   }
 ]
