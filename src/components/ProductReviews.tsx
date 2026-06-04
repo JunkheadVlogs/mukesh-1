@@ -20,183 +20,157 @@ const firstFemaleNames = [
   "Sneha", "Pooja", "Aarti", "Neha", "Kavita", "Priyanka", "Ritu", "Meenal", "Anjali", "Shruti", 
   "Divya", "Meera", "Nandini", "Kavya", "Swati", "Simran", "Roshni", "Vidya", "Sujata", "Pallavi", 
   "Anita", "Isha", "Bhavna", "Kriti", "Smriti", "Sakshi", "Tanya", "Geeta", "Sunita", "Jyoti", 
-  "Kiran", "Shalini", "Meenakshi", "Priya", "Komal", "Vandana", "Aiswarya", "Radha", "Nikita", "Payal"
+  "Kiran", "Shalini", "Meenakshi", "Priya", "Komal", "Vandana", "Aiswarya", "Radha", "Nikita", "Payal",
+  "Priti", "Deepa", "Deepika", "Kajal", "Sapna", "Amrita", "Kiran", "Madhu", "Shweta", "Megha",
+  "Varsha", "Rekha", "Rupa", "Preeti", "Monika", "Sheela", "Nisha", "Sweta", "Aruna", "Neetu"
 ];
 
 const lastFemaleNames = [
   "Kulkarni", "Sharma", "Verma", "Joshi", "Rao", "Patil", "Singh", "Deshmukh", "Kapoor", "Nair", 
   "Iyer", "Chatterjee", "Sen", "Reddy", "Bhatia", "Kaur", "Gupta", "Desai", "Agarwal", "Roy", 
   "Patel", "Mehta", "Shah", "Chauhan", "Saxena", "Pillai", "Shinde", "Mishra", "Pandey", "Majumdar", 
-  "Hegde", "Sundaram", "Nambiar", "Bose", "Solanki", "Pathak", "Menon", "Krishnan", "Vyas", "Dutta"
+  "Hegde", "Sundaram", "Nambiar", "Bose", "Solanki", "Pathak", "Menon", "Krishnan", "Vyas", "Dutta",
+  "Raturi", "Trivedi", "Dwivedi", "Tripathi", "Dubey", "Shukla", "Pandey", "Chaturvedi", "Bannerjee", "Mukherjee",
+  "Malhotra", "Kapoor", "Nanda", "Khanna", "Chopra", "Chawla", "Bhasin", "Sareen", "Mehra", "Sethi"
 ];
 
 const cities = [
-  "Mumbai, Maharashtra",
-  "Pune, Maharashtra",
-  "Bangalore, Karnataka",
-  "New Delhi, Delhi",
-  "Ahmedabad, Gujarat",
-  "Surat, Gujarat",
-  "Chennai, Tamil Nadu",
-  "Hyderabad, Telangana",
-  "Kolkata, West Bengal",
-  "Jaipur, Rajasthan",
-  "Lucknow, UP",
-  "Gurugram, Haryana",
-  "Indore, MP",
-  "Nagpur, Maharashtra",
+  "Nagpur, Maharashtra", "Mumbai, Maharashtra", "Pune, Maharashtra", "Bangalore, Karnataka", 
+  "New Delhi, Delhi", "Ahmedabad, Gujarat", "Surat, Gujarat", "Chennai, Tamil Nadu", 
+  "Hyderabad, Telangana", "Kolkata, West Bengal", "Jaipur, Rajasthan", "Lucknow, Uttar Pradesh", 
+  "Gurugram, Haryana", "Indore, Madhya Pradesh", "Nashik, Maharashtra", "Thane, Maharashtra",
+  "Bhopal, MP", "Kanpur, UP", "Patna, Bihar", "Vadodara, Gujarat", "Ludhiana, Punjab"
 ];
 
 const trustSignals = [
-  "Purchased for Cousin's Wedding",
+  "Purchased for Bride's Wedding Trouseau",
   "Purchased for Grah Pravesh Puja",
-  "Purchased for Office Wear",
-  "Purchased for Gifting Mother",
-  "Purchased for Rakhi Festival",
-  "Purchased for Semi-Formal Meet",
+  "Purchased for Office Festival Celebration",
+  "Purchased for Gifting Mother's Birthday",
+  "Purchased for Raksha Bandhan",
+  "Purchased for Friend's Sangeet Ceremony",
+  "Purchased for Diwali Family Dinner",
+  "Purchased for Kitty Party Wear",
+  "Purchased for Reception Ceremony"
 ];
 
-const tissueSareeReviews = [
-  "The gold-silver metallic sheen on this tissue saree is absolutely elegant! It has that perfect crisp, slightly structured drape for weddings.",
-  "Very lightweight tissue with such a beautiful shimmer under the lights. It stands perfectly as pleats and holds shape beautifully.",
-  "Loved the crisp sheen and floral print base. It gives a highly rich and traditional look without feeling heavy at all.",
-  "Draped this for my niece's engagement ceremony. Got many lovely compliments on the shiny, slightly stiff fabric finish.",
-  "Traditional yet modern. The shimmer is highly sophisticated, and the border finish is extremely neat and crisp.",
-  "Perfect for family puja. The material is structured and has a majestic look. Paired with gold jewelry, it feels royal.",
-  "The printed flowers look extremely bright against the metallic base. Extremely elegant choice for evening functions.",
-  "Very neat styling and lightweight tissue drape. Best part is it doesn't itch or prick at any place, quite high-grade.",
-  "Beautiful silver border lustre. It holds its lines and folds very sharply, letting you carry it hassle-free for long events."
+const sareeReviewTemplates = [
+  "Absolutely in love with the drape of this {fabric} saree! The {color} shade looks incredibly royal and has a beautiful shimmer under any lighting. Perfect for family weddings.",
+  "The texture of this {fabric} material is buttery soft. I purchased the {color} variant, and the real-life luster exceeded my expectations. Extremely lightweight to carry.",
+  "Beautiful craft! It holds pleats very sharply and has a perfect, natural fall. Draped it for my cousin's wedding reception and received so many elegant compliments.",
+  "Excellent quality. ❤️",
+  "Mukesh Saree Centre has the best collection. I was hesitant to buy {fabric} online, but the quality of this {color} saree is top-notch. Quick delivery of 3 days to Mumbai.",
+  "Simply gorgeous look and very subtle borders. Paired this with standard gold jewelry for a Grah Pravesh puja, and it looked so festive. Highly premium weave.",
+  "Nice {fabric} fabric and perfect {color} tone. Happy customer.",
+  "Incredibly comfortable to wear for long functions. The unstitched blouse piece provided is of high-quality matching fabric and is of generous standard length. Must buy!",
+  "This {color} {fabric} saree is a masterpiece. The weaving density is high, making it highly durable yet extremely light. No bulky feeling on the shoulders at all.",
+  "So lightweight and easy to carry all day! The subtle lustre on the border line is highly sophisticated and doesn't itch or poke. Authentic Indian elegance.",
+  "Truly boutique-grade material. The Mukesh team on WhatsApp was also very prompt in helping me select this {color} shade. Highly recommended for premium buyer.",
+  "Perfect festive addition! The fabric breathes naturally, and the design pattern looks very traditional yet sleek.",
+  "My mother loved this gift! She is extremely fond of {fabric} sarees, and she remarked that the {color} hue is highly unique and traditional.",
+  "High quality weave. Feels very royal.",
+  "Everything about this {fabric} saree is amazing—from the fast shipping to Nagpur to the stellar texture. It has that crisp, clean finish that stays secure without sliding.",
+  "Extremely graceful fall and traditional charm. It has a beautiful rich look but is very easy to carry for long hours.",
+  "Beautiful colored tassels and neat borders. Extremely happy with the purchase. Zero color fading or issues.",
+  "Simply flawless drape! The sheen under evening hall lights has a majestic quality. Will definitely buy more designs from this store.",
+  "A perfect 10/10 heritage piece. The {color} base and {fabric} texture make it look incredibly expensive.",
+  "Highly elegant and premium quality saree. Perfect experience."
 ];
 
-const linenSareeReviews = [
-  "The soft linen is highly breathable and light. Best comfort for my long day shifts at the college without feeling heavy.",
-  "Very lightweight linen. Loved the soft authentic linen texture and the lovely colored tassels at the end of the pallu.",
-  "Perfect for warm climates. The fabric is extremely breathable and holds pleating very quickly.",
-  "Beautiful artistic print quality and very subtle corporate color palette. Extremely graceful for office wear and casual dinners.",
-  "Very comfortable everyday saree. The soft linen cotton blend drapes naturally on the shoulders without look puffy.",
-  "Beautifully done borders and tassels. Needs just a light iron steam to look extremely professional and clean.",
-  "Subtle elegant wear. Draping is a five-minute job as the texture stays completely secure without sliding.",
-  "Extremely airy, lightweight and durable fabric. Perfect for regular semi-formal events and office meetings.",
-  "Classic linen texture with neat prints. Holds up the pleats strongly throughout the day with zero discomfort."
-];
-
-const softSilkSareeReviews = [
-  "The fabric is buttery smooth and drapes like an absolute dream! It has a gorgeous royal soft silk luster.",
-  "Extremely rich look and very soft touch. It drapes so beautifully, hugging the body nicely for family weddings.",
-  "Quite lightweight silk compared to heavy kanchipurams, making it very comfortable to wear for historical pujas.",
-  "Loved the intricate zari weaving patterns. The border is highly smooth and the pallu design is extremely majestic.",
-  "Wore it for the reception puja. My mother loved the soft texture so much she is planning to borrow it immediately.",
-  "Stunning vibrant color and rich royal touch. Highly premium soft silk selection with a lovely matching unstitched blouse.",
-  "Very elegant traditional fall. The fabric doesn't look bulky and remains soft and smooth against the skin all evening.",
-  "Subtle shine with highly durable weaving. Draped perfectly with minimal pins and garnered so many elegant compliments."
-];
-
-const coOrdSetReviews = [
-  "The fit of this co-ord set is perfect! The cotton fabric is extremely breathable for humid summer afternoons.",
-  "Pants length is perfect for average Indian height, and the waistband elastic is very comfortable on the stomach.",
-  "Perfect daily casual outfit. The material is airy, stitching is very clean, and color doesn't fade upon washing.",
-  "Extremely stylish tunic design! Stitching around collar and buttons has a premium boutique tailoring feel.",
-  "Very classy professional look for work or day-out with friends. Fabric feels extremely premium and light.",
-  "Smart and highly comfortable co-ord. Doesn't crush much even after hours of sitting in the office.",
-  "Loved the modern floral pattern and neat finish. Matching pants are stylish and comfortable for travel too."
-];
-
-const generalSareeReviews = [
-  "Very gracefull fall and comfortable fabric. The print borders are highly neat, giving a classy traditional look.",
-  "Excellent print quality and identical color tone as displayed in the website listings. Happy experience.",
-  "Very elegant and lightweight! Perfect choice for family get-togethers and domestic festivals.",
-  "Beautiful print and nice fabric texture. Extremely easy to carry for whole day functions without fatigue.",
-  "Drapes very cleanly and holds pleats secure. Matching unstitched blouse is of perfect standard length.",
-  "Great option for gifting your mother or sister. The colors are highly sophisticated and elegant."
-];
-
-const dates = [
-  "2 days ago",
-  "3 days ago",
-  "5 days ago",
-  "1 week ago",
-  "12 days ago",
-  "15 days ago",
-  "3 weeks ago",
-  "1 month ago",
-  "2 months ago",
-  "Yesterday",
-  "4 days ago",
-  "6 days ago",
-  "2 weeks ago",
-  "1.5 months ago",
+const coordReviewTemplates = [
+  "The fit of this {category} is incredible! The {fabric} fabric is extremely breathable and perfect for humid summer afternoons. Fits like custom tailoring.",
+  "Such a smart look. I bought the {color} shade for office wear, and it looks highly professional and neat. Paired it with simple flats.",
+  "Fabric feels highly premium and lightweight. It doesn't crush easily even after hours of sitting in meetings. The {color} is very classy.",
+  "Extremely stylish and comfy!",
+  "My absolute favorite for traveling now. The {fabric} is so airy, and the trousers have a very comfortable soft elastic waistband that doesn't pinch.",
+  "Stitching around the collar and buttons is done with absolute perfection. Mukesh Saree Centre's boutique-grade craftsmanship shines in this {color} set.",
+  "Excellent fit and premium fabric quality. Highly recommend.",
+  "Love the modern contemporary silhouette of this outfit. It hides bloated days perfectly and drapes nicely on the shoulders. The {color} is exact as pictured.",
+  "This {color} {category} is an absolute summer essential. The material is so soft to touch and has a beautiful natural fall that doesn't cling.",
+  "Highly elegant! Washed it once already and there was completely zero color bleeding or shrinkage. True value for money.",
+  "Perfect addition to my workwear closet. Received so many beautiful compliments from my colleagues on the sleek sleeve design.",
+  "Super comfortable daily wear set. The {fabric} texture feels like second skin.",
+  "Got the package in just 2 days. The styling is highly classy and matches global boutique standards. Will definitely buy more patterns of this {category}.",
+  "Stunning style and very breezy fabric.",
+  "Highly impressed by the boutique tailoring of this {fabric} piece. The {color} color is highly sophisticated. Perfect size fit as per the chart.",
+  "Very classy premium look for casual dinners or brunch with friends. Easy to carry and style.",
+  "The pockets are a highly welcome and functional addition to these smart trousers! The styling details of this {color} set are very elegant.",
+  "Buttery soft and looks highly expensive. Extremely happy with my purchase of this {fabric} {category}.",
+  "Perfect fusion of style and absolute comfort. The {color} tone matches the web photos 100%.",
+  "Incredible boutique-grade product. Very happy with the comfort of this {category}."
 ];
 
 function generateReviews(product: Product): EnhancedReview[] {
   const seed = getSeededRandom(product.id + "-revs");
-  const count = (seed % 10) + 12; // 12 to 21 reviews for better feel
-  const reviews: EnhancedReview[] = [];
+  const stats = getProductReviewStats(product);
 
   const nameParts = (product.name || "").toLowerCase();
   const catParts = (product.category || "").toLowerCase();
   const fabricParts = (product.fabric || "").toLowerCase();
 
-  const isTissue = nameParts.includes("tissue") || fabricParts.includes("tissue");
-  const isLinen = nameParts.includes("linen") || fabricParts.includes("linen") || catParts.includes("linen");
-  const isSilk = nameParts.includes("silk") || fabricParts.includes("silk") || nameParts.includes("banarasi") || fabricParts.includes("banarasi");
-  const isCoOrd = catParts.includes("co-ord") || catParts.includes("kurti") || catParts.includes("suit") || catParts.includes("set");
+  const isCoOrd = catParts.includes("co-ord") || catParts.includes("kurti") || catParts.includes("suit") || catParts.includes("set") || catParts.includes("tunic");
+  const isSaree = !isCoOrd || catParts.includes("saree") || nameParts.includes("saree");
 
-  // Determine key review pool
-  let prodPool = [...generalSareeReviews];
-  if (isTissue) prodPool = [...tissueSareeReviews];
-  else if (isLinen) prodPool = [...linenSareeReviews];
-  else if (isSilk) prodPool = [...softSilkSareeReviews];
-  else if (isCoOrd) prodPool = [...coOrdSetReviews];
+  // Format category name for Co-Ord/Tunic sets logically
+  const categoryTerm = isCoOrd ? "co-ord set" : (product.category || "outfit").toLowerCase().replace(/s$/, "");
 
-  // Determine overall product rating roughly so generated reviews match
-  const stats = getProductReviewStats(product);
+  // Clear and premium formatting for colors and fabrics
+  let color = (product.color || "beautiful").trim();
+  if (color.toLowerCase() === "multi" || color.toLowerCase() === "multicolor" || color.toLowerCase() === "assorted") {
+    color = "matching";
+  }
+  
+  let fabric = (product.fabric || "premium").trim();
+  if (fabric.toLowerCase() === "fabric" || !fabric) {
+    fabric = "premium weave";
+  }
+
+  const count = stats.reviewCount;
+  const reviews: EnhancedReview[] = [];
 
   for (let i = 0; i < count; i++) {
     const s = Math.abs(seed + i * 997);
 
-    // Realistic Indian Female Name
-    const fname = firstFemaleNames[s % firstFemaleNames.length];
-    const lname = lastFemaleNames[(s * 3) % lastFemaleNames.length];
-    const author = `${fname} ${lname}`;
+    // Dynamic but deterministic combination of first and last names for 100% unique names
+    const firstIdx = (seed * 17 + i * 23 + i * 3) % firstFemaleNames.length;
+    const lastIdx = (seed * 19 + i * 29 + i * 11) % lastFemaleNames.length;
+    const author = `${firstFemaleNames[firstIdx]} ${lastFemaleNames[lastIdx]}`;
 
-    // Base review comment
-    let text = prodPool[s % prodPool.length];
-
-    // Append organic variations in lengths & details
-    if (s % 4 === 0) {
-      const extraDetails = [
-        " Delivery was incredibly fast to Pune, got it in just 3 days.",
-        " Got so many complaints from my neighbors during the society Diwali function!",
-        " Multiple relatives asked me for the website link today evening.",
-        " The WhatsApp support from Mukesh Saree Centre team was also very helpful regarding the shade selection.",
-        " Highly recommend this boutique if you want subtle, elegant designs that aren't too bright.",
-        " Best part is that the color is exactly the same royal tone as shown.",
-        " The unstitched blouse piece fabric is of high quality and sufficient for making trendy sleeve designs."
-      ];
-      text += extraDetails[s % extraDetails.length];
-    } else if (s % 7 === 0) {
-      const shortExtra = [
-        " Truly happy with it.",
-        " 🥰 Beautiful find.",
-        " Totally happy with my purchase.",
-        " Highly elegant.",
-        " ❤️ Beautiful print."
-      ];
-      text += shortExtra[s % shortExtra.length];
-    }
-
-    const date = dates[(s * 11) % dates.length];
-
-    // Most should be 5 stars, some 4 stars based on average
-    let rating = 5;
-    if (stats.rating < 4.8) {
-      rating = s % 8 > 5 ? 4 : 5;
+    // Select the template and perform replacements
+    let text = "";
+    if (isSaree) {
+      const templateIndex = i % sareeReviewTemplates.length;
+      text = sareeReviewTemplates[templateIndex];
     } else {
-      rating = s % 10 > 8 ? 4 : 5;
+      const templateIndex = i % coordReviewTemplates.length;
+      text = coordReviewTemplates[templateIndex];
     }
 
-    if (stats.rating < 4.6 && s % 12 === 0) {
-      rating = 4; // Use 4 stars dynamically for realistic distribution
+    // Replace placeholders safely
+    text = text
+      .replace(/{color}/g, color)
+      .replace(/{fabric}/g, fabric)
+      .replace(/{category}/g, categoryTerm);
+
+    // Natural dates spread across the last 6-12 months (roughly 15 to 365 days ago)
+    const currentDate = new Date(2026, 5, 4); // June 4, 2026
+    const dayOffset = 15 + ((s * 27) % 350); 
+    const revDate = new Date(currentDate.getTime() - dayOffset * 24 * 60 * 60 * 1000);
+    const date = revDate.toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+
+    // Rating distribution: mostly 5, some 4, very few 3, matching utils calculation
+    const mod = s % 15;
+    let rating = 5;
+    if (mod === 14) {
+      rating = 3;
+    } else if (mod >= 12) {
+      rating = 4;
+    } else {
+      rating = 5;
     }
 
     // Occasional city and trust signal
@@ -209,7 +183,7 @@ function generateReviews(product: Product): EnhancedReview[] {
       rating,
       date,
       text,
-      verified: s % 12 !== 0, // mostly verified
+      verified: s % 15 !== 0, // mostly verified
       city,
       trustSignal,
     });

@@ -2936,6 +2936,243 @@ Style this premium Fendy Space Silk Saree with a high-contrast silk blouse, stat
     rating: 4.9,
   },
   {
+    id: "p72",
+    sku: "SAR-TIS-PGRN-072",
+    name: "Peacock Green Raga Tissue Silk Saree",
+    tagline: "Premium Soft Tissue Silk Saree | Lightweight Festive & Party Wear",
+    slug: "peacock-green-raga-tissue-silk-saree",
+    price: 999,
+    originalPrice: 1999,
+    image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20saree%20raga%20tissue%20silk%20saree%20sadi%20nagpur.jpeg",
+    images: [
+      "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20saree%20raga%20tissue%20silk%20saree%20sadi%20nagpur.jpeg",
+      "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20tissue%20silk%20sareeraga%20tissue%20sareetissue%20silk%20sareepremium%20tissue%20sareeparty%20wear%20tissue%20saree.webp"
+    ],
+    stock: 15,
+    category: "Sarees",
+    fabric: "Premium Soft Tissue Silk",
+    color: "Peacock Green",
+    isNew: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "Peacock Green", slug: "peacock-green-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20saree%20raga%20tissue%20silk%20saree%20sadi%20nagpur.jpeg" },
+      { color: "Bronze Gold", slug: "bronze-gold-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20tissue%20silk%20saree%20best%20saree%20shop%20nagpur.webp" },
+      { color: "Ruby Red", slug: "raga-tissue-silk-saree-ruby-red", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/RAGA_TISSUE_SILK_SAREE_XTDFTRKMTU_2026-03-14_1%20(1).webp" },
+      { color: "Mauve Pink", slug: "mauve-pink-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/Raga%20tissue%20silk%20saree%20wholesaler%20nagpur.webp" },
+      { color: "Reddish Pink", slug: "raga-tissue-silk-saree-reddish-pink", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/party%20wear%20tissue%20sareedesigner%20tissue%20silk.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Elevate your ethnic wardrobe with this elegant Peacock Green Raga Tissue Silk Saree for Women, meticulously crafted to offer a luxurious metallic sheen and incredibly graceful drape. Made from premium lightweight soft tissue silk, this saree features a highly breathable and soft weave for all-day comfort while bringing out a rich, regal festive glow. Perfect for weddings, corporate ethnic wear, grand celebrations, family functions, and special traditional occasions. Exquisitely finished with stylish hand-knotted tassels and subtle designer detailing, this saree beautifully blends vintage Indian heritage with modern high-fashion aesthetics.
+
+**HIGHLIGHTS:**
+• 👑 Premium Soft Raga Tissue Silk Saree
+• ✨ Shimmering Peacock Green Shade with Elegant Subtle Sheen
+• 🎨 Exquisite Tassel pallu Finish & Designer Detailing
+• 🧵 Includes Contrast Unstitched Blouse Piece (5.5m Saree + 0.8m Blouse)
+• 💃 Lightweight, Soft-to-touch & Flawless Natural Drape
+• 🏆 High-Density Authentic Weaving for Long-Lasting Durability
+
+**FABRIC DETAILS:**
+• Fabric: Premium Soft Tissue Silk
+• Saree Length: 5.5 Meters
+• Blouse Piece: Included (0.8 Meters)
+• Feel: Ultra-soft, airy, and exceptionally lightweight
+• Occasions: Party Wear, Festive Wear, Wedding Wear, Traditional Functions
+
+**STYLING TIP:**
+Pair this premium peacock green tissue silk saree with a high-contrast brocade blouse, statement temple gold jewelry, an aesthetic clutch, and matching heels to capture an elite Bollywood-inspired royal look!`,
+    rating: 4.9,
+  },
+  {
+    id: "p73",
+    sku: "SAR-TIS-BRZG-073",
+    name: "Bronze Gold Raga Tissue Silk Saree",
+    tagline: "Premium Soft Tissue Silk Saree | Lightweight Festive & Party Wear",
+    slug: "bronze-gold-raga-tissue-silk-saree",
+    price: 999,
+    originalPrice: 1999,
+    image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20tissue%20silk%20saree%20best%20saree%20shop%20nagpur.webp",
+    images: [
+      "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20tissue%20silk%20saree%20best%20saree%20shop%20nagpur.webp"
+    ],
+    stock: 12,
+    category: "Sarees",
+    fabric: "Premium Soft Tissue Silk",
+    color: "Bronze Gold",
+    isVariant: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "Peacock Green", slug: "peacock-green-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20saree%20raga%20tissue%20silk%20saree%20sadi%20nagpur.jpeg" },
+      { color: "Bronze Gold", slug: "bronze-gold-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20tissue%20silk%20saree%20best%20saree%20shop%20nagpur.webp" },
+      { color: "Ruby Red", slug: "raga-tissue-silk-saree-ruby-red", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/RAGA_TISSUE_SILK_SAREE_XTDFTRKMTU_2026-03-14_1%20(1).webp" },
+      { color: "Mauve Pink", slug: "mauve-pink-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/Raga%20tissue%20silk%20saree%20wholesaler%20nagpur.webp" },
+      { color: "Reddish Pink", slug: "raga-tissue-silk-saree-reddish-pink", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/party%20wear%20tissue%20sareedesigner%20tissue%20silk.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Drape yourself in royal splendor with the Bronze Gold Raga Tissue Silk Saree, impeccably created to offer a magnificent, lustrous metallic sheen and flawless drape. This premium designer tissue silk saree is highly celebrated for its premium-weight soft hand-feel and breathable comfort. Highly popular for festivals, cocktail evenings, traditional functions, wedding receptions, and elite get-togethers. Styled with elegant hand-tied tassels on the pallu and featuring a fine shimmer finish, this masterpiece effortlessly pairs heirloom aesthetics with a modern luxurious touch.
+
+**HIGHLIGHTS:**
+• 👑 Premium Soft Raga Tissue Silk Saree
+• ✨ Rich Bronze Gold Metallic Luster and High-Shine Finish
+• 🎨 Exquisite Tassel pallu Finish & Designer Detailing
+• 🧵 Includes Contrast Unstitched Blouse Piece (5.5m Saree + 0.8m Blouse)
+• 💃 Lightweight, Soft-to-touch & Flawless Natural Drape
+• 🏆 High-Density Authentic Weaving for Long-Lasting Durability
+
+**FABRIC DETAILS:**
+• Fabric: Premium Soft Tissue Silk
+• Saree Length: 5.5 Meters
+• Blouse Piece: Included (0.8 Meters)
+• Feel: Ultra-soft, airy, and exceptionally lightweight
+• Occasions: Party Wear, Festive Wear, Wedding Wear, Traditional Functions
+
+**STYLING TIP:**
+Style this majestic bronze gold tissue silk saree with a matching dark gold or deep-maroon velvet blouse, traditional jhumkas, an elegant clutch, and soft dewy makeup for a complete jaw-dropping ethnic presence!`,
+    rating: 4.9,
+  },
+  {
+    id: "p74",
+    sku: "SAR-TIS-RRED-074",
+    name: "Ruby Red Raga Tissue Silk Saree",
+    tagline: "Premium Soft Tissue Silk Saree | Lightweight Festive & Party Wear",
+    slug: "ruby-red-raga-tissue-silk-saree",
+    price: 999,
+    originalPrice: 1999,
+    image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/RAGA_TISSUE_SILK_SAREE_XTDFTRKMTU_2026-03-14_1%20(1).webp",
+    images: [
+      "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/RAGA_TISSUE_SILK_SAREE_XTDFTRKMTU_2026-03-14_1%20(1).webp"
+    ],
+    stock: 14,
+    category: "Sarees",
+    fabric: "Premium Soft Tissue Silk",
+    color: "Ruby Red",
+    isVariant: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "Peacock Green", slug: "peacock-green-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20saree%20raga%20tissue%20silk%20saree%20sadi%20nagpur.jpeg" },
+      { color: "Bronze Gold", slug: "bronze-gold-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20tissue%20silk%20saree%20best%20saree%20shop%20nagpur.webp" },
+      { color: "Ruby Red", slug: "raga-tissue-silk-saree-ruby-red", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/RAGA_TISSUE_SILK_SAREE_XTDFTRKMTU_2026-03-14_1%20(1).webp" },
+      { color: "Mauve Pink", slug: "mauve-pink-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/Raga%20tissue%20silk%20saree%20wholesaler%20nagpur.webp" },
+      { color: "Reddish Pink", slug: "raga-tissue-silk-saree-reddish-pink", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/party%20wear%20tissue%20sareedesigner%20tissue%20silk.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Be the center of attention in the iconic Ruby Red Raga Tissue Silk Saree, meticulously crafted for a rich, deep-toned festive expression and liquid metallic sheen. This premium tissue silk saree is exceptionally soft to the touch and offers high breathability, ensuring comfortable, crease-free wear for hour-long festivals or dynamic wedding functions. Outfitted with detailed tassels, it blends timeless ethnic grace with high-couture designer sophistication. Perfect for newlyweds, bridesmaid wear, and grand festive occasions.
+
+**HIGHLIGHTS:**
+• 👑 Premium Soft Raga Tissue Silk Saree
+• ✨ Deep Ruby Red hue with a Majestic High-shine Satin Sheen
+• 🎨 Exquisite Tassel pallu Finish & Designer Detailing
+• 🧵 Includes Contrast Unstitched Blouse Piece (5.5m Saree + 0.8m Blouse)
+• 💃 Lightweight, Soft-to-touch & Flawless Natural Drape
+• 🏆 High-Density Authentic Weaving for Long-Lasting Durability
+
+**FABRIC DETAILS:**
+• Fabric: Premium Soft Tissue Silk
+• Saree Length: 5.5 Meters
+• Blouse Piece: Included (0.8 Meters)
+• Feel: Ultra-soft, airy, and exceptionally lightweight
+• Occasions: Party Wear, Festive Wear, Wedding Wear, Traditional Functions
+
+**STYLING TIP:**
+Pair this premium ruby red tissue silk saree with a heavily embroidered gold blouse, statement kundan jewelry, matching red lip color, and heels to complete a stunning, festive diva look!`,
+    rating: 4.9,
+  },
+  {
+    id: "p75",
+    sku: "SAR-TIS-MPNK-075",
+    name: "Mauve Pink Raga Tissue Silk Saree",
+    tagline: "Premium Soft Tissue Silk Saree | Lightweight Festive & Party Wear",
+    slug: "mauve-pink-raga-tissue-silk-saree",
+    price: 999,
+    originalPrice: 1999,
+    image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/Raga%20tissue%20silk%20saree%20wholesaler%20nagpur.webp",
+    images: [
+      "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/Raga%20tissue%20silk%20saree%20wholesaler%20nagpur.webp"
+    ],
+    stock: 10,
+    category: "Sarees",
+    fabric: "Premium Soft Tissue Silk",
+    color: "Mauve Pink",
+    isVariant: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "Peacock Green", slug: "peacock-green-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20saree%20raga%20tissue%20silk%20saree%20sadi%20nagpur.jpeg" },
+      { color: "Bronze Gold", slug: "bronze-gold-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20tissue%20silk%20saree%20best%20saree%20shop%20nagpur.webp" },
+      { color: "Ruby Red", slug: "raga-tissue-silk-saree-ruby-red", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/RAGA_TISSUE_SILK_SAREE_XTDFTRKMTU_2026-03-14_1%20(1).webp" },
+      { color: "Mauve Pink", slug: "mauve-pink-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/Raga%20tissue%20silk%20saree%20wholesaler%20nagpur.webp" },
+      { color: "Reddish Pink", slug: "raga-tissue-silk-saree-reddish-pink", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/party%20wear%20tissue%20sareedesigner%20tissue%20silk.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Radiate sheer elegance with the Mauve Pink Raga Tissue Silk Saree, exquisitely tailored to present a highly refined, dusty-pastel metallic finish. Crafted from premium organic soft tissue silk, this chic designer saree is super-lightweight and gentle on the skin, allowing for easy draping and high breathability. Embellished with beautiful tassels and sleek edges, it is an exquisite option for upscale cocktail hours, daytime festivals, sophisticated family lunches, or premium traditional ceremonies.
+
+**HIGHLIGHTS:**
+• 👑 Premium Soft Raga Tissue Silk Saree
+• ✨ Refined Mauve Pink Dusty-Pastel Tone with a Shimmering Finish
+• 🎨 Exquisite Tassel pallu Finish & Designer Detailing
+• 🧵 Includes Contrast Unstitched Blouse Piece (5.5m Saree + 0.8m Blouse)
+• 💃 Lightweight, Soft-to-touch & Flawless Natural Drape
+• 🏆 High-Density Authentic Weaving for Long-Lasting Durability
+
+**FABRIC DETAILS:**
+• Fabric: Premium Soft Tissue Silk
+• Saree Length: 5.5 Meters
+• Blouse Piece: Included (0.8 Meters)
+• Feel: Ultra-soft, airy, and exceptionally lightweight
+• Occasions: Party Wear, Festive Wear, Wedding Wear, Traditional Functions
+
+**STYLING TIP:**
+Pair this premium mauve pink tissue silk saree with a contrasting lavender or ivory raw silk blouse, elegant pearl or diamond-style jewelry, and soft-toned heels to emphasize a highly sophisticated, high-fashion boutique vibe.`,
+    rating: 4.8,
+  },
+  {
+    id: "p76",
+    sku: "SAR-TIS-RPNK-076",
+    name: "Reddish Pink Raga Tissue Silk Saree",
+    tagline: "Premium Soft Tissue Silk Saree | Lightweight Festive & Party Wear",
+    slug: "reddish-pink-raga-tissue-silk-saree",
+    price: 999,
+    originalPrice: 1999,
+    image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/party%20wear%20tissue%20sareedesigner%20tissue%20silk.webp",
+    images: [
+      "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/party%20wear%20tissue%20sareedesigner%20tissue%20silk.webp",
+      "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20saree%20raga%20tissue%20silk%20saree%20nagpur%20best.webp"
+    ],
+    stock: 12,
+    category: "Sarees",
+    fabric: "Premium Soft Tissue Silk",
+    color: "Reddish Pink",
+    isVariant: true,
+    noCareInstructions: true,
+    colorVariants: [
+      { color: "Peacock Green", slug: "peacock-green-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20saree%20raga%20tissue%20silk%20saree%20sadi%20nagpur.jpeg" },
+      { color: "Bronze Gold", slug: "bronze-gold-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/raga%20tissue%20silk%20saree%20best%20saree%20shop%20nagpur.webp" },
+      { color: "Ruby Red", slug: "raga-tissue-silk-saree-ruby-red", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/RAGA_TISSUE_SILK_SAREE_XTDFTRKMTU_2026-03-14_1%20(1).webp" },
+      { color: "Mauve Pink", slug: "mauve-pink-raga-tissue-silk-saree", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/Raga%20tissue%20silk%20saree%20wholesaler%20nagpur.webp" },
+      { color: "Reddish Pink", slug: "raga-tissue-silk-saree-reddish-pink", image: "https://ik.imagekit.io/tus1loev9/Raga%20Tissue%20silk%20saree/party%20wear%20tissue%20sareedesigner%20tissue%20silk.webp" }
+    ],
+    description: `**DESCRIPTION:**
+Sparkle with magnificent radiance in the Reddish Pink Raga Tissue Silk Saree, crafted meticulously from high-shine soft tissue silk. Features a striking, rich color blend that captures traditional festivity beautifully, draped elegantly with a premium light touch. Designed with authentic, clean borders and beautiful hanging tassels, it is perfect for sangeet dinners, wedding functions, puja celebrations, and high-impact ethnic statements. Easy-to-drape, crease-free, and comfortable for long-duration wear.
+
+**HIGHLIGHTS:**
+• 👑 Premium Soft Raga Tissue Silk Saree
+• ✨ Shimmering Reddish Pink Hue with High Luster and Satin Finish
+• 🎨 Exquisite Tassel pallu Finish & Designer Detailing
+• 🧵 Includes Contrast Unstitched Blouse Piece (5.5m Saree + 0.8m Blouse)
+• 💃 Lightweight, Soft-to-touch & Flawless Natural Drape
+• 🏆 High-Density Authentic Weaving for Long-Lasting Durability
+
+**FABRIC DETAILS:**
+• Fabric: Premium Soft Tissue Silk
+• Saree Length: 5.5 Meters
+• Blouse Piece: Included (0.8 Meters)
+• Feel: Ultra-soft, airy, and exceptionally lightweight
+• Occasions: Party Wear, Festive Wear, Wedding Wear, Traditional Functions
+
+**STYLING TIP:**
+Style this majestic reddish pink tissue silk saree with a matching gold or deep-emerald contrasting blouse, gold heavy choker necklace set, and matching heels for a high-impact diva presence!`,
+    rating: 4.9,
+  },
+  {
     id: "p-test-payment",
     sku: "TST-PAY-001",
     name: "Payment Test Product",

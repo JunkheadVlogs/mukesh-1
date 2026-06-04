@@ -89,15 +89,24 @@ export default function Shop() {
     }
 
     // Sort
+    const sortedResult = [...result];
     switch (sortParam) {
       case "price-low":
-        result.sort((a, b) => a.price - b.price);
+        sortedResult.sort((a, b) => {
+          const valA = Number(a.price) || 0;
+          const valB = Number(b.price) || 0;
+          return valA - valB;
+        });
         break;
       case "price-high":
-        result.sort((a, b) => b.price - a.price);
+        sortedResult.sort((a, b) => {
+          const valA = Number(a.price) || 0;
+          const valB = Number(b.price) || 0;
+          return valB - valA;
+        });
         break;
       case "new":
-        result.sort((a, b) => {
+        sortedResult.sort((a, b) => {
           if (a.isNew !== b.isNew) return a.isNew ? -1 : 1;
           const aIndex = products.findIndex((p) => p.id === a.id);
           const bIndex = products.findIndex((p) => p.id === b.id);
@@ -105,26 +114,30 @@ export default function Shop() {
         });
         break;
       case "trending":
-        result.sort((a, b) =>
-          a.isTrending === b.isTrending ? 0 : a.isTrending ? -1 : 1,
-        );
+        sortedResult.sort((a, b) => {
+          const trendA = a.isTrending ? 1 : 0;
+          const trendB = b.isTrending ? 1 : 0;
+          return trendB - trendA;
+        });
         break;
       case "best-selling":
-        result.sort((a, b) =>
-          a.isBestSelling === b.isBestSelling ? 0 : a.isBestSelling ? -1 : 1,
-        );
+        sortedResult.sort((a, b) => {
+          const sellA = a.isBestSelling ? 1 : 0;
+          const sellB = b.isBestSelling ? 1 : 0;
+          return sellB - sellA;
+        });
         break;
       case "name-az":
-        result.sort((a, b) => a.name.localeCompare(b.name));
+        sortedResult.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
         break;
       case "name-za":
-        result.sort((a, b) => b.name.localeCompare(a.name));
+        sortedResult.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
         break;
       default:
         break;
     }
 
-    return result;
+    return sortedResult;
   }, [
     categoryFilter,
     fabricParam,
@@ -167,6 +180,7 @@ export default function Shop() {
       newParams.delete("category");
     }
     setSearchParams(newParams);
+    setIsFilterOpen(false); // Close mobile drawer
   };
 
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -195,6 +209,7 @@ export default function Shop() {
       newParams.delete("fabric");
     }
     setSearchParams(newParams);
+    setIsFilterOpen(false); // Close mobile drawer
   };
 
   const clearAllFilters = () => {
@@ -202,6 +217,7 @@ export default function Shop() {
     if (searchQuery) newParams.set("search", searchQuery);
     if (sortParam) newParams.set("sort", sortParam);
     setSearchParams(newParams);
+    setIsFilterOpen(false); // Close mobile drawer
   };
 
   const baseFabrics = [

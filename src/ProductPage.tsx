@@ -45,11 +45,15 @@ import {
 } from "./components/UrgencyWidget";
 import { ProductReviews } from "./components/ProductReviews";
 import { TrustBadges } from "./components/TrustBadges";
+import { WhyShopWithUs } from "./components/WhyShopWithUs";
 import { Breadcrumbs } from "./components/Breadcrumbs";
 
 const getImageSrc = (rawImageUrl: any): string => {
   if (!rawImageUrl) return '';
   let url = String(rawImageUrl);
+  if (url.endsWith('.webm') || url.includes('.webm') || url.endsWith('.mp4') || url.includes('.mp4')) {
+    return url;
+  }
   // If image URL already contains wsrv.nl parameters, strip them first
   if (url.includes('wsrv.nl')) {
     try {
@@ -78,6 +82,12 @@ const getImageSrc = (rawImageUrl: any): string => {
   }
   // Fallback
   return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&output=webp&q=85`;
+};
+
+const isVideoUrl = (url: any): boolean => {
+  if (!url) return false;
+  const str = String(url);
+  return str.endsWith('.webm') || str.includes('.webm') || str.endsWith('.mp4') || str.includes('.mp4');
 };
 
 const getWhatsAppSafeImageUrl = (imageUrl: string | undefined): string => {
@@ -295,6 +305,7 @@ export default function ProductPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setActiveImageIndex(0);
 
     if (product) {
       trackViewContent(product);
@@ -841,11 +852,25 @@ export default function ProductPage() {
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
             >
-              <img
-                src={getImageSrc(productImages[activeImageIndex])}
-                alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
-                className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
-              />
+              {isVideoUrl(productImages[activeImageIndex]) ? (
+                <video
+                  key={productImages[activeImageIndex]}
+                  src={productImages[activeImageIndex]}
+                  autoPlay
+                  loop
+                  muted={true}
+                  playsInline
+                  controls
+                  className="product-image-main product-main-img w-full h-full object-contain mx-auto"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <img
+                  src={getImageSrc(productImages[activeImageIndex])}
+                  alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
+                  className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
+                />
+              )}
               <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-[var(--color-bg)]/90 backdrop-blur-md p-3 shadow-sm text-[var(--color-dark)]/70 opacity-0 group-hover:opacity-100 transition-all z-10 hidden md:block rounded-full hover:text-[var(--color-dark)]">
                 <Maximize2 size={20} strokeWidth={1.5} />
               </div>
@@ -908,12 +933,22 @@ export default function ProductPage() {
                       ${activeImageIndex === idx ? "opacity-100 ring-1 ring-[var(--color-dark)] ring-offset-2" : "opacity-60 hover:opacity-100"}`}
                   >
                     <div className="absolute inset-0 bg-[#FAF8F5] -z-10" />
-                    <OptimizedImage
-                      src={img}
-                      width={150}
-                      alt={`${getImageAlt(product)} - Thumbnail ${idx + 1}`}
-                      className="w-full h-full object-contain object-center"
-                    />
+                    {isVideoUrl(img) ? (
+                      <div className="w-full h-full relative flex items-center justify-center bg-black/5">
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+                          <div className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md">
+                            <span className="text-[11px] font-bold text-primary-950 pl-[1.5px]">▶</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <OptimizedImage
+                        src={img}
+                        width={150}
+                        alt={`${getImageAlt(product)} - Thumbnail ${idx + 1}`}
+                        className="w-full h-full object-contain object-center"
+                      />
+                    )}
                   </button>
                 ))}
               </div>
@@ -1232,6 +1267,9 @@ export default function ProductPage() {
                 <TrustBadges compact={true} />
               </section>
 
+              {/* Why Shop With Us Custom Section */}
+              <WhyShopWithUs />
+
               {/* Description */}
               <section className="product-info pt-1 border-t border-[var(--color-border)] mt-1">
                 <ProductDescription description={product.description} product={product} />
@@ -1323,13 +1361,27 @@ export default function ProductPage() {
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full h-full md:w-auto md:h-auto md:max-w-5xl md:max-h-full relative flex items-center justify-center pointer-events-none"
             >
-              <OptimizedImage
-                src={productImages[activeImageIndex]}
-                width={1200}
-                alt={productImages.length > 1 ? `${getImageAlt(product)} - Fullscreen View ${activeImageIndex + 1} of ${productImages.length}` : `${getImageAlt(product)} - Fullscreen View`}
-                className="w-full h-full max-h-[95vh] md:w-auto md:h-auto md:max-h-[90vh] object-contain object-center md:rounded-sm md:shadow-2xl pointer-events-auto will-change-transform transform-gpu"
-                onClick={(e: any) => e.stopPropagation()}
-              />
+              {isVideoUrl(productImages[activeImageIndex]) ? (
+                <video
+                  key={`lightbox-${productImages[activeImageIndex]}`}
+                  src={productImages[activeImageIndex]}
+                  autoPlay
+                  loop
+                  muted={true}
+                  playsInline
+                  controls
+                  className="w-full h-full max-h-[95vh] md:w-auto md:h-auto md:max-h-[90vh] object-contain object-center md:rounded-sm md:shadow-2xl pointer-events-auto"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <OptimizedImage
+                  src={productImages[activeImageIndex]}
+                  width={1200}
+                  alt={productImages.length > 1 ? `${getImageAlt(product)} - Fullscreen View ${activeImageIndex + 1} of ${productImages.length}` : `${getImageAlt(product)} - Fullscreen View`}
+                  className="w-full h-full max-h-[95vh] md:w-auto md:h-auto md:max-h-[90vh] object-contain object-center md:rounded-sm md:shadow-2xl pointer-events-auto will-change-transform transform-gpu"
+                  onClick={(e: any) => e.stopPropagation()}
+                />
+              )}
               <div className="absolute inset-y-0 left-2 md:-left-20 flex items-center pointer-events-auto">
                 <button
                   onClick={(e) => {

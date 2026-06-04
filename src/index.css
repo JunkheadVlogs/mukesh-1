@@ -305,6 +305,12 @@ nav a:hover {
   background: #fafafa;
 }
 
+video.product-image-main,
+video.product-main-img {
+  height: 100% !important;
+  max-height: 60vh;
+}
+
 .gallery-main,
 .product-image-container,
 [class*="product-image-container"] {
@@ -325,6 +331,11 @@ nav a:hover {
   [class*="main-image"] img {
     max-height: 500px !important;
     object-fit: contain !important;
+  }
+  video.product-image-main,
+  video.product-main-img {
+    height: 100% !important;
+    max-height: 500px !important;
   }
   .gallery-main,
   .product-image-container,

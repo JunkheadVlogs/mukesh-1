@@ -74,10 +74,26 @@ export default function ThankYou() {
   const total = stateTotal !== undefined ? stateTotal : (rawSavedTotal ? parseFloat(rawSavedTotal) : 0);
 
   const rawSavedCart = localStorage.getItem("msc_last_order_cart");
-  const cart = stateCart || (rawSavedCart ? JSON.parse(rawSavedCart) : []);
+  let parsedCart = [];
+  if (rawSavedCart) {
+    try {
+      parsedCart = JSON.parse(rawSavedCart);
+    } catch (err) {
+      console.warn("Failed to parse saved cart JSON", err);
+    }
+  }
+  const cart = stateCart || parsedCart;
 
   const rawSavedCustomer = localStorage.getItem("msc_last_order_customer");
-  const customer = stateCustomer || (rawSavedCustomer ? JSON.parse(rawSavedCustomer) : null);
+  let parsedCustomer = null;
+  if (rawSavedCustomer) {
+    try {
+      parsedCustomer = JSON.parse(rawSavedCustomer);
+    } catch (err) {
+      console.warn("Failed to parse saved customer JSON", err);
+    }
+  }
+  const customer = stateCustomer || parsedCustomer;
 
   const orderDate = new Date().toLocaleDateString("en-IN", {
     day: "numeric",
@@ -156,8 +172,8 @@ export default function ThankYou() {
             const istTime = new Date().toLocaleString("en-IN", {
               timeZone: "Asia/Kolkata",
             });
-            const savedCustomer = customer || (rawSavedCustomer ? JSON.parse(rawSavedCustomer) : null);
-            const savedCart = cart || (rawSavedCart ? JSON.parse(rawSavedCart) : []);
+            const savedCustomer = customer || parsedCustomer;
+            const savedCart = cart || parsedCart;
 
             const productName = savedCart.map((i: any) => i.name).join(", ");
             const size = savedCart.map((i: any) => i.size || "Standard").join(", ");

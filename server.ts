@@ -34,6 +34,10 @@ const app = express();
 const PORT = 3000;
 
 app.use((req, res, next) => {
+  const logStr = `[${new Date().toISOString()}] ${req.method} ${req.url} (User-Agent: ${req.headers['user-agent']})\n`;
+  try {
+    fs.appendFileSync(path.join(process.cwd(), "requests.log"), logStr, "utf-8");
+  } catch (err) {}
   console.log(`[REQUEST] ${req.method} ${req.url}`);
   next();
 });
@@ -93,6 +97,22 @@ try {
 
 // API Routes
 const apiRouter = express.Router();
+
+// Simple endpoint to catch client-side browser logs and console errors
+apiRouter.post("/browser-log", (req, res) => {
+  try {
+    const { type, messages, timestamp } = req.body;
+    const msgStr = Array.isArray(messages) ? messages.join(" ") : String(messages);
+    console.log(`[CLIENT-SIDE ${String(type).toUpperCase()}] [${timestamp}]`, msgStr);
+    
+    // Append to file for easy deep dive reading
+    const logLine = `[${timestamp}] [${String(type).toUpperCase()}] ${msgStr}\n`;
+    fs.appendFileSync(path.join(process.cwd(), "browser.log"), logLine, "utf-8");
+  } catch (err) {
+    // Ignore logging errors to prevent loops
+  }
+  res.sendStatus(200);
+});
 
 // ==== secure server-side proxy for Google Drive images to bypass referrer/hotlink blocks ====
 apiRouter.get("/drive-proxy", async (req, res) => {
@@ -305,6 +325,119 @@ apiRouter.post("/submit-order", async (req, res) => {
       status: "error",
       message: error.message || "Failed to proxy order to Google Sheets",
     });
+  }
+});
+
+// ==== return request handler ====
+apiRouter.post("/return-request", async (req, res) => {
+  try {
+    const { orderId, fullName, phone, reason, comments } = req.body;
+
+    if (!orderId || !fullName || !phone || !reason) {
+      return res.status(400).json({ success: false, error: "Missing required fields" });
+    }
+
+    const cleanPhone = phone.toString().replace(/\D/g, '');
+    const finalPhone = cleanPhone.length === 12 && cleanPhone.startsWith('91') ? cleanPhone.substring(2) : cleanPhone;
+    const phoneWithPrefix = `+91${finalPhone}`;
+
+    console.log(`[ROUTE-RETURN-REQUEST] Processing return request for order: ${orderId}`);
+
+    let firestoreSaved = false;
+    const serviceAccountStr = process.env.FIREBASE_SERVICE_ACCOUNT;
+    if (serviceAccountStr) {
+      try {
+        const admin = await import("firebase-admin");
+        if (!admin.default.apps.length) {
+          const serviceAccount = JSON.parse(serviceAccountStr);
+          admin.default.initializeApp({
+            credential: admin.default.credential.cert(serviceAccount)
+          });
+        }
+        await admin.default.firestore().collection('return_requests').add({
+          orderId,
+          fullName,
+          phone: phoneWithPrefix,
+          reason,
+          comments: comments || "",
+          submittedAt: new Date().toISOString(),
+          status: "Pending"
+        });
+        firestoreSaved = true;
+        console.log('[ROUTE-RETURN-REQUEST] Save to Firestore successful.');
+      } catch (dbErr) {
+        console.error('[ROUTE-RETURN-REQUEST] Error saving to Firestore:', dbErr);
+      }
+    } else {
+      console.warn('[ROUTE-RETURN-REQUEST] FIREBASE_SERVICE_ACCOUNT not configured, skipping Firestore.');
+    }
+
+    // Proxy/Forward to Google Sheets
+    let sheetsSaved = false;
+    const rawUrl = process.env.VITE_GOOGLE_SHEETS_URL || process.env.VITE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
+    const urlStr = rawUrl.trim().replace(/^['"]|['"]$/g, '');
+    
+    if (urlStr) {
+      try {
+        const postData = JSON.stringify({
+          type: 'return_request',
+          orderId,
+          fullName,
+          phone: phoneWithPrefix,
+          reason,
+          comments: comments || "",
+          submittedAt: new Date().toISOString(),
+          device: /Mobi|Android/i.test(navigator.userAgent || "") ? 'Mobile' : 'Desktop'
+        });
+
+        const { URL } = await import('url');
+        const makeSheetsRequest = async (urlString: string) => {
+          return new Promise((resolve, reject) => {
+            const _url = new URL(urlString);
+            const options = {
+              hostname: _url.hostname,
+              path: _url.pathname + _url.search,
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(postData)
+              }
+            };
+
+            const reqHttp = https.request(options, (resHttp) => {
+              if (resHttp.statusCode === 302 && resHttp.headers.location) {
+                resolve({ status: 200, text: JSON.stringify({ status: 'success', message: 'Redirected' }) });
+                return;
+              }
+              let data = '';
+              resHttp.on('data', (chunk) => { data += chunk; });
+              resHttp.on('end', () => { resolve({ status: resHttp.statusCode, text: data }); });
+            });
+
+            reqHttp.on('error', (e) => reject(e));
+            reqHttp.write(postData);
+            reqHttp.end();
+          });
+        };
+
+        await makeSheetsRequest(urlStr);
+        sheetsSaved = true;
+        console.log('[ROUTE-RETURN-REQUEST] Forwarded to Google Sheets successfully.');
+      } catch (sheetsErr) {
+        console.error('[ROUTE-RETURN-REQUEST] Error sending to Google Sheets:', sheetsErr);
+      }
+    }
+
+    res.json({
+      success: true,
+      firestoreSaved,
+      sheetsSaved,
+      message: 'Return request submitted successfully'
+    });
+
+  } catch (err: any) {
+    console.error("[ROUTE-RETURN-REQUEST] Error processing return request:", err);
+    res.status(500).json({ success: false, error: err?.message || 'Internal server error' });
   }
 });
 

@@ -95,40 +95,35 @@ export function getSeededRandom(seed: string) {
   return Math.abs(hash);
 }
 
-export function getProductReviewStats(product: { id: string, fabric?: string, category?: string, price?: number }) {
-  const seed = getSeededRandom(product.id);
+export function getProductReviewStats(product: { id: string, name?: string, fabric?: string, category?: string, price?: number }) {
+  const seed = getSeededRandom(product.id + "-revs");
   
-  // Base 4.4 to 4.9
-  let baseRating = 4.4 + ((seed % 60) / 100); 
+  // Check if it is a Raga Tissue Saree
+  const isRagaTissue = (product.id && ["p72", "p73", "p74", "p75", "p76"].includes(product.id)) || 
+                       (product.name && product.name.toLowerCase().includes('raga') && product.name.toLowerCase().includes('tissue'));
   
-  // Luxury or Linen or Price > 900 tend to have higher reviews
-  const isPremium = (product.price && product.price > 900) || 
-                   (product.fabric && product.fabric.toLowerCase().includes('linen')) ||
-                   (product.category && product.category.toLowerCase().includes('premium'));
-
-  if (isPremium) {
-    baseRating = 4.7 + ((seed % 30) / 100); // 4.7 to 4.99
+  // Review Count: exactly 12-20 (or 9-12 for Raga Tissue as requested)
+  const reviewCount = isRagaTissue ? ((seed % 4) + 9) : ((seed % 9) + 12);
+  
+  let totalRating = 0;
+  for (let i = 0; i < reviewCount; i++) {
+    const s = Math.abs(seed + i * 997);
+    const mod = s % 15;
+    if (mod < 12) {
+      totalRating += 5;
+    } else if (mod < 14) {
+      totalRating += 4;
+    } else {
+      totalRating += 3;
+    }
   }
   
-  // Make some exactly 5.0
-  if (seed % 10 === 0 && isPremium) {
-    baseRating = 5.0;
-  }
+  const rating = Number((totalRating / reviewCount).toFixed(1));
   
-  const rating = Number(baseRating.toFixed(1));
-  
-  // Review counts 32 to 450 depending on seed
-  let reviewCount = (seed % 418) + 32;
-  
-  // Popular items (like trending) get a little bump
-  if (seed % 5 === 0) {
-    reviewCount += 100 + (seed % 50);
-  }
-
   return {
     rating,
     reviewCount
-  }
+  };
 }
 
 export function optimizeImage(url: string, width: number = 800, format: 'webp' | 'jpg' | 'png' = 'webp') {

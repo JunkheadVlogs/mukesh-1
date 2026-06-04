@@ -1085,55 +1085,16 @@ export default function Layout() {
           </div>
 
           {/* Accordions / Navigation Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-y-0 md:gap-x-10 lg:gap-x-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-y-0 md:gap-x-10 lg:gap-x-16">
             
-            {/* 1. MUKESH SAREE CENTRE (Contact Info) */}
-            <div className="border-b border-white/10 md:border-b-0 py-0">
-               <button
-                onClick={() => toggleFooterAccordion("contact-info")}
-                className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
-              >
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
-                  MUKESH SAREES
-                </span>
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-300 md:hidden text-neutral-400 ${
-                    openFooterAccordion === "contact-info" ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              
-              <div
-                className={`transition-all duration-300 ${
-                  openFooterAccordion === "contact-info" ? "block animate-fadeIn" : "hidden"
-                } md:block pb-1 md:pb-0`}
-              >
-                <ul className="space-y-3 text-[12px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-[1.6] pb-1">
-                  <li className="flex items-start gap-2">
-                    <MapPin size={16} className="text-[#C8A96B] shrink-0 mt-0.5" />
-                    <span>{CONFIG.STORE_ADDRESS}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Phone size={16} className="text-[#C8A96B] shrink-0" />
-                    <a href={`tel:${CONFIG.STORE_PHONE.replace(/[^0-9+]/g, '')}`} className="hover:text-[#C8A96B] transition-colors">{CONFIG.STORE_PHONE}</a>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Mail size={16} className="text-[#C8A96B] shrink-0" />
-                    <a href={`mailto:${CONFIG.STORE_EMAIL}`} className="hover:text-[#C8A96B] transition-colors">{CONFIG.STORE_EMAIL}</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* 2. QUICK LINKS Accordion */}
+            {/* 2. Collection Accordion */}
             <div className="border-b border-white/10 md:border-b-0 py-0">
               <button
                 onClick={() => toggleFooterAccordion("quick-links")}
                 className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
               >
                 <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
-                  QUICK LINKS
+                  Collection
                 </span>
                 <ChevronDown
                   size={14}
