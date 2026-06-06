@@ -12,10 +12,6 @@ export default function ShippingPolicy() {
           description="Learn about our free shipping across India, delivery timelines, trusted courier partners, COD availability, and order tracking." 
           url="/shipping-policy"
         />
-        
-        <div className="mb-6">
-          <Breadcrumbs />
-        </div>
 
         <div className="text-center mb-8 md:mb-10">
           <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-3">Shipping & Delivery Policy</h1>

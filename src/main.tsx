@@ -55,10 +55,35 @@ const showErrorOnScreen = (message: string, error?: any) => {
 };
 
 window.addEventListener('error', (event) => {
+  const isBenignError = (msgStr: string, err?: any): boolean => {
+    const text = (msgStr + " " + (err?.message || "") + " " + (err?.stack || "")).toLowerCase();
+    return [
+      "websocket", "web socket", "failed to connect to websocket", "hmr", "hot module", "hot-reload", 
+      "socket closed", "ws://", "wss://", "fbq", "google-analytics", "pinterest", "gtag", "extensions"
+    ].some(phrase => text.includes(phrase));
+  };
+
+  if (isBenignError(event.message || "", event.error)) {
+    console.warn("[DIAGNOSTIC SILENT] Ignored benign/HMR WebSocket error:", event.message);
+    return;
+  }
   showErrorOnScreen(`Global Error: ${event.message} in ${event.filename}:${event.lineno}`, event.error);
 });
 
 window.addEventListener('unhandledrejection', (event) => {
+  const isBenignError = (reasonStr: string, err?: any): boolean => {
+    const text = (reasonStr + " " + (err?.message || "") + " " + (err?.stack || "")).toLowerCase();
+    return [
+      "websocket", "web socket", "failed to connect to websocket", "hmr", "hot module", "hot-reload", 
+      "socket closed", "ws://", "wss://", "fbq", "google-analytics", "pinterest", "gtag", "extensions"
+    ].some(phrase => text.includes(phrase));
+  };
+
+  const reasonMsg = event.reason?.message || String(event.reason);
+  if (isBenignError(reasonMsg, event.reason)) {
+    console.warn("[DIAGNOSTIC SILENT] Ignored benign/HMR unhandled promise rejection:", reasonMsg);
+    return;
+  }
   showErrorOnScreen(`Unhandled Promise Rejection: ${event.reason}`, event.reason);
 });
 

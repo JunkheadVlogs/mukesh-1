@@ -86,8 +86,8 @@ export function CustomerReviews() {
           <div className="text-[11px] tracking-[0.25em] uppercase text-[var(--color-gold)] mb-1.5 font-semibold">
             What Our Customers Say
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-dark)] mb-2 md:mb-3 font-normal tracking-wide">
-            Loved By Our Customers
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)] mb-2 md:mb-4">
+            Loved By Our <span className="italic">Customers</span>
           </h2>
           <div className="flex justify-center items-center gap-1">
             {[...Array(5)].map((_, i) => (

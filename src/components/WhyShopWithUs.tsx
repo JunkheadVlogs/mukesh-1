@@ -21,7 +21,7 @@ export function WhyShopWithUs() {
   ];
 
   return (
-    <div className="why-shop-container my-6 p-4 border border-[var(--color-border)] bg-[#faf8f4]/60 backdrop-blur-xs rounded-sm">
+    <div className="why-shop-container mt-2 mb-2 p-4 border border-[var(--color-border)] bg-[#faf8f4]/60 backdrop-blur-xs rounded-sm">
       <h3 className="font-serif text-[13px] md:text-[14px] font-medium tracking-[0.15em] text-[var(--color-dark)] uppercase mb-4 text-center">
         Why Shop With Us
       </h3>

@@ -23,6 +23,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { ProductDescription } from "./components/ProductDescription";
+import { ProductAccordion } from "./components/ProductAccordion";
 import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
@@ -817,7 +818,7 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="bg-primary-50 product-page-content">
+    <div className="bg-primary-50 product-page-content pb-[70px] md:pb-0">
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
@@ -832,9 +833,7 @@ export default function ProductPage() {
         schema={detailedProductSchema}
       />
 
-      <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0 md:pt-2">
-        <Breadcrumbs />
-
+      <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
         <div className="flex flex-col lg:flex-row gap-2 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
           <div className="w-full lg:w-7/12 space-y-2 md:space-y-4">
@@ -922,7 +921,7 @@ export default function ProductPage() {
 
             {productImages.length > 1 && (
               <div 
-                className="flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 pt-1 pb-1 md:py-2 touch-pan-x touch-pan-y"
+                className="product-thumbnails-container flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 pt-1 pb-1 md:py-2 touch-pan-x touch-pan-y"
                 style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
               >
                 {productImages.map((img, idx) => (
@@ -1274,6 +1273,9 @@ export default function ProductPage() {
               <section className="product-info pt-1 border-t border-[var(--color-border)] mt-1">
                 <ProductDescription description={product.description} product={product} />
               </section>
+
+              {/* Collapsible Accordion */}
+              <ProductAccordion />
             </div>
           </div>
         </div>
@@ -1625,30 +1627,48 @@ export default function ProductPage() {
       </AnimatePresence>
 
       {/* Sticky Mobile ATC Bar */}
-      {showStickyAtc && (
-        <div
-          id="sticky-atc"
-          className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-[var(--color-border)] p-2 z-50 flex items-center shadow-[0_-10px_35px_rgba(0,0,0,0.03)] pb-[calc(8px+env(safe-area-inset-bottom))] lg:hidden"
-        >
-          <div className="flex gap-2 w-full h-[38px] px-1">
+      <AnimatePresence>
+        {showStickyAtc && (
+          <motion.div
+            id="sticky-atc"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed bottom-[0px] left-0 right-0 bg-white border-t border-[var(--color-border)] z-[1000] flex items-center justify-between px-4 pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)]"
+            style={{ height: "calc(64px + env(safe-area-inset-bottom))" }}
+          >
+            <div className="flex flex-col justify-center min-w-0 mr-4 pt-[env(safe-area-inset-bottom)]">
+              <h4 className="text-[13px] font-medium text-[var(--color-dark)] truncate max-w-[160px] xs:max-w-[200px]">
+                {product?.name}
+              </h4>
+              <div className="flex items-center gap-1.5 flex-wrap min-w-0">
+                <span className="text-[15px] font-bold text-[var(--color-dark)] leading-none shrink-0">
+                  {formatPrice(product?.price || 0)}
+                </span>
+                {product?.originalPrice && product.originalPrice > product.price && (
+                  <>
+                    <span className="text-[11px] text-[#8C8276] line-through font-normal shrink-0 leading-none">
+                      {formatPrice(product.originalPrice)}
+                    </span>
+                    <span className="text-[9px] font-extrabold text-[#8C1D18] bg-[#FFF1F2] border border-[#FECDD3] rounded-[4px] px-1.5 py-0.5 tracking-[0.05em] uppercase shrink-0 leading-none">
+                      {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                    </span>
+                  </>
+                )}
+              </div>
+            </div>
+            
             <button
               onClick={handleAddToCart}
               disabled={isOutOfStock}
-              className="flex-1 bg-transparent border border-[var(--color-dark)]/35 rounded-sm text-[var(--color-dark)] text-[10px] sm:text-[11px] uppercase tracking-[0.12em] font-medium disabled:opacity-50 disabled:cursor-not-allowed active:bg-black/5 transition-colors min-w-0"
+              className="mt-[env(safe-area-inset-bottom)] bg-[#C8A96B] hover:bg-[#B3965D] text-white px-6 h-[40px] rounded-sm text-[13px] uppercase tracking-[0.12em] font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap min-w-[140px]"
             >
               {isOutOfStock ? "Sold Out" : "Add to Cart"}
             </button>
-            {!isOutOfStock && (
-              <button
-                onClick={handleBuyNow}
-                className="flex-[1.2] bg-[var(--color-dark)] border border-[var(--color-dark)] rounded-sm text-white text-[10px] sm:text-[11px] uppercase tracking-[0.12em] font-medium active:opacity-90 transition-opacity min-w-0 shadow-sm"
-              >
-                Buy Now — COD 🛍️
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Quick Checkout Modal */}
       <AnimatePresence>

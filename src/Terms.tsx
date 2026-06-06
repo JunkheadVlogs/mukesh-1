@@ -11,10 +11,6 @@ export default function Terms() {
           description="Review the terms and conditions for Mukesh Saree Centre. Understanding our guidelines, policies, and terms ensures a transparent and smooth shopping experience." 
           url="/terms"
         />
-        
-        <div className="mb-6">
-          <Breadcrumbs />
-        </div>
 
         <div className="text-center mb-8 md:mb-10">
           <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-3">Terms & Conditions</h1>

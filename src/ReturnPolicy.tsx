@@ -113,10 +113,6 @@ export default function ReturnPolicy() {
           description="Mukesh Saree Centre's Return & Refund Policy. Understand our 7-day return period, refund timelines, and process for damaged or defective items." 
           url="/return-policy"
         />
-        
-        <div className="mb-6">
-          <Breadcrumbs />
-        </div>
 
         <div className="text-center mb-8 md:mb-10">
           <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-3">Returns & Refunds Policy</h1>
@@ -188,36 +184,11 @@ export default function ReturnPolicy() {
             </p>
           </section>
 
-          {/* Return Process */}
-          <section className="space-y-4">
-            <div className="flex items-center gap-3 text-primary-950 border-b border-black/5 pb-2">
-               <FileText size={22} className="text-gold-500" />
-               <h2 className="text-xl font-serif">4. The Return Process</h2>
-            </div>
-            <div className="grid sm:grid-cols-3 gap-6 pt-2">
-              <div className="space-y-2">
-                <div className="font-bold text-gold-600 text-lg">Step 1</div>
-                <div className="font-semibold text-primary-950">Raise a Request</div>
-                <p className="text-[13px]">Contact our support team within 7 days. Provide your Order ID and clear photographs of the product.</p>
-              </div>
-              <div className="space-y-2">
-                <div className="font-bold text-gold-600 text-lg">Step 2</div>
-                <div className="font-semibold text-primary-950">Approval & Pickup</div>
-                <p className="text-[13px]">Once approved (typically 24-48 hours), we will arrange a return pickup from your delivery address.</p>
-              </div>
-              <div className="space-y-2">
-                <div className="font-bold text-gold-600 text-lg">Step 3</div>
-                <div className="font-semibold text-primary-950">Inspection & Refund</div>
-                <p className="text-[13px]">After the product reaches our warehouse, it passes quality checks, followed by the initiation of your refund or exchange.</p>
-              </div>
-            </div>
-          </section>
-
           {/* Damaged or Defective Items */}
           <section className="space-y-4">
             <div className="flex items-center gap-3 text-primary-950 border-b border-black/5 pb-2">
                <AlertCircle size={22} className="text-gold-500" />
-               <h2 className="text-xl font-serif">5. Damaged, Defective, or Incorrect Items</h2>
+               <h2 className="text-xl font-serif">4. Damaged, Defective, or Incorrect Items</h2>
             </div>
             <p>
               We conduct rigorous quality checks, but in the rare event that you receive a damaged, defective, or incorrect item:
@@ -242,7 +213,7 @@ export default function ReturnPolicy() {
           <section className="space-y-4">
             <div className="flex items-center gap-3 text-primary-950 border-b border-black/5 pb-2">
                <HandCoins size={22} className="text-gold-500" />
-               <h2 className="text-xl font-serif">6. Refund Processing Timeline & Methods</h2>
+               <h2 className="text-xl font-serif">5. Refund Processing Timeline & Methods</h2>
             </div>
             <p>Once your returned item is received and inspected (typically 2-3 business days after arrival at our facility), refund timelines are as follows:</p>
             <ul className="space-y-3 ml-2 list-none">
@@ -263,7 +234,7 @@ export default function ReturnPolicy() {
               <li className="flex items-start gap-2">
                 <span className="text-gold-500 mt-1">•</span>
                 <div>
-                  <span className="font-semibold text-primary-950 text-[13px] block mb-0.5">Store Credit:</span>
+                  <span className="font-semibold text-primary-[#333] text-[13px] block mb-0.5">Store Credit:</span>
                   <span>If you opt for store credit, a voucher will be issued immediately upon approval, valid for 6 months.</span>
                 </div>
               </li>
@@ -291,6 +262,31 @@ export default function ReturnPolicy() {
               <div>
                 <h3 className="font-semibold text-primary-950 text-[14px]">What happens if the courier cannot pick up the return?</h3>
                 <p className="mt-1 text-[13px]">In rare cases where return pickup service is unavailable at your pincode, you may need to self-ship the item using a reliable courier service. We will reimburse standard shipping costs upon receipt of the receipt.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Return Process */}
+          <section className="space-y-4">
+            <div className="flex items-center gap-3 text-primary-950 border-b border-black/5 pb-2">
+               <FileText size={22} className="text-gold-500" />
+               <h2 className="text-xl font-serif">6. The Return Process</h2>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-6 pt-2">
+              <div className="space-y-2">
+                <div className="font-bold text-gold-600 text-lg">Step 1</div>
+                <div className="font-semibold text-primary-950">Raise a Request</div>
+                <p className="text-[13px]">Contact our support team within 7 days. Provide your Order ID and clear photographs of the product.</p>
+              </div>
+              <div className="space-y-2">
+                <div className="font-bold text-gold-600 text-lg">Step 2</div>
+                <div className="font-semibold text-primary-950">Approval & Pickup</div>
+                <p className="text-[13px]">Once approved (typically 24-48 hours), we will arrange a return pickup from your delivery address.</p>
+              </div>
+              <div className="space-y-2">
+                <div className="font-bold text-gold-600 text-lg">Step 3</div>
+                <div className="font-semibold text-primary-950">Inspection & Refund</div>
+                <p className="text-[13px]">After the product reaches our warehouse, it passes quality checks, followed by the initiation of your refund or exchange.</p>
               </div>
             </div>
           </section>

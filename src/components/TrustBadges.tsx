@@ -2,7 +2,7 @@ import { ShieldCheck, Users, CheckCircle2, Award, Truck } from "lucide-react";
 import { Link } from "react-router";
 
 export function TrustBadges({ compact = false }: { compact?: boolean }) {
-  const badges = [
+  const allBadges = [
     {
       icon: <Award size={20} strokeWidth={1} />,
       title: "Trusted Since 1978",
@@ -25,6 +25,14 @@ export function TrustBadges({ compact = false }: { compact?: boolean }) {
     },
   ];
 
+  const badges = compact
+    ? allBadges.filter(
+        (b) =>
+          b.title !== "Quality Assured" &&
+          b.title !== "Premium Fabric Selection"
+      )
+    : allBadges;
+
   if (compact) {
     return (
       <div className="flex flex-col gap-1.5 py-1.5 my-0.5">
@@ -41,13 +49,6 @@ export function TrustBadges({ compact = false }: { compact?: boolean }) {
             </span>
           </div>
         ))}
-        <div className="pt-2 mt-1 border-t border-black/5">
-           <Link to="/return-policy" className="inline-flex items-center gap-2 group hover:opacity-80 transition-opacity">
-             <span className="text-[11px] font-sans tracking-[0.1em] text-gold-600 underline underline-offset-4 decoration-gold-600/30 group-hover:text-gold-500 font-medium uppercase">
-               7-Day Easy Returns Policy
-             </span>
-           </Link>
-        </div>
       </div>
     );
   }

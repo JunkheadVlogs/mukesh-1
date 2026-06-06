@@ -6,7 +6,6 @@ import {
   Heart,
   User,
   X,
-  MessageCircle,
   ChevronRight,
   ArrowRight,
   ArrowUp,
@@ -78,28 +77,11 @@ export default function Layout() {
 
   const hasStickyBar = location.pathname.startsWith("/product") || location.pathname === "/checkout";
 
-  // Determine positions of both buttons dynamically to prevent overlapping with sticky bars on mobile
-  const getWhatsAppPosition = () => {
-    if (hasStickyBar) {
-      if (isDeepScrolled) {
-        return "bottom-[calc(115px+env(safe-area-inset-bottom))] md:bottom-[84px]";
-      } else {
-        return "bottom-[calc(65px+env(safe-area-inset-bottom))] md:bottom-[24px]";
-      }
-    } else {
-      if (isDeepScrolled) {
-        return "bottom-[calc(70px+env(safe-area-inset-bottom))] md:bottom-[84px]";
-      } else {
-        return "bottom-[calc(20px+env(safe-area-inset-bottom))] md:bottom-[24px]";
-      }
-    }
-  };
-
   const getScrollToTopPosition = () => {
     if (hasStickyBar) {
-      return "bottom-[calc(65px+env(safe-area-inset-bottom))] md:bottom-[24px]";
+      return "bottom-[calc(140px+env(safe-area-inset-bottom))] md:bottom-[90px]";
     } else {
-      return "bottom-[calc(20px+env(safe-area-inset-bottom))] md:bottom-[24px]";
+      return "bottom-[calc(90px+env(safe-area-inset-bottom))] md:bottom-[90px]";
     }
   };
 
@@ -112,7 +94,7 @@ export default function Layout() {
   const [subscribeMessage, setSubscribeMessage] = useState("");
   const lastScrollY = useRef(0);
 
-  const [showAnnouncement, setShowAnnouncement] = useState(true);
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
   const [cartBadgeHighlight, setCartBadgeHighlight] = useState(false);
   const prevCartCountRef = useRef(cartItemCount);
 
@@ -124,6 +106,17 @@ export default function Layout() {
     }
     prevCartCountRef.current = cartItemCount;
   }, [cartItemCount]);
+
+  useEffect(() => {
+    if (hasStickyBar) {
+      document.body.classList.add("has-sticky-atc");
+    } else {
+      document.body.classList.remove("has-sticky-atc");
+    }
+    return () => {
+      document.body.classList.remove("has-sticky-atc");
+    };
+  }, [hasStickyBar]);
 
   const toggleFooterAccordion = (section: string) => {
     setOpenFooterAccordion((prev) => (prev === section ? null : section));
@@ -155,7 +148,27 @@ export default function Layout() {
   useEffect(() => {
     // Scroll to top on pathname OR search change
     // This ensures that even params changes like ?category=Sarees from footer trigger top scroll
-    window.scrollTo(0, 0);
+    const scrollInstant = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    
+    scrollInstant();
+    
+    // Use requestAnimationFrame and deferred timers to handle any asynchronous rendering,
+    // skeleton layout shifts, and route state transition height updates.
+    const rafId = requestAnimationFrame(scrollInstant);
+    const timer1 = setTimeout(scrollInstant, 100);
+    const timer2 = setTimeout(scrollInstant, 300);
+    const timer3 = setTimeout(scrollInstant, 600);
+    
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
   }, [location.pathname, location.search]);
 
   useEffect(() => {
@@ -263,8 +276,6 @@ export default function Layout() {
   const filteredProducts = searchQuery.trim()
     ? searchProducts(searchQuery).slice(0, 5)
     : [];
-
-  const [announcementIndex, setAnnouncementIndex] = useState(0);
 
   const announcements = [
     "✨ FREE SHIPPING ON ALL ORDERS",
@@ -1019,7 +1030,15 @@ export default function Layout() {
 
       {/* Main Content */}
       <main
-        className={`flex-grow flex flex-col ${!isHomePage ? "pt-[84px]" : ""}`}
+        className={`flex-grow flex flex-col ${
+          isHomePage
+            ? ""
+            : (location.pathname.startsWith("/product/") ||
+               location.pathname.startsWith("/shop") ||
+               location.pathname.startsWith("/search"))
+            ? "pt-[100px]"
+            : "pt-[101px]"
+        }`}
       >
         <Suspense fallback={
           <div className="flex-grow min-h-[50vh] flex flex-col items-center justify-center bg-[#FAF8F4] space-y-4">
@@ -1308,7 +1327,8 @@ export default function Layout() {
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             onClick={scrollToTop}
-            className={`fixed right-4 z-[997] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#FAF8F4] text-[#2b2b2b] border border-[#C8A96B]/35 flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:border-[#C8A96B] hover:text-[#C8A96B] hover:scale-110 active:scale-95 transition-all duration-300 pointer-events-auto cursor-pointer ${getScrollToTopPosition()}`}
+            className="fixed right-[20px] z-[997] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#FAF8F4] text-[#2b2b2b] border border-[#C8A96B]/35 flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:border-[#C8A96B] hover:text-[#C8A96B] hover:scale-110 active:scale-95 transition-all duration-300 pointer-events-auto cursor-pointer"
+            style={{ bottom: "var(--scroll-top-bottom)" }}
             aria-label="Scroll to top"
           >
             <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
@@ -1316,16 +1336,27 @@ export default function Layout() {
         )}
       </AnimatePresence>
 
-      <a
-        id="whatsapp-float"
-        href={`https://wa.me/${getWhatsAppNumber()}?text=Hi!%20I%20Need%20Help.`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`fixed right-4 z-[997] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_6px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_8px_25px_rgba(37,211,102,0.4)] hover:scale-110 active:scale-95 transition-all duration-300 ${getWhatsAppPosition()}`}
-        aria-label="Contact on WhatsApp"
+      <div 
+        id="whatsapp-float-container"
+        className="group fixed right-[20px] z-[9999] flex items-center justify-end pointer-events-none transition-all duration-300"
+        style={{ bottom: "var(--whatsapp-bottom)" }}
       >
-        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />
-      </a>
+        <div className="mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/80 text-white text-xs px-3 py-1.5 rounded pointer-events-none shadow-lg whitespace-nowrap">
+          Chat with us
+        </div>
+        <a
+          id="whatsapp-float"
+          href={`https://wa.me/${getWhatsAppNumber()}?text=Hi%2C%20I%20am%20interested%20in%20your%20product.%20Can%20you%20help%20me%3F`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-[56px] h-[56px] rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_4px_14px_rgba(37,211,102,0.4)] hover:bg-[#20bd5a] hover:scale-110 active:scale-95 transition-all duration-300 pointer-events-auto"
+          aria-label="Contact on WhatsApp"
+        >
+          <svg viewBox="0 0 24 24" width="28" height="28" className="fill-current">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.663-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </a>
+      </div>
     </div>
   );
 }

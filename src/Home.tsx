@@ -375,8 +375,8 @@ export default function Home() {
       <section id="next-section" className="bg-primary-50 py-4 md:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-baseline mb-3 md:mb-6">
-            <h2 className="text-3xl md:text-4xl font-serif text-primary-950 tracking-wide font-normal">
-              Shop by Category
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)]">
+              Shop by <span className="italic">Category</span>
             </h2>
             <Link
               to="/shop"
@@ -386,7 +386,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-5">
             <Link
               to="/shop?category=Co-Ord-Sets"
               className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-2xl"
@@ -456,11 +456,11 @@ export default function Home() {
 
       {/* Trending Section */}
       <section className="bg-white pt-4 md:pt-6 pb-2.5 md:pb-3 border-t border-gold-200/30">
-        <div className="px-2.5 sm:px-6 lg:px-8 sm:max-w-7xl mx-auto">
-          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-3.5 md:mb-6 px-1.5 sm:px-0">
+        <div className="px-2 sm:px-4 lg:px-6 sm:max-w-7xl mx-auto">
+          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-3 md:mb-5 px-1.5 sm:px-0">
             <div>
-              <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-dark)] tracking-wide font-normal flex items-center justify-center md:justify-start gap-2">
-                Trending Now
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)] flex items-center justify-center md:justify-start gap-2">
+                Trending <span className="italic">Now</span>
               </h2>
             </div>
             <Link
@@ -470,7 +470,7 @@ export default function Home() {
               View Collection
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-4 md:gap-8 w-full mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full mx-auto">
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : trendingProducts.map((product, index) => (
@@ -494,8 +494,8 @@ export default function Home() {
               <div className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-[#C8A96B] mb-1 font-bold font-sans">
                 REELS COLLECTION
               </div>
-              <h2 className="text-lg sm:text-xl md:text-2xl font-serif text-[var(--color-dark)] mb-1 font-normal tracking-wide">
-                Shop Our Latest Video Styles
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)] mb-1">
+                Shop Our Latest <span className="italic">Video Styles</span>
               </h2>
               <p className="text-[11px] sm:text-[12px] text-[var(--color-dark)]/70 max-w-xl mx-auto font-sans font-light">
                 Discover trending sarees through elegant short videos curated for modern fashion lovers.
@@ -513,7 +513,7 @@ export default function Home() {
                 ref={reelsScrollRef}
                 onScroll={handleReelsScroll}
                 style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
-                className="flex lg:grid lg:grid-cols-3 xl:grid-cols-6 gap-5 overflow-x-auto lg:overflow-x-visible pb-4 lg:pb-0 snap-x snap-mandatory scroll-smooth no-scrollbar scrollbar-hide w-full tracking-wide px-10 md:px-0 scroll-px-10 md:scroll-px-0 touch-pan-x touch-pan-y"
+                className="flex lg:grid lg:grid-cols-3 xl:grid-cols-6 gap-3.5 md:gap-4 overflow-x-auto lg:overflow-x-visible pb-4 lg:pb-0 snap-x snap-mandatory scroll-smooth no-scrollbar scrollbar-hide w-full tracking-wide px-10 md:px-0 scroll-px-10 md:scroll-px-0 touch-pan-x touch-pan-y"
               >
                 {LOOK_REELS.map((reel, index) => {
                   return (
@@ -553,10 +553,10 @@ export default function Home() {
 
       {/* New Arrivals Section */}
       <section className="bg-primary-50 py-3 md:py-6 border-t border-gold-200/30">
-        <div className="px-2.5 sm:px-6 lg:px-8 sm:max-w-7xl mx-auto">
-          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-3.5 md:mb-6 px-1.5 sm:px-0">
-            <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-dark)] font-normal tracking-wide">
-              New Arrivals
+        <div className="px-2 sm:px-4 lg:px-6 sm:max-w-7xl mx-auto">
+          <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-3 md:mb-5 px-1.5 sm:px-0">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)]">
+              New <span className="italic">Arrivals</span>
             </h2>
             <Link
               to="/shop?sort=new"
@@ -566,7 +566,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-4 md:gap-8 w-full mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full mx-auto">
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : newArrivals.map((product, index) => (
@@ -651,7 +651,7 @@ export default function Home() {
             <div
               ref={scrollRef}
               style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
-              className="flex gap-4 md:gap-6 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide no-scrollbar h-[270px] sm:h-[340px] md:h-[450px] lg:h-[480px] touch-pan-x touch-pan-y will-change-scroll"
+              className="flex gap-3 md:gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide no-scrollbar h-[270px] sm:h-[340px] md:h-[450px] lg:h-[480px] touch-pan-x touch-pan-y will-change-scroll"
             >
               {shopImages.map((image, index) => (
                 <motion.div
@@ -717,8 +717,8 @@ export default function Home() {
             <div className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-gold)] mb-0.5 font-semibold">
               Visit Us
             </div>
-            <h2 className="text-2xl md:text-3xl font-serif text-[var(--color-dark)] mb-0.5 font-normal tracking-wide leading-tight">
-              Visit Our Store In-Person
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)] mb-2 leading-tight">
+              Visit Our Store <span className="italic">In-Person</span>
             </h2>
             <p className="text-[13.5px] sm:text-[14px] text-[var(--color-dark)]/75 max-w-[90%] md:max-w-2xl mx-auto font-light leading-normal px-2">
               Step into the world of Mukesh Saree Centre. Visit our popular Nagpur store and discover beautiful sarees, premium designs, and timeless traditional styles since 1978.

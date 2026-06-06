@@ -46,6 +46,14 @@ export default function Shop() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (!isLoading) {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+  }, [isLoading]);
+
   const filteredAndSortedProducts = useMemo(() => {
     let result = products.filter((p) => !p.isVariant && !p.isHidden);
 
@@ -260,31 +268,28 @@ export default function Shop() {
       />
 
       <div
-        className="shop-container max-w-[1600px] mx-auto pt-[8px] sm:pt-6 md:pt-10 pb-8 mt-0 w-full"
+        className="shop-container max-w-[1600px] mx-auto pt-0 pb-8 mt-0 w-full"
         style={{ minHeight: "auto" }}
       >
-        <div className="px-2 md:px-0">
-          <Breadcrumbs />
-        </div>
         {/* ROW 1: Shop All Heading */}
-        <div style={{ margin: "8px 0", padding: "0 8px" }}>
+        <div className="collection-header-wrapper" style={{ margin: "4px 0", padding: "0 8px" }}>
           <h1
-            className="font-serif text-[var(--color-dark)] tracking-wide flex items-baseline gap-2"
+            className="collection-hero__title for-seo-only font-serif text-[var(--color-dark)] tracking-wide flex items-baseline gap-2"
             style={{ fontSize: "18px", margin: "0", lineHeight: "1.2", fontWeight: "normal" }}
           >
-            <span>
+            <span className="collection-title-text">
               {searchQuery
                 ? `Results for "${searchQuery}"`
                 : categoryFilter || "Shop All"}
             </span>
-            <span className="text-[12px] font-sans text-neutral-500 tracking-wider font-normal lowercase normal-case whitespace-nowrap">
+            <span className="product-count product-count__text text-[12px] font-sans text-neutral-500 tracking-wider font-normal lowercase normal-case whitespace-nowrap">
               ({filteredAndSortedProducts.length} items)
             </span>
           </h1>
         </div>
 
         {/* ROW 2: Filters and Sort by Buttons */}
-        <div className="controls-bar flex flex-row items-center gap-2" style={{ display: "flex", flexDirection: "row", gap: "8px", alignItems: "center", margin: "0 0 6px 0", width: "100%" }}>
+        <div className="controls-bar flex flex-row items-center gap-2" style={{ display: "flex", flexDirection: "row", gap: "8px", alignItems: "center", margin: "0 0 2px 0", width: "100%" }}>
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
             className="lg:hidden flex items-center gap-1.5 bg-white cursor-pointer select-none"
@@ -346,7 +351,7 @@ export default function Shop() {
         </div>
 
         {/* ROW 3: Category Filter Pills Row (Sticky and Mobile-optimized scrollable row) */}
-        <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto select-none scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto sticky top-[91px] z-40 bg-[#FAF7F2] border-b border-gray-100/80" style={{ marginBottom: "6px", marginTop: "0", paddingTop: "4px", paddingBottom: "4px" }}>
+        <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto select-none scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto sticky top-[91px] z-40 bg-[#FAF7F2] border-b border-gray-100/80" style={{ marginBottom: "2px", marginTop: "0", paddingTop: "2px", paddingBottom: "2px" }}>
           {[
             { label: "All", value: null },
             { label: "Co-Ord Sets", value: "Co-Ord Sets" },

@@ -29,6 +29,23 @@
   --shadow-gold: 0 8px 30px rgba(200, 169, 107, 0.15);
 }
 
+/* Product Detail Rows */
+.prod-detail-row {
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(44, 36, 27, 0.1);
+  font-size: 14px;
+}
+.prod-detail-row > div:first-child {
+  width: 90px;
+  color: rgba(44, 36, 27, 0.6);
+}
+.prod-detail-row > div:last-child {
+  flex: 1;
+  color: #2C241B;
+}
+
 /* Typography styles */
 html {
   scroll-behavior: smooth;
@@ -1213,62 +1230,16 @@ video::-webkit-media-controls-fullscreen-button {
   width: 100% !important;
 }
 
-.product-info-section {
+header.product-info-section {
   display: flex !important;
   flex-direction: column !important;
-  gap: 6px !important;
+  gap: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
-.product-title {
-  font-size: 17px !important;
-  font-weight: 700 !important;
-  line-height: 1.3 !important;
-  margin-bottom: 10px !important;
-  display: block !important;
-  width: 100% !important;
-  clear: both !important;
-}
-
-/* 3. Rating + badge row compact: */
-.rating-badge-row {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 8px !important;
-  margin: 2px 0 !important;
-  flex-wrap: nowrap !important;
-}
-
-.rating-badge-row .badge, .rating-badge-row .urgency-badge {
-  font-size: 11px !important;
-  padding: 3px 8px !important;
-  white-space: nowrap !important;
-}
-
-/* 4. Details table compact: */
-.product-details-table {
-  margin: 6px 0 !important;
-}
-
-.product-details-table tr td {
-  padding: 3px 0 !important;
-  font-size: 13px !important;
-  line-height: 1.4 !important;
-}
-
-.product-details-label {
-  font-size: 11px !important;
-  color: #888 !important;
-  min-width: 90px !important;
-  vertical-align: top !important;
-}
-
-/* 5. Remove all extra margin/padding between sections: */
-.product-section + .product-section {
-  margin-top: 6px !important;
-}
-
-/* 6. SKU + Category row compact: */
 .product-meta-row {
   display: flex !important;
   flex-direction: row !important;
@@ -1278,7 +1249,10 @@ video::-webkit-media-controls-fullscreen-button {
   font-size: 11px !important;
   color: #888 !important;
   letter-spacing: 0.04em !important;
-  margin-bottom: 4px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
@@ -1306,6 +1280,99 @@ video::-webkit-media-controls-fullscreen-button {
   font-size: 11px !important;
   font-weight: 600 !important;
   white-space: nowrap !important;
+}
+
+.product-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 400;
+  color: var(--color-dark);
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  clear: both !important;
+  line-height: 1.35 !important;
+}
+
+/* 3. Product Info Block containing Price and Ratings rows */
+div.product-info-section {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 6px !important; /* Ratings -> Border gap: 6px */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+/* 4. Price and buttons group row */
+.price-action-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* 5. Rating and live viewer counter row */
+.rating-badge-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 6px !important; /* Rating -> Badge: 6px gap (Target 4px to 8px) */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  flex-wrap: nowrap !important;
+}
+
+.rating-badge-row .badge, .rating-badge-row .urgency-badge {
+  font-size: 11px !important;
+  padding: 3px 8px !important;
+  white-space: nowrap !important;
+}
+
+/* 6. Product Specifications Container and Table */
+.product-specs-container {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 8px !important; /* Ratings (Border) -> Specifications: 8px spacing */
+  margin-bottom: 0 !important;
+}
+
+.product-details-table {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+
+.product-details-table tr td {
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+
+.product-details-label {
+  font-size: 11px !important;
+  color: #888 !important;
+  min-width: 90px !important;
+  vertical-align: middle !important;
+}
+
+/* 7. Remove all extra margin/padding between sections: */
+.product-section + .product-section {
+  margin-top: 6px !important;
 }
 
 .price-section,
@@ -1523,11 +1590,24 @@ nav, nav.main-nav {
   flex-direction: row !important;
   overflow-x: auto !important;
   gap: 8px !important;
-  padding: 4px 8px !important;
+  padding: 2px 8px 3px 8px !important; /* Collapse vertical padding from 4px to 2px/3px */
   scroll-snap-type: x mandatory !important;
   -webkit-overflow-scrolling: touch !important;
   scrollbar-width: none !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  margin-top: 0 !important;
+  margin-bottom: 2px !important; /* Override layout bottom margin to decrease space before products */
+}
+
+@media (max-width: 767px) {
+  .filter-pills-container,
+  .category-filters,
+  [class*="filter-row"],
+  [class*="category-row"] {
+    padding: 1px 8px 2px 8px !important; /* Ultra-compact vertical padding on mobile devices */
+    margin-bottom: 1px !important;
+    top: 92px !important; /* Extremely minimal clearance below the sticky header on mobile screens to prevent cropping on scroll */
+  }
 }
 
 .filter-pills-container::-webkit-scrollbar,
@@ -1536,7 +1616,17 @@ nav, nav.main-nav {
 }
 
 .controls-bar {
-  padding: 4px 8px !important;
+  padding: 2px 8px !important; /* Reduced vertical padding from 4px to 2px */
+  margin-top: 0 !important;
+  margin-bottom: 2px !important; /* Reduce space after Filter/Sort row before Category chips */
+}
+
+@media (max-width: 767px) {
+  .controls-bar {
+    padding: 1px 8px !important; /* Ultra-compact vertical padding for controls on mobile */
+    margin-top: 2px !important; /* Moves Filter/Sort row down by 2px to avoid sitting too close to the header */
+    margin-bottom: 1px !important;
+  }
 }
 
 .controls-bar select {
@@ -1560,7 +1650,14 @@ nav, nav.main-nav {
 /* 🛍️ Ensure product list has sufficient clearance below sticky row */
 .product-grid,
 .products-container {
-  margin-top: 8px !important;
+  margin-top: 3px !important; /* Reduced top margin from 8px to 3px */
+}
+
+@media (max-width: 767px) {
+  .product-grid,
+  .products-container {
+    margin-top: 1px !important; /* Tiny gap before first list of products on mobile devices */
+  }
 }
 
 /* 🛍️ Side gaps & margins for extremely compact shop layout */
@@ -1571,6 +1668,14 @@ nav, nav.main-nav {
   margin-left: 0 !important;
   margin-right: 0 !important;
   width: 100% !important;
+  margin-top: -6px !important; /* Pulls the filter controls closer to the static page header on desktop */
+}
+
+@media (max-width: 767px) {
+  .shop-page,
+  .shop-container {
+    margin-top: -4px !important; /* Extremely tight spacing from the static page header on mobile, preventing overlap while reducing gap */
+  }
 }
 
 .product-grid {
@@ -1683,55 +1788,65 @@ nav, nav.main-nav {
   header.product-info-section {
     padding-top: 0px !important;
     padding-bottom: 0px !important;
-    margin-top: 2px !important;
-    margin-bottom: 2px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    gap: 0px !important;
   }
 
   .product-meta-row {
     margin-top: 0px !important;
-    margin-bottom: 2px !important;
+    margin-bottom: 0px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
     gap: 4px !important;
   }
 
   /* 2. Product Title */
   .product-title {
     font-size: 16px !important;
-    margin-top: 2px !important;
-    margin-bottom: 4px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
   }
 
   /* 3. Product Info Block containing Price and Ratings rows */
   div.product-info-section {
-    padding-top: 4px !important;
-    padding-bottom: 4px !important;
+    padding-top: 0px !important;
+    padding-bottom: 8px !important; /* Ratings -> Border gap */
     margin-top: 0px !important;
-    margin-bottom: 6px !important;
+    margin-bottom: 0px !important;
     border-bottom: 1px solid var(--color-border) !important;
   }
 
   /* 4. Price and buttons group row */
   .price-action-row {
-    margin-top: 2px !important;
-    margin-bottom: 2px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
   }
 
   /* 5. Rating and live viewer counter row */
   .rating-badge-row {
-    margin-top: 2px !important;
-    margin-bottom: 2px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    gap: 6px !important; /* Rating -> Badge: 6px gap (Target 4px to 8px) */
   }
 
   /* 6. Product Specifications Container and Table */
   .product-specs-container {
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
-    margin-top: 0px !important;
-    margin-bottom: 4px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 8px !important; /* Ratings (Border) -> Specifications: 8px spacing */
+    margin-bottom: 0px !important;
   }
 
   .product-specs-container .product-details-table {
-    margin-top: 2px !important;
-    margin-bottom: 2px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
   }
 
   .product-specs-container .product-details-table tr td {
@@ -1762,6 +1877,268 @@ nav, nav.main-nav {
     margin-bottom: 2px !important;
   }
 }
+
+/* ==========================================================================
+   🛍️ SHOPIFY / LOCAL COLLECTIONS - SEO-FRIENDLY VISUAL HIDING
+   ========================================================================== */
+
+/* 
+  1. Visually hide the Collection Title (H1) text.
+     Using standard clip-path/clip absolute positioning method so search 
+     engine spiders (Googlebot, etc.) still index the H1 for organic SEO 
+     while it is hidden visually from buyers design-wise.
+*/
+.collection-hero__title,
+.collection-title,
+.collection-title-text,
+h1.collection-hero__title,
+.for-seo-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* 
+  2. Hide the Product Count element completely (no SEO value anyway)
+*/
+.product-count,
+.product-count__text,
+#ProductCount,
+#ProductCountDesktop,
+.product-count-vertical {
+  display: none !important;
+}
+
+/* 
+  3. Collapse all spacing from the container header wrappers to eliminate
+     any residual white gaps or margin shifts.
+*/
+.collection-header-wrapper,
+.collection-hero__text-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   🖼️ PRODUCT PAGE EDGE-TO-EDGE FULL-WIDTH IMAGE & GALLERY OVERRIDES
+   ========================================================================== */
+
+/* 
+  1. Section/div wrapping the entire product layout
+     Removes the top gap between the site header/navigation bars and the 
+     product details/media content. Set padding/margins to zero.
+*/
+.product,
+.product-section,
+.product-page-content,
+[class*="section-template--"][class*="__main-padding"],
+[class*="section-template--"] .product,
+div[class*="section-template--"] {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* 
+  2. Main Product Image Container & Gallery Wrapper Div 
+     Sets the display containers to full 100% screen width on all 
+     devices, completely eliminating left/right side margins and paddings.
+*/
+.product__media-wrapper,
+.product__media-list,
+.product__media-item,
+.product-media-container,
+.slider-mobile-gutter,
+.gallery-main,
+.product-image-container,
+[class*="product-image-container"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  border-radius: 0 !important; /* Edge to edge looks cleanest with zero borders on mobile */
+}
+
+/* 
+  3. Main Product Image itself (img tag)
+     Ensures the core image scales dynamically and proportionally without distortion,
+     fitting exactly within the device screen width from edge-to-edge.
+*/
+.product__media img,
+.product__media-item img,
+.product-media-container img,
+.product__modal-opener img,
+.product-image-main,
+.product-main-img,
+.gallery-main img,
+[class*="product-image"] img {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important; /* Retains proportional sizing without cropping or clipping the saree */
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 
+  4. Thumbnail Images Row Container
+     Spans the full container width with zero margin or padding side gaps.
+*/
+.thumbnail-slider,
+.thumbnail-list,
+.product-thumbnails-container,
+.product-thumbnails-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* ==========================================================================
+   💬 FLOATING WHATSAPP BUTTON & SCROLL-TO-TOP STACKING ENHANCEMENTS
+   ========================================================================== */
+
+/* 
+  Defines modular, responsive CSS variables to style the floating widgets.
+  Ensures the WhatsApp button and Scroll up button never overlap, maintaining
+  a neat, vertical stack with a perfect margin separation.
+*/
+
+/* 1. Global / Desktop Defaults */
+:root {
+  --whatsapp-bottom: 24px;
+  --scroll-top-bottom: 88px; /* Top of 56px WhatsApp (at 24px bottom is 80px) + 8px gap = 88px */
+}
+
+/* 2. Mobile Default (No sticky addToCart bar present) */
+@media (max-width: 767px) {
+  :root {
+    --whatsapp-bottom: 16px;
+    --scroll-top-bottom: 80px; /* Top of 56px WhatsApp (at 16px bottom is 72px) + 8px gap = 80px */
+  }
+}
+
+/* 3. Mobile product/checkout pages with active sticky Add to Cart bottom bar */
+body.has-sticky-atc {
+  --whatsapp-bottom: 80px;   /* Sits neatly above the sticky bottom ATC dynamic action bar */
+  --scroll-top-bottom: 144px; /* Top of 56px WhatsApp + 8px gap = 144px */
+}
+
+/* 4. Desktop overrides for product/checkout pages (since we hide the sticky bar on md: 768px+) */
+@media (min-width: 768px) {
+  body.has-sticky-atc {
+    --whatsapp-bottom: 24px;
+    --scroll-top-bottom: 88px;
+  }
+}
+
+/* 
+  Now, override any greedy absolute styles which might try to position 
+  #whatsapp-float or #whatsapp-float-container independently. 
+*/
+#whatsapp-float-container {
+  bottom: var(--whatsapp-bottom) !important;
+  z-index: 9999 !important;
+}
+
+#whatsapp-float-container #whatsapp-float {
+  position: static !important;
+  bottom: auto !important;
+  right: auto !important;
+}
+
+/* Fallback styles for other possible classes/IDs just in case they are generated dynamically */
+#whatsapp-float,
+.whatsapp-float,
+[id*="whatsapp-float"],
+[id*="whatsapp"]:not(#whatsapp-float-container):not(#whatsapp-float-container-inner),
+[class*="whatsapp-float"]:not(#whatsapp-float-container),
+[class*="whatsapp-button"],
+.whatsapp-sticky,
+.whatsapp-support-btn,
+.wa-button {
+  bottom: var(--whatsapp-bottom) !important;
+}
+
+/* ==========================================================================
+   📏 PRODUCT DETAIL METADATA COMPACT SPACING (TITLE, PRICE, & RATING ROWS)
+   ========================================================================== */
+
+/*
+  Fixes inconsistent vertical spacing by removing hardcoded heights,
+  nullifying redundant paddings/margins, and enforcing exactly 10px
+  equal spacing between the metadata, title, price, and ratings rows.
+*/
+
+/* 1. Free the single product details header from the global 64px height constraint */
+header.product-info-section {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  min-height: unset !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  gap: 0 !important;
+}
+
+/* 2. Free product info section div from fixed constraints and vertical padding gaps */
+div.product-info-section {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  min-height: unset !important;
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 6px !important; /* Spacing below ratings to content border */
+  gap: 0 !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+/* 3. Enforce exactly 10px equal spacing between consecutive rows */
+.product-meta-row {
+  margin-top: 0 !important;
+  margin-bottom: 10px !important; /* Spacing: SKU/Category Row -> Product Title */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.product-title {
+  margin-top: 0 !important;
+  margin-bottom: 10px !important; /* Spacing: Product Title -> Price Row */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.price-action-row {
+  margin-top: 0 !important;
+  margin-bottom: 10px !important; /* Spacing: Price Row -> Rating Row */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.rating-badge-row {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+
 
 
 
