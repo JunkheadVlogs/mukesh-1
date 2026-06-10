@@ -12,7 +12,6 @@ import { Product, useStore } from "./store";
 import QuickViewModal from "./QuickViewModal";
 import { SEO } from "./components/SEO";
 import { trackViewItemList } from "./tracking";
-import { Breadcrumbs } from "./components/Breadcrumbs";
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,7 +29,7 @@ export default function Shop() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
     null,
   );
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { addToCart } = useStore();
 
   const [page, setPage] = useState(1);
@@ -38,21 +37,10 @@ export default function Shop() {
   const PER_PAGE = 12;
 
   useEffect(() => {
-    // Beautiful, super-snappy initial skeleton load on mount
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 250);
-    return () => clearTimeout(timer);
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, []);
-
-  useEffect(() => {
-    if (!isLoading) {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    }
-  }, [isLoading]);
 
   const filteredAndSortedProducts = useMemo(() => {
     let result = products.filter((p) => !p.isVariant && !p.isHidden);
@@ -404,11 +392,11 @@ export default function Shop() {
             className={`
             fixed lg:relative inset-y-0 left-0 w-[280px] lg:w-64 bg-white lg:bg-transparent z-[70] lg:z-0
             transform ${isFilterOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-            transition-transform duration-300 ease-in-out p-8 lg:p-0 overflow-y-auto lg:overflow-visible
+            transition-transform duration-300 ease-in-out pt-5 pb-6 px-6 lg:p-0 overflow-y-auto lg:overflow-visible
             shadow-2xl lg:shadow-none
           `}
           >
-            <div className="flex items-center justify-between lg:hidden mb-8">
+            <div className="flex items-center justify-between lg:hidden mb-2.5 lg:mb-8">
               <h2 className="text-xl font-serif font-semibold tracking-[1px]">
                 Filters
               </h2>
@@ -417,24 +405,24 @@ export default function Shop() {
               </button>
             </div>
 
-            <div className="space-y-10">
+            <div className="space-y-4 lg:space-y-10">
               {/* Category */}
-              <section>
-                <h3 className="text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-6">
+              <section className="category-filter-section">
+                <h3 className="category-filter-heading text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-1.5 lg:mb-6">
                   Category
                 </h3>
-                <div className="flex flex-col gap-3">
+                <div className="category-filter-links flex flex-col gap-1.5 lg:gap-3">
                   <button
                     onClick={() => handleCategoryChange(null)}
-                    className={`text-left text-sm font-medium transition-all ${!categoryFilter ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
+                    className={`category-filter-btn text-left text-sm font-medium transition-all ${!categoryFilter ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
                   >
                     All Collection
                   </button>
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-1 lg:gap-2">
                     <button
                       onClick={() => handleCategoryChange("Sarees")}
-                      className={`text-left text-sm font-medium transition-all ${categoryFilter === "Sarees" || categoryFilter === "Linen Sarees" ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
+                      className={`category-filter-btn text-left text-sm font-medium transition-all ${categoryFilter === "Sarees" || categoryFilter === "Linen Sarees" ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
                     >
                       Sarees
                     </button>
@@ -443,11 +431,11 @@ export default function Shop() {
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
-                        className="pl-4 flex flex-col gap-2 border-l border-gold-500/20 ml-1 overflow-hidden"
+                        className="pl-4 flex flex-col gap-1 lg:gap-2 border-l border-gold-500/20 ml-1 overflow-hidden"
                       >
                         <button
                           onClick={() => handleCategoryChange("Linen Sarees")}
-                          className={`text-left text-xs font-medium transition-all py-1 ${categoryFilter === "Linen Sarees" ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
+                          className={`category-filter-btn text-left text-xs font-medium transition-all py-0.5 lg:py-1 ${categoryFilter === "Linen Sarees" ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
                         >
                           — Linen Sarees
                         </button>
@@ -457,7 +445,7 @@ export default function Shop() {
 
                   <button
                     onClick={() => handleCategoryChange("Co-Ord Sets")}
-                    className={`text-left text-sm font-medium transition-all ${categoryFilter === "Co-Ord Sets" ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
+                    className={`category-filter-btn text-left text-sm font-medium transition-all ${categoryFilter === "Co-Ord Sets" ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
                   >
                     Co-Ord Sets
                   </button>
@@ -465,16 +453,16 @@ export default function Shop() {
               </section>
 
               {/* Fabric */}
-              <section>
-                <h3 className="text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-6">
+              <section className="fabric-filter-section !mt-4 lg:!mt-10">
+                <h3 className="fabric-filter-heading text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-6">
                   Fabric
                 </h3>
-                <div className="flex flex-col gap-3">
+                <div className="fabric-filter-options flex flex-col gap-3">
                   {baseFabrics.map((fabric) => (
                     <button
                       key={fabric}
                       onClick={() => toggleFabric(fabric)}
-                      className="flex items-center group w-full text-left gap-3"
+                      className="fabric-filter-btn flex items-center group w-full text-left gap-3"
                     >
                       <div
                         className={`w-4 h-4 border rounded-sm transition-all ${fabricFilter.includes(fabric) ? "bg-gold-500 border-gold-500" : "border-black/10 group-hover:border-black/30"}`}
@@ -525,7 +513,7 @@ export default function Shop() {
                     <ProductCard
                       key={product.id}
                       idx={idx}
-                      priority={false}
+                      priority={idx < 4}
                       product={product}
                       hideCategory={true}
                       hideRating={true}
@@ -583,7 +571,7 @@ export default function Shop() {
                         <ProductCard
                           key={product.id}
                           idx={idx}
-                          priority={false}
+                          priority={idx < 4}
                           product={product}
                           hideCategory={true}
                           hideRating={true}

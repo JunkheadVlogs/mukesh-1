@@ -153,7 +153,7 @@ function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string 
     targetUrl = targetUrl.split('=')[0]; // strip existing params
   }
   
-  return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=1200&fit=contain&bg=ffffff&cbg=ffffff&output=jpg&q=90`;
+  return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=center&output=jpg&q=90`;
 }
 
 function getSquarePrerenderImageUrl(imageUrl: string | undefined): string {
@@ -679,10 +679,16 @@ async function runPrerender() {
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
     const wsrvImgLandscape = getWhatsAppSafePrerenderImageUrl(p.image);
-    const shortDesc = getWhatsAppSafePrerenderDescription(p.description || "", p).replace(/\|/g, "").trim();
-    const mrpPart = p.originalPrice ? ` (MRP ₹${p.originalPrice})` : "";
-    const prodDesc = `✨ ${shortDesc} | 💰 ₹${p.price}${mrpPart} | 🚚 Free Shipping | Cash on Delivery Available`;
-    const pageTitle = `${p.name} – ₹${p.price} | Mukesh Saree Centre`;
+    const fabricItem = p.fabric ? `✨ ${p.fabric}` : "✨ Premium Fabric";
+    const discountPercent = (p.originalPrice && p.price && p.originalPrice > p.price)
+      ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
+      : null;
+    const priceText = discountPercent 
+      ? `💰 ₹${p.price} (${discountPercent}% OFF)` 
+      : `💰 ₹${p.price}`;
+
+    const prodDesc = `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since 1978`;
+    const pageTitle = `${p.name} | Mukesh Saree Centre`;
     
     let prodHtml = baseHtml
       .replace(/<title>.*?<\/title>/, `<title>${sanitize(pageTitle)}</title>`)
@@ -700,7 +706,7 @@ async function runPrerender() {
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content="Mukesh Saree Centre" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${sanitize(pageTitle)}" />
@@ -835,6 +841,19 @@ async function runPrerender() {
           ${getFooterHtml()}
         </div>
       `
+    },
+    {
+      dir: "wholesalesarees",
+      title: "Mukesh Saree Centre Wholesale VIP Club",
+      desc: "Join Mukesh Saree Centre Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers.",
+      body: `
+        <div style="background-color: #FAF6F0; min-height: 100vh; font-family: 'Playfair Display', serif; text-align: center; padding: 80px 24px; color: #1A0A00;">
+          <span style="display: inline-block; padding: 6px 16px; background-color: rgba(92, 6, 18, 0.05); color: #5C0612; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; border-radius: 99px; border: 1px solid rgba(92, 6, 18, 0.1); margin-bottom: 24px;">Wholesale Dealer Portal</span>
+          <h1 style="font-size: 36px; color: #1A0A00; font-weight: 300; margin-bottom: 12px; letter-spacing: 0.02em;">Mukesh Saree Centre <span style="display: block; font-style: italic; color: #5C0612; font-weight: 600; margin-top: 4px;">Wholesale VIP Club</span></h1>
+          <p style="font-size: 12px; text-transform: uppercase; tracking: 3px; font-weight: bold; color: #C5A059; margin-bottom: 24px;">Exclusive Community For Saree Shop Owners</p>
+          <p style="font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.8; color: rgba(26,10,0,0.7); max-width: 600px; margin: 0 auto 32px auto; font-weight: 300;">Get Daily New Arrivals, Wholesale Prices, Fast-Selling Collections and Special Dealer Offers Directly On WhatsApp. Keep your store ahead with daily fresh stocks and unmatched margins from Nagpur's premium saree pioneer since 1978.</p>
+        </div>
+      `
     }
   ];
 
@@ -892,6 +911,7 @@ Sitemap: https://mukeshsarees.com/sitemap.xml`;
     { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu", changefreq: "monthly", priority: "0.7" },
     { path: "/product/elegant-forest-green-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
     { path: "/contact", changefreq: "monthly", priority: "0.5" },
+    { path: "/wholesalesarees", changefreq: "daily", priority: "0.8" },
     { path: "/shipping-policy", changefreq: "yearly", priority: "0.4" },
     { path: "/return-policy", changefreq: "yearly", priority: "0.4" },
     { path: "/terms", changefreq: "yearly", priority: "0.3" }

@@ -497,6 +497,13 @@
     "price": "999"
   },
   {
+    "name": "Premium Jamdani Cotton Saree – Lal Pari",
+    "slug": "premium-jamdani-cotton-saree-lal-pari",
+    "description": "DESCRIPTION: Make a graceful statement with this stunning Red Jamdani Cotton Saree. Crafted from soft spun cotton, it features delicate jamdani polka",
+    "image": "https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525",
+    "price": "1399"
+  },
+  {
     "name": "Payment Test Product",
     "slug": "payment-test-product",
     "description": "DESCRIPTION: This is a secure, hidden payment testing product configured specifically for live environment transaction validation, gateway handshake v",

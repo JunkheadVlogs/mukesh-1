@@ -977,7 +977,7 @@ const getWhatsAppSafeServerImageUrl = (imageUrl) => {
     targetUrl = targetUrl.split('=')[0]; // strip existing params
   }
   
-  return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=1200&fit=contain&bg=ffffff&cbg=ffffff&output=jpg&q=90`;
+  return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=center&output=jpg&q=90`;
 };
 
 const getSquareServerImageUrl = (imageUrl) => {
@@ -1078,14 +1078,17 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     const slug = productMatch[1].trim().toLowerCase();
     const prod = preParsedProducts.find(p => p.slug && p.slug.trim().toLowerCase() === slug);
     if (prod) {
-      ogTitle = `${prod.name} – ₹${prod.price || "0"} | Mukesh Saree Centre`;
+      ogTitle = `${prod.name} | Mukesh Saree Centre`;
       
-      const rawShortDesc = getWhatsAppSafeServerDescription(prod.description, prod);
-      const cleanShortDesc = rawShortDesc.replace(/\|/g, "").trim();
-      const mrpValue = prod.originalPrice || "";
-      const mrpPart = mrpValue ? ` (MRP ₹${mrpValue})` : "";
-      
-      ogDesc = `✨ ${cleanShortDesc} | 💰 ₹${prod.price || "0"}${mrpPart} | 🚚 Free Shipping | Cash on Delivery Available`;
+      const fabricItem = prod.fabric ? `✨ ${prod.fabric}` : "✨ Premium Fabric";
+      const discountPercent = (prod.originalPrice && prod.price && prod.originalPrice > prod.price)
+        ? Math.round(((prod.originalPrice - prod.price) / prod.originalPrice) * 100)
+        : null;
+      const priceText = discountPercent 
+        ? `💰 ₹${prod.price} (${discountPercent}% OFF)` 
+        : `💰 ₹${prod.price}`;
+        
+      ogDesc = `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since 1978`;
  
       // Convert to beautiful landscape format for products to show perfectly on WhatsApp, Facebook, and Instagram
       ogImg = getWhatsAppSafeServerImageUrl(prod.image || defaultBannerUrl);
@@ -1115,7 +1118,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta property="og:type" content="${isProduct ? 'product' : 'website'}" />
      <meta property="og:site_name" content="Mukesh Saree Centre" />
      <meta property="og:image:width" content="1200" />
-     <meta property="og:image:height" content="${isProduct ? '1200' : '630'}" />
+     <meta property="og:image:height" content="630" />
      <meta property="og:image:type" content="image/jpeg" />
      <meta name="twitter:card" content="summary_large_image" />
      <meta name="twitter:title" content="${ogTitle}" />

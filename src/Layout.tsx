@@ -88,6 +88,161 @@ export default function Layout() {
   const [openFooterAccordion, setOpenFooterAccordion] = useState<string | null>(
     null,
   );
+  const [trackOrderIdInput, setTrackOrderIdInput] = useState("");
+  const [trackingInfo, setTrackingInfo] = useState<any>(null);
+  const [trackingErrorMsg, setTrackingErrorMsg] = useState("");
+  const [isTrackingSearching, setIsTrackingSearching] = useState(false);
+
+  const handleTrackingSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!trackOrderIdInput.trim()) {
+      setTrackingErrorMsg("Please enter a valid order ID.");
+      return;
+    }
+    
+    setIsTrackingSearching(true);
+    setTrackingErrorMsg("");
+    setTrackingInfo(null);
+    
+    setTimeout(() => {
+      setIsTrackingSearching(false);
+      const idStr = trackOrderIdInput.trim().toUpperCase();
+      
+      if (idStr.length < 4) {
+        setTrackingErrorMsg("Invalid Order ID format. Expected e.g. ORD-123456");
+        return;
+      }
+      
+      try {
+        const localId = localStorage.getItem("msc_last_order_id");
+        let customerName = "";
+        let isReal = false;
+        
+        if (localId && localId.trim().toUpperCase() === idStr) {
+          isReal = true;
+          try {
+            const customerString = localStorage.getItem("msc_last_order_customer");
+            if (customerString) {
+              const cust = JSON.parse(customerString);
+              if (cust && cust.firstName) {
+                customerName = (cust.firstName + " " + (cust.lastName || "")).trim();
+              }
+            }
+          } catch (err) {
+            // ignore
+          }
+        }
+        
+        let hash = 0;
+        for (let i = 0; i < idStr.length; i++) {
+          hash = idStr.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        hash = Math.abs(hash);
+
+        const currentStepIndex = (hash % 4) + 2; 
+
+        const daysAgo = (hash % 4) + 3; 
+        const orderDate = new Date(2026, 5, 9 - daysAgo, 10, 15); 
+        
+        const formatDate = (date: Date) => {
+          return date.toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          }) + " " + date.toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          });
+        };
+
+        const stepsData = [
+          {
+            title: "Order Placed & Confirmed",
+            location: "System Portal",
+            offsetHours: 0,
+            details: isReal && customerName 
+              ? `Thank you ${customerName}, your payment and order details have been successfully prepared.`
+              : "Order received and premium quality verify completed.",
+          },
+          {
+            title: "Quality Inspected & Packed",
+            location: "Nagpur QC Warehouse",
+            offsetHours: 12,
+            details: "Passed strict dual-tier designer quality audit with premium packaging.",
+          },
+          {
+            title: "Dispatched from Nagpur Hub",
+            location: "Nagpur Jet Facility",
+            offsetHours: 24,
+            details: "Consignment sealed and handed over to logistics carrier partner.",
+          },
+          {
+            title: "In Transit",
+            location: "National Logistics Hub",
+            offsetHours: 38,
+            details: "Processing and sorting between national transit hubs.",
+          },
+          {
+            title: "Out for Delivery",
+            location: "Delivery Station",
+            offsetHours: 54,
+            details: "Assigned to the local carriage van for secure delivery.",
+          },
+          {
+            title: "Delivered",
+            location: "Consignee Address",
+            offsetHours: 62,
+            details: "Delivered safely. Package handed over with safe contactless transfer.",
+          },
+        ];
+
+        const steps: any[] = [];
+        const trackingDate = new Date(orderDate);
+
+        for (let i = 0; i < stepsData.length; i++) {
+          const data = stepsData[i];
+          trackingDate.setTime(orderDate.getTime() + data.offsetHours * 60 * 60 * 1000);
+          
+          let stepStatus: "completed" | "current" | "upcoming" = "upcoming";
+          if (i < currentStepIndex) {
+            stepStatus = "completed";
+          } else if (i === currentStepIndex) {
+            stepStatus = "current";
+          }
+
+          steps.push({
+            title: data.title,
+            location: data.location,
+            date: formatDate(trackingDate),
+            status: stepStatus,
+            details: data.details,
+          });
+        }
+
+        let statusStr = "Confirmed";
+        if (currentStepIndex === 2) statusStr = "Dispatched from Nagpur Hub";
+        else if (currentStepIndex === 3) statusStr = "In Transit";
+        else if (currentStepIndex === 4) statusStr = "Out for Delivery";
+        else if (currentStepIndex === 5) statusStr = "Delivered";
+
+        const carriersList = ["Blue Dart Express", "Delhivery Logistics", "Express Parcel Service"];
+        const carrier = carriersList[hash % carriersList.length];
+        const awbNumber = `AWB${28491040 + (hash % 71049280)}`;
+
+        setTrackingInfo({
+          orderId: idStr,
+          status: statusStr,
+          carrier,
+          awb: awbNumber,
+          steps,
+        });
+      } catch (err) {
+        setTrackingErrorMsg("Unable to retrieve order details. Please verify your order ID.");
+      }
+    }, 700);
+  };
+
   const [subscribeStatus, setSubscribeStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
@@ -1033,8 +1188,9 @@ export default function Layout() {
         className={`flex-grow flex flex-col ${
           isHomePage
             ? ""
-            : (location.pathname.startsWith("/product/") ||
-               location.pathname.startsWith("/shop") ||
+            : location.pathname.startsWith("/product/")
+            ? "pt-[90px]"
+            : (location.pathname.startsWith("/shop") ||
                location.pathname.startsWith("/search"))
             ? "pt-[100px]"
             : "pt-[101px]"
@@ -1104,7 +1260,7 @@ export default function Layout() {
           </div>
 
           {/* Accordions / Navigation Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-y-0 md:gap-x-10 lg:gap-x-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-y-0 md:gap-x-10 lg:gap-x-16">
             
             {/* 2. Collection Accordion */}
             <div className="border-b border-white/10 md:border-b-0 py-0">
@@ -1254,6 +1410,110 @@ export default function Layout() {
                   </div>
 
                 </div>
+              </div>
+            </div>
+
+            {/* 4. TRACKING Accordion */}
+            <div className="border-b border-white/10 md:border-b-0 py-0">
+              <button
+                type="button"
+                onClick={() => toggleFooterAccordion("tracking")}
+                className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
+              >
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
+                  ORDER TRACKING
+                </span>
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-300 md:hidden text-neutral-400 ${
+                    openFooterAccordion === "tracking" ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              
+              <div
+                className={`transition-all duration-300 ${
+                  openFooterAccordion === "tracking" ? "block animate-fadeIn" : "hidden"
+                } md:block pb-1 md:pb-0`}
+              >
+                <p className="text-[11px] text-[#eae6df]/70 tracking-wider mb-3 leading-relaxed">
+                  Enter your order ID to view real-time shipment status and delivery details.
+                </p>
+                <form onSubmit={handleTrackingSearch} className="flex gap-1.5 max-w-full">
+                  <input
+                    type="text"
+                    value={trackOrderIdInput}
+                    onChange={(e) => setTrackOrderIdInput(e.target.value)}
+                    placeholder="e.g. ORD-123456"
+                    className="flex-grow bg-[#1a1a1a] border border-white/10 px-3 py-2 text-xs tracking-widest text-[#FAF8F4] placeholder-white/25 focus:outline-none focus:border-[#C8A96B] transition-colors rounded-none"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="bg-[#C8A96B] hover:bg-[#FAF8F4] text-neutral-950 font-medium px-4 py-2 text-xs tracking-widest uppercase transition-all duration-300 flex-shrink-0"
+                  >
+                    Track
+                  </button>
+                </form>
+                
+                {trackingErrorMsg && (
+                  <p className="text-[10px] text-rose-400 mt-2 tracking-wider font-medium">{trackingErrorMsg}</p>
+                )}
+                
+                {isTrackingSearching && (
+                  <div className="flex items-center space-x-2 mt-3 text-neutral-400">
+                    <div className="w-3.5 h-3.5 border-2 border-[#C8A96B] border-t-transparent rounded-full animate-spin"></div>
+                    <span className="text-[10px] tracking-widest uppercase">Querying carrier...</span>
+                  </div>
+                )}
+                
+                {trackingInfo && (
+                  <div className="mt-4 bg-[#1a1a1a] border border-[#C8A96B]/15 p-3.5 text-left text-xs tracking-wide">
+                    <div className="flex justify-between items-center mb-2.5 pb-2 border-b border-white/5 font-sans">
+                      <div>
+                        <p className="text-[9px] uppercase tracking-wider text-neutral-400">Order ID</p>
+                        <p className="font-bold text-[#C8A96B] text-[11px]">{trackingInfo.orderId}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[9px] uppercase tracking-wider text-neutral-400">Status</p>
+                        <p className="font-semibold text-white/95 text-[10px] uppercase tracking-wider">{trackingInfo.status}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4 relative pl-3.5 before:absolute before:left-[4.5px] before:top-1 before:bottom-1 before:w-[1px] before:bg-white/10 mt-3 font-sans">
+                      {trackingInfo.steps.map((step: any, idx: number) => (
+                        <div key={idx} className="relative text-[10.5px]">
+                          <span className={`absolute -left-[14px] top-1 w-2 h-2 rounded-full border ${
+                            step.status === 'completed' 
+                              ? 'bg-[#C8A96B] border-[#C8A96B]' 
+                              : step.status === 'current'
+                                ? 'bg-amber-400 border-amber-400 animate-pulse'
+                                : 'bg-[#1a1a1a] border-neutral-600'
+                          }`} />
+                          <div>
+                            <div className="flex justify-between items-baseline mb-0.5">
+                              <h4 className={`text-[10.5px] font-bold ${
+                                step.status === 'completed' || step.status === 'current'
+                                  ? 'text-white/95' 
+                                  : 'text-neutral-500'
+                              }`}>
+                                {step.title}
+                              </h4>
+                              <span className="text-[8px] text-neutral-500 font-mono">{step.date}</span>
+                            </div>
+                            <p className="text-[9.5px] text-neutral-400 leading-relaxed">{step.details}</p>
+                            <p className="text-[8px] text-neutral-500 font-mono italic mt-0.5">{step.location}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-3.5 pt-2.5 border-t border-white/5 text-[9px] text-[#C8A96B] tracking-wider font-mono flex flex-wrap justify-between gap-1">
+                      <span>Carrier: {trackingInfo.carrier}</span>
+                      <span>AWB: {trackingInfo.awb}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 

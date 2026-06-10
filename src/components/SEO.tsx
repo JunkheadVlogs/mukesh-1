@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 interface SEOProps {
   title: string;
   description: string;
+  keywords?: string;
   image?: string;
   url?: string;
   type?: string;
@@ -124,6 +125,7 @@ export function cleanSEOText(text: string): string {
 export function SEO({
   title,
   description,
+  keywords,
   image = "https://mukeshsarees.com/images/og-home.jpg",
   url = "https://mukeshsarees.com",
   type = "website",
@@ -253,6 +255,7 @@ export function SEO({
       <title>{displayTitle}</title>
       <meta name="title" content={displayTitle} />
       <meta name="description" content={finalDescriptionText} />
+      {keywords && <meta name="keywords" content={keywords} />}
       <link rel="canonical" href={absoluteUrl} />
 
       {/* Open Graph / Facebook / WhatsApp */}

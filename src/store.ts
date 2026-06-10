@@ -50,6 +50,7 @@ export interface Product {
   noCareInstructions?: boolean;
   availableSizes?: string[];
   stock?: number;
+  keywords?: string;
 }
 
 interface CartItem extends Product {

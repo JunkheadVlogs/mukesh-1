@@ -1990,7 +1990,6 @@ div[class*="section-template--"] {
   margin: 0 !important;
   padding: 0 !important;
 }
-
 /* 
   4. Thumbnail Images Row Container
      Spans the full container width with zero margin or padding side gaps.
@@ -2137,6 +2136,72 @@ div.product-info-section {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
+
+/* 🎒 Mobile Filter Drawer Category Spacing Overrides */
+@media (max-width: 1023px) {
+  /* Reduce top padding and top margin of the Category section */
+  .category-filter-section {
+    padding-top: 2px !important;
+    margin-top: 2px !important;
+  }
+  
+  /* Reduce bottom margin below the Category title heading */
+  .category-filter-heading {
+    margin-bottom: 6px !important;
+    padding-bottom: 0px !important;
+  }
+  
+  /* Reduce vertical spacing between category buttons/links */
+  .category-filter-links {
+    gap: 2px !important;
+  }
+
+  /* Override the global button min-height target specifically for category items */
+  .category-filter-btn {
+    min-height: 28px !important;
+    height: 28px !important;
+    min-width: unset !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  /* Reduce empty spacing below the last category item before the next filter section */
+  .category-filter-section {
+    margin-bottom: 12px !important;
+  }
+
+  /* 🎒 Mobile Filter Drawer Fabric Spacing Overrides */
+  .fabric-filter-section {
+    padding-top: 2px !important;
+    margin-top: 2px !important;
+  }
+
+  .fabric-filter-heading {
+    margin-bottom: 8px !important;
+    padding-bottom: 0px !important;
+  }
+
+  .fabric-filter-options {
+    gap: 5px !important; /* Tighten gap between checkbox rows from 12px down to 5px */
+  }
+
+  .fabric-filter-btn {
+    min-height: 26px !important;
+    height: 26px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+}
+
+
 
 
 

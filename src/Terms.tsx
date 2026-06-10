@@ -1,5 +1,4 @@
 import { SEO } from './components/SEO';
-import { Breadcrumbs } from './components/Breadcrumbs';
 import { Link } from 'react-router';
 
 export default function Terms() {

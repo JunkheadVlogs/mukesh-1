@@ -111,14 +111,21 @@ export default function QuickViewModal({
                 />
                 
                 {productImages.length > 1 && (
-                  <div className="absolute bottom-6 left-6 flex gap-2">
-                    {productImages.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setActiveImageIndex(i)}
-                        className={`w-10 h-1 transition-all rounded-full ${activeImageIndex === i ? "bg-gold-500" : "bg-black/10 hover:bg-black/20"}`}
-                      />
-                    ))}
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center justify-center bg-white/70 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-black/[0.03] shadow-[0_2px_10px_rgba(0,0,0,0.02)] z-10">
+                    <div className="flex items-center gap-1.2">
+                      {productImages.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setActiveImageIndex(i)}
+                          className={`h-1.25 rounded-full transition-all duration-300 ${
+                            activeImageIndex === i
+                              ? "w-3.5 bg-[#C8A96B] shadow-[0_0_6px_rgba(200,169,107,0.30)]"
+                              : "w-1.25 bg-[#2B2B2B]/20 hover:bg-[#2B2B2B]/40"
+                          }`}
+                          aria-label={`Go to slide ${i + 1}`}
+                        />
+                      ))}
+                    </div>
                   </div>
                 )}
                 

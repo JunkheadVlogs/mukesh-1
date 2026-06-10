@@ -1,7 +1,6 @@
 import { SEO } from './components/SEO';
 import { Truck, Clock, MapPin, Coins, Package, Info, Search, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router';
-import { Breadcrumbs } from './components/Breadcrumbs';
 
 export default function ShippingPolicy() {
   return (

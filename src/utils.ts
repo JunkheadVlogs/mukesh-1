@@ -129,12 +129,76 @@ export function getProductReviewStats(product: { id: string, name?: string, fabr
 export function optimizeImage(url: string, width: number = 800, format: 'webp' | 'jpg' | 'png' = 'webp') {
   if (!url) return url;
   
-  if (url.startsWith('/images/')) {
+  if (url.includes('wsrv.nl') && !url.includes('imagekit.io')) {
     return url;
   }
-  
-  if (url.includes('wsrv.nl')) {
-    return url;
+
+  const IMAGEKIT_ENDPOINT = 'https://ik.imagekit.io/tus1loev9';
+
+  // 1. Handle Native ImageKit optimization (and transform existing ImageKit URLs)
+  if (url.includes('ik.imagekit.io') || url.includes('imagekit.io')) {
+    try {
+      const urlObj = new URL(url);
+      
+      // Clean path of any older path-based transformations like /tr:h-200,w-300
+      let cleanPath = urlObj.pathname;
+      cleanPath = cleanPath.replace(/\/tr:[^/]+/g, '');
+      
+      // Re-create raw ImageKit base without transformations
+      const cleanUrlStr = `${urlObj.origin}${cleanPath}`;
+      const cleanUrlObj = new URL(cleanUrlStr);
+      
+      // Preserve tracking and caching query parameters (like updatedAt) but remove old 'tr'
+      for (const [key, val] of urlObj.searchParams.entries()) {
+        if (key !== 'tr') {
+          cleanUrlObj.searchParams.set(key, val);
+        }
+      }
+      
+      // Append optimized quality and format conversion parameters
+      cleanUrlObj.searchParams.set('tr', `w-${width},f-${format},q-80`);
+      return cleanUrlObj.toString();
+    } catch (e) {
+      // Fallback if URL parsing fails
+      let cleanUrl = url.replace(/\/tr:[^/]+/g, '');
+      cleanUrl = cleanUrl.replace(/[?&]tr=[^&]*/g, '');
+      const sep = cleanUrl.includes('?') ? '&' : '?';
+      return `${cleanUrl}${sep}tr=w-${width},f-${format},q-80`;
+    }
+  }
+
+  // 2. Transform relative, localhost, or production-hosted paths into optimized ImageKit URLs
+  const isRelative = url.startsWith('/');
+  const isLocalOrMs = url.includes('localhost') || 
+                      url.includes('127.0.0.1') || 
+                      url.includes('3000') || 
+                      url.includes('run.app') || 
+                      url.includes('mukeshsarees.com');
+
+  if (isRelative || isLocalOrMs) {
+    let pathname = '';
+    try {
+      if (isRelative) {
+        pathname = url;
+      } else {
+        pathname = new URL(url).pathname;
+      }
+    } catch (e) {
+      pathname = url;
+    }
+
+    // Clean leading slashes and map asset path directly to the ImageKit endpoint
+    const cleanPath = pathname.replace(/^\/+/, '');
+    
+    // Ensure all local media assets map directly to our ImageKit instance for premium delivery
+    const finalUrl = `${IMAGEKIT_ENDPOINT}/${cleanPath}`;
+    try {
+      const urlObj = new URL(finalUrl);
+      urlObj.searchParams.set('tr', `w-${width},f-${format},q-80`);
+      return urlObj.toString();
+    } catch (e) {
+      return `${finalUrl}?tr=w-${width},f-${format},q-80`;
+    }
   }
   
   const isGoogle = url.includes('drive.google.com') || 
@@ -158,10 +222,9 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     }
 
     if (driveId) {
-      // Use wsrv.nl to dynamically compress and resize the Google Drive target image.
-      // export=view is highly reliable, and wsrv.nl creates highly optimized, small webp/jpg files with CDN caching.
-      const outputFormat = format === 'jpg' ? 'jpg' : 'webp';
-      return `https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&output=${outputFormat}&q=85`;
+      // Use Google's direct static cookieless CDN with width resizing.
+      // This is extremely fast (zero redirects, direct edge delivery) and supports custom widths.
+      return `https://lh3.googleusercontent.com/d/${driveId}=w${width}`;
     }
     
     // Safety guarantee: Do not let any Google URL fall through to the wsrv.nl proxy block

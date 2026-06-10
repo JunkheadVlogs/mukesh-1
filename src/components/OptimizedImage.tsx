@@ -112,22 +112,25 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
   const driveId = extractGoogleDriveId(sanitized);
 
   if (isDrive && driveId) {
-    // 1. High-speed, dynamically compressed CDN webp url using the reliable export option (Option A + speed)
-    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&output=webp&q=85`);
-    
-    // 2. High-speed, lightweight pre-resized Google Drive thumbnail (also super fast!)
+    // 1. Direct static cookieless Google CDN download cache with on-the-fly resizing - fastest possible delivery with no authentication checks
+    candidates.push(`https://lh3.googleusercontent.com/d/${driveId}=w${width}`);
+
+    // 2. High-speed, lightweight pre-resized Google Drive thumbnail (direct from Google CDN, no redirects, fastest fallback render!)
     candidates.push(`https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`);
     
-    // 3. Direct Export Link (Option A recommended format - always works for public Google Drive items as fallback)
+    // 3. High-speed, dynamically compressed WebP from wsrv.nl proxying the non-redirecting thumbnail URL (avoids redirect lag!)
+    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D${driveId}%26sz%3Dw${width}&w=${width}&output=webp&q=80`);
+    
+    // 4. WSRV webp from redirect export URL (slower fallback)
+    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&output=webp&q=80`);
+    
+    // 5. Direct Export Link (always works for public Google Drive items as fallback)
     candidates.push(`https://drive.google.com/uc?export=view&id=${driveId}`);
     
-    // 4. Simple layout query parameter alternative
+    // 6. Simple layout query parameter alternative
     candidates.push(`https://drive.google.com/uc?id=${driveId}`);
     
-    // 5. WSRV Proxy fallback using thumbnail link
-    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D${driveId}%26sz%3Dw${width}&w=${width}&output=webp&q=85`);
-
-    // 6. Original sanitized input
+    // 7. Original sanitized input
     if (!candidates.includes(sanitized)) {
       candidates.push(sanitized);
     }
@@ -264,7 +267,7 @@ export function OptimizedImage({
 
   // Intersection Observer implementation
   const imageRef = useRef<HTMLImageElement | null>(null);
-  const [isInView, setIsInView] = useState(priority);
+  const [isInView, setIsInView] = useState(true);
 
   useEffect(() => {
     if (priority || isInView) return;
@@ -302,7 +305,7 @@ export function OptimizedImage({
     setCandidateIndex(0);
     setRetryCount(0);
     setHasFailedAll(false);
-    setIsInView(priority);
+    setIsInView(true);
   }
 
   const currentSrc = candidates[candidateIndex] || sanitizeUrl(src);
@@ -353,19 +356,26 @@ export function OptimizedImage({
 
   const isGoogleDrive = (currentSrc.includes('drive.google.com') || currentSrc.includes('googleusercontent.com')) && !currentSrc.includes('wsrv.nl');
   const isRelative = currentSrc.startsWith('/');
-
+ 
   // Google Drive logic or relative references loading directly with the specific custom key to force refresh
   if (isGoogleDrive || isRelative) {
+    const driveId = extractGoogleDriveId(currentSrc);
+    const driveSrcSet = (isGoogleDrive && driveId)
+      ? `https://lh3.googleusercontent.com/d/${driveId}=w300 300w, https://lh3.googleusercontent.com/d/${driveId}=w600 600w, https://lh3.googleusercontent.com/d/${driveId}=w1000 1000w`
+      : undefined;
+
     return (
       <img
         ref={imageRef}
         key={`${currentSrc}-${retryCount}`}
         src={isInView ? currentSrc : PLACEHOLDER_1X1}
+        srcSet={isInView ? (srcSet || driveSrcSet) : undefined}
+        sizes={isInView ? (sizes || "(max-width: 768px) 50vw, 33vw") : undefined}
         alt={finalAlt}
         width={width}
         height={calculatedHeight}
         className={`${className || ''} ${!isInView ? 'animate-pulse' : ''}`}
-        loading={loading !== undefined ? loading : (priority ? undefined : "lazy")}
+        loading={loading !== undefined ? loading : (priority ? "eager" : "lazy")}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"
         decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}
@@ -380,6 +390,8 @@ export function OptimizedImage({
   const isDirectBypass = (currentSrc.startsWith('http') && 
                           !currentSrc.includes('drive.google.com') && 
                           !currentSrc.includes('googleusercontent.com') &&
+                          !currentSrc.includes('ik.imagekit.io') &&
+                          !currentSrc.includes('imagekit.io') &&
                           !currentSrc.includes('mukeshsarees.com')) ||
                           currentSrc.includes('wsrv.nl');
 
@@ -390,8 +402,8 @@ export function OptimizedImage({
   let generatedSrcSetJpg = srcSet;
   
   if (!srcSet && !isDirectBypass) {
-    generatedSrcSetWebp = `${optimizeImage(currentSrc, 400, 'webp')} 400w, ${optimizeImage(currentSrc, 400, 'webp')} 400w, ${optimizeImage(currentSrc, 800, 'webp')} 800w`;
-    generatedSrcSetJpg = `${optimizeImage(currentSrc, 400, 'jpg')} 400w, ${optimizeImage(currentSrc, 400, 'jpg')} 400w, ${optimizeImage(currentSrc, 800, 'jpg')} 800w`;
+    generatedSrcSetWebp = `${optimizeImage(currentSrc, 300, 'webp')} 300w, ${optimizeImage(currentSrc, 600, 'webp')} 600w, ${optimizeImage(currentSrc, 1000, 'webp')} 1000w`;
+    generatedSrcSetJpg = `${optimizeImage(currentSrc, 300, 'jpg')} 300w, ${optimizeImage(currentSrc, 600, 'jpg')} 600w, ${optimizeImage(currentSrc, 1000, 'jpg')} 1000w`;
   }
   const defaultSizes = sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw";
 
@@ -407,7 +419,7 @@ export function OptimizedImage({
         width={width}
         height={calculatedHeight}
         className={`${className || ''} ${!isInView ? 'animate-pulse' : ''}`}
-        loading={loading !== undefined ? loading : (priority ? undefined : "lazy")}
+        loading={loading !== undefined ? loading : (priority ? "eager" : "lazy")}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"
         decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}

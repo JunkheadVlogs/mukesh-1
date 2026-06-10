@@ -47,7 +47,6 @@ import {
 import { ProductReviews } from "./components/ProductReviews";
 import { TrustBadges } from "./components/TrustBadges";
 import { WhyShopWithUs } from "./components/WhyShopWithUs";
-import { Breadcrumbs } from "./components/Breadcrumbs";
 
 const getImageSrc = (rawImageUrl: any): string => {
   if (!rawImageUrl) return '';
@@ -55,34 +54,7 @@ const getImageSrc = (rawImageUrl: any): string => {
   if (url.endsWith('.webm') || url.includes('.webm') || url.endsWith('.mp4') || url.includes('.mp4')) {
     return url;
   }
-  // If image URL already contains wsrv.nl parameters, strip them first
-  if (url.includes('wsrv.nl')) {
-    try {
-      const parsedUrl = new URL(url);
-      const urlParam = parsedUrl.searchParams.get('url');
-      if (urlParam) {
-        url = urlParam;
-      }
-    } catch (e) {
-      const match = url.match(/[?&]url=([^&]+)/);
-      if (match && match[1]) {
-        url = decodeURIComponent(match[1]);
-      }
-    }
-  }
-
-  // Then rebuild like this:
-  // For ImageKit images — use directly with webp conversion
-  if (url.includes('imagekit.io') || url.includes('ik.imagekit')) {
-    return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&output=webp&q=85`;
-  }
-  // For Google Drive thumbnail images — NO fit parameter
-  if (url.includes('drive.google.com')) {
-    const driveId = url.match(/id=([^&]+)/)?.[1];
-    return `https://wsrv.nl/?url=${encodeURIComponent(`https://drive.google.com/thumbnail?id=${driveId}&sz=w800`)}&w=800&output=webp&q=85`;
-  }
-  // Fallback
-  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&output=webp&q=85`;
+  return optimizeImage(url, 800, 'webp');
 };
 
 const isVideoUrl = (url: any): boolean => {
@@ -213,6 +185,7 @@ export default function ProductPage() {
   const [sizeGuideUnit, setSizeGuideUnit] = useState<"in" | "cm">("in");
   const [quantity, setQuantity] = useState(1);
   const [isZoomed, setIsZoomed] = useState(false);
+
   const touchRef = useRef<{
     startX: number;
     startY: number;
@@ -632,6 +605,18 @@ export default function ProductPage() {
       : [product.image];
   const totalMediaLength = productImages.length;
 
+  // Intelligent preloading of remaining gallery images to ensure instantaneous transition of main gallery on clicks or swipes
+  useEffect(() => {
+    if (productImages && productImages.length > 1) {
+      productImages.forEach((url, idx) => {
+        if (idx !== activeImageIndex && !isVideoUrl(url)) {
+          const img = new Image();
+          img.src = getImageSrc(url);
+        }
+      });
+    }
+  }, [productImages, activeImageIndex]);
+
   const handleShare = async () => {
     // Determine the share URL. If we are in the development environment,
     // it will share the current URL. When deployed to production, it will be the real domain.
@@ -679,12 +664,6 @@ export default function ProductPage() {
       quantity,
       size: isSaree ? undefined : (selectedSize || undefined),
     });
-    if (toastTimeoutRef.current) {
-      clearTimeout(toastTimeoutRef.current);
-    }
-    toastTimeoutRef.current = setTimeout(() => {
-      setShowAddedToast((prev) => ({ ...prev, visible: false }));
-    }, 4000);
 
     return true;
   };
@@ -716,6 +695,7 @@ export default function ProductPage() {
     name: product.name,
     image: absoluteProductImages,
     description: cleanSEOText(product.description).substring(0, 300),
+    ...(product.keywords ? { keywords: product.keywords } : {}),
     sku: product.sku || product.id,
     mpn: product.sku || product.id,
     brand: {
@@ -826,6 +806,7 @@ export default function ProductPage() {
       <SEO
         title={`${product.name} – Mukesh Saree Centre`}
         description={product.description}
+        keywords={product.keywords}
         image={product.image}
         url={`/product/${product.slug}`}
         type="product"
@@ -868,6 +849,9 @@ export default function ProductPage() {
                   src={getImageSrc(productImages[activeImageIndex])}
                   alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
                   className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
                 />
               )}
               <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-[var(--color-bg)]/90 backdrop-blur-md p-3 shadow-sm text-[var(--color-dark)]/70 opacity-0 group-hover:opacity-100 transition-all z-10 hidden md:block rounded-full hover:text-[var(--color-dark)]">
@@ -882,13 +866,13 @@ export default function ProductPage() {
                       e.stopPropagation();
                       prevImage(e);
                     }}
-                    className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white/90 backdrop-blur-md text-primary-950 rounded-full shadow-md hover:bg-white transition-all z-10 border border-black/5"
+                    className="absolute left-2.5 md:left-4 top-1/2 -translate-y-1/2 w-5.5 h-5.5 md:w-6.5 md:h-6.5 flex items-center justify-center bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white hover:text-[#C8A96B] transition-all duration-300 z-10 border border-white/5 rounded-full shadow-none"
                     aria-label="Previous Image"
                   >
                     <ChevronLeft
-                      size={20}
-                      className="text-primary-950"
-                      strokeWidth={1.5}
+                      size={14}
+                      className="transition-colors"
+                      strokeWidth={2.5}
                     />
                   </button>
                   <button
@@ -896,27 +880,19 @@ export default function ProductPage() {
                       e.stopPropagation();
                       nextImage(e);
                     }}
-                    className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white/90 backdrop-blur-md text-primary-950 rounded-full shadow-md hover:bg-white transition-all z-10 border border-black/5"
+                    className="absolute right-2.5 md:right-4 top-1/2 -translate-y-1/2 w-5.5 h-5.5 md:w-6.5 md:h-6.5 flex items-center justify-center bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white hover:text-[#C8A96B] transition-all duration-300 z-10 border border-white/5 rounded-full shadow-none"
                     aria-label="Next Image"
                   >
                     <ChevronRight
-                      size={20}
-                      className="text-primary-950"
-                      strokeWidth={1.5}
+                      size={14}
+                      className="transition-colors"
+                      strokeWidth={2.5}
                     />
                   </button>
                 </>
               )}
 
-              {/* Image Indicators */}
-              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 md:hidden z-10">
-                {productImages.map((_, idx) => (
-                  <div
-                    key={idx}
-                    className={`h-[3px] rounded-full transition-all duration-300 ${activeImageIndex === idx ? "w-6 bg-primary-950" : "w-1.5 bg-primary-950/30"}`}
-                  />
-                ))}
-              </div>
+
             </div>
 
             {productImages.length > 1 && (
@@ -1422,13 +1398,8 @@ export default function ProductPage() {
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
             className="fixed top-[90px] md:top-28 right-4 md:right-8 z-[100] w-[calc(100%-32px)] sm:w-[420px] bg-white border border-black/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] rounded-xl overflow-hidden flex flex-col pointer-events-auto mx-auto sm:mx-0 left-0 right-0 sm:left-auto"
           >
-            {/* Progress Bar */}
-            <motion.div
-              initial={{ width: "100%" }}
-              animate={{ width: "0%" }}
-              transition={{ duration: 4, ease: "linear" }}
-              className="absolute top-0 left-0 h-1 bg-gold-500 z-10"
-            />
+            {/* Elegant luxury top accent line */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gold-500 z-10" />
 
             <div className="bg-gradient-to-r from-gold-50/80 to-white px-5 py-4 flex items-center justify-between border-b border-black/5 relative">
               <div className="flex items-center gap-3 text-gold-700">

@@ -141,12 +141,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
+    <link rel="dns-prefetch" href="https://ik.imagekit.io" />
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
     <link rel="dns-prefetch" href="https://wsrv.nl" />
-    <link rel="preload" as="image" 
-          imagesrcset="https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1tucc1ZblHYQt5suadHkwZl-3BzyzAuIA&amp;w=400&amp;output=webp&amp;q=80&amp;we 400w, https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1tucc1ZblHYQt5suadHkwZl-3BzyzAuIA&amp;w=800&amp;output=webp&amp;q=80&amp;we 800w, https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1tucc1ZblHYQt5suadHkwZl-3BzyzAuIA&amp;w=1200&amp;output=webp&amp;q=80&amp;we 1200w"
-          imagesizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          fetchpriority="high" />
+    <!-- Preload actual hero images from ImageKit and size them appropriately for screen dimensions -->
+    <link rel="preload" as="image" href="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&amp;tr=w-768,f-webp,q-80" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-80" media="(min-width: 768px)" fetchpriority="high" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",

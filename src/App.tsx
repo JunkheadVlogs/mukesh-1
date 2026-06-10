@@ -4,7 +4,7 @@
  */
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, lazy } from 'react';
 import Layout from './Layout';
 import Home from './Home';
 import { ExitIntentPopup } from './components/ExitIntentPopup';
@@ -13,16 +13,17 @@ import { trackWhatsAppClick, trackLead } from './tracking';
 import { useStore } from './store';
 import { safeSessionStorage } from './utils/safeStorage';
 
-import Shop from './Shop';
-import Wishlist from './Wishlist';
-import ProductPage from './ProductPage';
-import Cart from './Cart';
-import Checkout from './Checkout';
-import ThankYou from './ThankYou';
-import Contact from './Contact';
-import Terms from './Terms';
-import ShippingPolicy from './ShippingPolicy';
-import ReturnPolicy from './ReturnPolicy';
+const Shop = lazy(() => import('./Shop'));
+const Wishlist = lazy(() => import('./Wishlist'));
+const ProductPage = lazy(() => import('./ProductPage'));
+const Cart = lazy(() => import('./Cart'));
+const Checkout = lazy(() => import('./Checkout'));
+const ThankYou = lazy(() => import('./ThankYou'));
+const Contact = lazy(() => import('./Contact'));
+const Terms = lazy(() => import('./Terms'));
+const ShippingPolicy = lazy(() => import('./ShippingPolicy'));
+const ReturnPolicy = lazy(() => import('./ReturnPolicy'));
+const WholesaleSarees = lazy(() => import('./WholesaleSarees'));
 
 import { CONFIG, submitToGoogleSheets, getApiUrl } from "./config";
 
@@ -221,6 +222,7 @@ export default function App() {
             <Route path="shipping-policy" element={<ShippingPolicy />} />
             <Route path="return-policy" element={<ReturnPolicy />} />
           </Route>
+          <Route path="wholesalesarees" element={<WholesaleSarees />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

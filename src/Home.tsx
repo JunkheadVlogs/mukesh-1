@@ -38,7 +38,7 @@ const LOOK_REELS = [
     category: "MEDIA COVERAGE",
     subtitle: "Exquisite Saree Exhibition",
     badge: "📺 TV News",
-    poster: "https://ik.imagekit.io/tus1loev9/VID-20260601-WA0034.mp4/ik-thumbnail.jpg"
+    poster: "https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695"
   },
   {
     id: "look-2",
@@ -47,7 +47,7 @@ const LOOK_REELS = [
     category: "FASHION PRESS",
     subtitle: "Nagpur Silk Collection",
     badge: "🔥 Trending",
-    poster: "https://ik.imagekit.io/tus1loev9/VID-20260521-WA0037.mp4/ik-thumbnail.jpg"
+    poster: "https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790"
   },
   {
     id: "look-3",
@@ -56,7 +56,7 @@ const LOOK_REELS = [
     category: "MEDIA SHOWCODE",
     subtitle: "Elite Festive Drapes",
     badge: "🌟 Exclusive",
-    poster: "https://ik.imagekit.io/tus1loev9/VID-20260513-WA0026.mp4/ik-thumbnail.jpg"
+    poster: "https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469"
   },
   {
     id: "look-4",
@@ -65,7 +65,7 @@ const LOOK_REELS = [
     category: "FIRST IMPRESSION",
     subtitle: "Luxury Organza & Silks",
     badge: "✨ Verified",
-    poster: "https://ik.imagekit.io/tus1loev9/VID-20260513-WA0025.mp4/ik-thumbnail.jpg"
+    poster: "https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298"
   },
   {
     id: "look-5",
@@ -74,7 +74,7 @@ const LOOK_REELS = [
     category: "PRESS RELEASE",
     subtitle: "Designer Bridal Georgets",
     badge: "💎 Premium",
-    poster: "https://ik.imagekit.io/tus1loev9/VID_20260124_071257_055_bsl5200255307509945724.mp4/ik-thumbnail.jpg"
+    poster: "https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691"
   }
 ];
 

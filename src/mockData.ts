@@ -3173,6 +3173,52 @@ Style this majestic reddish pink tissue silk saree with a matching gold or deep-
     rating: 4.9,
   },
   {
+    id: "p77",
+    sku: "SAR-JAM-RED-077",
+    name: "Premium Jamdani Cotton Saree – Lal Pari",
+    tagline: "Premium Jamdani Cotton Saree - Looks Twice the Price!",
+    slug: "premium-jamdani-cotton-saree-lal-pari",
+    price: 1399,
+    originalPrice: 2799,
+    image: "https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525",
+    images: [
+      "https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525",
+      "https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190656.png?updatedAt=1780926288970",
+      "https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190803.png?updatedAt=1780926289687",
+      "https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190538.png?updatedAt=1780926290479",
+      "https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190638.png?updatedAt=1780926288895",
+      "https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190717.png?updatedAt=1780926288868"
+    ],
+    stock: 15,
+    category: "Sarees",
+    fabric: "Soft Spun Cotton",
+    color: "Rich Red",
+    isNew: true,
+    keywords: "Red Jamdani Saree, Red Cotton Jamdani Saree, Red Jamdani Cotton Saree, Pure Cotton Jamdani Saree Red, Handwoven Red Jamdani Saree, Traditional Red Jamdani Saree, Bengal Jamdani Saree Red, Soft Cotton Red Jamdani Saree, Red Jamdani Saree Online, Red Handloom Jamdani Saree, Red Jamdani Saree with Blouse Piece, Red Jamdani Saree for Women, Red Jamdani Saree India, Red Jamdani Saree Online Shopping, Designer Red Jamdani Saree, Red Cotton Saree, Pure Cotton Red Saree, Red Handloom Cotton Saree, Traditional Red Cotton Saree, Red Cotton Saree for Women, Red Cotton Saree Online, Soft Cotton Red Saree, Daily Wear Red Cotton Saree, Party Wear Red Cotton Saree, Wedding Red Cotton Saree, Red Saree, Red Saree for Women, Red Saree Online, Traditional Red Saree, Designer Red Saree, Red Saree for Wedding, Red Saree for Puja, Red Saree for Festivals, Elegant Red Saree, Premium Red Saree",
+    description: `**DESCRIPTION:**
+Make a graceful statement with this stunning Red Jamdani Cotton Saree. Crafted from soft spun cotton, it features delicate jamdani polka dot butas across the body along with intricate traditional jamdani detailing on the border and palla. Enhanced with elegant resham and gold zari work, this saree offers the perfect blend of comfort and timeless beauty. The breathable fabric and easy drape make it ideal for festive occasions, family gatherings, office wear, and everyday elegance.
+
+**HIGHLIGHTS:**
+- Rich Red Color with Elegant Traditional Jamdani Weaving
+- Soft Spun Cotton Fabric - Lightweight & Comfortable
+- Beautiful Jamdani Polka Dot Butas All Over the Body
+- Intricate Traditional Jamdani Work on Border & Palla
+- Detailed Resham & Gold Zari Weaving
+- Soft, Breathable & Skin-Friendly Fabric
+- Easy to Drape & Carry Throughout the Day
+- Perfect for Festive Wear, Office Wear & Family Functions
+
+**FABRIC DETAILS:**
+- Fabric: Soft Spun Cotton Fabric
+- Saree Length: 5.50 Meters
+- Blouse Piece: 0.80 Meter Included
+- Feel: Soft, Breathable, Lightweight, Easy to Drape, Timeless Jamdani Craftsmanship
+
+**STYLING TIP:**
+Style this gorgeous red Jamdani cotton saree with gold traditional jewelry, contrasting golden or rich red blouse, and matching heels or flats for a classic, sophisticated festive look.`,
+    rating: 4.9,
+  },
+  {
     id: "p-test-payment",
     sku: "TST-PAY-001",
     name: "Payment Test Product",
