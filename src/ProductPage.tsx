@@ -20,7 +20,7 @@ import {
   Share2,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, Fragment } from "react";
 import { Helmet } from "react-helmet-async";
 import { ProductDescription } from "./components/ProductDescription";
 import { ProductAccordion } from "./components/ProductAccordion";
@@ -99,6 +99,52 @@ export default function ProductPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const product = products.find((p) => p.slug === slug);
+  
+  // Dynamic breadcrumb generation matching exactly the requested collection hierarchy
+  const breadcrumbItems = useMemo(() => {
+    if (!product) return [];
+    const items = [
+      { label: "Home", to: "/" }
+    ];
+
+    const category = product.category || "";
+    const fabric = product.fabric || "";
+
+    if (category === "Linen Sarees") {
+      items.push({ label: "Sarees", to: "/shop?category=Sarees" });
+      items.push({ label: "Linen Sarees", to: "/shop?category=Linen Sarees" });
+    } else if (category === "Sarees") {
+      items.push({ label: "Sarees", to: "/shop?category=Sarees" });
+      
+      // Map subcategories dynamically to match "Chiffon Sarees", "Georgette Sarees", etc.
+      const fabLower = fabric.toLowerCase();
+      if (fabLower.includes("chiffon")) {
+        items.push({ label: "Chiffon Sarees", to: "/shop?category=Sarees&fabric=Chiffon" });
+      } else if (fabLower.includes("georgette")) {
+        items.push({ label: "Georgette Sarees", to: "/shop?category=Sarees&fabric=Georgette" });
+      } else if (fabLower.includes("cotton") || fabLower.includes("khadi")) {
+        items.push({ label: "Cotton Sarees", to: "/shop?category=Sarees&fabric=Cotton" });
+      } else if (fabLower.includes("tissue")) {
+        items.push({ label: "Tissue Sarees", to: "/shop?category=Sarees&fabric=Tissue" });
+      } else if (fabLower.includes("silk")) {
+        items.push({ label: "Silk Sarees", to: "/shop?category=Sarees&fabric=Silk" });
+      } else if (fabLower.includes("linen")) {
+        items.push({ label: "Linen Sarees", to: "/shop?category=Linen Sarees" });
+      } else if (fabric) {
+        items.push({ label: `${fabric} Sarees`, to: `/shop?category=Sarees&fabric=${encodeURIComponent(fabric)}` });
+      }
+    } else if (category === "Co-Ord Sets") {
+      items.push({ label: "Co-Ord Sets", to: "/shop?category=Co-Ord Sets" });
+      if (fabric.toLowerCase().includes("cotton")) {
+        items.push({ label: "Cotton Co-Ord Sets", to: "/shop?category=Co-Ord Sets&fabric=Cotton" });
+      }
+    } else if (category) {
+      items.push({ label: category, to: `/shop?category=${encodeURIComponent(category)}` });
+    }
+
+    return items;
+  }, [product]);
+
   const { addToCart, toggleWishlist, wishlist } = useStore();
 
   const storeCoupon = useStore((state) => state.appliedCoupon);
@@ -815,6 +861,23 @@ export default function ProductPage() {
       />
 
       <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
+        {/* Minimalist, super-low profile Breadcrumbs with absolutely zero wasted space */}
+        <div className="breadcrumb-wrapper !px-4 md:!px-0 select-none py-1.5 md:py-2 bg-transparent shrink-0">
+          <div className="breadcrumb font-sans text-[10px] md:text-xs">
+            {breadcrumbItems.map((item, idx) => (
+              <Fragment key={idx}>
+                <Link to={item.to} className="!text-[#2b2b2b] hover:!text-[#C8A96B] transition-colors font-medium">
+                  {item.label}
+                </Link>
+                <span className="separator !text-black/40">/</span>
+              </Fragment>
+            ))}
+            <span className="current-page !text-black !font-semibold">
+              {product.name}
+            </span>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-2 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
           <div className="w-full lg:w-7/12 space-y-2 md:space-y-4">
@@ -845,13 +908,12 @@ export default function ProductPage() {
                   onClick={(e) => e.stopPropagation()}
                 />
               ) : (
-                <img
-                  src={getImageSrc(productImages[activeImageIndex])}
+                <OptimizedImage
+                  src={productImages[activeImageIndex]}
+                  width={800}
                   alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
                   className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="sync"
+                  priority={true}
                 />
               )}
               <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-[var(--color-bg)]/90 backdrop-blur-md p-3 shadow-sm text-[var(--color-dark)]/70 opacity-0 group-hover:opacity-100 transition-all z-10 hidden md:block rounded-full hover:text-[var(--color-dark)]">
@@ -1251,7 +1313,7 @@ export default function ProductPage() {
               </section>
 
               {/* Collapsible Accordion */}
-              <ProductAccordion />
+              <ProductAccordion category={product.category} />
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
-export function ProductAccordion() {
+export function ProductAccordion({ category }: { category?: string }) {
   const [openPanel, setOpenPanel] = useState<number | null>(null);
 
   const togglePanel = (index: number) => {
@@ -20,12 +20,16 @@ export function ProductAccordion() {
       content:
         "Easy 7-day returns on all unworn, unwashed items with original tags. Customised or stitched blouses are non-returnable. To initiate a return, WhatsApp us at 7020664641 with your order ID and photos.",
     },
-    {
+  ];
+
+  const isCoOrdSet = category?.toLowerCase().includes("co-ord");
+  if (!isCoOrdSet) {
+    panels.push({
       title: "Saree Size & Drape Guide",
       content:
         "All our sarees are standard 5.5 meters + 1 meter blouse piece unless stated otherwise. Suitable for all draping styles — Nivi, Gujarati, Nauvari, Bengali. Need help draping? WhatsApp us or visit our Nagpur store.",
-    },
-  ];
+    });
+  }
 
   return (
     <div className="flex flex-col gap-3 w-full mt-2 mb-2 font-sans text-sm">

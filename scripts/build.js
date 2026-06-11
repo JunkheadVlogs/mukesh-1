@@ -4,26 +4,35 @@ import path from "path";
 
 console.log("[BUILD] Starting unified build process...");
 
+const findBin = (name) => {
+  const localBin = path.join(process.cwd(), "node_modules", ".bin", name);
+  return fs.existsSync(localBin) ? localBin : name;
+};
+
 try {
   // Step 1: Run Vite Build
   console.log("\n--- [BUILD] Step 1: Compiling frontend with Vite ---");
-  execSync("npx vite build", { stdio: "inherit" });
+  execSync(`${findBin("vite")} build`, { stdio: "inherit" });
 
   // Step 2: Bundle Server with esbuild
   console.log("\n--- [BUILD] Step 2: Bundling server.ts with esbuild ---");
-  execSync("npx esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs", { stdio: "inherit" });
+  execSync(`${findBin("esbuild")} server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs`, { stdio: "inherit" });
 
   // Step 3: Run products metadata compilation
   console.log("\n--- [BUILD] Step 3: Compiling products metadata ---");
-  execSync("npx tsx scripts/build_meta.js", { stdio: "inherit" });
+  execSync(`${findBin("tsx")} scripts/build_meta.js`, { stdio: "inherit" });
 
   // Step 4: Run pre-prerender routing
   console.log("\n--- [BUILD] Step 4: Running page static pre-rendering ---");
-  execSync("npx tsx scripts/prerender.ts", { stdio: "inherit" });
+  execSync(`${findBin("tsx")} scripts/prerender.ts`, { stdio: "inherit" });
 
   // Step 5: Run sitemap and robots generation
   console.log("\n--- [BUILD] Step 5: Generating sitemap.xml and robots.txt ---");
-  execSync("npx tsx scripts/generate-sitemap.ts", { stdio: "inherit" });
+  execSync(`${findBin("tsx")} scripts/generate-sitemap.ts`, { stdio: "inherit" });
+
+  // Step 6: Post-Build Performance Optimization (Async CSS & Fonts)
+  console.log("\n--- [BUILD] Step 6: Running CSS performance optimization ---");
+  execSync("node scripts/post-build-optimize.js", { stdio: "inherit" });
 
   console.log("\n[BUILD] Unified build process completed successfully!");
 } catch (error) {

@@ -157,21 +157,29 @@ if (typeof window !== "undefined") {
       (window as any)._fbq_initialized = true;
       initMetaPixel();
     };
- 
-    // Fallback if no activity is detected within a reasonable timeframe (lab audits)
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(() => setTimeout(run, 1500));
-    } else {
-      setTimeout(run, 2000);
-    }
- 
-    // Trigger on first human interaction
-    const triggerEvents = ["mousedown", "keypress", "touchstart", "scroll"];
-    const triggerLoader = () => {
-      run();
-      triggerEvents.forEach((ev) => window.removeEventListener(ev, triggerLoader));
+
+    const attach = () => {
+      // Fallback if no activity is detected within a reasonable timeframe (lab audits)
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => setTimeout(run, 8500));
+      } else {
+        setTimeout(run, 9000);
+      }
+
+      // Trigger on first human interaction
+      const triggerEvents = ["mousedown", "keypress", "touchstart", "scroll", "mousemove"];
+      const triggerLoader = () => {
+        run();
+        triggerEvents.forEach((ev) => window.removeEventListener(ev, triggerLoader));
+      };
+      triggerEvents.forEach((ev) => window.addEventListener(ev, triggerLoader, { passive: true }));
     };
-    triggerEvents.forEach((ev) => window.addEventListener(ev, triggerLoader, { passive: true }));
+
+    if (document.readyState === "complete") {
+      attach();
+    } else {
+      window.addEventListener("load", attach, { passive: true });
+    }
   };
  
   delayInit();

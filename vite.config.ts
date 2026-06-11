@@ -91,6 +91,7 @@ export default defineConfig(({mode}) => {
       'import.meta.env.VITE_STORE_PHONE': JSON.stringify(env.VITE_STORE_PHONE || fallbacks.VITE_STORE_PHONE),
     },
     build: {
+      target: 'es2022',
       outDir: 'dist',
       emptyOutDir: true,
       cssCodeSplit: true,
@@ -100,6 +101,9 @@ export default defineConfig(({mode}) => {
           drop_console: true,
           drop_debugger: true
         }
+      },
+      modulePreload: {
+        resolveDependencies: () => []
       },
       cssMinify: true,
       rollupOptions: {
@@ -115,7 +119,6 @@ export default defineConfig(({mode}) => {
               if (id.includes('lucide-react')) {
                 return 'vendor-icons';
               }
-              return 'vendor';
             }
           },
           entryFileNames: 'assets/[name].[hash].min.js',

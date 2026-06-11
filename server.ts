@@ -1267,16 +1267,15 @@ async function setupServer() {
     
     app.use(express.static(distPath, { 
       index: false,
-      maxAge: '7d', // Default fallback cache of 7 days for normal static files
+      maxAge: '1y', // Default fallback cache of 1 year for static assets
       setHeaders: (res, filePath) => {
         if (filePath.endsWith('.html')) {
           res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        } else if (filePath.match(/\.(js|css|woff|woff2|ttf|otf)$/)) {
-          // Content-hashed bundle assets are safe to cache forever immutably
+          res.setHeader('Pragma', 'no-cache');
+          res.setHeader('Expires', '0');
+        } else if (filePath.match(/\.(js|css|woff|woff2|ttf|otf|eot|png|jpg|jpeg|gif|svg|webp|avif|ico|json)$/)) {
+          // Both content-hashed bundles and other static assets are safe to cache forever immutably
           res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-        } else if (filePath.match(/\.(png|jpg|jpeg|gif|svg|webp|ico)$/)) {
-          // General image resources
-          res.setHeader('Cache-Control', 'public, max-age=2592000, stale-while-revalidate=86400');
         }
       }
     }));

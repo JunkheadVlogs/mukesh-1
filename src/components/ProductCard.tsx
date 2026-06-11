@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import { Link } from "react-router";
 import { Product } from "../store";
 import { trackSelectItem } from "../tracking";
@@ -18,7 +18,7 @@ interface ProductCardProps {
   hideRating?: boolean;
 }
 
-export function ProductCard({
+export const ProductCard = memo(function ProductCard({
   product,
   idx = 0,
   priority = false,
@@ -143,4 +143,4 @@ export function ProductCard({
       </div>
     </Link>
   );
-}
+});

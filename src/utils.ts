@@ -137,6 +137,9 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
 
   // 1. Handle Native ImageKit optimization (and transform existing ImageKit URLs)
   if (url.includes('ik.imagekit.io') || url.includes('imagekit.io')) {
+    if (url.includes('ik-thumbnail.jpg') || url.endsWith('.mp4') || url.includes('.mp4')) {
+      return url;
+    }
     try {
       const urlObj = new URL(url);
       
@@ -222,9 +225,8 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     }
 
     if (driveId) {
-      // Use Google's direct static cookieless CDN with width resizing.
-      // This is extremely fast (zero redirects, direct edge delivery) and supports custom widths.
-      return `https://lh3.googleusercontent.com/d/${driveId}=w${width}`;
+      // Return high-quality pre-resized direct Google Drive thumbnail (direct from Google CDN, no redirects or proxy-induced blur)
+      return `https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`;
     }
     
     // Safety guarantee: Do not let any Google URL fall through to the wsrv.nl proxy block

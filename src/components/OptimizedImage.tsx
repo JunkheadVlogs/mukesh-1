@@ -36,6 +36,14 @@ const LOCAL_IMAGE_FALLBACKS: Record<string, string> = {
   'shop-main-enterence.webp': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
 };
 
+const VIDEO_THUMB_FALLBACKS: Record<string, string> = {
+  'VID-20260601-WA0034': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695',
+  'VID-20260521-WA0037': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695',
+  'VID-20260513-WA0026': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695',
+  'VID-20260513-WA0025': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
+  'VID_20260124_071257_055': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695'
+};
+
 /**
  * Robustly extracts the Google Drive File ID from Google Drive URLs.
  */
@@ -103,6 +111,32 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
   const sanitized = sanitizeUrl(src);
   const candidates: string[] = [];
 
+  // If it's a video file or an ImageKit video thumbnail, try loading the exact sanitized URL first,
+  // and then fallback to beautiful pre-mapped store section WebP images instead of generic local asset directories
+  if (sanitized.includes('ik-thumbnail.jpg') || sanitized.endsWith('.mp4') || sanitized.includes('.mp4')) {
+    candidates.push(sanitized);
+    
+    // Find matching video-specific premium WebP image
+    let foundFallback = false;
+    for (const [vKey, vVal] of Object.entries(VIDEO_THUMB_FALLBACKS)) {
+      if (sanitized.includes(vKey)) {
+        candidates.push(vVal);
+        foundFallback = true;
+        break;
+      }
+    }
+    
+    // If no specific match, append general Saree Section image
+    if (!foundFallback) {
+      candidates.push('https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695');
+    }
+    
+    // Also append the Shop Entrance as supplementary fallback
+    candidates.push('https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298');
+    
+    return candidates;
+  }
+
   // Determine if it is a Google Drive asset
   const isDrive = sanitized.includes('drive.google.com') || 
                   sanitized.includes('googleusercontent.com') || 
@@ -112,25 +146,28 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
   const driveId = extractGoogleDriveId(sanitized);
 
   if (isDrive && driveId) {
-    // 1. Direct static cookieless Google CDN download cache with on-the-fly resizing - fastest possible delivery with no authentication checks
+    // 1. High-speed, lightweight pre-resized Google Drive thumbnail (direct from Google CDN, no redirects, fastest fallback render!) - FIRST CHOICE TO PREVENT BLUR
+    candidates.push(`https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`);
+
+    // 2. Direct static cookieless Google CDN download cache with on-the-fly resizing - fastest possible delivery with no authentication checks
     candidates.push(`https://lh3.googleusercontent.com/d/${driveId}=w${width}`);
 
-    // 2. High-speed, lightweight pre-resized Google Drive thumbnail (direct from Google CDN, no redirects, fastest fallback render!)
-    candidates.push(`https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`);
+    // 3. High-speed, dynamically compressed WebP from wsrv.nl proxying the non-redirecting thumbnail URL with encoded high-res size
+    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D${driveId}%26sz%3Dw1200&w=${width}&output=webp&q=80`);
     
-    // 3. High-speed, dynamically compressed WebP from wsrv.nl proxying the non-redirecting thumbnail URL (avoids redirect lag!)
-    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D${driveId}%26sz%3Dw${width}&w=${width}&output=webp&q=80`);
+    // 4. High-speed, dynamically compressed WebP from wsrv.nl proxying lh3 direct CDN
+    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F${driveId}&w=${width}&output=webp&q=80`);
     
-    // 4. WSRV webp from redirect export URL (slower fallback)
+    // 5. WSRV webp from redirect export URL (slower fallback)
     candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&output=webp&q=80`);
     
-    // 5. Direct Export Link (always works for public Google Drive items as fallback)
+    // 6. Direct Export Link (always works for public Google Drive items as fallback)
     candidates.push(`https://drive.google.com/uc?export=view&id=${driveId}`);
     
-    // 6. Simple layout query parameter alternative
+    // 7. Simple layout query parameter alternative
     candidates.push(`https://drive.google.com/uc?id=${driveId}`);
     
-    // 7. Original sanitized input
+    // 8. Original sanitized input
     if (!candidates.includes(sanitized)) {
       candidates.push(sanitized);
     }
@@ -354,23 +391,27 @@ export function OptimizedImage({
     );
   }
 
-  const isGoogleDrive = (currentSrc.includes('drive.google.com') || currentSrc.includes('googleusercontent.com')) && !currentSrc.includes('wsrv.nl');
+  const isGoogleDrive = src.includes('drive.google.com') || src.includes('googleusercontent.com') || currentSrc.includes('drive.google.com') || currentSrc.includes('googleusercontent.com');
   const isRelative = currentSrc.startsWith('/');
- 
+  
   // Google Drive logic or relative references loading directly with the specific custom key to force refresh
   if (isGoogleDrive || isRelative) {
-    const driveId = extractGoogleDriveId(currentSrc);
+    const driveId = extractGoogleDriveId(src) || extractGoogleDriveId(currentSrc);
     const driveSrcSet = (isGoogleDrive && driveId)
-      ? `https://lh3.googleusercontent.com/d/${driveId}=w300 300w, https://lh3.googleusercontent.com/d/${driveId}=w600 600w, https://lh3.googleusercontent.com/d/${driveId}=w1000 1000w`
+      ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w300 300w, https://drive.google.com/thumbnail?id=${driveId}&sz=w450 450w, https://drive.google.com/thumbnail?id=${driveId}&sz=w600 600w, https://drive.google.com/thumbnail?id=${driveId}&sz=w800 800w, https://drive.google.com/thumbnail?id=${driveId}&sz=w1200 1200w`
       : undefined;
+
+    const finalRenderSrc = (isGoogleDrive && driveId)
+      ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`
+      : currentSrc;
 
     return (
       <img
         ref={imageRef}
         key={`${currentSrc}-${retryCount}`}
-        src={isInView ? currentSrc : PLACEHOLDER_1X1}
+        src={isInView ? finalRenderSrc : PLACEHOLDER_1X1}
         srcSet={isInView ? (srcSet || driveSrcSet) : undefined}
-        sizes={isInView ? (sizes || "(max-width: 768px) 50vw, 33vw") : undefined}
+        sizes={isInView ? (sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw") : undefined}
         alt={finalAlt}
         width={width}
         height={calculatedHeight}

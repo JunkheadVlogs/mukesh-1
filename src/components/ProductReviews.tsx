@@ -598,6 +598,7 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
                                   alt={`Uploaded preview ${index + 1}`}
                                   className="w-full h-full object-cover"
                                   loading="lazy"
+                                  decoding="async"
                                   referrerPolicy="no-referrer"
                                 />
                                 <button
@@ -770,6 +771,7 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
                                   alt={`Review attachment by ${review.author || "customer"} ${index + 1}`}
                                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                                   loading="lazy"
+                                  decoding="async"
                                   referrerPolicy="no-referrer"
                                 />
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />

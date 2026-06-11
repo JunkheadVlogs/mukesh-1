@@ -38,7 +38,7 @@ const LOOK_REELS = [
     category: "MEDIA COVERAGE",
     subtitle: "Exquisite Saree Exhibition",
     badge: "📺 TV News",
-    poster: "https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695"
+    poster: "https://ik.imagekit.io/tus1loev9/VID-20260601-WA0034.mp4/ik-thumbnail.jpg"
   },
   {
     id: "look-2",
@@ -47,7 +47,7 @@ const LOOK_REELS = [
     category: "FASHION PRESS",
     subtitle: "Nagpur Silk Collection",
     badge: "🔥 Trending",
-    poster: "https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790"
+    poster: "https://ik.imagekit.io/tus1loev9/VID-20260521-WA0037.mp4/ik-thumbnail.jpg"
   },
   {
     id: "look-3",
@@ -56,7 +56,7 @@ const LOOK_REELS = [
     category: "MEDIA SHOWCODE",
     subtitle: "Elite Festive Drapes",
     badge: "🌟 Exclusive",
-    poster: "https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469"
+    poster: "https://ik.imagekit.io/tus1loev9/VID-20260513-WA0026.mp4/ik-thumbnail.jpg"
   },
   {
     id: "look-4",
@@ -65,7 +65,7 @@ const LOOK_REELS = [
     category: "FIRST IMPRESSION",
     subtitle: "Luxury Organza & Silks",
     badge: "✨ Verified",
-    poster: "https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298"
+    poster: "https://ik.imagekit.io/tus1loev9/VID-20260513-WA0025.mp4/ik-thumbnail.jpg"
   },
   {
     id: "look-5",
@@ -74,7 +74,7 @@ const LOOK_REELS = [
     category: "PRESS RELEASE",
     subtitle: "Designer Bridal Georgets",
     badge: "💎 Premium",
-    poster: "https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691"
+    poster: "https://ik.imagekit.io/tus1loev9/VID_20260124_071257_055_bsl5200255307509945724.mp4/ik-thumbnail.jpg"
   }
 ];
 
@@ -190,7 +190,7 @@ export default function Home() {
       handleReelsScroll();
     }, 100);
 
-    window.addEventListener("resize", handleReelsScroll);
+    window.addEventListener("resize", handleReelsScroll, { passive: true });
     return () => {
       clearTimeout(timer);
       window.removeEventListener("resize", handleReelsScroll);
@@ -281,7 +281,7 @@ export default function Home() {
           {/* Desktop Hero Image (hidden on mobile) */}
           <OptimizedImage
             src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp"
-            width={1600}
+            width={1200}
             height={1000}
             alt="Best Saree Shop in Nagpur Hero Exhibition"
             priority={true}
@@ -521,7 +521,7 @@ export default function Home() {
                       key={reel.id}
                       reel={reel}
                       onVisibilityChange={handleReelVisibilityChange}
-                      shouldRenderIframe={true}
+                      shouldRenderIframe={!!visibleReelIds[reel.id] || activeReelId === reel.id}
                       isActive={activeReelId === reel.id}
                     />
                   );

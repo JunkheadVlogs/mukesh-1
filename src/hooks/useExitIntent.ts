@@ -18,12 +18,12 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
       return;
     }
 
+    let isAttached = false;
     const readyTime = Date.now() + delay;
 
     // DESKTOP: mouse leaves viewport top
     const handleMouseMove = (e: MouseEvent) => {
       if (hasShown) return;
-      if (Date.now() < readyTime) return;
       if (e.clientY < sensitivity) {
         setTriggered(true);
         setHasShown(true);
@@ -54,11 +54,20 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
       }
     }, 45000);
 
-    document.addEventListener('mousemove', handleMouseMove);
+    const mouseMoveTimer = setTimeout(() => {
+      if (!hasShown) {
+        document.addEventListener('mousemove', handleMouseMove);
+        isAttached = true;
+      }
+    }, delay);
+
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(mouseMoveTimer);
+      if (isAttached) {
+        document.removeEventListener('mousemove', handleMouseMove);
+      }
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(inactivityTimer);
     };

@@ -121,5 +121,22 @@ try {
   showErrorOnScreen("Failed to render application container:", renderError);
 }
 
+// Register high-performance Browser Caching Service Worker
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // Only register on production domain to optimize testing in active dev/sandboxed environments
+    const isDevEnvironment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.includes('run.app');
+    if (!isDevEnvironment) {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => {
+          console.log('[SW] Cache ServiceWorker active. Scope:', reg.scope);
+        })
+        .catch((err) => {
+          console.warn('[SW] Cache ServiceWorker registration failed:', err);
+        });
+    }
+  });
+}
+
 // Built and verified by Google AI Studio agent. Ready for commitment.
 
