@@ -818,7 +818,7 @@ export default function Layout() {
               </button>
             </div>
 
-            <nav className="hidden md:flex space-x-6 items-center h-full">
+            <nav aria-label="Main Navigation" className="hidden md:flex space-x-6 items-center h-full">
               <Link
                 to="/shop"
                 className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
@@ -973,7 +973,7 @@ export default function Layout() {
                 </div>
 
                 {/* Nav Links */}
-                <div style={{
+                <nav aria-label="Mobile Navigation" style={{
                   display: "flex",
                   flexDirection: "column"
                 }}>
@@ -1084,7 +1084,7 @@ export default function Layout() {
                   >
                     <span>Contact</span> <span>›</span>
                   </Link>
-                </div>
+                </nav>
 
                 {/* Customer Assistance */}
                 <div style={{
@@ -1231,7 +1231,7 @@ export default function Layout() {
           <div className="footer-full">
             
             {/* Newsletter Section */}
-          <div className="mb-2 md:mb-12 border-b border-white/10 pb-2 md:pb-10">
+          <section className="mb-2 md:mb-12 border-b border-white/10 pb-2 md:pb-10">
             <div className="max-w-xl mx-auto text-center">
               <h3 
                 className="text-xs md:text-sm uppercase tracking-[0.25em] font-semibold mb-1.5 sm:mb-3"
@@ -1245,7 +1245,7 @@ export default function Layout() {
               <p className="text-[11px] md:text-sm text-[#eae6df]/75 tracking-wider mb-3 md:mb-5 leading-normal">
                 Subscribe to receive early access to new collections, exclusive previews, and ethnic styling inspiration.
               </p>
-              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-1.5 max-w-md mx-auto">
+              <form aria-label="Newsletter Subscription Form" onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-1.5 max-w-md mx-auto">
                 <input
                   type="email"
                   name="email"
@@ -1274,7 +1274,7 @@ export default function Layout() {
                 By subscribing, you agree to our Privacy Policy and consent to receive updates.
               </p>
             </div>
-          </div>
+          </section>
 
           {/* Accordions / Navigation Columns */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-y-0 md:gap-x-10 lg:gap-x-16">
@@ -1518,7 +1518,7 @@ export default function Layout() {
                 <p className="text-[11px] text-[#eae6df]/70 tracking-wider mb-3 leading-relaxed">
                   Enter your order ID to view real-time shipment status and delivery details.
                 </p>
-                <form onSubmit={handleTrackingSearch} className="flex gap-1.5 max-w-full">
+                <form aria-label="Order Tracking Form" onSubmit={handleTrackingSearch} className="flex gap-1.5 max-w-full">
                   <input
                     type="text"
                     value={trackOrderIdInput}

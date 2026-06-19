@@ -4,69 +4,46 @@ import { MapPin, Phone, Clock, MessageCircle, Heart, ShieldCheck, Award, Sparkle
 import { CONFIG } from './config';
 
 export default function About() {
-  useEffect(() => {
-    const scriptId = 'about-page-jsonld';
-    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
-    if (!script) {
-      script = document.createElement('script');
-      script.id = scriptId;
-      script.type = 'application/ld+json';
-      document.head.appendChild(script);
-    }
-
-    const orgSchema = {
+  const customSchema = [
+    {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Mukesh Saree Centre",
-      "url": "https://mukeshsarees.com",
-      "logo": "https://mukeshsarees.com/images/og-home.jpg",
-      "foundingDate": "1978",
-      "founder": {
-        "@type": "Person",
-        "name": "Nanakram Khemchandani"
-      },
-      "description": "Mukesh Saree Centre is a premium Indian ethnic wear store established in Nagpur in 1978. We sell sarees, lehengas, co-ord sets, and readymade suits online with Cash on Delivery and free shipping above ₹499.",
-      "telephone": "+917020664641",
-      "email": "info@mukeshsarees.com",
-      "sameAs": [
-        "https://www.facebook.com/Mukeshsareesindia/",
-        "https://www.youtube.com/channel/UCzpp0A8DWt3XSWMO8QLBOPw",
-        "https://www.instagram.com/Mukeshsarees_Nagpur"
-      ],
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Jagnath Road, Opposite Wholesale Cloth Market Gate No. 2, Gandhibagh",
-        "addressLocality": "Nagpur",
-        "addressRegion": "Maharashtra",
-        "postalCode": "440002",
-        "addressCountry": "IN"
+      "@type": "AboutPage",
+      "mainEntity": {
+        "@id": "https://mukeshsarees.com/#organization"
       }
-    };
-
-    const personSchema = {
+    },
+    {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Nanakram Khemchandani",
       "jobTitle": "Founder",
       "worksFor": {
-        "@type": "Organization",
-        "name": "Mukesh Saree Centre"
+        "@id": "https://mukeshsarees.com/#organization"
       },
       "nationality": {
         "@type": "Country",
-        "name": "Indian"
+        "name": "India"
       }
-    };
-
-    script.innerHTML = JSON.stringify([orgSchema, personSchema]);
-
-    return () => {
-      const scriptToRemove = document.getElementById(scriptId);
-      if (scriptToRemove) {
-        document.head.removeChild(scriptToRemove);
-      }
-    };
-  }, []);
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://mukeshsarees.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About Us",
+          "item": "https://mukeshsarees.com/about"
+        }
+      ]
+    }
+  ];
 
   const handleWhatsAppContact = () => {
     const text = encodeURIComponent("Hi Mukesh Saree Centre! I was reading your About Us page and would love to connect.");
@@ -80,6 +57,7 @@ export default function About() {
           title="About Us | Mukesh Saree Centre — Nagpur's Trusted Saree Store Since 1978" 
           description="Learn about Mukesh Saree Centre, established in 1978 by the Nanakram Khemchandani family in Nagpur. We offer 30+ saree varieties with Cash on Delivery and free shipping." 
           url="/about"
+          schema={customSchema}
         />
 
         <div className="text-center mb-8 md:mb-10">

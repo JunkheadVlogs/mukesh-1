@@ -833,7 +833,7 @@ export default function Checkout() {
           </div>
 
           {/* Checkout Summary */}
-          <div className="lg:col-span-5 mt-1 sm:mt-0">
+          <aside className="lg:col-span-5 mt-1 sm:mt-0">
             <div className="bg-white p-2.5 sm:p-5 md:p-6 border border-black/5 rounded-sm shadow-sm lg:sticky lg:top-32">
               <h2 className="text-sm sm:text-base md:text-lg font-serif text-primary-950 mb-2 sm:mb-4 font-medium pb-1.5 sm:pb-3 border-b border-black/5">
                 Order Summary
@@ -1015,7 +1015,7 @@ export default function Checkout() {
                 </div>
               </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </div>

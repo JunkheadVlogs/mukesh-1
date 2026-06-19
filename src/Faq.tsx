@@ -253,13 +253,13 @@ export default function Faq() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-0">
         
         {/* Header Section */}
-        <div className="text-center mb-2">
+        <header className="text-center mb-2">
           <h1 className="text-2xl md:text-3xl font-serif text-primary-950 mb-2">Frequently Asked Questions</h1>
           <div className="w-12 h-[2px] bg-gold-200 mx-auto mb-2"></div>
           <p className="text-primary-950/70 text-xs max-w-xl mx-auto leading-relaxed">
             Find answers to commonly asked questions about ordering, delivery, regional fabrics, customized tailoring support, and wholesale pricing.
           </p>
-        </div>
+        </header>
 
         {/* Intelligent Search Input */}
         <div className="max-w-xl mx-auto mb-2 relative">

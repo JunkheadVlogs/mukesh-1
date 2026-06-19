@@ -238,5 +238,158 @@ export const guidesMeta: GuideMeta[] = [
       { question: "Should I buy my wedding saree online?", answer: "Yes, provided you buy from a trusted seller with heritage like Mukesh Saree Centre, where high-quality images and transparent policies guarantee satisfaction." },
       { question: "How long in advance should I buy my wedding saree?", answer: "It is best to purchase 2-3 months in advance to allow time for blouse stitching, embroidery work, and matching jewelry." }
     ]
+  },
+  {
+    id: "silk-saree-guide",
+    slug: "silk-saree-guide",
+    title: "Silk Saree Guide",
+    description: "The complete guide to understanding, buying, and styling authentic silk sarees for every grand occasion.",
+    author: "Mukesh Saree Centre",
+    date: "2024-05-24",
+    lastUpdated: "2024-05-24",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695",
+    relatedSlugs: ["banarasi-saree-guide", "wedding-saree-guide"],
+    productCategories: ["Silk Sarees", "Banarasi Sarees"],
+    faqs: [
+      { question: "How can I tell if silk is pure?", answer: "The burn test is the most reliable method. Pure silk smells like burnt hair and leaves a brittle ash." },
+      { question: "Can silk sarees be worn in summer?", answer: "Yes, pure silk is highly breathable and acts as a natural temperature regulator, making it comfortable in various climates." },
+      { question: "How should I store my silk saree?", answer: "Store it in a soft cotton bag, away from direct sunlight and humidity. Avoid plastic covers at all costs." }
+    ]
+  },
+  {
+    id: "organza-saree-guide",
+    slug: "organza-saree-guide",
+    title: "Organza Saree Guide",
+    description: "Discover the ethereal beauty of organza sarees, perfect for modern parties and minimalist grace.",
+    author: "Mukesh Saree Centre",
+    date: "2024-05-25",
+    lastUpdated: "2024-05-25",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469",
+    relatedSlugs: ["chiffon-saree-guide", "party-wear-saree-guide"],
+    productCategories: ["Organza Sarees", "Party Wear"],
+    faqs: [
+      { question: "Do organza sarees make you look bulky?", answer: "Organza has natural volume. If draped well with crisp pleats, it adds structure rather than bulk. Opt for softer organza variants if you prefer less volume." },
+      { question: "Is organza comfortable for long events?", answer: "Yes, it is very lightweight and airy. However, pure silk organza is softer against the skin compared to its synthetic counterparts." },
+      { question: "How should I iron organza?", answer: "Always use a low heat setting and preferably place a fine cotton cloth over the organza to protect the delicate sheer fibers." }
+    ]
+  },
+  {
+    id: "chiffon-saree-guide",
+    slug: "chiffon-saree-guide",
+    title: "Chiffon Saree Guide",
+    description: "Everything you need to know about styling and maintaining fluid, lightweight chiffon sarees.",
+    author: "Mukesh Saree Centre",
+    date: "2024-05-26",
+    lastUpdated: "2024-05-26",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp",
+    relatedSlugs: ["georgette-saree-guide", "party-wear-saree-guide"],
+    productCategories: ["Chiffon Sarees", "Daily Wear Sarees", "Party Wear"],
+    faqs: [
+      { question: "How delicate is pure chiffon?", answer: "It is quite delicate and can snag easily on jewelry. Take care when pinning the pallu and pleats." },
+      { question: "Is chiffon a good choice for plus-size figures?", answer: "Absolutely. Chiffon drapes closely to the body's natural shape, providing a slimming and elongating silhouette without adding bulk." },
+      { question: "Can I machine wash my chiffon saree?", answer: "It's best to dry clean or gently hand wash in cold water to preserve the delicate weave and prevent tearing." }
+    ]
+  },
+  {
+    id: "georgette-saree-guide",
+    slug: "georgette-saree-guide",
+    title: "Georgette Saree Guide",
+    description: "A deep dive into georgette sarees, the durable, flowy alternative offering beautiful drapes and comfort.",
+    author: "Mukesh Saree Centre",
+    date: "2024-05-27",
+    lastUpdated: "2024-05-27",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695",
+    relatedSlugs: ["chiffon-saree-guide", "party-wear-saree-guide"],
+    productCategories: ["Georgette Sarees", "Party Wear", "Daily Wear Sarees"],
+    faqs: [
+      { question: "What is the difference between georgette and chiffon?", answer: "Georgette is slightly thicker and heavier, with a more pronounced crinkled texture, making it more durable than sheer chiffon." },
+      { question: "Does georgette shrink?", answer: "Pure silk georgette tends to shrink slightly when exposed to water, which is why dry cleaning is generally recommended." },
+      { question: "Is georgette suitable for heavy embroidery?", answer: "Yes, georgette is strong enough to hold heavy sequins, zardosi, and beadwork, making it ideal for bridal and party wear." }
+    ]
+  },
+  {
+    id: "corporate-uniform-saree-guide",
+    slug: "corporate-uniform-saree-guide",
+    title: "Corporate Uniform Saree Guide",
+    description: "Professional aesthetics: How to choose elegant and fuss-free uniform sarees for your corporate workforce.",
+    author: "Mukesh Saree Centre",
+    date: "2024-05-28",
+    lastUpdated: "2024-05-28",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/billingcounter.webp?updatedAt=1779907894357",
+    relatedSlugs: ["uniform-saree-guide", "wholesale-saree-buying-guide"],
+    productCategories: ["Corporate Wear", "Uniform Sarees"],
+    faqs: [
+      { question: "What is the best fabric for corporate uniforms?", answer: "Crepe and georgette blends are excellent choices because they are largely wrinkle-free and maintain their crisp look all day." },
+      { question: "Can we incorporate company colors into the saree?", answer: "Yes, customized weaving or designated uniform selections can easily match your corporate branding and colors." },
+      { question: "How many sarees are recommended per employee?", answer: "Usually, providing 3 to 4 sarees per employee ensures longevity and eases the burden of daily washing routines." }
+    ]
+  },
+  {
+    id: "hospital-uniform-saree-guide",
+    slug: "hospital-uniform-saree-guide",
+    title: "Hospital Uniform Saree Guide",
+    description: "Selecting sanitary, durable, and comfortable sarees for healthcare workers and administrative hospital staff.",
+    author: "Mukesh Saree Centre",
+    date: "2024-05-29",
+    lastUpdated: "2024-05-29",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298",
+    relatedSlugs: ["uniform-saree-guide", "wholesale-saree-buying-guide"],
+    productCategories: ["Uniform Sarees", "Wholesale Sarees"],
+    faqs: [
+      { question: "Why choose sarees for hospital administration?", answer: "Sarees convey professionalism, cultural respect, and when made of the right material, provide comfort for long shifts." },
+      { question: "Are poly or cotton blends better for hospitals?", answer: "Poly-cotton blends are preferred as they dry quickly, withstand frequent washing, and resist wrinkling." },
+      { question: "Do hospital uniform sarees come with pre-stitched pleats?", answer: "While traditional sarees are standard, pre-stitched options are becoming highly requested for speed and efficiency during shift changes." }
+    ]
+  },
+  {
+    id: "saree-styling-guide",
+    slug: "saree-styling-guide",
+    title: "Saree Styling Guide",
+    description: "Elevate your look with modern accessories, contemporary blouses, and unique draping techniques.",
+    author: "Mukesh Saree Centre",
+    date: "2024-05-30",
+    lastUpdated: "2024-05-30",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp",
+    relatedSlugs: ["saree-draping-guide", "party-wear-saree-guide"],
+    productCategories: ["All Sarees", "Party Wear"],
+    faqs: [
+      { question: "Can I wear a belt with a traditional saree?", answer: "Yes, kamarbandhs (traditional belts) or modern leather belts are incredibly stylish and help keep the pleats secure." },
+      { question: "What kind of blouse modernizes a saree look?", answer: "Try a cape style, an off-shoulder blouse, or even pairing your saree with a formal shirt or crop top." },
+      { question: "Is statement jewelry always necessary?", answer: "No. If your saree is heavily embroidered, opt for minimalist jewelry like simple studs. For a plain saree, go bold with statement necklaces or heavy jhumkas." }
+    ]
+  },
+  {
+    id: "festival-saree-guide",
+    slug: "festival-saree-guide",
+    title: "Festival Saree Guide",
+    description: "Celebrate traditions in style with the right fabrics and colors for major Indian festivals.",
+    author: "Mukesh Saree Centre",
+    date: "2024-05-31",
+    lastUpdated: "2024-05-31",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469",
+    relatedSlugs: ["party-wear-saree-guide", "silk-saree-guide"],
+    productCategories: ["Festive Wear", "Silk Sarees", "Banarasi Sarees"],
+    faqs: [
+      { question: "What colors are best for Diwali and Durga Puja?", answer: "Auspicious colors like vermilion red, bright yellow, gold, and deep green are timeless choices for festive celebrations." },
+      { question: "Should I choose silk or cotton for daytime festivals?", answer: "For daytime events, opt for comfortable choices like Chanderi cotton, linen, or lightweight georgette. Save heavy silks for the evening." },
+      { question: "How can I incorporate modern aesthetics into festive wear?", answer: "Choose traditional fabrics but opt for contemporary blouses, unique draping styles, or an elegant jacket overlay." }
+    ]
+  },
+  {
+    id: "office-wear-saree-guide",
+    slug: "office-wear-saree-guide",
+    title: "Office Wear Saree Guide",
+    description: "Master the art of wearing sarees to the workplace with subtle elegance and maximum comfort.",
+    author: "Mukesh Saree Centre",
+    date: "2024-06-01",
+    lastUpdated: "2024-06-01",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695",
+    relatedSlugs: ["uniform-saree-guide", "cotton-saree-guide"],
+    productCategories: ["Office Wear", "Daily Wear Sarees", "Cotton Sarees"],
+    faqs: [
+      { question: "Are prints or solids better for the office?", answer: "Solids, subtle stripes, minimal geometric prints, and tiny floral motifs look highly professional. Avoid large, loud prints." },
+      { question: "Which fabric is most comfortable for a 9-to-5 job?", answer: "Cotton, pure linen, and light georgettes are best. They breathe well, don't restrict movement, and maintain their shape." },
+      { question: "How should I pin my saree for the office?", answer: "Neat, precisely pinned shoulder pleats are essential for a professional look. Avoid letting the pallu float freely, as it can get in the way." }
+    ]
   }
 ];

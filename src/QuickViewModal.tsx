@@ -96,6 +96,7 @@ export default function QuickViewModal({
           >
             <button
               onClick={onClose}
+              aria-label="Close quick view"
               className="absolute top-4 right-4 z-20 p-2 text-primary-950/20 hover:text-primary-950 transition-all"
             >
               <X size={24} />

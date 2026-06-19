@@ -618,7 +618,6 @@ export default function Home() {
       {/* Trending Section */}
       <section className="bg-white pt-4 md:pt-6 pb-2.5 md:pb-3 border-t border-gold-200/30">
         <div className="sr-only">
-          <h3>Trending Ethnic Wear & Sarees</h3>
           <p>
             Who it is for: Fashion-forward women looking for the latest styles securely delivered to their doorstep.
             Fabric highlights: Lightweight silks, comfortable daily cottons, and intricately embroidered georgettes.
@@ -631,7 +630,7 @@ export default function Home() {
           <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-3 md:mb-5 px-1.5 sm:px-0">
             <div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)] flex items-center justify-center md:justify-start gap-2">
-                Trending <span className="italic">Now</span>
+                Trending <span className="sr-only">Ethnic Wear & Sarees</span> <span className="italic">Now</span>
               </h2>
             </div>
             <Link
@@ -758,7 +757,6 @@ export default function Home() {
       {/* New Arrivals Section */}
       <section className="bg-primary-50 py-3 md:py-6 border-t border-gold-200/30">
         <div className="sr-only">
-          <h3>New Saree Arrivals</h3>
           <p>
             Who it is for: Trendsetters seeking the most recently launched fabrics and exclusive boutique additions.
             Fabric highlights: Innovative silk blends, crisp organzas, and newly patterned handlooms.
@@ -770,7 +768,7 @@ export default function Home() {
         <div className="px-2 sm:px-4 lg:px-6 sm:max-w-7xl mx-auto">
           <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-3 md:mb-5 px-1.5 sm:px-0">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)]">
-              New <span className="italic">Arrivals</span>
+              New<span className="sr-only"> Saree</span> <span className="italic">Arrivals</span>
             </h2>
             <Link
               to="/shop?sort=new"

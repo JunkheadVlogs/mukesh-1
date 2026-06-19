@@ -178,7 +178,12 @@
           "@id": "https://mukeshsarees.com/#organization",
           "name": "Mukesh Saree Centre",
           "url": "https://mukeshsarees.com",
-          "logo": "https://mukeshsarees.com/images/og-home.jpg",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://mukeshsarees.com/images/og-home.jpg",
+            "width": 1200,
+            "height": 630
+          },
           "foundingDate": "1978",
           "founder": {
             "@type": "Person",
@@ -187,6 +192,13 @@
           "description": "Mukesh Saree Centre is a premium Indian ethnic wear store established in Nagpur in 1978. We sell sarees, lehengas, co-ord sets, and readymade suits online with Cash on Delivery and free shipping above ₹499.",
           "telephone": "%VITE_STORE_PHONE%",
           "email": "info@mukeshsarees.com",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "%VITE_STORE_PHONE%",
+            "contactType": "customer service",
+            "areaServed": "IN",
+            "availableLanguage": ["English", "Hindi"]
+          },
           "sameAs": [
             "https://www.facebook.com/Mukeshsareesindia/",
             "https://www.youtube.com/channel/UCzpp0A8DWt3XSWMO8QLBOPw",
@@ -206,7 +218,12 @@
           "@id": "https://mukeshsarees.com/#localbusiness",
           "name": "Mukesh Saree Centre",
           "url": "https://mukeshsarees.com",
-          "image": "https://mukeshsarees.com/images/og-home.jpg",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://mukeshsarees.com/images/og-home.jpg",
+            "width": 1200,
+            "height": 630
+          },
           "telephone": "%VITE_STORE_PHONE%",
           "email": "info@mukeshsarees.com",
           "parentOrganization": { "@id": "https://mukeshsarees.com/#organization" },

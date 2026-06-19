@@ -145,133 +145,6 @@ export default function ProductPage() {
     return items;
   }, [product]);
 
-  useEffect(() => {
-    if (!product) return;
-
-    const scriptId = 'product-jsonld';
-    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
-    if (!script) {
-      script = document.createElement('script');
-      script.id = scriptId;
-      script.type = 'application/ld+json';
-      document.head.appendChild(script);
-    }
-    
-    // Fallback for stats and dummy review
-    const stats = getProductReviewStats(product);
-    const reviewCount = product.reviewsCount || stats.reviewCount || 15;
-    const ratingValue = stats.rating || 4.8;
-    
-    const productSchema = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": product.name,
-      "image": [
-        product.image,
-        ...(product.additionalImages || [])
-      ],
-      "description": product.description,
-      "sku": product.sku || product.id,
-      "brand": {
-        "@type": "Brand",
-        "name": "Mukesh Saree Centre"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": ratingValue,
-        "reviewCount": reviewCount
-      },
-      "review": [
-        {
-          "@type": "Review",
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": 5,
-            "bestRating": 5
-          },
-          "author": {
-            "@type": "Person",
-            "name": "Verified Customer"
-          },
-          "reviewBody": "Excellent quality and fast delivery. Exactly as shown in the picture.",
-          "datePublished": "2024-05-12"
-        }
-      ],
-      "offers": {
-        "@type": "Offer",
-        "price": product.price,
-        "priceCurrency": "INR",
-        "itemCondition": "https://schema.org/NewCondition",
-        "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        "url": window.location.href,
-        "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-        "seller": {
-          "@type": "Organization",
-          "name": "Mukesh Saree Centre"
-        },
-        "shippingDetails": {
-          "@type": "OfferShippingDetails",
-          "shippingRate": {
-            "@type": "MonetaryAmount",
-            "value": "0",
-            "currency": "INR"
-          },
-          "deliveryTime": {
-            "@type": "ShippingDeliveryTime",
-            "handlingTime": {
-              "@type": "QuantitativeValue",
-              "minValue": 1,
-              "maxValue": 2,
-              "unitCode": "d"
-            },
-            "transitTime": {
-              "@type": "QuantitativeValue",
-              "minValue": 3,
-              "maxValue": 7,
-              "unitCode": "d"
-            }
-          }
-        },
-        "hasMerchantReturnPolicy": {
-          "@type": "MerchantReturnPolicy",
-          "applicableCountry": "IN",
-          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-          "merchantReturnDays": 7,
-          "returnMethod": "https://schema.org/ReturnByMail",
-          "returnFees": "https://schema.org/FreeReturn"
-        }
-      }
-    };
-
-    const breadcrumbListSchema = {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        ...breadcrumbItems.map((item, index) => ({
-          "@type": "ListItem",
-          "position": index + 1,
-          "name": item.label,
-          "item": new URL(item.to, window.location.href).href
-        })),
-        {
-          "@type": "ListItem",
-          "position": breadcrumbItems.length + 1,
-          "name": product.name,
-          "item": window.location.href
-        }
-      ]
-    };
-
-    script.innerHTML = JSON.stringify([productSchema, breadcrumbListSchema]);
-
-    return () => {
-      const scriptToRemove = document.getElementById(scriptId);
-      if (scriptToRemove) {
-        document.head.removeChild(scriptToRemove);
-      }
-    };
-  }, [product, breadcrumbItems]);
-
   const { addToCart, toggleWishlist, wishlist } = useStore();
 
   const storeCoupon = useStore((state) => state.appliedCoupon);
@@ -990,30 +863,6 @@ export default function ProductPage() {
 
   return (
     <div className="bg-primary-50 product-page-content pb-[70px] md:pb-0">
-      <Helmet>
-        <title>{`${product.name} | Premium ${product.category} | Mukesh Saree Centre`}</title>
-        <meta name="description" content={`Buy ${product.name} online at Mukesh Saree Centre. High-quality ${product.fabric} ${product.category.toLowerCase()} perfect for festive wear and elegant styling. Check styling tips, reviews, and fast shipping options!`} />
-        
-        {/* Open Graph Tags */}
-        <meta property="og:title" content={`${product.name} - Mukesh Saree Centre`} />
-        <meta property="og:description" content={`Explore ${product.name}. Premium ${product.fabric} ${product.category}. Shop authentic, hand-picked regional styles.`} />
-        <meta property="og:url" content={`https://mukeshsarees.com/product/${product.slug}`} />
-        <meta property="og:type" content="product" />
-        <meta property="product:price:amount" content={product.price.toString()} />
-        <meta property="product:price:currency" content="INR" />
-        <meta property="product:availability" content={product.stock > 0 ? "instock" : "oos"} />
-        <meta property="product:category" content={product.category} />
-        
-        {/* Twitter Card Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${product.name} - Mukesh Saree Centre`} />
-        <meta name="twitter:description" content={`Buy ${product.name} crafted in premium ${product.fabric}. Free shipping on prepaid orders!`} />
-        <meta name="twitter:image" content={absoluteProductImages[0]} />
-        <meta name="twitter:image:alt" content={`${product.name} in ${product.color || 'premium fabric'}`} />
-
-        <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
-      </Helmet>
       <SEO
         title={`${product.name} – Mukesh Saree Centre`}
         description={cleanSEOText(product.description).substring(0, 160)}
@@ -1022,26 +871,30 @@ export default function ProductPage() {
         url={`/product/${product.slug}`}
         type="product"
         product={product}
-        schema={productSchema}
+        schema={[productSchema, breadcrumbSchema] as any}
       />
 
       <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
         {/* Minimalist, super-low profile Breadcrumbs with absolutely zero wasted space */}
-        <div className="breadcrumb-wrapper !px-4 md:!px-0 select-none py-1.5 md:py-2 bg-transparent shrink-0">
-          <div className="breadcrumb font-sans text-[10px] md:text-xs">
+        <nav aria-label="Breadcrumb" className="breadcrumb-wrapper !px-4 md:!px-0 select-none py-1.5 md:py-2 bg-transparent shrink-0">
+          <ol className="breadcrumb font-sans text-[10px] md:text-xs flex flex-wrap m-0 p-0 list-none content-start">
             {breadcrumbItems.map((item, idx) => (
               <Fragment key={idx}>
-                <Link to={item.to} className="!text-[#2b2b2b] hover:!text-[#C8A96B] transition-colors font-medium">
-                  {item.label}
-                </Link>
-                <span className="separator !text-black/40">/</span>
+                <li className="flex items-center">
+                  <Link to={item.to} className="!text-[#2b2b2b] hover:!text-[#C8A96B] transition-colors font-medium">
+                    {item.label}
+                  </Link>
+                  <span className="separator !text-black/40 mx-1">/</span>
+                </li>
               </Fragment>
             ))}
-            <span className="current-page !text-black !font-semibold">
-              {product.name}
-            </span>
-          </div>
-        </div>
+            <li className="flex items-center">
+              <span className="current-page !text-black !font-semibold" aria-current="page">
+                {product.name}
+              </span>
+            </li>
+          </ol>
+        </nav>
 
         <div className="flex flex-col lg:flex-row gap-2 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
@@ -1342,9 +1195,9 @@ export default function ProductPage() {
               {/* Color Variants */}
               {product.colorVariants && product.colorVariants.length > 0 && (
                 <section className="product-info mb-2.5">
-                  <h3 className="text-[11px] uppercase tracking-[0.15em] text-[var(--color-muted)] font-medium mb-2">
+                  <h2 className="text-[11px] uppercase tracking-[0.15em] text-[var(--color-muted)] font-medium mb-2">
                     Color Options
-                  </h3>
+                  </h2>
                   <div className="flex flex-wrap gap-3">
                     {product.colorVariants.map((v) => (
                       <Link
