@@ -1328,6 +1328,11 @@ export default function Layout() {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/guides" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Knowledge Hub / Guides
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/faqs" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Frequently Asked Questions
                     </Link>

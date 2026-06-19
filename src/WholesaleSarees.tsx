@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { SEO } from "./components/SEO";
 
 export default function WholesaleSarees() {
   const [rating, setRating] = useState<number | null>(null);
@@ -22,13 +23,6 @@ export default function WholesaleSarees() {
       setRating(5);
       setGoogleClicked(true);
       setSubmittedReview(true);
-    }
-
-    // Explicit metadata mapping for SEO Title and Meta Description
-    document.title = "Mukesh Saree Centre Wholesale VIP Club";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", "Join Mukesh Saree Centre Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers.");
     }
   }, []);
 
@@ -171,6 +165,38 @@ export default function WholesaleSarees() {
 
   return (
     <div className="relative min-h-screen bg-[#FAF6F0] text-[#1A0A00] font-sans overflow-x-hidden pb-16">
+      <SEO 
+        title="Mukesh Saree Centre Wholesale VIP Club" 
+        description="Join Mukesh Saree Centre Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers." 
+        url="/wholesale-sarees"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Wholesale Sarees VIP Club",
+            "description": "Join Mukesh Saree Centre Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers.",
+            "url": "https://mukeshsarees.com/wholesale-sarees"
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://mukeshsarees.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Wholesale VIP Club",
+                "item": "https://mukeshsarees.com/wholesale-sarees"
+              }
+            ]
+          }
+        ]}
+      />
       {/* High-accuracy overlay container canvas for confetti physics particle system */}
       <canvas 
         ref={canvasRef} 

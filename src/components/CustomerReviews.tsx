@@ -130,7 +130,7 @@ export function CustomerReviews() {
             className="-mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 flex gap-4 md:gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scrollbar-hide no-scrollbar touch-pan-x touch-pan-y"
           >
             {REVIEWS.map((review, index) => (
-              <motion.div
+              <motion.article
                 key={review.id}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -163,7 +163,7 @@ export function CustomerReviews() {
                     </span>
                   )}
                 </div>
-              </motion.div>
+              </motion.article>
             ))}
           </div>
 

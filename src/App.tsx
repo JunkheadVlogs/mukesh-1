@@ -26,6 +26,8 @@ const ReturnPolicy = lazy(() => import('./ReturnPolicy'));
 const WholesaleSarees = lazy(() => import('./WholesaleSarees'));
 const About = lazy(() => import('./About'));
 const Faq = lazy(() => import('./Faq'));
+const GuideIndex = lazy(() => import('./pages/GuideIndex'));
+const GuideDetail = lazy(() => import('./pages/GuideDetail'));
 
 import { CONFIG, submitToGoogleSheets, getApiUrl } from "./config";
 
@@ -229,6 +231,8 @@ export default function App() {
             <Route path="shipping-policy" element={<ShippingPolicy />} />
             <Route path="return-policy" element={<ReturnPolicy />} />
             <Route path="faqs" element={<Faq />} />
+            <Route path="guides" element={<GuideIndex />} />
+            <Route path="guides/:slug" element={<GuideDetail />} />
           </Route>
           <Route path="wholesalesarees" element={<WholesaleSarees />} />
         </Routes>

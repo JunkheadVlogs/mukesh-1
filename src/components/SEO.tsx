@@ -287,7 +287,21 @@ export function SEO({
         </>
       )}
 
-      {/* Structured Data Schema */}
+      {/* WebPage Schema (Automatic) */}
+      {!isProductType && !schema && (
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": displayTitle,
+            "description": cleanSEOText(description).substring(0, 300),
+            "url": absoluteUrl,
+            "publisher": { "@id": "https://mukeshsarees.com/#organization" }
+          })}
+        </script>
+      )}
+
+      {/* Custom Structured Data Schema */}
       {schema && (
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       )}

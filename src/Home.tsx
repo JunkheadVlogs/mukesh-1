@@ -323,18 +323,22 @@ export default function Home() {
     {
       url: "https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298",
       label: "Main Shop Enterence",
+      alt: "Entrance of Mukesh Saree Centre physical shop in Gandhibagh Nagpur",
     },
     {
       url: "https://ik.imagekit.io/tus1loev9/homepage/billingcounter.webp?updatedAt=1779907894357",
       label: "Billing Counter",
+      alt: "Interior view showing the busy billing counter at Mukesh Saree Centre",
     },
     {
       url: "https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695",
       label: "Saree Section",
+      alt: "Beautiful display of premium silk and cotton sarees in our wholesale showroom",
     },
     {
       url: "https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691",
       label: "Lehenga Section",
+      alt: "Exclusive bridal lehenga section displaying rich ethnic wedding wear",
     },
   ];
 
@@ -361,29 +365,39 @@ export default function Home() {
         description="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles."
         image="https://mukeshsarees.com/images/og-home.jpg"
         url="/"
-        schema={{
-          "@context": "https://schema.org",
-          "@type": "ClothingStore",
-          name: "Mukesh Saree Centre",
-          url: "https://mukeshsarees.com",
-          logo: "https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217",
-          foundingDate: "1978",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Jagnath Road",
-            addressLocality: "Nagpur",
-            addressRegion: "Maharashtra",
-            addressCountry: "IN",
-          },
-          telephone: CONFIG.STORE_PHONE,
-          sameAs: [
-            "https://www.facebook.com/Mukeshsareesindia/",
-            "https://www.instagram.com/mukeshsarees_nagpur",
-            "https://www.pinterest.com/MukeshSareesdotcom/",
-            "https://youtube.com/@mukeshsarees?si=aMljrBMnIJYQDGDI"
-          ],
-        }}
       />
+
+      {/* Intro section for SEO - Visually Hidden */}
+      <section className="sr-only">
+        <h1>Mukesh Saree Centre – Premium Sarees Online & Wholesale Sarees in India</h1>
+        <h2>About Mukesh Saree Centre</h2>
+        <p>
+          Welcome to Mukesh Saree Centre, your ultimate destination for premium <a href="/shop?category=Sarees">sarees online</a> and <a href="/wholesale-sarees">wholesale sarees</a> in India. Established in 1978 in Nagpur, we have been a trusted name in the world of ethnic fashion. With decades of heritage, our Nagpur showroom offers an exclusive offline shopping experience, while our online store provides seamless pan-India delivery, ensuring every woman has access to the finest drapes.
+        </p>
+        <p>
+          Our expansive saree collections are thoughtfully curated to cater to every occasion, preference, and season. Whether you are looking for luxurious Banarasi sarees that exude timeless elegance, breathable cotton sarees for everyday comfort, or sophisticated linen sarees for contemporary styling, we have something perfect for you. We also pride ourselves on our extensive range of <a href="/shop?category=Co-Ord-Sets">co-ord sets</a> and uniform sarees, tailored for corporate professionals, educational institutions, and healthcare staff who require matching, durable, and elegant attire.
+        </p>
+        <p>
+          At Mukesh Saree Centre, we are dedicated to serving both retail and wholesale customers. Our wholesale sarees division provides unmatched support, premium quality, and competitive pricing for boutiques and resellers across India. For our retail shoppers, experiencing premium online shopping with us is effortless. Enjoy secure checkout, the convenience of COD (Cash on Delivery) available nationwide, and free shipping on your orders. Join thousands of satisfied customers who trust our 46 years of legacy in the textile industry and let us drape you in tradition and modernity. <a href="/contact">Contact us</a> for more information.
+        </p>
+      </section>
+
+      {/* Why Choose us SEO section */}
+      <section className="sr-only">
+        <h2>Why Choose Mukesh Saree Centre</h2>
+        <ul>
+          <li><strong>Since 1978:</strong> Deep-rooted heritage and over four decades of expertise in textiles.</li>
+          <li><strong>Trusted by thousands of customers:</strong> A legacy built on quality, transparency, and trust.</li>
+          <li><strong>Premium fabrics:</strong> We use only the finest materials for our Banarasi, cotton, and linen sarees.</li>
+          <li><strong>Affordable prices:</strong> Experience luxury without the extravagant price tags.</li>
+          <li><strong>Wholesale support:</strong> Dedicated catalogs and bulk solutions for businesses across India.</li>
+          <li><strong>Retail shopping:</strong> Flawless online shopping experience with high-resolution imagery.</li>
+          <li><strong>Secure checkout:</strong> Safe and encrypted payment gateways for total peace of mind.</li>
+          <li><strong>Fast shipping:</strong> Reliable logistics partners to ensure prompt doorstep delivery.</li>
+          <li><strong>COD available:</strong> Easy Cash on Delivery payments anywhere in India.</li>
+          <li><strong>Customer support:</strong> Helpful WhatsApp and phone consultation for sizes, styles, and orders.</li>
+        </ul>
+      </section>
 
       {/* Hero Section */}
       <section className="relative w-full h-[85vh] md:h-[90vh] bg-[#1A0A00] flex items-center overflow-hidden">
@@ -396,7 +410,7 @@ export default function Home() {
             src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469"
             width={768}
             height={1000}
-            alt="Best Saree Shop in Nagpur Hero Exhibition"
+            alt="Mukesh Saree Centre Premium Saree Collection - Trusted saree shop in Nagpur offering offline and online sales in India"
             priority={true}
             className="block md:hidden w-full h-full object-cover object-[72%_bottom] opacity-100 transition-opacity duration-700"
           />
@@ -405,7 +419,7 @@ export default function Home() {
             src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp"
             width={1200}
             height={1000}
-            alt="Best Saree Shop in Nagpur Hero Exhibition"
+            alt="Mukesh Saree Centre Premium Saree Collection - Trusted saree shop in Nagpur offering offline and online sales in India"
             priority={true}
             className="hidden md:block w-full h-full object-cover object-bottom opacity-100 transition-opacity duration-700"
           />
@@ -425,7 +439,7 @@ export default function Home() {
           style={{ opacity: heroTextOpacity, y: heroTextY }}
         >
           <div className="max-w-[200px] xs:max-w-[220px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[500px] text-left mb-4 md:mb-8">
-            <motion.h1
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -434,9 +448,11 @@ export default function Home() {
                 textShadow: "0 2px 10px rgba(0,0,0,0.45), 0 4px 24px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.2)",
                 color: "#FFFDF8",
               }}
+              role="heading"
+              aria-level={2}
             >
               Explore Our <br className="block sm:hidden" />Premium Sarees
-            </motion.h1>
+            </motion.div>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -460,6 +476,7 @@ export default function Home() {
               <Link
                 to="/shop"
                 className="btn-hero-white w-[145px] xs:w-[160px] sm:w-[220px] tracking-[0.2em] text-[9.5px] md:text-[11px]"
+                aria-label="Shop our entire collection of sarees and ethnic wear at Mukesh Saree Centre"
               >
                 SHOP NOW
               </Link>
@@ -509,15 +526,26 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-5">
+            <div className="sr-only">
+              <h3>Designer Co-Ord Sets Collection</h3>
+              <p>
+                Who it is for: Modern women looking for chic, effortless, and coordinated everyday wear.
+                Fabric highlights: Premium breathable cottons, high-quality linen blends, and soft rayon.
+                Best occasions: Office wear, casual outings, daytime parties, and semi-formal events.
+                Benefits: Ready-to-wear comfort with perfectly matched tops and bottoms for an instantly put-together look.
+                Styling tips: Pair with minimal jewelry and block heels for an elegant contemporary outfit.
+              </p>
+            </div>
             <Link
               to="/shop?category=Co-Ord-Sets"
               className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-2xl"
+              aria-label="Shop our Designer Co-Ord Sets Collection"
             >
               <div className="absolute inset-0">
                 <OptimizedImage
                   src="https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090"
                   width={800}
-                  alt="Designer Co-Ord Sets Collection for Women"
+                  alt="Women wearing premium Co-Ord sets from Mukesh Saree Centre"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -541,15 +569,26 @@ export default function Home() {
               </div>
             </Link>
 
+            <div className="sr-only">
+              <h3>Premium Sarees Collection</h3>
+              <p>
+                Who it is for: Women seeking authentic, high-quality traditional and contemporary sarees.
+                Fabric highlights: Rich silk, authentic Banarasi, breathable cotton, and luxurious linen.
+                Best occasions: Weddings, festivals, corporate wear, and daily elegant dressing.
+                Benefits: A timeless drape with flawless weaving, long-lasting colors, and unmatched elegance.
+                Styling tips: Accessorize with traditional gold jewelry for weddings or minimal oxidized silver for a chic daily look.
+              </p>
+            </div>
             <Link
               to="/shop?category=Sarees"
               className="lg:col-span-5 xl:col-span-4 relative h-[450px] md:h-[550px] overflow-hidden group rounded-2xl"
+              aria-label="Shop our Premium Sarees Collection"
             >
               <div className="absolute inset-0">
                 <OptimizedImage
                   src="https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790"
                   width={800}
-                  alt="Best Saree Shop in Nagpur Saree Collection"
+                  alt="Beautiful traditional Saree from Mukesh Saree Centre collection"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -578,6 +617,16 @@ export default function Home() {
 
       {/* Trending Section */}
       <section className="bg-white pt-4 md:pt-6 pb-2.5 md:pb-3 border-t border-gold-200/30">
+        <div className="sr-only">
+          <h3>Trending Ethnic Wear & Sarees</h3>
+          <p>
+            Who it is for: Fashion-forward women looking for the latest styles securely delivered to their doorstep.
+            Fabric highlights: Lightweight silks, comfortable daily cottons, and intricately embroidered georgettes.
+            Best occasions: Current season festivities, upcoming weddings, and highly-anticipated parties.
+            Benefits: Stay ahead of the fashion curve with our most loved and frequently bought styles.
+            Styling tips: Mix and match with contemporary blouses and statement jewelry for a fashionable edge.
+          </p>
+        </div>
         <div className="px-2 sm:px-4 lg:px-6 sm:max-w-7xl mx-auto">
           <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-3 md:mb-5 px-1.5 sm:px-0">
             <div>
@@ -600,7 +649,7 @@ export default function Home() {
                 ))}
           </div>
           <div className="text-center mt-3 md:mt-4">
-            <Link to="/shop?sort=trending" className="btn-primary">
+            <Link to="/shop?sort=trending" className="btn-primary" aria-label="Shop our top selling trending sarees and ethnic wear">
               Shop Top Sellers
             </Link>
           </div>
@@ -708,6 +757,16 @@ export default function Home() {
 
       {/* New Arrivals Section */}
       <section className="bg-primary-50 py-3 md:py-6 border-t border-gold-200/30">
+        <div className="sr-only">
+          <h3>New Saree Arrivals</h3>
+          <p>
+            Who it is for: Trendsetters seeking the most recently launched fabrics and exclusive boutique additions.
+            Fabric highlights: Innovative silk blends, crisp organzas, and newly patterned handlooms.
+            Best occasions: Stand out at all upcoming prestigious events with out-of-the-box fresh designs.
+            Benefits: Be the first to own our unique seasonal launches in very limited quantities.
+            Styling tips: Let the fresh patterns speak for themselves by keeping accessories elegant and understated.
+          </p>
+        </div>
         <div className="px-2 sm:px-4 lg:px-6 sm:max-w-7xl mx-auto">
           <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-baseline mb-3 md:mb-5 px-1.5 sm:px-0">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)]">
@@ -729,7 +788,7 @@ export default function Home() {
                 ))}
           </div>
           <div className="text-center mt-4 md:mt-6">
-            <Link to="/shop?sort=new" className="btn-secondary">
+            <Link to="/shop?sort=new" className="btn-secondary" aria-label="Shop our newest arrivals of sarees and ethnic wear">
               Shop New Arrivals
             </Link>
           </div>
@@ -761,7 +820,7 @@ export default function Home() {
             Discover our selection of beautiful fabrics and sarees made with love. Don't miss out on our special sale of the season.
           </p>
           <div className="text-center mt-3 sm:mt-4 md:mt-6">
-            <Link to="/shop" className="btn-primary px-10">
+            <Link to="/shop" className="btn-primary px-10" aria-label="Shop the special collection with 50% off">
               Shop Now
             </Link>
           </div>
@@ -819,7 +878,7 @@ export default function Home() {
                     <OptimizedImage
                       src={image.url}
                       width={800}
-                      alt={image.label}
+                      alt={image.alt}
                       className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-1000 ease-out"
                     />
                   </div>

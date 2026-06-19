@@ -395,6 +395,36 @@ export default function Shop() {
   const activeCategory = categoryFilter || "default";
   const ogImageUrl = categoryOgImages[activeCategory] || categoryOgImages.default;
 
+  const currentUrl = "https://mukeshsarees.com" + window.location.pathname + window.location.search;
+  
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://mukeshsarees.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": seoData.heading,
+        "item": currentUrl
+      }
+    ]
+  };
+
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": seoData.title,
+    "description": seoData.description,
+    "url": currentUrl,
+    "publisher": { "@id": "https://mukeshsarees.com/#organization" }
+  };
+
   return (
     <div className="shop-page bg-[var(--color-bg)]">
       <SEO
@@ -402,6 +432,8 @@ export default function Shop() {
         description={seoData.description}
         image={ogImageUrl}
         url={window.location.pathname + window.location.search}
+        type="website"
+        schema={[breadcrumbSchema, collectionSchema] as any}
       />
 
       <div

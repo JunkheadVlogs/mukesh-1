@@ -268,7 +268,7 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
   };
 
   return (
-    <div
+    <article
       ref={containerRef}
       data-reel-id={reel.id}
       style={{ scrollSnapStop: 'always', touchAction: 'pan-x pan-y pinch-zoom' }}
@@ -385,6 +385,6 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
           style={{ width: `${Math.min(100, Math.max(0, (currentTime / duration) * 100))}%` }}
         />
       </div>
-    </div>
+    </article>
   );
 }

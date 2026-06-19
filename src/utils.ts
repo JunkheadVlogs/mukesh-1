@@ -7,31 +7,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getImageAlt(product: Partial<Product>) {
-  if (!product) return "Exclusive Traditional Wear - Mukesh Saree Centre Nagpur";
+  if (!product) return "Premium Traditional Indian Clothing - Mukesh Saree Centre Nagpur";
   
-  const suffix = " - Mukesh Saree Centre Nagpur";
-  const maxLength = 125;
-  const maxBaseLength = maxLength - suffix.length; // 94 characters
-
   const name = (product.name || "").trim();
   const color = (product.color || "").trim();
   const fabric = (product.fabric || "").trim();
   const category = (product.category || "").trim();
-
-  let base = "";
-  const parts: string[] = [];
-
-  // Start with Color if available and not already in name
-  if (color && !name.toLowerCase().includes(color.toLowerCase())) {
-    parts.push(color);
-  }
-
-  // Add Fabric type if available and not already in name
-  if (fabric && !name.toLowerCase().includes(fabric.toLowerCase())) {
-    parts.push(fabric);
-  }
-
-  // Add Category if name doesn't already contain it, or name doesn't contain category singulars
+  
   let categoryDisplay = category;
   if (category.toLowerCase() === "sarees") {
     categoryDisplay = "Saree";
@@ -41,27 +23,28 @@ export function getImageAlt(product: Partial<Product>) {
     categoryDisplay = "Lehenga";
   }
 
-  // Let's make sure the name is cleanly formatted and included
+  const parts = [];
+  parts.push("Buy");
   parts.push(name);
+  if (color && !name.toLowerCase().includes(color.toLowerCase())) {
+    parts.push(`in elegant ${color} color`);
+  }
+  if (fabric && !name.toLowerCase().includes(fabric.toLowerCase())) {
+    parts.push(`crafted with authentic ${fabric}`);
+  }
+  if (!name.toLowerCase().includes(categoryDisplay.toLowerCase())) {
+    parts.push(categoryDisplay);
+  }
+  parts.push("for festive and casual wear - Mukesh Saree Centre Nagpur");
 
-  base = parts.join(" ").replace(/\s+/g, " ").trim();
+  let altText = parts.join(" ").replace(/\s+/g, " ").trim();
   
-  if (!base) {
-    base = [color, fabric, categoryDisplay].filter(Boolean).join(" ").trim();
+  // Truncate to maximum standard alt text length for search engines (around 125 chars recommended, but 150 max is fine here)
+  if (altText.length > 200) {
+    altText = `${name} in ${color} ${fabric} ${categoryDisplay} - Mukesh Saree Centre Nagpur`;
   }
   
-  if (!base) {
-    base = "Exclusive Elegant Traditional Wear";
-  }
-
-  // Ensure base length fits under maxBaseLength
-  if (base.length > maxBaseLength) {
-    base = base.substring(0, maxBaseLength).trim();
-    // remove any trailing comma/space/dash
-    base = base.replace(/[\s,\-_|]+$/, "");
-  }
-
-  return base + suffix;
+  return altText;
 }
 
 export function formatPrice(price: number) {
