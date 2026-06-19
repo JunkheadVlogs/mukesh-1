@@ -96,7 +96,7 @@ export default function ShippingPolicy() {
                 <h3 className="font-semibold text-primary-950 mb-2 flex items-center gap-2">
                   <Truck size={18} className="text-gold-600" /> Free Shipping
                 </h3>
-                <p className="text-[13px]">We are proud to offer <strong>100% Free Shipping</strong> on all prepaid and COD orders across India, with no minimum order value required.</p>
+                <p className="text-[13px]">We are proud to offer <strong>100% Free Shipping</strong> on all prepaid and COD orders across India above ₹499. Orders below ₹499 may incur a small shipping charge depending on the delivery location.</p>
               </div>
               <div className="border border-black/5 rounded-sm p-5 bg-amber-50/30">
                 <h3 className="font-semibold text-primary-950 mb-2 flex items-center gap-2">

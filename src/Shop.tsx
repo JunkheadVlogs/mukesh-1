@@ -13,17 +13,172 @@ import QuickViewModal from "./QuickViewModal";
 import { SEO } from "./components/SEO";
 import { trackViewItemList } from "./tracking";
 
+const categoryDescriptions = {
+  "linen-sarees": {
+    title: "Buy Linen Sarees Online | Mukesh Saree Centre Nagpur",
+    metaDescription: "Shop premium linen sarees online at Mukesh Saree Centre. Lightweight, breathable, and perfect for everyday wear. Cash on Delivery. Free shipping above ₹499.",
+    heading: "Linen Sarees — Light, Elegant & Perfect for Daily Wear",
+    description: "Linen sarees are loved for their breathable fabric and natural texture. At Mukesh Saree Centre, our linen saree collection features beautiful prints and solid colours perfect for office wear, casual outings, and festive occasions. Sourced from top weavers, every linen saree in our collection is soft, durable, and elegantly crafted. Shop online with Cash on Delivery across India."
+  },
+  "paithani-sarees": {
+    title: "Paithani Sarees Online | Mukesh Saree Centre Nagpur",
+    metaDescription: "Buy authentic Paithani sarees from Mukesh Saree Centre, Nagpur. Maharashtra's heritage weave with zari work and peacock motifs. COD available.",
+    heading: "Paithani Sarees — Maharashtra's Royal Heritage Weave",
+    description: "Paithani sarees are the pride of Maharashtra, known for their rich zari borders, vibrant silk body, and iconic peacock and lotus motifs. At Mukesh Saree Centre, we carry authentic Paithani sarees sourced from skilled weavers, perfect for weddings, festivals, and cultural occasions. Each Paithani is a work of art that carries centuries of tradition. Available online with Cash on Delivery across India."
+  },
+  "banarasi-sarees": {
+    title: "Banarasi Sarees Online | Mukesh Saree Centre Nagpur",
+    metaDescription: "Shop Banarasi silk sarees at Mukesh Saree Centre. Pure silk, georgette, and satin Banarasi weaves for weddings and festivals. COD & Free Shipping.",
+    heading: "Banarasi Sarees — The Gold Standard of Indian Bridal Wear",
+    description: "Banarasi sarees from Varanasi are the most sought-after bridal sarees in India. Known for their opulent zari work, intricate brocade patterns, and lustrous silk, these sarees are perfect for weddings, receptions, and grand celebrations. Our collection includes pure silk Banarasi, georgette Banarasi, and satin Banarasi in a range of colours. Shop online with free shipping above ₹499 and Cash on Delivery."
+  },
+  "silk-sarees": {
+    title: "Silk Sarees Online | Mukesh Saree Centre Nagpur",
+    metaDescription: "Buy pure silk sarees online — Kanjivaram, soft silk, art silk and more at Mukesh Saree Centre Nagpur. COD. Free shipping above ₹499.",
+    heading: "Silk Sarees — Timeless Elegance for Every Occasion",
+    description: "Silk sarees are a wardrobe essential for every Indian woman. Our silk collection includes Kanjivaram, pure silk, soft silk, art silk, and Upada silk — each handpicked from the finest weaving centres in India. Whether you are dressing for a wedding, puja, or family celebration, our silk sarees offer richness, sheen, and grace that is unmatched. Available online with Cash on Delivery all across India."
+  },
+  "cotton-sarees": {
+    title: "Cotton Sarees Online | Mukesh Saree Centre Nagpur",
+    metaDescription: "Shop handloom and printed cotton sarees at Mukesh Saree Centre. Comfortable, everyday sarees in beautiful designs. COD available.",
+    heading: "Cotton Sarees — Comfortable, Stylish & Made for Every Day",
+    description: "Cotton sarees are the most comfortable and versatile sarees you can own. Our cotton saree collection covers mulmul cotton, handloom cotton, printed cotton, and pure cotton in a wide range of designs, colours, and patterns. These sarees are perfect for daily wear, office, and casual occasions. Lightweight and easy to drape, cotton sarees from Mukesh Saree Centre combine comfort with timeless Indian style."
+  }
+};
+
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
   const rawCategoryFilter = searchParams.get("category");
-  const categoryFilter = rawCategoryFilter === "Co-Ord-Sets" ? "Co-Ord Sets" : rawCategoryFilter;
-  const fabricParam = searchParams.get("fabric") || "";
+  
+  const path = window.location.pathname.toLowerCase();
+  
+  const { categoryFilter, fabricFilter } = useMemo(() => {
+    let cat = rawCategoryFilter === "Co-Ord-Sets" ? "Co-Ord Sets" : rawCategoryFilter;
+    let fabs = searchParams.get("fabric") ? (searchParams.get("fabric") || "").split(",") : [];
+
+    if (!cat) {
+      if (path.includes("/sarees")) {
+        cat = "Sarees";
+        if (path.includes("linen-sarees")) {
+          fabs = ["Linen"];
+        } else if (path.includes("paithani-sarees")) {
+          fabs = ["Paithani"];
+        } else if (path.includes("banarasi-sarees")) {
+          fabs = ["Banarasi"];
+        } else if (path.includes("silk-sarees")) {
+          fabs = ["Silk"];
+        } else if (path.includes("cotton-sarees")) {
+          fabs = ["Cotton"];
+        }
+      } else if (path.includes("/lehengas")) {
+        cat = "Lehengas";
+      } else if (path.includes("/suits")) {
+        cat = "Kurtas";
+      } else if (path.includes("/coord-sets")) {
+        cat = "Co-Ord Sets";
+      }
+    }
+
+    return { categoryFilter: cat, fabricFilter: fabs };
+  }, [rawCategoryFilter, searchParams, path]);
+
   const colorParam = searchParams.get("color") || "";
-  const fabricFilter = useMemo(() => fabricParam ? fabricParam.split(",") : [], [fabricParam]);
   const colorFilter = useMemo(() => colorParam ? colorParam.split(",") : [], [colorParam]);
   const priceRangeFilter = searchParams.get("priceRange");
   const sortParam = searchParams.get("sort");
   const searchQuery = searchParams.get("search") || searchParams.get("q");
+
+  const fabricParam = searchParams.get("fabric") || "";
+
+  const activeSEOKey = useMemo(() => {
+    const path = window.location.pathname.toLowerCase();
+    for (const key of Object.keys(categoryDescriptions)) {
+      if (path.includes(key)) {
+        return key as keyof typeof categoryDescriptions;
+      }
+    }
+
+    if (categoryFilter) {
+      const normalizedQueryCat = categoryFilter.toLowerCase().trim().replace(/[\s_]+/g, "-");
+      
+      if (normalizedQueryCat === "linen-sarees" || normalizedQueryCat === "linen") {
+        return "linen-sarees";
+      }
+      if (normalizedQueryCat === "paithani-sarees" || normalizedQueryCat === "paithani") {
+        return "paithani-sarees";
+      }
+      if (normalizedQueryCat === "banarasi-sarees" || normalizedQueryCat === "banarasi") {
+        return "banarasi-sarees";
+      }
+      if (normalizedQueryCat === "silk-sarees" || normalizedQueryCat === "silk") {
+        return "silk-sarees";
+      }
+      if (normalizedQueryCat === "cotton-sarees" || normalizedQueryCat === "cotton") {
+        return "cotton-sarees";
+      }
+      
+      if (normalizedQueryCat in categoryDescriptions) {
+        return normalizedQueryCat as keyof typeof categoryDescriptions;
+      }
+    }
+
+    if (!categoryFilter || categoryFilter === "Sarees") {
+      if (fabricFilter.length === 1) {
+        const fab = fabricFilter[0].toLowerCase();
+        if (fab === "linen") return "linen-sarees";
+        if (fab === "paithani") return "paithani-sarees";
+        if (fab === "banarasi") return "banarasi-sarees";
+        if (fab === "silk") return "silk-sarees";
+        if (fab === "cotton") return "cotton-sarees";
+      }
+    }
+
+    return null;
+  }, [categoryFilter, fabricFilter]);
+
+  const seoData = useMemo(() => {
+    if (activeSEOKey && categoryDescriptions[activeSEOKey]) {
+      const match = categoryDescriptions[activeSEOKey];
+      return {
+        title: match.title,
+        description: match.metaDescription,
+        heading: match.heading,
+        paragraph: match.description
+      };
+    }
+
+    const cat = categoryFilter || "";
+    if (cat === "Sarees" || cat === "Linen Sarees") {
+      return {
+        title: "Buy Sarees Online | Mukesh Saree Centre Nagpur — Paithani, Banarasi, Silk, Linen",
+        description: "Shop 100+ saree styles online at Mukesh Saree Centre, Nagpur. Paithani, Banarasi, Kanjivaram, linen, cotton, silk & more. Cash on Delivery. Free shipping above ₹499.",
+        heading: "Saree Collection — Elegant & Exquisite Weaves",
+        paragraph: "Sarees are the soul of Indian ethnic fashion, embodying timeless grace and cultural pride. At Mukesh Saree Centre, our curated collection brings you authentic weaves and designs ranging from lightweight cotton and modern printed linens to royal silk katan Banarasis and intricate handloom Paithanis. Sourced directly from premier weaving centers, each saree in our collection showcases unparalleled craftsmanship, soft premium fabrics, and rich colors. Enjoy a seamless online shopping experience with free shipping above ₹499 and reliable Cash on Delivery service anywhere in India."
+      };
+    }
+
+    if (cat === "Lehengas") {
+      return {
+        title: "Buy Lehengas Online | Mukesh Saree Centre Nagpur — Bridal & Designer",
+        description: "Browse bridal and designer lehengas at Mukesh Saree Centre, Nagpur. Beautiful embroidered and printed lehengas with Cash on Delivery. Free shipping above ₹499.",
+        heading: "Bridal & Designer Lehengas — Grace, Contrast & Opulence",
+        paragraph: "Step into any celebration with unmatched confidence and luxury in a premium lehenga from Mukesh Saree Centre. Our lehenga collection spans a rich variety of designs, from opulent, heavy-crafted bridal lehengas adorned with intricate zari work, hand embroidery, and premium sequins, to modern, breathable printed and georgette designer lehengas perfect for sangeet, receptions, and bridesmaid attire. Expertly selected and sized for absolute comfort and styling versatility, our lehengas deliver flawless fits and eye-catching drapes. Buy online with authentic quality guarantees, free nationwide shipping above ₹499, and easy Cash on Delivery options."
+      };
+    }
+    
+    return {
+      title: categoryFilter 
+        ? `Shop ${categoryFilter} Online | Mukesh Saree Centre` 
+        : "Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre",
+      description: categoryFilter
+        ? `Explore our beautiful collection of ${categoryFilter}. Cash on Delivery, free shipping above ₹499, and easy 7-day returns on orders.`
+        : "Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978.",
+      heading: searchQuery
+        ? `Results for "${searchQuery}"`
+        : categoryFilter || "Shop All",
+      paragraph: null
+    };
+  }, [activeSEOKey, categoryFilter, searchQuery]);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
@@ -243,16 +398,10 @@ export default function Shop() {
   return (
     <div className="shop-page bg-[var(--color-bg)]">
       <SEO
-        title="Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre"
-        description="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978."
-        image="https://mukeshsarees.com/images/og-home.jpg"
-        url={
-          searchQuery
-            ? `/shop?search=${encodeURIComponent(searchQuery)}`
-            : categoryFilter
-              ? `/shop?category=${encodeURIComponent(categoryFilter === "Co-Ord Sets" ? "Co-Ord-Sets" : categoryFilter)}`
-              : `/shop`
-        }
+        title={seoData.title}
+        description={seoData.description}
+        image={ogImageUrl}
+        url={window.location.pathname + window.location.search}
       />
 
       <div
@@ -266,9 +415,7 @@ export default function Shop() {
             style={{ fontSize: "18px", margin: "0", lineHeight: "1.2", fontWeight: "normal" }}
           >
             <span className="collection-title-text">
-              {searchQuery
-                ? `Results for "${searchQuery}"`
-                : categoryFilter || "Shop All"}
+              {seoData.heading}
             </span>
             <span className="product-count product-count__text text-[12px] font-sans text-neutral-500 tracking-wider font-normal lowercase normal-case whitespace-nowrap">
               ({filteredAndSortedProducts.length} items)
@@ -500,6 +647,13 @@ export default function Shop() {
 
           {/* Product Grid */}
           <main className="flex-1">
+            {seoData.paragraph && (
+              <div className="category-seo-description sr-only">
+                <p>
+                  {seoData.paragraph}
+                </p>
+              </div>
+            )}
             {isLoading ? (
               <div className="product-grid">
                 {[...Array(8)].map((_, i) => (

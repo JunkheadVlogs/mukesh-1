@@ -1064,7 +1064,7 @@ const getWhatsAppSafeServerDescription = (text, productContext) => {
 
 const injectOGTags = (html, reqPath, originalUrl) => {
   let ogTitle = "Mukesh Saree Centre – Premium Silk Sarees Since 1978";
-  let ogDesc = "Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles.";
+  let ogDesc = "Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles.";
   
   const defaultBannerUrl = "https://mukeshsarees.com/images/og-home.jpg";
   // Fallback banner optimized to 1200x630 landscape JPG for standard page sharing
@@ -1097,7 +1097,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     }
   } else if (reqPath.startsWith('/shop')) {
     ogTitle = "Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre";
-    ogDesc = "Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978.";
+    ogDesc = "Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978.";
     ogImg = defaultBannerUrl;
   } else if (reqPath.startsWith('/contact')) {
     ogTitle = "Contact Us";

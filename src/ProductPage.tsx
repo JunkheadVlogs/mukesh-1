@@ -145,6 +145,70 @@ export default function ProductPage() {
     return items;
   }, [product]);
 
+  useEffect(() => {
+    if (!product) return;
+
+    const scriptId = 'product-jsonld';
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    
+    const productSchema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "image": product.image,
+      "description": product.description,
+      "brand": {
+        "@type": "Brand",
+        "name": "Mukesh Saree Centre"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": product.price,
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/InStock",
+        "url": window.location.href,
+        "seller": {
+          "@type": "Organization",
+          "name": "Mukesh Saree Centre"
+        }
+      }
+    };
+
+    const breadcrumbListSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        ...breadcrumbItems.map((item, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": item.label,
+          "item": new URL(item.to, window.location.href).href
+        })),
+        {
+          "@type": "ListItem",
+          "position": breadcrumbItems.length + 1,
+          "name": product.name,
+          "item": window.location.href
+        }
+      ]
+    };
+
+    script.innerHTML = JSON.stringify([productSchema, breadcrumbListSchema]);
+
+    return () => {
+      const scriptToRemove = document.getElementById(scriptId);
+      if (scriptToRemove) {
+        document.head.removeChild(scriptToRemove);
+      }
+    };
+  }, [product, breadcrumbItems]);
+
   const { addToCart, toggleWishlist, wishlist } = useStore();
 
   const storeCoupon = useStore((state) => state.appliedCoupon);

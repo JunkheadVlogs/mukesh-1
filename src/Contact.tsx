@@ -77,8 +77,8 @@ export default function Contact() {
     <div className="bg-primary-50 min-h-screen">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <SEO 
-          title="Contact Mukesh Saree Centre & Malvika Sarees Nagpur" 
-          description="Get in touch with Malvika Sarees (Mukesh Saree Centre), the best saree shop in Nagpur. Find our shop location, or message us on WhatsApp for orders." 
+          title="Contact Us | Mukesh Saree Centre Nagpur — WhatsApp, Phone & Store Address" 
+          description="Contact Mukesh Saree Centre in Nagpur. Call or WhatsApp +91 70206 64641. Visit our store on Jagnath Road, Gandhibagh, Nagpur 440002. Open Mon–Sat, 10AM–8PM." 
           url="/contact"
         />
         

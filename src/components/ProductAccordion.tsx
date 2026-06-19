@@ -13,7 +13,7 @@ export function ProductAccordion({ category }: { category?: string }) {
     {
       title: "Shipping & Delivery",
       content:
-        "Free shipping. Standard delivery in 3–7 business days across India. Cash on Delivery available pan-India. Express delivery available for select pincodes — contact us on WhatsApp.",
+        "Free shipping on orders above ₹499. Standard delivery in 3–7 business days across India. Cash on Delivery available pan-India. Express delivery available for select pincodes — contact us on WhatsApp.",
     },
     {
       title: "Returns & Exchange",

@@ -342,7 +342,7 @@ async function runPrerender() {
     "name": "Mukesh Saree Centre",
     "url": "https://mukeshsarees.com",
     "logo": "https://mukeshsarees.com/images/logo.webp",
-    "description": "Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles.",
+    "description": "Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles.",
     "foundingDate": "1978",
     "address": {
       "@type": "PostalAddress",
@@ -371,7 +371,7 @@ async function runPrerender() {
         <div style="max-width: 800px; margin: 0 auto; z-index: 10; position: relative;">
           <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED 1978</span>
           <h1 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">Mukesh Saree Centre</h1>
-          <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop Nagpur's premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, bridal lehengas, and stylish breathable co-ord sets. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹999.</p>
+          <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop Nagpur's premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, bridal lehengas, and stylish breathable co-ord sets. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹499.</p>
           <div style="display: flex; gap: 16px; justify-content: center;">
             <a href="/shop" style="background: #faf6f0; color: #1a0a00; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Explore Collection</a>
             <a href="/contact" style="border: 1px solid rgba(250, 246, 240, 0.4); color: #faf6f0; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Contact Boutique</a>
@@ -430,7 +430,7 @@ async function runPrerender() {
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
   const homeOgTags = `<!-- Dynamic OG Tags -->
   <meta property="og:title" content="Mukesh Saree Centre — Premium Indian Ethnic Wear Since 1978" />
-  <meta property="og:description" content="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles." />
+  <meta property="og:description" content="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles." />
   <meta property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
   <meta property="og:url" content="https://mukeshsarees.com/" />
   <meta property="og:type" content="website" />
@@ -440,7 +440,7 @@ async function runPrerender() {
   <meta property="og:image:type" content="image/jpeg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mukesh Saree Centre — Premium Indian Ethnic Wear Since 1978" />
-  <meta name="twitter:description" content="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders ₹999+. Shop 100+ authentic ethnic wear styles." />
+  <meta name="twitter:description" content="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles." />
   <meta name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
   <link rel="canonical" href="https://mukeshsarees.com/" />
   <!-- End Dynamic OG Tags -->`;
@@ -502,12 +502,12 @@ async function runPrerender() {
     .replace(/<title>.*?<\/title>/, "<title>Shop Premium Indian Ethnic Ensembles | Mukesh Saree Centre</title>")
     .replace(
       /<meta name="description" content=".*?"\s*\/>/,
-      `<meta name="description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978." />`
+      `<meta name="description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978." />`
     );
 
   const shopOgTags = `<!-- Dynamic OG Tags -->
     <meta property="og:title" content="Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre" />
-    <meta property="og:description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978." />
+    <meta property="og:description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978." />
     <meta property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
     <meta property="og:url" content="https://mukeshsarees.com/shop" />
     <meta property="og:type" content="website" />
@@ -517,7 +517,7 @@ async function runPrerender() {
     <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre" />
-    <meta name="twitter:description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹999. Trusted since 1978." />
+    <meta name="twitter:description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978." />
     <meta name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
     <link rel="canonical" href="https://mukeshsarees.com/shop" />
     <!-- End Dynamic OG Tags -->`;

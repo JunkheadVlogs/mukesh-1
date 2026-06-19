@@ -24,6 +24,8 @@ const Terms = lazy(() => import('./Terms'));
 const ShippingPolicy = lazy(() => import('./ShippingPolicy'));
 const ReturnPolicy = lazy(() => import('./ReturnPolicy'));
 const WholesaleSarees = lazy(() => import('./WholesaleSarees'));
+const About = lazy(() => import('./About'));
+const Faq = lazy(() => import('./Faq'));
 
 import { CONFIG, submitToGoogleSheets, getApiUrl } from "./config";
 
@@ -208,6 +210,11 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="shop" element={<Shop />} />
+            <Route path="sarees" element={<Shop />} />
+            <Route path="sarees/:subcategory" element={<Shop />} />
+            <Route path="lehengas" element={<Shop />} />
+            <Route path="suits" element={<Shop />} />
+            <Route path="coord-sets" element={<Shop />} />
             <Route path="search" element={<Shop />} />
             <Route path="wishlist" element={<Wishlist />} />
             <Route path="wishlist/:shareId" element={<Wishlist />} />
@@ -215,12 +222,13 @@ export default function App() {
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="thank-you" element={<ThankYou />} />
-            <Route path="about" element={<Navigate to="/contact" replace />} />
+            <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
             <Route path="privacy" element={<Navigate to="/contact" replace />} />
             <Route path="terms" element={<Terms />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />
             <Route path="return-policy" element={<ReturnPolicy />} />
+            <Route path="faqs" element={<Faq />} />
           </Route>
           <Route path="wholesalesarees" element={<WholesaleSarees />} />
         </Routes>

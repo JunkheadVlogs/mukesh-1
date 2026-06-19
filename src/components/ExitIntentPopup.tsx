@@ -373,7 +373,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
               <div className="flex items-center justify-center gap-1 sm:gap-2 flex-wrap text-[10px] sm:text-[11px] text-[#E8B84B]/80 font-medium mt-6 pt-4 border-t border-[#E8B84B]/10 w-full select-none font-sans">
                 <span>⭐ 4.8/5 Rating</span>
                 <span className="text-neutral-500">•</span>
-                <span>📦 Free Shipping ₹999+</span>
+                <span>📦 Free Shipping ₹499+</span>
                 <span className="text-neutral-500">•</span>
                 <span>💵 Cash on Delivery</span>
               </div>

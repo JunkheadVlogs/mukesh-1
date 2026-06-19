@@ -5,7 +5,7 @@ export function WhyShopWithUs() {
   const benefits = [
     {
       icon: <Truck className="w-4 h-4 text-[#c8a96b]" strokeWidth={1.5} />,
-      title: "Free Shipping All India",
+      title: "Free Shipping Above ₹499",
       description: "Delivered securely via BlueDart & Delhivery with real-time tracking.",
     },
     {

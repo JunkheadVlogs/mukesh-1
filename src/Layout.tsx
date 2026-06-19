@@ -8,7 +8,6 @@ import {
   X,
   ChevronRight,
   ArrowRight,
-  ArrowUp,
   ChevronDown,
   Instagram,
   Facebook,
@@ -433,7 +432,7 @@ export default function Layout() {
     : [];
 
   const announcements = [
-    "✨ FREE SHIPPING ON ALL ORDERS",
+    "✨ FREE SHIPPING ON ORDERS ABOVE ₹499",
     "🚚 CASH ON DELIVERY AVAILABLE",
     "👑 THE SPECIAL SALE • 50% OFF ON ALL PRODUCTS",
     "🏛️ TRUSTED SINCE 1978 · NAGPUR",
@@ -1051,6 +1050,24 @@ export default function Layout() {
                   </Link>
 
                   <Link 
+                    to="/about" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      padding: "16px 20px",
+                      fontSize: "16px",
+                      fontWeight: "700",
+                      borderBottom: "1px solid #eee",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      color: "#000",
+                      textDecoration: "none"
+                    }}
+                  >
+                    <span>About Us</span> <span>›</span>
+                  </Link>
+
+                  <Link 
                     to="/contact" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
@@ -1310,6 +1327,11 @@ export default function Layout() {
                       Best Sellers
                     </Link>
                   </li>
+                  <li>
+                    <Link to="/faqs" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Frequently Asked Questions
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -1338,6 +1360,11 @@ export default function Layout() {
               >
                 <ul className="space-y-0 md:space-y-4 text-[12.5px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-none pb-1">
                   <li>
+                    <Link to="/about" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      About Us
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/contact" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Contact Us
                     </Link>
@@ -1353,6 +1380,11 @@ export default function Layout() {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/faqs" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Frequently Asked Questions
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/terms" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Terms of Service
                     </Link>
@@ -1361,14 +1393,14 @@ export default function Layout() {
               </div>
             </div>
 
-            {/* 3. CONTACT Accordion (Elegant 2-column layout inside) */}
-            <div className="border-b border-white/10 md:border-b-0 py-0">
+            {/* 3. CONTACT Accordion (Elegant NAP with Schema.org Microdata) */}
+            <div className="border-b border-white/10 md:border-b-0 py-0" itemScope itemType="https://schema.org/ClothingStore">
               <button
                 onClick={() => toggleFooterAccordion("contact")}
                 className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
               >
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
-                  CONTACT
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]" itemProp="name">
+                  Mukesh Saree Centre
                 </span>
                 <ChevronDown
                   size={14}
@@ -1383,30 +1415,72 @@ export default function Layout() {
                   openFooterAccordion === "contact" ? "block animate-fadeIn" : "hidden"
                 } md:block pb-1 md:pb-0`}
               >
-                <div className="grid grid-cols-[1.25fr_0.75fr] md:grid-cols-2 gap-y-1 gap-x-2 md:gap-4 text-xs tracking-wider leading-none pt-0.5">
-                  <div>
-                    <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-neutral-500 mb-0.5 md:mb-1">
-                      CUSTOMER CARE
+                <div className="flex flex-col space-y-3.5 text-xs tracking-wider leading-relaxed pt-1.5 text-[#eae6df]/85">
+                  
+                  {/* Address */}
+                  <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                    <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-[#C8A96B] mb-1">
+                      Our Showroom
                     </h5>
-                    <a
-                      href={`mailto:${CONFIG.STORE_EMAIL}`}
-                      className="text-[11.5px] min-[370px]:text-[12px] md:text-[12.5px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors font-semibold tracking-wider whitespace-nowrap block py-0.5 md:py-0.5"
-                    >
-                      {CONFIG.STORE_EMAIL}
-                    </a>
+                    <p className="text-[#FAF8F4]/90 text-[12px] md:text-[12.5px] leading-relaxed">
+                      <span itemProp="streetAddress">Jagnath Road, Opposite Wholesale Cloth Market Gate No. 2, Gandhibagh</span>, <br />
+                      <span itemProp="addressLocality">Nagpur</span> - <span itemProp="postalCode">440002</span>, <br />
+                      <span itemProp="addressRegion">Maharashtra</span>, India
+                    </p>
                   </div>
-                  <div>
-                    <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-neutral-500 mb-0.5 md:mb-1">
-                      WHATSAPP SUPPORT
-                    </h5>
-                    <a
-                      href={`https://wa.me/${getWhatsAppNumber()}?text=Hi!%20I%20Need%20Help.`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11.5px] min-[370px]:text-[12px] md:text-[12.5px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors font-semibold tracking-wider whitespace-nowrap block py-0.5 md:py-0.5"
-                    >
-                      {CONFIG.STORE_PHONE}
-                    </a>
+
+                  {/* Phone & WhatsApp Support */}
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                    <div>
+                      <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-[#C8A96B] mb-1">
+                        Call Us
+                      </h5>
+                      <a
+                        href="tel:+917020664641"
+                        itemProp="telephone"
+                        className="text-[12px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors font-semibold tracking-wider block"
+                      >
+                        +91 70206 64641
+                      </a>
+                    </div>
+                    <div>
+                      <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-[#C8A96B] mb-1">
+                        WhatsApp
+                      </h5>
+                      <a
+                        href="https://wa.me/917020664641"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[12px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors font-semibold tracking-wider block"
+                      >
+                        +91 70206 64641
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Email & Opening Hours */}
+                  <div className="grid grid-cols-1 gap-y-3 gap-x-2">
+                    <div>
+                      <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-[#C8A96B] mb-1">
+                        Email Us
+                      </h5>
+                      <a
+                        href="mailto:info@mukeshsarees.com"
+                        itemProp="email"
+                        className="text-[11.5px] md:text-[12.5px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors tracking-wider block"
+                      >
+                        info@mukeshsarees.com
+                      </a>
+                    </div>
+                    <div>
+                      <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-[#C8A96B] mb-1">
+                        Store Hours
+                      </h5>
+                      <p className="text-[11.5px] text-[#FAF8F4]/80 leading-normal">
+                        Monday to Saturday, 10 AM – 8 PM <br />
+                        <span className="text-neutral-500 font-medium">(Closed Sunday)</span>
+                      </p>
+                    </div>
                   </div>
 
                 </div>
@@ -1522,7 +1596,7 @@ export default function Layout() {
           {/* Social Icons Section */}
           <div className="flex justify-center items-center gap-6 mt-2 md:mt-12 border-t border-white/10 pt-2.5 md:pt-6">
             <a
-              href="https://www.instagram.com/mukeshsarees_nagpur"
+              href="https://www.instagram.com/Mukeshsarees_Nagpur"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
@@ -1556,7 +1630,7 @@ export default function Layout() {
               </svg>
             </a>
             <a
-              href="https://youtube.com/@mukeshsarees?si=aMljrBMnIJYQDGDI"
+              href="https://www.youtube.com/@mukeshsarees"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
@@ -1564,12 +1638,27 @@ export default function Layout() {
             >
               <Youtube size={20} strokeWidth={1.5} />
             </a>
+            <a
+              href="https://wa.me/917020664641"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
+              aria-label="WhatsApp"
+            >
+              <svg
+                className="w-5 h-5 flex-shrink-0 fill-current"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.663-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+            </a>
           </div>
 
           {/* Copyright Section */}
           <div className="mt-1.5 md:mt-4 pt-1.5 md:pt-4 border-t border-white/5 flex flex-col items-center">
             <p className="text-[9.5px] md:text-[10px] text-white/45 tracking-[0.15em] font-medium uppercase text-center leading-normal">
-              © {new Date().getFullYear()} Mukesh Saree Centre. All Rights Reserved.
+              © 2025 Mukesh Saree Centre. All Rights Reserved. | Nagpur, Maharashtra, India
             </p>
           </div>
 
@@ -1578,23 +1667,6 @@ export default function Layout() {
       </footer>
 
       {/* Floating Buttons Stack with Smooth Scroll to Top and WhatsApp */}
-      <AnimatePresence>
-        {isDeepScrolled && (
-          <motion.button
-            key="scroll-top"
-            initial={{ opacity: 0, scale: 0.8, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 10 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            onClick={scrollToTop}
-            className="fixed right-[20px] z-[997] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#FAF8F4] text-[#2b2b2b] border border-[#C8A96B]/35 flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.12)] hover:border-[#C8A96B] hover:text-[#C8A96B] hover:scale-110 active:scale-95 transition-all duration-300 pointer-events-auto cursor-pointer"
-            style={{ bottom: "var(--scroll-top-bottom)" }}
-            aria-label="Scroll to top"
-          >
-            <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
-          </motion.button>
-        )}
-      </AnimatePresence>
 
       <div 
         id="whatsapp-float-container"
