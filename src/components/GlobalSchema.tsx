@@ -1,29 +1,30 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router";
+import { BUSINESS_INFO } from "../config/business";
 
 export function GlobalSchema() {
   const location = useLocation();
-  const currentUrl = `https://mukeshsarees.com${location.pathname === '/' ? '' : location.pathname}`;
+  const currentUrl = `${BUSINESS_INFO.website}${location.pathname === '/' ? '' : location.pathname}`;
 
   const organizationSchema = {
     "@context": "https://schema.org",
-    "@type": ["Organization", "ClothingStore", "LocalBusiness"],
-    "@id": "https://mukeshsarees.com/#organization",
-    "name": "Mukesh Saree Centre",
-    "url": "https://mukeshsarees.com/",
+    "@type": ["Organization", ...BUSINESS_INFO.type.map(t => t.replace(/ /g, ''))].filter(t => t === 'Organization' || t === 'ClothingStore' || t === 'LocalBusiness'),
+    "@id": `${BUSINESS_INFO.website}/#organization`,
+    "name": BUSINESS_INFO.name,
+    "url": `${BUSINESS_INFO.website}/`,
     "logo": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
     "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
-    "description": "Premium Sarees & Ethnic Indian Wear in Nagpur since 1978. Offering an exclusive collection of silk sarees, cotton sarees, designer suits, and wholesale ethnic wear.",
-    "telephone": "+918149868720",
+    "description": "Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery.",
+    "telephone": BUSINESS_INFO.phone,
     "priceRange": "₹₹",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Gyaneshwar Mandir Road, Tin Nul Chowk, Hansapuri",
-      "addressLocality": "Nagpur",
-      "addressRegion": "Maharashtra",
-      "postalCode": "440018",
-      "addressCountry": "IN"
+      "streetAddress": `${BUSINESS_INFO.address.street}, ${BUSINESS_INFO.address.area}`,
+      "addressLocality": BUSINESS_INFO.address.city,
+      "addressRegion": BUSINESS_INFO.address.region,
+      "postalCode": BUSINESS_INFO.address.postalCode,
+      "addressCountry": BUSINESS_INFO.address.country
     },
     "geo": {
       "@type": "GeoCoordinates",
@@ -33,16 +34,13 @@ export function GlobalSchema() {
     "contactPoint": [
       {
         "@type": "ContactPoint",
-        "telephone": "+918149868720",
+        "telephone": BUSINESS_INFO.phone,
         "contactType": "customer service",
-        "email": "info.mukeshsareecentre@gmail.com",
+        "email": BUSINESS_INFO.email,
         "availableLanguage": ["English", "Hindi", "Marathi"]
       }
     ],
-    "sameAs": [
-      "https://www.facebook.com/109033288599426",
-      "https://www.instagram.com/mukesh_saree_centre_"
-    ],
+    "sameAs": BUSINESS_INFO.social,
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
@@ -64,18 +62,18 @@ export function GlobalSchema() {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://mukeshsarees.com/#website",
-    "url": "https://mukeshsarees.com/",
-    "name": "Mukesh Saree Centre",
-    "description": "Premium Sarees & Ethnic Indian Wear since 1978",
+    "@id": `${BUSINESS_INFO.website}/#website`,
+    "url": `${BUSINESS_INFO.website}/`,
+    "name": BUSINESS_INFO.name,
+    "description": "Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery.",
     "publisher": {
-      "@id": "https://mukeshsarees.com/#organization"
+      "@id": `${BUSINESS_INFO.website}/#organization`
     },
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://mukeshsarees.com/shop?q={search_term_string}"
+        "urlTemplate": `${BUSINESS_INFO.website}/shop?q={search_term_string}`
       },
       "query-input": "required name=search_term_string"
     }
@@ -87,10 +85,10 @@ export function GlobalSchema() {
     "@id": `${currentUrl}#webpage`,
     "url": currentUrl,
     "isPartOf": {
-      "@id": "https://mukeshsarees.com/#website"
+      "@id": `${BUSINESS_INFO.website}/#website`
     },
     "about": {
-      "@id": "https://mukeshsarees.com/#organization"
+      "@id": `${BUSINESS_INFO.website}/#organization`
     }
   };
 

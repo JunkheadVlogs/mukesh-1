@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "./config/business";
 import { CONFIG, getApiUrl } from "./config";
 
 // Detect and ignore default placeholders or corporate business contact profiles in general metric tracking

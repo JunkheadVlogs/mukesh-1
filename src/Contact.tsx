@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "./config/business";
 import { useState } from 'react';
 import { MapPin, Phone, Mail, Award } from 'lucide-react';
 import { SEO } from './components/SEO';
@@ -70,7 +71,7 @@ export default function Contact() {
     const message = encodeURIComponent(
       `Hi Mukesh Saree Centre!\n\n*Support Request ID:* ${requestId}\n*Name:* ${trimmedName}\n*Category:* ${requestType}\n*Message:* ${trimmedMsg}`
     );
-    window.open(`https://wa.me/917020664641?text=${message}`, '_blank');
+    window.open(`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
   };
 
   const customSchema = [

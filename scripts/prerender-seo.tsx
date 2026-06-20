@@ -1,13 +1,58 @@
-import React, { useMemo } from "react";
-import { useParams, Navigate, Link } from "react-router";
-import { SEO } from "../components/SEO";
-import { ProductCard } from "../components/ProductCard";
-import { useStore } from "../store";
-import { ChevronRight } from "lucide-react";
-import { BUSINESS_INFO } from "../config/business";
-import { products } from "../mockData";
+import fs from "fs";
+import path from "path";
+import React from "react";
+import { renderToString } from "react-dom/server";
+import { createStaticPage } from "./prerenderHelper.js";
 
-// Shared AI-friendly SEO Data for landing pages
+// To avoid window/document not defined errors when importing React files, we mock them minimally
+if (typeof global !== "undefined") {
+  (global as any).window = {};
+  (global as any).document = {
+    createElement: () => ({}),
+  };
+}
+
+// Read the clean index HTML
+const distPath = path.resolve(process.cwd(), "dist");
+const cleanHtmlPath = path.join(distPath, "index-clean.html");
+
+import { BUSINESS_INFO } from "../src/config/business.js";
+
+if (!fs.existsSync(cleanHtmlPath)) {
+  console.error("clean HTML not found");
+  process.exit(1);
+}
+let baseHtml = fs.readFileSync(cleanHtmlPath, "utf-8");
+
+// Generate Header and Footer skeleton (copied from prerender.ts)
+function getHeaderHtml(): string {
+  return `
+    <header style="background: rgba(250, 246, 240, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); font-family: 'Playfair Display', serif; position: sticky; top: 0; z-index: 100;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+          <img src="/images/logo.webp" alt="${BUSINESS_INFO.name} Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
+        </a>
+      </div>
+      <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
+        <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
+        <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
+        <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
+      </nav>
+    </header>
+  `;
+}
+
+function getFooterHtml(): string {
+  return `
+    <footer style="background-color: #1A0A00; color: #faf6f0; padding: 80px 32px; font-family: 'Inter', sans-serif; border-top: 1px solid rgba(255,255,255,0.05);">
+      <div style="text-align: center; border-top: 1px solid rgba(250,246,240,0.08); padding-top: 24px; margin-top: 64px; font-size: 12px; opacity: 0.55; color: #faf6f0;">
+        &copy; ${BUSINESS_INFO.established} - 2026 ${BUSINESS_INFO.name} ${BUSINESS_INFO.address.city}. All Rights Reserved. Specializing in luxury silk drapes and designer ethnic ensembles.
+      </div>
+    </footer>
+  `;
+}
+
+// We will define the pages map directly to avoid ESM import issues with react-helmet-async
 const seoPagesData: Record<
   string,
   {
@@ -17,33 +62,28 @@ const seoPagesData: Record<
     intro: string;
     body: React.ReactNode;
     faqs: { question: string; answer: string }[];
-    relatedKeywords: string[];
-    filterCategory?: string;
   }
 > = {
   "malvika-saree": {
-    title:
-      "Malvika Saree - Premium Collection | ${BUSINESS_INFO.name} ${BUSINESS_INFO.address.city}",
-    description:
-      "Shop authentic Malvika sarees from ${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city}. Discover luxurious softness, elegant designs, and pure comfort.",
+    title: `Malvika Saree - Premium Collection | ${BUSINESS_INFO.name} ${BUSINESS_INFO.address.city}`,
+    description: `Shop authentic Malvika sarees from ${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city}. Discover luxurious softness, elegant designs, and pure comfort.`,
     h1: "Malvika Saree Collection",
     intro:
       "Welcome to our exclusive Malvika saree collection. Known for its incredible softness, lightweight comfort, and graceful draping, the Malvika saree is a beloved choice for modern women who value both tradition and ease.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
-          At <strong>${BUSINESS_INFO.name}</strong> (established $
-          {BUSINESS_INFO.established} in ${BUSINESS_INFO.address.city}), we
-          pride ourselves on offering the finest <strong>Malvika sarees</strong>
-          . Whether you are seeking a saree for a casual gathering, an office
+          At <strong>{BUSINESS_INFO.name}</strong> (established{" "}
+          {BUSINESS_INFO.established} in {BUSINESS_INFO.address.city}), we pride
+          ourselves on offering the finest <strong>Malvika sarees</strong>.
+          Whether you are seeking a saree for a casual gathering, an office
           event, or a festive celebration, the Malvika saree provides the
           perfect blend of elegance and all-day comfort.
         </p>
         <p>
           Each Malvika saree is crafted with attention to detail, ensuring rich
           colors and beautiful motifs that stand out. As a leading{" "}
-          <em>saree shop in ${BUSINESS_INFO.address.city}</em>, we ensure every
+          <em>saree shop in {BUSINESS_INFO.address.city}</em>, we ensure every
           piece meets our strict quality standards.
         </p>
         <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
@@ -68,8 +108,7 @@ const seoPagesData: Record<
     faqs: [
       {
         question: "Where can I buy Malvika saree online?",
-        answer:
-          "You can buy authentic Malvika sarees online directly from the ${BUSINESS_INFO.name} website. We offer fast shipping across India.",
+        answer: `You can buy authentic Malvika sarees online directly from the ${BUSINESS_INFO.name} website. We offer fast shipping across India.`,
       },
       {
         question: "Is the Malvika saree good for daily wear?",
@@ -77,32 +116,22 @@ const seoPagesData: Record<
           "Yes! The lightweight and soft nature of the Malvika saree makes it exceptionally comfortable for daily wear and office use.",
       },
       {
-        question: "Where is ${BUSINESS_INFO.name} located?",
-        answer:
-          "${BUSINESS_INFO.name} is located at ${BUSINESS_INFO.address.street}, ${BUSINESS_INFO.address.area}, ${BUSINESS_INFO.address.city}, ${BUSINESS_INFO.address.region}.",
+        question: `Where is ${BUSINESS_INFO.name} located?`,
+        answer: `${BUSINESS_INFO.name} is located at ${BUSINESS_INFO.address.street}, ${BUSINESS_INFO.address.area}, ${BUSINESS_INFO.address.city}, ${BUSINESS_INFO.address.region}.`,
       },
-    ],
-    relatedKeywords: [
-      "Mukesh Saree",
-      "saree shop in ${BUSINESS_INFO.address.city}",
-      "traditional Indian sarees",
     ],
   },
   "mukesh-saree": {
-    title:
-      "Mukesh Saree - Premium Indian Ethnic Wear Since ${BUSINESS_INFO.established} | ${BUSINESS_INFO.address.city}",
-    description:
-      "Discover the legacy of ${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city}. Offering an exquisite collection of premium sarees, lehengas, and ethnic wear since ${BUSINESS_INFO.established}.",
-    h1: "Mukesh Saree - A Legacy of Elegance Since ${BUSINESS_INFO.established}",
-    intro:
-      'Welcome to ${BUSINESS_INFO.name}, your trusted destination for premium Indian ethnic wear in ${BUSINESS_INFO.address.city}. For over four decades, the name "Mukesh Saree" has been synonymous with quality, authenticity, and unparalleled customer service in the world of traditional Indian fashion.',
-    filterCategory: "sarees",
+    title: `Mukesh Saree - Premium Indian Ethnic Wear Since ${BUSINESS_INFO.established} | ${BUSINESS_INFO.address.city}`,
+    description: `Discover the legacy of ${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city}. Offering an exquisite collection of premium sarees, lehengas, and ethnic wear since ${BUSINESS_INFO.established}.`,
+    h1: `Mukesh Saree - A Legacy of Elegance Since ${BUSINESS_INFO.established}`,
+    intro: `Welcome to ${BUSINESS_INFO.name}, your trusted destination for premium Indian ethnic wear in ${BUSINESS_INFO.address.city}. For over four decades, the name "Mukesh Saree" has been synonymous with quality, authenticity, and unparalleled customer service in the world of traditional Indian fashion.`,
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
-          Established in ${BUSINESS_INFO.established},{" "}
-          <strong>${BUSINESS_INFO.name}</strong> has grown to become a premier{" "}
-          <em>saree shop in ${BUSINESS_INFO.address.city}</em>. We curate the
+          Established in {BUSINESS_INFO.established},{" "}
+          <strong>{BUSINESS_INFO.name}</strong> has grown to become a premier{" "}
+          <em>saree shop in {BUSINESS_INFO.address.city}</em>. We curate the
           finest fabrics and weaves from across India, presenting our customers
           with an unparalleled selection of <strong>Mukesh Saree</strong>{" "}
           collections, bridal wear, and festive ethnic attire.
@@ -132,11 +161,6 @@ const seoPagesData: Record<
           "Yes, we are one of the oldest and most reputed saree shops in ${BUSINESS_INFO.address.city}, located at ${BUSINESS_INFO.address.street}, ${BUSINESS_INFO.address.area}.",
       },
     ],
-    relatedKeywords: [
-      "${BUSINESS_INFO.name}",
-      "sarees in ${BUSINESS_INFO.address.city}",
-      "ethnic wear ${BUSINESS_INFO.address.city}",
-    ],
   },
   "uniform-saree": {
     title:
@@ -146,7 +170,6 @@ const seoPagesData: Record<
     h1: "Uniform Sarees for Every Profession",
     intro:
       "${BUSINESS_INFO.name} offers a dedicated selection of high-quality uniform sarees designed for professionals, schools, hospitals, hospitality staff, and corporate teams.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
@@ -181,11 +204,6 @@ const seoPagesData: Record<
           "Crepe, georgette, and poly-cotton blends are usually best for uniform sarees because they are durable, easy to wash, and require little ironing.",
       },
     ],
-    relatedKeywords: [
-      "uniform sarees for women",
-      "staff uniform sarees",
-      "school uniform sarees",
-    ],
   },
   "saree-shop-in-nagpur": {
     title:
@@ -195,7 +213,6 @@ const seoPagesData: Record<
     h1: "Your Trusted Saree Shop in ${BUSINESS_INFO.address.city}",
     intro:
       "Conveniently located in the heart of ${BUSINESS_INFO.address.city}, ${BUSINESS_INFO.name} is a landmark destination for ethnic wear enthusiasts.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
@@ -227,11 +244,6 @@ const seoPagesData: Record<
           "We offer an extensive range including pure silk, cotton, Paithani, Malvika, uniform sarees, and designer bridal collections.",
       },
     ],
-    relatedKeywords: [
-      "sarees in ${BUSINESS_INFO.address.city}",
-      "ethnic wear ${BUSINESS_INFO.address.city}",
-      "${BUSINESS_INFO.name} ${BUSINESS_INFO.address.city}",
-    ],
   },
   "bridal-sarees-nagpur": {
     title:
@@ -241,7 +253,6 @@ const seoPagesData: Record<
     h1: "Exquisite Bridal Sarees in ${BUSINESS_INFO.address.city}",
     intro:
       "Your wedding day deserves the finest attire. ${BUSINESS_INFO.name} offers an exclusive collection of bridal sarees and lehengas to make your special moments unforgettable.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
@@ -271,11 +282,6 @@ const seoPagesData: Record<
           "Rich silk sarees like Kanjivaram, Banarasi, and Paithani are traditional favorites. Designer georgette and net sarees with heavy embroidery are also very popular for modern weddings.",
       },
     ],
-    relatedKeywords: [
-      "wedding sarees in ${BUSINESS_INFO.address.city}",
-      "lehengas in ${BUSINESS_INFO.address.city}",
-      "bridal lehengas",
-    ],
   },
   "wedding-sarees": {
     title: "Wedding Sarees Collection | Buy Authentic Bridal Wear Online",
@@ -284,7 +290,6 @@ const seoPagesData: Record<
     h1: "Premium Wedding Sarees",
     intro:
       "Celebrate life's biggest milestones with our exquisite collection of wedding sarees. Rich textures, vibrant hues, and masterful craftsmanship.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
@@ -313,11 +318,6 @@ const seoPagesData: Record<
           "Yes, you can confidently purchase premium wedding sarees online through our secure website with fast pan-India delivery.",
       },
     ],
-    relatedKeywords: [
-      "traditional Indian sarees",
-      "festive sarees",
-      "${BUSINESS_INFO.name}",
-    ],
   },
   "paithani-sarees": {
     title:
@@ -327,7 +327,6 @@ const seoPagesData: Record<
     h1: "Authentic Paithani Sarees",
     intro:
       'The Paithani saree is a legacy of royalty. Known as the "Queen of Silks", these sarees are an essential part of Maharashtrian culture and heritage.',
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
@@ -357,11 +356,6 @@ const seoPagesData: Record<
           "${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city} houses a verified, authentic collection of premium Paithani sarees.",
       },
     ],
-    relatedKeywords: [
-      "silk sarees ${BUSINESS_INFO.address.city}",
-      "traditional Indian sarees",
-      "wedding sarees in ${BUSINESS_INFO.address.city}",
-    ],
   },
   "ethnic-wear-nagpur": {
     title:
@@ -371,7 +365,6 @@ const seoPagesData: Record<
     h1: "The Finest Ethnic Wear in ${BUSINESS_INFO.address.city}",
     intro:
       "From subtle daily wear to spectacular festive ensembles, our ethnic wear collection covers every aspect of traditional Indian clothing.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
@@ -402,11 +395,6 @@ const seoPagesData: Record<
           "Yes, we have a vast array of lehengas in ${BUSINESS_INFO.address.city} suitable for weddings, sangeets, and festivals.",
       },
     ],
-    relatedKeywords: [
-      "lehengas in ${BUSINESS_INFO.address.city}",
-      "Mukesh Saree",
-      "designer sarees",
-    ],
   },
   "saree-buying-guide": {
     title:
@@ -416,7 +404,6 @@ const seoPagesData: Record<
     h1: "The Ultimate Saree Buying Guide",
     intro:
       "Choosing the right saree can be overwhelming. As experts since ${BUSINESS_INFO.established}, we have created this guide to help you find the perfect drape for your lifestyle and body type.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
@@ -453,11 +440,6 @@ const seoPagesData: Record<
           "Authentic silk feels soft and warm to the touch. Look for the Silk Mark certification and check the luster, which should change slightly under different lighting.",
       },
     ],
-    relatedKeywords: [
-      "sarees online India",
-      "Malvika saree",
-      "traditional Indian sarees",
-    ],
   },
   "saree-care-guide": {
     title: "Saree Care & Maintenance Guide | ${BUSINESS_INFO.name}",
@@ -466,7 +448,6 @@ const seoPagesData: Record<
     h1: "Saree Care & Maintenance Guide",
     intro:
       "A premium saree is an investment that can be passed down through generations. Learn the best practices for washing, folding, and storing your sarees to preserve their beauty.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
@@ -503,25 +484,17 @@ const seoPagesData: Record<
           "Wrap them individually in unbleached cotton or muslin cloths. Refold them every few months to prevent permanent creasing and fabric tearing at the folds.",
       },
     ],
-    relatedKeywords: [
-      "${BUSINESS_INFO.name}",
-      "Saree buying guide",
-      "silk sarees ${BUSINESS_INFO.address.city}",
-    ],
   },
   "corporate-uniform-sarees": {
-    title:
-      "Corporate Uniform Sarees | Professional Wear | ${BUSINESS_INFO.name}",
-    description:
-      "Shop premium corporate uniform sarees at ${BUSINESS_INFO.name}. Wrinkle-free, elegant, and perfect for office professionals and corporate teams.",
+    title: `Corporate Uniform Sarees | Professional Wear | ${BUSINESS_INFO.name}`,
+    description: `Shop premium corporate uniform sarees at ${BUSINESS_INFO.name}. Wrinkle-free, elegant, and perfect for office professionals and corporate teams.`,
     h1: "Corporate Uniform Sarees",
     intro:
       "Enhance your corporate identity with our elegant corporate uniform sarees. Designed for comfort during long working hours and maintaining a crisp, professional look.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
-          At <strong>${BUSINESS_INFO.name}</strong>, we provide high-quality{" "}
+          At <strong>{BUSINESS_INFO.name}</strong>, we provide high-quality{" "}
           <strong>corporate uniform sarees</strong> crafted from premium crepe
           and georgette blends. These fabrics offer a wrinkle-free finish that
           ensures your team members always look their best.
@@ -545,27 +518,20 @@ const seoPagesData: Record<
           "Yes, we specialize in bulk and wholesale orders with customized patterns and company branding.",
       },
     ],
-    relatedKeywords: [
-      "corporate sarees",
-      "office wear sarees",
-      "hospitality uniform sarees",
-    ],
   },
   "school-uniform-sarees": {
-    title: "School Uniform Sarees | Teachers & Staff | ${BUSINESS_INFO.name}",
-    description:
-      "Durable, professional school uniform sarees for teachers and administrative staff. Discover comfortable fabrics suited for everyday wear at ${BUSINESS_INFO.name}.",
+    title: `School Uniform Sarees | Teachers & Staff | ${BUSINESS_INFO.name}`,
+    description: `Durable, professional school uniform sarees for teachers and administrative staff. Discover comfortable fabrics suited for everyday wear at ${BUSINESS_INFO.name}.`,
     h1: "School Uniform Sarees",
     intro:
       "Empower your educational staff with comfortable and respectable school uniform sarees. Specially chosen fabrics to endure daily school activities.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
           <strong>School uniform sarees</strong> need to strike the perfect
           balance between comfort and authority. At{" "}
-          <strong>${BUSINESS_INFO.name}</strong>, we offer a specialized range
-          of sarees tailored for school environments.
+          <strong>{BUSINESS_INFO.name}</strong>, we offer a specialized range of
+          sarees tailored for school environments.
         </p>
         <p>
           Our poly-cotton and crepe sarees are breathable, easy to maintain, and
@@ -586,27 +552,19 @@ const seoPagesData: Record<
           "Yes, we can provide specific borders and color combinations to match your school's official colors.",
       },
     ],
-    relatedKeywords: [
-      "school teacher sarees",
-      "school uniform sarees",
-      "poly-cotton sarees",
-    ],
   },
   "teacher-uniform-sarees": {
-    title:
-      "Teacher Uniform Sarees | Comfortable Educational Wear | ${BUSINESS_INFO.name}",
-    description:
-      "Browse our exclusive collection of teacher uniform sarees at ${BUSINESS_INFO.name}. Look professional while commanding respect and staying comfortable.",
+    title: `Teacher Uniform Sarees | Comfortable Educational Wear | ${BUSINESS_INFO.name}`,
+    description: `Browse our exclusive collection of teacher uniform sarees at ${BUSINESS_INFO.name}. Look professional while commanding respect and staying comfortable.`,
     h1: "Teacher Uniform Sarees",
     intro:
       "We honor educators by offering teacher uniform sarees that combine traditional grace with pragmatic comfort for the modern classroom.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
           As a teacher, your attire speaks volumes.{" "}
           <strong>Teacher uniform sarees</strong> from{" "}
-          <strong>${BUSINESS_INFO.name}</strong> are curated to provide an
+          <strong>{BUSINESS_INFO.name}</strong> are curated to provide an
           authoritative yet approachable appearance.
         </p>
         <p>
@@ -618,9 +576,8 @@ const seoPagesData: Record<
     ),
     faqs: [
       {
-        question: "Why choose ${BUSINESS_INFO.name} for teacher uniforms?",
-        answer:
-          "With decades of experience since ${BUSINESS_INFO.established}, we understand the fabric durability and aesthetic required for daily academic use.",
+        question: `Why choose ${BUSINESS_INFO.name} for teacher uniforms?`,
+        answer: `With decades of experience since ${BUSINESS_INFO.established}, we understand the fabric durability and aesthetic required for daily academic use.`,
       },
       {
         question: "What colors are best for teacher sarees?",
@@ -628,17 +585,13 @@ const seoPagesData: Record<
           "Muted tones, pastels, and earthy colors are most popular as they bring a calm and focused atmosphere to the classroom.",
       },
     ],
-    relatedKeywords: ["teacher sarees", "uniform sarees", "daily wear silk"],
   },
   "hospital-uniform-sarees": {
-    title:
-      "Hospital Uniform Sarees | Healthcare Staff Wear | ${BUSINESS_INFO.name}",
-    description:
-      "Provide your hospital administration and healthcare staff with hygienic, comfortable, and unified hospital uniform sarees from ${BUSINESS_INFO.name}.",
+    title: `Hospital Uniform Sarees | Healthcare Staff Wear | ${BUSINESS_INFO.name}`,
+    description: `Provide your hospital administration and healthcare staff with hygienic, comfortable, and unified hospital uniform sarees from ${BUSINESS_INFO.name}.`,
     h1: "Hospital Uniform Sarees",
     intro:
       "Clean, subtle, and exceptionally comfortable. Our hospital uniform sarees are chosen for their resilience in fast-paced healthcare environments.",
-    filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
@@ -666,136 +619,71 @@ const seoPagesData: Record<
           "Absolutely, we cater to all departments within a hospital, from nursing administration to front desk.",
       },
     ],
-    relatedKeywords: [
-      "hospital sarees",
-      "nursing uniform sarees",
-      "hospitality wear",
-    ],
   },
 };
 
-export default function SeoLandingPage() {
-  const { slug } = useParams<{ slug: string }>();
-  const pageData = slug ? seoPagesData[slug] : null;
+async function run() {
+  for (const [slug, data] of Object.entries(seoPagesData)) {
+    const pData = data as any;
+    console.log("[SEO PRERENDER] Generating /" + slug);
 
-  if (!pageData) {
-    return <Navigate to="/shop" replace />;
+    const bodyContent = renderToString(pData.body);
+
+    const fullBody = `
+      <div style="background-color: #faf6f0; min-height: 100vh;">
+        ${getHeaderHtml()}
+        <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+          <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">${pData.h1}</h1>
+          <p style="font-size: 16px; line-height: 1.8; color: #4a4a4a; margin-bottom: 40px; font-weight: 500;">${pData.intro}</p>
+          <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; margin-bottom: 48px; line-height: 1.8; color: #4a4a4a;">
+             ${bodyContent}
+          </div>
+          <div>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; color: #1a0a00;">Frequently Asked Questions</h2>
+            ${pData.faqs
+              .map(
+                (f: any) => `
+              <div style="margin-bottom: 16px;">
+                <h3 style="font-size: 15px; font-weight: bold; color: #1a0a00; margin-bottom: 8px;">${f.question}</h3>
+                <p style="font-size: 14px; color: #4a4a4a;">${f.answer}</p>
+              </div>
+            `,
+              )
+              .join("")}
+          </div>
+        </main>
+        ${getFooterHtml()}
+      </div>
+    `;
+
+    const pageOgTags = `<!-- Dynamic OG Tags -->
+    <meta data-rh="true" property="og:title" content="${pData.title}" />
+    <meta data-rh="true" property="og:description" content="${pData.description}" />
+    <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
+    <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${slug}" />
+    <meta data-rh="true" property="og:type" content="website" />
+    <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
+    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+    <meta data-rh="true" name="twitter:title" content="${pData.title}" />
+    <meta data-rh="true" name="twitter:description" content="${pData.description}" />
+    <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
+    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${slug}" />
+    <!-- End Dynamic OG Tags -->`;
+
+    const phtml = createStaticPage({
+      htmlTemplate: baseHtml,
+      bodyHtml: fullBody,
+      title: pData.title,
+      description: pData.description,
+      customOgTags: pageOgTags
+    });
+
+    const dirPath = path.join(distPath, slug);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+    fs.writeFileSync(path.join(dirPath, "index.html"), phtml);
   }
-
-  // Filter some relevant products
-  const displayProducts = products
-    .filter(
-      (p) =>
-        !p.isVariant &&
-        (pageData.filterCategory
-          ? p.category.toLowerCase() === pageData.filterCategory.toLowerCase()
-          : true),
-    )
-    .slice(0, 12);
-
-  // Generate FAQ Schema dynamically
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: pageData.faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-
-  return (
-    <div className="bg-[#FAF9F8]">
-      <SEO
-        title={pageData.title}
-        description={pageData.description}
-        url={`/${slug}`}
-        schema={[faqSchema]}
-      />
-
-      {/* Header Section */}
-      <div className="bg-[#2C241B] text-white py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <nav
-            className="flex text-sm text-[var(--color-light)]/60 mb-6"
-            aria-label="Breadcrumb"
-          >
-            <Link
-              to="/"
-              className="hover:text-[var(--color-light)] transition-colors"
-            >
-              Home
-            </Link>
-            <ChevronRight className="w-4 h-4 mx-2 mt-0.5" />
-            <span className="text-[var(--color-light)]" aria-current="page">
-              {pageData.h1}
-            </span>
-          </nav>
-          <h1 className="text-4xl md:text-5xl font-serif mb-6">
-            {pageData.h1}
-          </h1>
-          <p className="text-lg md:text-xl text-[var(--color-light)]/90 max-w-3xl leading-relaxed">
-            {pageData.intro}
-          </p>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Main Content */}
-          <div className="lg:col-span-8">
-            <div className="bg-white p-8 md:p-12 shadow-sm border border-black/5 rounded-sm">
-              {pageData.body}
-
-              {/* FAQs Section */}
-              {pageData.faqs.length > 0 && (
-                <div className="mt-12 pt-8 border-t border-black/5">
-                  <h2 className="text-2xl font-serif text-[var(--color-dark)] mb-6">
-                    Frequently Asked Questions
-                  </h2>
-                  <div className="space-y-6">
-                    {pageData.faqs.map((faq, idx) => (
-                      <div key={idx}>
-                        <h3 className="text-lg font-medium text-[var(--color-dark)] mb-2">
-                          {faq.question}
-                        </h3>
-                        <p className="text-[var(--color-dark)]/70">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Sidebar / Products */}
-          <div className="lg:col-span-4">
-            <div className="sticky top-24">
-              <h3 className="text-xl font-serif text-[var(--color-dark)] mb-6">
-                Explore Collection
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                {displayProducts.slice(0, 4).map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-              <div className="mt-6 text-center">
-                <Link
-                  to="/shop"
-                  className="inline-block bg-[var(--color-dark)] text-white px-6 py-3 rounded-sm text-sm uppercase tracking-widest font-medium hover:bg-[var(--color-dark)]/90 transition-colors"
-                >
-                  View All Products
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 }
+
+run().catch(console.error);

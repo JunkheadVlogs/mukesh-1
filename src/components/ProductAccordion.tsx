@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "../config/business";
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";

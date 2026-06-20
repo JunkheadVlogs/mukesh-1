@@ -145,21 +145,21 @@ function main() {
     const canonicalUrl = `https://mukeshsarees.com/product/${slug}`;
 
     const ogTagsBlock = `<!-- Dynamic OG Tags -->
-  <meta property="og:title" content="${titleText}" />
-  <meta property="og:description" content="${cleanDesc}" />
-  <meta property="og:image" content="${ogImageUrl}" />
-  <meta property="og:image:secure_url" content="${ogImageUrl}" />
-  <meta property="og:url" content="${canonicalUrl}" />
-  <meta property="og:type" content="product" />
-  <meta property="og:site_name" content="Mukesh Saree Centre" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${titleText}" />
-  <meta name="twitter:description" content="${cleanDesc}" />
-  <meta name="twitter:image" content="${ogImageUrl}" />
-  <link rel="canonical" href="${canonicalUrl}" />
+  <meta data-rh="true" property="og:title" content="${titleText}" />
+  <meta data-rh="true" property="og:description" content="${cleanDesc}" />
+  <meta data-rh="true" property="og:image" content="${ogImageUrl}" />
+  <meta data-rh="true" property="og:image:secure_url" content="${ogImageUrl}" />
+  <meta data-rh="true" property="og:url" content="${canonicalUrl}" />
+  <meta data-rh="true" property="og:type" content="product" />
+  <meta data-rh="true" property="og:site_name" content="Mukesh Saree Centre" />
+  <meta data-rh="true" property="og:image:width" content="1200" />
+  <meta data-rh="true" property="og:image:height" content="630" />
+  <meta data-rh="true" property="og:image:type" content="image/jpeg" />
+  <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+  <meta data-rh="true" name="twitter:title" content="${titleText}" />
+  <meta data-rh="true" name="twitter:description" content="${cleanDesc}" />
+  <meta data-rh="true" name="twitter:image" content="${ogImageUrl}" />
+  <link data-rh="true" rel="canonical" href="${canonicalUrl}" />
   <!-- End Dynamic OG Tags -->`;
 
     // E. Perform replacement inside HTML template values safely

@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "./config/business";
 import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import {
   ShoppingBag,
@@ -1103,11 +1104,11 @@ export default function Layout() {
                   }}>CUSTOMER ASSISTANCE</p>
                   <div className="contact-row">
                     <Mail size={18} />
-                    <a href="mailto:info@mukeshsarees.com">info@mukeshsarees.com</a>
+                    <a href={`mailto:${BUSINESS_INFO.email}`}>{BUSINESS_INFO.email}</a>
                   </div>
                   <div className="contact-row">
                     <Phone size={18} />
-                    <a href="tel:+917020664641">+91 7020664641</a>
+                    <a href={`tel:${BUSINESS_INFO.phone}`}>{BUSINESS_INFO.phone}</a>
                   </div>
                 </div>
 
@@ -1428,7 +1429,7 @@ export default function Layout() {
                       Our Showroom
                     </h5>
                     <p className="text-[#FAF8F4]/90 text-[12px] md:text-[12.5px] leading-relaxed">
-                      <span itemProp="streetAddress">Jagnath Road, Opposite Wholesale Cloth Market Gate No. 2, Gandhibagh</span>, <br />
+                      <span itemProp="streetAddress">{BUSINESS_INFO.address.street}, {BUSINESS_INFO.address.area}</span>, <br />
                       <span itemProp="addressLocality">Nagpur</span> - <span itemProp="postalCode">440002</span>, <br />
                       <span itemProp="addressRegion">Maharashtra</span>, India
                     </p>
@@ -1441,7 +1442,7 @@ export default function Layout() {
                         Call Us
                       </h5>
                       <a
-                        href="tel:+917020664641"
+                        href={`tel:${BUSINESS_INFO.phone}`}
                         itemProp="telephone"
                         className="text-[12px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors font-semibold tracking-wider block"
                       >
@@ -1453,7 +1454,7 @@ export default function Layout() {
                         WhatsApp
                       </h5>
                       <a
-                        href="https://wa.me/917020664641"
+                        href={`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[12px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors font-semibold tracking-wider block"
@@ -1470,7 +1471,7 @@ export default function Layout() {
                         Email Us
                       </h5>
                       <a
-                        href="mailto:info@mukeshsarees.com"
+                        href={`mailto:${BUSINESS_INFO.email}`}
                         itemProp="email"
                         className="text-[11.5px] md:text-[12.5px] text-[#FAF8F4] hover:text-[#C8A96B] transition-colors tracking-wider block"
                       >
@@ -1644,7 +1645,7 @@ export default function Layout() {
               <Youtube size={20} strokeWidth={1.5} />
             </a>
             <a
-              href="https://wa.me/917020664641"
+              href={`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"

@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "./config/business";
 import { useState, useMemo } from 'react';
 import { SEO } from './components/SEO';
 import { 
@@ -30,7 +31,7 @@ const faqs: FAQ[] = [
   {
     category: "support",
     q: "Where is your physical saree shop located?",
-    a: "Our landmark physical retail flagship is proudly located at Jagnath Road, Opposite Wholesale Cloth Market Gate No. 2, Gandhibagh, Nagpur, Maharashtra - 440002. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Saturday from 10:00 AM to 8:00 PM."
+    a: "Our landmark physical retail flagship is proudly located at {BUSINESS_INFO.address.fullAddress}. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Saturday from 10:00 AM to 8:00 PM."
   },
   {
     category: "payments",
@@ -388,7 +389,7 @@ export default function Faq() {
               Get in Touch
             </Link>
             <a 
-              href="https://wa.me/917020664641" 
+              href={`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`} 
               target="_blank" 
               rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/20 text-white px-8 py-2.5 text-[11px] font-bold uppercase tracking-widest hover:bg-white/10 transition-all duration-300"

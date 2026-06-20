@@ -801,37 +801,10 @@ export default function ProductPage() {
         returnMethod: "https://schema.org/ReturnByMail",
         returnFees: "https://schema.org/FreeReturn"
       }
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: stats.rating.toString(),
-      reviewCount: stats.reviewCount.toString(),
-    },
+    }
   };
 
-  const reviewSchema = {
-    "@context": "https://schema.org",
-    "@type": "Review",
-    "itemReviewed": {
-      "@type": "Product",
-      "name": product.name,
-      "image": absoluteProductImages[0]
-    },
-    "reviewRating": {
-      "@type": "Rating",
-      "ratingValue": stats.rating.toString(),
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "author": {
-      "@type": "Person",
-      "name": "Verified Customer"
-    },
-    "reviewBody": "Premium quality fabric and excellent finishing. Exactly as described.",
-    "datePublished": new Date().toISOString().split('T')[0]
-  };
-
-  const productSchema = {
+  const productSchema: any = {
     "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.name,
@@ -839,10 +812,37 @@ export default function ProductPage() {
     "description": cleanSEOText(product.description).substring(0, 300),
     "sku": product.sku || product.id,
     "brand": { "@type": "Brand", "name": "Mukesh Saree Centre" },
-    "offers": detailedProductSchema.offers,
-    "aggregateRating": detailedProductSchema.aggregateRating,
-    "review": reviewSchema
+    "offers": detailedProductSchema.offers
   };
+
+  // Only include Review and AggregateRating schema if the product has real, verified reviews
+  if (product.reviews && product.reviews.length > 0) {
+    const totalReviews = product.reviews.length;
+    const avgRating = product.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews;
+    const bestReview = product.reviews.reduce((prev, current) => (prev.rating > current.rating) ? prev : current);
+    
+    productSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: avgRating.toFixed(1),
+      reviewCount: totalReviews.toString(),
+    };
+
+    productSchema.review = {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": bestReview.rating.toString(),
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "author": {
+        "@type": "Person",
+        "name": bestReview.author || "Verified Customer"
+      },
+      "reviewBody": bestReview.text || "I bought this product.",
+      "datePublished": bestReview.date ? new Date(bestReview.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+    };
+  }
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

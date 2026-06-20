@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "./config/business";
 import { useEffect } from 'react';
 import { SEO } from './components/SEO';
 import { MapPin, Phone, Clock, MessageCircle, Heart, ShieldCheck, Award, Sparkles } from 'lucide-react';
@@ -47,7 +48,7 @@ export default function About() {
 
   const handleWhatsAppContact = () => {
     const text = encodeURIComponent("Hi Mukesh Saree Centre! I was reading your About Us page and would love to connect.");
-    window.open(`https://wa.me/917020664641?text=${text}`, '_blank');
+    window.open(`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}?text=${text}`, '_blank');
   };
 
   return (

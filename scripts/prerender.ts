@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import { products } from "../src/mockData.js";
 import dotenv from "dotenv";
+import { createStaticPage, injectIntoRoot } from "./prerenderHelper.js";
+import { BUSINESS_INFO } from "../src/config/business.js";
 
 dotenv.config();
 
@@ -16,12 +18,12 @@ function replaceEnvPlaceholders(html: string): string {
     VITE_PINTEREST_TAG: '',
     VITE_PINTEREST_DOMAIN: '',
     VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',
-    VITE_WHATSAPP_NUMBER: '917020664641',
+    VITE_WHATSAPP_NUMBER: BUSINESS_INFO.phone.replace(/[^0-9]/g, ''),
     VITE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
     VITE_GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec',
-    VITE_SITE_URL: 'https://mukeshsarees.com',
-    VITE_SITE_NAME: 'Mukesh Saree Centre',
-    VITE_STORE_PHONE: '+91 7020664641',
+    VITE_SITE_URL: BUSINESS_INFO.website,
+    VITE_SITE_NAME: BUSINESS_INFO.name,
+    VITE_STORE_PHONE: BUSINESS_INFO.phone,
   };
 
   return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
@@ -75,7 +77,7 @@ function cleanDescriptionForPrerender(rawDesc: string): string {
 }
 
 function getWhatsAppSafePrerenderDescription(text: string, productContext?: any): string {
-  if (!text) return "Shop premium Indian ethnic wear, sarees, and co-ord sets at Mukesh Saree Centre.";
+  if (!text) return "Shop premium Indian ethnic wear, sarees, and co-ord sets at ${BUSINESS_INFO.name}.";
   
   // Clean HTML, Markdown, and other clutter
   let clean = text
@@ -220,12 +222,12 @@ function mdToHtml(markdown: string): string {
 }
 
 // Generate Header and Footer skeleton
-function getHeaderHtml(): string {
+export function getHeaderHtml(): string {
   return `
     <header style="background: rgba(250, 246, 240, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); font-family: 'Playfair Display', serif; position: sticky; top: 0; z-index: 100;">
       <div style="display: flex; align-items: center; gap: 12px;">
         <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-          <img src="/images/logo.webp" alt="Mukesh Saree Centre Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
+          <img src="/images/logo.webp" alt="${BUSINESS_INFO.name} Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
         </a>
       </div>
       <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
@@ -238,14 +240,14 @@ function getHeaderHtml(): string {
   `;
 }
 
-function getFooterHtml(): string {
+export function getFooterHtml(): string {
   return `
     <footer style="background-color: #1A0A00; color: #faf6f0; padding: 80px 32px; font-family: 'Inter', sans-serif; border-top: 1px solid rgba(255,255,255,0.05);">
       <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 48px; text-align: left;">
         <div>
-          <h3 style="font-family: 'Playfair Display', serif; color: #d4af37; font-size: 20px; font-weight: 500; margin: 0 0 24px 0; letter-spacing: 2px;">MUKESH SAREE CENTRE</h3>
-          <p style="opacity: 0.7; font-size: 13px; line-height: 1.8; color: #e5dfd5;">Premium luxury Indian ethnic wear, specializing in pure silk sarees, designer Banarasi, and high-quality contemporary co-ord sets. Nagpur's trusted fashion boutique since 1978.</p>
-          <p style="margin-top: 24px; font-size: 13px; color: #d4af37;">📍 Gandhibagh, Nagpur, Maharashtra</p>
+          <h3 style="font-family: 'Playfair Display', serif; color: #d4af37; font-size: 20px; font-weight: 500; margin: 0 0 24px 0; letter-spacing: 2px;">${BUSINESS_INFO.name.toUpperCase()}</h3>
+          <p style="opacity: 0.7; font-size: 13px; line-height: 1.8; color: #e5dfd5;">Premium luxury Indian ethnic wear, specializing in pure silk sarees, designer Banarasi, and high-quality contemporary co-ord sets. ${BUSINESS_INFO.address.city}'s trusted fashion boutique since ${BUSINESS_INFO.established}.</p>
+          <p style="margin-top: 24px; font-size: 13px; color: #d4af37;">📍 ${BUSINESS_INFO.address.area}, ${BUSINESS_INFO.address.city}, ${BUSINESS_INFO.address.region}</p>
         </div>
         <div>
           <h4 style="font-family: 'Playfair Display', serif; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: #faf6f0; margin: 0 0 20px 0;">Shop Categories</h4>
@@ -267,13 +269,13 @@ function getFooterHtml(): string {
         </div>
         <div>
           <h4 style="font-family: 'Playfair Display', serif; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: #faf6f0; margin: 0 0 20px 0;">Contact Details</h4>
-          <p style="opacity: 0.82; font-size: 13px; line-height: 1.8; color: #e5dfd5; margin: 0 0 12px 0;">📍 Mukesh Saree Centre, Jagnath Road, Gandhibagh, Nagpur, MH, 440002</p>
-          <p style="opacity: 0.82; font-size: 13px; color: #e5dfd5; margin: 0 0 8px 0;">📞 Phone: +91 7020664641</p>
-          <p style="opacity: 0.82; font-size: 13px; color: #e5dfd5; margin: 0;">✉ Email: info@mukeshsarees.com</p>
+          <p style="opacity: 0.82; font-size: 13px; line-height: 1.8; color: #e5dfd5; margin: 0 0 12px 0;">📍 ${BUSINESS_INFO.name}, ${BUSINESS_INFO.address.fullAddress}</p>
+          <p style="opacity: 0.82; font-size: 13px; color: #e5dfd5; margin: 0 0 8px 0;">📞 Phone: ${BUSINESS_INFO.phone}</p>
+          <p style="opacity: 0.82; font-size: 13px; color: #e5dfd5; margin: 0;">✉ Email: ${BUSINESS_INFO.email}</p>
         </div>
       </div>
       <div style="text-align: center; border-top: 1px solid rgba(250,246,240,0.08); padding-top: 24px; margin-top: 64px; font-size: 12px; opacity: 0.55; color: #faf6f0; font-family: 'Inter', sans-serif;">
-        &copy; 1978 - 2026 Mukesh Saree Centre Nagpur. All Rights Reserved. Specializing in luxury silk drapes and designer ethnic ensembles.
+        &copy; ${BUSINESS_INFO.established} - 2026 ${BUSINESS_INFO.name} ${BUSINESS_INFO.address.city}. All Rights Reserved. Specializing in luxury silk drapes and designer ethnic ensembles.
       </div>
     </footer>
   `;
@@ -339,27 +341,22 @@ async function runPrerender() {
   const homeSchema = {
     "@context": "https://schema.org",
     "@type": "ClothingStore",
-    "name": "Mukesh Saree Centre",
-    "url": "https://mukeshsarees.com",
-    "logo": "https://mukeshsarees.com/images/logo.webp",
-    "description": "Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles.",
-    "foundingDate": "1978",
+    "name": BUSINESS_INFO.name,
+    "url": BUSINESS_INFO.website,
+    "logo": `${BUSINESS_INFO.website}/images/logo.webp`,
+    "description": "Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery.",
+    "foundingDate": BUSINESS_INFO.established,
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Jagnath Road, Gandhibagh",
-      "addressLocality": "Nagpur",
-      "addressRegion": "Maharashtra",
-      "addressCountry": "IN",
-      "postalCode": "440002"
+      "streetAddress": `${BUSINESS_INFO.address.street}, ${BUSINESS_INFO.address.area}`,
+      "addressLocality": BUSINESS_INFO.address.city,
+      "addressRegion": BUSINESS_INFO.address.region,
+      "addressCountry": BUSINESS_INFO.address.country,
+      "postalCode": BUSINESS_INFO.address.postalCode
     },
-    "telephone": "+917020664641",
+    "telephone": BUSINESS_INFO.phone,
     "priceRange": "$$",
-    "sameAs": [
-      "https://www.facebook.com/Mukeshsareesindia/",
-      "https://www.instagram.com/mukeshsarees_nagpur",
-      "https://www.pinterest.com/MukeshSareesdotcom/",
-      "https://youtube.com/@mukeshsarees?si=aMljrBMnIJYQDGDI"
-    ]
+    "sameAs": BUSINESS_INFO.social
   };
 
   const homepageBody = `
@@ -369,9 +366,9 @@ async function runPrerender() {
       <!-- Hero Section -->
       <section style="background-color: #1A0A00; color: #faf6f0; padding: 100px 24px; text-align: center; position: relative;">
         <div style="max-width: 800px; margin: 0 auto; z-index: 10; position: relative;">
-          <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED 1978</span>
-          <h1 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">Mukesh Saree Centre</h1>
-          <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop Nagpur's premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, bridal lehengas, and stylish breathable co-ord sets. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹499.</p>
+          <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED ${BUSINESS_INFO.established}</span>
+          <h1 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">${BUSINESS_INFO.name}</h1>
+          <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop ${BUSINESS_INFO.address.city}'s premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, bridal lehengas, and stylish breathable co-ord sets. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹499.</p>
           <div style="display: flex; gap: 16px; justify-content: center;">
             <a href="/shop" style="background: #faf6f0; color: #1a0a00; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Explore Collection</a>
             <a href="/contact" style="border: 1px solid rgba(250, 246, 240, 0.4); color: #faf6f0; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Contact Boutique</a>
@@ -414,9 +411,56 @@ async function runPrerender() {
       <!-- Editorial Legacy section -->
       <section style="background-color: white; border-top: 1px solid rgba(0,0,0,0.04); border-bottom: 1px solid rgba(0,0,0,0.04); padding: 80px 24px;">
         <div style="max-width: 800px; margin: 0 auto; text-align: center; font-family: 'Playfair Display', serif;">
-          <h2 style="font-size: 30px; margin-bottom: 24px; color: #1a0a00;">Our Legacy Since 1978</h2>
-          <p style="font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.8; color: #4a4a4a; margin-bottom: 24px;">Founded in the heart of Nagpur's historic textile market, Mukesh Saree Centre has been the premier destination for premium silk sarees, bridal trousseaus, and custom handloom drapes for over four decades. We bring together time-tested weaver traditions with premium fabrics like Banarasi Georgette, pure Organza silks, high-density Linens, and premium co-ord sets.</p>
+          <h2 style="font-size: 30px; margin-bottom: 24px; color: #1a0a00;">Our Legacy Since ${BUSINESS_INFO.established}</h2>
+          <p style="font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.8; color: #4a4a4a; margin-bottom: 24px;">Founded in the heart of ${BUSINESS_INFO.address.city}'s historic textile market, ${BUSINESS_INFO.name} has been the premier destination for premium silk sarees, bridal trousseaus, and custom handloom drapes for over four decades. We bring together time-tested weaver traditions with premium fabrics like <a href="/banarasi-silk-sarees" style="color: inherit; text-decoration: underline;">Banarasi Georgette</a>, pure Organza silks, high-density <a href="/pure-linen-sarees" style="color: inherit; text-decoration: underline;">Linens</a>, and premium co-ord sets. As a leading manufacturer and wholesaler, we specialize in bulk uniform solutions spanning <a href="/school-uniform-sarees" style="color: inherit; text-decoration: underline;">School Uniform Sarees</a> to <a href="/corporate-uniform-sarees" style="color: inherit; text-decoration: underline;">Corporate Attire</a>.</p>
           <p style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: bold; color: #8c7355; letter-spacing: 1.5px; text-transform: uppercase;">A Heritage of Trust, Originality, and Royal Appeal.</p>
+        </div>
+      </section>
+
+      <!-- Discover & Resources (SEO & Internal Links) -->
+      <section style="background-color: #faf6f0; border-bottom: 1px solid rgba(0,0,0,0.04); padding: 60px 24px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.8; color: #4a4a4a;">
+            
+            <div>
+              <h3 style="font-weight: 600; color: #1a0a00; margin-bottom: 16px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">Saree Collections</h3>
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 8px;"><a href="/pure-linen-sarees" style="color: inherit; text-decoration: none;">Premium Linen Sarees</a></li>
+                <li style="margin-bottom: 8px;"><a href="/soft-cotton-sarees" style="color: inherit; text-decoration: none;">Soft Cotton Sarees</a></li>
+                <li style="margin-bottom: 8px;"><a href="/banarasi-silk-sarees" style="color: inherit; text-decoration: none;">Banarasi Silk Sarees</a></li>
+                <li style="margin-bottom: 8px;"><a href="/designer-party-wear-sarees" style="color: inherit; text-decoration: none;">Designer Party Wear</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 style="font-weight: 600; color: #1a0a00; margin-bottom: 16px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">B2B & Wholesale</h3>
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 8px;"><a href="/wholesalesarees" style="color: inherit; text-decoration: none;">Wholesale Sarees Direct</a></li>
+                <li style="margin-bottom: 8px;"><a href="/school-uniform-sarees" style="color: inherit; text-decoration: none;">School Uniform Sarees</a></li>
+                <li style="margin-bottom: 8px;"><a href="/teacher-uniform-sarees" style="color: inherit; text-decoration: none;">Teacher Uniform Sarees</a></li>
+                <li style="margin-bottom: 8px;"><a href="/corporate-uniform-sarees" style="color: inherit; text-decoration: none;">Corporate Uniform Sarees</a></li>
+                <li style="margin-bottom: 8px;"><a href="/hospital-uniform-sarees" style="color: inherit; text-decoration: none;">Hospital Uniform Sarees</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 style="font-weight: 600; color: #1a0a00; margin-bottom: 16px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">Guides & Resources</h3>
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 8px;"><a href="/guides/saree-buying-guide" style="color: inherit; text-decoration: none;">Saree Buying Guide</a></li>
+                <li style="margin-bottom: 8px;"><a href="/guides/saree-fabric-guide" style="color: inherit; text-decoration: none;">Saree Fabric Guide</a></li>
+                <li style="margin-bottom: 8px;"><a href="/faqs" style="color: inherit; text-decoration: none;">Frequently Asked Questions</a></li>
+                <li style="margin-bottom: 8px;"><a href="/about" style="color: inherit; text-decoration: none;">About Mukesh Saree Centre</a></li>
+                <li style="margin-bottom: 8px;"><a href="/contact" style="color: inherit; text-decoration: none;">Contact Us</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 style="font-weight: 600; color: #1a0a00; margin-bottom: 16px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">Why Choose Us?</h3>
+              <p style="margin-bottom: 12px; line-height: 1.6; opacity: 0.85;">Since 1978, we provide both retail and wholesale ethnic wear. Browse our vast categories or reach out for bulk discounts.</p>
+              <a href="/about" style="color: #8c7355; text-decoration: underline; font-weight: 500;">Read our story</a>
+            </div>
+
+          </div>
         </div>
       </section>
 
@@ -424,109 +468,232 @@ async function runPrerender() {
     </div>
   `;
 
-  // Inject into index.html for Root and Schema
-  let updatedHomeHtml = baseHtml;
-
-  const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
   const homeOgTags = `<!-- Dynamic OG Tags -->
-  <meta property="og:title" content="Mukesh Saree Centre — Premium Indian Ethnic Wear Since 1978" />
-  <meta property="og:description" content="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles." />
-  <meta property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
-  <meta property="og:url" content="https://mukeshsarees.com/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Mukesh Saree Centre" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Mukesh Saree Centre — Premium Indian Ethnic Wear Since 1978" />
-  <meta name="twitter:description" content="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles." />
-  <meta name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
-  <link rel="canonical" href="https://mukeshsarees.com/" />
+  <meta data-rh="true" property="og:title" content="Mukesh Saree Centre – Wholesale & Retail Sarees Nagpur" />
+  <meta data-rh="true" property="og:description" content="Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery." />
+  <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
+  <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/" />
+  <meta data-rh="true" property="og:type" content="website" />
+  <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
+  <meta data-rh="true" property="og:image:width" content="1200" />
+  <meta data-rh="true" property="og:image:height" content="630" />
+  <meta data-rh="true" property="og:image:type" content="image/jpeg" />
+  <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+  <meta data-rh="true" name="twitter:title" content="Mukesh Saree Centre – Wholesale & Retail Sarees Nagpur" />
+  <meta data-rh="true" name="twitter:description" content="Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery." />
+  <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
+  <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/" />
   <!-- End Dynamic OG Tags -->`;
 
-  updatedHomeHtml = updatedHomeHtml.replace(defaultOgBlockRegex, homeOgTags);
-  updatedHomeHtml = updatedHomeHtml.replace("</head>", `<script type="application/ld+json">${JSON.stringify(homeSchema)}</script></head>`);
+  const updatedHomeHtml = createStaticPage({
+    htmlTemplate: baseHtml,
+    bodyHtml: homepageBody,
+    title: "Mukesh Saree Centre – Wholesale & Retail Sarees Nagpur",
+    description: "Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery.",
+    customOgTags: homeOgTags,
+    schemaJson: homeSchema
+  });
 
   fs.writeFileSync(baseHtmlPath, replaceEnvPlaceholders(updatedHomeHtml));
   console.log("[PRERENDER] Index.html updated successfully with homepage static HTML.");
 
 
-  // 2. GENERATE SHOP PAGE (dist/shop/index.html)
-  console.log("[PRERENDER] Engineering static file for Shop page...");
-  const shopSchema = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "Shop Premium Indian Ethnic Wear — Mukesh Saree Centre",
-    "url": "https://mukeshsarees.com/shop",
-    "description": "Browse 100+ premium sarees, linen sarees and cotton co-ord sets at Mukesh Saree Centre. All at 50% OFF. Cash on Delivery available across India.",
-    "breadcrumb": {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://mukeshsarees.com/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Shop",
-          "item": "https://mukeshsarees.com/shop"
-        }
-      ]
+  // 2. GENERATE SHOP & COLLECTION PAGES
+  console.log("[PRERENDER] Engineering static files for Shop and Collection pages...");
+  
+  const collections = [
+    {
+      route: "shop",
+      title: "Shop Premium Indian Ethnic Ensembles",
+      description: "Browse our complete collection of 100+ premium sarees, linen sarees, and co-ord sets at Mukesh Saree Centre. Cash on Delivery available.",
+      h1: "Complete Collection",
+      introTitle: "Premium Luxury Catalogue",
+      introBody: "Find your perfect match from our extensive collection of traditional and modern ethnic wear. We offer the finest silks, breathable cottons, and heavy bridal lehengas, meticulously woven to celebrate Indian heritage.",
+      filterFn: () => true
+    },
+    {
+      route: "sarees",
+      title: "Buy Premium Sarees Online",
+      description: "Discover our premium collection of sarees including pure silk, soft cotton, and banarasi drapes. Authentic weavers and cash on delivery available.",
+      h1: "Premium Saree Collection",
+      introTitle: "Timeless Drapes for Every Occasion",
+      introBody: "Sarees are the epitome of Indian elegance. Whether you need a lightweight drape for daily wear, a soft cotton saree for the office, or a heavy silk saree for a wedding, our selection has been hand-picked to deliver unmatched quality.",
+      filterFn: (p: any) => p.category === "Sarees" || p.category === "Saree"
+    },
+    {
+      route: "sarees/banarasi-sarees",
+      title: "Banarasi Silk Sarees Online",
+      description: "Shop authentic Banarasi silk sarees. Perfect for weddings, festivities, and grand occasions. Pure silk and Zari weaves.",
+      h1: "Banarasi Silk Sarees",
+      introTitle: "The Gold Standard of Indian Bridal Wear",
+      introBody: "Banarasi sarees are known for their opulent zari work, intricate brocade patterns, and lustrous silk. Handwoven by skilled artisans, these sarees are heirloom pieces perfect for weddings and heritage styling.",
+      filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree") && (p.name.toLowerCase().includes("banarasi") || (p.description || "").toLowerCase().includes("banarasi"))
+    },
+    {
+      route: "sarees/linen-sarees",
+      title: "Buy Linen Sarees Online",
+      description: "Shop premium linen sarees online. Lightweight, breathable, and perfect for everyday wear. Sourced from top weavers.",
+      h1: "Linen Sarees",
+      introTitle: "Light, Elegant & Perfect for Daily Wear",
+      introBody: "Experience the breathable comfort of pure linen. Our linen sarees feature beautiful prints and solid colors perfect for office wear, casual outings, and summer festivities. Easy to drape and incredibly soft.",
+      filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree") && (p.name.toLowerCase().includes("linen") || (p.description || "").toLowerCase().includes("linen"))
+    },
+    {
+      route: "sarees/cotton-sarees",
+      title: "Cotton Sarees Online",
+      description: "Shop handloom and printed cotton sarees. Comfortable, everyday sarees in beautiful designs. COD available.",
+      h1: "Cotton Sarees",
+      introTitle: "Comfortable, Stylish & Made for Every Day",
+      introBody: "Cotton sarees are the most comfortable and versatile drapes. Discover mulmul cotton, handloom cotton, and block prints tailored for hot Indian summers, office environments, and casual occasions.",
+      filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree") && (p.name.toLowerCase().includes("cotton") || (p.description || "").toLowerCase().includes("cotton") || p.name.toLowerCase().includes("mulmul") || (p.description || "").toLowerCase().includes("mulmul"))
+    },
+    {
+      route: "sarees/paithani-sarees",
+      title: "Paithani Sarees Online | Mukesh Saree Centre Nagpur",
+      description: "Buy authentic Paithani sarees from Mukesh Saree Centre, Nagpur. Maharashtra's heritage weave with zari work and peacock motifs. COD available.",
+      h1: "Paithani Sarees",
+      introTitle: "Maharashtra's Royal Heritage Weave",
+      introBody: "Paithani sarees are the pride of Maharashtra, known for their rich zari borders, vibrant silk body, and iconic peacock and lotus motifs. At Mukesh Saree Centre, we carry authentic Paithani sarees sourced from skilled weavers, perfect for weddings, festivals, and cultural occasions.",
+      filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree") && (p.name.toLowerCase().includes("paithani") || (p.description || "").toLowerCase().includes("paithani"))
+    },
+    {
+      route: "sarees/silk-sarees",
+      title: "Silk Sarees Online | Mukesh Saree Centre Nagpur",
+      description: "Buy pure silk sarees online — Kanjivaram, soft silk, art silk and more at Mukesh Saree Centre Nagpur. COD. Free shipping above ₹499.",
+      h1: "Silk Sarees",
+      introTitle: "Timeless Elegance for Every Occasion",
+      introBody: "Silk sarees are a wardrobe essential for every Indian woman. Our silk collection includes Kanjivaram, pure silk, soft silk, art silk, and Upada silk — each handpicked from the finest weaving centres in India.",
+      filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree" || p.category === "Silk Sarees") && (p.name.toLowerCase().includes("silk") || (p.description || "").toLowerCase().includes("silk") || p.name.toLowerCase().includes("kanjivaram") || p.name.toLowerCase().includes("organza"))
+    },
+    {
+      route: "lehengas",
+      title: "Designer Bridal Lehengas Online",
+      description: "Shop grand wedding lehengas and bridal wear. Intricate embroidery, rich fabrics, and stunning designs for your special day.",
+      h1: "Designer Lehengas",
+      introTitle: "Grandeur for Weddings & Celebrations",
+      introBody: "Make a statement with our designer lehengas. Featuring heavy zari work, intricate gota patti, and rich silk bases, our lehenga collection is tailored for brides, bridesmaids, and festive gatherings.",
+      filterFn: (p: any) => p.category === "Lehengas" || p.category === "Lehenga"
+    },
+    {
+      route: "suits",
+      title: "Buy Kurtas & Suits Online",
+      description: "Shop elegant kurtas and salwar suits. Comfortable everyday elegance for work and casual wear.",
+      h1: "Kurtas & Suits",
+      introTitle: "Comfortable Everyday Elegance",
+      introBody: "Our beautifully tailored kurtas and suit sets blend traditional prints with modern silhouettes. Available in breathable cottons, rich muslins, and soft silks for perfect all-day comfort.",
+      filterFn: (p: any) => p.category === "Kurtas" || p.category === "Suits"
+    },
+    {
+      route: "coord-sets",
+      title: "Premium Co-Ord Sets Online",
+      description: "Shop fashionable ethnic and fusion co-ord sets. Luxe cotton and linen pairs for contemporary styling.",
+      h1: "Co-Ord Sets",
+      introTitle: "Luxe Cotton & Linen Pairs",
+      introBody: "Step out in style with our matching co-ord sets. Fusing traditional craftsmanship with modern silhouettes, these coordinated pieces are perfect for lounging, vacations, or casual work wear.",
+      filterFn: (p: any) => p.category === "Co-Ord Sets" || p.category === "Co-Ord Set" || p.category === "Co-Ords"
     }
-  };
+  ];
 
-  const shopBody = `
-    <div style="background-color: #faf6f0; min-height: 100vh;">
-      ${getHeaderHtml()}
-      
-      <main style="max-width: 1200px; margin: 40px auto; padding: 0 24px;">
-        <div style="text-align: center; margin-bottom: 48px; font-family: 'Playfair Display', serif;">
-          <h1 style="font-size: 36px; margin-bottom: 12px; color: #1a0a00; font-weight: 500;">Complete Collection</h1>
-          <p style="font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.6;">All products under one premium luxury catalogue with instant COD checkout.</p>
-        </div>
+  for (const collection of collections) {
+    const colProducts = mainProducts.filter(collection.filterFn);
+    const shopSchema = {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": `${collection.h1} — ${BUSINESS_INFO.name}`,
+      "url": `https://mukeshsarees.com/${collection.route}`,
+      "description": collection.description,
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://mukeshsarees.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": collection.h1,
+            "item": `https://mukeshsarees.com/${collection.route}`
+          }
+        ]
+      }
+    };
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px;">
-          ${mainProducts.map(getProductCardHtml).join("")}
-        </div>
-      </main>
+    const shopBody = `
+      <div style="background-color: #faf6f0; min-height: 100vh;">
+        ${getHeaderHtml()}
+        
+        <main style="max-width: 1200px; margin: 40px auto; padding: 0 24px;">
+          
+          <!-- Breadcrumbs -->
+          <nav aria-label="breadcrumb" style="margin-bottom: 24px; font-family: 'Inter', sans-serif; font-size: 12px; color: #666;">
+            <ol style="list-style: none; padding: 0; margin: 0; display: flex; gap: 8px;">
+              <li><a href="/" style="color: #666; text-decoration: none;">Home</a></li>
+              <li>/</li>
+              <li aria-current="page" style="color: #1a0a00; font-weight: 500;">${collection.h1}</li>
+            </ol>
+          </nav>
 
-      ${getFooterHtml()}
-    </div>
-  `;
+          <div style="text-align: center; margin-bottom: 48px; font-family: 'Playfair Display', serif;">
+            <h1 style="font-size: 36px; margin-bottom: 12px; color: #1a0a00; font-weight: 500;">${collection.h1}</h1>
+            <p style="font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.8; font-weight: 600; color: #8c7355; text-transform: uppercase; letter-spacing: 1px;">${collection.introTitle}</p>
+            <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.7; max-width: 800px; margin: 16px auto 0 auto; line-height: 1.6;">${collection.introBody}</p>
+          </div>
 
-  let shopHtml = baseHtml
-    .replace(/<title>.*?<\/title>/, "<title>Shop Premium Indian Ethnic Ensembles | Mukesh Saree Centre</title>")
-    .replace(
-      /<meta name="description" content=".*?"\s*\/>/,
-      `<meta name="description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978." />`
-    );
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px; margin-bottom: 60px;">
+            ${colProducts.map(getProductCardHtml).join("")}
+          </div>
 
-  const shopOgTags = `<!-- Dynamic OG Tags -->
-    <meta property="og:title" content="Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre" />
-    <meta property="og:description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978." />
-    <meta property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
-    <meta property="og:url" content="https://mukeshsarees.com/shop" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Mukesh Saree Centre" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre" />
-    <meta name="twitter:description" content="Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978." />
-    <meta name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
-    <link rel="canonical" href="https://mukeshsarees.com/shop" />
-    <!-- End Dynamic OG Tags -->`;
+          <!-- Internal Nav & SEO Silo -->
+          <section style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 40px; margin-bottom: 40px;">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 24px; color: #1a0a00;">Explore More Collections</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; font-family: 'Inter', sans-serif; font-size: 14px;">
+              <a href="/shop" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">All Products</a>
+              <a href="/sarees/banarasi-sarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Banarasi Silk</a>
+              <a href="/sarees/linen-sarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Linen Sarees</a>
+              <a href="/sarees/cotton-sarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Cotton Sarees</a>
+              <a href="/lehengas" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Lehengas</a>
+              <a href="/wholesalesarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Wholesale Enquiries</a>
+            </div>
+          </section>
 
-  shopHtml = shopHtml.replace(defaultOgBlockRegex, shopOgTags);
-  shopHtml = shopHtml.replace("</head>", `<script type="application/ld+json">${JSON.stringify(shopSchema)}</script></head>`);
+        </main>
 
-  writePage("shop", shopHtml);
-  console.log("[PRERENDER] Shop static route compiled.");
+        ${getFooterHtml()}
+      </div>
+    `;
+
+    const shopOgTags = `<!-- Dynamic OG Tags -->
+      <meta data-rh="true" property="og:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
+      <meta data-rh="true" property="og:description" content="${collection.description}" />
+      <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
+      <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${collection.route}" />
+      <meta data-rh="true" property="og:type" content="website" />
+      <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
+      <meta data-rh="true" property="og:image:width" content="1200" />
+      <meta data-rh="true" property="og:image:height" content="630" />
+      <meta data-rh="true" property="og:image:type" content="image/jpeg" />
+      <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+      <meta data-rh="true" name="twitter:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
+      <meta data-rh="true" name="twitter:description" content="${collection.description}" />
+      <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
+      <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}" />
+      <!-- End Dynamic OG Tags -->`;
+
+    const shopHtml = createStaticPage({
+      htmlTemplate: baseHtml,
+      bodyHtml: shopBody,
+      title: `${collection.title} | ${BUSINESS_INFO.name}`,
+      description: collection.description,
+      customOgTags: shopOgTags,
+      schemaJson: shopSchema
+    });
+
+    writePage(collection.route, shopHtml);
+    console.log(`[PRERENDER] Static route compiled: /${collection.route} (${colProducts.length} items)`);
+  }
 
 
   // 3. GENERATE PRODUCT PAGES (dist/product/[slug]/index.html)
@@ -570,7 +737,7 @@ async function runPrerender() {
     };
 
     // Google Product SEO JSON-LD schema
-    const prodSchema = {
+    const prodSchema: any = {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": p.name,
@@ -580,28 +747,11 @@ async function runPrerender() {
       "mpn": p.sku || `MSC-${p.id}`,
       "brand": {
         "@type": "Brand",
-        "name": "Mukesh Saree Centre"
-      },
-      "review": {
-        "@type": "Review",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5"
-        },
-        "author": {
-          "@type": "Person",
-          "name": "Arpita Shinde"
-        }
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": String(p.rating || 4.8),
-        "reviewCount": "18"
+        "name": BUSINESS_INFO.name
       },
       "offers": {
         "@type": "Offer",
-        "url": `https://mukeshsarees.com/product/${p.slug}`,
+        "url": `${BUSINESS_INFO.website}/product/${p.slug}`,
         "priceCurrency": "INR",
         "price": String(p.price),
         "priceValidUntil": "2030-01-01",
@@ -609,10 +759,39 @@ async function runPrerender() {
         "availability": p.stock === 0 ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
         "seller": {
           "@type": "Organization",
-          "name": "Mukesh Saree Centre"
+          "name": BUSINESS_INFO.name
         }
       }
     };
+    
+    // Only include Review and AggregateRating schema if the product has real, verified reviews
+    if (p.reviews && p.reviews.length > 0) {
+      const totalReviews = p.reviews.length;
+      const avgRating = p.reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / totalReviews;
+      const bestReview = p.reviews.reduce((prev: any, current: any) => (prev.rating > current.rating) ? prev : current);
+      
+      prodSchema.aggregateRating = {
+        "@type": "AggregateRating",
+        "ratingValue": avgRating.toFixed(1),
+        "reviewCount": totalReviews.toString()
+      };
+      
+      prodSchema.review = {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": bestReview.rating.toString(),
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "author": {
+          "@type": "Person",
+          "name": bestReview.author || "Verified Customer"
+        },
+        "reviewBody": bestReview.text || "I bought this product.",
+        "datePublished": bestReview.date ? new Date(bestReview.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+      };
+    }
 
     const wsrvImgMain = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=800&output=webp&q=85`;
 
@@ -687,45 +866,43 @@ async function runPrerender() {
       ? `💰 ₹${p.price} (${discountPercent}% OFF)` 
       : `💰 ₹${p.price}`;
 
-    const prodDesc = `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since 1978`;
-    const pageTitle = `${p.name} | Mukesh Saree Centre`;
+    const prodDesc = `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since ${BUSINESS_INFO.established}`;
+    const pageTitle = `${p.name} | ${BUSINESS_INFO.name}`;
     
-    let prodHtml = baseHtml
-      .replace(/<title>.*?<\/title>/, `<title>${sanitize(pageTitle)}</title>`)
-      .replace(
-        /<meta name="description" content=".*?"\s*\/>/,
-        `<meta name="description" content="${sanitize(prodDesc)}" />`
-      );
- 
     const dynamicTags = `<!-- Dynamic OG Tags -->
-    <meta property="og:title" content="${sanitize(pageTitle)}" />
-    <meta property="og:description" content="${sanitize(prodDesc)}" />
-    <meta property="og:image" content="${wsrvImgLandscape}" />
-    <meta property="og:image:secure_url" content="${wsrvImgLandscape}" />
-    <meta property="og:url" content="${originalUrl}" />
-    <meta property="og:type" content="product" />
-    <meta property="og:site_name" content="Mukesh Saree Centre" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${sanitize(pageTitle)}" />
-    <meta name="twitter:description" content="${sanitize(prodDesc)}" />
-    <meta name="twitter:image" content="${wsrvImgLandscape}" />
-    <link rel="canonical" href="${originalUrl}" />
+    <meta data-rh="true" property="og:title" content="${sanitize(pageTitle)}" />
+    <meta data-rh="true" property="og:description" content="${sanitize(prodDesc)}" />
+    <meta data-rh="true" property="og:image" content="${wsrvImgLandscape}" />
+    <meta data-rh="true" property="og:image:secure_url" content="${wsrvImgLandscape}" />
+    <meta data-rh="true" property="og:url" content="${originalUrl}" />
+    <meta data-rh="true" property="og:type" content="product" />
+    <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
+    <meta data-rh="true" property="og:image:width" content="1200" />
+    <meta data-rh="true" property="og:image:height" content="630" />
+    <meta data-rh="true" property="og:image:type" content="image/jpeg" />
+    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+    <meta data-rh="true" name="twitter:title" content="${sanitize(pageTitle)}" />
+    <meta data-rh="true" name="twitter:description" content="${sanitize(prodDesc)}" />
+    <meta data-rh="true" name="twitter:image" content="${wsrvImgLandscape}" />
+    <link data-rh="true" rel="canonical" href="${originalUrl}" />
     <!-- End Dynamic OG Tags -->`;
 
-    prodHtml = prodHtml.replace(defaultOgBlockRegex, dynamicTags);
+    const prodHtml = createStaticPage({
+      htmlTemplate: baseHtml,
+      bodyHtml: productBody,
+      title: sanitize(pageTitle),
+      description: sanitize(prodDesc),
+      customOgTags: dynamicTags
+    });
 
     // Inject Schemas
-    prodHtml = prodHtml.replace(
+    const finalProdHtml = prodHtml.replace(
       "</head>",
-      `<script type="application/ld+json">${JSON.stringify(prodBreadcrumb)}</script>
-       <script type="application/ld+json">${JSON.stringify(prodSchema)}</script></head>`
+      `<script type="application/ld+json">${JSON.stringify(prodBreadcrumb)}</script>\n<script type="application/ld+json">${JSON.stringify(prodSchema)}</script></head>`
     );
 
     // Save
-    writePage(`product/${p.slug}`, prodHtml);
+    writePage(`product/${p.slug}`, finalProdHtml);
   }
 
 
@@ -733,20 +910,20 @@ async function runPrerender() {
   const staticPages = [
     {
       dir: "contact",
-      title: "Contact Boutique — Mukesh Saree Centre, Gandhibagh, Nagpur",
-      desc: "Contact Mukesh Saree Centre, Gandhibagh Nagpur. Call +91 7020664641. Open 11:30AM–9:30PM (closed Mondays). Bridal saree bookings, custom orders welcome.",
+      title: "Contact Boutique — ${BUSINESS_INFO.name}, ${BUSINESS_INFO.address.area}, ${BUSINESS_INFO.address.city}",
+      desc: "Contact ${BUSINESS_INFO.name}, ${BUSINESS_INFO.address.area} ${BUSINESS_INFO.address.city}. Call ${BUSINESS_INFO.phone}. Open 11:30AM–9:30PM (closed Mondays). Bridal saree bookings, custom orders welcome.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
             <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Contact Us</h1>
-            <p style="font-size: 15px; line-height: 1.8; color: #4a4a4a; margin-bottom: 40px;">For any inquiries, sizing requests, bridal booking, or support with your cash-on-delivery or online payments, please contact our Nagpur showroom or write to us through our direct email.</p>
+            <p style="font-size: 15px; line-height: 1.8; color: #4a4a4a; margin-bottom: 40px;">For any inquiries, sizing requests, bridal booking, or support with your cash-on-delivery or online payments, please contact our ${BUSINESS_INFO.address.city} showroom or write to us through our direct email.</p>
             
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; margin-bottom: 48px;">
               <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; margin-top: 0; margin-bottom: 24px; color: #1a0a00;">Store Showroom</h2>
-              <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">📍 <strong>Address:</strong> Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India</p>
-              <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">📞 <strong>Phone:</strong> +91 7020664641</p>
-              <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">✉ <strong>Email:</strong> info@mukeshsarees.com</p>
+              <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">📍 <strong>Address:</strong> ${BUSINESS_INFO.address.fullAddress}, India</p>
+              <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">📞 <strong>Phone:</strong> ${BUSINESS_INFO.phone}</p>
+              <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">✉ <strong>Email:</strong> ${BUSINESS_INFO.email}</p>
               <p style="font-size: 14px; line-height: 1.6; margin-bottom: 0;">⏰ <strong>Hours:</strong> 11:30 AM to 9:30 PM (All days except Mon)</p>
             </div>
           </main>
@@ -756,7 +933,7 @@ async function runPrerender() {
     },
     {
       dir: "shipping-policy",
-      title: "Shipping & Delivery Policy | Mukesh Saree Centre",
+      title: "Shipping & Delivery Policy | ${BUSINESS_INFO.name}",
       desc: "Learn about our free shipping across India, delivery timelines, trusted courier partners, COD availability, and order tracking.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
@@ -792,8 +969,8 @@ async function runPrerender() {
     },
     {
       dir: "return-policy",
-      title: "Returns & Refund Policy — Mukesh Saree Centre",
-      desc: "Mukesh Saree Centre return policy — 7-day returns on all products. Refund via UPI/Bank Transfer within 3-5 business days. Easy hassle-free process.",
+      title: "Returns & Refund Policy — ${BUSINESS_INFO.name}",
+      desc: "${BUSINESS_INFO.name} return policy — 7-day returns on all products. Refund via UPI/Bank Transfer within 3-5 business days. Easy hassle-free process.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
@@ -806,7 +983,7 @@ async function runPrerender() {
               <p>Returns are accepted within 7 days of package delivery. The items must be unused, unwashed, unaltered, and retain all native tags and designer cardboards.</p>
 
               <h3>2. How to Initiate a Return</h3>
-              <p>Email us at info@mukeshsarees.com or WhatsApp us at +91 7020664641 with your Order ID and photo of the item. Our team will verify eligibility.</p>
+              <p>Email us at ${BUSINESS_INFO.email} or WhatsApp us at ${BUSINESS_INFO.phone} with your Order ID and photo of the item. Our team will verify eligibility.</p>
 
               <h3>3. Refunds</h3>
               <p>Once verified, refunds are processed via Bank Transfer or GPay within 3-5 business days. For COD orders, refund options include store credit or UPI/Bank transfers securely.</p>
@@ -818,15 +995,15 @@ async function runPrerender() {
     },
     {
       dir: "terms",
-      title: "Terms & Conditions | Mukesh Saree Centre",
-      desc: "Review the terms and conditions for Mukesh Saree Centre. Understanding our guidelines, policies, and terms ensures a transparent and smooth shopping experience.",
+      title: "Terms & Conditions | ${BUSINESS_INFO.name}",
+      desc: "Review the terms and conditions for ${BUSINESS_INFO.name}. Understanding our guidelines, policies, and terms ensures a transparent and smooth shopping experience.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
             <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Terms & Conditions</h1>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
-              <p style="margin-top: 0; font-style: italic; border-left: 4px solid #F1E5C1; padding-left: 12px;">"Welcome to Mukesh Saree Centre. By accessing our website, placing an order, or using our services, you agree to comply with and be bound by the following legally protected terms and conditions."</p>
+              <p style="margin-top: 0; font-style: italic; border-left: 4px solid #F1E5C1; padding-left: 12px;">"Welcome to ${BUSINESS_INFO.name}. By accessing our website, placing an order, or using our services, you agree to comply with and be bound by the following legally protected terms and conditions."</p>
               
               <h3 style="margin-top: 24px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;">1. Acceptance of Terms & Eligibility</h3>
               <p>By using mukeshsarees.com, you confirm that you have read, understood, and agreed to these Terms & Conditions. You must be at least 18 years of age (or shopping under parental supervision) to make purchases. We reserve the right to refuse service to anyone at our sole discretion.</p>
@@ -835,7 +1012,7 @@ async function runPrerender() {
               <p>We strive to accurately represent product color and detail; however, variations may exist based on device displays. Once dispatched, orders cannot be cancelled. We utilize Razorpay for safe, secure online billing. For our detailed logistics outlines, refer to our Shipping Policy and Refund Rules.</p>
 
               <h3 style="margin-top: 24px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;">3. Intellectual Property Rights</h3>
-              <p>Content including images, text, user interfaces, branding, and graphics remain the exclusive, licensed property of Mukesh Saree Centre under Indian copyright laws. Unlawful extraction or usage of this material without written consent is strictly prohibited.</p>
+              <p>Content including images, text, user interfaces, branding, and graphics remain the exclusive, licensed property of ${BUSINESS_INFO.name} under Indian copyright laws. Unlawful extraction or usage of this material without written consent is strictly prohibited.</p>
             </div>
           </main>
           ${getFooterHtml()}
@@ -844,14 +1021,50 @@ async function runPrerender() {
     },
     {
       dir: "wholesalesarees",
-      title: "Mukesh Saree Centre Wholesale VIP Club",
-      desc: "Join Mukesh Saree Centre Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers.",
+      title: "${BUSINESS_INFO.name} Wholesale VIP Club",
+      desc: "Join ${BUSINESS_INFO.name} Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers.",
       body: `
         <div style="background-color: #FAF6F0; min-height: 100vh; font-family: 'Playfair Display', serif; text-align: center; padding: 80px 24px; color: #1A0A00;">
           <span style="display: inline-block; padding: 6px 16px; background-color: rgba(92, 6, 18, 0.05); color: #5C0612; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; border-radius: 99px; border: 1px solid rgba(92, 6, 18, 0.1); margin-bottom: 24px;">Wholesale Dealer Portal</span>
-          <h1 style="font-size: 36px; color: #1A0A00; font-weight: 300; margin-bottom: 12px; letter-spacing: 0.02em;">Mukesh Saree Centre <span style="display: block; font-style: italic; color: #5C0612; font-weight: 600; margin-top: 4px;">Wholesale VIP Club</span></h1>
+          <h1 style="font-size: 36px; color: #1A0A00; font-weight: 300; margin-bottom: 12px; letter-spacing: 0.02em;">${BUSINESS_INFO.name} <span style="display: block; font-style: italic; color: #5C0612; font-weight: 600; margin-top: 4px;">Wholesale VIP Club</span></h1>
           <p style="font-size: 12px; text-transform: uppercase; tracking: 3px; font-weight: bold; color: #C5A059; margin-bottom: 24px;">Exclusive Community For Saree Shop Owners</p>
-          <p style="font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.8; color: rgba(26,10,0,0.7); max-width: 600px; margin: 0 auto 32px auto; font-weight: 300;">Get Daily New Arrivals, Wholesale Prices, Fast-Selling Collections and Special Dealer Offers Directly On WhatsApp. Keep your store ahead with daily fresh stocks and unmatched margins from Nagpur's premium saree pioneer since 1978.</p>
+          <p style="font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.8; color: rgba(26,10,0,0.7); max-width: 600px; margin: 0 auto 32px auto; font-weight: 300;">Get Daily New Arrivals, Wholesale Prices, Fast-Selling Collections and Special Dealer Offers Directly On WhatsApp. Keep your store ahead with daily fresh stocks and unmatched margins from ${BUSINESS_INFO.address.city}'s premium saree pioneer since ${BUSINESS_INFO.established}.</p>
+        </div>
+      `
+    },
+    {
+      dir: "about",
+      title: "About Us | ${BUSINESS_INFO.name} Since ${BUSINESS_INFO.established}",
+      desc: "Learn about the heritage of ${BUSINESS_INFO.name}, ${BUSINESS_INFO.address.city}'s premium destination for authentic ethnic wear, established in ${BUSINESS_INFO.established}.",
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">About ${BUSINESS_INFO.name}</h1>
+            <p style="font-size: 16px; line-height: 1.8; color: #4a4a4a;">Established in ${BUSINESS_INFO.established}, ${BUSINESS_INFO.name} has been the heart of ethnic fashion in ${BUSINESS_INFO.address.city} for generations. We pride ourselves on offering meticulously curated collections of traditional silk, modern cotton, and designer lehengas.</p>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `
+    },
+    {
+      dir: "categories",
+      title: "All Collections & Categories | ${BUSINESS_INFO.name}",
+      desc: "Browse our entire catalog of premium ethnic clothing, from Malvika sarees and uniform sarees to bridal lehengas and festive co-ords.",
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shop By Category</h1>
+            <ul>
+               <li><a href="/shop?category=Sarees">Premium Sarees</a></li>
+               <li><a href="/shop?category=Co-Ord-Sets">Co-Ord Sets</a></li>
+               <li><a href="/malvika-saree">Malvika Saree</a></li>
+               <li><a href="/uniform-saree">Uniform Sarees</a></li>
+               <li><a href="/wedding-sarees">Wedding & Bridal</a></li>
+            </ul>
+          </main>
+          ${getFooterHtml()}
         </div>
       `
     }
@@ -859,28 +1072,30 @@ async function runPrerender() {
 
   console.log("[PRERENDER] Compiling static policies...");
   for (const page of staticPages) {
-    let phtml = baseHtml
-      .replace(/<title>.*?<\/title>/, `<title>${page.title}</title>`)
-      .replace(/<meta name="description" content=".*?"\s*\/>/, `<meta name="description" content="${page.desc}" />`);
-
     const pageOgTags = `<!-- Dynamic OG Tags -->
-    <meta property="og:title" content="${page.title}" />
-    <meta property="og:description" content="${page.desc}" />
-    <meta property="og:image" content="https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
-    <meta property="og:url" content="https://mukeshsarees.com/${page.dir}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Mukesh Saree Centre" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${page.title}" />
-    <meta name="twitter:description" content="${page.desc}" />
-    <meta name="twitter:image" content="https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
-    <link rel="canonical" href="https://mukeshsarees.com/${page.dir}" />
+    <meta data-rh="true" property="og:title" content="${page.title}" />
+    <meta data-rh="true" property="og:description" content="${page.desc}" />
+    <meta data-rh="true" property="og:image" content="https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+    <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${page.dir}" />
+    <meta data-rh="true" property="og:type" content="website" />
+    <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
+    <meta data-rh="true" property="og:image:width" content="1200" />
+    <meta data-rh="true" property="og:image:height" content="630" />
+    <meta data-rh="true" property="og:image:type" content="image/jpeg" />
+    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+    <meta data-rh="true" name="twitter:title" content="${page.title}" />
+    <meta data-rh="true" name="twitter:description" content="${page.desc}" />
+    <meta data-rh="true" name="twitter:image" content="https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}" />
     <!-- End Dynamic OG Tags -->`;
 
-    phtml = phtml.replace(defaultOgBlockRegex, pageOgTags);
+    const phtml = createStaticPage({
+      htmlTemplate: baseHtml,
+      bodyHtml: page.body,
+      title: page.title,
+      description: page.desc,
+      customOgTags: pageOgTags
+    });
 
     writePage(page.dir, phtml);
   }
@@ -891,6 +1106,15 @@ async function runPrerender() {
   
   const robotsCompiled = `User-agent: *
 Allow: /
+Allow: /shop
+Allow: /product/*
+Allow: /sarees/*
+Allow: /malvika-saree
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /cart
+Disallow: /checkout
+Disallow: /wishlist
 
 Sitemap: https://mukeshsarees.com/sitemap.xml`;
 

@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { products } from "../src/mockData";
+import { guidesMeta } from "../src/data/guidesMeta";
 
 async function generateSitemap() {
   const publicDir = path.resolve(process.cwd(), "public");
@@ -23,8 +24,32 @@ async function generateSitemap() {
     { path: "/shipping-policy", changefreq: "yearly", priority: "0.4" },
     { path: "/return-policy", changefreq: "yearly", priority: "0.4" },
     { path: "/terms", changefreq: "yearly", priority: "0.3" },
-    { path: "/wishlist", changefreq: "monthly", priority: "0.5" }
+    { path: "/wishlist", changefreq: "monthly", priority: "0.5" },
+    { path: "/about", changefreq: "yearly", priority: "0.7" },
+    { path: "/categories", changefreq: "weekly", priority: "0.8" }
   ];
+
+  // Specific AI SEO Pages
+  const aiPages = [
+    "malvika-saree",
+    "mukesh-saree",
+    "uniform-saree",
+    "saree-shop-in-nagpur",
+    "bridal-sarees-nagpur",
+    "wedding-sarees",
+    "paithani-sarees",
+    "ethnic-wear-nagpur",
+    "saree-buying-guide",
+    "saree-care-guide"
+  ];
+
+  for (const page of aiPages) {
+    routes.push({
+      path: `/${page}`,
+      changefreq: "monthly",
+      priority: "0.9"
+    });
+  }
 
   // Dynamic product URLs from mockData
   const seenSlugs = new Set<string>();
@@ -37,6 +62,15 @@ async function generateSitemap() {
         priority: "0.8"
       });
     }
+  }
+
+  // Knowledge base guides
+  for (const guide of guidesMeta) {
+    routes.push({
+      path: `/guides/${guide.slug}`,
+      changefreq: "monthly",
+      priority: "0.8"
+    });
   }
 
   const sitemapLines: string[] = [];

@@ -1,4 +1,6 @@
 
+import { BUSINESS_INFO } from './config/business';
+
 const BASE_URL = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const getValidApiUrl = () => {
@@ -15,10 +17,10 @@ const getValidApiUrl = () => {
 
 export const CONFIG = {
   API_BASE_URL: getValidApiUrl() || BASE_URL || '',
-  STORE_NAME: import.meta.env.VITE_SITE_NAME || 'Mukesh Saree Centre',
-  STORE_EMAIL: 'info@mukeshsarees.com',
-  STORE_PHONE: import.meta.env.VITE_STORE_PHONE || '+91 7020664641',
-  STORE_ADDRESS: import.meta.env.VITE_STORE_ADDRESS || 'Jagnath Road, Gandhibagh, Nagpur 440002',
+  STORE_NAME: import.meta.env.VITE_SITE_NAME || BUSINESS_INFO.name,
+  STORE_EMAIL: BUSINESS_INFO.email,
+  STORE_PHONE: import.meta.env.VITE_STORE_PHONE || BUSINESS_INFO.phone,
+  STORE_ADDRESS: import.meta.env.VITE_STORE_ADDRESS || BUSINESS_INFO.address.fullAddress,
   RAZORPAY_KEY_ID: import.meta.env.VITE_RAZORPAY_KEY_ID, // STRICTLY KEY_ID NO SECRET
 };
 
@@ -37,7 +39,7 @@ export function getWhatsAppNumber(): string {
       return digits;
     }
   }
-  return '917020664641';
+  return BUSINESS_INFO.phone.replace(/[^0-9]/g, '');
 }
 
 export function getApiUrl(endpoint: string): string {

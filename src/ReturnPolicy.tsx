@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "./config/business";
 import { useState } from 'react';
 import { SEO } from './components/SEO';
 import { ShieldCheck, RefreshCcw, HandCoins, AlertCircle, FileText, PackageX, HelpCircle, ChevronDown, ChevronUp, CheckCircle2, Loader2 } from 'lucide-react';
@@ -368,12 +369,12 @@ export default function ReturnPolicy() {
                   <div>
                     <span className="text-primary-950/60 mr-2">Call/WhatsApp:</span>
                     <a
-                      href="https://wa.me/917020664641"
+                      href={`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-bold text-primary-950 hover:text-gold-600 transition-colors"
                     >
-                      +91 7020664641
+                      {BUSINESS_INFO.phone}
                     </a>
                   </div>
                 </div>
@@ -534,7 +535,7 @@ export default function ReturnPolicy() {
                 <Link to="/contact" className="inline-block bg-white text-primary-950 px-8 py-3 text-[12px] uppercase tracking-widest font-bold hover:bg-gold-50 transition-colors w-full sm:w-auto text-center">
                   CONTACT SUPPORT
                 </Link>
-                <a href="mailto:info@mukeshsarees.com" className="inline-block border border-gold-500 text-gold-400 px-8 py-3 text-[12px] uppercase tracking-widest font-bold hover:bg-gold-500 hover:text-white transition-colors w-full sm:w-auto text-center">
+                <a href={`mailto:${BUSINESS_INFO.email}`} className="inline-block border border-gold-500 text-gold-400 px-8 py-3 text-[12px] uppercase tracking-widest font-bold hover:bg-gold-500 hover:text-white transition-colors w-full sm:w-auto text-center">
                   EMAIL US
                 </a>
               </div>

@@ -639,6 +639,7 @@ apiRouter.post(["/meta-capi", "/sys-metric"], async (req, res) => {
       if (!em) return undefined;
       const val = em.toString().trim().toLowerCase();
       if (
+        val === 'info.mukeshsareecentre@gmail.com' ||
         val === 'info@mukeshsarees.com' ||
         val === 'test@gmail.com' ||
         val === 'test@example.com' ||

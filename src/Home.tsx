@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "./config/business";
 import { Link } from "react-router";
 import { useState, useRef, useEffect } from "react";
 import { ProductCard } from "./components/ProductCard";
@@ -85,7 +86,7 @@ const LOOK_REELS = [
   },
   {
     q: "Where is your physical saree shop located?",
-    a: "Our landmark physical retail flagship is proudly located at Jagnath Road, Opposite Wholesale Cloth Market Gate No. 2, Gandhibagh, Nagpur, Maharashtra - 440002. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Saturday from 10:00 AM to 8:00 PM."
+    a: "Our landmark physical retail flagship is proudly located at {BUSINESS_INFO.address.fullAddress}. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Saturday from 10:00 AM to 8:00 PM."
   },
   {
     q: "Do you provide Cash on Delivery (COD) for online saree shopping?",
@@ -361,8 +362,8 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <SEO
-        title="Mukesh Saree Centre | Malvika Saree, Uniform Saree & Ethnic Wear in Nagpur"
-        description="Shop Malvika saree, uniform saree, bridal sarees, wedding sarees, lehengas and ethnic wear from Mukesh Saree Centre, Nagpur. Trusted saree destination since 1978."
+        title="Mukesh Saree Centre – Wholesale & Retail Sarees Nagpur"
+        description="Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery."
         image="https://mukeshsarees.com/images/og-home.jpg"
         url="/"
       />
