@@ -1,9 +1,15 @@
 User-agent: *
 Allow: /
+Allow: /product/
+Allow: /shop/
+Allow: /guides/
+Allow: /images/
+Disallow: /admin/
+Disallow: /*?*key=
+Disallow: /*?*token=
+Disallow: /api/
 Disallow: /cart
 Disallow: /checkout
-Disallow: /account
-Disallow: /admin
+Disallow: /thank-you
 
-# Sitemap URL
 Sitemap: https://mukeshsarees.com/sitemap.xml

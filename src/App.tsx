@@ -28,6 +28,9 @@ const About = lazy(() => import('./About'));
 const Faq = lazy(() => import('./Faq'));
 const GuideIndex = lazy(() => import('./pages/GuideIndex'));
 const GuideDetail = lazy(() => import('./pages/GuideDetail'));
+const SeoLandingPage = lazy(() => import('./pages/SeoLandingPage'));
+
+import { GlobalSchema } from './components/GlobalSchema';
 
 import { CONFIG, submitToGoogleSheets, getApiUrl } from "./config";
 
@@ -206,6 +209,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <GlobalSchema />
       {triggered && <ExitIntentPopup onDismiss={dismiss} onSubmit={handleSubmitLead} />}
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
@@ -233,6 +237,9 @@ export default function App() {
             <Route path="faqs" element={<Faq />} />
             <Route path="guides" element={<GuideIndex />} />
             <Route path="guides/:slug" element={<GuideDetail />} />
+            
+            {/* AI-Friendly SEO Landing Pages */}
+            <Route path=":slug" element={<SeoLandingPage />} />
           </Route>
           <Route path="wholesalesarees" element={<WholesaleSarees />} />
         </Routes>

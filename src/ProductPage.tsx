@@ -23,6 +23,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState, useMemo, Fragment } from "react";
 import { Helmet } from "react-helmet-async";
 import { ProductDescription } from "./components/ProductDescription";
+import { ProductSeoContent } from "./components/ProductSeoContent";
 import { ProductAccordion } from "./components/ProductAccordion";
 import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
@@ -861,17 +862,109 @@ export default function ProductPage() {
     ])
   };
 
+  const isSareeProduct = product.category.toLowerCase().includes("saree") || product.name.toLowerCase().includes("saree");
+  
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `Is the color of the ${product.name} exactly as shown in the picture?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `We strive for 95% color accuracy. Due to bright studio lighting and individual monitor settings, very slight variations may occur, but the genuine beauty of the ${product.fabric} is always preserved.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Cash on Delivery (COD) available for this item?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Cash on Delivery is available across all serviceable pincodes in India for this item."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `How do I know if this ${product.fabric} is authentic?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mukesh Saree Centre has been a highly trusted name since 1978. Every piece undergoes rigorous quality checks to authenticate the weave and material."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I get the blouse stitched before delivery?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Currently, this is provided as an unstitched blouse piece. However, you can contact our WhatsApp support team to inquire about custom tailoring options prior to dispatch."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will this fabric shrink after washing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Premium ${product.fabric} usually does not shrink if care instructions are strictly followed. Professional dry cleaning is highly recommended.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `Is this ${product.category} suitable for plus-size women?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": isSareeProduct ? "Absolutely. A 5.5-meter drape is universally flattering, easily accommodating and elegantly draping around all body types." : "Please refer to our detailed size chart. We ensure our cuts are flattering and comfortable across our entire size range."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How fast will my order be dispatched?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Orders are typically processed and dispatched within 24 to 48 hours from our Nagpur facility."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer wholesale or bulk discounts for this product?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we cater to boutique owners and bulk buyers. Please reach out to our wholesale department via our Contact Us page for specialized pricing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What do I do if I receive a damaged product?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "While rare, if you receive a defective item, simply share an unboxing video via WhatsApp within 24 hours of delivery, and we will arrange a swift replacement or refund."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I wear this for a full-day event without feeling uncomfortable?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Without a doubt! This piece was selected specifically for its breathability and light weight, ensuring it remains comfortable even during 12-hour events."
+        }
+      }
+    ]
+  };
+
+  const seoTitle = `${product.name} | Authentic ${product.fabric} ${product.category}`.substring(0, 60);
+  const seoDescription = `Buy ${product.name} online. Premium ${product.fabric} ${product.category} perfect for elegant occasions, weddings, and daily wear. Free Shipping & COD.`.substring(0, 160);
+
   return (
     <div className="bg-primary-50 product-page-content pb-[70px] md:pb-0">
       <SEO
-        title={`${product.name} – Mukesh Saree Centre`}
-        description={cleanSEOText(product.description).substring(0, 160)}
+        title={seoTitle}
+        description={seoDescription}
         keywords={product.keywords}
         image={product.image}
         url={`/product/${product.slug}`}
         type="product"
         product={product}
-        schema={[productSchema, breadcrumbSchema] as any}
+        schema={[productSchema, breadcrumbSchema, faqSchema] as any}
       />
 
       <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
@@ -1058,6 +1151,7 @@ export default function ProductPage() {
                   title={product.name}
                 >
                   {product.name}
+                  <span className="sr-only"> - Premium {product.fabric} {product.category} for Women</span>
                 </h1>
 
               </header>
@@ -1325,6 +1419,9 @@ export default function ProductPage() {
               {/* Why Shop With Us Custom Section */}
               <WhyShopWithUs />
 
+              {/* Hidden AI SEO Core Knowledge Block */}
+              <ProductSeoContent product={product} />
+
               {/* Description */}
               <section className="product-info pt-1 border-t border-[var(--color-border)] mt-1">
                 <ProductDescription description={product.description} product={product} />
@@ -1395,16 +1492,46 @@ export default function ProductPage() {
               ))}
           </div>
 
+          {/* Additional AI SEO Component Grids */}
+          {[
+            { title: "Customers Also Bought", offset: 2 },
+            { title: "Recently Viewed", offset: 4 },
+            { title: "Related Products", offset: 6 },
+          ].map((gridSet, setIdx) => {
+            const gridProducts = products
+              .filter((p) => p.id !== product.id && !p.isVariant)
+              .sort((a, b) => b.price - a.price)
+              .slice(gridSet.offset, gridSet.offset + 4);
+              
+            if(gridProducts.length === 0) return null;
+
+            return (
+              <div key={setIdx} className="mt-6 md:mt-10 pt-6 border-t border-[var(--color-border)]">
+                <div className="flex justify-between items-center mb-4 md:mb-6">
+                  <h2 className="text-xl md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide">
+                    {gridSet.title}
+                  </h2>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 sm:gap-6 md:gap-8 w-full">
+                  {gridProducts.map((p) => (
+                    <div key={p.id} className="w-full">
+                      <ProductCard product={p} priority={false} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+
           {/* Internal Links / Popular Searches - AI SEO Optimized */}
           <div className="mt-12 pt-6 border-t border-[var(--color-border)]">
-            <h3 className="text-sm font-serif text-[var(--color-dark)] mb-4">Popular Searches</h3>
+            <h3 className="text-sm font-serif text-[var(--color-dark)] mb-4">Explore More Collections & Guides</h3>
             <div className="flex flex-wrap gap-2 md:gap-3">
-              <Link to="/shop?category=Sarees" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Wedding Sarees</Link>
-              <Link to="/shop?category=Sarees&fabric=Cotton" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Cotton Handloom Sarees</Link>
-              <Link to="/shop?category=Sarees&fabric=Silk" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Premium Silk Sarees</Link>
-              <Link to="/shop?category=Linen Sarees" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Pure Linen Sarees</Link>
-              <Link to="/shop?category=Co-Ord Sets" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Designer Co-Ord Sets</Link>
-              <Link to="/shop" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Shop Latest Ethnic Wear</Link>
+              <Link to={`/shop?category=${product.category}`} className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">More {product.category}</Link>
+              <Link to="/guides/saree-fabric-guide" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Saree Fabric Guide</Link>
+              <Link to="/guides/saree-care-guide" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Saree Care Guide</Link>
+              <Link to="/wholesale-sarees" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Wholesale Buying</Link>
+              <Link to="/shop" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Similar Premium Products</Link>
               <Link to="/about" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">About Mukesh Saree Centre</Link>
             </div>
           </div>

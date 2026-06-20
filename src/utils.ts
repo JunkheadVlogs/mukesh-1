@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getImageAlt(product: Partial<Product>) {
-  if (!product) return "Premium Traditional Indian Clothing - Mukesh Saree Centre Nagpur";
+  if (!product) return "Authentic Premium Traditional Indian Clothing from Mukesh Saree Centre";
   
   const name = (product.name || "").trim();
   const color = (product.color || "").trim();
@@ -24,24 +24,28 @@ export function getImageAlt(product: Partial<Product>) {
   }
 
   const parts = [];
-  parts.push("Buy");
-  parts.push(name);
-  if (color && !name.toLowerCase().includes(color.toLowerCase())) {
-    parts.push(`in elegant ${color} color`);
-  }
+  parts.push("High-Quality Authentic");
+  
   if (fabric && !name.toLowerCase().includes(fabric.toLowerCase())) {
-    parts.push(`crafted with authentic ${fabric}`);
+    parts.push(fabric);
   }
+  
+  if (color && !name.toLowerCase().includes(color.toLowerCase())) {
+    parts.push(`${color} Color`);
+  }
+  
+  parts.push(name);
+  
   if (!name.toLowerCase().includes(categoryDisplay.toLowerCase())) {
     parts.push(categoryDisplay);
   }
-  parts.push("for festive and casual wear - Mukesh Saree Centre Nagpur");
+  
+  parts.push("perfect for Wedding, Festival, or Party Wear from Mukesh Saree Centre");
 
   let altText = parts.join(" ").replace(/\s+/g, " ").trim();
   
-  // Truncate to maximum standard alt text length for search engines (around 125 chars recommended, but 150 max is fine here)
   if (altText.length > 200) {
-    altText = `${name} in ${color} ${fabric} ${categoryDisplay} - Mukesh Saree Centre Nagpur`;
+    altText = `${name} in ${color} ${fabric} ${categoryDisplay} - Mukesh Saree Centre`;
   }
   
   return altText;

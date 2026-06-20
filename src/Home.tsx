@@ -361,43 +361,11 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <SEO
-        title="Mukesh Saree Centre — Buy Sarees, Lehengas & Ethnic Wear Online | Since 1978, Nagpur"
-        description="Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles."
+        title="Mukesh Saree Centre | Malvika Saree, Uniform Saree & Ethnic Wear in Nagpur"
+        description="Shop Malvika saree, uniform saree, bridal sarees, wedding sarees, lehengas and ethnic wear from Mukesh Saree Centre, Nagpur. Trusted saree destination since 1978."
         image="https://mukeshsarees.com/images/og-home.jpg"
         url="/"
       />
-
-      {/* Intro section for SEO - Visually Hidden */}
-      <section className="sr-only">
-        <h1>Mukesh Saree Centre – Premium Sarees Online & Wholesale Sarees in India</h1>
-        <h2>About Mukesh Saree Centre</h2>
-        <p>
-          Welcome to Mukesh Saree Centre, your ultimate destination for premium <a href="/shop?category=Sarees">sarees online</a> and <a href="/wholesale-sarees">wholesale sarees</a> in India. Established in 1978 in Nagpur, we have been a trusted name in the world of ethnic fashion. With decades of heritage, our Nagpur showroom offers an exclusive offline shopping experience, while our online store provides seamless pan-India delivery, ensuring every woman has access to the finest drapes.
-        </p>
-        <p>
-          Our expansive saree collections are thoughtfully curated to cater to every occasion, preference, and season. Whether you are looking for luxurious Banarasi sarees that exude timeless elegance, breathable cotton sarees for everyday comfort, or sophisticated linen sarees for contemporary styling, we have something perfect for you. We also pride ourselves on our extensive range of <a href="/shop?category=Co-Ord-Sets">co-ord sets</a> and uniform sarees, tailored for corporate professionals, educational institutions, and healthcare staff who require matching, durable, and elegant attire.
-        </p>
-        <p>
-          At Mukesh Saree Centre, we are dedicated to serving both retail and wholesale customers. Our wholesale sarees division provides unmatched support, premium quality, and competitive pricing for boutiques and resellers across India. For our retail shoppers, experiencing premium online shopping with us is effortless. Enjoy secure checkout, the convenience of COD (Cash on Delivery) available nationwide, and free shipping on your orders. Join thousands of satisfied customers who trust our 46 years of legacy in the textile industry and let us drape you in tradition and modernity. <a href="/contact">Contact us</a> for more information.
-        </p>
-      </section>
-
-      {/* Why Choose us SEO section */}
-      <section className="sr-only">
-        <h2>Why Choose Mukesh Saree Centre</h2>
-        <ul>
-          <li><strong>Since 1978:</strong> Deep-rooted heritage and over four decades of expertise in textiles.</li>
-          <li><strong>Trusted by thousands of customers:</strong> A legacy built on quality, transparency, and trust.</li>
-          <li><strong>Premium fabrics:</strong> We use only the finest materials for our Banarasi, cotton, and linen sarees.</li>
-          <li><strong>Affordable prices:</strong> Experience luxury without the extravagant price tags.</li>
-          <li><strong>Wholesale support:</strong> Dedicated catalogs and bulk solutions for businesses across India.</li>
-          <li><strong>Retail shopping:</strong> Flawless online shopping experience with high-resolution imagery.</li>
-          <li><strong>Secure checkout:</strong> Safe and encrypted payment gateways for total peace of mind.</li>
-          <li><strong>Fast shipping:</strong> Reliable logistics partners to ensure prompt doorstep delivery.</li>
-          <li><strong>COD available:</strong> Easy Cash on Delivery payments anywhere in India.</li>
-          <li><strong>Customer support:</strong> Helpful WhatsApp and phone consultation for sizes, styles, and orders.</li>
-        </ul>
-      </section>
 
       {/* Hero Section */}
       <section className="relative w-full h-[85vh] md:h-[90vh] bg-[#1A0A00] flex items-center overflow-hidden">
@@ -983,13 +951,13 @@ export default function Home() {
           </h2>
           <div className="space-y-4 text-[13.5px] sm:text-[15px] font-light leading-relaxed text-[var(--color-dark)]/80 text-justify sm:text-center">
             <p>
-              Founded in 1978 by the Nanakram Khemchandani family, Mukesh Saree Centre has grown into one of the largest and most trusted saree distributors in Vidarbha. For over 46 years, we have proudly shared the rich heritage of Indian ethnic wear with our customers right from our base in Nagpur, Maharashtra.
+              Founded in 1978 by the Nanakram Khemchandani family, <strong>Mukesh Saree Centre</strong> has grown into one of the largest and most trusted saree distributors in Vidarbha. For over 46 years, we have proudly shared the rich heritage of Indian ethnic wear with our customers right from our base in Nagpur, Maharashtra. We have built our reputation on unmatched quality, variety, and a deep commitment to customer trust.
             </p>
             <p>
-              We bring you an exquisite collection of over 30 varieties of premium fabrics sourced directly from weavers across Surat, Varanasi, Jaipur, Bangalore, Kolkata, and Madurai. Whether you are looking for luxurious Paithani, Banarasi, and Kanjivaram silks, chic organza and georgette, or comfortable linen and cotton sarees, our catalogue caters to your every styling need. We also feature the latest trends in designer lehengas, co-ord sets, and readymade suits.
+              We bring you an exquisite collection of over 30 varieties of premium fabrics sourced directly from weavers across Surat, Varanasi, Jaipur, Bangalore, Kolkata, and Madurai. Whether you are looking for luxurious Paithani, pure silk, elegant bridal sarees for your wedding day, or comfortable cotton and linen sarees, our catalogue caters to every occasion. Our highly popular <strong>Malvika saree</strong> collection provides incredible softness and a graceful drape, beloved by our customers for both festive and office wear. We also specialize in high-quality <strong>uniform sarees</strong>, fulfilling bulk institutional orders for schools, corporate teams, and hospitality staff with durable, color-coordinated fabrics.
             </p>
             <p>
-              With over 500+ satisfied clients, your trust remains our greatest asset. We strive to make premium ethnic fashion accessible through a seamless online shopping experience, offering Cash on Delivery (COD), free shipping across India for all orders above ₹499, and a hassle-free 7-day returns policy.
+              If you are searching for the best <strong>saree shop in Nagpur</strong> to experience these traditional fabrics in person, our showroom welcomes you. For our pan-India customers, we strive to make premium ethnic fashion accessible through a flawless online shopping experience. We offer Cash on Delivery (COD) everywhere in India, fast free shipping on all orders above ₹499, secure checkouts, and a hassle-free 7-day returns policy. Embrace the legacy of the <em>Mukesh Saree</em> brand—where tradition seamlessly meets modern elegance.
             </p>
           </div>
         </div>

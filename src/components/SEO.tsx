@@ -256,6 +256,7 @@ export function SEO({
       <meta name="title" content={displayTitle} />
       <meta name="description" content={finalDescriptionText} />
       {keywords && <meta name="keywords" content={keywords} />}
+      <meta name="robots" content="index, follow" />
       <link rel="canonical" href={absoluteUrl} />
 
       {/* Open Graph / Facebook / WhatsApp */}
