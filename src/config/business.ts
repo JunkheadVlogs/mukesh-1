@@ -11,8 +11,8 @@ export const BUSINESS_INFO = {
     country: "IN",
     fullAddress: "Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India"
   },
-  phone: "{BUSINESS_INFO.phone}",
-  email: "{BUSINESS_INFO.email}",
+  phone: "+91 7020664641",
+  email: "info@mukeshsarees.com",
   website: "https://mukeshsarees.com",
   social: [
     "https://www.facebook.com/109033288599426",

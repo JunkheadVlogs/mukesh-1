@@ -1,5 +1,6 @@
 import { BUSINESS_INFO } from "./config/business";
 import { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { SEO } from './components/SEO';
 import { 
   Search, 
@@ -31,7 +32,7 @@ const faqs: FAQ[] = [
   {
     category: "support",
     q: "Where is your physical saree shop located?",
-    a: "Our landmark physical retail flagship is proudly located at {BUSINESS_INFO.address.fullAddress}. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Saturday from 10:00 AM to 8:00 PM."
+    a: "Our landmark physical retail flagship is proudly located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Saturday from 10:00 AM to 8:00 PM."
   },
   {
     category: "payments",
@@ -251,21 +252,20 @@ export default function Faq() {
         schema={jsonLdSchema}
       />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-0">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-8 md:pb-16">
         
-        {/* Header Section */}
-        <header className="text-center mb-2">
-          <h1 className="text-2xl md:text-3xl font-serif text-primary-950 mb-2">Frequently Asked Questions</h1>
-          <div className="w-12 h-[2px] bg-gold-200 mx-auto mb-2"></div>
-          <p className="text-primary-950/70 text-xs max-w-xl mx-auto leading-relaxed">
-            Find answers to commonly asked questions about ordering, delivery, regional fabrics, customized tailoring support, and wholesale pricing.
-          </p>
+        {/* Header Section / Compact and elegant footprint */}
+        <header className="faq-header text-center mb-3 md:mb-5">
+          <h1 className="text-[18px] xs:text-[20px] sm:text-[24px] md:text-[28px] font-serif tracking-[0.05em] text-[var(--color-dark)] mb-1 md:mb-1.5 leading-[1.3] font-normal mx-auto max-w-full px-2 text-center break-words">
+            Frequently Asked Questions
+          </h1>
+          <div className="w-8 md:w-12 h-[1px] bg-[#C8A96B] mx-auto mb-0"></div>
         </header>
 
-        {/* Intelligent Search Input */}
-        <div className="max-w-xl mx-auto mb-2 relative">
-          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-primary-950/40">
-            <Search size={18} />
+        {/* Intelligent Search Input - Compact Height 40px/44px */}
+        <div className="faq-search-wrapper max-w-xl mx-auto mb-2 md:mb-3.5 relative px-1 sm:px-0">
+          <div className="absolute inset-y-0 left-0 pl-4 sm:pl-3.5 flex items-center pointer-events-none text-primary-950/40">
+            <Search size={15} className="md:w-[16px] md:h-[16px]" />
           </div>
           <input
             type="text"
@@ -274,20 +274,20 @@ export default function Faq() {
               setSearchQuery(e.target.value);
             }}
             placeholder="Search questions (e.g. shipping, Paithani, wholesale)..."
-            className="w-full bg-white pl-11 pr-4 py-3 border border-black/5 rounded-sm focus:outline-none focus:border-[#C8A96B] focus:ring-1 focus:ring-[#C8A96B]/25 text-xs tracking-wider transition-all placeholder:text-neutral-400 font-sans shadow-sm"
+            className="w-full h-[38px] md:h-[42px] bg-white pl-9 pr-14 border border-[var(--color-border)] rounded-[4px] focus:outline-none focus:border-[#C8A96B] focus:ring-1 focus:ring-[#C8A96B]/25 text-[11.5px] md:text-[12.5px] tracking-wide transition-all placeholder:text-neutral-400 font-sans shadow-sm"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-xs tracking-widest text-primary-950/40 hover:text-primary-950 uppercase font-bold"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-[9px] sm:text-[10px] tracking-widest text-[#C8A96B] hover:text-[#a6864b] uppercase font-bold"
             >
               Clear
             </button>
           )}
         </div>
 
-        {/* Categories Tab Layout */}
-        <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 mb-2 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+        {/* Categories Tab Layout - Highly Compact, responsive and uniform */}
+        <div className="faq-categories-wrapper flex flex-wrap justify-center gap-1 md:gap-1.5 mb-2.5 md:mb-4 overflow-x-auto pb-1 px-1 sm:px-0 no-scrollbar scrollbar-hide">
           {categoryLabels.map((cat) => {
             const Icon = cat.icon;
             const isActive = activeCategory === cat.id;
@@ -297,29 +297,29 @@ export default function Faq() {
                 onClick={() => {
                   setActiveCategory(cat.id);
                 }}
-                className={`flex items-center gap-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] font-sans transition-all duration-300 rounded-sm border select-none shrink-0 cursor-pointer ${
+                className={`flex items-center justify-center gap-1 px-2.5 py-1.5 md:gap-1.5 md:px-3 md:py-2 text-[9.5px] xs:text-[10px] sm:text-[10.5px] md:text-[11px] font-semibold uppercase tracking-[0.1em] font-sans transition-all duration-300 rounded-[4px] border select-none shrink-0 cursor-pointer ${
                   isActive
-                    ? "bg-primary-950 border-primary-950 text-white shadow-sm"
-                    : "bg-white border-black/5 text-primary-950/70 hover:border-[#C8A96B]/50 hover:text-primary-950"
+                    ? "bg-[var(--color-dark)] border-[var(--color-dark)] text-white shadow-sm"
+                    : "bg-white border-[var(--color-border)] text-[#2C241B]/80 hover:border-[#C8A96B] hover:text-[#C8A96B]"
                 }`}
               >
-                <Icon size={14} className={isActive ? "text-gold-200" : "text-primary-950/40"} />
+                <Icon className={`${isActive ? "text-gold-200" : "text-[#2C241B]/40"} w-3 h-3 md:w-3.5 md:h-3.5`} />
                 <span>{cat.label}</span>
               </button>
             );
           })}
         </div>
 
-        {/* Dynamic Expand/Collapse Controls */}
-        <div className="max-w-4xl mx-auto flex justify-between items-center mb-1 px-1">
-          <span className="text-[10px] text-primary-950/40 uppercase tracking-widest font-sans font-semibold">
+        {/* Dynamic Expand/Collapse Controls - Compact Margins */}
+        <div className="faq-controls-wrapper max-w-4xl mx-auto flex justify-between items-center mb-1.5 md:mb-2 px-1.5">
+          <span className="text-[11px] sm:text-[12px] text-[#2C241B]/60 uppercase tracking-[0.08em] font-sans font-medium">
             {filteredFaqs.length} {filteredFaqs.length === 1 ? "Question" : "Questions"} found
           </span>
           {filteredFaqs.length > 0 && (
             <button
               type="button"
               onClick={toggleAll}
-              className="text-[10px] text-[#C8A96B] hover:text-[#C8A96B]/80 hover:underline uppercase tracking-wider font-sans font-bold cursor-pointer transition-colors"
+              className="text-[11px] sm:text-[11.5px] text-[#C8A96B] hover:text-[#a6864b] uppercase tracking-[0.05em] font-sans font-semibold cursor-pointer transition-colors focus:outline-none"
             >
               {isAllExpanded ? "Collapse All" : "Expand All"}
             </button>
@@ -327,7 +327,7 @@ export default function Faq() {
         </div>
 
         {/* FAQs Accordion Container */}
-        <div className="bg-white rounded-sm border border-black/5 p-0 sm:p-0 md:p-0 shadow-sm max-w-4xl mx-auto">
+        <div className="faq-accordion-container bg-white rounded-[4px] border border-[var(--color-border)] shadow-sm max-w-4xl mx-auto overflow-hidden">
           {filteredFaqs.length > 0 ? (
             <div className="space-y-0 text-left">
               {filteredFaqs.map((faq, idx) => {
@@ -335,33 +335,41 @@ export default function Faq() {
                 return (
                   <div 
                     key={idx} 
-                    className={`border-b border-neutral-100 last:border-b-0 py-0 sm:py-0 transition-colors duration-300 ${
-                      isExpanded ? "bg-primary-50/20" : ""
+                    className={`faq-accordion-item border-b border-[var(--color-border)]/40 last:border-b-0 transition-colors duration-300 ${
+                      isExpanded ? "bg-[#FAF8F4]/30" : "hover:bg-neutral-50/20"
                     }`}
                   >
                     <button
                       type="button"
                       onClick={() => handleToggle(faq.q)}
                       aria-expanded={isExpanded}
-                      className="w-full text-left p-2 flex justify-between items-center gap-4 focus:outline-none cursor-pointer group"
+                      className="faq-accordion-button w-full text-left py-[6px] px-[12px] md:py-[8px] md:px-[18px] flex justify-between items-center gap-2.5 md:gap-4 focus:outline-none cursor-pointer group transition-colors duration-300"
                     >
-                      <h3 className="text-[13.5px] sm:text-[14.5px] font-semibold text-primary-955 tracking-[0.01em] leading-snug group-hover:text-[#C8A96B] transition-colors duration-300 m-0">
+                      <span className="text-[12.5px] xs:text-[13px] sm:text-[13.5px] md:text-[14.5px] font-medium text-[#2C241B]/95 tracking-wide leading-[1.35] group-hover:text-[#C8A96B] transition-colors duration-300 m-0">
                         {faq.q}
-                      </h3>
-                      <span className="text-[#C8A96B] shrink-0 pt-0 transition-transform duration-300" style={{ transform: isExpanded ? 'rotate(180deg)' : 'none' }}>
-                        <ChevronDown size={18} strokeWidth={2} />
+                      </span>
+                      <span className="text-[#C8A96B] shrink-0 transition-transform duration-300 ease-in-out flex items-center" style={{ transform: isExpanded ? 'rotate(180deg)' : 'none' }}>
+                        <ChevronDown size={14} strokeWidth={2} className="xs:w-[15px] xs:h-[15px] md:w-[17px] md:h-[17px]" />
                       </span>
                     </button>
                     
-                    <div
-                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                        isExpanded ? "max-h-[500px] opacity-100 mt-0 pb-1" : "max-h-0 opacity-0"
-                      }`}
-                    >
-                      <p className="text-[12.5px] sm:text-[13px] text-primary-950/75 leading-relaxed font-light pl-2 m-0 border-t border-black/5 pt-1">
-                        {faq.a}
-                      </p>
-                    </div>
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-[14px] pb-[12px] pt-[3px] md:px-[20px] md:pb-[15px] md:pt-[5px] border-t border-[var(--color-border)]/20">
+                            <p className="text-[12px] xs:text-[12.5px] sm:text-[13px] md:text-[13.5px] text-[#2C241B]/75 leading-relaxed font-normal m-0 whitespace-pre-wrap">
+                              {faq.a}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 );
               })}
@@ -376,15 +384,15 @@ export default function Faq() {
         </div>
 
         {/* Still Need Help CTA Block */}
-        <div className="mt-0 text-center bg-primary-950 rounded-sm p-4 max-w-4xl mx-auto text-white shadow-md">
-          <h2 className="text-lg font-serif mb-2 text-[#E7D3A8]">Still have questions?</h2>
-          <p className="text-white/70 mb-6 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+        <div className="mt-6 md:mt-8 text-center bg-[var(--color-dark)] rounded-[4px] py-6 px-4 md:py-8 md:px-6 max-w-4xl mx-auto text-white shadow-md border border-[var(--color-border)]/20">
+          <h2 className="text-base sm:text-lg md:text-xl font-serif text-[#E7D3A8] mb-1.5 md:mb-2 tracking-wide font-normal">Still have questions?</h2>
+          <p className="text-white/70 mb-4 md:mb-5 text-[11px] sm:text-[12px] md:text-[12.5px] max-w-md mx-auto leading-relaxed font-sans">
             Our boutique specialists are here to guide you with fabric weights, customized measurements, tailored readymade blouses, or bulk shipping.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 max-w-xs sm:max-w-md mx-auto">
             <Link 
               to="/contact" 
-              className="w-full sm:w-auto inline-block bg-white text-primary-950 px-8 py-2.5 text-[11px] font-bold uppercase tracking-widest hover:bg-[#FAF8F4] transition-all duration-300 shadow-sm"
+              className="w-full sm:w-auto inline-block bg-white text-[var(--color-dark)] px-6 py-2.5 text-[10.5px] font-bold uppercase tracking-widest hover:bg-[#FAF8F4]/90 transition-all duration-300 shadow-sm rounded-[2px] cursor-pointer"
             >
               Get in Touch
             </Link>
@@ -392,7 +400,7 @@ export default function Faq() {
               href={`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/20 text-white px-8 py-2.5 text-[11px] font-bold uppercase tracking-widest hover:bg-white/10 transition-all duration-300"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/25 text-white px-6 py-2.5 text-[10.5px] font-bold uppercase tracking-widest hover:bg-white/10 transition-all duration-300 rounded-[2px] cursor-pointer"
             >
               WhatsApp Support
             </a>

@@ -786,7 +786,7 @@ video::-webkit-media-controls-fullscreen-button {
   white-space: nowrap;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
-  padding: 1px 16px !important; /* Extremely tight mobile breadcrumb spacing */
+  padding: 10px 16px !important; /* Elegant compact vertical padding (exactly 10px) on mobile */
   align-items: center;
   display: flex !important;
   width: 100%;
@@ -803,8 +803,8 @@ video::-webkit-media-controls-fullscreen-button {
   .breadcrumb-wrapper {
     padding-left: 0 !important;
     padding-right: 0 !important;
-    padding-top: 1px !important;
-    padding-bottom: 1px !important;
+    padding-top: 10px !important; /* Balanced 10px vertical padding on desktop */
+    padding-bottom: 10px !important;
     overflow-x: visible;
   }
 }
@@ -845,7 +845,7 @@ video::-webkit-media-controls-fullscreen-button {
   align-items: center !important;
   min-height: 0px !important;
   min-width: 0px !important;
-  padding: 4px 0 !important;
+  padding: 1px 0 !important; /* Extremely minimal vertical spacing */
 }
 
 .breadcrumb a:hover {
@@ -1617,14 +1617,14 @@ nav, nav.main-nav {
 
 .controls-bar {
   padding: 2px 8px !important; /* Reduced vertical padding from 4px to 2px */
-  margin-top: 0 !important;
+  margin-top: 1px !important; /* Keep it tight and clear the header shadow without excess empty space */
   margin-bottom: 2px !important; /* Reduce space after Filter/Sort row before Category chips */
 }
 
 @media (max-width: 767px) {
   .controls-bar {
     padding: 1px 8px !important; /* Ultra-compact vertical padding for controls on mobile */
-    margin-top: 2px !important; /* Moves Filter/Sort row down by 2px to avoid sitting too close to the header */
+    margin-top: 1px !important; /* Keep it tight on mobile without excess empty space */
     margin-bottom: 1px !important;
   }
 }
@@ -1668,13 +1668,13 @@ nav, nav.main-nav {
   margin-left: 0 !important;
   margin-right: 0 !important;
   width: 100% !important;
-  margin-top: -6px !important; /* Pulls the filter controls closer to the static page header on desktop */
+  margin-top: 0px !important; /* Keep it tight to clear the static page header on desktop without excess spacing */
 }
 
 @media (max-width: 767px) {
   .shop-page,
   .shop-container {
-    margin-top: -4px !important; /* Extremely tight spacing from the static page header on mobile, preventing overlap while reducing gap */
+    margin-top: 0px !important; /* Keep it tight on mobile devices with zero gap/space */
   }
 }
 
@@ -2200,6 +2200,66 @@ div.product-info-section {
     align-items: center !important;
   }
 }
+
+/* ==========================================================================
+   ❓ FAQ PAGE MOBILE RESPONSIVE OPTIMIZATIONS
+   ========================================================================== */
+
+/* Universal FAQ Accordion Custom Styling */
+.faq-accordion-button {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+@media (min-width: 768px) {
+  .faq-accordion-button {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    gap: 16px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Reduce the vertical margin between consecutive FAQ page components to 8-16px */
+  .faq-header {
+    margin-bottom: 12px !important;
+  }
+
+  .faq-search-wrapper {
+    margin-bottom: 10px !important;
+  }
+
+  .faq-categories-wrapper {
+    margin-bottom: 12px !important;
+  }
+
+  .faq-controls-wrapper {
+    margin-bottom: 10px !important;
+  }
+}
+
+/* ==========================================================================
+   📱 HAMBURGER MOBILE MENU VISIBILITY AND COLOR FIXES
+   ========================================================================== */
+
+.mobile-nav-panel a,
+.mobile-nav-panel span,
+.mobile-nav-panel nav a,
+.mobile-nav-panel nav a span,
+.mobile-nav-panel .contact-row a,
+.mobile-nav-panel .contact-row span {
+  color: #111111 !important;
+}
+
+.mobile-nav-panel a:hover,
+.mobile-nav-panel nav a:hover {
+  color: #C8A96B !important;
+}
+
 
 
 

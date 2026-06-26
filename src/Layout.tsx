@@ -77,6 +77,47 @@ export default function Layout() {
 
   const hasStickyBar = location.pathname.startsWith("/product") || location.pathname === "/checkout";
 
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(101);
+
+  useEffect(() => {
+    const measureHeader = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+
+    // Run measurement
+    measureHeader();
+
+    // Small delay to ensure browser layout is ready
+    const handle = scrollY.on("change", () => {
+      // Periodic adjustments in case scroll state changes layout heights
+      measureHeader();
+    });
+
+    const timeoutId = setTimeout(measureHeader, 100);
+
+    if (typeof ResizeObserver !== "undefined" && headerRef.current) {
+      const resizeObserver = new ResizeObserver(() => {
+        measureHeader();
+      });
+      resizeObserver.observe(headerRef.current);
+      return () => {
+        handle();
+        clearTimeout(timeoutId);
+        resizeObserver.disconnect();
+      };
+    } else {
+      window.addEventListener("resize", measureHeader, { passive: true });
+      return () => {
+        handle();
+        clearTimeout(timeoutId);
+        window.removeEventListener("resize", measureHeader);
+      };
+    }
+  }, [location.pathname, isHidden]);
+
   const getScrollToTopPosition = () => {
     if (hasStickyBar) {
       return "bottom-[calc(140px+env(safe-area-inset-bottom))] md:bottom-[90px]";
@@ -775,6 +816,7 @@ export default function Layout() {
 
       {/* Navigation Wrapper */}
       <div
+        ref={headerRef}
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ease-in-out will-change-transform transform-gpu ${
           isHidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
         }`}
@@ -929,7 +971,7 @@ export default function Layout() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-0 z-[9999] w-full h-full md:hidden bg-[#FAF8F4] overflow-y-auto"
+              className="mobile-nav-panel fixed inset-y-0 left-0 z-[9999] w-[300px] xs:w-[320px] sm:w-[340px] h-full md:hidden bg-[#FAF8F4] overflow-y-auto shadow-2xl"
               style={{ backgroundColor: "#FAF8F4", opacity: 1, visibility: "visible" }}
             >
               <div style={{
@@ -937,7 +979,7 @@ export default function Layout() {
                 flexDirection: "column",
                 width: "100%",
                 height: "auto",
-                paddingBottom: "24px"
+                paddingBottom: "16px"
               }}>
                 {/* Header */}
                 <div style={{
@@ -945,24 +987,24 @@ export default function Layout() {
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "16px 20px",
-                  borderBottom: "1px solid #eee"
+                  padding: "14px 20px",
+                  borderBottom: "1px solid #f3f3f3"
                 }}>
                   <img 
                     src={logoSrc} 
                     alt="Mukesh Saree Centre Logo"
-                    style={{ height: "44px", width: "auto", objectFit: "contain" }}
+                    style={{ height: "40px", width: "auto", objectFit: "contain" }}
                   />
                   <button 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
                       border: "none",
                       background: "transparent",
-                      fontSize: "20px",
+                      fontSize: "18px",
                       fontWeight: "300",
                       cursor: "pointer",
                       padding: "8px",
-                      color: "#000",
+                      color: "#111",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center"
@@ -979,136 +1021,119 @@ export default function Layout() {
                   flexDirection: "column"
                 }}>
                   <Link 
-                    to="/" 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    style={{
-                      padding: "16px 20px",
-                      fontSize: "16px",
-                      fontWeight: "700",
-                      borderBottom: "1px solid #eee",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      color: "#000",
-                      textDecoration: "none"
-                    }}
-                  >
-                    <span>Home</span> <span>›</span>
-                  </Link>
-
-                  <Link 
-                    to="/shop" 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    style={{
-                      padding: "16px 20px",
-                      fontSize: "16px",
-                      fontWeight: "700",
-                      borderBottom: "1px solid #eee",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      color: "#000",
-                      textDecoration: "none"
-                    }}
-                  >
-                    <span>Shop</span> <span>›</span>
-                  </Link>
-
-                  <Link 
                     to="/shop?category=Sarees" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
-                      padding: "16px 20px",
-                      fontSize: "16px",
-                      fontWeight: "700",
-                      borderBottom: "1px solid #eee",
+                      padding: "13px 20px",
+                      fontSize: "13px",
+                      fontWeight: "600",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      borderBottom: "1px solid #f3f3f3",
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      color: "#000",
+                      color: "#111",
                       textDecoration: "none"
                     }}
                   >
-                    <span>Sarees</span> <span>›</span>
+                    <span>Sarees</span>
+                    <ChevronRight size={13} className="text-neutral-400" />
                   </Link>
 
                   <Link 
                     to="/shop?category=Co-Ord-Sets" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
-                      padding: "16px 20px",
-                      fontSize: "16px",
-                      fontWeight: "700",
-                      borderBottom: "1px solid #eee",
+                      padding: "13px 20px",
+                      fontSize: "13px",
+                      fontWeight: "600",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      borderBottom: "1px solid #f3f3f3",
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      color: "#000",
+                      color: "#111",
                       textDecoration: "none"
                     }}
                   >
-                    <span>Co-Ord Sets</span> <span>›</span>
+                    <span>Co-Ord Sets</span>
+                    <ChevronRight size={13} className="text-neutral-400" />
                   </Link>
 
                   <Link 
                     to="/about" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
-                      padding: "16px 20px",
-                      fontSize: "16px",
-                      fontWeight: "700",
-                      borderBottom: "1px solid #eee",
+                      padding: "13px 20px",
+                      fontSize: "13px",
+                      fontWeight: "600",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      borderBottom: "1px solid #f3f3f3",
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      color: "#000",
+                      color: "#111",
                       textDecoration: "none"
                     }}
                   >
-                    <span>About Us</span> <span>›</span>
+                    <span>About Us</span>
+                    <ChevronRight size={13} className="text-neutral-400" />
                   </Link>
 
                   <Link 
                     to="/contact" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
-                      padding: "16px 20px",
-                      fontSize: "16px",
-                      fontWeight: "700",
-                      borderBottom: "1px solid #eee",
+                      padding: "13px 20px",
+                      fontSize: "13px",
+                      fontWeight: "600",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      borderBottom: "1px solid #f3f3f3",
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      color: "#000",
+                      color: "#111",
                       textDecoration: "none"
                     }}
                   >
-                    <span>Contact</span> <span>›</span>
+                    <span>Contact</span>
+                    <ChevronRight size={13} className="text-neutral-400" />
                   </Link>
                 </nav>
 
                 {/* Customer Assistance */}
                 <div style={{
-                  margin: "16px",
-                  padding: "16px",
-                  backgroundColor: "#FAF0E6",
-                  borderRadius: "8px"
+                  margin: "24px 20px 0px",
+                  padding: "14px 12px",
+                  backgroundColor: "#FAF6F0",
+                  border: "1px solid #E7D3A8",
+                  borderRadius: "6px",
+                  textAlign: "center"
                 }}>
                   <p style={{
-                    fontSize: "11px",
-                    fontWeight: "700",
-                    color: "#c8963e",
-                    letterSpacing: "0.1em",
-                    marginBottom: "12px",
-                    marginTop: "0px"
+                    fontSize: "10.5px",
+                    fontWeight: "600",
+                    color: "#C8A96B",
+                    letterSpacing: "0.15em",
+                    marginBottom: "10px",
+                    marginTop: "0px",
+                    textTransform: "uppercase"
                   }}>CUSTOMER ASSISTANCE</p>
-                  <div className="contact-row">
-                    <Mail size={18} />
-                    <a href={`mailto:${BUSINESS_INFO.email}`}>{BUSINESS_INFO.email}</a>
+                  
+                  <div style={{ marginBottom: "8px" }}>
+                    <a href="mailto:info@mukeshsarees.com" style={{ fontSize: "12.5px", color: "#2C241B", fontWeight: "500", textDecoration: "none" }}>
+                      info@mukeshsarees.com
+                    </a>
                   </div>
-                  <div className="contact-row">
-                    <Phone size={18} />
-                    <a href={`tel:${BUSINESS_INFO.phone}`}>{BUSINESS_INFO.phone}</a>
+                  
+                  <div>
+                    <a href="tel:+917020664641" style={{ fontSize: "12.5px", color: "#2C241B", fontWeight: "500", textDecoration: "none" }}>
+                      +91 7020664641
+                    </a>
                   </div>
                 </div>
 
@@ -1116,82 +1141,87 @@ export default function Layout() {
                 <div style={{
                   display: "flex",
                   flexDirection: "row",
-                  gap: "12px",
-                  padding: "8px 20px 16px",
-                  alignItems: "center"
+                  gap: "14px",
+                  padding: "24px 20px 0px",
+                  alignItems: "center",
+                  justifyContent: "center"
                 }}>
                   <a 
-                    href="https://www.instagram.com/mukeshsarees_nagpur"
+                    href="https://www.instagram.com/mukesh_saree_centre_"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      width: "44px",
-                      height: "44px",
+                      width: "36px",
+                      height: "36px",
                       borderRadius: "50%",
-                      border: "1px solid #eee",
+                      border: "1px solid #e5e5e5",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      backgroundColor: "#fff"
+                      backgroundColor: "#fff",
+                      color: "#111"
                     }}
                     aria-label="Instagram"
                   >
-                    <Instagram size={18} className="text-neutral-800" />
+                    <Instagram size={15} />
                   </a>
                   <a 
-                    href="https://www.facebook.com/Mukeshsareesindia/"
+                    href="https://www.facebook.com/109033288599426"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      width: "44px",
-                      height: "44px",
+                      width: "36px",
+                      height: "36px",
                       borderRadius: "50%",
-                      border: "1px solid #eee",
+                      border: "1px solid #e5e5e5",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      backgroundColor: "#fff"
+                      backgroundColor: "#fff",
+                      color: "#111"
                     }}
                     aria-label="Facebook"
                   >
-                    <Facebook size={18} className="text-neutral-800" />
+                    <Facebook size={15} />
                   </a>
                   <a 
-                    href="https://youtube.com/@mukeshsarees"
+                    href="https://youtube.com/@mukeshsarees?si=aMljrBMnIJYQDGDI"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      width: "44px",
-                      height: "44px",
+                      width: "36px",
+                      height: "36px",
                       borderRadius: "50%",
-                      border: "1px solid #eee",
+                      border: "1px solid #e5e5e5",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      backgroundColor: "#fff"
+                      backgroundColor: "#fff",
+                      color: "#111"
                     }}
                     aria-label="YouTube"
                   >
-                    <Youtube size={18} className="text-neutral-800" />
+                    <Youtube size={15} />
                   </a>
                 </div>
 
                 {/* Footer text */}
                 <div style={{
                   textAlign: "center",
-                  padding: "8px 20px 24px"
+                  padding: "24px 20px 24px"
                 }}>
                   <p style={{
-                    fontSize: "13px",
-                    fontWeight: "700",
-                    letterSpacing: "0.1em",
-                    margin: "0 0 4px 0",
-                    color: "#000"
+                    fontSize: "11px",
+                    fontWeight: "600",
+                    letterSpacing: "0.12em",
+                    margin: "0 0 2px 0",
+                    color: "#2C241B"
                   }}>MUKESH SAREE CENTRE</p>
                   <p style={{
-                    fontSize: "11px",
-                    color: "#c8963e",
+                    fontSize: "9px",
+                    color: "#C8A96B",
                     letterSpacing: "0.08em",
+                    textTransform: "uppercase",
                     margin: "0"
                   }}>NAGPUR, INDIA • EST. 1978</p>
                 </div>
@@ -1207,12 +1237,19 @@ export default function Layout() {
           isHomePage
             ? ""
             : location.pathname.startsWith("/product/")
-            ? "pt-[90px]"
+            ? "pt-[78px]"
             : (location.pathname.startsWith("/shop") ||
                location.pathname.startsWith("/search"))
             ? "pt-[100px]"
             : "pt-[101px]"
         }`}
+        style={
+          isHomePage
+            ? {}
+            : location.pathname.startsWith("/product/")
+            ? { paddingTop: `${headerHeight - 12}px` }
+            : { paddingTop: `${headerHeight}px` }
+        }
       >
         <Suspense fallback={
           <div className="flex-grow min-h-[50vh] flex flex-col items-center justify-center bg-[#FAF8F4] space-y-4">
@@ -1328,16 +1365,6 @@ export default function Layout() {
                       Best Sellers
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/guides" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
-                      Knowledge Hub / Guides
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/faqs" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
-                      Frequently Asked Questions
-                    </Link>
-                  </li>
                 </ul>
               </div>
             </div>
@@ -1388,6 +1415,11 @@ export default function Layout() {
                   <li>
                     <Link to="/faqs" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Frequently Asked Questions
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/guides" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Knowledge Hub / Guides
                     </Link>
                   </li>
                   <li>

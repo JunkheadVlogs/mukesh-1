@@ -25,6 +25,7 @@ import { Helmet } from "react-helmet-async";
 import { ProductDescription } from "./components/ProductDescription";
 import { ProductSeoContent } from "./components/ProductSeoContent";
 import { ProductAccordion } from "./components/ProductAccordion";
+import { ProductComparison } from "./components/ProductComparison";
 import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
@@ -969,7 +970,7 @@ export default function ProductPage() {
 
       <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
         {/* Minimalist, super-low profile Breadcrumbs with absolutely zero wasted space */}
-        <nav aria-label="Breadcrumb" className="breadcrumb-wrapper !px-4 md:!px-0 select-none py-1.5 md:py-2 bg-transparent shrink-0">
+        <nav aria-label="Breadcrumb" className="breadcrumb-wrapper !px-4 md:!px-0 select-none py-0.5 md:py-0.5 bg-transparent shrink-0">
           <ol className="breadcrumb font-sans text-[10px] md:text-xs flex flex-wrap m-0 p-0 list-none content-start">
             {breadcrumbItems.map((item, idx) => (
               <Fragment key={idx}>
@@ -989,7 +990,7 @@ export default function ProductPage() {
           </ol>
         </nav>
 
-        <div className="flex flex-col lg:flex-row gap-2 md:gap-12 xl:gap-16">
+        <div className="flex flex-col lg:flex-row gap-1.5 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
           <div className="w-full lg:w-7/12 space-y-2 md:space-y-4">
             <div
@@ -1432,6 +1433,11 @@ export default function ProductPage() {
             </div>
           </div>
         </div>
+
+        {/* Dynamic Side-by-Side Saree Match & Comparison Table */}
+        <section className="mt-8 px-4 md:px-0">
+          <ProductComparison currentProduct={product} />
+        </section>
 
         {/* Product Reviews */}
         <div
