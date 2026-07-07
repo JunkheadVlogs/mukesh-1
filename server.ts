@@ -1073,6 +1073,8 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   let ogUrl = "https://mukeshsarees.com" + originalUrl;
   let price = "";
   let isProduct = false;
+  let ogWidth = "1200";
+  let ogHeight = "630";
   
   const productMatch = reqPath.match(/^\/product\/([^\/]+)\/?$/);
   if (productMatch) {
@@ -1091,8 +1093,10 @@ const injectOGTags = (html, reqPath, originalUrl) => {
         
       ogDesc = `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since 1978`;
  
-      // Convert to beautiful landscape format for products to show perfectly on WhatsApp, Facebook, and Instagram
-      ogImg = getWhatsAppSafeServerImageUrl(prod.image || defaultBannerUrl);
+      // Serve dedicated social sharing portrait image
+      ogImg = `https://mukeshsarees.com/og-images/${prod.slug}.jpg`;
+      ogWidth = "800";
+      ogHeight = "1200";
       price = prod.price || "0";
       isProduct = true;
     }
@@ -1118,8 +1122,8 @@ const injectOGTags = (html, reqPath, originalUrl) => {
      <meta property="og:url" content="${ogUrl}" />
      <meta property="og:type" content="${isProduct ? 'product' : 'website'}" />
      <meta property="og:site_name" content="Mukesh Saree Centre" />
-     <meta property="og:image:width" content="1200" />
-     <meta property="og:image:height" content="630" />
+     <meta property="og:image:width" content="${ogWidth}" />
+     <meta property="og:image:height" content="${ogHeight}" />
      <meta property="og:image:type" content="image/jpeg" />
      <meta name="twitter:card" content="summary_large_image" />
      <meta name="twitter:title" content="${ogTitle}" />
@@ -1172,6 +1176,95 @@ const injectOGTags = (html, reqPath, originalUrl) => {
 
   return injectedHtml;
 };
+
+app.get('/og-images/:slug.jpg', (req, res) => {
+  const slug = req.params.slug;
+  if (!slug) {
+    return res.redirect(302, 'https://mukeshsarees.com/images/og-home.jpg');
+  }
+  const cleanSlug = slug.replace(/\.jpg$/, '').trim().toLowerCase();
+  
+  // Define storage paths
+  const publicOgDir = path.join(process.cwd(), 'public', 'og-images');
+  const distOgDir = path.join(process.cwd(), 'dist', 'og-images');
+  const destPublicFile = path.join(publicOgDir, `${cleanSlug}.jpg`);
+  const destDistFile = path.join(distOgDir, `${cleanSlug}.jpg`);
+  
+  // 1. If file already exists in cache, serve it directly and immediately
+  if (fs.existsSync(destDistFile)) {
+    return res.sendFile(destDistFile);
+  } else if (fs.existsSync(destPublicFile)) {
+    return res.sendFile(destPublicFile);
+  }
+  
+  const prod = preParsedProducts.find(p => p.slug && p.slug.trim().toLowerCase() === cleanSlug);
+  if (prod) {
+    let targetUrl = prod.image || 'https://mukeshsarees.com/images/og-home.jpg';
+    if (targetUrl.includes('wsrv.nl')) {
+      const match = targetUrl.match(/[?&]url=([^&]+)/);
+      if (match) {
+        targetUrl = decodeURIComponent(match[1]);
+      }
+    }
+    
+    if (targetUrl.includes('drive.google.com')) {
+      let fileId = '';
+      const idMatch = targetUrl.match(/[?&]id=([^&]+)/);
+      if (idMatch) {
+        fileId = idMatch[1];
+      } else {
+        const dMatch = targetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (dMatch) {
+          fileId = dMatch[1];
+        }
+      }
+      if (fileId) {
+        targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
+      }
+    } else if (targetUrl.includes('lh3.googleusercontent.com')) {
+      targetUrl = targetUrl.split('=')[0];
+    }
+    
+    if (!targetUrl.startsWith('http')) {
+      targetUrl = `https://mukeshsarees.com/${targetUrl.replace(/^\/+/, '')}`;
+    }
+    
+    const innerUrl = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=760&h=1160&fit=contain&cbg=ffffff`;
+    const finalUrl = `https://wsrv.nl/?url=${encodeURIComponent(innerUrl)}&w=800&h=1200&fit=contain&cbg=ffffff&output=jpg&q=95`;
+    
+    // 2. Perform non-blocking background fetch & cache to avoid delaying the response
+    try {
+      if (!fs.existsSync(publicOgDir)) {
+        fs.mkdirSync(publicOgDir, { recursive: true });
+      }
+      if (!fs.existsSync(distOgDir)) {
+        fs.mkdirSync(distOgDir, { recursive: true });
+      }
+      
+      fetch(finalUrl)
+        .then(async (response) => {
+          if (response.ok) {
+            const arrayBuffer = await response.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            fs.writeFileSync(destPublicFile, buffer);
+            fs.writeFileSync(destDistFile, buffer);
+            console.log(`[LAZY-OG] Cached image for product slug: ${cleanSlug}`);
+          }
+        })
+        .catch(err => {
+          console.warn(`[LAZY-OG] Failed to cache image background: ${cleanSlug}`, err);
+        });
+    } catch (fsError) {
+      console.warn(`[LAZY-OG] Error setting up local directories`, fsError);
+    }
+    
+    // 3. Immediately redirect the caller for instantaneous response
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.redirect(302, finalUrl);
+  }
+  
+  res.redirect(302, 'https://mukeshsarees.com/images/og-home.jpg');
+});
 
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain');

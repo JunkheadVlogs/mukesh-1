@@ -231,27 +231,7 @@ export const trackPageView = (path: string) => {
     const validEmail = storedUserData.email && !isPlaceholderOrBusinessEmail(storedUserData.email) ? storedUserData.email : undefined;
     const validPhone = storedUserData.phone && !isPlaceholderOrBusinessPhone(storedUserData.phone) ? storedUserData.phone : undefined;
  
-    // Server-Side Conversions API PageView Trigger
-    fetch(getApiUrl("api/sys-metric"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event_name: "PageView",
-        event_id: eventId,
-        event_source_url: getProductionizedUrl(window.location.origin + path),
-        user_data: {
-          fbp,
-          fbc,
-          external_id: extId,
-          em: validEmail,
-          ph: validPhone,
-          fn: storedUserData.name ? storedUserData.name.split(' ')[0] : undefined,
-          ln: storedUserData.name ? storedUserData.name.split(' ').slice(1).join(' ') : undefined,
-          ct: storedUserData.city || undefined,
-          zp: storedUserData.zip || undefined
-        }
-      })
-    }).catch(err => console.warn("[CAPI PageView Error]", err));
+    // Server-Side Conversions API PageView Trigger (Removed pending backend implementation)
  
     // Browser Multi-Channel Meta Pixel trigger
     if ((window as any).fbq) {
@@ -366,24 +346,7 @@ export const trackViewContent = (product: any) => {
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
 
-    // Server CAPI Post (Task #8)
-    fetch(getApiUrl("api/sys-metric"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event_name: "ViewContent",
-        event_id: eventId,
-        value: valueNum,
-        currency: "INR",
-        content_type: "product",
-        content_name: product.name,
-        content_ids: [pId],
-        contents: [{ id: pId, quantity: 1 }],
-        num_items: 1,
-        event_source_url: getProductionizedUrl(window.location.href),
-        user_data: { fbp, fbc, external_id: extId, ...userMatch }
-      })
-    }).catch(err => console.warn("[CAPI ViewContent Error]", err));
+    // Server CAPI Post (Removed pending backend implementation)
 
     // Meta Pixel (Deduplicated via eventID matches)
     if ((window as any).fbq) {
@@ -448,24 +411,7 @@ export const trackAddToCart = (product: any, quantity: number = 1) => {
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
 
-    // Server CAPI Post (Task #8)
-    fetch(getApiUrl("api/sys-metric"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event_name: "AddToCart",
-        event_id: eventId,
-        value: valueNum,
-        currency: "INR",
-        content_type: "product",
-        content_name: product.name,
-        content_ids: [pId],
-        contents: [{ id: pId, quantity: quantity }],
-        num_items: quantity,
-        event_source_url: getProductionizedUrl(window.location.href),
-        user_data: { fbp, fbc, external_id: extId, ...userMatch }
-      })
-    }).catch(err => console.warn("[CAPI AddToCart Error]", err));
+    // Server CAPI Post (Removed pending backend implementation)
 
     // Meta Pixel
     if ((window as any).fbq) {
@@ -529,29 +475,7 @@ export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
 
-    // Server CAPI Post (Task #8)
-    fetch(getApiUrl("api/sys-metric"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event_name: "InitiateCheckout",
-        event_id: eventId,
-        value: numericTotal,
-        currency: "INR",
-        content_type: "product",
-        content_name: items.map(i => i.name).join(', '),
-        content_ids: itemIds,
-        contents: items.map(item => ({ id: item.sku || item.id, quantity: item.quantity || 1 })),
-        num_items: items.reduce((total, item) => total + (item.quantity || 1), 0),
-        event_source_url: getProductionizedUrl(window.location.href),
-        user_data: {
-          fbp,
-          fbc,
-          external_id: extId,
-          ...userMatch
-        }
-      })
-    }).catch(err => console.warn("[CAPI InitiateCheckout Error]", err));
+    // Server CAPI Post (Removed pending backend implementation)
 
     // Meta Pixel
     if ((window as any).fbq) {
@@ -622,29 +546,7 @@ export const trackPurchase = (totalValue: number, items: any[], transactionId: s
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
 
-    // Server CAPI Post (Task #8 & #9)
-    fetch(getApiUrl("api/sys-metric"), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        event_name: 'Purchase',
-        event_id: transactionId,
-        value: numericTotal,
-        currency: 'INR',
-        content_type: 'product',
-        content_name: items.map(i => i.name).join(', '),
-        content_ids: itemIds,
-        contents: items.map(item => ({ id: item.sku || item.id, quantity: item.quantity || 1 })),
-        num_items: items.length,
-        event_source_url: getProductionizedUrl(window.location.href),
-        user_data: {
-          fbp,
-          fbc,
-          external_id: extId,
-          ...userMatch
-        }
-      })
-    }).catch(err => console.warn('Meta CAPI Purchase error:', err));
+    // Server CAPI Post (Removed pending backend implementation)
     
     // Meta Pixel
     if ((window as any).fbq) {
@@ -801,22 +703,7 @@ export const trackLead = (userData?: { email?: string; phone?: string; name?: st
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
 
-    // Server-Side CAPI
-    fetch(getApiUrl("api/sys-metric"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event_name: "Lead",
-        event_id: eventId,
-        event_source_url: getProductionizedUrl(window.location.href),
-        user_data: {
-          fbp,
-          fbc,
-          external_id: extId,
-          ...userMatch
-        }
-      })
-    }).catch(err => console.warn("[CAPI Lead Error]", err));
+    // Server-Side CAPI (Removed pending backend implementation)
 
     // Pixel track
     if ((window as any).fbq) {
@@ -858,22 +745,7 @@ export const trackContact = (userData?: { email?: string; phone?: string; name?:
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
 
-    // Server-Side CAPI
-    fetch(getApiUrl("api/sys-metric"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event_name: "Contact",
-        event_id: eventId,
-        event_source_url: getProductionizedUrl(window.location.href),
-        user_data: {
-          fbp,
-          fbc,
-          external_id: extId,
-          ...userMatch
-        }
-      })
-    }).catch(err => console.warn("[CAPI Contact Error]", err));
+    // Server-Side CAPI (Removed pending backend implementation)
 
     // Pixel track
     if ((window as any).fbq) {

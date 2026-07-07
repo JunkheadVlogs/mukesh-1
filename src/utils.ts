@@ -113,7 +113,7 @@ export function getProductReviewStats(product: { id: string, name?: string, fabr
   };
 }
 
-export function optimizeImage(url: string, width: number = 800, format: 'webp' | 'jpg' | 'png' = 'webp') {
+export function optimizeImage(url: string, width: number = 800, format: 'webp' | 'jpg' | 'png' | 'auto' = 'webp') {
   if (!url) return url;
   
   if (url.includes('wsrv.nl') && !url.includes('imagekit.io')) {
@@ -146,14 +146,14 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
       }
       
       // Append optimized quality and format conversion parameters
-      cleanUrlObj.searchParams.set('tr', `w-${width},f-${format},q-80`);
+      cleanUrlObj.searchParams.set('tr', `w-${width},f-${format},q-75`);
       return cleanUrlObj.toString();
     } catch (e) {
       // Fallback if URL parsing fails
       let cleanUrl = url.replace(/\/tr:[^/]+/g, '');
       cleanUrl = cleanUrl.replace(/[?&]tr=[^&]*/g, '');
       const sep = cleanUrl.includes('?') ? '&' : '?';
-      return `${cleanUrl}${sep}tr=w-${width},f-${format},q-80`;
+      return `${cleanUrl}${sep}tr=w-${width},f-${format},q-75`;
     }
   }
 
@@ -184,10 +184,10 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     const finalUrl = `${IMAGEKIT_ENDPOINT}/${cleanPath}`;
     try {
       const urlObj = new URL(finalUrl);
-      urlObj.searchParams.set('tr', `w-${width},f-${format},q-80`);
+      urlObj.searchParams.set('tr', `w-${width},f-${format},q-75`);
       return urlObj.toString();
     } catch (e) {
-      return `${finalUrl}?tr=w-${width},f-${format},q-80`;
+      return `${finalUrl}?tr=w-${width},f-${format},q-75`;
     }
   }
   
@@ -223,7 +223,7 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
   if (url.includes('images.unsplash.com')) {
     const urlObj = new URL(url);
     urlObj.searchParams.set('w', width.toString());
-    urlObj.searchParams.set('q', '80');
+    urlObj.searchParams.set('q', '75');
     if (format === 'webp') {
       urlObj.searchParams.set('fm', 'webp');
     } else {
@@ -253,7 +253,8 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
       !absoluteUrl.includes('3000') && 
       !absoluteUrl.includes('run.app') &&
       !absoluteUrl.includes('mukeshsarees.com')) {
-     return `https://wsrv.nl/?url=${encodeURIComponent(absoluteUrl)}&w=${width}&output=${format}&q=80&we`;
+    const wsrvOutput = format === 'auto' ? 'webp' : format;
+    return `https://wsrv.nl/?url=${encodeURIComponent(absoluteUrl)}&w=${width}&output=${wsrvOutput}&q=75&we`;
   }
   
   return url;

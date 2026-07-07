@@ -211,7 +211,7 @@ export default function WholesaleSarees() {
         <div className="flex flex-col items-center">
           <img 
             src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png" 
-            alt="Mukesh Saree Centre Premium Logo" 
+            alt="Mukesh Saree Centre Premium Logo" width="200" height="64" 
             className="h-14 sm:h-16 w-auto max-w-full object-contain drop-shadow-sm select-none" 
           />
           <div className="w-16 h-[1px] bg-[#D4AF37] mt-2.5 opacity-80"></div>

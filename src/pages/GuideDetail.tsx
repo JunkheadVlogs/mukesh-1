@@ -114,6 +114,19 @@ export default function GuideDetail() {
     ]
   };
 
+  const getCleanMarkdown = (raw: string) => {
+    let cleaned = raw.trim();
+    if (cleaned.startsWith('#')) {
+      const firstNewlineIndex = cleaned.indexOf('\n');
+      if (firstNewlineIndex !== -1) {
+        cleaned = cleaned.substring(firstNewlineIndex).trim();
+      } else {
+        cleaned = '';
+      }
+    }
+    return cleaned;
+  };
+
   return (
     <>
       <Helmet>
@@ -167,7 +180,7 @@ export default function GuideDetail() {
           <div className="mb-12 md:mb-16 rounded-2xl overflow-hidden shadow-sm">
             <img 
               src={guide.image} 
-              alt={guide.title}
+              alt={guide.title} width="800" height="500"
               className="w-full h-auto max-h-[500px] object-cover"
               loading="eager"
             />
@@ -194,7 +207,7 @@ export default function GuideDetail() {
                   prose-a:text-[var(--color-gold)] prose-a:no-underline hover:prose-a:underline
                   prose-img:rounded-xl prose-img:shadow-sm"
                 >
-                  <ReactMarkdown>{content}</ReactMarkdown>
+                  <ReactMarkdown>{getCleanMarkdown(content)}</ReactMarkdown>
                 </div>
               )}
 
@@ -250,7 +263,7 @@ export default function GuideDetail() {
                         <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-primary-100">
                           <img 
                             src={related.image} 
-                            alt={related.title}
+                            alt={related.title} width="80" height="80"
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           />
                         </div>

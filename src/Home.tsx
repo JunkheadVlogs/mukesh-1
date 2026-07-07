@@ -1,10 +1,10 @@
 import { BUSINESS_INFO } from "./config/business";
 import { Link } from "react-router";
-import { useState, useRef, useEffect } from "react";
-import { ProductCard } from "./components/ProductCard";
+import { useState, useRef, useEffect, lazy, Suspense } from "react";
+const ProductCard = lazy(() => import("./components/ProductCard").then(m => ({ default: m.ProductCard })));
+const LookReelCard = lazy(() => import("./components/LookReelCard").then(m => ({ default: m.LookReelCard })));
 import { ProductCardSkeleton } from "./components/ProductCardSkeleton";
 import { SEO } from "./components/SEO";
-import { LookReelCard } from "./components/LookReelCard";
 import { CONFIG } from "./config";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import {
@@ -28,8 +28,8 @@ import { products } from "./mockData";
 import { type Product } from "./store";
 import { formatPrice, optimizeImage } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
-import { TrustBadges } from "./components/TrustBadges";
-import { CustomerReviews } from "./components/CustomerReviews";
+const TrustBadges = lazy(() => import("./components/TrustBadges").then(m => ({ default: m.TrustBadges })));
+const CustomerReviews = lazy(() => import("./components/CustomerReviews").then(m => ({ default: m.CustomerReviews })));
 
 const LOOK_REELS = [
   {
@@ -276,32 +276,20 @@ export default function Home() {
       const { scrollLeft, scrollWidth, clientWidth } = container;
       const totalScrollable = scrollWidth - clientWidth;
       if (totalScrollable > 0) {
-        setReelsScrollProgress(scrollLeft / totalScrollable);
-      }
+        const progress = scrollLeft / totalScrollable;
+        setReelsScrollProgress(progress);
 
-      // Detect the card closest to the horizontal center of the viewport
-      const children = container.children;
-      let closestId = "look-1";
-      let minDistance = Infinity;
-      const containerRect = container.getBoundingClientRect();
-      const containerCenter = containerRect.left + containerRect.width / 2;
-
-      for (let i = 0; i < children.length; i++) {
-        const child = children[i] as HTMLElement;
-        const reelId = child.getAttribute("data-reel-id");
-        if (reelId) {
-          const childRect = child.getBoundingClientRect();
-          const childCenter = childRect.left + childRect.width / 2;
-          const distance = Math.abs(childCenter - containerCenter);
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestId = reelId;
-          }
+        // Highly performant active index calculation avoiding any DOM bounding box calculations (zero reflows):
+        // Since look reels are in a snapped, horizontal layout, mapping progress directly to index
+        // yields the active center reel perfectly with no layout-thrashing getBoundingClientRect() calls.
+        const activeIndex = Math.min(
+          LOOK_REELS.length - 1,
+          Math.max(0, Math.round(progress * (LOOK_REELS.length - 1)))
+        );
+        const closestId = LOOK_REELS[activeIndex]?.id;
+        if (closestId && closestId !== activeReelId) {
+          setActiveReelId(closestId);
         }
-      }
-
-      if (closestId) {
-        setActiveReelId(closestId);
       }
     }
   };
@@ -375,21 +363,29 @@ export default function Home() {
           style={{ y: heroImageY }}
         >
           {/* Mobile Hero Image (hidden on desktop) */}
-          <OptimizedImage
-            src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469"
+          <img
+            src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75"
+            srcSet="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w"
+            sizes="(max-width: 768px) 100vw, 768px"
             width={768}
             height={1000}
             alt="Mukesh Saree Centre Premium Saree Collection - Trusted saree shop in Nagpur offering offline and online sales in India"
-            priority={true}
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
             className="block md:hidden w-full h-full object-cover object-[72%_bottom] opacity-100 transition-opacity duration-700"
           />
           {/* Desktop Hero Image (hidden on mobile) */}
-          <OptimizedImage
-            src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp"
+          <img
+            src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75"
+            srcSet="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w"
+            sizes="(min-width: 768px) 100vw, 1200px"
             width={1200}
             height={1000}
             alt="Mukesh Saree Centre Premium Saree Collection - Trusted saree shop in Nagpur offering offline and online sales in India"
-            priority={true}
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
             className="hidden md:block w-full h-full object-cover object-bottom opacity-100 transition-opacity duration-700"
           />
         </motion.div>
@@ -408,7 +404,7 @@ export default function Home() {
           style={{ opacity: heroTextOpacity, y: heroTextY }}
         >
           <div className="max-w-[200px] xs:max-w-[220px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[500px] text-left mb-4 md:mb-8">
-            <motion.div
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -417,11 +413,9 @@ export default function Home() {
                 textShadow: "0 2px 10px rgba(0,0,0,0.45), 0 4px 24px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.2)",
                 color: "#FFFDF8",
               }}
-              role="heading"
-              aria-level={2}
             >
               Explore Our <br className="block sm:hidden" />Premium Sarees
-            </motion.div>
+            </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -488,7 +482,7 @@ export default function Home() {
             </h2>
             <Link
               to="/shop"
-              className="text-[12px] uppercase text-gold-500 tracking-[0.15em] hover:text-gold-600 transition-colors font-medium"
+              className="text-[12px] uppercase text-gold-600 tracking-[0.15em] hover:text-gold-500 transition-colors font-medium"
             >
               View Collection
             </Link>
@@ -613,7 +607,9 @@ export default function Home() {
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : trendingProducts.map((product, index) => (
-                  <ProductCard key={product.id} product={product} priority={index < 4} />
+                  <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
+                    <ProductCard product={product} priority={index < 4} />
+                  </Suspense>
                 ))}
           </div>
           <div className="text-center mt-3 md:mt-4">
@@ -663,7 +659,7 @@ export default function Home() {
           <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             {/* Header with improved, elegant, slightly compact premium luxury typography */}
             <div className="text-center mb-1.5 md:mb-3 animate-fade-in animate-duration-500">
-              <div className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-[#C8A96B] mb-1 font-bold font-sans">
+              <div className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-[var(--color-gold-dark)] mb-1 font-bold font-sans">
                 REELS COLLECTION
               </div>
               <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)] mb-1">
@@ -689,13 +685,14 @@ export default function Home() {
               >
                 {LOOK_REELS.map((reel, index) => {
                   return (
-                    <LookReelCard
-                      key={reel.id}
-                      reel={reel}
-                      onVisibilityChange={handleReelVisibilityChange}
-                      shouldRenderIframe={!!visibleReelIds[reel.id] || activeReelId === reel.id}
-                      isActive={activeReelId === reel.id}
-                    />
+                    <Suspense fallback={<div className="min-w-[70vw] md:min-w-0 snap-center snap-always bg-gray-100 animate-pulse aspect-[9/16] rounded-md shrink-0 lg:w-full h-[65vh] max-h-[460px] md:h-[480px] lg:h-[320px] 2xl:h-[400px]" />} key={reel.id}>
+                      <LookReelCard
+                        reel={reel}
+                        onVisibilityChange={handleReelVisibilityChange}
+                        shouldRenderIframe={!!visibleReelIds[reel.id] || activeReelId === reel.id}
+                        isActive={activeReelId === reel.id}
+                      />
+                    </Suspense>
                   );
                 })}
               </div>
@@ -751,7 +748,9 @@ export default function Home() {
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : newArrivals.map((product, index) => (
-                  <ProductCard key={product.id} product={product} priority={index < 4} />
+                  <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
+                    <ProductCard product={product} priority={index < 4} />
+                  </Suspense>
                 ))}
           </div>
           <div className="text-center mt-4 md:mt-6">
@@ -770,14 +769,14 @@ export default function Home() {
           className="absolute inset-0 z-0 opacity-[0.15] mix-blend-multiply"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1583391733958-d25e07fac04f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80')",
+              "url('https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1600&q=45')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
         />
         <div className="max-w-3xl mx-auto px-4 relative z-10 w-full">
-          <div className="text-[11px] tracking-[0.2em] uppercase text-[var(--color-gold)] mb-1.5 sm:mb-2 font-medium">
+          <div className="text-[11px] tracking-[0.2em] uppercase text-[var(--color-gold-dark)] mb-1.5 sm:mb-2 font-medium">
             Special Collection
           </div>
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif text-[var(--color-dark)] mb-1.5 sm:mb-2 font-normal tracking-wide leading-tight">
@@ -856,12 +855,12 @@ export default function Home() {
                     />
                   </div>
                   <div className="absolute inset-0 transition-all duration-300 flex flex-col justify-end p-5 sm:p-8 z-10 pointer-events-none">
-                    <h3 
+                    <div 
                       style={{ color: '#E7D3A8', fontWeight: 600, opacity: 1, visibility: 'visible', textShadow: '0px 2px 8px rgba(0,0,0,0.85), 0px 1px 3px rgba(0,0,0,0.95)' }}
                       className="text-xl sm:text-2xl font-serif mb-0 tracking-wide"
                     >
                       {image.label}
-                    </h3>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -892,7 +891,7 @@ export default function Home() {
 
           {/* Text block (Placed after the Image/Gallery with tight spacing) */}
           <div className="text-center mt-2">
-            <div className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-gold)] mb-0.5 font-semibold">
+            <div className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-gold-dark)] mb-0.5 font-semibold">
               Visit Us
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)] mb-2 leading-tight">
@@ -939,12 +938,14 @@ export default function Home() {
         <div className="h-[1px] bg-[#C8A96B]/20" />
       </div>
 
-      <CustomerReviews />
+      <Suspense fallback={<div className="h-40 bg-gray-50" />}>
+        <CustomerReviews />
+      </Suspense>
 
       {/* About Section (Hidden for UI, kept for Local SEO) */}
       <section className="about-section sr-only">
         <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center">
-          <div className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-gold)] mb-2 font-semibold">
+          <div className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-gold-dark)] mb-2 font-semibold">
             Our Heritage
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)] mb-6 md:mb-8">

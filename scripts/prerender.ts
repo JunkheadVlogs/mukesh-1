@@ -365,6 +365,19 @@ async function runPrerender() {
 
       <!-- Hero Section -->
       <section style="background-color: #1A0A00; color: #faf6f0; padding: 100px 24px; text-align: center; position: relative;">
+        <!-- Pre-rendered hero images for LCP discovery -->
+        <style>
+          .mobile-hero { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 72% bottom; }
+          .desktop-hero { display: none; width: 100%; height: 100%; object-fit: cover; object-position: bottom; }
+          @media (min-width: 768px) {
+            .mobile-hero { display: none; }
+            .desktop-hero { display: block; }
+          }
+        </style>
+        <div style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden;">
+          <img src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" sizes="(max-width: 768px) 100vw, 768px" width="768" height="1000" fetchpriority="high" loading="eager" decoding="sync" alt="Mukesh Saree Centre Premium Saree Collection - Trusted saree shop in Nagpur offering offline and online sales in India" class="mobile-hero" />
+          <img src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" sizes="(min-width: 768px) 100vw, 1200px" width="1200" height="1000" fetchpriority="high" loading="eager" decoding="sync" alt="Mukesh Saree Centre Premium Saree Collection - Trusted saree shop in Nagpur offering offline and online sales in India" class="desktop-hero" />
+        </div>
         <div style="max-width: 800px; margin: 0 auto; z-index: 10; position: relative;">
           <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED ${BUSINESS_INFO.established}</span>
           <h1 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">${BUSINESS_INFO.name}</h1>
@@ -857,7 +870,7 @@ async function runPrerender() {
     `;
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
-    const wsrvImgLandscape = getWhatsAppSafePrerenderImageUrl(p.image);
+    const productOgImage = `https://mukeshsarees.com/og-images/${p.slug}.jpg`;
     const fabricItem = p.fabric ? `✨ ${p.fabric}` : "✨ Premium Fabric";
     const discountPercent = (p.originalPrice && p.price && p.originalPrice > p.price)
       ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
@@ -872,18 +885,18 @@ async function runPrerender() {
     const dynamicTags = `<!-- Dynamic OG Tags -->
     <meta data-rh="true" property="og:title" content="${sanitize(pageTitle)}" />
     <meta data-rh="true" property="og:description" content="${sanitize(prodDesc)}" />
-    <meta data-rh="true" property="og:image" content="${wsrvImgLandscape}" />
-    <meta data-rh="true" property="og:image:secure_url" content="${wsrvImgLandscape}" />
+    <meta data-rh="true" property="og:image" content="${productOgImage}" />
+    <meta data-rh="true" property="og:image:secure_url" content="${productOgImage}" />
     <meta data-rh="true" property="og:url" content="${originalUrl}" />
     <meta data-rh="true" property="og:type" content="product" />
     <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
-    <meta data-rh="true" property="og:image:width" content="1200" />
-    <meta data-rh="true" property="og:image:height" content="630" />
+    <meta data-rh="true" property="og:image:width" content="800" />
+    <meta data-rh="true" property="og:image:height" content="1200" />
     <meta data-rh="true" property="og:image:type" content="image/jpeg" />
     <meta data-rh="true" name="twitter:card" content="summary_large_image" />
     <meta data-rh="true" name="twitter:title" content="${sanitize(pageTitle)}" />
     <meta data-rh="true" name="twitter:description" content="${sanitize(prodDesc)}" />
-    <meta data-rh="true" name="twitter:image" content="${wsrvImgLandscape}" />
+    <meta data-rh="true" name="twitter:image" content="${productOgImage}" />
     <link data-rh="true" rel="canonical" href="${originalUrl}" />
     <!-- End Dynamic OG Tags -->`;
 

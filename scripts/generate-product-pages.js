@@ -144,21 +144,23 @@ function main() {
     const titleText = `${name} ${price ? `– ₹${price}` : ''} | Mukesh Saree Centre`;
     const canonicalUrl = `https://mukeshsarees.com/product/${slug}`;
 
+    const productOgImage = `https://mukeshsarees.com/og-images/${slug}.jpg`;
+
     const ogTagsBlock = `<!-- Dynamic OG Tags -->
   <meta data-rh="true" property="og:title" content="${titleText}" />
   <meta data-rh="true" property="og:description" content="${cleanDesc}" />
-  <meta data-rh="true" property="og:image" content="${ogImageUrl}" />
-  <meta data-rh="true" property="og:image:secure_url" content="${ogImageUrl}" />
+  <meta data-rh="true" property="og:image" content="${productOgImage}" />
+  <meta data-rh="true" property="og:image:secure_url" content="${productOgImage}" />
   <meta data-rh="true" property="og:url" content="${canonicalUrl}" />
   <meta data-rh="true" property="og:type" content="product" />
   <meta data-rh="true" property="og:site_name" content="Mukesh Saree Centre" />
   <meta data-rh="true" property="og:image:width" content="1200" />
-  <meta data-rh="true" property="og:image:height" content="630" />
+  <meta data-rh="true" property="og:image:height" content="1200" />
   <meta data-rh="true" property="og:image:type" content="image/jpeg" />
   <meta data-rh="true" name="twitter:card" content="summary_large_image" />
   <meta data-rh="true" name="twitter:title" content="${titleText}" />
   <meta data-rh="true" name="twitter:description" content="${cleanDesc}" />
-  <meta data-rh="true" name="twitter:image" content="${ogImageUrl}" />
+  <meta data-rh="true" name="twitter:image" content="${productOgImage}" />
   <link data-rh="true" rel="canonical" href="${canonicalUrl}" />
   <!-- End Dynamic OG Tags -->`;
 

@@ -24,7 +24,6 @@ import { useStore } from "./store";
 import { useState, useEffect, useRef, Suspense } from "react";
 import type { FormEvent } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
-import { products } from "./mockData";
 import { CONFIG, getWhatsAppNumber } from "./config";
 import { formatPrice, getImageAlt } from "./utils";
 import { searchProducts } from "./services/search";
@@ -91,11 +90,6 @@ export default function Layout() {
     measureHeader();
 
     // Small delay to ensure browser layout is ready
-    const handle = scrollY.on("change", () => {
-      // Periodic adjustments in case scroll state changes layout heights
-      measureHeader();
-    });
-
     const timeoutId = setTimeout(measureHeader, 100);
 
     if (typeof ResizeObserver !== "undefined" && headerRef.current) {
@@ -104,14 +98,12 @@ export default function Layout() {
       });
       resizeObserver.observe(headerRef.current);
       return () => {
-        handle();
         clearTimeout(timeoutId);
         resizeObserver.disconnect();
       };
     } else {
       window.addEventListener("resize", measureHeader, { passive: true });
       return () => {
-        handle();
         clearTimeout(timeoutId);
         window.removeEventListener("resize", measureHeader);
       };
@@ -898,7 +890,7 @@ export default function Layout() {
             >
               <img
                 src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png"
-                alt="Mukesh Saree Centre Logo"
+                alt="Mukesh Saree Centre Logo" width="200" height="40"
                 style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
                 className="transition-all duration-500 group-hover:opacity-80 m-0 p-0 h-[48px] md:h-[52px] w-auto object-contain"
               />
@@ -992,7 +984,7 @@ export default function Layout() {
                 }}>
                   <img 
                     src={logoSrc} 
-                    alt="Mukesh Saree Centre Logo"
+                    alt="Mukesh Saree Centre Logo" width="200" height="40"
                     style={{ height: "40px", width: "auto", objectFit: "contain" }}
                   />
                   <button 
@@ -1237,7 +1229,7 @@ export default function Layout() {
           isHomePage
             ? ""
             : location.pathname.startsWith("/product/")
-            ? "pt-[78px]"
+            ? "pt-[101px]"
             : (location.pathname.startsWith("/shop") ||
                location.pathname.startsWith("/search"))
             ? "pt-[100px]"
@@ -1246,8 +1238,6 @@ export default function Layout() {
         style={
           isHomePage
             ? {}
-            : location.pathname.startsWith("/product/")
-            ? { paddingTop: `${headerHeight - 12}px` }
             : { paddingTop: `${headerHeight}px` }
         }
       >

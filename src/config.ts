@@ -46,6 +46,14 @@ export function getApiUrl(endpoint: string): string {
   const base = CONFIG.API_BASE_URL || "";
   const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
 
+  let prefix = "";
+  if (typeof window !== "undefined") {
+    const match = window.location.pathname.match(/^\/(AIzaSy[^\/]+)/);
+    if (match) {
+      prefix = `/${match[1]}`;
+    }
+  }
+
   if (base.startsWith("http://") || base.startsWith("https://")) {
     const cleanBase = base.endsWith("/") ? base.slice(0, -1) : base;
     
@@ -53,7 +61,7 @@ export function getApiUrl(endpoint: string): string {
     // fallback to window.location.origin to prevent mixed content blocking and relative routing failures on the container
     if (typeof window !== "undefined") {
       if (window.location.protocol === "https:" && cleanBase.startsWith("http://localhost")) {
-        return `${window.location.origin}${cleanEndpoint}`;
+        return `${window.location.origin}${prefix}${cleanEndpoint}`;
       }
     }
     return `${cleanBase}${cleanEndpoint}`;
@@ -62,7 +70,7 @@ export function getApiUrl(endpoint: string): string {
   const cleanBase = base ? (base.endsWith("/") ? base.slice(0, -1) : base) : "";
   
   if (typeof window !== "undefined") {
-    return `${window.location.origin}${cleanBase}${cleanEndpoint}`;
+    return `${window.location.origin}${prefix}${cleanBase}${cleanEndpoint}`;
   }
   return `${cleanBase}${cleanEndpoint}`;
 }

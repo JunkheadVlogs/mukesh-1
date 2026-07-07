@@ -272,6 +272,8 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                             <img
                               src={optimizeImage(p.image, 80, "webp")}
                               alt={p.name}
+                              width={32}
+                              height={40}
                               className="w-8 h-10 object-cover rounded bg-neutral-50"
                               referrerPolicy="no-referrer"
                             />
@@ -306,6 +308,8 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                     <img
                       src={optimizeImage(p.image, 100, "webp")}
                       alt={p.name}
+                      width={40}
+                      height={48}
                       className="w-10 h-12 object-cover rounded bg-neutral-50 shrink-0 border border-black/[0.02]"
                       referrerPolicy="no-referrer"
                     />
@@ -346,6 +350,8 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                         <img
                           src={optimizeImage(currentProduct.image, 120, "webp")}
                           alt={currentProduct.name}
+                          width={48}
+                          height={64}
                           className="w-10 h-14 md:w-12 md:h-16 object-cover rounded border border-black/[0.05] bg-neutral-50 shrink-0"
                           referrerPolicy="no-referrer"
                         />
@@ -381,6 +387,8 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                           <img
                             src={optimizeImage(selectedProduct.image, 120, "webp")}
                             alt={selectedProduct.name}
+                            width={48}
+                            height={64}
                             className="w-10 h-14 md:w-12 md:h-16 object-cover rounded border border-black/[0.05] bg-neutral-50 hover:opacity-90 transition-opacity"
                             referrerPolicy="no-referrer"
                           />

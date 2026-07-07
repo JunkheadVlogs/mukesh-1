@@ -122,21 +122,22 @@ $html = preg_replace('/<link rel="canonical" href="[^"]*".*?>/is', '<link rel="c
 $html = preg_replace('/<meta name="description" content=".*?".*?>/is', '<meta name="description" content="' . $seo_desc . '" />', $html);
 
 // Build modern social meta-tags specifically optimized for social share platforms details
+$portrait_image_url = "https://mukeshsarees.com/og-images/" . urlencode($slug) . ".jpg";
 $og_tags_replacement = '<!-- Dynamic OG Tags -->
   <meta property="og:title" content="' . $seo_title . '" />
   <meta property="og:description" content="' . $seo_desc . '" />
-  <meta property="og:image" content="' . htmlspecialchars($image_url) . '" />
-  <meta property="og:image:secure_url" content="' . htmlspecialchars($image_url) . '" />
+  <meta property="og:image" content="' . htmlspecialchars($portrait_image_url) . '" />
+  <meta property="og:image:secure_url" content="' . htmlspecialchars($portrait_image_url) . '" />
   <meta property="og:url" content="https://mukeshsarees.com/product/' . htmlspecialchars($slug) . '" />
   <meta property="og:type" content="product" />
   <meta property="og:site_name" content="Mukesh Saree Centre" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content="800" />
+  <meta property="og:image:height" content="1200" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="' . $seo_title . '" />
   <meta name="twitter:description" content="' . $seo_desc . '" />
-  <meta name="twitter:image" content="' . htmlspecialchars($image_url) . '" />
+  <meta name="twitter:image" content="' . htmlspecialchars($portrait_image_url) . '" />
   <link rel="canonical" href="https://mukeshsarees.com/product/' . htmlspecialchars($slug) . '" />
   <!-- End Dynamic OG Tags -->';
 

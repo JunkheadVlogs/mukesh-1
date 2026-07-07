@@ -59,7 +59,7 @@ export function CustomerReviews() {
     const scrollPosition = container.scrollLeft;
     const cardWidth = container.scrollWidth / REVIEWS.length;
     const index = Math.round(scrollPosition / cardWidth);
-    if (index >= 0 && index < REVIEWS.length) {
+    if (index >= 0 && index < REVIEWS.length && index !== activeIndex) {
       setActiveIndex(index);
     }
   };
@@ -83,7 +83,7 @@ export function CustomerReviews() {
     <section className="bg-[#FAF6F0]/40 pt-6 pb-4 md:pt-10 md:pb-6 border-t border-[#C8A96B]/15">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-4 md:mb-8">
-          <div className="text-[11px] tracking-[0.25em] uppercase text-[var(--color-gold)] mb-1.5 font-semibold">
+          <div className="text-[11px] tracking-[0.25em] uppercase text-[var(--color-gold-dark)] mb-1.5 font-semibold">
             What Our Customers Say
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)] mb-2 md:mb-4">
@@ -150,9 +150,9 @@ export function CustomerReviews() {
                 </div>
                 <div className="flex items-center justify-between border-t border-[var(--color-gold)]/10 pt-4">
                   <div>
-                    <h4 className="text-[11px] uppercase tracking-wider font-semibold text-[var(--color-dark)]">
+                    <h3 className="text-[11px] uppercase tracking-wider font-semibold text-[var(--color-dark)]">
                       {review.name}
-                    </h4>
+                    </h3>
                     <p className="text-[10px] text-[var(--color-dark)]/50 tracking-wide font-medium mt-0.5">
                       {review.location} • {review.verified ? 'Verified Buyer' : 'Customer'}
                     </p>

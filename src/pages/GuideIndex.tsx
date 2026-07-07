@@ -14,7 +14,7 @@ export default function GuideIndex() {
       </Helmet>
 
       {/* Header */}
-      <section className="bg-primary-50 py-12 md:py-16 border-b border-gold-200/30">
+      <section className="bg-primary-50 pt-28 pb-12 md:pb-16 border-b border-gold-200/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-5xl font-serif font-light text-primary-950 mb-4">
             AI Knowledge Hub & Guides
@@ -39,7 +39,7 @@ export default function GuideIndex() {
                   <img 
                     src={guide.image} 
                     alt={guide.title}
-                    loading="lazy"
+                    loading="lazy" width="400" height="224"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />

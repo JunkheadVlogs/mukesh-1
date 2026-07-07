@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SEO } from './components/SEO';
 import { ShieldCheck, RefreshCcw, HandCoins, AlertCircle, FileText, PackageX, HelpCircle, ChevronDown, ChevronUp, CheckCircle2, Loader2 } from 'lucide-react';
 import { Link } from 'react-router';
+import { getApiUrl } from "./config";
 
 export default function ReturnPolicy() {
   const [isFormExpanded, setIsFormExpanded] = useState(false);
@@ -63,7 +64,7 @@ export default function ReturnPolicy() {
     setError("");
     setSubmitting(true);
     try {
-      const response = await fetch("/api/return-request", {
+      const response = await fetch(getApiUrl("api/return-request"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

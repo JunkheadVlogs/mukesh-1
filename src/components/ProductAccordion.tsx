@@ -37,22 +37,22 @@ export function ProductAccordion({ category, product }: { category?: string; pro
       content: `Fabric: ${fabricRaw}\n\nFeatures:\n${featuresList}`
     },
     {
-      title: "Benefits & Who Should Buy",
+      title: "Why You'll Love It",
       content: `${benefitsText}\n\nWho should buy: ${whoShouldBuy}\n\nBest occasions: Premium weddings, festive celebrations, cultural events, and high tea gatherings.`
     },
     {
-      title: "Styling Tips & Occasions",
+      title: "Styling Ideas & Occasions",
       content: stylingTips
     },
     {
-      title: "Washing & Care Instructions",
+      title: "Wash & Care Instructions",
       content: "First wash strictly dry clean to lock in colors and preserve the fabric sheen. Subsequent washes can be gentle hand washes in cold water using a mild baby shampoo or specialized silk/cotton detergent. Do not wring or twist. Dry strictly in the shade to prevent sun bleaching."
     },
   ];
 
   if (isSaree) {
     panels.push({
-      title: "Saree Size, Drape & Blouse Guide",
+      title: "Size, Fit & Blouse Details",
       content:
         "All our sarees are standard 5.5 meters with an additional 1 meter unstitched blouse piece unless stated otherwise. Suitable for all draping styles — Nivi, Gujarati, Nauvari, Bengali. Need help draping or blouse stitching? WhatsApp us or visit our Nagpur store."
     });
@@ -65,18 +65,18 @@ export function ProductAccordion({ category, product }: { category?: string; pro
         "Free shipping on orders. Standard delivery in 3–7 business days across India. Cash on Delivery available pan-India. Express delivery available for select pincodes — contact us on WhatsApp.",
     },
     {
-      title: "Returns & Exchange Policy",
+      title: "Returns & Exchange",
       content:
         "Easy 7-day returns on all unworn, unwashed items with original tags intact. Customised or stitched blouses are non-returnable. To initiate a return, WhatsApp us at 7020664641 with your order ID and photos. Refunds securely processed to the original payment method.",
     },
     {
-      title: "Frequently Asked Questions",
+      title: "Frequently Asked Questions (FAQs)",
       content: "Q: Can I wash this at home?\nA: We recommend dry cleaning for the first wash. Subsequent washes can be gentle cold hand washes.\n\nQ: Is Cash on Delivery available?\nA: Yes, COD is available pan-India.\n\nQ: Does the product look exactly like the picture?\nA: We ensure 95% color accuracy. Due to studio lighting, slight variations might occur but the overall beauty and quality remain exactly as promised."
     }
   );
 
   return (
-    <div className="flex flex-col gap-3 w-full mt-2 mb-2 font-sans text-sm">
+    <div className="flex flex-col gap-[4px] w-full px-0 mt-0 mb-0 font-sans text-sm">
       {panels.map((panel, index) => {
         const isOpen = openPanel === index;
 
@@ -87,16 +87,18 @@ export function ProductAccordion({ category, product }: { category?: string; pro
           >
             <button
               onClick={() => togglePanel(index)}
-              className="w-full flex items-center justify-between px-3 h-[44px] bg-white hover:bg-black/[0.02] transition-colors focus:outline-none"
+              className="w-full flex items-center justify-between py-[8px] px-[12px] bg-white hover:bg-black/[0.02] transition-colors focus:outline-none"
             >
-              <span className="text-[#2C241B] font-medium text-[13px] tracking-wide">
+              <span className="text-[#2C241B] font-medium text-[13px] tracking-wide leading-normal text-left">
                 {panel.title}
               </span>
-              {isOpen ? (
-                <Minus size={16} className="text-[#2C241B]/70" />
-              ) : (
-                <Plus size={16} className="text-[#2C241B]/70" />
-              )}
+              <div className="flex items-center justify-center shrink-0 ml-4">
+                {isOpen ? (
+                  <Minus size={15} className="text-[#2C241B]/70" />
+                ) : (
+                  <Plus size={15} className="text-[#2C241B]/70" />
+                )}
+              </div>
             </button>
             <AnimatePresence initial={false}>
               {isOpen && (
@@ -107,7 +109,7 @@ export function ProductAccordion({ category, product }: { category?: string; pro
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="p-[12px] pt-0 text-[#2C241B]/70 leading-relaxed text-[13.5px] whitespace-pre-wrap">
+                  <div className="px-[12px] pb-[8px] pt-[2px] text-[#2C241B]/70 leading-relaxed text-[13px] whitespace-pre-wrap">
                     {panel.content}
                   </div>
                 </motion.div>

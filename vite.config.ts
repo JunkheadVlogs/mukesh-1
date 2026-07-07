@@ -36,7 +36,7 @@ export default defineConfig(({mode}) => {
       {
         name: 'html-transform',
         transformIndexHtml(html) {
-          return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
+          let updatedHtml = html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
             const envKey = `VITE_${key}`;
             let val = env[envKey] || process.env[envKey];
             if (envKey === 'VITE_FB_DOMAIN_VERIFY') {
@@ -63,6 +63,10 @@ export default defineConfig(({mode}) => {
             }
             return '';
           });
+          
+          // Lower fetch priority of main bundles so hero image loads faster
+          updatedHtml = updatedHtml.replace(/<script type="module" crossorigin/g, '<script type="module" defer fetchpriority="low" crossorigin');
+          return updatedHtml;
         }
       }
     ],
@@ -109,6 +113,9 @@ export default defineConfig(({mode}) => {
       rollupOptions: {
         output: {
           manualChunks(id) {
+            if (id.includes('mockData.ts')) {
+              return 'mock-data';
+            }
             if (id.includes('node_modules')) {
               if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
                 return 'vendor-react';

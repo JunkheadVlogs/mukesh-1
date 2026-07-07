@@ -102,21 +102,23 @@ function runGenerator() {
     const docTitle = `${product.name} ${product.price ? `– ₹${product.price}` : ''} | Mukesh Saree Centre`;
     const docCanonicalUrl = `https://mukeshsarees.com/product/${slug}`;
 
+    const productOgImage = `https://mukeshsarees.com/og-images/${slug}.jpg`;
+
     const customOgTags = `<!-- Dynamic OG Tags -->
   <meta property="og:title" content="${docTitle}" />
   <meta property="og:description" content="${shortDesc}" />
-  <meta property="og:image" content="${ogImageUrl}" />
-  <meta property="og:image:secure_url" content="${ogImageUrl}" />
+  <meta property="og:image" content="${productOgImage}" />
+  <meta property="og:image:secure_url" content="${productOgImage}" />
   <meta property="og:url" content="${docCanonicalUrl}" />
   <meta property="og:type" content="product" />
   <meta property="og:site_name" content="Mukesh Saree Centre" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content="800" />
+  <meta property="og:image:height" content="1200" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${docTitle}" />
   <meta name="twitter:description" content="${shortDesc}" />
-  <meta name="twitter:image" content="${ogImageUrl}" />
+  <meta name="twitter:image" content="${productOgImage}" />
   <link rel="canonical" href="${docCanonicalUrl}" />
   <!-- End Dynamic OG Tags -->`;
 

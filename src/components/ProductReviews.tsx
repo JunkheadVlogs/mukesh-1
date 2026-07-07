@@ -596,6 +596,8 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
                                 <img
                                   src={imgUrl}
                                   alt={`Uploaded preview ${index + 1}`}
+                                  width={100}
+                                  height={100}
                                   className="w-full h-full object-cover"
                                   loading="lazy"
                                   decoding="async"
@@ -769,6 +771,8 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
                                 <img
                                   src={imgUrl}
                                   alt={`Review attachment by ${review.author || "customer"} ${index + 1}`}
+                                  width={80}
+                                  height={80}
                                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                                   loading="lazy"
                                   decoding="async"

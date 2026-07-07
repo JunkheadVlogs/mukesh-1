@@ -292,6 +292,13 @@ export default function Cart() {
                   <span>GST & All Taxes Included</span>
                   <span className="text-[#2C241B]/45 font-medium">Included</span>
                 </div>
+                
+                <div className="flex items-center justify-center gap-1 bg-emerald-50 text-emerald-700 px-1.5 py-0 rounded-sm border border-emerald-100/50">
+                  <span className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wide leading-none py-0.5">
+                    🎁 Save ₹50 EXTRA on prepaid online orders at checkout!
+                  </span>
+                </div>
+
                 <div className="pt-2.5 sm:pt-4 border-t border-black/5 flex justify-between items-center gap-2">
                   <span className="text-sm sm:text-base md:text-lg font-serif text-primary-950 font-normal">Grand Total</span>
                   <span className="text-base sm:text-xl md:text-2xl font-bold text-primary-950">{formatPrice(total)}</span>

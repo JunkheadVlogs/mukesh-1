@@ -1,74 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Real-time Browser Console Telemetry for AI Studio Debugging -->
-    <script>
-      (function() {
-        const originalLog = console.log;
-        const originalWarn = console.warn;
-        const originalError = console.error;
-        
-        function sendPayload(type, args) {
-          try {
-            const messages = Array.from(args).map(arg => {
-              if (arg instanceof Error) {
-                return arg.message + '\n' + arg.stack;
-              }
-              if (typeof arg === 'object') {
-                try { return JSON.stringify(arg); } catch(e) { return String(arg); }
-              }
-              return String(arg);
-            });
-            
-            const payload = JSON.stringify({
-              type: type,
-              messages: messages,
-              timestamp: new Date().toISOString()
-            });
-
-            fetch('/api/browser-log', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: payload,
-              keepalive: true
-            }).catch(() => {});
-          } catch (e) {
-            // Keep completely safe
-          }
-        }
-
-        console.log = function() {
-          originalLog.apply(console, arguments);
-          sendPayload('log', arguments);
-        };
-
-        console.warn = function() {
-          originalWarn.apply(console, arguments);
-          sendPayload('warn', arguments);
-        };
-
-        console.error = function() {
-          originalError.apply(console, arguments);
-          sendPayload('error', arguments);
-        };
-
-        window.addEventListener('error', function(event) {
-          sendPayload('uncaught', [
-            event.message,
-            'at ' + event.filename + ':' + event.lineno + ':' + event.colno,
-            event.error
-          ]);
-        });
-
-        window.addEventListener('unhandledrejection', function(event) {
-          sendPayload('unhandled', [
-            String(event.reason)
-          ]);
-        });
-
-        originalLog('[TELEMETRY_INITIALIZED] Capture script primed successfully.');
-      })();
-    </script>
+    <meta charset="UTF-8">
     <!-- Google Tag Manager -->
     <script>
       (function(w,d,s,l,i){
@@ -76,7 +9,7 @@
         w._gtm_loaded = true; // Mark as loaded to prevent duplicate injection in App.tsx
         w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.defer=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','%VITE_GTM_ID%');
     </script>
@@ -89,7 +22,7 @@
           window._clarity_initialized = true;
           (function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              t=l.createElement(r);t.defer=1;t.src="https://www.clarity.ms/tag/"+i;
               y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
           })(window, document, "clarity", "script", "x1spvs9vsv");
         };
@@ -132,7 +65,6 @@
         gtag('config', gaId);
       });
     </script>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title data-rh="true">Mukesh Saree Centre – Wholesale & Retail Sarees Nagpur</title>
     <meta data-rh="true" name="description" content="Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery.">
@@ -167,8 +99,8 @@
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
     <link rel="dns-prefetch" href="https://wsrv.nl" />
     <!-- Preload actual hero images from ImageKit and size them appropriately for screen dimensions -->
-    <link rel="preload" as="image" href="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-80" media="(max-width: 767px)" fetchpriority="high" />
-    <link rel="preload" as="image" href="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-80" media="(min-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp" media="(min-width: 768px)" fetchpriority="high" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -330,7 +262,7 @@
       </div>
     </div>
     
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" defer src="/src/main.tsx"></script>
     <script>
     // Safe auto-dismiss timeout fallback for the premium boutique loading screen
     (function() {

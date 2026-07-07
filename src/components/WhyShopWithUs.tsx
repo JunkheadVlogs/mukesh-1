@@ -35,7 +35,7 @@ export function WhyShopWithUs() {
               <h4 className="font-sans text-[11px] md:text-[12px] font-semibold text-[var(--color-dark)] tracking-[0.05em] uppercase mb-1">
                 {benefit.title}
               </h4>
-              <p className="font-sans text-[11px] text-[#8e8279] leading-relaxed font-light">
+              <p className="font-sans text-[11px] text-[var(--color-muted)] leading-relaxed font-light">
                 {benefit.description}
               </p>
             </div>

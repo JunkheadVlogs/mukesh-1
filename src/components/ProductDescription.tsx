@@ -103,7 +103,7 @@ export function ProductDescription({
   const finalCare = "Gentle hand wash with care to preserve the beauty of the fabric.";
 
   return (
-    <div className={`pt-1.5 pb-1 font-sans text-[#2C241B] ${className}`}>
+    <div className={`pt-1.5 pb-0 font-sans text-[#2C241B] ${className}`}>
       <p className="text-[14px] leading-relaxed mb-3 font-medium">
         {sectionDesc}
       </p>

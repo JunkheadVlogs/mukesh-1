@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { Suspense, useEffect, useState, lazy } from 'react';
 import Layout from './Layout';
 import Home from './Home';
-import { ExitIntentPopup } from './components/ExitIntentPopup';
+const ExitIntentPopup = lazy(() => import('./components/ExitIntentPopup').then(m => ({ default: m.ExitIntentPopup })));
 import { useExitIntent } from './hooks/useExitIntent';
 import { trackWhatsAppClick, trackLead } from './tracking';
 import { useStore } from './store';
@@ -56,7 +56,7 @@ function LoadingScreen() {
       <div className="flex flex-col items-center space-y-4">
          <img 
            src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png" 
-           alt="Mukesh Saree Centre Logo" 
+           alt="Mukesh Saree Centre Logo" width="350" height="350" 
            className="w-auto h-[260px] md:h-[350px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block" 
          />
          <div className="w-12 h-[1px] bg-gold-500 animate-pulse"></div>
@@ -210,7 +210,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <GlobalSchema />
-      {triggered && <ExitIntentPopup onDismiss={dismiss} onSubmit={handleSubmitLead} />}
+      {triggered && (
+        <Suspense fallback={null}>
+          <ExitIntentPopup onDismiss={dismiss} onSubmit={handleSubmitLead} />
+        </Suspense>
+      )}
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           <Route path="/" element={<Layout />}>

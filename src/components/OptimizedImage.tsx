@@ -425,9 +425,7 @@ export function OptimizedImage({
         {...props}
       />
     );
-  }
-
-  // Custom live Hostinger links or external bypass optimization logic
+  }  // Custom live Hostinger links or external bypass optimization logic
   const isDirectBypass = (currentSrc.startsWith('http') && 
                           !currentSrc.includes('drive.google.com') && 
                           !currentSrc.includes('googleusercontent.com') &&
@@ -437,37 +435,32 @@ export function OptimizedImage({
                           currentSrc.includes('wsrv.nl');
 
   const webpUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'webp');
-  const jpgUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'jpg');
 
   let generatedSrcSetWebp = srcSet;
-  let generatedSrcSetJpg = srcSet;
   
   if (!srcSet && !isDirectBypass) {
     generatedSrcSetWebp = `${optimizeImage(currentSrc, 300, 'webp')} 300w, ${optimizeImage(currentSrc, 600, 'webp')} 600w, ${optimizeImage(currentSrc, 1000, 'webp')} 1000w`;
-    generatedSrcSetJpg = `${optimizeImage(currentSrc, 300, 'jpg')} 300w, ${optimizeImage(currentSrc, 600, 'jpg')} 600w, ${optimizeImage(currentSrc, 1000, 'jpg')} 1000w`;
   }
+
   const defaultSizes = sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw";
 
   return (
-    <picture key={`${currentSrc}-${retryCount}`} className="contents">
-      {isInView && generatedSrcSetWebp && <source srcSet={generatedSrcSetWebp} sizes={defaultSizes} type="image/webp" />}
-      <img
-        ref={imageRef}
-        src={isInView ? jpgUrl : PLACEHOLDER_1X1}
-        srcSet={isInView ? generatedSrcSetJpg : undefined}
-        sizes={isInView && generatedSrcSetJpg ? defaultSizes : undefined}
-        alt={finalAlt}
-        width={width}
-        height={calculatedHeight}
-        className={`${className || ''} ${!isInView ? 'animate-pulse' : ''}`}
-        loading={loading !== undefined ? loading : (priority ? "eager" : "lazy")}
-        fetchPriority={priority ? "high" : "auto"}
-        referrerPolicy="no-referrer"
-        decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}
-        style={{ background: '#F5F0E8', objectFit: 'cover', ...(props.style || {}) }}
-        onError={handleImageError}
-        {...props}
-      />
-    </picture>
+    <img
+      ref={imageRef}
+      src={isInView ? webpUrl : PLACEHOLDER_1X1}
+      srcSet={isInView ? generatedSrcSetWebp : undefined}
+      sizes={isInView && generatedSrcSetWebp ? defaultSizes : undefined}
+      alt={finalAlt}
+      width={width}
+      height={calculatedHeight}
+      className={`${className || ''} ${!isInView ? 'animate-pulse' : ''}`}
+      loading={loading !== undefined ? loading : (priority ? "eager" : "lazy")}
+      fetchPriority={priority ? "high" : "auto"}
+      referrerPolicy="no-referrer"
+      decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}
+      style={{ background: '#F5F0E8', objectFit: 'cover', ...(props.style || {}) }}
+      onError={handleImageError}
+      {...props}
+    />
   );
 }

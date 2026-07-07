@@ -25,7 +25,6 @@ import { Helmet } from "react-helmet-async";
 import { ProductDescription } from "./components/ProductDescription";
 import { ProductSeoContent } from "./components/ProductSeoContent";
 import { ProductAccordion } from "./components/ProductAccordion";
-import { ProductComparison } from "./components/ProductComparison";
 import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
@@ -233,6 +232,7 @@ export default function ProductPage() {
   const [sizeGuideUnit, setSizeGuideUnit] = useState<"in" | "cm">("in");
   const [quantity, setQuantity] = useState(1);
   const [isZoomed, setIsZoomed] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const touchRef = useRef<{
     startX: number;
@@ -545,7 +545,7 @@ export default function ProductPage() {
         }
 
         // Create the order on the backend to get a valid order_id + correct live key
-        const res = await fetch("/api/create-order", {
+        const res = await fetch(getApiUrl("api/create-order"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -636,7 +636,7 @@ export default function ProductPage() {
         <h2 className="mb-4 text-2xl font-serif">Product Not Found</h2>
         <Link
           to="/shop"
-          className="text-gold-500 hover:underline font-bold uppercase tracking-widest text-xs"
+          className="text-gold-600 hover:text-gold-500 hover:underline font-bold uppercase tracking-widest text-xs"
         >
           Return to Shop
         </Link>
@@ -682,7 +682,8 @@ export default function ProductPage() {
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(shareUrl);
-        alert("Link copied to clipboard!");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
       }
     } catch (err) {
       if ((err as Error).name !== "AbortError") {
@@ -969,27 +970,6 @@ export default function ProductPage() {
       />
 
       <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
-        {/* Minimalist, super-low profile Breadcrumbs with absolutely zero wasted space */}
-        <nav aria-label="Breadcrumb" className="breadcrumb-wrapper !px-4 md:!px-0 select-none py-0.5 md:py-0.5 bg-transparent shrink-0">
-          <ol className="breadcrumb font-sans text-[10px] md:text-xs flex flex-wrap m-0 p-0 list-none content-start">
-            {breadcrumbItems.map((item, idx) => (
-              <Fragment key={idx}>
-                <li className="flex items-center">
-                  <Link to={item.to} className="!text-[#2b2b2b] hover:!text-[#C8A96B] transition-colors font-medium">
-                    {item.label}
-                  </Link>
-                  <span className="separator !text-black/40 mx-1">/</span>
-                </li>
-              </Fragment>
-            ))}
-            <li className="flex items-center">
-              <span className="current-page !text-black !font-semibold" aria-current="page">
-                {product.name}
-              </span>
-            </li>
-          </ol>
-        </nav>
-
         <div className="flex flex-col lg:flex-row gap-1.5 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
           <div className="w-full lg:w-7/12 space-y-2 md:space-y-4">
@@ -1184,21 +1164,28 @@ export default function ProductPage() {
                   </div>
 
                   <div className="buttons-group">
-                    <a
-                      href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                        `https://mukeshsarees.com/product/${product.slug}`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="whatsapp-btn border border-[#25D366]/30 bg-transparent hover:bg-[#25D366]/10 text-[#25D366] transition-colors"
-                      aria-label="Share on WhatsApp"
-                      title="Share on WhatsApp"
+                    <button
+                      onClick={handleShare}
+                      className="share-btn border border-[var(--color-border)] bg-transparent hover:bg-[var(--color-gold-light)]/10 text-[var(--color-gold-dark)] transition-colors"
+                      aria-label="Share Product"
+                      title={copied ? "Link Copied!" : "Share Product"}
                     >
-                      <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                      </svg>
-                    </a>
+                      {copied ? (
+                        <CheckCircle className="w-[18px] h-[18px] text-emerald-600" />
+                      ) : (
+                        <Share2 className="w-[18px] h-[18px]" />
+                      )}
+                    </button>
                   </div>
+                </div>
+
+                <div className="flex items-center gap-1 bg-emerald-50 text-emerald-700 px-1.5 py-0 rounded-sm border border-emerald-100/50 w-fit">
+                  <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span className="text-[9.5px] sm:text-[10px] font-medium tracking-wide leading-none py-0.5">
+                    Save <strong className="font-bold">₹50 EXTRA</strong> on Prepaid Online Orders
+                  </span>
                 </div>
 
                 {/* ROW 2 — Ratings + urgency badge */}
@@ -1424,20 +1411,18 @@ export default function ProductPage() {
               <ProductSeoContent product={product} />
 
               {/* Description */}
-              <section className="product-info pt-1 border-t border-[var(--color-border)] mt-1">
+              <section className="product-info product-description-section pt-1 border-t border-[var(--color-border)] mt-1 mb-0 pb-0">
                 <ProductDescription description={product.description} product={product} />
               </section>
 
               {/* Collapsible Accordion */}
-              <ProductAccordion category={product.category} product={product} />
+              <section className="product-info product-accordion-section mt-0 mb-0 pt-0 pb-0">
+                <ProductAccordion category={product.category} product={product} />
+              </section>
             </div>
           </div>
         </div>
 
-        {/* Dynamic Side-by-Side Saree Match & Comparison Table */}
-        <section className="mt-8 px-4 md:px-0">
-          <ProductComparison currentProduct={product} />
-        </section>
 
         {/* Product Reviews */}
         <div
@@ -1530,15 +1515,15 @@ export default function ProductPage() {
           })}
 
           {/* Internal Links / Popular Searches - AI SEO Optimized */}
-          <div className="mt-12 pt-6 border-t border-[var(--color-border)]">
-            <h3 className="text-sm font-serif text-[var(--color-dark)] mb-4">Explore More Collections & Guides</h3>
-            <div className="flex flex-wrap gap-2 md:gap-3">
-              <Link to={`/shop?category=${product.category}`} className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">More {product.category}</Link>
-              <Link to="/guides/saree-fabric-guide" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Saree Fabric Guide</Link>
-              <Link to="/guides/saree-care-guide" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Saree Care Guide</Link>
-              <Link to="/wholesale-sarees" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Wholesale Buying</Link>
-              <Link to="/shop" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">Similar Premium Products</Link>
-              <Link to="/about" className="text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 px-3 py-1.5 bg-white">About Mukesh Saree Centre</Link>
+          <div className="mt-4 pt-4 md:mt-12 md:pt-6 border-t border-[var(--color-border)] mb-[16px]">
+            <h3 className="text-sm font-serif text-[var(--color-dark)] text-center mt-[16px] mb-[12px] leading-[1.2]">Explore More Collections & Guides</h3>
+            <div className="grid grid-cols-2 md:flex md:flex-wrap gap-[10px]">
+              <Link to={`/shop?category=${product.category}`} className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">More {product.category}</Link>
+              <Link to="/guides/saree-fabric-guide" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Saree Fabric Guide</Link>
+              <Link to="/guides/saree-care-guide" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Saree Care Guide</Link>
+              <Link to="/wholesale-sarees" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Wholesale Buying</Link>
+              <Link to="/shop" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Similar Premium Products</Link>
+              <Link to="/about" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">About Mukesh Saree Centre</Link>
             </div>
           </div>
         </section>

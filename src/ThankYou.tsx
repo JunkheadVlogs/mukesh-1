@@ -272,7 +272,7 @@ export default function ThankYou() {
       const totalVal = priceVal * qtyVal;
       const sizeText = item.size ? `Size: ${item.size}` : "Size: Free Size";
       const colorText = item.color ? ` &middot; Color: ${item.color}` : "";
-      const imgTag = item.image ? `<img src="${esc(item.image)}" style="width: 44px; height: 58px; object-fit: cover; border: 1px solid rgba(0,0,0,0.06); border-radius: 2px;" />` : '';
+      const imgTag = item.image ? `<img src="${esc(item.image)}" width="44" height="58" style="width: 44px; height: 58px; object-fit: cover; border: 1px solid rgba(0,0,0,0.06); border-radius: 2px;" />` : '';
       
       return `
         <tr>

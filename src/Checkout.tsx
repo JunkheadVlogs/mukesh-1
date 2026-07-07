@@ -17,7 +17,7 @@ import {
   MessageCircle,
   Clock,
 } from "lucide-react";
-import { CONFIG, submitToGoogleSheets, getWhatsAppNumber } from "./config";
+import { CONFIG, submitToGoogleSheets, getWhatsAppNumber, getApiUrl } from "./config";
 import { sendOrderToSheets } from "./utils/googleSheets";
 import { trackInitiateCheckout, updateTrackerUserData } from "./tracking";
 
@@ -72,11 +72,13 @@ export default function Checkout() {
 
   const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
 
-  const total = cart.reduce((sum, item) => {
+  const totalRaw = cart.reduce((sum, item) => {
     const mrp = item.originalPrice || item.price * 2;
     const calculatedPrice = mrp - Math.round(mrp * discountRate);
     return sum + calculatedPrice * item.quantity;
   }, 0);
+  
+  const finalTotal = paymentMethod === "online" ? Math.max(0, totalRaw - 50) : totalRaw;
 
   const displayDiscountPercent = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 60 : 50;
 
@@ -210,8 +212,8 @@ export default function Checkout() {
             zip: zipCode, // for Apps Script "data.zip" compatibility
             zipCode: zipCode,
             productName: productName,
-            amount: total, // for Apps Script "data.amount" compatibility
-            totalAmount: total.toString(),
+            amount: finalTotal, // for Apps Script "data.amount" compatibility
+            totalAmount: finalTotal.toString(),
             size: size,
             sku: sku,
             color: color,
@@ -265,7 +267,7 @@ export default function Checkout() {
               navigate("/thank-you", {
                 state: { 
                   orderId: newOrderId, 
-                  total, 
+                  total: finalTotal, 
                   cart: cartData,
                   paymentStatus: isPaid ? "Paid" : "Pending",
                   paymentId: (paymentId && paymentId !== "N/A") ? paymentId : undefined,
@@ -308,7 +310,7 @@ export default function Checkout() {
 
           // Save backup state to localStorage for absolute reliability when returning
           localStorage.setItem("msc_last_order_id", newOrderId);
-          localStorage.setItem("msc_last_order_total", total.toString());
+          localStorage.setItem("msc_last_order_total", finalTotal.toString());
           localStorage.setItem("msc_last_order_cart", JSON.stringify(cart));
           localStorage.setItem("msc_last_order_customer", JSON.stringify({
             fullName,
@@ -330,14 +332,14 @@ export default function Checkout() {
           }
 
           // Create the order on the server
-          console.log(`[PAYMENT ACTION LOG] Creating Razorpay order on server. Amount: ₹${total}, Order Number ID: ${newOrderId}`);
-          const res = await fetch("/api/create-order", {
+          console.log(`[PAYMENT ACTION LOG] Creating Razorpay order on server. Amount: ₹${finalTotal}, Order Number ID: ${newOrderId}`);
+          const res = await fetch(getApiUrl("api/create-order"), {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
-              amount: total,
+              amount: finalTotal,
               notes: {
                 order_id: newOrderId,
                 customer_name: fullName,
@@ -364,7 +366,7 @@ export default function Checkout() {
           const fbq = (window as any).fbq;
           if (typeof fbq !== 'undefined') {
             fbq('track', 'InitiateCheckout', {
-              value: total,
+              value: finalTotal,
               currency: 'INR',
               content_ids: cart.map((i: any) => i.id)
             });
@@ -393,7 +395,7 @@ export default function Checkout() {
               
               try {
                 console.log("[PAYMENT ACTION LOG] Initiating server-side payment signature verification...");
-                const verifyRes = await fetch("/api/verify-payment", {
+                const verifyRes = await fetch(getApiUrl("api/verify-payment"), {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json"
@@ -661,7 +663,7 @@ export default function Checkout() {
                   id="productName"
                   value={cart.map((i) => i.name).join(", ")}
                 />
-                <input type="hidden" id="totalAmount" value={total} />
+                <input type="hidden" id="totalAmount" value={finalTotal} />
                 <input
                   type="hidden"
                   id="size"
@@ -746,8 +748,9 @@ export default function Checkout() {
                         className="cursor-pointer flex-shrink-0"
                       />
                       <div className="flex-grow">
-                        <strong className="text-[13px] sm:text-[15px] font-bold text-[#1A0A00] block leading-snug">
+                        <strong className="text-[13px] sm:text-[15px] font-bold text-[#1A0A00] flex flex-wrap items-center gap-1.5 leading-snug">
                           💳 Pay Online (UPI, Cards, Wallets via Razorpay)
+                          <span className="text-[10px] sm:text-[11px] font-bold px-1.5 py-0 rounded-sm bg-emerald-100 text-emerald-800 uppercase tracking-wide leading-none">Save ₹50 Extra</span>
                         </strong>
                         <div className="text-[11px] sm:text-[13px] text-[#6B5F4A] mt-0.5 leading-tight">
                           Pay securely via UPI, Cards, NetBanking, or Wallets.
@@ -951,6 +954,13 @@ export default function Checkout() {
                     </div>
                   )}
 
+                  {paymentMethod === "online" && (
+                    <div className="flex justify-between items-center text-[#1E7E34]">
+                      <span>Prepaid Extra Discount</span>
+                      <span className="font-bold">-₹50</span>
+                    </div>
+                  )}
+
                   <div className="flex justify-between items-center">
                     <span>Shipping</span>
                     <span className="text-[#1E7E34] font-bold">FREE</span>
@@ -966,7 +976,7 @@ export default function Checkout() {
                     Grand Total
                   </span>
                   <span className="text-base sm:text-2xl font-bold text-primary-950">
-                    {formatPrice(total)}
+                    {formatPrice(finalTotal)}
                   </span>
                 </div>
               </div>
