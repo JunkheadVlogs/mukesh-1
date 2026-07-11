@@ -350,8 +350,8 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <SEO
-        title="Mukesh Saree Centre – Wholesale & Retail Sarees Nagpur"
-        description="Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery."
+        title="Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978"
+        description="Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us."
         image="https://mukeshsarees.com/images/og-home.jpg"
         url="/"
       />
@@ -414,7 +414,7 @@ export default function Home() {
                 color: "#FFFDF8",
               }}
             >
-              Explore Our <br className="block sm:hidden" />Premium Sarees
+              Mukesh Saree Centre <br className="block sm:hidden" />– Saree Shop in Nagpur
             </motion.h1>
 
             <motion.p
@@ -476,6 +476,11 @@ export default function Home() {
       {/* Shop by Category */}
       <section id="next-section" className="bg-primary-50 py-4 md:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6 md:mb-8 text-center md:text-left bg-white/40 p-4 md:p-6 rounded-lg border border-black/5">
+            <p className="text-[13px] sm:text-[14px] md:text-[15px] text-primary-950/80 font-sans leading-relaxed max-w-4xl">
+              Welcome to Mukesh Saree Centre, the best saree shop in Nagpur offering an exquisite collection of hand-picked ethnic wear since 1978. Whether you are searching for premium sarees near me or visiting our iconic physical showroom in Gandhibagh, we provide unmatched quality and designs. Discover why generations of families trust us as their favorite saree shop in Nagpur for every special celebration.
+            </p>
+          </div>
           <div className="flex justify-between items-baseline mb-3 md:mb-6">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)]">
               Shop by <span className="italic">Category</span>

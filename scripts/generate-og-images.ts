@@ -57,6 +57,7 @@ async function downloadFile(url: string, destPath: string): Promise<boolean> {
       fs.writeFileSync(destPath, buffer);
       return true;
     } catch (error: any) {
+      console.error(`Attempt ${attempt} failed for url ${url}:`, error.message || error);
       if (attempt === maxRetries) {
         return false;
       }
@@ -104,9 +105,8 @@ async function main() {
 
     const cleanImgUrl = getCleanDirectImageUrl(p.image);
     
-    // Construct the double-wrapped centering-pad formula for 800x1200 portrait (2:3 aspect ratio):
-    const innerUrl = `https://wsrv.nl/?url=${encodeURIComponent(cleanImgUrl)}&w=760&h=1160&fit=contain&cbg=ffffff`;
-    const finalUrl = `https://wsrv.nl/?url=${encodeURIComponent(innerUrl)}&w=800&h=1200&fit=contain&cbg=ffffff&output=jpg&q=95`;
+    // Construct the single-wrapped centering-pad formula for 800x1200 portrait (2:3 aspect ratio):
+    const finalUrl = `https://wsrv.nl/?url=${encodeURIComponent(cleanImgUrl)}&w=800&h=1200&fit=contain&cbg=ffffff&output=jpg&q=85`;
 
     const destPublicFile = path.join(publicOgDir, `${slug}.jpg`);
     const destDistFile = path.join(distOgDir, `${slug}.jpg`);

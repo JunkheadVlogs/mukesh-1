@@ -15,32 +15,32 @@ import { trackViewItemList } from "./tracking";
 
 const categoryDescriptions = {
   "linen-sarees": {
-    title: "Buy Linen Sarees Online | Mukesh Saree Centre Nagpur",
-    metaDescription: "Shop premium linen sarees online at Mukesh Saree Centre. Lightweight, breathable, and perfect for everyday wear. Cash on Delivery. Free shipping above ₹499.",
+    title: "Buy Linen Sarees Online | Best Saree Shop in Nagpur",
+    metaDescription: "Looking for premium linen sarees? Visit Mukesh Saree Centre, the best saree shop in Nagpur. Lightweight, breathable sarees online. COD & Free Shipping.",
     heading: "Linen Sarees — Light, Elegant & Perfect for Daily Wear",
     description: "Linen sarees are loved for their breathable fabric and natural texture. At Mukesh Saree Centre, our linen saree collection features beautiful prints and solid colours perfect for office wear, casual outings, and festive occasions. Sourced from top weavers, every linen saree in our collection is soft, durable, and elegantly crafted. Shop online with Cash on Delivery across India."
   },
   "paithani-sarees": {
-    title: "Paithani Sarees Online | Mukesh Saree Centre Nagpur",
-    metaDescription: "Buy authentic Paithani sarees from Mukesh Saree Centre, Nagpur. Maharashtra's heritage weave with zari work and peacock motifs. COD available.",
+    title: "Paithani Sarees Online | Best Saree Shop in Nagpur",
+    metaDescription: "Buy authentic Paithani sarees from Mukesh Saree Centre, Nagpur's premier saree shop since 1978. Exquisite peacock border drapes with COD & Free Shipping.",
     heading: "Paithani Sarees — Maharashtra's Royal Heritage Weave",
     description: "Paithani sarees are the pride of Maharashtra, known for their rich zari borders, vibrant silk body, and iconic peacock and lotus motifs. At Mukesh Saree Centre, we carry authentic Paithani sarees sourced from skilled weavers, perfect for weddings, festivals, and cultural occasions. Each Paithani is a work of art that carries centuries of tradition. Available online with Cash on Delivery across India."
   },
   "banarasi-sarees": {
-    title: "Banarasi Sarees Online | Mukesh Saree Centre Nagpur",
-    metaDescription: "Shop Banarasi silk sarees at Mukesh Saree Centre. Pure silk, georgette, and satin Banarasi weaves for weddings and festivals. COD & Free Shipping.",
+    title: "Banarasi Sarees Online | Best Saree Shop in Nagpur",
+    metaDescription: "Shop luxury Banarasi silk sarees at Mukesh Saree Centre, the leading saree shop in Nagpur. Handwoven zari weaves for weddings & festivals. COD & Free Shipping.",
     heading: "Banarasi Sarees — The Gold Standard of Indian Bridal Wear",
     description: "Banarasi sarees from Varanasi are the most sought-after bridal sarees in India. Known for their opulent zari work, intricate brocade patterns, and lustrous silk, these sarees are perfect for weddings, receptions, and grand celebrations. Our collection includes pure silk Banarasi, georgette Banarasi, and satin Banarasi in a range of colours. Shop online with free shipping above ₹499 and Cash on Delivery."
   },
   "silk-sarees": {
-    title: "Silk Sarees Online | Mukesh Saree Centre Nagpur",
-    metaDescription: "Buy pure silk sarees online — Kanjivaram, soft silk, art silk and more at Mukesh Saree Centre Nagpur. COD. Free shipping above ₹499.",
+    title: "Silk Sarees Online | Best Saree Shop in Nagpur",
+    metaDescription: "Buy pure silk, Kanjivaram & soft silk sarees at Mukesh Saree Centre, Nagpur's trusted saree shop since 1978. Shop online with Cash on Delivery.",
     heading: "Silk Sarees — Timeless Elegance for Every Occasion",
     description: "Silk sarees are a wardrobe essential for every Indian woman. Our silk collection includes Kanjivaram, pure silk, soft silk, art silk, and Upada silk — each handpicked from the finest weaving centres in India. Whether you are dressing for a wedding, puja, or family celebration, our silk sarees offer richness, sheen, and grace that is unmatched. Available online with Cash on Delivery all across India."
   },
   "cotton-sarees": {
-    title: "Cotton Sarees Online | Mukesh Saree Centre Nagpur",
-    metaDescription: "Shop handloom and printed cotton sarees at Mukesh Saree Centre. Comfortable, everyday sarees in beautiful designs. COD available.",
+    title: "Cotton Sarees Online | Best Saree Shop in Nagpur",
+    metaDescription: "Shop elegant daily wear cotton sarees at Mukesh Saree Centre, the best saree shop in Nagpur. Lightweight, comfortable & durable weaves. COD available.",
     heading: "Cotton Sarees — Comfortable, Stylish & Made for Every Day",
     description: "Cotton sarees are the most comfortable and versatile sarees you can own. Our cotton saree collection covers mulmul cotton, handloom cotton, printed cotton, and pure cotton in a wide range of designs, colours, and patterns. These sarees are perfect for daily wear, office, and casual occasions. Lightweight and easy to drape, cotton sarees from Mukesh Saree Centre combine comfort with timeless Indian style."
   }
@@ -150,8 +150,8 @@ export default function Shop() {
     const cat = categoryFilter || "";
     if (cat === "Sarees" || cat === "Linen Sarees") {
       return {
-        title: "Buy Sarees Online | Mukesh Saree Centre Nagpur — Paithani, Banarasi, Silk, Linen",
-        description: "Shop 100+ saree styles online at Mukesh Saree Centre, Nagpur. Paithani, Banarasi, Kanjivaram, linen, cotton, silk & more. Cash on Delivery. Free shipping above ₹499.",
+        title: "Buy Sarees Online | Best Saree Shop in Nagpur",
+        description: "Looking for the best saree shop in Nagpur? Shop 100+ premium sarees online at Mukesh Saree Centre. Paithani, Banarasi, Kanjivaram, linen, silk & cotton. COD available.",
         heading: "Saree Collection — Elegant & Exquisite Weaves",
         paragraph: "Sarees are the soul of Indian ethnic fashion, embodying timeless grace and cultural pride. At Mukesh Saree Centre, our curated collection brings you authentic weaves and designs ranging from lightweight cotton and modern printed linens to royal silk katan Banarasis and intricate handloom Paithanis. Sourced directly from premier weaving centers, each saree in our collection showcases unparalleled craftsmanship, soft premium fabrics, and rich colors. Enjoy a seamless online shopping experience with free shipping above ₹499 and reliable Cash on Delivery service anywhere in India."
       };
@@ -159,8 +159,8 @@ export default function Shop() {
 
     if (cat === "Lehengas") {
       return {
-        title: "Buy Lehengas Online | Mukesh Saree Centre Nagpur — Bridal & Designer",
-        description: "Browse bridal and designer lehengas at Mukesh Saree Centre, Nagpur. Beautiful embroidered and printed lehengas with Cash on Delivery. Free shipping above ₹499.",
+        title: "Buy Lehengas Online | Saree Shop in Nagpur — Mukesh Saree Centre",
+        description: "Browse bridal and designer lehengas at Mukesh Saree Centre, Nagpur's premium saree and ethnic store. Beautiful embroidered and printed lehengas with COD.",
         heading: "Bridal & Designer Lehengas — Grace, Contrast & Opulence",
         paragraph: "Step into any celebration with unmatched confidence and luxury in a premium lehenga from Mukesh Saree Centre. Our lehenga collection spans a rich variety of designs, from opulent, heavy-crafted bridal lehengas adorned with intricate zari work, hand embroidery, and premium sequins, to modern, breathable printed and georgette designer lehengas perfect for sangeet, receptions, and bridesmaid attire. Expertly selected and sized for absolute comfort and styling versatility, our lehengas deliver flawless fits and eye-catching drapes. Buy online with authentic quality guarantees, free nationwide shipping above ₹499, and easy Cash on Delivery options."
       };
@@ -168,11 +168,11 @@ export default function Shop() {
     
     return {
       title: categoryFilter 
-        ? `Shop ${categoryFilter} Online | Mukesh Saree Centre` 
-        : "Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre",
+        ? `Shop ${categoryFilter} Online | Best Saree Shop in Nagpur` 
+        : "Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978",
       description: categoryFilter
-        ? `Explore our beautiful collection of ${categoryFilter}. Cash on Delivery, free shipping above ₹499, and easy 7-day returns on orders.`
-        : "Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978.",
+        ? `Explore our beautiful collection of ${categoryFilter} at Nagpur's trusted saree shop. Cash on Delivery and free shipping available.`
+        : "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop online or visit us in Gandhibagh.",
       heading: searchQuery
         ? `Results for "${searchQuery}"`
         : categoryFilter || "Shop All",

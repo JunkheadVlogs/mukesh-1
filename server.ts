@@ -1229,8 +1229,7 @@ app.get('/og-images/:slug.jpg', (req, res) => {
       targetUrl = `https://mukeshsarees.com/${targetUrl.replace(/^\/+/, '')}`;
     }
     
-    const innerUrl = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=760&h=1160&fit=contain&cbg=ffffff`;
-    const finalUrl = `https://wsrv.nl/?url=${encodeURIComponent(innerUrl)}&w=800&h=1200&fit=contain&cbg=ffffff&output=jpg&q=95`;
+    const finalUrl = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=800&h=1200&fit=contain&cbg=ffffff&output=jpg&q=85`;
     
     // 2. Perform non-blocking background fetch & cache to avoid delaying the response
     try {

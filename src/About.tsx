@@ -55,8 +55,8 @@ export default function About() {
     <div className="bg-primary-50 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <SEO 
-          title="About Us | Mukesh Saree Centre — Nagpur's Trusted Saree Store Since 1978" 
-          description="Learn about Mukesh Saree Centre, established in 1978 by the Nanakram Khemchandani family in Nagpur. We offer 30+ saree varieties with Cash on Delivery and free shipping." 
+          title="About Our Saree Shop in Nagpur | Mukesh Saree Centre Est. 1978" 
+          description="Looking for the best saree shop in Nagpur? Learn about the rich legacy of Mukesh Saree Centre, Nagpur's trusted saree destination since 1978." 
           url="/about"
           schema={customSchema}
         />

@@ -15,7 +15,7 @@ export function GlobalSchema() {
     "url": `${BUSINESS_INFO.website}/`,
     "logo": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
     "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
-    "description": "Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery.",
+    "description": "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us.",
     "telephone": BUSINESS_INFO.phone,
     "priceRange": "₹₹",
     "address": {
@@ -65,7 +65,7 @@ export function GlobalSchema() {
     "@id": `${BUSINESS_INFO.website}/#website`,
     "url": `${BUSINESS_INFO.website}/`,
     "name": BUSINESS_INFO.name,
-    "description": "Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery.",
+    "description": "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us.",
     "publisher": {
       "@id": `${BUSINESS_INFO.website}/#organization`
     },

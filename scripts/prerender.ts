@@ -344,7 +344,7 @@ async function runPrerender() {
     "name": BUSINESS_INFO.name,
     "url": BUSINESS_INFO.website,
     "logo": `${BUSINESS_INFO.website}/images/logo.webp`,
-    "description": "Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery.",
+    "description": "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us.",
     "foundingDate": BUSINESS_INFO.established,
     "address": {
       "@type": "PostalAddress",
@@ -482,8 +482,8 @@ async function runPrerender() {
   `;
 
   const homeOgTags = `<!-- Dynamic OG Tags -->
-  <meta data-rh="true" property="og:title" content="Mukesh Saree Centre – Wholesale & Retail Sarees Nagpur" />
-  <meta data-rh="true" property="og:description" content="Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery." />
+  <meta data-rh="true" property="og:title" content="Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978" />
+  <meta data-rh="true" property="og:description" content="Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us." />
   <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
   <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/" />
   <meta data-rh="true" property="og:type" content="website" />
@@ -492,8 +492,8 @@ async function runPrerender() {
   <meta data-rh="true" property="og:image:height" content="630" />
   <meta data-rh="true" property="og:image:type" content="image/jpeg" />
   <meta data-rh="true" name="twitter:card" content="summary_large_image" />
-  <meta data-rh="true" name="twitter:title" content="Mukesh Saree Centre – Wholesale & Retail Sarees Nagpur" />
-  <meta data-rh="true" name="twitter:description" content="Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery." />
+  <meta data-rh="true" name="twitter:title" content="Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978" />
+  <meta data-rh="true" name="twitter:description" content="Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us." />
   <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
   <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/" />
   <!-- End Dynamic OG Tags -->`;
@@ -501,8 +501,8 @@ async function runPrerender() {
   const updatedHomeHtml = createStaticPage({
     htmlTemplate: baseHtml,
     bodyHtml: homepageBody,
-    title: "Mukesh Saree Centre – Wholesale & Retail Sarees Nagpur",
-    description: "Mukesh Saree Centre, Nagpur: Wholesale and retail sarees since 1978. Shop online for premium silk, linen & uniform sarees. Cash on Delivery.",
+    title: "Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978",
+    description: "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us.",
     customOgTags: homeOgTags,
     schemaJson: homeSchema
   });
@@ -1047,8 +1047,8 @@ async function runPrerender() {
     },
     {
       dir: "about",
-      title: "About Us | ${BUSINESS_INFO.name} Since ${BUSINESS_INFO.established}",
-      desc: "Learn about the heritage of ${BUSINESS_INFO.name}, ${BUSINESS_INFO.address.city}'s premium destination for authentic ethnic wear, established in ${BUSINESS_INFO.established}.",
+      title: "About Our Saree Shop in Nagpur | ${BUSINESS_INFO.name} Est. 1978",
+      desc: "Looking for the best saree shop in Nagpur? Learn about the rich legacy of Mukesh Saree Centre, Nagpur's trusted saree destination since 1978.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}

@@ -154,7 +154,7 @@ function main() {
   <meta data-rh="true" property="og:url" content="${canonicalUrl}" />
   <meta data-rh="true" property="og:type" content="product" />
   <meta data-rh="true" property="og:site_name" content="Mukesh Saree Centre" />
-  <meta data-rh="true" property="og:image:width" content="1200" />
+  <meta data-rh="true" property="og:image:width" content="800" />
   <meta data-rh="true" property="og:image:height" content="1200" />
   <meta data-rh="true" property="og:image:type" content="image/jpeg" />
   <meta data-rh="true" name="twitter:card" content="summary_large_image" />
