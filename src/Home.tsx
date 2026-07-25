@@ -23,6 +23,10 @@ import {
   Pause,
   Volume2,
   VolumeX,
+  Award,
+  Sparkles,
+  Package,
+  Coins,
 } from "lucide-react";
 import { products } from "./mockData";
 import { type Product } from "./store";
@@ -350,9 +354,9 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <SEO
-        title="Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978"
-        description="Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us."
-        image="https://mukeshsarees.com/images/og-home.jpg"
+        title="Mukesh Saree Centre | Wholesale & Retail Sarees in Nagpur"
+        description="Buy premium sarees online from Mukesh Saree Centre. Wholesale & retail sarees, designer sarees, cotton, linen, silk, party wear and more. Cash on Delivery available across India."
+        image="https://mukeshsarees.com/og-image.jpg"
         url="/"
       />
 
@@ -476,11 +480,6 @@ export default function Home() {
       {/* Shop by Category */}
       <section id="next-section" className="bg-primary-50 py-4 md:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6 md:mb-8 text-center md:text-left bg-white/40 p-4 md:p-6 rounded-lg border border-black/5">
-            <p className="text-[13px] sm:text-[14px] md:text-[15px] text-primary-950/80 font-sans leading-relaxed max-w-4xl">
-              Welcome to Mukesh Saree Centre, the best saree shop in Nagpur offering an exquisite collection of hand-picked ethnic wear since 1978. Whether you are searching for premium sarees near me or visiting our iconic physical showroom in Gandhibagh, we provide unmatched quality and designs. Discover why generations of families trust us as their favorite saree shop in Nagpur for every special celebration.
-            </p>
-          </div>
           <div className="flex justify-between items-baseline mb-3 md:mb-6">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)]">
               Shop by <span className="italic">Category</span>
@@ -626,33 +625,69 @@ export default function Home() {
       </section>
 
       {/* Why Shop With Us Section */}
-      <section className="why-us-section pt-4 pb-0 bg-white border-t border-gold-200/30">
-        <div className="max-w-4xl mx-auto px-1 sm:px-2">
-          <div className="text-center mb-2 md:mb-3">
-            <h2 className="text-xl sm:text-2xl font-serif font-light tracking-[0.06em] text-[var(--color-dark)]">
+      <section className="why-us-section py-5 md:py-10 bg-white border-t border-[var(--color-gold-500)]/10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 md:mb-8">
+            <p className="text-[9px] tracking-[0.3em] uppercase text-[var(--color-gold-500)] mb-1 font-semibold font-sans">
+              The Mukesh Legacy
+            </p>
+            <h2 className="text-xl sm:text-2xl font-serif font-light tracking-[0.08em] text-[var(--color-dark)]">
               Why Customers Choose <span className="italic">Mukesh Saree Centre</span>
             </h2>
+            <div className="w-8 h-[1px] bg-[var(--color-gold-500)]/30 mx-auto mt-2.5"></div>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:gap-4">
-            <div className="text-center p-1">
-              <div className="text-2xl sm:text-3xl mb-1">🏆</div>
-              <h3 className="text-[12px] sm:text-[13px] md:text-[14px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-wider mb-0.5">46 Years of Trust</h3>
-              <p className="text-[11px] sm:text-[12px] md:text-[13px] text-[var(--color-dark)]/75">Established in Nagpur since 1978</p>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-4 md:gap-x-8 max-w-5xl mx-auto">
+            {/* Feature 1 */}
+            <div className="flex flex-col items-center text-center">
+              <div className="text-[var(--color-gold-500)] mb-2 transition-transform duration-300 hover:scale-105">
+                <Award size={22} strokeWidth={1.2} />
+              </div>
+              <h3 className="text-[11px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-[0.15em] mb-0.5">
+                46 Years of Trust
+              </h3>
+              <p className="text-[10.5px] text-[var(--color-dark)]/50 font-sans font-light tracking-[0.02em] max-w-[150px] leading-relaxed">
+                Established in Nagpur since 1978
+              </p>
             </div>
-            <div className="text-center p-1">
-              <div className="text-2xl sm:text-3xl mb-1">🚚</div>
-              <h3 className="text-[12px] sm:text-[13px] md:text-[14px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-wider mb-0.5">Cash on Delivery</h3>
-              <p className="text-[11px] sm:text-[12px] md:text-[13px] text-[var(--color-dark)]/75">Available all across India</p>
+
+            {/* Feature 2 */}
+            <div className="flex flex-col items-center text-center">
+              <div className="text-[var(--color-gold-500)] mb-2 transition-transform duration-300 hover:scale-105">
+                <Coins size={22} strokeWidth={1.2} />
+              </div>
+              <h3 className="text-[11px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-[0.15em] mb-0.5">
+                Cash on Delivery
+              </h3>
+              <p className="text-[10.5px] text-[var(--color-dark)]/50 font-sans font-light tracking-[0.02em] max-w-[150px] leading-relaxed">
+                Available all across India
+              </p>
             </div>
-            <div className="text-center p-1">
-              <div className="text-2xl sm:text-3xl mb-1">📦</div>
-              <h3 className="text-[12px] sm:text-[13px] md:text-[14px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-wider mb-0.5">Free Shipping</h3>
-              <p className="text-[11px] sm:text-[12px] md:text-[13px] text-[var(--color-dark)]/75">On all orders above ₹999</p>
+
+            {/* Feature 3 */}
+            <div className="flex flex-col items-center text-center">
+              <div className="text-[var(--color-gold-500)] mb-2 transition-transform duration-300 hover:scale-105">
+                <Package size={22} strokeWidth={1.2} />
+              </div>
+              <h3 className="text-[11px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-[0.15em] mb-0.5">
+                Free Shipping
+              </h3>
+              <p className="text-[10.5px] text-[var(--color-dark)]/50 font-sans font-light tracking-[0.02em] max-w-[150px] leading-relaxed">
+                On all orders above ₹999
+              </p>
             </div>
-            <div className="text-center p-1">
-              <div className="text-2xl sm:text-3xl mb-1">✨</div>
-              <h3 className="text-[12px] sm:text-[13px] md:text-[14px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-wider mb-0.5">30+ Saree Varieties</h3>
-              <p className="text-[11px] sm:text-[12px] md:text-[13px] text-[var(--color-dark)]/75">From Paithani to Banarasi to Linen</p>
+
+            {/* Feature 4 */}
+            <div className="flex flex-col items-center text-center">
+              <div className="text-[var(--color-gold-500)] mb-2 transition-transform duration-300 hover:scale-105">
+                <Sparkles size={22} strokeWidth={1.2} />
+              </div>
+              <h3 className="text-[11px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-[0.15em] mb-0.5">
+                30+ Saree Varieties
+              </h3>
+              <p className="text-[10.5px] text-[var(--color-dark)]/50 font-sans font-light tracking-[0.02em] max-w-[150px] leading-relaxed">
+                From Paithani to Banarasi to Linen
+              </p>
             </div>
           </div>
         </div>

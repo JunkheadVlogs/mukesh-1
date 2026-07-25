@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useParams, Navigate, Link } from "react-router";
 import { SEO } from "../components/SEO";
 import { ProductCard } from "../components/ProductCard";
+import { SareeShopInNagpurArticle } from "../components/SareeShopInNagpurArticle";
 import { useStore } from "../store";
 import { ChevronRight } from "lucide-react";
 import { BUSINESS_INFO } from "../config/business";
@@ -188,50 +189,91 @@ const seoPagesData: Record<
     ],
   },
   "saree-shop-in-nagpur": {
-    title:
-      "Best Saree Shop in ${BUSINESS_INFO.address.city} Since ${BUSINESS_INFO.established} | ${BUSINESS_INFO.name}",
-    description:
-      "Looking for a authentic saree shop in ${BUSINESS_INFO.address.city}? Visit ${BUSINESS_INFO.name} for premium silk, bridal, and party wear sarees. Established ${BUSINESS_INFO.established}.",
-    h1: "Your Trusted Saree Shop in ${BUSINESS_INFO.address.city}",
-    intro:
-      "Conveniently located in the heart of ${BUSINESS_INFO.address.city}, ${BUSINESS_INFO.name} is a landmark destination for ethnic wear enthusiasts.",
+    title: "Best Saree Shop in Nagpur | Saree Wholesaler Nagpur - Mukesh Saree Centre",
+    description: "Looking for the best saree shop in Nagpur or a trusted saree wholesaler in Nagpur? Read our ultimate 6,000-word guide on Paithani, Banarasi, Cotton, and Uniform sarees on Jagnath Road, Itwari.",
+    h1: "Best Saree Shop in Nagpur",
+    intro: "The ultimate 6,000-word definitive guide to buying, sourcing, and styling the finest sarees in Nagpur. Written by generational textile experts at Mukesh Saree Centre.",
     filterCategory: "sarees",
-    body: (
-      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
-        <p>
-          When you search for a{" "}
-          <strong>saree shop in ${BUSINESS_INFO.address.city}</strong> with a
-          legacy of trust and quality, <em>${BUSINESS_INFO.name}</em> stands
-          out. Since ${BUSINESS_INFO.established}, we have been serving the
-          community with authentic Indian traditional sarees.
-        </p>
-        <p>
-          Whether you are looking for luxurious silk sarees in $
-          {BUSINESS_INFO.address.city}, traditional Paithani sarees, or modern
-          party wear lehengas, our expansive showroom provides an unmatched
-          shopping experience.
-        </p>
-      </div>
-    ),
+    body: <SareeShopInNagpurArticle />,
     faqs: [
       {
-        question:
-          "Where is the best saree shop in ${BUSINESS_INFO.address.city}?",
-        answer:
-          "${BUSINESS_INFO.name}, located at ${BUSINESS_INFO.address.area}, is widely regarded as one of the best and most trusted saree shops in ${BUSINESS_INFO.address.city}.",
+        question: "Where is Mukesh Saree Centre located?",
+        answer: "Mukesh Saree Centre is located at Jagnath Road, Itwari, Nagpur, Maharashtra, 440002. We are situated in the heart of Nagpur's historic textile trading district."
       },
       {
-        question:
-          "What types of sarees are available in ${BUSINESS_INFO.address.city} at ${BUSINESS_INFO.name}?",
-        answer:
-          "We offer an extensive range including pure silk, cotton, Paithani, Malvika, uniform sarees, and designer bridal collections.",
+        question: "Is Mukesh Saree Centre a retail store or a wholesale store?",
+        answer: "We are both! We function as a premier Saree Wholesaler Nagpur, supplying bulk stock to boutiques and resellers, while also welcoming retail walk-in shoppers at highly competitive wholesale-matched prices."
       },
+      {
+        question: "Do you supply uniform sarees in bulk?",
+        answer: "Yes, we are a leading provider of Uniform Sarees Nagpur, catering to schools, colleges, corporate offices, healthcare facilities, and hospitality services with perfect color matching and high durability."
+      },
+      {
+        question: "Do you provide shipping across India?",
+        answer: "Absolutely. We offer secure, fully tracked Pan India Delivery for all individual retail purchases and high-volume wholesale commercial shipments."
+      }
     ],
     relatedKeywords: [
-      "sarees in ${BUSINESS_INFO.address.city}",
-      "ethnic wear ${BUSINESS_INFO.address.city}",
-      "${BUSINESS_INFO.name} ${BUSINESS_INFO.address.city}",
+      "Best Saree Shop in Nagpur",
+      "Saree Wholesaler Nagpur",
+      "Wholesale Saree Shop Nagpur",
+      "Best Saree Store Nagpur",
+      "Saree Shop Near Me",
+      "Wholesale Sarees Nagpur",
+      "Cotton Saree Shop Nagpur",
+      "Designer Saree Shop Nagpur",
+      "Wedding Sarees Nagpur",
+      "Bridal Sarees Nagpur",
+      "Uniform Sarees Nagpur"
+    ]
+  },
+  "saree-wholesaler-nagpur": {
+    title: "Saree Wholesaler Nagpur | Best Saree Shop in Nagpur - Mukesh Saree Centre",
+    description: "Sourcing premium sarees in bulk? Mukesh Saree Centre is the leading Saree Wholesaler in Nagpur, offering Paithani, cotton, and uniform sarees on Jagnath Road, Itwari.",
+    h1: "Saree Wholesaler Nagpur",
+    intro: "The premier bulk sourcing destination for boutiques, retailers, and online resellers in Central India. Explore Nagpur's best-priced wholesale collection.",
+    filterCategory: "sarees",
+    body: <SareeShopInNagpurArticle />,
+    faqs: [
+      {
+        question: "Why should I buy bulk sarees from a Saree Wholesaler Nagpur like Mukesh Saree Centre?",
+        answer: "Buying directly from us bypasses mid-tier distributors, allowing you to access near-factory prices and maximize your profit margins while ensuring top-tier weave quality."
+      },
+      {
+        question: "What is your minimum order quantity for wholesale buyers?",
+        answer: "We offer highly flexible, low MOQs specifically designed to help home-based resellers and boutique owners launch and scale their businesses without high capital risk."
+      }
     ],
+    relatedKeywords: [
+      "Saree Wholesaler Nagpur",
+      "Best Saree Shop in Nagpur",
+      "Wholesale Saree Shop Nagpur",
+      "Wholesale Sarees Nagpur"
+    ]
+  },
+  "wholesale-saree-shop-nagpur": {
+    title: "Wholesale Saree Shop Nagpur | Direct Factory Prices | Mukesh Saree Centre",
+    description: "Visit our wholesale saree shop in Nagpur for unbeatable rates on bulk wedding sarees, cotton drapes, and high-quality staff uniforms on Jagnath Road, Itwari.",
+    h1: "Wholesale Saree Shop Nagpur",
+    intro: "Access direct-from-weaver wholesale prices on traditional Maharashtrian silks, soft summer cottons, and custom uniform solutions.",
+    filterCategory: "sarees",
+    body: <SareeShopInNagpurArticle />,
+    faqs: [
+      {
+        question: "Are your sarees sourced directly from weavers?",
+        answer: "Yes, we maintain direct relationships with traditional weaving circles and handloom clusters across Banaras, Yeola, Surat, and Kanchipuram to guarantee genuine quality."
+      },
+      {
+        question: "Do you offer digital catalogs for remote ordering?",
+        answer: "Yes, we provide full digital catalogs via WhatsApp and provide seamless national shipping with tracking."
+      }
+    ],
+    relatedKeywords: [
+      "Wholesale Saree Shop Nagpur",
+      "Saree Wholesaler Nagpur",
+      "Best Saree Shop in Nagpur",
+      "Wholesale Sarees Nagpur"
+    ]
   },
   "bridal-sarees-nagpur": {
     title:
@@ -693,19 +735,141 @@ export default function SeoLandingPage() {
     )
     .slice(0, 12);
 
-  // Generate FAQ Schema dynamically
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: pageData.faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
+  // Generate Combined Advanced Schemas dynamically
+  const combinedSchema = useMemo(() => {
+    // Standard FAQ Schema
+    const faqSchemaObj = {
+      "@type": "FAQPage",
+      "mainEntity": pageData.faqs.map((faq) => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer,
+        },
+      })),
+    };
+
+    const isNagpurSpecial = ["saree-shop-in-nagpur", "saree-wholesaler-nagpur", "wholesale-saree-shop-nagpur"].includes(slug || "");
+
+    if (!isNagpurSpecial) {
+      return {
+        "@context": "https://schema.org",
+        ...faqSchemaObj
+      };
+    }
+
+    // Advanced Local + Article Schemas
+    const organizationSchema = {
+      "@type": "Organization",
+      "@id": "https://mukeshsarees.com/#organization",
+      "name": "Mukesh Saree Centre",
+      "url": "https://mukeshsarees.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png"
       },
-    })),
-  };
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91-9325034636",
+        "contactType": "sales",
+        "areaServed": "IN",
+        "availableLanguage": ["en", "hi", "mr"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/mukeshsareecentre",
+        "https://www.instagram.com/mukeshsareecentre"
+      ]
+    };
+
+    const localBusinessSchema = {
+      "@type": "ClothingStore",
+      "@id": "https://mukeshsarees.com/#localbusiness",
+      "name": "Mukesh Saree Centre",
+      "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
+      "telephone": "+919325034636",
+      "url": "https://mukeshsarees.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jagnath Road, Itwari",
+        "addressLocality": "Nagpur",
+        "addressRegion": "Maharashtra",
+        "postalCode": "440002",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "21.1528",
+        "longitude": "79.1121"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "11:00",
+        "closes": "21:00"
+      },
+      "priceRange": "₹₹"
+    };
+
+    const breadcrumbSchema = {
+      "@type": "BreadcrumbList",
+      "@id": "https://mukeshsarees.com/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://mukeshsarees.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": pageData.h1,
+          "item": `https://mukeshsarees.com/${slug}`
+        }
+      ]
+    };
+
+    const articleSchema = {
+      "@type": "Article",
+      "@id": `https://mukeshsarees.com/${slug}#article`,
+      "isPartOf": {
+        "@id": `https://mukeshsarees.com/${slug}`
+      },
+      "headline": pageData.title,
+      "description": pageData.description,
+      "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
+      "datePublished": "2026-05-30T08:00:00+05:30",
+      "dateModified": "2026-07-15T10:00:00+05:30",
+      "mainEntityOfPage": `https://mukeshsarees.com/${slug}`,
+      "author": {
+        "@id": "https://mukeshsarees.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://mukeshsarees.com/#organization"
+      }
+    };
+
+    // Return combined graph schema
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        { "@context": "https://schema.org", ...faqSchemaObj },
+        organizationSchema,
+        localBusinessSchema,
+        breadcrumbSchema,
+        articleSchema
+      ]
+    };
+  }, [pageData, slug]);
 
   return (
     <div className="bg-[#FAF9F8]">
@@ -713,7 +877,7 @@ export default function SeoLandingPage() {
         title={pageData.title}
         description={pageData.description}
         url={`/${slug}`}
-        schema={[faqSchema]}
+        schema={combinedSchema}
       />
 
       {/* Header Section */}

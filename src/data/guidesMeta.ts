@@ -391,5 +391,99 @@ export const guidesMeta: GuideMeta[] = [
       { question: "Which fabric is most comfortable for a 9-to-5 job?", answer: "Cotton, pure linen, and light georgettes are best. They breathe well, don't restrict movement, and maintain their shape." },
       { question: "How should I pin my saree for the office?", answer: "Neat, precisely pinned shoulder pleats are essential for a professional look. Avoid letting the pallu float freely, as it can get in the way." }
     ]
+  },
+  {
+    id: "uniform-saree-wholesaler-nagpur",
+    slug: "uniform-saree-wholesaler-nagpur",
+    title: "Uniform Saree Wholesaler Nagpur - Saree Center Sourcing Guide",
+    description: "Looking for a reliable Uniform Saree Wholesaler in Nagpur? Mukesh Saree Centre is India's leading bulk uniform saree supplier since 1978. Get wholesale rates, customizable designs, and premium fabrics.",
+    author: "Mukesh Saree Centre",
+    date: "2026-07-14",
+    lastUpdated: "2026-07-14",
+    image: "https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695",
+    relatedSlugs: ["uniform-saree-guide", "office-wear-saree-guide"],
+    productCategories: ["Uniform Sarees", "Wholesale Sarees", "Corporate Wear", "School Uniforms"],
+    faqs: [
+      {
+        question: "Who is the leading uniform saree wholesaler in Nagpur?",
+        answer: "Mukesh Saree Centre is Nagpur's top uniform saree wholesaler, supplying durable, high-quality drapes since 1978. We serve schools, corporate offices, hotels, hospitals, and boutiques across India with customizable options and direct wholesale pricing."
+      },
+      {
+        question: "What is the minimum order quantity (MOQ) for bulk uniform sarees?",
+        answer: "Our standard Minimum Order Quantity (MOQ) for bulk uniform sarees is highly flexible, typically starting from 20 to 25 units per design. This enables growing businesses and schools to scale their purchases without excessive capital commitment."
+      },
+      {
+        question: "Which fabrics are best for corporate uniform sarees?",
+        answer: "Premium crepe and poly-crepe blends are excellent for corporate uniform sarees because they are wrinkle-resistant, dry quickly, and maintain an elegant drape throughout long 10-hour work shifts without creasing."
+      },
+      {
+        question: "Do you supply school uniform sarees for teachers and staff?",
+        answer: "Yes, we are a leading school uniform saree supplier in Central India. We specialize in comfortable, breathable teacher uniform sarees in classic stripes, subtle borders, and board-approved institutional color schemes."
+      },
+      {
+        question: "Can hospital administrative staff order customized nursing uniform sarees?",
+        answer: "Yes, we provide specialized hospital uniform sarees designed for administrative and support staff. These are woven with bleach-tolerant, highly washable poly-cotton blends that can withstand frequent hot wash cycles."
+      },
+      {
+        question: "Is nationwide shipping available from Nagpur for bulk orders?",
+        answer: "Absolutely. We provide seamless nationwide delivery across India, partnering with premium express freight services. Every shipment is carefully packed in heavy-duty, moisture-resistant cartons to ensure perfect condition upon arrival."
+      },
+      {
+        question: "What styling and custom design options do you offer for corporate drapes?",
+        answer: "We offer extensive customization, including custom contrast borders matching your official brand palette, custom woven patterns, and professional embroidery of corporate logos on the saree's pallu or blouse sleeve."
+      },
+      {
+        question: "Why should we purchase directly from a uniform saree manufacturer or wholesaler?",
+        answer: "Purchasing directly from a manufacturer or wholesaler like Mukesh Saree Centre eliminates retail markups (saving 40% to 60%), guarantees shade consistency across all batches, and ensures long-term support for repeat orders."
+      },
+      {
+        question: "Are cotton uniform sarees available for hot climates?",
+        answer: "Yes! We specialize in cotton uniform sarees wholesale, offering high-breathability poly-cotton and pure cotton blends that are perfect for warm and humid regions, ensuring staff remain cool and comfortable."
+      },
+      {
+        question: "How can we ensure brand color consistency across multiple bulk batches?",
+        answer: "We archive your exact Pantone color specifications, weave codes, and digital design files in our database. This ensures that any repeat orders or mid-year hires receive uniforms that perfectly match the original batch."
+      },
+      {
+        question: "What is the typical turnaround time for a bulk uniform saree order?",
+        answer: "The delivery timeline ranges from 2 to 4 weeks depending on order volume and the level of customization. We also keep a robust inventory of standard corporate designs for immediate dispatch in urgent scenarios."
+      },
+      {
+        question: "Do uniform sarees come with pre-stitched matching blouse pieces?",
+        answer: "Every uniform saree is supplied with a matching running blouse piece. Upon request, we can also provide pre-stitched blouses in standardized sizes, or source custom unstitched fabrics of higher weight for customized tailoring."
+      },
+      {
+        question: "How do crepe uniform sarees perform in terms of durability and daily wear?",
+        answer: "Crepe uniform drapes are the highest performing option for daily wear. They offer exceptional tensile strength at key stress points, resist wrinkling, require no starching or heavy ironing, and maintain color fastness over hundreds of washes."
+      },
+      {
+        question: "Can hotel staff order customized restaurant uniform sarees from you?",
+        answer: "Yes, as a specialized hotel uniform saree supplier, we design drapes that reflect the elegance of hospitality brands. From rich Banarasi border silks for reception desks to lightweight, stain-resistant crepes for floor hosts, we customize to your theme."
+      },
+      {
+        question: "Are there any special discounts for recurring or educational institution orders?",
+        answer: "Yes, we offer special contracted pricing structures and bulk tier discounts for educational institutions, government bodies, and long-term corporate accounts with recurring annual uniform requirements."
+      },
+      {
+        question: "How does Mukesh Saree Centre conduct quality inspections for wholesale batches?",
+        answer: "We carry out a multi-stage quality control process: pre-weaving check of raw yarns for dye consistency, loom calibration, and final manual inspection of every finished drape for weave errors or spots before secure packing."
+      },
+      {
+        question: "What are some common mistakes to avoid when purchasing staff uniform sarees?",
+        answer: "Avoid prioritizing cheap pricing over fabric durability (which doubles replacement costs) and neglecting employee comfort by ordering unbreathable heavy synthetic materials for warm climates."
+      },
+      {
+        question: "Can we request fabric swatches or sample sarees before making a large order?",
+        answer: "Absolutely. We can ship physical fabric swatches or a complete sample saree of your chosen fabric and color to your procurement committee to verify look, texture, and drape prior to formal order confirmation."
+      },
+      {
+        question: "Do you support both retail boutique resellers and corporate institutional clients?",
+        answer: "Yes, we support both ends of the market. We supply bulk inventory to independent boutique owners and saree resellers across India, while also directly serving school administrations, hospital boards, and corporate procurement departments."
+      },
+      {
+        question: "What is the best way to contact Mukesh Saree Centre for an immediate quotation?",
+        answer: "You can reach our wholesale desk directly by calling or WhatsApping us at +91 7020664641. You can also send your detailed RFP or requirements list to our team via the contact form on our website."
+      }
+    ]
   }
 ];

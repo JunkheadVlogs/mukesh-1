@@ -126,7 +126,7 @@ export function SEO({
   title,
   description,
   keywords,
-  image = "https://mukeshsarees.com/images/og-home.jpg",
+  image = "https://mukeshsarees.com/og-image.jpg",
   url = "https://mukeshsarees.com",
   type = "website",
   product,

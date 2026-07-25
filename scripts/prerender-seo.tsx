@@ -657,17 +657,17 @@ async function run() {
     `;
 
     const pageOgTags = `<!-- Dynamic OG Tags -->
-    <meta data-rh="true" property="og:title" content="${pData.title}" />
-    <meta data-rh="true" property="og:description" content="${pData.description}" />
-    <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
-    <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${slug}" />
-    <meta data-rh="true" property="og:type" content="website" />
-    <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
-    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
-    <meta data-rh="true" name="twitter:title" content="${pData.title}" />
-    <meta data-rh="true" name="twitter:description" content="${pData.description}" />
-    <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
-    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${slug}" />
+    <meta property="og:title" content="${pData.title}" />
+    <meta property="og:description" content="${pData.description}" />
+    <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg" />
+    <meta property="og:url" content="https://mukeshsarees.com/${slug}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="${BUSINESS_INFO.name}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${pData.title}" />
+    <meta name="twitter:description" content="${pData.description}" />
+    <meta name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
+    <link rel="canonical" href="https://mukeshsarees.com/${slug}" />
     <!-- End Dynamic OG Tags -->`;
 
     const phtml = createStaticPage({
@@ -678,11 +678,22 @@ async function run() {
       customOgTags: pageOgTags
     });
 
+    let finalHtml = phtml;
+    // Post-processing to fully replace any leftover template string placeholders caused by quoting issues
+    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.name\}/g, "Mukesh Saree Centre");
+    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.city\}/g, "Nagpur");
+    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.established\}/g, "1978");
+    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.phone\}/g, "+91 7020664641");
+    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.email\}/g, "info@mukeshsarees.com");
+    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.area\}/g, "Gandhibagh");
+    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.street\}/g, "Jagnath Road");
+    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.fullAddress\}/g, "Jagnath Road, Gandhibagh, Nagpur");
+
     const dirPath = path.join(distPath, slug);
     if (!fs.existsSync(dirPath)) {
       fs.mkdirSync(dirPath, { recursive: true });
     }
-    fs.writeFileSync(path.join(dirPath, "index.html"), phtml);
+    fs.writeFileSync(path.join(dirPath, "index.html"), finalHtml);
   }
 }
 

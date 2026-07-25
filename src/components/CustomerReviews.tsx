@@ -80,7 +80,7 @@ export function CustomerReviews() {
   };
 
   return (
-    <section className="bg-[#FAF6F0]/40 pt-6 pb-4 md:pt-10 md:pb-6 border-t border-[#C8A96B]/15">
+    <section className="bg-[#FAF6F0]/40 pt-5 pb-3.5 md:pt-8 md:pb-6 border-t border-[#C8A96B]/15">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-4 md:mb-8">
           <div className="text-[11px] tracking-[0.25em] uppercase text-[var(--color-gold-dark)] mb-1.5 font-semibold">

@@ -65,7 +65,7 @@ const isVideoUrl = (url: any): boolean => {
 };
 
 const getWhatsAppSafeImageUrl = (imageUrl: string | undefined): string => {
-  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  if (!imageUrl) return 'https://mukeshsarees.com/og-image.jpg';
   
   // If already a clean URL (Cloudinary, direct hosting), use as-is
   if (imageUrl.includes('cloudinary.com') || imageUrl.includes('mukeshsarees.com/images')) {
@@ -1433,7 +1433,7 @@ export default function ProductPage() {
         </div>
 
         {/* Related Section */}
-        <section className="mt-2 md:mt-12 px-4 md:px-0 pb-6 md:pb-12">
+        <section className="mt-2 md:mt-12 px-4 md:px-0 pb-4 md:pb-12">
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h2 className="text-xl md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide">
               Similar & Related Products

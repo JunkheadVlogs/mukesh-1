@@ -26,7 +26,7 @@ function replaceEnvPlaceholders(html: string): string {
     VITE_STORE_PHONE: BUSINESS_INFO.phone,
   };
 
-  return html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
+  const replaced = html.replace(/%VITE_([A-Z0-9_]+)%/g, (match, key) => {
     const envKey = `VITE_${key}`;
     let val = process.env[envKey];
     if (envKey === 'VITE_FB_DOMAIN_VERIFY') {
@@ -56,6 +56,21 @@ function replaceEnvPlaceholders(html: string): string {
     }
     return '';
   });
+
+  // Post-processing to fully replace any leftover template string placeholders caused by quoting issues
+  let finalHtml = replaced;
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.name\}/g, "Mukesh Saree Centre");
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.city\}/g, "Nagpur");
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.established\}/g, "1978");
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.phone\}/g, "+91 7020664641");
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.email\}/g, "info@mukeshsarees.com");
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.area\}/g, "Gandhibagh");
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.street\}/g, "Jagnath Road");
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.fullAddress\}/g, "Jagnath Road, Gandhibagh, Nagpur");
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.website\}/g, "https://mukeshsarees.com");
+  finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\}/g, "Mukesh Saree Centre");
+
+  return finalHtml;
 }
 
 // Helper to sanitize text for meta/JSON attributes
@@ -126,7 +141,7 @@ function getWhatsAppSafePrerenderDescription(text: string, productContext?: any)
 }
 
 function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string {
-  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  if (!imageUrl) return 'https://mukeshsarees.com/og-image.jpg';
   
   let targetUrl = imageUrl;
   
@@ -159,7 +174,7 @@ function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string 
 }
 
 function getSquarePrerenderImageUrl(imageUrl: string | undefined): string {
-  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  if (!imageUrl) return 'https://mukeshsarees.com/og-image.jpg';
   
   let targetUrl = imageUrl;
   
@@ -482,27 +497,27 @@ async function runPrerender() {
   `;
 
   const homeOgTags = `<!-- Dynamic OG Tags -->
-  <meta data-rh="true" property="og:title" content="Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978" />
-  <meta data-rh="true" property="og:description" content="Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us." />
-  <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
-  <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/" />
-  <meta data-rh="true" property="og:type" content="website" />
-  <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
-  <meta data-rh="true" property="og:image:width" content="1200" />
-  <meta data-rh="true" property="og:image:height" content="630" />
-  <meta data-rh="true" property="og:image:type" content="image/jpeg" />
-  <meta data-rh="true" name="twitter:card" content="summary_large_image" />
-  <meta data-rh="true" name="twitter:title" content="Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978" />
-  <meta data-rh="true" name="twitter:description" content="Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us." />
-  <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
-  <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/" />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mukesh Saree Centre">
+  <meta property="og:title" content="Mukesh Saree Centre | Wholesale & Retail Sarees in Nagpur">
+  <meta property="og:description" content="Wholesale & Retail Sarees. Cash on Delivery Available Across India.">
+  <meta property="og:url" content="https://mukeshsarees.com">
+  <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_IN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mukesh Saree Centre | Wholesale & Retail Sarees">
+  <meta name="twitter:description" content="Wholesale & Retail Sarees in Nagpur. Cash on Delivery Available Across India.">
+  <meta name="twitter:image" content="https://mukeshsarees.com/og-image.jpg">
+  <link rel="canonical" href="https://mukeshsarees.com/">
   <!-- End Dynamic OG Tags -->`;
 
   const updatedHomeHtml = createStaticPage({
     htmlTemplate: baseHtml,
     bodyHtml: homepageBody,
-    title: "Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978",
-    description: "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us.",
+    title: "Mukesh Saree Centre | Wholesale & Retail Sarees in Nagpur",
+    description: "Buy premium sarees online from Mukesh Saree Centre. Wholesale & retail sarees, designer sarees, cotton, linen, silk, party wear and more. Cash on Delivery available across India.",
     customOgTags: homeOgTags,
     schemaJson: homeSchema
   });
@@ -681,7 +696,7 @@ async function runPrerender() {
     const shopOgTags = `<!-- Dynamic OG Tags -->
       <meta data-rh="true" property="og:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
       <meta data-rh="true" property="og:description" content="${collection.description}" />
-      <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/images/og-home.jpg" />
+      <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/og-image.jpg" />
       <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${collection.route}" />
       <meta data-rh="true" property="og:type" content="website" />
       <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
@@ -691,7 +706,7 @@ async function runPrerender() {
       <meta data-rh="true" name="twitter:card" content="summary_large_image" />
       <meta data-rh="true" name="twitter:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
       <meta data-rh="true" name="twitter:description" content="${collection.description}" />
-      <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/images/og-home.jpg" />
+      <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
       <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}" />
       <!-- End Dynamic OG Tags -->`;
 

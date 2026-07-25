@@ -137,7 +137,7 @@ function main() {
       }
     } else {
       // General fallbacks
-      ogImageUrl = 'https://mukeshsarees.com/images/og-home.jpg';
+      ogImageUrl = 'https://mukeshsarees.com/og-image.jpg';
     }
 
     // D. Build corresponding dynamic head parameters
