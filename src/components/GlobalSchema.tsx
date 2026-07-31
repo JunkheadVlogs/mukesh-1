@@ -5,19 +5,19 @@ import { BUSINESS_INFO } from "../config/business";
 
 export function GlobalSchema() {
   const location = useLocation();
-  const currentUrl = `${BUSINESS_INFO.website}${location.pathname === '/' ? '' : location.pathname}`;
+  const isHome = location.pathname === '/' || location.pathname === '';
+  const currentUrl = `${BUSINESS_INFO.website}${isHome ? '' : location.pathname}`;
 
   const organizationSchema = {
     "@context": "https://schema.org",
-    "@type": ["Organization", ...BUSINESS_INFO.type.map(t => t.replace(/ /g, ''))].filter(t => t === 'Organization' || t === 'ClothingStore' || t === 'LocalBusiness'),
-    "@id": `${BUSINESS_INFO.website}/#organization`,
+    "@type": ["Organization", "ClothingStore"],
     "name": BUSINESS_INFO.name,
-    "url": `${BUSINESS_INFO.website}/`,
-    "logo": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
-    "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
-    "description": "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us.",
-    "telephone": BUSINESS_INFO.phone,
-    "priceRange": "₹₹",
+    "foundingDate": BUSINESS_INFO.established,
+    "url": BUSINESS_INFO.website,
+    "logo": `${BUSINESS_INFO.website}/images/logo.webp`,
+    "image": `${BUSINESS_INFO.website}/og-image.jpg`,
+    "telephone": "+91-7020664641",
+    "email": BUSINESS_INFO.email,
     "address": {
       "@type": "PostalAddress",
       "streetAddress": `${BUSINESS_INFO.address.street}, ${BUSINESS_INFO.address.area}`,
@@ -26,37 +26,7 @@ export function GlobalSchema() {
       "postalCode": BUSINESS_INFO.address.postalCode,
       "addressCountry": BUSINESS_INFO.address.country
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "21.1498",
-      "longitude": "79.0806"
-    },
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "telephone": BUSINESS_INFO.phone,
-        "contactType": "customer service",
-        "email": BUSINESS_INFO.email,
-        "availableLanguage": ["English", "Hindi", "Marathi"]
-      }
-    ],
-    "sameAs": BUSINESS_INFO.social,
-    "openingHoursSpecification": [
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday"
-        ],
-        "opens": "11:00",
-        "closes": "21:00"
-      }
-    ]
+    "sameAs": BUSINESS_INFO.social
   };
 
   const websiteSchema = {
@@ -73,7 +43,7 @@ export function GlobalSchema() {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": `${BUSINESS_INFO.website}/shop?q={search_term_string}`
+        "urlTemplate": `${BUSINESS_INFO.website}/shop?search={search_term_string}`
       },
       "query-input": "required name=search_term_string"
     }
@@ -94,9 +64,15 @@ export function GlobalSchema() {
 
   return (
     <Helmet>
-      <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
-      <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
-      <script type="application/ld+json">{JSON.stringify(currentWebPageSchema)}</script>
+      {!isHome && (
+        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
+      )}
+      {!isHome && (
+        <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
+      )}
+      {!isHome && (
+        <script type="application/ld+json">{JSON.stringify(currentWebPageSchema)}</script>
+      )}
     </Helmet>
   );
 }

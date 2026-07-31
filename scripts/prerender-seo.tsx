@@ -667,27 +667,152 @@ async function run() {
     <meta name="twitter:title" content="${pData.title}" />
     <meta name="twitter:description" content="${pData.description}" />
     <meta name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
-    <link rel="canonical" href="https://mukeshsarees.com/${slug}" />
+    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${slug}" />
     <!-- End Dynamic OG Tags -->`;
+
+    const graph = [];
+    
+    // Breadcrumb Schema
+    graph.push({
+      "@type": "BreadcrumbList",
+      "@id": `https://mukeshsarees.com/${slug}#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://mukeshsarees.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": pData.h1,
+          "item": `https://mukeshsarees.com/${slug}`
+        }
+      ]
+    });
+
+    // FAQ Schema
+    if (pData.faqs && pData.faqs.length > 0) {
+      graph.push({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": `https://mukeshsarees.com/${slug}#faq`,
+        "mainEntity": pData.faqs.map((faq: any) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer,
+          },
+        })),
+      });
+    }
+
+    // Organization & Local Business & Article Schema
+    graph.push({
+      "@type": "Organization",
+      "@id": "https://mukeshsarees.com/#organization",
+      "name": "Mukesh Saree Centre",
+      "url": "https://mukeshsarees.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91-9325034636",
+        "contactType": "sales",
+        "areaServed": "IN",
+        "availableLanguage": ["en", "hi", "mr"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/mukeshsareecentre",
+        "https://www.instagram.com/mukeshsareecentre"
+      ]
+    });
+
+    graph.push({
+      "@type": "ClothingStore",
+      "@id": "https://mukeshsarees.com/#localbusiness",
+      "name": "Mukesh Saree Centre",
+      "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
+      "telephone": "+919325034636",
+      "url": "https://mukeshsarees.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jagnath Road, Itwari",
+        "addressLocality": "Nagpur",
+        "addressRegion": "Maharashtra",
+        "postalCode": "440002",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "21.1528",
+        "longitude": "79.1121"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "11:00",
+        "closes": "21:00"
+      },
+      "priceRange": "₹₹"
+    });
+
+    graph.push({
+      "@type": "Article",
+      "@id": `https://mukeshsarees.com/${slug}#article`,
+      "isPartOf": {
+        "@id": `https://mukeshsarees.com/${slug}`
+      },
+      "headline": pData.title,
+      "description": pData.description,
+      "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
+      "datePublished": "2026-05-30T08:00:00+05:30",
+      "dateModified": "2026-07-15T10:00:00+05:30",
+      "mainEntityOfPage": `https://mukeshsarees.com/${slug}`,
+      "author": {
+        "@id": "https://mukeshsarees.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://mukeshsarees.com/#organization"
+      }
+    });
+
+    const combinedSchema = {
+      "@context": "https://schema.org",
+      "@graph": graph
+    };
 
     const phtml = createStaticPage({
       htmlTemplate: baseHtml,
       bodyHtml: fullBody,
       title: pData.title,
       description: pData.description,
-      customOgTags: pageOgTags
+      customOgTags: pageOgTags,
+      schemaJson: combinedSchema
     });
 
     let finalHtml = phtml;
     // Post-processing to fully replace any leftover template string placeholders caused by quoting issues
-    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.name\}/g, "Mukesh Saree Centre");
-    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.city\}/g, "Nagpur");
-    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.established\}/g, "1978");
-    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.phone\}/g, "+91 7020664641");
-    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.email\}/g, "info@mukeshsarees.com");
-    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.area\}/g, "Gandhibagh");
-    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.street\}/g, "Jagnath Road");
-    finalHtml = finalHtml.replace(/\$\{BUSINESS_INFO\.address\.fullAddress\}/g, "Jagnath Road, Gandhibagh, Nagpur");
+    finalHtml = finalHtml.replace(/$\{BUSINESS_INFO\.name\}/g, "Mukesh Saree Centre");
+    finalHtml = finalHtml.replace(/$\{BUSINESS_INFO\.address\.city\}/g, "Nagpur");
+    finalHtml = finalHtml.replace(/$\{BUSINESS_INFO\.established\}/g, "1978");
+    finalHtml = finalHtml.replace(/$\{BUSINESS_INFO\.phone\}/g, "+91 7020664641");
+    finalHtml = finalHtml.replace(/$\{BUSINESS_INFO\.email\}/g, "info@mukeshsarees.com");
+    finalHtml = finalHtml.replace(/$\{BUSINESS_INFO\.address\.area\}/g, "Gandhibagh");
+    finalHtml = finalHtml.replace(/$\{BUSINESS_INFO\.address\.street\}/g, "Jagnath Road");
+    finalHtml = finalHtml.replace(/$\{BUSINESS_INFO\.address\.fullAddress\}/g, "Jagnath Road, Gandhibagh, Nagpur");
 
     const dirPath = path.join(distPath, slug);
     if (!fs.existsSync(dirPath)) {

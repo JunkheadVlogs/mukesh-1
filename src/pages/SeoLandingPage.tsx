@@ -737,29 +737,49 @@ export default function SeoLandingPage() {
 
   // Generate Combined Advanced Schemas dynamically
   const combinedSchema = useMemo(() => {
-    // Standard FAQ Schema
-    const faqSchemaObj = {
-      "@type": "FAQPage",
-      "mainEntity": pageData.faqs.map((faq) => ({
-        "@type": "Question",
-        "name": faq.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": faq.answer,
+    const graph = [];
+
+    // 1. Breadcrumb Schema (For ALL SEO Landing Pages)
+    const breadcrumbSchema = {
+      "@type": "BreadcrumbList",
+      "@id": `https://mukeshsarees.com/${slug}#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://mukeshsarees.com"
         },
-      })),
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": pageData.h1,
+          "item": `https://mukeshsarees.com/${slug}`
+        }
+      ]
     };
+    graph.push(breadcrumbSchema);
 
-    const isNagpurSpecial = ["saree-shop-in-nagpur", "saree-wholesaler-nagpur", "wholesale-saree-shop-nagpur"].includes(slug || "");
-
-    if (!isNagpurSpecial) {
-      return {
+    // 2. FAQ Schema (ONLY if FAQs exist on the page)
+    if (pageData.faqs && pageData.faqs.length > 0) {
+      const faqSchemaObj = {
         "@context": "https://schema.org",
-        ...faqSchemaObj
+        "@type": "FAQPage",
+        "@id": `https://mukeshsarees.com/${slug}#faq`,
+        "mainEntity": pageData.faqs.map((faq) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer,
+          },
+        })),
       };
+      graph.push(faqSchemaObj);
     }
 
-    // Advanced Local + Article Schemas
+    // 3. Organization, LocalBusiness, Article (For Nagpur specific / all landing pages)
+    // The instructions say "Keep Organization, LocalBusiness, WebSite schema."
     const organizationSchema = {
       "@type": "Organization",
       "@id": "https://mukeshsarees.com/#organization",
@@ -781,6 +801,7 @@ export default function SeoLandingPage() {
         "https://www.instagram.com/mukeshsareecentre"
       ]
     };
+    graph.push(organizationSchema);
 
     const localBusinessSchema = {
       "@type": "ClothingStore",
@@ -818,25 +839,7 @@ export default function SeoLandingPage() {
       },
       "priceRange": "₹₹"
     };
-
-    const breadcrumbSchema = {
-      "@type": "BreadcrumbList",
-      "@id": "https://mukeshsarees.com/#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://mukeshsarees.com"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": pageData.h1,
-          "item": `https://mukeshsarees.com/${slug}`
-        }
-      ]
-    };
+    graph.push(localBusinessSchema);
 
     const articleSchema = {
       "@type": "Article",
@@ -857,17 +860,12 @@ export default function SeoLandingPage() {
         "@id": "https://mukeshsarees.com/#organization"
       }
     };
+    graph.push(articleSchema);
 
     // Return combined graph schema
     return {
       "@context": "https://schema.org",
-      "@graph": [
-        { "@context": "https://schema.org", ...faqSchemaObj },
-        organizationSchema,
-        localBusinessSchema,
-        breadcrumbSchema,
-        articleSchema
-      ]
+      "@graph": graph
     };
   }, [pageData, slug]);
 

@@ -43,7 +43,14 @@ export function createStaticPage({
 
   // 2. Inject OG Tags
   if (customOgTags) {
-    baseHtml = baseHtml.replace(/(<!-- Default OG Tags -->)[\s\S]*?(<!-- End Default OG Tags -->)/, customOgTags);
+    if (baseHtml.includes('<!-- Default OG Tags -->')) {
+      baseHtml = baseHtml.replace(/(<!-- Default OG Tags -->)[\s\S]*?(<!-- End Default OG Tags -->)/, customOgTags);
+    } else if (baseHtml.includes('<!-- Dynamic OG Tags -->')) {
+      baseHtml = baseHtml.replace(/(<!-- Dynamic OG Tags -->)[\s\S]*?(<!-- End Dynamic OG Tags -->)/, customOgTags);
+    } else {
+      // Fallback
+      baseHtml = baseHtml.replace("</head>", `\n${customOgTags}\n</head>`);
+    }
   }
   
   if (schemaJson) {

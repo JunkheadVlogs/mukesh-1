@@ -23,10 +23,6 @@ import {
   Pause,
   Volume2,
   VolumeX,
-  Award,
-  Sparkles,
-  Package,
-  Coins,
 } from "lucide-react";
 import { products } from "./mockData";
 import { type Product } from "./store";
@@ -583,7 +579,7 @@ export default function Home() {
       </section>
 
       {/* Trending Section */}
-      <section className="bg-white pt-4 md:pt-6 pb-2.5 md:pb-3 border-t border-gold-200/30">
+      <section className="bg-white pt-4 md:pt-6 pb-4 md:pb-6 border-t border-gold-200/30">
         <div className="sr-only">
           <p>
             Who it is for: Fashion-forward women looking for the latest styles securely delivered to their doorstep.
@@ -620,75 +616,6 @@ export default function Home() {
             <Link to="/shop?sort=trending" className="btn-primary" aria-label="Shop our top selling trending sarees and ethnic wear">
               Shop Top Sellers
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Shop With Us Section */}
-      <section className="why-us-section py-5 md:py-10 bg-white border-t border-[var(--color-gold-500)]/10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-6 md:mb-8">
-            <p className="text-[9px] tracking-[0.3em] uppercase text-[var(--color-gold-500)] mb-1 font-semibold font-sans">
-              The Mukesh Legacy
-            </p>
-            <h2 className="text-xl sm:text-2xl font-serif font-light tracking-[0.08em] text-[var(--color-dark)]">
-              Why Customers Choose <span className="italic">Mukesh Saree Centre</span>
-            </h2>
-            <div className="w-8 h-[1px] bg-[var(--color-gold-500)]/30 mx-auto mt-2.5"></div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-4 md:gap-x-8 max-w-5xl mx-auto">
-            {/* Feature 1 */}
-            <div className="flex flex-col items-center text-center">
-              <div className="text-[var(--color-gold-500)] mb-2 transition-transform duration-300 hover:scale-105">
-                <Award size={22} strokeWidth={1.2} />
-              </div>
-              <h3 className="text-[11px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-[0.15em] mb-0.5">
-                46 Years of Trust
-              </h3>
-              <p className="text-[10.5px] text-[var(--color-dark)]/50 font-sans font-light tracking-[0.02em] max-w-[150px] leading-relaxed">
-                Established in Nagpur since 1978
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="flex flex-col items-center text-center">
-              <div className="text-[var(--color-gold-500)] mb-2 transition-transform duration-300 hover:scale-105">
-                <Coins size={22} strokeWidth={1.2} />
-              </div>
-              <h3 className="text-[11px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-[0.15em] mb-0.5">
-                Cash on Delivery
-              </h3>
-              <p className="text-[10.5px] text-[var(--color-dark)]/50 font-sans font-light tracking-[0.02em] max-w-[150px] leading-relaxed">
-                Available all across India
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="flex flex-col items-center text-center">
-              <div className="text-[var(--color-gold-500)] mb-2 transition-transform duration-300 hover:scale-105">
-                <Package size={22} strokeWidth={1.2} />
-              </div>
-              <h3 className="text-[11px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-[0.15em] mb-0.5">
-                Free Shipping
-              </h3>
-              <p className="text-[10.5px] text-[var(--color-dark)]/50 font-sans font-light tracking-[0.02em] max-w-[150px] leading-relaxed">
-                On all orders above ₹999
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="flex flex-col items-center text-center">
-              <div className="text-[var(--color-gold-500)] mb-2 transition-transform duration-300 hover:scale-105">
-                <Sparkles size={22} strokeWidth={1.2} />
-              </div>
-              <h3 className="text-[11px] font-sans font-semibold text-[var(--color-dark)] uppercase tracking-[0.15em] mb-0.5">
-                30+ Saree Varieties
-              </h3>
-              <p className="text-[10.5px] text-[var(--color-dark)]/50 font-sans font-light tracking-[0.02em] max-w-[150px] leading-relaxed">
-                From Paithani to Banarasi to Linen
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -805,16 +732,6 @@ export default function Home() {
 
       {/* Offer Banner */}
       <section className="bg-[var(--color-surface)] text-[var(--color-dark)] text-center relative overflow-hidden py-4 sm:py-6 md:py-10 border-t border-gold-200/30">
-        <div
-          className="absolute inset-0 z-0 opacity-[0.15] mix-blend-multiply"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1600&q=45')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
         <div className="max-w-3xl mx-auto px-4 relative z-10 w-full">
           <div className="text-[11px] tracking-[0.2em] uppercase text-[var(--color-gold-dark)] mb-1.5 sm:mb-2 font-medium">
             Special Collection

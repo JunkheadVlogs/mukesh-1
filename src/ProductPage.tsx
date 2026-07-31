@@ -969,12 +969,12 @@ export default function ProductPage() {
         schema={[productSchema, breadcrumbSchema, faqSchema] as any}
       />
 
-      <div className="max-w-[1400px] mx-auto px-0 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
+      <div className="max-w-[1400px] mx-auto px-2.5 sm:px-4 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
         <div className="flex flex-col lg:flex-row gap-1.5 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
           <div className="w-full lg:w-7/12 space-y-2 md:space-y-4">
             <div
-              className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y"
+              className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y p-2 sm:p-3 md:p-4"
               style={{
                 touchAction: 'pan-y pinch-zoom',
                 width: '100%',
@@ -996,7 +996,7 @@ export default function ProductPage() {
                   muted={true}
                   playsInline
                   controls
-                  className="product-image-main product-main-img w-full h-full object-contain mx-auto"
+                  className="product-image-main product-main-img w-full h-full object-contain mx-auto rounded-[6px] sm:rounded-[8px]"
                   onClick={(e) => e.stopPropagation()}
                 />
               ) : (
@@ -1004,7 +1004,7 @@ export default function ProductPage() {
                   src={productImages[activeImageIndex]}
                   width={800}
                   alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
-                  className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02]"
+                  className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02] rounded-[6px] sm:rounded-[8px]"
                   priority={true}
                 />
               )}

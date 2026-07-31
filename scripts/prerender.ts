@@ -4,6 +4,7 @@ import { products } from "../src/mockData.js";
 import dotenv from "dotenv";
 import { createStaticPage, injectIntoRoot } from "./prerenderHelper.js";
 import { BUSINESS_INFO } from "../src/config/business.js";
+import { faqs } from "../src/data/faqsData.js";
 
 dotenv.config();
 
@@ -510,7 +511,7 @@ async function runPrerender() {
   <meta name="twitter:title" content="Mukesh Saree Centre | Wholesale & Retail Sarees">
   <meta name="twitter:description" content="Wholesale & Retail Sarees in Nagpur. Cash on Delivery Available Across India.">
   <meta name="twitter:image" content="https://mukeshsarees.com/og-image.jpg">
-  <link rel="canonical" href="https://mukeshsarees.com/">
+  <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/">
   <!-- End Dynamic OG Tags -->`;
 
   const updatedHomeHtml = createStaticPage({
@@ -518,8 +519,7 @@ async function runPrerender() {
     bodyHtml: homepageBody,
     title: "Mukesh Saree Centre | Wholesale & Retail Sarees in Nagpur",
     description: "Buy premium sarees online from Mukesh Saree Centre. Wholesale & retail sarees, designer sarees, cotton, linen, silk, party wear and more. Cash on Delivery available across India.",
-    customOgTags: homeOgTags,
-    schemaJson: homeSchema
+    customOgTags: homeOgTags
   });
 
   fs.writeFileSync(baseHtmlPath, replaceEnvPlaceholders(updatedHomeHtml));
@@ -937,6 +937,35 @@ async function runPrerender() {
   // 4. GENERATE POLICIES AND STATIC PAGES (terms, contact, shipping-policy, return-policy)
   const staticPages = [
     {
+      dir: "faqs",
+      title: `Frequently Asked Questions (FAQ) | ${BUSINESS_INFO.name}`,
+      desc: `Browse frequently asked questions regarding shopping, delivery, payments, pure silks, linen fabrics, customized blouses, wholesale rates, and returns at ${BUSINESS_INFO.name}, Nagpur.`,
+      schemaJson: {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((faq) => ({
+          "@type": "Question",
+          "name": faq.q,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.a
+          }
+        }))
+      },
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Frequently Asked Questions</h1>
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
+              ${faqs.map(faq => `<div style="margin-bottom: 24px;"><h3 style="font-size: 16px; color: #1a0a00; margin-bottom: 8px;">${faq.q}</h3><p style="font-size: 14px; color: #4a4a4a; line-height: 1.6;">${faq.a}</p></div>`).join('')}
+            </div>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `
+    },
+    {
       dir: "contact",
       title: "Contact Boutique — ${BUSINESS_INFO.name}, ${BUSINESS_INFO.address.area}, ${BUSINESS_INFO.address.city}",
       desc: "Contact ${BUSINESS_INFO.name}, ${BUSINESS_INFO.address.area} ${BUSINESS_INFO.address.city}. Call ${BUSINESS_INFO.phone}. Open 11:30AM–9:30PM (closed Mondays). Bridal saree bookings, custom orders welcome.",
@@ -1122,7 +1151,8 @@ async function runPrerender() {
       bodyHtml: page.body,
       title: page.title,
       description: page.desc,
-      customOgTags: pageOgTags
+      customOgTags: pageOgTags,
+      schemaJson: (page as any).schemaJson
     });
 
     writePage(page.dir, phtml);

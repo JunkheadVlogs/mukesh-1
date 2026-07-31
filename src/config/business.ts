@@ -15,9 +15,9 @@ export const BUSINESS_INFO = {
   email: "info@mukeshsarees.com",
   website: "https://mukeshsarees.com",
   social: [
-    "https://www.facebook.com/109033288599426",
-    "https://www.instagram.com/mukesh_saree_centre_",
-    "https://www.pinterest.com/MukeshSareesdotcom/",
-    "https://youtube.com/@mukeshsarees?si=aMljrBMnIJYQDGDI"
+    "https://www.facebook.com/Mukeshsareesindia/",
+    "https://www.instagram.com/mukeshsarees_nagpur",
+    "https://www.youtube.com/@mukeshsarees",
+    "https://www.pinterest.com/MukeshSareesdotcom"
   ]
 };
