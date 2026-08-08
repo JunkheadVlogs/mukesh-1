@@ -301,6 +301,7 @@ export function OptimizedImage({
   const [candidateIndex, setCandidateIndex] = useState(0);
   const [retryCount, setRetryCount] = useState(0);
   const [hasFailedAll, setHasFailedAll] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Intersection Observer implementation
   const imageRef = useRef<HTMLImageElement | null>(null);
@@ -343,9 +344,24 @@ export function OptimizedImage({
     setRetryCount(0);
     setHasFailedAll(false);
     setIsInView(true);
+    setIsLoaded(false);
   }
 
   const currentSrc = candidates[candidateIndex] || sanitizeUrl(src);
+
+  // Check if image is already cached in browser memory upon load/candidate change
+  useEffect(() => {
+    if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
+      setIsLoaded(true);
+    }
+  }, [currentSrc]);
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    setIsLoaded(true);
+    if (props.onLoad) {
+      props.onLoad(e);
+    }
+  };
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     if (retryCount < 1) {
@@ -415,17 +431,20 @@ export function OptimizedImage({
         alt={finalAlt}
         width={width}
         height={calculatedHeight}
-        className={`${className || ''} ${!isInView ? 'animate-pulse' : ''}`}
+        className={className || ''}
         loading={loading !== undefined ? loading : (priority ? "eager" : "lazy")}
         fetchPriority={priority ? "high" : "auto"}
         referrerPolicy="no-referrer"
         decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}
-        style={{ background: '#F5F0E8', objectFit: 'cover', ...(props.style || {}) }}
+        style={{ backgroundColor: '#FAF6F0', objectFit: 'cover', ...(props.style || {}) }}
+        onLoad={handleImageLoad}
         onError={handleImageError}
         {...props}
       />
     );
-  }  // Custom live Hostinger links or external bypass optimization logic
+  }
+
+  // Custom live Hostinger links or external bypass optimization logic
   const isDirectBypass = (currentSrc.startsWith('http') && 
                           !currentSrc.includes('drive.google.com') && 
                           !currentSrc.includes('googleusercontent.com') &&
@@ -453,12 +472,13 @@ export function OptimizedImage({
       alt={finalAlt}
       width={width}
       height={calculatedHeight}
-      className={`${className || ''} ${!isInView ? 'animate-pulse' : ''}`}
+      className={className || ''}
       loading={loading !== undefined ? loading : (priority ? "eager" : "lazy")}
       fetchPriority={priority ? "high" : "auto"}
       referrerPolicy="no-referrer"
       decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}
-      style={{ background: '#F5F0E8', objectFit: 'cover', ...(props.style || {}) }}
+      style={{ backgroundColor: '#FAF6F0', objectFit: 'cover', ...(props.style || {}) }}
+      onLoad={handleImageLoad}
       onError={handleImageError}
       {...props}
     />

@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 
 interface SEOProps {
   title: string;
@@ -136,6 +137,32 @@ export function SEO({
 }: SEOProps) {
   const siteUrl = "https://mukeshsarees.com";
   const absoluteUrl = url.startsWith("http") ? url : `${siteUrl}${url}`;
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      // Safely remove static pre-rendered fallback canonical tags that are NOT managed by react-helmet-async (lacking data-rh attribute)
+      try {
+        const staticCanonicals = document.querySelectorAll('link[rel="canonical"]:not([data-rh="true"])');
+        staticCanonicals.forEach(tag => {
+          try {
+            if (tag && typeof tag.remove === 'function') {
+              tag.remove();
+            } else if (tag && tag.parentNode) {
+              (tag.parentNode && tag.parentNode.removeChild(tag));
+            }
+          } catch (e) {
+            // Ignore individual element removal errors
+          }
+        });
+      } catch (e) {
+        // Ignore querySelector errors if any
+      }
+    }
+  }, [absoluteUrl]);
+
+
+
+
   const absoluteImage = image?.startsWith("http") ? image : `${siteUrl}${image}`;
 
   const isProductType = type === "product" || type === "og:product";

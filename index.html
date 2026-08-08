@@ -1,6 +1,26 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      if (typeof Node !== 'undefined' && Node.prototype && !Node.prototype._safeRemoveChildPatched) {
+        Node.prototype._safeRemoveChildPatched = true;
+        var originalRemoveChild = Node.prototype.removeChild;
+        Node.prototype.removeChild = function(child) {
+          if (!child) return child;
+          if (child.parentNode !== this) {
+            if (child.parentNode) {
+              try { return child.parentNode.removeChild(child); } catch (e) { return child; }
+            }
+            return child;
+          }
+          try {
+            return originalRemoveChild.call(this, child);
+          } catch (e) {
+            return child;
+          }
+        };
+      }
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1LMBHFFF1F"></script>
     <script>
@@ -161,8 +181,8 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=%VITE_GTM_ID%"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <div id="root">
-      <!-- Premium Boutique Loading Skeleton -->
+    <!-- Premium Boutique Loading Skeleton (Outside #root to prevent React DOM reconciliation conflicts) -->
+    <div id="initial-page-loader" class="loading-wrapper">
       <style>
         .loading-wrapper {
           position: fixed;
@@ -174,6 +194,7 @@
           z-index: 99999;
           align-items: center;
           justify-content: center;
+          pointer-events: none;
         }
         .loading-title {
           font-size: 20px;
@@ -209,28 +230,28 @@
           50% { opacity: 1; }
         }
       </style>
-      <div class="loading-wrapper">
-        <div class="loading-title">MUKESH SAREE CENTRE</div>
-        <div class="loading-subtitle">Since 1978</div>
-        <div class="loading-spinner"></div>
-      </div>
+      <div class="loading-title">MUKESH SAREE CENTRE</div>
+      <div class="loading-subtitle">Since 1978</div>
+      <div class="loading-spinner"></div>
     </div>
+
+    <div id="root"></div>
     
     <script type="module" defer src="/src/main.tsx"></script>
     <script>
     // Safe auto-dismiss timeout fallback for the premium boutique loading screen
     (function() {
       setTimeout(function() {
-        var loader = document.querySelector('.loading-wrapper');
-        if (loader) {
-          console.warn('[DIAGNOSTIC SAFEGUARD] React mounting or asset load took longer than expected. Auto-fading static loading screen.');
+        var loader = document.getElementById('initial-page-loader');
+        if (loader && loader.parentNode) {
           loader.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
           loader.style.opacity = '0';
           setTimeout(function() {
-            if (loader && loader.parentNode) {
-              loader.parentNode.removeChild(loader);
-              console.log('[DIAGNOSTIC SAFEGUARD] Static loading screen removed safely.');
-            }
+            try {
+              if (loader && loader.parentNode) {
+                (loader.parentNode && loader.parentNode.removeChild(loader));
+              }
+            } catch (e) {}
           }, 600);
         }
       }, 3200);

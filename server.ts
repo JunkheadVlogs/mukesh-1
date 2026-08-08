@@ -1267,7 +1267,43 @@ app.get('/og-images/:slug.jpg', (req, res) => {
 
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain');
+  const distRobotsPath = path.join(process.cwd(), 'dist', 'robots.txt');
+  const publicRobotsPath = path.join(process.cwd(), 'public', 'robots.txt');
+  if (fs.existsSync(distRobotsPath)) {
+    return res.sendFile(distRobotsPath);
+  } else if (fs.existsSync(publicRobotsPath)) {
+    return res.sendFile(publicRobotsPath);
+  }
   res.send(`User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /cart
+Disallow: /checkout
+Disallow: /wishlist
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: Bingbot
 Allow: /
 
 Sitemap: https://mukeshsarees.com/sitemap.xml`);
@@ -1298,7 +1334,7 @@ app.get('/sitemap.xml', (req, res) => {
 });
 
 async function setupServer() {
-  // 1. Explicitly bypass any application-level cookie/auth checks for social bots
+  // 1. Explicitly bypass any application-level cookie/auth checks for social bots and AI search crawlers
   app.use((req, res, next) => {
     const userAgent = (req.headers['user-agent'] || '').toLowerCase();
     const isBot = [
@@ -1309,7 +1345,33 @@ async function setupServer() {
       'telegrambot', 
       'linkedinbot', 
       'slackbot',
-      'googlebot'
+      'googlebot',
+      'oai-searchbot',
+      'gptbot',
+      'chatgpt',
+      'chatgpt-user',
+      'perplexity',
+      'perplexitybot',
+      'claude',
+      'claudebot',
+      'anthropic',
+      'bingbot',
+      'msnbot',
+      'google-extended',
+      'googleother',
+      'bytespider',
+      'cohere',
+      'diffbot',
+      'applebot',
+      'meta-externalagent',
+      'amazonbot',
+      'bot',
+      'crawler',
+      'spider',
+      'slurp',
+      'duckduckbot',
+      'baiduspider',
+      'yandexbot'
     ].some(bot => userAgent.includes(bot));
     
     if (isBot) {

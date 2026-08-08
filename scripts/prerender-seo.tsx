@@ -66,182 +66,587 @@ const seoPagesData: Record<
 > = {
   "malvika-saree": {
     title: `Malvika Saree - Premium Collection | ${BUSINESS_INFO.name} ${BUSINESS_INFO.address.city}`,
-    description: `Shop authentic Malvika sarees from ${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city}. Discover luxurious softness, elegant designs, and pure comfort.`,
+    description: `Shop authentic Malvika sarees from ${BUSINESS_INFO.name} in Gandhibagh, ${BUSINESS_INFO.address.city}. Lightweight, silky-soft, easy-drape sarees ideal for daily wear, office, and events.`,
     h1: "Malvika Saree Collection",
     intro:
-      "Welcome to our exclusive Malvika saree collection. Known for its incredible softness, lightweight comfort, and graceful draping, the Malvika saree is a beloved choice for modern women who value both tradition and ease.",
+      "A Malvika saree is a soft, lightweight, and easy-to-drape everyday saree known for its breathable comfort, subtle luster, and effortless maintenance. Explore our exclusive collection curated by Mukesh Saree Centre in Gandhibagh, Nagpur.",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
-        <p>
-          At <strong>{BUSINESS_INFO.name}</strong> (established{" "}
-          {BUSINESS_INFO.established} in {BUSINESS_INFO.address.city}), we pride
-          ourselves on offering the finest <strong>Malvika sarees</strong>.
-          Whether you are seeking a saree for a casual gathering, an office
-          event, or a festive celebration, the Malvika saree provides the
-          perfect blend of elegance and all-day comfort.
-        </p>
-        <p>
-          Each Malvika saree is crafted with attention to detail, ensuring rich
-          colors and beautiful motifs that stand out. As a leading{" "}
-          <em>saree shop in {BUSINESS_INFO.address.city}</em>, we ensure every
-          piece meets our strict quality standards.
-        </p>
+        {/* Direct Answer Box */}
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: What is a Malvika Saree?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            A <strong>Malvika saree</strong> is a lightweight, silky-soft daily wear drape crafted from breathable micro-blend fabrics with a smooth tissue finish. It combines the breathable comfort of fine cotton with the wrinkle-resistant drape of silk blends, making it ideal for long office hours, academic teaching, daily wear, and festive gatherings across Nagpur and India.
+          </p>
+        </div>
+
         <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
-          Why Choose a Malvika Saree?
+          About the Malvika Saree Collection at Mukesh Saree Centre
+        </h2>
+        <p>
+          At <strong>Mukesh Saree Centre</strong> (established 1978 in Gandhibagh, Nagpur), we curate and supply authentic <strong>Malvika sarees</strong> directly from master weavers. Renowned for their feather-light weight, smooth touch, and non-creasing weave, Malvika sarees give modern women the perfect balance between timeless traditional grace and all-day ease.
+        </p>
+        <p>
+          Unlike heavy silk sarees that require careful pinning and frequent dry cleaning, Malvika sarees fall into clean, natural pleats in under two minutes. Whether you are walking through busy workdays or hosting guests at home, the fabric maintains its crisp, fresh appearance without clinging or feeling stiff.
+        </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Who Should Buy a Malvika Saree?
         </h2>
         <ul className="list-disc pl-5 space-y-2">
           <li>
-            <strong>Unmatched Softness:</strong> The fabric feels gentle against
-            the skin.
+            <strong>Working Professionals & Teachers:</strong> Excellent for 8 to 10-hour shifts requiring a neat, professional appearance without deep wrinkles.
           </li>
           <li>
-            <strong>Perfect Draping:</strong> It falls gracefully, creating a
-            flattering silhouette.
+            <strong>Homemakers & Daily Wearers:</strong> Lightweight and airy, ideal for effortless daily household management and errand runs.
           </li>
           <li>
-            <strong>Versatile Style:</strong> Suitable for daily wear, office
-            environments, and intimate parties.
+            <strong>Festive & Family Event Attendees:</strong> Provides an elegant, subtle sheen for family get-togethers, temple visits, and festive functions without heavy zari weight.
+          </li>
+          <li>
+            <strong>Boutique Buyers & Resellers:</strong> High-turnover category with consistent customer demand and excellent repeat order rates.
           </li>
         </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Fabric Characteristics, Styles & Use Cases
+        </h2>
+        <p>
+          Every piece in our Malvika collection is chosen with strict attention to fiber quality, colorfastness, and border craftsmanship:
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Fabric Weave:</strong> Soft micro-crepe and tissue-touch poly-blend weaves engineered for high tensile strength and air circulation.
+          </li>
+          <li>
+            <strong>Styles & Prints:</strong> Subtle pastel florals, geometric digital prints, classic temple borders, and contrast pallus.
+          </li>
+          <li>
+            <strong>Best Use Cases:</strong> Office workwear, school/college teaching shifts, family lunches, summer travel, and festive occasions.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Buying Guidance & Blouse Styling Tips
+        </h2>
+        <p>
+          When selecting a Malvika saree, choose delicate prints in soothing pastels for daytime work environments, and richer jewel tones with woven zari borders for evening events.
+        </p>
+        <p>
+          <strong>Styling Recommendation:</strong> Pair your Malvika saree with a fitted elbow-sleeve cotton-silk blouse or a solid contrast boat-neck blouse. Add minimal silver or antique brass jewelry to highlight the subtle texture of the fabric.
+        </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Care & Washing Instructions
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Washing:</strong> Gentle hand wash or mild machine cycle in cold water using neutral detergent.
+          </li>
+          <li>
+            <strong>Drying:</strong> Line dry in shade to preserve color brightness and prevent fabric weakening.
+          </li>
+          <li>
+            <strong>Ironing:</strong> Low-heat steam iron on reverse side if required. The fabric is naturally wrinkle-resistant.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Local Nagpur Heritage & Quality Assurance
+        </h2>
+        <p>
+          Located at Jagnath Road, Gandhibagh, Nagpur, <strong>Mukesh Saree Centre</strong> has been a trusted landmark for ethnic textiles since 1978. Every Malvika saree sold in our store or shipped online undergoes manual quality checks for weave consistency, thread count, and border finish. We offer direct wholesale rates with transparent pricing and no middleman markup.
+        </p>
+
+        {/* WhatsApp & Contact CTA */}
+        <div className="p-6 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30">
+          <h3 className="text-xl font-serif text-white mb-2 mt-0 font-medium">
+            Order Malvika Sarees Online or Visit Store
+          </h3>
+          <p className="text-sm text-white/80 mb-4 leading-relaxed">
+            Interested in viewing our latest live Malvika saree catalog or placing a bulk order? Chat directly with our Gandhibagh showroom team on WhatsApp or visit us in person.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20Malvika%20sarees."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
+            >
+              Chat on WhatsApp (+91 9325034636)
+            </a>
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center px-6 py-3 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all"
+            >
+              Get Store Address & Directions
+            </a>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Pages
+        </h2>
+        <p className="space-x-2">
+          <a href="/sarees/cotton-sarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Pure Cotton Sarees</a> •{" "}
+          <a href="/sarees/linen-sarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Linen Sarees</a> •{" "}
+          <a href="/uniform-saree" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Institutional Uniform Sarees</a> •{" "}
+          <a href="/saree-shop-in-nagpur" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Best Saree Shop in Nagpur Guide</a> •{" "}
+          <a href="/mukesh-saree" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Mukesh Saree Legacy</a> •{" "}
+          <a href="/wholesalesarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Wholesale Sarees Nagpur</a>
+        </p>
       </div>
     ),
     faqs: [
       {
-        question: "Where can I buy Malvika saree online?",
-        answer: `You can buy authentic Malvika sarees online directly from the ${BUSINESS_INFO.name} website. We offer fast shipping across India.`,
-      },
-      {
-        question: "Is the Malvika saree good for daily wear?",
+        question: "What is a Malvika saree and why is it popular?",
         answer:
-          "Yes! The lightweight and soft nature of the Malvika saree makes it exceptionally comfortable for daily wear and office use.",
+          "A Malvika saree is a lightweight, soft-drape saree made from micro-blend tissue fabrics. It is popular because it provides the elegance of a silk-blend saree with the breathable, wrinkle-free comfort required for daily wear and long office shifts.",
       },
       {
-        question: `Where is ${BUSINESS_INFO.name} located?`,
-        answer: `${BUSINESS_INFO.name} is located at ${BUSINESS_INFO.address.street}, ${BUSINESS_INFO.address.area}, ${BUSINESS_INFO.address.city}, ${BUSINESS_INFO.address.region}.`,
+        question: "Is the Malvika saree suitable for summer and long wear?",
+        answer:
+          "Yes. The micro-blend fabric offers high breathability and a light touch against the skin, making it exceptionally comfortable for summer months and 8-10 hour work shifts.",
+      },
+      {
+        question: "How should I wash and care for my Malvika saree?",
+        answer:
+          "Wash with gentle hand care or mild machine cycle in cold water using gentle detergent. Line dry in shade. Low-heat steam ironing on the reverse side keeps the fabric crisp.",
+      },
+      {
+        question: "Where can I buy authentic Malvika sarees in Nagpur?",
+        answer:
+          "You can buy authentic Malvika sarees at Mukesh Saree Centre, located at Jagnath Road, Gandhibagh, Nagpur. We offer retail and wholesale rates with direct weaver connections.",
+      },
+      {
+        question: "Does Mukesh Saree Centre offer nationwide shipping across India?",
+        answer:
+          "Yes! We provide fast, fully tracked shipping across India for both individual retail purchases and bulk wholesale orders.",
+      },
+      {
+        question: "Can I buy Malvika sarees in bulk for wholesale or resale?",
+        answer:
+          "Yes, Mukesh Saree Centre caters to boutique owners, online resellers, and corporate buyers with wholesale catalog pricing and bulk shipping options.",
       },
     ],
   },
   "mukesh-saree": {
     title: `Mukesh Saree - Premium Indian Ethnic Wear Since ${BUSINESS_INFO.established} | ${BUSINESS_INFO.address.city}`,
-    description: `Discover the legacy of ${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city}. Offering an exquisite collection of premium sarees, lehengas, and ethnic wear since ${BUSINESS_INFO.established}.`,
+    description: `Discover the legacy of ${BUSINESS_INFO.name} in Gandhibagh, ${BUSINESS_INFO.address.city}. Offering authentic Paithani, Banarasi silk, cotton, linen, Malvika, and uniform sarees since ${BUSINESS_INFO.established}.`,
     h1: `Mukesh Saree - A Legacy of Elegance Since ${BUSINESS_INFO.established}`,
-    intro: `Welcome to ${BUSINESS_INFO.name}, your trusted destination for premium Indian ethnic wear in ${BUSINESS_INFO.address.city}. For over four decades, the name "Mukesh Saree" has been synonymous with quality, authenticity, and unparalleled customer service in the world of traditional Indian fashion.`,
+    intro: `Mukesh Saree Centre is a landmark saree and ethnic wear store established in ${BUSINESS_INFO.established} in Gandhibagh, Nagpur, Maharashtra. Renowned for authentic silk, Paithani, Banarasi, linen, cotton, uniform sarees, and bridal lehengas at direct wholesale-matched rates.`,
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        {/* Direct Answer Box */}
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: Who is Mukesh Saree Centre?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            <strong>Mukesh Saree Centre</strong> is a premier saree store and wholesale destination located at Jagnath Road, Gandhibagh, Nagpur (Estd. 1978). For over 45 years, we have brought authentic handloom weaves—from pure Yeola Paithani and Banarasi silk to everyday cotton, Malvika sarees, and institutional uniform sarees—directly from weaver clusters to families and retailers across Central India.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Our Heritage & Direct Weaver Relationships
+        </h2>
         <p>
-          Established in {BUSINESS_INFO.established},{" "}
-          <strong>{BUSINESS_INFO.name}</strong> has grown to become a premier{" "}
-          <em>saree shop in {BUSINESS_INFO.address.city}</em>. We curate the
-          finest fabrics and weaves from across India, presenting our customers
-          with an unparalleled selection of <strong>Mukesh Saree</strong>{" "}
-          collections, bridal wear, and festive ethnic attire.
+          Founded in 1978 in the historic textile quarter of Gandhibagh, Nagpur, <strong>Mukesh Saree Centre</strong> was built on a simple promise: delivering authentic Indian textiles with uncompromised quality and fair pricing. Over four decades, we have established direct partnerships with master handloom weavers in Yeola, Varanasi, Kanchipuram, Surat, and Chanderi.
         </p>
         <p>
-          Our commitment is to bring the rich heritage of Indian textiles to
-          modern women. From pure silk and Paithani to comfortable cottons and
-          our signature Malvika sarees, every piece is chosen with care.
+          By removing intermediaries, we ensure that every customer—whether shopping for a once-in-a-lifetime bridal Paithani or ordering 200 uniform sarees for a hospital—receives verified craftsmanship at direct wholesale rates.
+        </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Who Should Shop at Mukesh Saree Centre?
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Brides & Wedding Families:</strong> Seeking certified pure silk Paithani sarees, Banarasi brocades, and heavy bridal lehengas for wedding pheras and receptions.
+          </li>
+          <li>
+            <strong>Working Women & Everyday Shoppers:</strong> Looking for breathable cottons, linen sarees, Kota Doria, and soft Malvika sarees for comfortable daily elegance.
+          </li>
+          <li>
+            <strong>Boutique Owners & Resellers:</strong> Sourcing high-margin wholesale catalogs with bulk pricing, low minimum order quantities, and tracked delivery.
+          </li>
+          <li>
+            <strong>Schools, Hospitals & Corporate Procurement:</strong> Sourcing high-durability, color-matched institutional uniform sarees in bulk.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Our Signature Product Categories
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Pure Silk & Paithani:</strong> Hand-woven Maharashtrian Paithani sarees featuring pure silk body, gold zari borders, and peacock/muniya motifs.
+          </li>
+          <li>
+            <strong>Banarasi & Kanjivaram:</strong> Rich wedding silks with intricate zari brocade, kadwa weaving, and timeless regal allure.
+          </li>
+          <li>
+            <strong>Malvika & Daily Wear:</strong> Micro-blend soft sarees engineered for non-crease daily office and home wear.
+          </li>
+          <li>
+            <strong>Uniform Sarees:</strong> High-durability crepe and poly-cotton sarees for corporate staff, schools, and healthcare institutions.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Buying Guidance & In-Store Experience
+        </h2>
+        <p>
+          Our Gandhibagh showroom in Nagpur offers a spacious, hospitable environment where experienced saree consultants guide you through fabric feel, drape weight, and color harmonizing.
+        </p>
+        <p>
+          For outstation customers across India and abroad, we offer <strong>Live WhatsApp Video Shopping</strong>. You can view saree drapes, inspect zari work under natural light, and receive direct home delivery.
+        </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Care & Preservation Protocol for Fine Sarees
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Pure Silk & Paithani:</strong> Dry clean only. Store wrapped in unbleached white cotton or muslin fabric. Avoid plastic covers or cardboard boxes.
+          </li>
+          <li>
+            <strong>Rest & Rotation:</strong> Refold fine silk sarees every 3 months along different lines to avoid permanent creasing at zari edges.
+          </li>
+          <li>
+            <strong>Cotton & Linen:</strong> Gentle hand wash in cold water. Use mild liquid detergent and dry in shaded outdoor areas.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Local Nagpur Trust Signal
+        </h2>
+        <p>
+          Located in the heart of Gandhibagh, Nagpur, <strong>Mukesh Saree Centre</strong> has served three generations of families across Vidarbha and Maharashtra. We stand behind every saree with a 100% authenticity guarantee and honest pricing.
+        </p>
+
+        {/* WhatsApp & Contact CTA */}
+        <div className="p-6 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30">
+          <h3 className="text-xl font-serif text-white mb-2 mt-0 font-medium">
+            Visit Mukesh Saree Centre or Order Online
+          </h3>
+          <p className="text-sm text-white/80 mb-4 leading-relaxed">
+            Experience four decades of textile excellence. Visit our Gandhibagh, Nagpur store or connect on WhatsApp for live video calls and latest catalog access.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20see%20your%20saree%20collection."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
+            >
+              WhatsApp Us (+91 9325034636)
+            </a>
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center px-6 py-3 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all"
+            >
+              Visit Showroom in Nagpur
+            </a>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Our Saree Collections
+        </h2>
+        <p className="space-x-2">
+          <a href="/saree-shop-in-nagpur" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Best Saree Shop in Nagpur Guide</a> •{" "}
+          <a href="/sarees/paithani-sarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Pure Paithani Sarees</a> •{" "}
+          <a href="/sarees/banarasi-sarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Banarasi Silk Sarees</a> •{" "}
+          <a href="/malvika-saree" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Malvika Saree Collection</a> •{" "}
+          <a href="/uniform-saree" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Institutional Uniform Sarees</a> •{" "}
+          <a href="/wholesalesarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Wholesale Sarees Nagpur</a>
         </p>
       </div>
     ),
     faqs: [
       {
-        question: "Who is ${BUSINESS_INFO.name}?",
+        question: "Where is Mukesh Saree Centre located in Nagpur?",
         answer:
-          "${BUSINESS_INFO.name} is a highly trusted, premium ethnic wear brand and store based in ${BUSINESS_INFO.address.city}, Maharashtra, established in ${BUSINESS_INFO.established}.",
+          "Mukesh Saree Centre is located at Jagnath Road, Gandhibagh, Itwari, Nagpur, Maharashtra, 440002. We are situated in Nagpur's main wholesale and retail textile market.",
       },
       {
-        question: "What does ${BUSINESS_INFO.name} sell?",
+        question: "Is Mukesh Saree Centre a retail or wholesale saree shop?",
         answer:
-          "We sell a wide variety of premium ethnic wear including silk sarees, cotton sarees, bridal lehengas, uniform sarees, Malvika sarees, salwar suits, and designer wear.",
+          "We function as both a leading saree wholesaler for boutique owners and resellers, and a retail store offering wholesale-matched prices to individual buyers and families.",
       },
       {
-        question:
-          "Is ${BUSINESS_INFO.name} a saree shop in ${BUSINESS_INFO.address.city}?",
+        question: "What types of sarees does Mukesh Saree Centre sell?",
         answer:
-          "Yes, we are one of the oldest and most reputed saree shops in ${BUSINESS_INFO.address.city}, located at ${BUSINESS_INFO.address.street}, ${BUSINESS_INFO.address.area}.",
+          "We offer pure silk Paithani, Banarasi zari, Kanjivaram, pure cotton, linen, Kota Doria, Malvika daily-wear sarees, institutional uniform sarees, and bridal lehengas.",
+      },
+      {
+        question: "Do you offer video shopping for customers outside Nagpur?",
+        answer:
+          "Yes! We offer live video call shopping via WhatsApp (+91 9325034636). Our team shows fabrics, colors, and drapes in real-time with full home delivery.",
+      },
+      {
+        question: "Are all silk sarees at Mukesh Saree Centre authentic?",
+        answer:
+          "Yes, all our silk sarees are sourced directly from handloom weaving centers with genuine fabric authenticity guarantees.",
+      },
+      {
+        question: "How can I place a bulk or wholesale order?",
+        answer:
+          "You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 9325034636).",
       },
     ],
   },
   "uniform-saree": {
     title:
-      "Uniform Saree Collection | Corporate, School & Staff Sarees | ${BUSINESS_INFO.address.city}",
+      `Uniform Saree Collection | Corporate, School & Staff Sarees | ${BUSINESS_INFO.address.city}`,
     description:
-      "Shop durable and elegant uniform sarees for staff, schools, hospitals, and corporate use at ${BUSINESS_INFO.name}. Bulk orders available.",
-    h1: "Uniform Sarees for Every Profession",
+      `Shop durable, color-matched uniform sarees for schools, hospitals, corporate offices, and hospitality staff at ${BUSINESS_INFO.name}, Nagpur. Bulk wholesale rates available.`,
+    h1: "Uniform Sarees for Schools, Hospitals & Corporate Staff",
     intro:
-      "${BUSINESS_INFO.name} offers a dedicated selection of high-quality uniform sarees designed for professionals, schools, hospitals, hospitality staff, and corporate teams.",
+      `Uniform sarees are durable, color-consistent, and easy-care sarees specifically manufactured for institutional, corporate, school, hospital, and hospitality staff uniforms. Explore Central India's leading bulk uniform saree supplier in Gandhibagh, Nagpur.`,
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        {/* Direct Answer Box */}
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: What is a Uniform Saree?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            A <strong>uniform saree</strong> is a specialized, highly durable saree engineered for institutional and professional staff. Manufactured with color-fast dyes, wrinkle-resistant crepe and poly-cotton fabrics, and uniform dye-lot consistency, these sarees ensure that teams—from school teachers to hospital staff and corporate front desks—present a cohesive, polished appearance every single day.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Institutional Uniform Saree Solutions by Mukesh Saree Centre
+        </h2>
         <p>
-          A <strong>uniform saree</strong> needs to be more than just visually
-          appealing; it requires durability for daily use, ease of maintenance,
-          and comfort for long shifts. At ${BUSINESS_INFO.name}, we understand
-          these requirements perfectly.
+          At <strong>Mukesh Saree Centre</strong> (Gandhibagh, Nagpur), we specialize in manufacturing and supplying bulk <strong>uniform sarees</strong> for schools, colleges, healthcare facilities, hotel chains, and corporate organizations across Maharashtra and Central India.
         </p>
         <p>
-          Our collection of <em>staff uniform sarees</em> and{" "}
-          <em>corporate uniform sarees</em> is available in various durable
-          fabrics such as poly-crepe, georgette, and blended cotton. We provide
-          consistent color matching for bulk orders, ensuring your team presents
-          a unified and professional appearance.
+          A great uniform saree must balance three vital elements: professional aesthetics, long-lasting durability, and wearer comfort during extended work shifts. We supply institutional fabrics that withstand daily wear, repeated machine washing, and active mobility without fading or losing shape.
+        </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Who Should Buy Uniform Sarees? (Sectors & Applications)
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Educational Institutions (Schools & Colleges):</strong> Graceful, dignified uniform sarees for school teachers and female faculty members in cohesive pastel, navy, maroon, or green border motifs.
+          </li>
+          <li>
+            <strong>Hospitals & Healthcare Facilities:</strong> Easy-to-clean, hygienic uniform sarees for nursing staff, ward supervisors, and administrative personnel.
+          </li>
+          <li>
+            <strong>Corporate Offices & Front Desks:</strong> Sleek crepe and georgette uniform sarees for receptionists, guest relations managers, and corporate staff.
+          </li>
+          <li>
+            <strong>Hotels, Resorts & Hospitality:</strong> Elegant uniform drapes tailored to match brand color palettes for banquet hosts, front-of-house staff, and airline/travel counters.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Fabric Options & Quality Specifications
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Poly-Crepe & Georgette:</strong> Lightweight, smooth texture, zero ironing needed, highly fluid drape.
+          </li>
+          <li>
+            <strong>Poly-Cotton & Art Silk Blends:</strong> Structured weave for formal academic and government environments.
+          </li>
+          <li>
+            <strong>Dye-Lot Consistency:</strong> Guaranteed 100% color matching across initial orders and future batch re-orders for new team hires.
+          </li>
+          <li>
+            <strong>Colorfastness:</strong> High-grade industrial dyes that retain vibrancy through repeated home or commercial washing.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Buying Guidance for Bulk Institutional Orders
+        </h2>
+        <ol className="list-decimal pl-5 space-y-2">
+          <li>
+            <strong>Select Fabric & Pattern:</strong> Browse our uniform catalog or request physical sample swatches sent directly to your institution.
+          </li>
+          <li>
+            <strong>Confirm Dye-Lot & Quantity:</strong> Order with a 5-10% extra buffer to account for staff additions during the academic or financial year.
+          </li>
+          <li>
+            <strong>Approve Sample Saree:</strong> Inspect border alignment, texture, and color before mass dispatch.
+          </li>
+          <li>
+            <strong>Dispatch & Delivery:</strong> Fast batch packing and tracked delivery across Nagpur and all Indian states.
+          </li>
+        </ol>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Care & Maintenance Protocol for Uniform Sarees
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Washing:</strong> Machine wash on regular gentle cycle with mild detergent in cold water.
+          </li>
+          <li>
+            <strong>Drying:</strong> Air dry indoors or in shade; dries rapidly within 30–45 minutes.
+          </li>
+          <li>
+            <strong>Ironing:</strong> Minimal or zero ironing required due to crease-resistant poly-crepe properties.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Trusted Uniform Saree Wholesaler in Nagpur Since 1978
+        </h2>
+        <p>
+          Located at Jagnath Road, Gandhibagh, Nagpur, <strong>Mukesh Saree Centre</strong> has supplied bulk uniform sarees to over 500+ institutions across Central India. We offer factory-direct bulk rates, sample dispatch services, and reliable fulfillment.
+        </p>
+
+        {/* WhatsApp & Contact CTA */}
+        <div className="p-6 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30">
+          <h3 className="text-xl font-serif text-white mb-2 mt-0 font-medium">
+            Request Bulk Uniform Saree Swatches & Wholesale Quotes
+          </h3>
+          <p className="text-sm text-white/80 mb-4 leading-relaxed">
+            Planning uniform sarees for your school, hospital, hotel, or corporate team? Contact our wholesale procurement team on WhatsApp for swatches and institutional pricing.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20need%20a%20quote%20for%20bulk%20uniform%20sarees."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
+            >
+              Get Wholesale Quote (+91 9325034636)
+            </a>
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center px-6 py-3 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all"
+            >
+              Visit Store in Gandhibagh Nagpur
+            </a>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Uniform & Saree Pages
+        </h2>
+        <p className="space-x-2">
+          <a href="/teacher-uniform-sarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Teacher Uniform Sarees</a> •{" "}
+          <a href="/school-uniform-sarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">School Uniform Sarees</a> •{" "}
+          <a href="/hospital-uniform-sarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Hospital Uniform Sarees</a> •{" "}
+          <a href="/corporate-uniform-sarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Corporate Uniform Sarees</a> •{" "}
+          <a href="/saree-shop-in-nagpur" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Saree Shop in Nagpur Guide</a> •{" "}
+          <a href="/malvika-saree" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Malvika Sarees</a> •{" "}
+          <a href="/wholesalesarees" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Wholesale Sarees Nagpur</a>
         </p>
       </div>
     ),
     faqs: [
       {
-        question: "Does ${BUSINESS_INFO.name} sell uniform sarees?",
+        question: "Does Mukesh Saree Centre supply uniform sarees in bulk?",
         answer:
-          "Yes, we offer a specialized collection of uniform sarees for corporate offices, hospitals, schools, and the hospitality sector.",
+          "Yes. We are a major bulk uniform saree supplier in Central India, providing uniform sarees for schools, colleges, hospitals, hotels, and corporate offices.",
       },
       {
-        question: "Are uniform sarees available for bulk or institutional use?",
+        question: "What is the minimum order quantity (MOQ) for uniform sarees?",
         answer:
-          "Absolutely. We cater to bulk wholesale and institutional orders, ensuring consistent quality and color matching.",
+          "We accommodate orders ranging from small staff groups (10-20 sarees) up to large institutional batches of 500+ sarees with consistent color matching.",
       },
       {
-        question: "Which fabric is best for a uniform saree?",
+        question: "Can you guarantee exact color matching for future re-orders?",
         answer:
-          "Crepe, georgette, and poly-cotton blends are usually best for uniform sarees because they are durable, easy to wash, and require little ironing.",
+          "Yes. We maintain strict dye-lot records for all corporate and school clients so that new staff additions receive perfectly matched uniform sarees.",
+      },
+      {
+        question: "Which fabric is recommended for daily teacher or staff uniform sarees?",
+        answer:
+          "Poly-crepe and poly-cotton blends are best because they offer wrinkle resistance, high durability, fast drying, and comfort during long shifts.",
+      },
+      {
+        question: "Can we get sample swatches before placing a bulk uniform order?",
+        answer:
+          "Yes! We dispatch fabric sample swatches across India so institutional decision-makers can inspect quality and color before finalizing orders.",
+      },
+      {
+        question: "Where is Mukesh Saree Centre located for in-person uniform selection?",
+        answer:
+          "We are located at Jagnath Road, Gandhibagh, Itwari, Nagpur, Maharashtra, 440002. You can inspect physical sample sets in our wholesale division.",
       },
     ],
   },
   "saree-shop-in-nagpur": {
     title:
-      "Best Saree Shop in ${BUSINESS_INFO.address.city} Since ${BUSINESS_INFO.established} | ${BUSINESS_INFO.name}",
+      `Best Saree Shop in ${BUSINESS_INFO.address.city} Since ${BUSINESS_INFO.established} | ${BUSINESS_INFO.name}`,
     description:
-      "Looking for a authentic saree shop in ${BUSINESS_INFO.address.city}? Visit ${BUSINESS_INFO.name} for premium silk, bridal, and party wear sarees. Established ${BUSINESS_INFO.established}.",
-    h1: "Your Trusted Saree Shop in ${BUSINESS_INFO.address.city}",
+      `Looking for an authentic saree shop in ${BUSINESS_INFO.address.city}? Visit ${BUSINESS_INFO.name} in Gandhibagh for Paithani, Banarasi, Cotton, Malvika, and Uniform Sarees. Established ${BUSINESS_INFO.established}.`,
+    h1: `Best Saree Shop in ${BUSINESS_INFO.address.city}`,
     intro:
-      "Conveniently located in the heart of ${BUSINESS_INFO.address.city}, ${BUSINESS_INFO.name} is a landmark destination for ethnic wear enthusiasts.",
+      `Mukesh Saree Centre is Nagpur's premier saree shop and leading saree wholesaler on Jagnath Road, Gandhibagh, Itwari, Nagpur. Trusted since 1978 for authentic Paithani, Banarasi silk, cotton, Malvika, and uniform sarees at direct weaver prices.`,
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: What is the Best Saree Shop in Nagpur?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            <strong>Mukesh Saree Centre</strong>, located at Jagnath Road, Gandhibagh, Itwari, Nagpur (Estd. 1978), is widely recognized as the premier saree shop and leading saree wholesaler in Nagpur. Offering an extensive collection of authentic Paithani silks, Banarasi weaves, Kota cottons, daily-wear <strong>Malvika sarees</strong>, and institutional <strong>uniform sarees</strong>, Mukesh Saree Centre combines direct weaver pricing with over 45 years of trusted craftsmanship and Pan-India delivery.
+          </p>
+        </div>
+
         <p>
-          When you search for a{" "}
-          <strong>saree shop in ${BUSINESS_INFO.address.city}</strong> with a
-          legacy of trust and quality, <em>${BUSINESS_INFO.name}</em> stands
-          out. Since ${BUSINESS_INFO.established}, we have been serving the
-          community with authentic Indian traditional sarees.
+          When you search for a <strong>saree shop in {BUSINESS_INFO.address.city}</strong> with a legacy of trust and quality, <em>{BUSINESS_INFO.name}</em> stands out. Since {BUSINESS_INFO.established}, we have been serving the community with authentic Indian traditional sarees directly from master handloom weavers.
         </p>
         <p>
-          Whether you are looking for luxurious silk sarees in $
-          {BUSINESS_INFO.address.city}, traditional Paithani sarees, or modern
-          party wear lehengas, our expansive showroom provides an unmatched
-          shopping experience.
+          Whether you are looking for luxurious silk sarees in {BUSINESS_INFO.address.city}, traditional Paithani sarees, soft-drape Malvika sarees for daily office wear, or durable institutional uniform sarees for staff, our expansive Gandhibagh showroom provides an unmatched shopping experience.
         </p>
+
+        {/* WhatsApp & Contact CTA */}
+        <div className="p-6 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30">
+          <h3 className="text-xl font-serif text-white mb-2 mt-0 font-medium">
+            Visit Store in Gandhibagh or Request WhatsApp Catalog
+          </h3>
+          <p className="text-sm text-white/80 mb-4 leading-relaxed">
+            Discover Central India's finest collection of sarees at direct wholesale prices. Visit our Gandhibagh, Nagpur showroom or chat on WhatsApp.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20want%20to%20view%20your%20latest%20saree%20collection."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
+            >
+              Chat on WhatsApp (+91 9325034636)
+            </a>
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center px-6 py-3 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all"
+            >
+              Store Location & Directions
+            </a>
+          </div>
+        </div>
       </div>
     ),
     faqs: [
       {
-        question:
-          "Where is the best saree shop in ${BUSINESS_INFO.address.city}?",
-        answer:
-          "${BUSINESS_INFO.name}, located at ${BUSINESS_INFO.address.area}, is widely regarded as one of the best and most trusted saree shops in ${BUSINESS_INFO.address.city}.",
+        question: `Where is the best saree shop in ${BUSINESS_INFO.address.city}?`,
+        answer: `${BUSINESS_INFO.name}, located at Jagnath Road, ${BUSINESS_INFO.address.area}, ${BUSINESS_INFO.address.city}, is widely regarded as one of the best and most trusted saree shops in ${BUSINESS_INFO.address.city}.`,
       },
       {
-        question:
-          "What types of sarees are available in ${BUSINESS_INFO.address.city} at ${BUSINESS_INFO.name}?",
-        answer:
-          "We offer an extensive range including pure silk, cotton, Paithani, Malvika, uniform sarees, and designer bridal collections.",
+        question: `What types of sarees are available in ${BUSINESS_INFO.address.city} at ${BUSINESS_INFO.name}?`,
+        answer: "We offer an extensive range including pure silk Paithani, Banarasi zari, cotton, linen, Malvika sarees, institutional uniform sarees, and designer bridal collections.",
+      },
+      {
+        question: "Does Mukesh Saree Centre supply uniform sarees in bulk?",
+        answer: "Yes, we are a primary supplier of uniform sarees for schools, hospitals, hotels, and corporate offices across Central India with dye-lot color consistency.",
+      },
+      {
+        question: "Can I order online or schedule a video shopping call?",
+        answer: "Yes! We offer live WhatsApp video shopping (+91 9325034636) and ship tracked orders across India.",
       },
     ],
   },
@@ -695,7 +1100,6 @@ async function run() {
     // FAQ Schema
     if (pData.faqs && pData.faqs.length > 0) {
       graph.push({
-        "@context": "https://schema.org",
         "@type": "FAQPage",
         "@id": `https://mukeshsarees.com/${slug}#faq`,
         "mainEntity": pData.faqs.map((faq: any) => ({

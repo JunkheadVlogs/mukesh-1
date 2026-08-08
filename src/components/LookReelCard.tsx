@@ -333,6 +333,8 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
           alt={reel.title}
           width={600}
           height={800}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.04]"
         />
       </div>

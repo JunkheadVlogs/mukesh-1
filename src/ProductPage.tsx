@@ -1478,7 +1478,7 @@ export default function ProductPage() {
                   key={p.id}
                   className="w-full"
                 >
-                  <ProductCard product={p} priority={index < 4} />
+                  <ProductCard product={p} priority={false} />
                 </div>
               ))}
           </div>

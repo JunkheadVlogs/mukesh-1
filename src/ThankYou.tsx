@@ -272,7 +272,7 @@ export default function ThankYou() {
       const totalVal = priceVal * qtyVal;
       const sizeText = item.size ? `Size: ${item.size}` : "Size: Free Size";
       const colorText = item.color ? ` &middot; Color: ${item.color}` : "";
-      const imgTag = item.image ? `<img src="${esc(item.image)}" width="44" height="58" style="width: 44px; height: 58px; object-fit: cover; border: 1px solid rgba(0,0,0,0.06); border-radius: 2px;" />` : '';
+      const imgTag = item.image ? `<img src="${esc(item.image)}" width="44" height="58" loading="lazy" decoding="async" style="width: 44px; height: 58px; object-fit: cover; border: 1px solid rgba(0,0,0,0.06); border-radius: 2px;" />` : '';
       
       return `
         <tr>
@@ -643,7 +643,9 @@ export default function ThankYou() {
     link.download = `MSC_Invoice_${orderId}.html`;
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    try {
+      if (link && link.parentNode) { try { (link.parentNode && link.parentNode.removeChild(link)); } catch (e) {} }
+    } catch (e) {}
     URL.revokeObjectURL(url);
   };
 

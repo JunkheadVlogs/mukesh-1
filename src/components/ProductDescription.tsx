@@ -1,5 +1,6 @@
 import React from "react";
 import { Product } from "../store";
+import { LinenStylingGuide } from "./LinenStylingGuide";
 
 export function ProductDescription({
   description,
@@ -84,6 +85,12 @@ export function ProductDescription({
   }
 
   // 2. PRODUCT HIGHLIGHTS SECTION
+  const isLinen = 
+    categoryName.toUpperCase().includes("LINEN") || 
+    fabricName.toUpperCase().includes("LINEN") || 
+    productName.toUpperCase().includes("LINEN") ||
+    (product?.sku ? product.sku.toUpperCase().includes("LIN") : false);
+
   const isElephantPrint = 
     product?.sku === "SAR-LIN-NVY-033" || 
     product?.sku === "SAR-LIN-WHT-033" || 
@@ -94,7 +101,9 @@ export function ProductDescription({
     productName.toUpperCase().includes("ELEPHANT");
 
   let occasionLabel = "Festive Occasions, Premium Weddings, Family Celebrations & Haldi-Mehndi";
-  if (isElephantPrint) {
+  if (isLinen) {
+    occasionLabel = "Office Wear, Corporate Meetings, Regular Daily Wear, Casual Outings & Formal Events";
+  } else if (isElephantPrint) {
     occasionLabel = "Festive Occasions, Premium Weddings, Family Celebrations & Social Gatherings";
   } else if (!isSaree) {
     occasionLabel = "Casual Glamour, Holiday Travel, High Tea, and Luxurious Office Afternoons";
@@ -142,6 +151,10 @@ export function ProductDescription({
           </div>
         )}
       </div>
+
+      {(categoryName.toUpperCase().includes("LINEN") || fabricName.toUpperCase().includes("LINEN") || productName.toUpperCase().includes("LINEN")) && (
+        <LinenStylingGuide className="mt-4" />
+      )}
     </div>
   );
 }

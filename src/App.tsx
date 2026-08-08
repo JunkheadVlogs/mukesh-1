@@ -28,6 +28,11 @@ const About = lazy(() => import('./About'));
 const Faq = lazy(() => import('./Faq'));
 const GuideIndex = lazy(() => import('./pages/GuideIndex'));
 const GuideDetail = lazy(() => import('./pages/GuideDetail'));
+const CustomerReviews = lazy(() => import('./pages/CustomerReviews'));
+const WhyMukeshSareeCentre = lazy(() => import('./pages/WhyMukeshSareeCentre'));
+const MediaCoverage = lazy(() => import('./pages/MediaCoverage'));
+const UniformSareeBulkOrders = lazy(() => import('./pages/UniformSareeBulkOrders'));
+const MalvikaSareeBuyingGuide = lazy(() => import('./pages/MalvikaSareeBuyingGuide'));
 const SeoLandingPage = lazy(() => import('./pages/SeoLandingPage'));
 
 import { GlobalSchema } from './components/GlobalSchema';
@@ -234,6 +239,12 @@ export default function App() {
             <Route path="thank-you" element={<ThankYou />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="reviews" element={<CustomerReviews />} />
+            <Route path="customer-reviews" element={<CustomerReviews />} />
+            <Route path="why-mukesh-saree-centre" element={<WhyMukeshSareeCentre />} />
+            <Route path="media" element={<MediaCoverage />} />
+            <Route path="uniform-saree-bulk-orders" element={<UniformSareeBulkOrders />} />
+            <Route path="malvika-saree-buying-guide" element={<MalvikaSareeBuyingGuide />} />
             <Route path="privacy" element={<Navigate to="/contact" replace />} />
             <Route path="terms" element={<Terms />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />

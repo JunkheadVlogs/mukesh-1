@@ -18,7 +18,8 @@ Choosing the right material is paramount. The journey from raw fiber to a finish
 ### Types of Fabrics Available
 1. **Pure Silks:** The zenith of luxury. Pure silks have a natural sheen and a beautiful drape. They are temperature-regulating, meaning they feel cool in summer and warm in winter. Mulberry silk is the most common, but wild silks like Tussar, Eri, and Muga offer beautiful, earthy textures.
 2. **Finest Cottons:** The backbone of the Indian summer wardrobe. Cottons range from the slightly coarse and durable to the incredibly sheer and delicate (like mull or muslin). It breathes, absorbs moisture, and softens with every wash.
-3. **Linen Blends:** Linen, derived from the flax plant, is prized for its crisp texture and exceptional coolness in hot weather. When blended with cotton or silk, it offers the perfect balance of sheen, breathability, and structure.
+3. **Linen & Linen Blends:** Linen, derived from the flax plant, is prized for its crisp texture and exceptional coolness in hot weather. When blended with cotton or silk, it offers the perfect balance of sheen, breathability, and structure. Explore our curated [Linen Sarees collection](/sarees/linen-sarees).
+   > **Styling Tip:** Best styled for office meetings, corporate wear, regular daily comfort, travel, and casual day functions.
 4. **Georgette and Chiffon:** These are twisted yarns that create a light, flowy, and crinkled texture. They are incredibly popular for party wear because they hug the curves and fall elegantly without adding volume.
 5. **Organza:** A crisp, sheer fabric that holds volume. It's perfect for structured, modern silhouettes and statement looks.
 

@@ -12,6 +12,7 @@ import { Product, useStore } from "./store";
 import QuickViewModal from "./QuickViewModal";
 import { SEO } from "./components/SEO";
 import { trackViewItemList } from "./tracking";
+import { LinenStylingGuide } from "./components/LinenStylingGuide";
 
 const categoryDescriptions = {
   "linen-sarees": {
@@ -453,6 +454,9 @@ export default function Shop() {
               ({filteredAndSortedProducts.length} items)
             </span>
           </h1>
+          {(categoryFilter === "Linen Sarees" || path.includes("linen-sarees") || fabricFilter.includes("Linen")) && (
+            <LinenStylingGuide />
+          )}
         </div>
 
         {/* ROW 2: Filters and Sort by Buttons */}
@@ -699,7 +703,7 @@ export default function Shop() {
                     <ProductCard
                       key={product.id}
                       idx={idx}
-                      priority={idx < 4}
+                      priority={idx < 2}
                       product={product}
                       hideCategory={true}
                       hideRating={true}
@@ -757,7 +761,7 @@ export default function Shop() {
                         <ProductCard
                           key={product.id}
                           idx={idx}
-                          priority={idx < 4}
+                          priority={false}
                           product={product}
                           hideCategory={true}
                           hideRating={true}

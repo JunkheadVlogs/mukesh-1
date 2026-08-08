@@ -39,7 +39,7 @@ export default function GuideIndex() {
                   <img 
                     src={guide.image} 
                     alt={guide.title}
-                    loading="lazy" width="400" height="224"
+                    loading="lazy" decoding="async" width="400" height="224"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />

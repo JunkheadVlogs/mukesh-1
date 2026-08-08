@@ -37,11 +37,20 @@ const indexBody = `
   </div>
 `;
 
+const guideIndexOgTags = `<!-- Dynamic OG Tags -->
+  <meta data-rh="true" property="og:title" content="Saree Buying Guides & Styling Tips — ${BUSINESS_INFO.name}" />
+  <meta data-rh="true" property="og:description" content="Read expert guides on buying sarees, Lehengas, and Indian ethnic wear. Fabric care, styling, and much more from ${BUSINESS_INFO.name}." />
+  <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/guides" />
+  <meta data-rh="true" property="og:type" content="website" />
+  <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/guides" />
+<!-- End Dynamic OG Tags -->`;
+
 const indexHtml = createStaticPage({
   htmlTemplate: baseHtml,
   bodyHtml: indexBody,
   title: `Saree Buying Guides & Styling Tips — ${BUSINESS_INFO.name}`,
-  description: `Read expert guides on buying sarees, Lehengas, and Indian ethnic wear. Fabric care, styling, and much more from ${BUSINESS_INFO.name}.`
+  description: `Read expert guides on buying sarees, Lehengas, and Indian ethnic wear. Fabric care, styling, and much more from ${BUSINESS_INFO.name}.`,
+  customOgTags: guideIndexOgTags
 });
 
 fs.writeFileSync(path.join(guideIndexDir, "index.html"), indexHtml);

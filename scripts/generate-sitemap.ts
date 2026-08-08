@@ -12,24 +12,43 @@ async function generateSitemap() {
   // Base domain
   const DOMAIN = "https://mukeshsarees.com";
 
-  // Static routes
-  const routes = [
-    { path: "/", changefreq: "daily", priority: "1.0" },
-    { path: "/shop", changefreq: "weekly", priority: "0.9" },
-    { path: "/shop?category=Sarees", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Co-Ord-Sets", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Lehengas", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Kurtas", changefreq: "weekly", priority: "0.8" },
-    { path: "/contact", changefreq: "monthly", priority: "0.5" },
-    { path: "/shipping-policy", changefreq: "yearly", priority: "0.4" },
-    { path: "/return-policy", changefreq: "yearly", priority: "0.4" },
-    { path: "/terms", changefreq: "yearly", priority: "0.3" },
-    { path: "/wishlist", changefreq: "monthly", priority: "0.5" },
-    { path: "/about", changefreq: "yearly", priority: "0.7" },
-    { path: "/categories", changefreq: "weekly", priority: "0.8" }
-  ];
+  const routes: { path: string; changefreq: string; priority: string }[] = [];
+  const addedPaths = new Set<string>();
 
-  // Specific AI SEO Pages
+  function addRoute(routePath: string, changefreq: string, priority: string) {
+    // Ensure routePath starts with / and has no trailing slash (except root /)
+    let cleanPath = routePath.trim();
+    if (cleanPath.length > 1 && cleanPath.endsWith("/")) {
+      cleanPath = cleanPath.slice(0, -1);
+    }
+    if (!addedPaths.has(cleanPath)) {
+      addedPaths.add(cleanPath);
+      routes.push({ path: cleanPath, changefreq, priority });
+    }
+  }
+
+  // 1. Primary Static Public Pages
+  addRoute("/", "daily", "1.0");
+  addRoute("/shop", "weekly", "0.9");
+  addRoute("/sarees", "weekly", "0.9");
+  addRoute("/sarees/banarasi-sarees", "weekly", "0.8");
+  addRoute("/sarees/linen-sarees", "weekly", "0.8");
+  addRoute("/sarees/cotton-sarees", "weekly", "0.8");
+  addRoute("/sarees/paithani-sarees", "weekly", "0.8");
+  addRoute("/sarees/silk-sarees", "weekly", "0.8");
+  addRoute("/lehengas", "weekly", "0.8");
+  addRoute("/suits", "weekly", "0.8");
+  addRoute("/coord-sets", "weekly", "0.8");
+  addRoute("/wholesalesarees", "monthly", "0.9");
+  addRoute("/categories", "weekly", "0.8");
+  addRoute("/about", "yearly", "0.7");
+  addRoute("/contact", "monthly", "0.7");
+  addRoute("/faqs", "monthly", "0.7");
+  addRoute("/shipping-policy", "yearly", "0.4");
+  addRoute("/return-policy", "yearly", "0.4");
+  addRoute("/terms", "yearly", "0.3");
+
+  // 2. Specific AI SEO Landing Pages
   const aiPages = [
     "malvika-saree",
     "mukesh-saree",
@@ -40,37 +59,34 @@ async function generateSitemap() {
     "paithani-sarees",
     "ethnic-wear-nagpur",
     "saree-buying-guide",
-    "saree-care-guide"
+    "saree-care-guide",
+    "corporate-uniform-sarees",
+    "school-uniform-sarees",
+    "teacher-uniform-sarees",
+    "hospital-uniform-sarees",
+    "pure-linen-sarees",
+    "soft-cotton-sarees",
+    "banarasi-silk-sarees",
+    "designer-party-wear-sarees"
   ];
 
   for (const page of aiPages) {
-    routes.push({
-      path: `/${page}`,
-      changefreq: "monthly",
-      priority: "0.9"
-    });
+    addRoute(`/${page}`, "monthly", "0.9");
   }
 
-  // Dynamic product URLs from mockData
-  const seenSlugs = new Set<string>();
-  for (const product of products) {
-    if (product && product.slug && !product.isHidden && !seenSlugs.has(product.slug)) {
-      seenSlugs.add(product.slug);
-      routes.push({
-        path: `/product/${product.slug}`,
-        changefreq: "weekly",
-        priority: "0.8"
-      });
+  // 3. Knowledge Base Guides
+  addRoute("/guides", "weekly", "0.8");
+  for (const guide of guidesMeta) {
+    if (guide && guide.slug) {
+      addRoute(`/guides/${guide.slug}`, "monthly", "0.8");
     }
   }
 
-  // Knowledge base guides
-  for (const guide of guidesMeta) {
-    routes.push({
-      path: `/guides/${guide.slug}`,
-      changefreq: "monthly",
-      priority: "0.8"
-    });
+  // 4. Dynamic Product URLs from mockData
+  for (const product of products) {
+    if (product && product.slug && !product.isHidden) {
+      addRoute(`/product/${product.slug}`, "weekly", "0.8");
+    }
   }
 
   const sitemapLines: string[] = [];
@@ -84,7 +100,7 @@ async function generateSitemap() {
   </url>`);
   }
 
-  // 3. Compile everything together
+  // 5. Compile XML content
   const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${sitemapLines.join("\n")}
@@ -107,7 +123,7 @@ ${sitemapLines.join("\n")}
     console.log(`[SITEMAP] Synced copy saved to: ${distSitemapPath}`);
   }
 
-  console.log("[SITEMAP] XML Generation Completed successfully.");
+  console.log(`[SITEMAP] XML Generation Completed successfully. Total URLs: ${routes.length}`);
 }
 
 generateSitemap().catch((err) => {

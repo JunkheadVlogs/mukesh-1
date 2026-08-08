@@ -11,7 +11,8 @@
     "build:prod": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs && tsx scripts/build_meta.js && tsx scripts/generate-og-images.ts && tsx scripts/prerender.ts && tsx scripts/generate-sitemap.ts && tsx scripts/prerender-seo.tsx && tsx scripts/prerender-guides.tsx && node scripts/post-build-optimize.js && node scripts/prerender-aliases.js && node scripts/validate_encoding.js",
     "preview": "vite preview",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "postinstall": "node scripts/patch-react-dom.cjs && node scripts/patch-react-helmet.cjs"
   },
   "dependencies": {
     "@google/genai": "^2.3.0",

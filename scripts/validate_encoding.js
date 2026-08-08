@@ -27,12 +27,13 @@ const traverse = (dir) => {
       }
 
       // Check root container content
-      if (content.match(/<div id="root">\s*<\/div>/)) {
+      const pureClientRoutes = ['/cart/', '/wishlist/', '/checkout/', '/thank-you/', '/search/', 'shell.html'];
+      const isPureClientRoute = pureClientRoutes.some(route => fullPath.replace(/\\/g, '/').includes(route));
+
+      if (!isPureClientRoute && content.match(/<div id="root">\s*<\/div>/)) {
           console.error(`Validation Error: Empty root container found in ${fullPath}`);
           hasError = true;
       }
-      const pureClientRoutes = ['/cart/', '/wishlist/', '/checkout/', '/thank-you/', '/search/', 'shell.html'];
-      const isPureClientRoute = pureClientRoutes.some(route => fullPath.replace(/\\/g, '/').includes(route));
       
       if (!isPureClientRoute && content.match(/<div class="loading-spinner">/)) {
           console.error(`Validation Error: Loading placeholder still present in root container of ${fullPath}`);

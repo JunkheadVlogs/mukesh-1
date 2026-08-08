@@ -274,6 +274,8 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                               alt={p.name}
                               width={32}
                               height={40}
+                              loading="lazy"
+                              decoding="async"
                               className="w-8 h-10 object-cover rounded bg-neutral-50"
                               referrerPolicy="no-referrer"
                             />
@@ -310,6 +312,8 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                       alt={p.name}
                       width={40}
                       height={48}
+                      loading="lazy"
+                      decoding="async"
                       className="w-10 h-12 object-cover rounded bg-neutral-50 shrink-0 border border-black/[0.02]"
                       referrerPolicy="no-referrer"
                     />
@@ -352,6 +356,8 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                           alt={currentProduct.name}
                           width={48}
                           height={64}
+                          loading="lazy"
+                          decoding="async"
                           className="w-10 h-14 md:w-12 md:h-16 object-cover rounded border border-black/[0.05] bg-neutral-50 shrink-0"
                           referrerPolicy="no-referrer"
                         />
@@ -389,6 +395,8 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                             alt={selectedProduct.name}
                             width={48}
                             height={64}
+                            loading="lazy"
+                            decoding="async"
                             className="w-10 h-14 md:w-12 md:h-16 object-cover rounded border border-black/[0.05] bg-neutral-50 hover:opacity-90 transition-opacity"
                             referrerPolicy="no-referrer"
                           />

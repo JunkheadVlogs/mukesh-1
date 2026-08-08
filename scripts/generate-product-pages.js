@@ -168,8 +168,8 @@ function main() {
     let targetHtml = baseHtmlTemplate;
     
     // Replace primary titles and canonical lines
+    targetHtml = targetHtml.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
     targetHtml = targetHtml.replace(/<title>.*?<\/title>/is, `<title>${titleText}</title>`);
-    targetHtml = targetHtml.replace(/<link[^>]*rel="canonical"[^>]*>/is, `<link data-rh="true" rel="canonical" href="${canonicalUrl}" />`);
     targetHtml = targetHtml.replace(/<meta name="description" content=".*?".*?>/is, `<meta name="description" content="${cleanDesc}" />`);
 
     // Inject OG block surgically, replacing standard home tag definitions

@@ -57,43 +57,11 @@ export function createStaticPage({
       baseHtml = baseHtml.replace("</head>", `\n<script type="application/ld+json">${JSON.stringify(schemaJson)}</script>\n</head>`);
   }
 
-  // 3. Inject into Root
-  let found = false;
+  // 3. Strip initial page loader for statically pre-rendered pages
+  baseHtml = baseHtml.replace(/<div id="initial-page-loader"[\s\S]*?<\/div>\s*<\/div>/gi, '');
 
-  // Attempt 1: Safe string splitting around the loading wrapper block
-  const startMarker = '<div id="root">';
-  const startIndex = baseHtml.indexOf(startMarker);
-  
-  if (startIndex !== -1) {
-    // Find where the script starts, which is exactly after the root div closes in index.html
-    const endMarker = '<script type="module" src="/src/main.tsx"></script>';
-    const endIndex = baseHtml.indexOf(endMarker);
-    
-    if (endIndex !== -1) {
-      // Extract everything before <div id="root">
-      const before = baseHtml.substring(0, startIndex + startMarker.length);
-      // Extract everything from <script type="module" ... onwards
-      const after = "\n</div>\n    " + baseHtml.substring(endIndex);
-      
-      baseHtml = before + "\n" + bodyHtml + after;
-      found = true;
-    }
-  }
-
-  if (!found) {
-    // Fallback: simple replace if the structure is not exactly as expected
-    const rootInjectionRegex = /<div id="root">[\s\S]*?<div class="loading-spinner"><\/div>\s*<\/div>\s*<\/div>/i;
-    if (rootInjectionRegex.test(baseHtml)) {
-      baseHtml = baseHtml.replace(rootInjectionRegex, `<div id="root">\n${bodyHtml}\n</div>`);
-      found = true;
-    }
-  }
-  
-  if (!found) {
-    baseHtml = baseHtml.replace(/<div id="root"><\/div>/, `<div id="root">\n${bodyHtml}\n</div>`);
-  }
-
-  return baseHtml;
+  // 4. Inject into Root
+  return injectIntoRoot(baseHtml, bodyHtml);
 }
 
 /**
@@ -102,16 +70,20 @@ export function createStaticPage({
  */
 export function injectIntoRoot(html: string, newBody: string): string {
   let res = html;
+
+  // Strip initial page loader if present
+  res = res.replace(/<div id="initial-page-loader"[\s\S]*?<\/div>\s*<\/div>/gi, '');
+
   let found = false;
 
   const startMarker = '<div id="root">';
   const startIndex = res.indexOf(startMarker);
   
   if (startIndex !== -1) {
-    const endMarker = '<script type="module" src="/src/main.tsx"></script>';
-    const endIndex = res.indexOf(endMarker);
-    
-    if (endIndex !== -1) {
+    // Match script tag flexible for defer attribute or missing defer
+    const scriptMatch = res.match(/<script type="module"[^>]*src="\/src\/main\.tsx"><\/script>/);
+    if (scriptMatch && scriptMatch.index !== undefined) {
+      const endIndex = scriptMatch.index;
       const before = res.substring(0, startIndex + startMarker.length);
       const after = "\n</div>\n    " + res.substring(endIndex);
       
@@ -121,15 +93,13 @@ export function injectIntoRoot(html: string, newBody: string): string {
   }
 
   if (!found) {
-    const rootInjectionRegex = /<div id="root">[\s\S]*?<div class="loading-spinner"><\/div>\s*<\/div>\s*<\/div>/i;
-    if (rootInjectionRegex.test(res)) {
-      res = res.replace(rootInjectionRegex, `<div id="root">\n${newBody}\n</div>`);
+    if (res.includes('<div id="root"></div>')) {
+      res = res.replace('<div id="root"></div>', `<div id="root">\n${newBody}\n</div>`);
+      found = true;
+    } else {
+      res = res.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">\n${newBody}\n</div>`);
       found = true;
     }
-  }
-  
-  if (!found) {
-    res = res.replace(/<div id="root"><\/div>/, `<div id="root">\n${newBody}\n</div>`);
   }
   
   return res;

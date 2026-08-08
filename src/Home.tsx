@@ -369,7 +369,7 @@ export default function Home() {
             sizes="(max-width: 768px) 100vw, 768px"
             width={768}
             height={1000}
-            alt="Mukesh Saree Centre Premium Saree Collection - Trusted saree shop in Nagpur offering offline and online sales in India"
+            alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978"
             loading="eager"
             fetchPriority="high"
             decoding="sync"
@@ -382,7 +382,7 @@ export default function Home() {
             sizes="(min-width: 768px) 100vw, 1200px"
             width={1200}
             height={1000}
-            alt="Mukesh Saree Centre Premium Saree Collection - Trusted saree shop in Nagpur offering offline and online sales in India"
+            alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978"
             loading="eager"
             fetchPriority="high"
             decoding="sync"
@@ -403,31 +403,44 @@ export default function Home() {
           className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-center items-start h-full pt-[100px] md:pt-[110px] pb-12"
           style={{ opacity: heroTextOpacity, y: heroTextY }}
         >
-          <div className="max-w-[200px] xs:max-w-[220px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[500px] text-left mb-4 md:mb-8">
-            <motion.h1
+          <div className="max-w-[280px] xs:max-w-[320px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[640px] text-left mb-4 md:mb-8">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-[19px] xs:text-[21px] sm:text-[30px] md:text-[38px] lg:text-[45px] font-serif mb-2.5 md:mb-4 leading-[1.35] sm:leading-[1.2] font-normal tracking-[0.14em] sm:tracking-[0.12em] uppercase"
+              className="text-[10px] xs:text-[11px] sm:text-[12px] md:text-[13px] font-sans font-semibold tracking-[0.22em] sm:tracking-[0.25em] uppercase mb-2 md:mb-3 text-[var(--color-gold-light)]"
+              style={{
+                textShadow: "0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)",
+                color: "var(--color-gold-light)",
+              }}
+            >
+              MUKESH SAREE CENTRE · EST. 1978
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="text-[24px] xs:text-[28px] sm:text-[38px] md:text-[48px] lg:text-[56px] font-serif mb-2.5 md:mb-4 leading-[1.25] sm:leading-[1.15] font-normal tracking-[0.06em] sm:tracking-[0.08em]"
               style={{
                 textShadow: "0 2px 10px rgba(0,0,0,0.45), 0 4px 24px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.2)",
                 color: "#FFFDF8",
               }}
             >
-              Mukesh Saree Centre <br className="block sm:hidden" />– Saree Shop in Nagpur
+              The Art of the Drape
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-[10px] xs:text-[11px] sm:text-[13px] md:text-[15px] leading-[1.8] mb-8 md:mb-10 max-w-[190px] xs:max-w-[200px] sm:max-w-[300px] md:max-w-[360px] lg:max-w-[420px] font-sans font-light tracking-[0.12em] uppercase opacity-95"
+              className="text-[11px] xs:text-[12px] sm:text-[14px] md:text-[16px] leading-[1.7] mb-8 md:mb-10 max-w-[220px] xs:max-w-[260px] sm:max-w-[380px] md:max-w-[440px] lg:max-w-[500px] font-sans font-light tracking-[0.04em] opacity-95"
               style={{
                 textShadow: "0 2px 8px rgba(0,0,0,0.4), 0 4px 18px rgba(0,0,0,0.25)",
                 color: "#F5EFE6",
               }}
             >
-              Beautiful Designs. Trusted Quality.
+              Handcrafted silks and linens, styled for the modern woman.
             </motion.p>
 
             <motion.div
@@ -508,6 +521,7 @@ export default function Home() {
                 <OptimizedImage
                   src="https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090"
                   width={800}
+                  height={600}
                   alt="Women wearing premium Co-Ord sets from Mukesh Saree Centre"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
                 />
@@ -551,6 +565,7 @@ export default function Home() {
                 <OptimizedImage
                   src="https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790"
                   width={800}
+                  height={550}
                   alt="Beautiful traditional Saree from Mukesh Saree Centre collection"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
@@ -608,7 +623,7 @@ export default function Home() {
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : trendingProducts.map((product, index) => (
                   <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
-                    <ProductCard product={product} priority={index < 4} />
+                    <ProductCard product={product} priority={index < 2} />
                   </Suspense>
                 ))}
           </div>
@@ -716,7 +731,7 @@ export default function Home() {
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : newArrivals.map((product, index) => (
                   <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
-                    <ProductCard product={product} priority={index < 4} />
+                    <ProductCard product={product} priority={false} />
                   </Suspense>
                 ))}
           </div>

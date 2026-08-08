@@ -1388,8 +1388,33 @@ export default function Layout() {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/why-mukesh-saree-centre" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Why Choose Us
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/reviews" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Customer Reviews
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/contact" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Contact Us
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/media" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Media & Press Proof
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/uniform-saree-bulk-orders" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Uniform Sarees Bulk
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/malvika-saree-buying-guide" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Malvika Saree Guide
                     </Link>
                   </li>
                   <li>

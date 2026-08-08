@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useStore } from '../store';
-import { safeLocalStorage, safeSessionStorage } from '../utils/safeStorage';
+import { safeLocalStorage } from '../utils/safeStorage';
+import { isExitPopupAlreadyShown, markExitPopupAsShown, recordExitPopupDismissal, detectInAppBrowser } from '../hooks/useExitIntent';
 
 export interface ExitIntentPopupProps {
   onDismiss: () => void;
@@ -44,9 +45,7 @@ const Confetti = () => {
 export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
   const applyCoupon = useStore((state) => state.applyCoupon);
   const [isVisible, setIsVisible] = useState(false);
-  const [hasShown, setHasShown] = useState(() => {
-    return safeSessionStorage.getItem('exitPopupShown') === 'true' || safeSessionStorage.getItem('exit_intent_shown') === '1';
-  });
+  const [hasShown, setHasShown] = useState(false);
 
   const [stage, setStage] = useState<'capture' | 'revealed'>('capture');
   const [name, setName] = useState('');
@@ -57,31 +56,16 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
 
   const checkShouldShow = () => {
     if (hasShown) return false;
-    if (safeSessionStorage.getItem('exitPopupShown') === 'true' || safeSessionStorage.getItem('exit_intent_shown') === '1') return false;
-    
-    const hasPurchased = safeLocalStorage.getItem('hasPurchased');
-    if (hasPurchased === 'true') return false;
 
-    // Do not show on thank you pages
+    // Do not show on thank you or order success pages
     if (window.location.pathname.includes('/thank-you') || window.location.pathname.includes('/success')) {
       return false;
     }
-    
-    const isDevOrPreview = window.location.hostname.includes('localhost') || 
-                          window.location.hostname.includes('127.0.0.1') || 
-                          window.location.hostname.includes('.run.app') ||
-                          window.location.search.includes('test_exit=true');
 
-    if (isDevOrPreview) {
-      return true;
+    if (isExitPopupAlreadyShown()) {
+      return false;
     }
 
-    const submitted = safeLocalStorage.getItem('exitIntentSubmittedTime');
-    const now = Date.now();
-    const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
-    
-    if (submitted && (now - parseInt(submitted)) < SEVEN_DAYS) return false;
-    
     return true;
   };
 
@@ -89,12 +73,15 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
     if (checkShouldShow()) {
       setIsVisible(true);
       setHasShown(true);
-      safeSessionStorage.setItem('exitPopupShown', 'true');
-      safeSessionStorage.setItem('exit_intent_shown', '1');
+      markExitPopupAsShown();
       
+      const inApp = detectInAppBrowser();
+
       // Track impressions
       if ((window as any).fbq) {
-        (window as any).fbq('trackCustom', 'ExitIntentShown');
+        (window as any).fbq('trackCustom', 'ExitIntentShown', {
+          in_app_browser: inApp.name || 'None'
+        });
       }
       if ((window as any).gtag) {
         (window as any).gtag('event', 'view_promotion', {
@@ -128,11 +115,18 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
   }, [isVisible]);
 
   const setSuccessStorage = () => {
-    safeLocalStorage.setItem('exitIntentSubmittedTime', Date.now().toString());
-    safeLocalStorage.setItem('exitIntentSubmitted', 'true');
+    try {
+      const now = Date.now().toString();
+      safeLocalStorage.setItem('exitIntentSubmittedTime', now);
+      safeLocalStorage.setItem('exitIntentSubmitted', 'true');
+      safeLocalStorage.setItem('hasPurchased', 'true');
+    } catch {
+      // Fail gracefully
+    }
   };
 
   const handleClose = () => {
+    recordExitPopupDismissal();
     setIsVisible(false);
     onDismiss();
   };
@@ -164,6 +158,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
       if (sheetsUrl) {
         const isMobile = window.innerWidth <= 768;
         try {
+          const inApp = detectInAppBrowser();
           await fetch(sheetsUrl, {
             method: 'POST',
             mode: 'no-cors',
@@ -175,10 +170,10 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
               name: trimmedName,
               phone: trimmedPhone,
               page: window.location.pathname,
-              device: isMobile ? 'Mobile' : 'Desktop',
+              device: isMobile ? (inApp.isInApp ? `Mobile (${inApp.name})` : 'Mobile') : 'Desktop',
               request: 'Exit Intent Discount Coupon VIP50',
               requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000),
-              source: 'Exit Intent Popup'
+              source: inApp.isInApp ? `Exit Intent Popup (${inApp.name})` : 'Exit Intent Popup'
             })
           });
         } catch (fetchErr) {
@@ -209,7 +204,13 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
         document.body.appendChild(textArea);
         textArea.select();
         document.execCommand('copy');
-        document.body.removeChild(textArea);
+        try {
+          if (textArea && textArea.parentNode) {
+            try {
+              (textArea.parentNode && textArea.parentNode.removeChild(textArea));
+            } catch (e) {}
+          }
+        } catch (e) {}
         setCopied(true);
       });
     } else {
@@ -218,7 +219,9 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand('copy');
-      document.body.removeChild(textArea);
+      try {
+        if (textArea && textArea.parentNode) { try { (textArea.parentNode && textArea.parentNode.removeChild(textArea)); } catch(e){} }
+      } catch (e) {}
       setCopied(true);
     }
 

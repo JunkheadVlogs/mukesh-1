@@ -124,8 +124,8 @@ function runGenerator() {
 
     let outHtml = baseTemplateHtml;
 
+    outHtml = outHtml.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
     outHtml = outHtml.replace(/<title>.*?<\/title>/is, `<title>${docTitle}</title>`);
-    outHtml = outHtml.replace(/<link rel="canonical" href="[^"]*".*?>/is, `<link rel="canonical" href="${docCanonicalUrl}" />`);
     outHtml = outHtml.replace(/<meta name="description" content=".*?".*?>/is, `<meta name="description" content="${shortDesc}" />`);
 
     if (outHtml.includes('<!-- Dynamic OG Tags -->') && outHtml.includes('<!-- End Dynamic OG Tags -->')) {

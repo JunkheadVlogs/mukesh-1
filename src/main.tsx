@@ -59,12 +59,13 @@ window.addEventListener('error', (event) => {
     const text = (msgStr + " " + (err?.message || "") + " " + (err?.stack || "")).toLowerCase();
     return [
       "websocket", "web socket", "failed to connect to websocket", "hmr", "hot module", "hot-reload", 
-      "socket closed", "ws://", "wss://", "fbq", "google-analytics", "pinterest", "gtag", "extensions"
+      "socket closed", "ws://", "wss://", "fbq", "google-analytics", "pinterest", "gtag", "extensions",
+      "removechild", "not a child of this node"
     ].some(phrase => text.includes(phrase));
   };
 
   if (isBenignError(event.message || "", event.error)) {
-    console.warn("[DIAGNOSTIC SILENT] Ignored benign/HMR WebSocket error:", event.message);
+    console.warn("[DIAGNOSTIC SILENT] Ignored benign/HMR WebSocket or DOM extension error:", event.message);
     return;
   }
   showErrorOnScreen(`Global Error: ${event.message} in ${event.filename}:${event.lineno}`, event.error);
@@ -75,7 +76,8 @@ window.addEventListener('unhandledrejection', (event) => {
     const text = (reasonStr + " " + (err?.message || "") + " " + (err?.stack || "")).toLowerCase();
     return [
       "websocket", "web socket", "failed to connect to websocket", "hmr", "hot module", "hot-reload", 
-      "socket closed", "ws://", "wss://", "fbq", "google-analytics", "pinterest", "gtag", "extensions"
+      "socket closed", "ws://", "wss://", "fbq", "google-analytics", "pinterest", "gtag", "extensions",
+      "removechild", "not a child of this node"
     ].some(phrase => text.includes(phrase));
   };
 
@@ -117,6 +119,22 @@ try {
     </StrictMode>,
   );
   console.log("[DIAGNOSTIC] App main render call completed successfully.");
+
+  // Safely dismiss initial page loader after React mounts
+  setTimeout(() => {
+    const loader = document.getElementById('initial-page-loader');
+    if (loader && loader.parentNode) {
+      loader.style.transition = 'opacity 0.3s ease-out';
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        try {
+          if (loader && loader.parentNode) {
+            (loader.parentNode && loader.parentNode.removeChild(loader));
+          }
+        } catch (e) {}
+      }, 300);
+    }
+  }, 100);
 } catch (renderError: any) {
   showErrorOnScreen("Failed to render application container:", renderError);
 }

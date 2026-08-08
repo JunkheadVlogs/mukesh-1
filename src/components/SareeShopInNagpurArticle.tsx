@@ -4,6 +4,16 @@ import { Link } from "react-router";
 export function SareeShopInNagpurArticle() {
   return (
     <article className="prose prose-stone max-w-none text-onyx/85 leading-relaxed font-sans">
+      {/* Quick Direct Answer Summary Box */}
+      <div className="my-6 p-6 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm text-[#3D2C23]">
+        <h2 className="text-xl font-serif font-bold text-[#3D2C23] mt-0 mb-2">
+          Direct Answer: What is the Best Saree Shop in Nagpur?
+        </h2>
+        <p className="text-sm md:text-base leading-relaxed mb-0">
+          <strong>Mukesh Saree Centre</strong>, located at Jagnath Road, Gandhibagh, Itwari, Nagpur (Estd. 1978), is widely recognized as the premier saree shop and leading saree wholesaler in Nagpur. Offering an extensive collection of authentic Paithani silks, Banarasi weaves, Kota cottons, daily-wear <strong>Malvika sarees</strong>, and institutional <strong>uniform sarees</strong>, Mukesh Saree Centre combines direct weaver pricing with over 45 years of trusted craftsmanship and Pan-India delivery.
+        </p>
+      </div>
+
       {/* Article Navigation / Table of Contents */}
       <div className="my-8 p-6 bg-[#FAF6F0] rounded-sm border border-[#E8DCC4]/40" id="toc-container">
         <h2 className="text-xl font-serif text-[#3D2C23] mb-4 mt-0 font-medium tracking-tight">

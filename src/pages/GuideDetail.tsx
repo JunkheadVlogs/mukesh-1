@@ -642,9 +642,13 @@ export default function GuideDetail() {
                         <div className="aspect-[3/4] overflow-hidden bg-[#FAF8F5] mb-4 relative border border-[#EAE6E1]">
                           <img 
                             src={product.image} 
-                            alt={product.name} 
+                            alt={product.name}
+                            width={400}
+                            height={533}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                             loading="lazy"
+                            decoding="async"
+                            style={{ backgroundColor: '#FAF6F0' }}
                           />
                           {product.isNew && (
                             <span className="absolute top-3 left-3 bg-[#C8A96B] text-white text-[9px] uppercase tracking-widest px-2 py-0.5 font-semibold">
@@ -777,6 +781,8 @@ export default function GuideDetail() {
                           <img 
                             src={related.image} 
                             alt={related.title} width="64" height="64"
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </div>
