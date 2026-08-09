@@ -99,91 +99,65 @@ export const getExternalId = (): string => {
 // Map of tracked ViewContent events with their timestamps to prevent reactive duplicate fires
 const trackedViewContentTimes = new Map<string, number>();
 
-if (typeof window !== "undefined") {
-  // Safe helper to bootstrap Meta Pixel dynamically if not already initialized
-  const initMetaPixel = () => {
-    if ((window as any).fbq) return;
+// Safe helper to bootstrap Meta Pixel dynamically if not already initialized
+export const initMetaPixel = () => {
+  if (typeof window === "undefined") return;
+  if ((window as any)._fbq_initialized && (window as any).fbq) return;
+  (window as any)._fbq_initialized = true;
 
-    (function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
-      if (f.fbq) return;
-      n = f.fbq = function () {
-        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-      };
-      if (!f._fbq) f._fbq = n;
-      n.push = n;
-      n.loaded = !0;
-      n.version = "2.0";
-      n.queue = [];
-      t = b.createElement(e);
-      t.async = !0;
-      t.src = v;
-      s = b.getElementsByTagName(e)[0];
+  (function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = "2.0";
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    if (s && s.parentNode) {
       s.parentNode.insertBefore(t, s);
-    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    } else if (document.head) {
+      document.head.appendChild(t);
+    }
+  })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
 
-    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384"; // Fallback to provided defaults if none configured
-    if (pixelId) {
-      const extId = getExternalId();
-      const initUserData: any = { external_id: extId };
- 
-      // Enrich initial loading parameters with stored validated user details if present
-      try {
-        const info = localStorage.getItem('customer_checkout_info');
-        if (info) {
-          const stored = JSON.parse(info);
-          if (stored.email && !isPlaceholderOrBusinessEmail(stored.email)) {
-            initUserData.em = stored.email;
-          }
-          if (stored.phone && !isPlaceholderOrBusinessPhone(stored.phone)) {
-            initUserData.ph = stored.phone;
-          }
-          if (stored.name) {
-            initUserData.fn = stored.name.split(' ')[0];
-            initUserData.ln = stored.name.split(' ').slice(1).join(' ');
-          }
-          if (stored.city) initUserData.ct = stored.city;
-          if (stored.zip) initUserData.zp = stored.zip;
+  const pixelId = import.meta.env.VITE_META_PIXEL_ID || "3834311026859384"; // Fallback to provided defaults if none configured
+  if (pixelId) {
+    const extId = getExternalId();
+    const initUserData: any = { external_id: extId };
+
+    // Enrich initial loading parameters with stored validated user details if present
+    try {
+      const info = localStorage.getItem('customer_checkout_info');
+      if (info) {
+        const stored = JSON.parse(info);
+        if (stored.email && !isPlaceholderOrBusinessEmail(stored.email)) {
+          initUserData.em = stored.email;
         }
-      } catch (e) {}
- 
-      (window as any).fbq("init", pixelId, initUserData);
-      console.log(`[Pixel Tracker] Initialized on client with ID: ${pixelId} and matched user data`);
-    }
-  };
- 
-  // Defer initialization to avoid main thread blockage during startup
-  const delayInit = () => {
-    const run = () => {
-      if ((window as any)._fbq_initialized) return;
-      (window as any)._fbq_initialized = true;
-      initMetaPixel();
-    };
-
-    const attach = () => {
-      // Fallback if no activity is detected within a reasonable timeframe (lab audits)
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(() => setTimeout(run, 8500));
-      } else {
-        setTimeout(run, 9000);
+        if (stored.phone && !isPlaceholderOrBusinessPhone(stored.phone)) {
+          initUserData.ph = stored.phone;
+        }
+        if (stored.name) {
+          initUserData.fn = stored.name.split(' ')[0];
+          initUserData.ln = stored.name.split(' ').slice(1).join(' ');
+        }
+        if (stored.city) initUserData.ct = stored.city;
+        if (stored.zip) initUserData.zp = stored.zip;
       }
+    } catch (e) {}
 
-      // Trigger on first human interaction
-      const triggerEvents = ["mousedown", "keypress", "touchstart", "scroll", "mousemove"];
-      const triggerLoader = () => {
-        run();
-        triggerEvents.forEach((ev) => window.removeEventListener(ev, triggerLoader));
-      };
-      triggerEvents.forEach((ev) => window.addEventListener(ev, triggerLoader, { passive: true }));
-    };
+    (window as any).fbq("init", pixelId, initUserData);
+    console.log(`[Pixel Tracker] Initialized on client with ID: ${pixelId} and matched user data`);
+  }
+};
 
-    if (document.readyState === "complete") {
-      attach();
-    } else {
-      window.addEventListener("load", attach, { passive: true });
-    }
-  };
- 
-  delayInit();
+if (typeof window !== "undefined") {
+  initMetaPixel();
 }
  
 // Dynamically updates Meta Pixel user properties matching the active session

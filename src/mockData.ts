@@ -2499,8 +2499,8 @@ Pair it with the matching black blouse piece and silver oxidised tribal jewelry 
     oldSlug: "chiku-linen-saree-with-bird-digital-print-and-foil-border",
     metaTitle: "Pure Linen Saree with Woven Bird Design & Print | Mukesh Saree Centre",
     metaDescription: "Shop our 100% original Pure Linen Saree featuring an intricately woven bird motif design with elegant print details. An original Mukesh Saree Centre creation made for a distinctive ethnic look.",
-    price: 699,
-    originalPrice: 1399,
+    price: 999,
+    originalPrice: 1999,
     image: "https://ik.imagekit.io/tus1loev9/beige-printed-cotton-saree-women-model.jpg.jpg",
     images: [
       "https://ik.imagekit.io/tus1loev9/beige-printed-cotton-saree-women-model.jpg.jpg",

@@ -17,14 +17,10 @@ export function ProductAccordion({ category, product }: { category?: string; pro
   const fabricRaw = product?.fabric || "Premium Blended Fabric";
   const cat = category || "Sarees";
   
-  const stylingTips = isSaree 
-    ? "Pair with statement gold or oxidized silver jewelry depending on the occasion. A contrasting or matching designer blouse will complete the traditional yet modern look. Use block heels or wedges for an elegant posture."
-    : "Style with minimal accessories, an elegant sling bag, and comfortable flats or block heels for an effortlessly chic look.";
-    
   const featuresList = isSaree
     ? "• 5.5 Meter premium unstitched drape\n• 1 Meter matching unstitched blouse piece\n• Authentic weaving and rich border design\n• Lightweight and breathable for all-day comfort"
     : "• Highly breathable and skin-friendly natural fabrics\n• Flattering contemporary cuts and fits\n• Durable stitching for everyday elegance\n• Easy to maintain and wrinkle-resistant blends";
-    
+
   const benefitsText = "Experience the perfect balance of heritage and comfort. Our meticulously crafted designs ensure you look effortlessly stylish while enjoying all-day breathability. This garment is an investment in timeless fashion that won't fade with changing seasons.";
   
   const whoShouldBuy = isSaree
@@ -38,11 +34,7 @@ export function ProductAccordion({ category, product }: { category?: string; pro
     },
     {
       title: "Why You'll Love It",
-      content: `${benefitsText}\n\nWho should buy: ${whoShouldBuy}\n\nBest occasions: Premium weddings, festive celebrations, cultural events, and high tea gatherings.`
-    },
-    {
-      title: "Styling Ideas & Occasions",
-      content: stylingTips
+      content: `${benefitsText}\n\nWho should buy: ${whoShouldBuy}`
     },
     {
       title: "Wash & Care Instructions",
