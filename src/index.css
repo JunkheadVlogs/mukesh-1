@@ -362,6 +362,32 @@ video.product-main-img {
   }
 }
 
+@media (min-width: 1024px) {
+  .product-image-main,
+  .product-main-img,
+  .gallery-main img,
+  [class*="product-image"] img,
+  [class*="main-image"] img {
+    max-height: 720px !important;
+    height: auto !important;
+    width: 100% !important;
+    object-fit: contain !important;
+  }
+  video.product-image-main,
+  video.product-main-img {
+    height: 100% !important;
+    max-height: 720px !important;
+  }
+  .gallery-main,
+  .product-image-container,
+  [class*="product-image-container"] {
+    max-height: 720px !important;
+    height: auto !important;
+    min-height: 580px;
+    aspect-ratio: 3/4;
+  }
+}
+
 .product-gallery img {
   width: 100%;
   border-radius: 8px;

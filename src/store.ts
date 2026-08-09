@@ -42,6 +42,11 @@ export interface Product {
   isVariant?: boolean;
   isHidden?: boolean;
   slug: string;
+  oldSlug?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  seoTitle?: string;
+  seoDescription?: string;
   description: string;
   rating: number;
   reviewsCount?: number;

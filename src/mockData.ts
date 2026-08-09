@@ -2493,44 +2493,40 @@ Pair it with the matching black blouse piece and silver oxidised tribal jewelry 
   {
     id: "p62",
     sku: "SAR-LIN-BRD-062",
-    name: "Chiku Linen Saree with Bird Digital Print & Foil Border",
-    tagline: "Elegant Printed Saree with Blouse Piece",
-    slug: "chiku-linen-saree-with-bird-digital-print-and-foil-border",
+    name: "Pure Linen Saree with Woven Bird Design & Print | 100% Original Mukesh Saree Centre",
+    tagline: "Pure Linen Saree featuring an intricately Woven Bird Design complemented by elegant print details. A 100% original creation by Mukesh Saree Centre.",
+    slug: "pure-linen-saree-natural-bird-print-woven-design",
+    oldSlug: "chiku-linen-saree-with-bird-digital-print-and-foil-border",
+    metaTitle: "Pure Linen Saree with Woven Bird Design & Print | Mukesh Saree Centre",
+    metaDescription: "Shop our 100% original Pure Linen Saree featuring an intricately woven bird motif design with elegant print details. An original Mukesh Saree Centre creation made for a distinctive ethnic look.",
     price: 699,
     originalPrice: 1399,
-    image: "https://drive.google.com/thumbnail?id=1NEHBHiqkmhdj7EfgvTGbHSF1h3MYVxt1&sz=w1000",
+    image: "https://ik.imagekit.io/tus1loev9/beige-printed-cotton-saree-women-model.jpg.jpg",
     images: [
-      "https://drive.google.com/thumbnail?id=1NEHBHiqkmhdj7EfgvTGbHSF1h3MYVxt1&sz=w1000",
-      "https://drive.google.com/thumbnail?id=1nreGBlzcF5t2GFH5paTI0fvMkEyh9SfI&sz=w1000",
-      "https://drive.google.com/thumbnail?id=1cbymQP0ro-thTbyHdxMePwiXMoBXNQUj&sz=w1000"
+      "https://ik.imagekit.io/tus1loev9/beige-printed-cotton-saree-women-model.jpg.jpg",
+      "https://ik.imagekit.io/tus1loev9/The%20perfect%20linen%20cotton%20saree%20with%20digital%20print%20on%20border._%E2%9D%A4%EF%B8%8FComes%20with%20contrast%20blouse._Lig%20(2).jpg",
+      "https://ik.imagekit.io/tus1loev9/beige-printed-cotton-saree-border-blouse.jpg.jpg",
+      "https://ik.imagekit.io/tus1loev9/IMG-20260518-WA0722(1).jpg",
+      "https://ik.imagekit.io/tus1loev9/The%20perfect%20linen%20cotton%20saree%20with%20digital%20print%20on%20border._%E2%9D%A4%EF%B8%8FComes%20with%20contrast%20blouse._Lig%20(5).jpg",
+      "https://ik.imagekit.io/tus1loev9/beige-cotton-saree-printed-pallu-closeup.jpg.jpg"
     ],
     category: "Linen Sarees",
-    fabric: "Linen",
+    fabric: "Pure Linen",
     color: "Chiku / Beige",
     isNew: true,
     description: `**DESCRIPTION:**
-This beautiful Chiku Linen Saree with Bird Digital Print & Foil Border is meticulously fashioned from premium light-weave linen displaying an authentic hand-spun structure and elegant fall, showcasing a lightweight texture of pure quality. Adorned with delicate nature-inspired bird prints and subtle gold-toned outline detailing across the pallu, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for high-profile corporate daytime presentations, casual boardrooms, or a chic weekend brunch, while its incredibly compact packing density makes it an essential chic option for destination weeding wardrobes for a truly delightful wearing experience.
+This 100% original Pure Linen Saree by Mukesh Saree Centre features a distinctive woven bird design where the bird motif is intricately woven into the fabric, complemented by elegant printed details throughout. Crafted from natural pure linen with a rich woven texture, it delivers a graceful, authentic, and sophisticated ethnic look for every occasion.
 
 **HIGHLIGHTS:**
-• 🌿 Fabric: Linen
-• 🎨 Design: Bird Digital Print
-• ✨ Work: Foil Line Border Design
-• 🤎 Saree Color: Chiku / Beige
-• 🖤 Blouse Color: Navy Blue Printed Blouse
-• 👗 Saree Length: 5.50 Meters
-• ✂️ Blouse Piece Length: 1 Meter
-• 💖 Lightweight & Comfortable Fabric
-• 🌸 Perfect for Casual, Office & Festive Wear
-• 🧵 Elegant Nature Inspired Pattern
-
-**FABRIC FEATURES:**
-• Highly breathable and lightweight premium linen blend
-• Majestic digital artwork of birds and nature-inspired elements
-• Sleek and shiny foil line border detailing for a subtle luxurious touch
-• Smooth and comfortable texture suited for all-day ethnic wear
+• Pure Linen Fabric
+• Intricately Woven Bird Design Motifs
+• Elegant Print Details
+• 100% Original Product by Mukesh Saree Centre
+• Distinctive Ethnic Design & Tactile Richness
+• Suitable for customers looking for unique Linen Sarees
 
 **STYLING TIP:**
-Style this nature-inspired bird print saree with minimal gold-toned stud earrings and a neat high bun to complement its elegant sophistication.`,
+Style this original pure linen saree with minimalist traditional jewelry and a sleek hair bun to highlight the intricate woven bird motif and print combination.`,
     rating: 4.8,
   },
   {

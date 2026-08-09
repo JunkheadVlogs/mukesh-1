@@ -175,8 +175,55 @@
       }
     }
     </script>
+    <!-- Synchronous Pinterest Visitor Detection & Static Resilience Banner Styles -->
+    <script>
+      (function() {
+        try {
+          var ua = navigator.userAgent || '';
+          var ref = document.referrer || '';
+          var search = window.location.search || '';
+          if (/Pinterest/i.test(ua) || /pinterest\.com|pin\.it/i.test(ref) || /[?&]utm_source=pinterest/i.test(search)) {
+            document.documentElement.className += ' is-pinterest-visitor';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      .pinterest-static-banner {
+        display: none;
+        background: #1a0a00;
+        background: linear-gradient(90deg, #1a0a00 0%, #3a1a08 50%, #1a0a00 100%);
+        color: #ffffff;
+        padding: 9px 16px;
+        text-align: center;
+        font-size: 13px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        border-bottom: 2px solid #b5894a;
+        position: relative;
+        z-index: 100000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+      html.is-pinterest-visitor .pinterest-static-banner {
+        display: block !important;
+      }
+    </style>
+    <noscript>
+      <style>
+        .pinterest-static-banner { display: block !important; }
+      </style>
+    </noscript>
   </head>
   <body>
+    <!-- Static Non-JS-Dependent Pinterest Resilience Banner (Safety Net for In-App WebViews) -->
+    <div id="pinterest-static-banner" class="pinterest-static-banner">
+      <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px; text-align: left;">
+          <span style="font-size: 15px;">📌</span>
+          <span><strong>Pinterest Welcome Special:</strong> Get <strong style="color: #f3d399;">60% OFF</strong> your order! Use code <strong style="color: #f3d399; letter-spacing: 1px; background: rgba(255,255,255,0.12); padding: 2px 6px; border-radius: 4px;">VIPCLUB60</strong> at checkout</span>
+        </div>
+        <a href="/shop" style="background: #b5894a; color: #ffffff; text-decoration: none; padding: 5px 14px; border-radius: 4px; font-size: 12px; font-weight: 700; white-space: nowrap; display: inline-block;">Shop & Claim 60% OFF →</a>
+      </div>
+    </div>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=%VITE_GTM_ID%"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -398,8 +445,8 @@
             document.addEventListener("mouseleave", function (e) {
               if (e.clientY < 10) showModal();
             });
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-              setTimeout(showModal, 5000);
+            if (/Mobi|Android|Pinterest/i.test(navigator.userAgent) || /pinterest\.com|pin\.it/i.test(document.referrer) || /[?&]utm_source=pinterest/i.test(window.location.search)) {
+              setTimeout(showModal, 15000);
             }
             let lastScrollY = 0;
             window.addEventListener("scroll", function () {

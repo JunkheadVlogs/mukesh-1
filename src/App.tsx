@@ -8,7 +8,7 @@ import { Suspense, useEffect, useState, lazy } from 'react';
 import Layout from './Layout';
 import Home from './Home';
 const ExitIntentPopup = lazy(() => import('./components/ExitIntentPopup').then(m => ({ default: m.ExitIntentPopup })));
-import { useExitIntent } from './hooks/useExitIntent';
+import { useExitIntent, isPinterestBrowser } from './hooks/useExitIntent';
 import { trackWhatsAppClick, trackLead } from './tracking';
 import { useStore } from './store';
 import { safeSessionStorage } from './utils/safeStorage';
@@ -73,6 +73,13 @@ function LoadingScreen() {
 
 export default function App() {
   const { triggered, dismiss } = useExitIntent({ delay: 5000, sensitivity: 20 });
+
+  useEffect(() => {
+    if (isPinterestBrowser()) {
+      import('./components/ExitIntentPopup').catch(() => {});
+    }
+  }, []);
+
   // Version 1.0.1 - Cache Bust
   console.log("[DEBUG] BASE_URL:", import.meta.env.BASE_URL);
   console.log("[DEBUG] CONFIG API_BASE_URL:", CONFIG.API_BASE_URL);

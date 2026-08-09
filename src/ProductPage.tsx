@@ -99,7 +99,7 @@ const getWhatsAppSafeImageUrl = (imageUrl: string | undefined): string => {
 export default function ProductPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const product = products.find((p) => p.slug === slug);
+  const product = products.find((p) => p.slug === slug || (p as any).oldSlug === slug || p.id === slug);
   
   // Dynamic breadcrumb generation matching exactly the requested collection hierarchy
   const breadcrumbItems = useMemo(() => {
@@ -953,8 +953,8 @@ export default function ProductPage() {
     ]
   };
 
-  const seoTitle = `${product.name} | Authentic ${product.fabric} ${product.category}`.substring(0, 60);
-  const seoDescription = `Buy ${product.name} online. Premium ${product.fabric} ${product.category} perfect for elegant occasions, weddings, and daily wear. Free Shipping & COD.`.substring(0, 160);
+  const seoTitle = product.metaTitle || product.seoTitle || `${product.name} | Authentic ${product.fabric} ${product.category}`.substring(0, 60);
+  const seoDescription = product.metaDescription || product.seoDescription || `Buy ${product.name} online. Premium ${product.fabric} ${product.category} perfect for elegant occasions, weddings, and daily wear. Free Shipping & COD.`.substring(0, 160);
 
   return (
     <div className="bg-primary-50 product-page-content pb-[70px] md:pb-0">
@@ -972,7 +972,7 @@ export default function ProductPage() {
       <div className="max-w-[1400px] mx-auto px-2.5 sm:px-4 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
         <div className="flex flex-col lg:flex-row gap-1.5 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
-          <div className="w-full lg:w-7/12 space-y-2 md:space-y-4">
+          <div className="w-full lg:w-[54%] xl:w-[52%] lg:sticky lg:top-28 lg:self-start space-y-2 md:space-y-4">
             <div
               className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y p-2 sm:p-3 md:p-4"
               style={{
@@ -1085,8 +1085,8 @@ export default function ProductPage() {
           </div>
 
           {/* Details Section */}
-          <div className="w-full lg:w-5/12 px-0">
-            <div className="lg:sticky lg:top-32 lg:pb-12">
+          <div className="w-full lg:w-[46%] xl:w-[48%] px-0">
+            <div className="pb-4 lg:pb-12">
               <header className="product-info-section flex flex-col items-start text-left mt-0 mb-1">
                 {/* SKU + Category row compact */}
                 <div className="product-meta-row select-none">
@@ -1221,13 +1221,13 @@ export default function ProductPage() {
 
               {/* Product Specifications - Clean Minimal List */}
               <div className="product-info product-specs-container">
-                <table className="product-details-table w-full mb-3 border-collapse">
+                <table className="product-details-table w-full mb-2 border-collapse">
                   <tbody>
                     <tr className="border-none">
                       <td className="product-details-label font-light uppercase">
                         Fabric
                       </td>
-                      <td className="text-[var(--color-dark)] align-middle">
+                      <td className="text-[var(--color-dark)] align-middle font-medium">
                         {product.fabric}
                       </td>
                     </tr>
@@ -1236,7 +1236,7 @@ export default function ProductPage() {
                       <>
                         <tr className="border-none">
                           <td className="product-details-label font-light uppercase">
-                            Dimensions
+                            Saree Length
                           </td>
                           <td className="text-[var(--color-dark)] align-middle">
                             5.50 Meters
@@ -1244,10 +1244,18 @@ export default function ProductPage() {
                         </tr>
                         <tr className="border-none">
                           <td className="product-details-label font-light uppercase">
-                            Blouse
+                            Blouse Piece Length
                           </td>
                           <td className="text-[var(--color-dark)] align-middle">
-                            1 Meter (Unstitched)
+                            1.00 Meter (Unstitched)
+                          </td>
+                        </tr>
+                        <tr className="border-none">
+                          <td className="product-details-label font-light uppercase">
+                            Blouse Details
+                          </td>
+                          <td className="text-[var(--color-dark)] align-middle">
+                            Comes with Contrast Blouse Piece
                           </td>
                         </tr>
                       </>
@@ -1262,14 +1270,23 @@ export default function ProductPage() {
                       </td>
                     </tr>
 
-                    {!product.category.toLowerCase().includes("saree") && (
-                      <tr className="border-none">
-                        <td className="product-details-label font-light uppercase">
-                          Style
-                        </td>
-                        <td className="text-[var(--color-dark)] align-middle">Premium</td>
-                      </tr>
-                    )}
+                    <tr className="border-none">
+                      <td className="product-details-label font-light uppercase">
+                        Availability
+                      </td>
+                      <td className="text-[var(--color-dark)] align-middle">
+                        In Stock (Ready to Ship)
+                      </td>
+                    </tr>
+
+                    <tr className="border-none">
+                      <td className="product-details-label font-light uppercase">
+                        Payment
+                      </td>
+                      <td className="text-[var(--color-dark)] align-middle">
+                        Cash on Delivery Available
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

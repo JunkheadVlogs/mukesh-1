@@ -9,6 +9,19 @@ interface UseExitIntentOptions {
 // Tier 3 Storage: Global in-memory JS state that survives SPA route changes & component remounts
 let globalSessionExitPopupShown = false;
 
+export function isPinterestBrowser(): boolean {
+  if (typeof window === 'undefined') return false;
+  const ua = navigator?.userAgent || '';
+  const ref = document?.referrer || '';
+  const search = window?.location?.search || '';
+
+  const isUaPinterest = /Pinterest/i.test(ua);
+  const isRefPinterest = /pinterest\.com|pin\.it/i.test(ref);
+  const isUtmPinterest = /[?&]utm_source=pinterest/i.test(search);
+
+  return isUaPinterest || isRefPinterest || isUtmPinterest;
+}
+
 /**
  * Detects if the current user agent belongs to a known in-app browser WebView
  * (Pinterest, Instagram, Facebook, WhatsApp, TikTok, LinkedIn, Twitter/X, Snapchat, etc.)
@@ -17,8 +30,8 @@ export function detectInAppBrowser(): { isInApp: boolean; name: string | null } 
   if (typeof window === 'undefined' || !navigator?.userAgent) {
     return { isInApp: false, name: null };
   }
+  if (isPinterestBrowser()) return { isInApp: true, name: 'Pinterest' };
   const ua = navigator.userAgent;
-  if (/Pinterest/i.test(ua)) return { isInApp: true, name: 'Pinterest' };
   if (/Instagram/i.test(ua)) return { isInApp: true, name: 'Instagram' };
   if (/FBAN|FBAV|FB_IAB/i.test(ua)) return { isInApp: true, name: 'Facebook' };
   if (/WhatsApp/i.test(ua)) return { isInApp: true, name: 'WhatsApp' };
@@ -144,6 +157,18 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
       setTriggered(true);
     };
 
+    // PINTEREST IN-APP BROWSER DIRECT GUARANTEED TRIGGER:
+    // Bypasses complex event listeners (scroll velocity, mousemove, popstate, interaction guards)
+    let pinterestTimer: ReturnType<typeof setTimeout> | null = null;
+    if (isPinterestBrowser()) {
+      // Eagerly prefetch popup code chunk
+      import('../components/ExitIntentPopup').catch(() => {});
+
+      pinterestTimer = setTimeout(() => {
+        trigger();
+      }, 15000);
+    }
+
     // Track user engagement/interaction (touch, click, scroll, keydown)
     const recordInteraction = () => {
       hasInteractedRef.current = true;
@@ -218,7 +243,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
     // 4. TIME-DELAY FALLBACK TRIGGER: 22s safety net
     // Only fires after visitor has interacted or scrolled
     const timeDelayTimer = setTimeout(() => {
-      if (hasInteractedRef.current || window.scrollY > 40) {
+      if (hasInteractedRef.current || window.scrollY > 40 || isPinterestBrowser()) {
         trigger();
       } else {
         // Wait for first interaction if visitor was completely idle
@@ -236,6 +261,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
     }, 22000);
 
     return () => {
+      if (pinterestTimer) clearTimeout(pinterestTimer);
       clearTimeout(mouseMoveTimer);
       clearTimeout(timeDelayTimer);
       if (mouseMoveAttached) {
