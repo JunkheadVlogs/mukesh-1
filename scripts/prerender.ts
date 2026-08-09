@@ -12,7 +12,7 @@ process.env.VITE_FB_DOMAIN_VERIFY = 'kjvbvikfmctlsdfygll3tadkpzty8a';
 
 function replaceEnvPlaceholders(html: string): string {
   const fallbacks: Record<string, string> = {
-    VITE_META_PIXEL_ID: '3834311026859384',
+    VITE_META_PIXEL_ID: '1361999902797117',
     VITE_FB_DOMAIN_VERIFY: 'kjvbvikfmctlsdfygll3tadkpzty8a',
     VITE_GTM_ID: '',
     VITE_GA4_ID: '',

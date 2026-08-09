@@ -303,14 +303,18 @@ export function OptimizedImage({
   const [hasFailedAll, setHasFailedAll] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Intersection Observer implementation
+  // Intersection Observer implementation for lazy loading
   const imageRef = useRef<HTMLImageElement | null>(null);
-  const [isInView, setIsInView] = useState(true);
+  const [isInView, setIsInView] = useState(() => {
+    if (priority) return true;
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return true;
+    return false;
+  });
 
   useEffect(() => {
     if (priority || isInView) return;
 
-    if (typeof window === 'undefined' || !window.IntersectionObserver) {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
       setIsInView(true);
       return;
     }
@@ -323,7 +327,7 @@ export function OptimizedImage({
         }
       },
       {
-        rootMargin: '200px', // Preload images 200px before they enter the viewport
+        rootMargin: '300px', // Preload images 300px before entering viewport for seamless scrolling
         threshold: 0.01
       }
     );
@@ -343,7 +347,7 @@ export function OptimizedImage({
     setCandidateIndex(0);
     setRetryCount(0);
     setHasFailedAll(false);
-    setIsInView(true);
+    setIsInView(priority || typeof window === 'undefined' || !('IntersectionObserver' in window));
     setIsLoaded(false);
   }
 

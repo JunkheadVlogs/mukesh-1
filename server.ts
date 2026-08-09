@@ -1472,7 +1472,7 @@ async function setupServer() {
         let html = fs.readFileSync(selectedIndexPath, 'utf-8');
         // Substitute %VITE_...% style placeholders with process.env properties for runtime environment injection
         const fallbacks = {
-          VITE_META_PIXEL_ID: '3834311026859384',
+          VITE_META_PIXEL_ID: '1361999902797117',
           VITE_FB_DOMAIN_VERIFY: 'kjvbvikfmctlsdfygll3tadkpzty8a',
           VITE_GTM_ID: '',
           VITE_GA4_ID: '',
