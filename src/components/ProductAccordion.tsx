@@ -1,7 +1,6 @@
 import { BUSINESS_INFO } from "../config/business";
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import { Product } from "../store";
 
 export function ProductAccordion({ category, product }: { category?: string; product?: Product }) {
@@ -92,21 +91,15 @@ export function ProductAccordion({ category, product }: { category?: string; pro
                 )}
               </div>
             </button>
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  initial={{ height: 0 }}
-                  animate={{ height: "auto" }}
-                  exit={{ height: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="overflow-hidden"
-                >
-                  <div className="px-[12px] pb-[8px] pt-[2px] text-[#2C241B]/70 leading-relaxed text-[13px] whitespace-pre-wrap">
-                    {panel.content}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {isOpen && (
+              <div
+                className="overflow-hidden transition-all duration-200"
+              >
+                <div className="px-[12px] pb-[8px] pt-[2px] text-[#2C241B]/70 leading-relaxed text-[13px] whitespace-pre-wrap">
+                  {panel.content}
+                </div>
+              </div>
+            )}
           </div>
         );
       })}

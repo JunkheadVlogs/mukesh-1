@@ -6,7 +6,7 @@
   --color-surface: #f5efe6;
   --color-dark: #2b2b2b;
   --color-charcoal: #2b2b2b;
-  --color-muted: #766a60;
+  --color-muted: #59524A;
   --color-border: rgba(200, 169, 107, 0.2);
   --color-gold: #c8a96b;
   --color-gold-light: #e8d3a2;
@@ -265,8 +265,8 @@ button[data-action="buy-now"],
 }
 .discount-badge {
   background: var(--color-urgent-bg);
-  color: var(--color-urgent);
-  font-weight: 500;
+  color: #8A3B22;
+  font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.05em;
   padding: 4px 10px;
@@ -426,7 +426,7 @@ video.product-main-img {
 .product-details-label {
   font-size: 11px;
   letter-spacing: 0.05em;
-  color: #888;
+  color: #59524A;
   min-width: 70px;
 }
 
@@ -1201,7 +1201,7 @@ video::-webkit-media-controls-fullscreen-button {
 .price-mrp {
   font-size: 12px !important;
   text-decoration: line-through !important;
-  color: #999 !important;
+  color: #59524A !important;
   white-space: nowrap !important;
 }
 
@@ -1212,8 +1212,8 @@ video::-webkit-media-controls-fullscreen-button {
   border-radius: 4px !important;
   white-space: nowrap !important;
   background: #fff0f0 !important;
-  color: #e63946 !important;
-  border: 1px solid #e63946 !important;
+  color: #b91c1c !important;
+  border: 1px solid #b91c1c !important;
   flex-shrink: 0 !important;
 }
 
@@ -1276,7 +1276,7 @@ header.product-info-section {
   gap: 8px !important;
   flex-wrap: nowrap !important;
   font-size: 11px !important;
-  color: #888 !important;
+  color: #59524A !important;
   letter-spacing: 0.04em !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
@@ -1289,23 +1289,23 @@ header.product-info-section {
 }
 
 .product-meta-row .category {
-  color: #888 !important;
+  color: #59524A !important;
   font-size: 11px !important;
   white-space: nowrap !important;
 }
 
 .product-meta-row .separator {
-  color: #ccc !important;
+  color: #888 !important;
 }
 
 .product-meta-row .sku {
-  color: #aaa !important;
+  color: #59524A !important;
   font-size: 10px !important;
   white-space: nowrap !important;
 }
 
 .product-meta-row .trending-tag {
-  color: #c8963e !important;
+  color: #8A5E10 !important;
   font-size: 11px !important;
   font-weight: 600 !important;
   white-space: nowrap !important;
@@ -1394,7 +1394,7 @@ div.product-info-section {
 
 .product-details-label {
   font-size: 11px !important;
-  color: #888 !important;
+  color: #59524A !important;
   min-width: 90px !important;
   vertical-align: middle !important;
 }

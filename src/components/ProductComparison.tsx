@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router";
 import { Scale, Search, X, Check, HelpCircle, Star, ArrowLeftRight, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import { Product } from "../store";
 import { products } from "../mockData";
 import { formatPrice, optimizeImage } from "../utils";
@@ -205,15 +204,9 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
         )}
       </div>
 
-      <AnimatePresence mode="wait">
         {!selectedProduct ? (
-          <motion.div
-            key="selector"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="space-y-6"
+          <div
+            className="space-y-6 transition-all duration-200"
           >
             {/* Search Input Selector */}
             <div className="max-w-xl">
@@ -249,50 +242,45 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
               </div>
 
               {/* Search Dropdown Panel */}
-              <AnimatePresence>
-                {isSearching && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 5 }}
-                    className="absolute z-10 mt-1 max-w-xl w-full max-h-[280px] overflow-y-auto bg-white border border-[#2C241B]/15 rounded-md shadow-lg"
-                  >
-                    {filteredProducts.length === 0 ? (
-                      <div className="p-4 text-center text-primary-950/50 text-[12px]">
-                        No sarees found matching "{searchQuery}"
-                      </div>
-                    ) : (
-                      <div className="py-1">
-                        {filteredProducts.map((p) => (
-                          <button
-                            key={p.id}
-                            onClick={() => handleSelectProduct(p)}
-                            className="w-full text-left px-4 py-2 hover:bg-neutral-50 flex items-center gap-3 transition-colors text-primary-950 font-sans border-b border-black/[0.03] last:border-0"
-                          >
-                            <img
-                              src={optimizeImage(p.image, 80, "webp")}
-                              alt={p.name}
-                              width={32}
-                              height={40}
-                              loading="lazy"
-                              decoding="async"
-                              className="w-8 h-10 object-cover rounded bg-neutral-50"
-                              referrerPolicy="no-referrer"
-                            />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-[12px] font-medium truncate">{p.name}</p>
-                              <p className="text-[10px] text-primary-950/60 truncate">
-                                {p.category} • {p.fabric || "Premium drape"} • ₹{formatPrice(p.price)}
-                              </p>
-                            </div>
-                            <ChevronRight size={14} className="text-primary-950/30" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {isSearching && (
+                <div
+                  className="absolute z-10 mt-1 max-w-xl w-full max-h-[280px] overflow-y-auto bg-white border border-[#2C241B]/15 rounded-md shadow-lg transition-all duration-200"
+                >
+                  {filteredProducts.length === 0 ? (
+                    <div className="p-4 text-center text-primary-950/50 text-[12px]">
+                      No sarees found matching "{searchQuery}"
+                    </div>
+                  ) : (
+                    <div className="py-1">
+                      {filteredProducts.map((p) => (
+                        <button
+                          key={p.id}
+                          onClick={() => handleSelectProduct(p)}
+                          className="w-full text-left px-4 py-2 hover:bg-neutral-50 flex items-center gap-3 transition-colors text-primary-950 font-sans border-b border-black/[0.03] last:border-0"
+                        >
+                          <img
+                            src={optimizeImage(p.image, 80, "webp")}
+                            alt={p.name}
+                            width={32}
+                            height={40}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-8 h-10 object-cover rounded bg-neutral-50"
+                            referrerPolicy="no-referrer"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[12px] font-medium truncate">{p.name}</p>
+                            <p className="text-[10px] text-primary-950/60 truncate">
+                              {p.category} • {p.fabric || "Premium drape"} • ₹{formatPrice(p.price)}
+                            </p>
+                          </div>
+                          <ChevronRight size={14} className="text-primary-950/30" />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Quick Suggestions Row */}
@@ -329,14 +317,10 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
         ) : (
-          <motion.div
-            key="results"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0"
+          <div
+            className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 transition-all duration-200"
           >
             {/* Desktop / Tablet Comparison Grid Table */}
             <table className="w-full table-fixed md:table-auto border-collapse text-left text-[12.5px] font-sans text-primary-950">
@@ -447,7 +431,7 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                               {row.val1}
                             </span>
                             {currentProduct.originalPrice && currentProduct.originalPrice > currentProduct.price && (
-                              <span className="text-[10px] text-primary-950/50 line-through ml-2">
+                              <span className="text-[10px] text-[#59524A] line-through ml-2">
                                 ₹{formatPrice(currentProduct.originalPrice)}
                               </span>
                             )}
@@ -468,7 +452,7 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                               {row.val2}
                             </span>
                             {selectedProduct.originalPrice && selectedProduct.originalPrice > selectedProduct.price && (
-                              <span className="text-[10px] text-primary-950/50 line-through ml-2">
+                              <span className="text-[10px] text-[#59524A] line-through ml-2">
                                 ₹{formatPrice(selectedProduct.originalPrice)}
                               </span>
                             )}
@@ -482,9 +466,8 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                 })}
               </tbody>
             </table>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </div>
   );
 }

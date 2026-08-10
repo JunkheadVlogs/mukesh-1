@@ -1,6 +1,5 @@
 import { BUSINESS_INFO } from "./config/business";
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { SEO } from './components/SEO';
 import { faqs, FAQ } from './data/faqsData';
 import { 
@@ -200,23 +199,17 @@ export default function Faq() {
                       </span>
                     </button>
                     
-                    <AnimatePresence initial={false}>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.25, ease: "easeInOut" }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-[14px] pb-[12px] pt-[3px] md:px-[20px] md:pb-[15px] md:pt-[5px] border-t border-[var(--color-border)]/20">
-                            <p className="text-[12px] xs:text-[12.5px] sm:text-[13px] md:text-[13.5px] text-[#2C241B]/75 leading-relaxed font-normal m-0 whitespace-pre-wrap">
-                              {faq.a}
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    {isExpanded && (
+                      <div
+                        className="overflow-hidden transition-all duration-200"
+                      >
+                        <div className="px-[14px] pb-[12px] pt-[3px] md:px-[20px] md:pb-[15px] md:pt-[5px] border-t border-[var(--color-border)]/20">
+                          <p className="text-[12px] xs:text-[12.5px] sm:text-[13px] md:text-[13.5px] text-[#2C241B]/75 leading-relaxed font-normal m-0 whitespace-pre-wrap">
+                            {faq.a}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}

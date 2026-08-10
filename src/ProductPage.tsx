@@ -19,7 +19,6 @@ import {
   CheckCircle,
   Share2,
 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState, useMemo, Fragment } from "react";
 import { Helmet } from "react-helmet-async";
 import { ProductDescription } from "./components/ProductDescription";
@@ -996,6 +995,7 @@ export default function ProductPage() {
                   muted={true}
                   playsInline
                   controls
+                  preload="none"
                   className="product-image-main product-main-img w-full h-full object-contain mx-auto rounded-[6px] sm:rounded-[8px]"
                   onClick={(e) => e.stopPropagation()}
                 />
@@ -1547,347 +1547,303 @@ export default function ProductPage() {
       </div>
 
       {/* Lightbox Component Here... (I will keep it simple relying on motion) */}
-      <AnimatePresence>
-        {isLightboxOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-primary-950/95 backdrop-blur-md flex flex-col items-center justify-center p-0 md:p-6"
+      {/* Lightbox Modal */}
+      {isLightboxOpen && (
+        <div
+          className="fixed inset-0 z-[100] bg-primary-950/95 backdrop-blur-md flex flex-col items-center justify-center p-0 md:p-6 transition-opacity duration-200"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <button
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/50 hover:text-white transition-colors z-[110] bg-black/20 p-2 rounded-full backdrop-blur-md"
             onClick={() => setIsLightboxOpen(false)}
           >
+            <X size={28} />
+          </button>
+          <div
+            className="w-full h-full md:w-auto md:h-auto md:max-w-5xl md:max-h-full relative flex items-center justify-center pointer-events-none"
+          >
+            {isVideoUrl(productImages[activeImageIndex]) ? (
+              <video
+                key={`lightbox-${productImages[activeImageIndex]}`}
+                src={productImages[activeImageIndex]}
+                autoPlay
+                loop
+                muted={true}
+                playsInline
+                controls
+                preload="none"
+                className="w-full h-full max-h-[95vh] md:w-auto md:h-auto md:max-h-[90vh] object-contain object-center md:rounded-sm md:shadow-2xl pointer-events-auto"
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <OptimizedImage
+                src={productImages[activeImageIndex]}
+                width={1200}
+                alt={productImages.length > 1 ? `${getImageAlt(product)} - Fullscreen View ${activeImageIndex + 1} of ${productImages.length}` : `${getImageAlt(product)} - Fullscreen View`}
+                className="w-full h-full max-h-[95vh] md:w-auto md:h-auto md:max-h-[90vh] object-contain object-center md:rounded-sm md:shadow-2xl pointer-events-auto will-change-transform transform-gpu"
+                onClick={(e: any) => e.stopPropagation()}
+              />
+            )}
+            <div className="absolute inset-y-0 left-2 md:-left-20 flex items-center pointer-events-auto">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevImage(e);
+                }}
+                className="p-2 text-white/70 hover:text-white bg-black/20 rounded-full backdrop-blur-sm transition-all"
+              >
+                <ChevronLeft className="w-8 h-8 md:w-12 md:h-12" />
+              </button>
+            </div>
+            <div className="absolute inset-y-0 right-2 md:-right-20 flex items-center pointer-events-auto">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextImage(e);
+                }}
+                className="p-2 text-white/70 hover:text-white bg-black/20 rounded-full backdrop-blur-sm transition-all"
+              >
+                <ChevronRight className="w-8 h-8 md:w-12 md:h-12" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cart Toast Notification */}
+      {showAddedToast.visible && (
+        <div
+          className="fixed top-[90px] md:top-28 right-4 md:right-8 z-[100] w-[calc(100%-32px)] sm:w-[420px] bg-white border border-black/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] rounded-xl overflow-hidden flex flex-col pointer-events-auto mx-auto sm:mx-0 left-0 right-0 sm:left-auto transition-all duration-200"
+        >
+          {/* Elegant luxury top accent line */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gold-500 z-10" />
+
+          <div className="bg-gradient-to-r from-gold-50/80 to-white px-5 py-4 flex items-center justify-between border-b border-black/5 relative">
+            <div className="flex items-center gap-3 text-gold-700">
+              <div
+                className="bg-gold-500 text-white rounded-full p-1 shadow-sm"
+              >
+                <CheckCircle size={16} strokeWidth={3} />
+              </div>
+              <span className="text-[11px] md:text-sm font-bold uppercase tracking-[0.08em] text-primary-950">
+                Added to Cart Successfully
+              </span>
+            </div>
             <button
-              className="absolute top-4 right-4 md:top-6 md:right-6 text-white/50 hover:text-white transition-colors z-[110] bg-black/20 p-2 rounded-full backdrop-blur-md"
-              onClick={() => setIsLightboxOpen(false)}
+              onClick={() =>
+                setShowAddedToast((prev) => ({ ...prev, visible: false }))
+              }
+              className="text-primary-950/75 hover:text-primary-950 transition-colors p-1"
+              aria-label="Close"
             >
-              <X size={28} />
+              <X size={18} />
             </button>
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full h-full md:w-auto md:h-auto md:max-w-5xl md:max-h-full relative flex items-center justify-center pointer-events-none"
-            >
-              {isVideoUrl(productImages[activeImageIndex]) ? (
-                <video
-                  key={`lightbox-${productImages[activeImageIndex]}`}
-                  src={productImages[activeImageIndex]}
-                  autoPlay
-                  loop
-                  muted={true}
-                  playsInline
-                  controls
-                  className="w-full h-full max-h-[95vh] md:w-auto md:h-auto md:max-h-[90vh] object-contain object-center md:rounded-sm md:shadow-2xl pointer-events-auto"
-                  onClick={(e) => e.stopPropagation()}
-                />
-              ) : (
-                <OptimizedImage
-                  src={productImages[activeImageIndex]}
-                  width={1200}
-                  alt={productImages.length > 1 ? `${getImageAlt(product)} - Fullscreen View ${activeImageIndex + 1} of ${productImages.length}` : `${getImageAlt(product)} - Fullscreen View`}
-                  className="w-full h-full max-h-[95vh] md:w-auto md:h-auto md:max-h-[90vh] object-contain object-center md:rounded-sm md:shadow-2xl pointer-events-auto will-change-transform transform-gpu"
-                  onClick={(e: any) => e.stopPropagation()}
-                />
-              )}
-              <div className="absolute inset-y-0 left-2 md:-left-20 flex items-center pointer-events-auto">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    prevImage(e);
-                  }}
-                  className="p-2 text-white/70 hover:text-white bg-black/20 rounded-full backdrop-blur-sm transition-all"
-                >
-                  <ChevronLeft className="w-8 h-8 md:w-12 md:h-12" />
-                </button>
-              </div>
-              <div className="absolute inset-y-0 right-2 md:-right-20 flex items-center pointer-events-auto">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    nextImage(e);
-                  }}
-                  className="p-2 text-white/70 hover:text-white bg-black/20 rounded-full backdrop-blur-sm transition-all"
-                >
-                  <ChevronRight className="w-8 h-8 md:w-12 md:h-12" />
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Cart Toast Notification */}
-      {/* Cart Toast Notification */}
-      <AnimatePresence>
-        {showAddedToast.visible && (
-          <motion.div
-            initial={{ opacity: 0, y: -40, scale: 0.92 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            className="fixed top-[90px] md:top-28 right-4 md:right-8 z-[100] w-[calc(100%-32px)] sm:w-[420px] bg-white border border-black/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] rounded-xl overflow-hidden flex flex-col pointer-events-auto mx-auto sm:mx-0 left-0 right-0 sm:left-auto"
-          >
-            {/* Elegant luxury top accent line */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gold-500 z-10" />
-
-            <div className="bg-gradient-to-r from-gold-50/80 to-white px-5 py-4 flex items-center justify-between border-b border-black/5 relative">
-              <div className="flex items-center gap-3 text-gold-700">
-                <motion.div
-                  initial={{ scale: 0, rotate: -90 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{
-                    type: "spring",
-                    delay: 0.1,
-                    stiffness: 400,
-                    damping: 20,
-                  }}
-                  className="bg-gold-500 text-white rounded-full p-1 shadow-sm"
-                >
-                  <CheckCircle size={16} strokeWidth={3} />
-                </motion.div>
-                <span className="text-[11px] md:text-sm font-bold uppercase tracking-[0.08em] text-primary-950">
-                  Added to Cart Successfully
-                </span>
-              </div>
-              <button
-                onClick={() =>
-                  setShowAddedToast((prev) => ({ ...prev, visible: false }))
-                }
-                className="text-primary-950/40 hover:text-primary-950 transition-colors p-1"
-                aria-label="Close"
-              >
-                <X size={18} />
-              </button>
+          </div>
+          <div className="p-5 flex gap-5 bg-white">
+            <div className="w-[70px] h-[90px] bg-primary-50 rounded-[4px] relative overflow-hidden flex-shrink-0 border border-black/5 shadow-sm">
+              <OptimizedImage
+                src={showAddedToast.customImg || product.image}
+                width={100}
+                alt={`${getImageAlt(product)} - Added to Bag Successfully`}
+                className="w-full h-full object-contain object-center will-change-transform transform-gpu"
+              />
             </div>
-            <div className="p-5 flex gap-5 bg-white">
-              <div className="w-[70px] h-[90px] bg-primary-50 rounded-[4px] relative overflow-hidden flex-shrink-0 border border-black/5 shadow-sm">
-                <OptimizedImage
-                  src={showAddedToast.customImg || product.image}
-                  width={100}
-                  alt={`${getImageAlt(product)} - Added to Bag Successfully`}
-                  className="w-full h-full object-contain object-center will-change-transform transform-gpu"
-                />
-              </div>
-              <div className="flex-1 flex flex-col justify-center">
-                <h4 className="text-sm md:text-base font-serif text-primary-950 line-clamp-2 leading-snug font-medium mb-2">
-                  {showAddedToast.customName || product.name}
-                </h4>
-                <div className="flex items-center text-[11px] md:text-xs font-bold text-primary-950/60 uppercase tracking-widest mt-auto pb-1">
-                  <span>Qty: {showAddedToast.quantity}</span>
-                  {showAddedToast.size && (
-                    <>
-                      <span className="mx-3 text-primary-950/20">•</span>
-                      <span>Size: {showAddedToast.size}</span>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="px-5 pb-5 pt-2 flex gap-3 bg-white justify-between items-center rounded-b-xl border-t border-black/5 mt-1">
-              <button
-                onClick={() =>
-                  setShowAddedToast((prev) => ({ ...prev, visible: false }))
-                }
-                className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-primary-950/60 hover:text-primary-950 underline underline-offset-4 transition-colors"
-              >
-                Continue <span className="hidden sm:inline">Shopping</span>
-              </button>
-              <Link
-                to="/cart"
-                className="bg-primary-950 hover:bg-gold-600 text-white text-[11px] md:text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-sm transition-colors shadow-md transform hover:-translate-y-0.5 active:translate-y-0 duration-200"
-              >
-                View Cart
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Premium Size Guide Modal */}
-      <AnimatePresence>
-        {isSizeGuideOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[120] bg-black/45 backdrop-blur-sm flex items-center justify-center p-4"
-            onClick={() => setIsSizeGuideOpen(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 15 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 15 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="w-full max-w-lg bg-[#FCFAF7] rounded-lg shadow-2xl overflow-hidden flex flex-col pointer-events-auto border border-[#E8D3A2]/20"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Header */}
-              <div className="flex justify-between items-center px-5 py-4 border-b border-[#E8D3A2]/15 bg-white">
-                <div>
-                  <h3 className="text-base font-serif text-[var(--color-dark)] tracking-wide font-normal">
-                    Size Guide
-                  </h3>
-                  <p className="text-[10px] text-[var(--color-muted)] tracking-wider uppercase mt-0.5">
-                    Co-Ord Sets & Apparel
-                  </p>
-                </div>
-                <button
-                  onClick={() => setIsSizeGuideOpen(false)}
-                  className="p-1 rounded-full text-[var(--color-dark)]/50 hover:text-[var(--color-dark)] hover:bg-[#FAF6F0] transition-all"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-
-              {/* Content */}
-              <div className="p-5 overflow-y-auto max-h-[75vh] space-y-5 text-left font-body">
-                {/* Unit Switcher */}
-                <div className="flex items-center justify-between p-2.5 bg-[#FAF6F0] rounded-sm border border-[#E8D3A2]/10">
-                  <span className="text-xs text-[var(--color-dark)]/75 font-medium tracking-wide">
-                    Measurement Unit:
-                  </span>
-                  <div className="flex gap-1 bg-white p-0.5 border border-black/5 rounded-sm">
-                    <button
-                      onClick={() => setSizeGuideUnit("in")}
-                      className={`px-3 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider rounded-sm transition-all ${
-                        sizeGuideUnit === "in"
-                          ? "bg-[var(--color-dark)] text-white"
-                          : "text-[var(--color-dark)]/60 hover:text-[var(--color-dark)] bg-transparent"
-                      }`}
-                    >
-                      Inches
-                    </button>
-                    <button
-                      onClick={() => setSizeGuideUnit("cm")}
-                      className={`px-3 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider rounded-sm transition-all ${
-                        sizeGuideUnit === "cm"
-                          ? "bg-[var(--color-dark)] text-white"
-                          : "text-[var(--color-dark)]/60 hover:text-[var(--color-dark)] bg-transparent"
-                      }`}
-                    >
-                      CM
-                    </button>
-                  </div>
-                </div>
-
-                {/* Table Container */}
-                <div className="border border-[#E8D3A2]/15 rounded-sm overflow-hidden bg-white shadow-sm">
-                  <div className="overflow-x-auto overflow-y-hidden">
-                    <table className="w-full text-center text-xs border-collapse">
-                      <thead>
-                        <tr className="bg-[#FAF6F0] border-b border-[#E8D3A2]/15 text-[10px] uppercase tracking-wider font-semibold text-[var(--color-dark)]">
-                          <th className="py-2.5 px-2 text-left bg-[#FAF6F0]">Size</th>
-                          <th className="py-2.5 px-2">Bust</th>
-                          <th className="py-2.5 px-2">Waist</th>
-                          <th className="py-2.5 px-2">Hips</th>
-                          <th className="py-2.5 px-2">Top L</th>
-                          <th className="py-2.5 px-2">Bottom L</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-black/5 text-[var(--color-dark)]/90">
-                        {[
-                          { sz: "S", b: 36, w: 30, h: 38, tl: 26, bl: 38 },
-                          { sz: "M", b: 38, w: 32, h: 40, tl: 26.5, bl: 38.5 },
-                          { sz: "L", b: 40, w: 34, h: 42, tl: 27, bl: 39 },
-                          { sz: "XL", b: 42, w: 36, h: 44, tl: 27.5, bl: 39.5 },
-                          { sz: "XXL", b: 44, w: 38, h: 46, tl: 28, bl: 40 },
-                        ].map((row) => (
-                          <tr key={row.sz} className="hover:bg-[#FAF8F5]/55 transition-colors">
-                            <td className="py-3 px-2 font-bold text-[11px] text-left bg-white border-r border-black/5">{row.sz}</td>
-                            <td className="py-3 px-2 font-light">
-                              {sizeGuideUnit === "in" ? row.b : Math.round(row.b * 2.54)}
-                            </td>
-                            <td className="py-3 px-2 font-light">
-                              {sizeGuideUnit === "in" ? row.w : Math.round(row.w * 2.54)}
-                            </td>
-                            <td className="py-3 px-2 font-light">
-                              {sizeGuideUnit === "in" ? row.h : Math.round(row.h * 2.54)}
-                            </td>
-                            <td className="py-3 px-2 font-light">
-                              {sizeGuideUnit === "in" ? row.tl : Math.round(row.tl * 2.54)}
-                            </td>
-                            <td className="py-3 px-2 font-light">
-                              {sizeGuideUnit === "in" ? row.bl : Math.round(row.bl * 2.54)}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Sizing Note */}
-                <p className="text-[10px] text-[var(--color-muted)] text-center leading-relaxed">
-                  * Note: Sizing can vary slightly by 0.5 inches due to the premium handcrafted fabrication. For a relaxed fit, we suggest choosing one size up.
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Sticky Mobile ATC Bar */}
-      <AnimatePresence>
-        {showStickyAtc && (
-          <motion.div
-            id="sticky-atc"
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-[0px] left-0 right-0 bg-white border-t border-[var(--color-border)] z-[1000] flex items-center justify-between px-4 pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)]"
-            style={{ height: "calc(64px + env(safe-area-inset-bottom))" }}
-          >
-            <div className="flex flex-col justify-center min-w-0 mr-4 pt-[env(safe-area-inset-bottom)]">
-              <h4 className="text-[13px] font-medium text-[var(--color-dark)] truncate max-w-[160px] xs:max-w-[200px]">
-                {product?.name}
+            <div className="flex-1 flex flex-col justify-center">
+              <h4 className="text-sm md:text-base font-serif text-primary-950 line-clamp-2 leading-snug font-medium mb-2">
+                {showAddedToast.customName || product.name}
               </h4>
-              <div className="flex items-center gap-1.5 flex-wrap min-w-0">
-                <span className="text-[15px] font-bold text-[var(--color-dark)] leading-none shrink-0">
-                  {formatPrice(product?.price || 0)}
-                </span>
-                {product?.originalPrice && product.originalPrice > product.price && (
+              <div className="flex items-center text-[11px] md:text-xs font-bold text-primary-950/80 uppercase tracking-widest mt-auto pb-1">
+                <span>Qty: {showAddedToast.quantity}</span>
+                {showAddedToast.size && (
                   <>
-                    <span className="text-[11px] text-[#8C8276] line-through font-normal shrink-0 leading-none">
-                      {formatPrice(product.originalPrice)}
-                    </span>
-                    <span className="text-[9px] font-extrabold text-[#8C1D18] bg-[#FFF1F2] border border-[#FECDD3] rounded-[4px] px-1.5 py-0.5 tracking-[0.05em] uppercase shrink-0 leading-none">
-                      {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
-                    </span>
+                    <span className="mx-3 text-primary-950/40">•</span>
+                    <span>Size: {showAddedToast.size}</span>
                   </>
                 )}
               </div>
             </div>
-            
+          </div>
+          <div className="px-5 pb-5 pt-2 flex gap-3 bg-white justify-between items-center rounded-b-xl border-t border-black/5 mt-1">
             <button
-              onClick={handleAddToCart}
-              disabled={isOutOfStock}
-              className="mt-[env(safe-area-inset-bottom)] bg-[#C8A96B] hover:bg-[#B3965D] text-white px-6 h-[40px] rounded-sm text-[13px] uppercase tracking-[0.12em] font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap min-w-[140px]"
+              onClick={() =>
+                setShowAddedToast((prev) => ({ ...prev, visible: false }))
+              }
+              className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-primary-950/80 hover:text-primary-950 underline underline-offset-4 transition-colors"
             >
-              {isOutOfStock ? "Sold Out" : "Add to Cart"}
+              Continue <span className="hidden sm:inline">Shopping</span>
             </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <Link
+              to="/cart"
+              className="bg-primary-950 hover:bg-gold-600 text-white text-[11px] md:text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-sm transition-colors shadow-md transform hover:-translate-y-0.5 active:translate-y-0 duration-200"
+            >
+              View Cart
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* Premium Size Guide Modal */}
+      {isSizeGuideOpen && (
+        <div
+          className="fixed inset-0 z-[120] bg-black/45 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity duration-200"
+          onClick={() => setIsSizeGuideOpen(false)}
+        >
+          <div
+            className="w-full max-w-lg bg-[#FCFAF7] rounded-lg shadow-2xl overflow-hidden flex flex-col pointer-events-auto border border-[#E8D3A2]/20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex justify-between items-center px-5 py-4 border-b border-[#E8D3A2]/15 bg-white">
+              <div>
+                <h3 className="text-base font-serif text-[var(--color-dark)] tracking-wide font-normal">
+                  Size Guide
+                </h3>
+                <p className="text-[10px] text-[var(--color-muted)] tracking-wider uppercase mt-0.5">
+                  Co-Ord Sets & Apparel
+                </p>
+              </div>
+              <button
+                onClick={() => setIsSizeGuideOpen(false)}
+                className="p-1 rounded-full text-[var(--color-dark)]/50 hover:text-[var(--color-dark)] hover:bg-[#FAF6F0] transition-all"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-5 overflow-y-auto max-h-[75vh] space-y-5 text-left font-body">
+              {/* Unit Switcher */}
+              <div className="flex items-center justify-between p-2.5 bg-[#FAF6F0] rounded-sm border border-[#E8D3A2]/10">
+                <span className="text-xs text-[var(--color-dark)]/75 font-medium tracking-wide">
+                  Measurement Unit:
+                </span>
+                <div className="flex gap-1 bg-white p-0.5 border border-black/5 rounded-sm">
+                  <button
+                    onClick={() => setSizeGuideUnit("in")}
+                    className={`px-3 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider rounded-sm transition-all ${
+                      sizeGuideUnit === "in"
+                        ? "bg-[var(--color-dark)] text-white"
+                        : "text-[var(--color-dark)]/60 hover:text-[var(--color-dark)] bg-transparent"
+                    }`}
+                  >
+                    Inches
+                  </button>
+                  <button
+                    onClick={() => setSizeGuideUnit("cm")}
+                    className={`px-3 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider rounded-sm transition-all ${
+                      sizeGuideUnit === "cm"
+                        ? "bg-[var(--color-dark)] text-white"
+                        : "text-[var(--color-dark)]/60 hover:text-[var(--color-dark)] bg-transparent"
+                    }`}
+                  >
+                    CM
+                  </button>
+                </div>
+              </div>
+
+              {/* Table Container */}
+              <div className="border border-[#E8D3A2]/15 rounded-sm overflow-hidden bg-white shadow-sm">
+                <div className="overflow-x-auto overflow-y-hidden">
+                  <table className="w-full text-center text-xs border-collapse">
+                    <thead>
+                      <tr className="bg-[#FAF6F0] border-b border-[#E8D3A2]/15 text-[10px] uppercase tracking-wider font-semibold text-[var(--color-dark)]">
+                        <th className="py-2.5 px-2 text-left bg-[#FAF6F0]">Size</th>
+                        <th className="py-2.5 px-2">Bust</th>
+                        <th className="py-2.5 px-2">Waist</th>
+                        <th className="py-2.5 px-2">Hips</th>
+                        <th className="py-2.5 px-2">Top L</th>
+                        <th className="py-2.5 px-2">Bottom L</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-black/5 text-[var(--color-dark)]/90">
+                      {[
+                        { sz: "S", b: 36, w: 30, h: 38, tl: 26, bl: 38 },
+                        { sz: "M", b: 38, w: 32, h: 40, tl: 26.5, bl: 38.5 },
+                        { sz: "L", b: 40, w: 34, h: 42, tl: 27, bl: 39 },
+                        { sz: "XL", b: 42, w: 36, h: 44, tl: 27.5, bl: 39.5 },
+                        { sz: "XXL", b: 44, w: 38, h: 46, tl: 28, bl: 40 },
+                      ].map((row) => (
+                        <tr key={row.sz} className="hover:bg-[#FAF8F5]/55 transition-colors">
+                          <td className="py-3 px-2 font-bold text-[11px] text-left bg-white border-r border-black/5">{row.sz}</td>
+                          <td className="py-3 px-2 font-light">
+                            {sizeGuideUnit === "in" ? row.b : Math.round(row.b * 2.54)}
+                          </td>
+                          <td className="py-3 px-2 font-light">
+                            {sizeGuideUnit === "in" ? row.w : Math.round(row.w * 2.54)}
+                          </td>
+                          <td className="py-3 px-2 font-light">
+                            {sizeGuideUnit === "in" ? row.h : Math.round(row.h * 2.54)}
+                          </td>
+                          <td className="py-3 px-2 font-light">
+                            {sizeGuideUnit === "in" ? row.tl : Math.round(row.tl * 2.54)}
+                          </td>
+                          <td className="py-3 px-2 font-light">
+                            {sizeGuideUnit === "in" ? row.bl : Math.round(row.bl * 2.54)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Sizing Note */}
+              <p className="text-[10px] text-[var(--color-muted)] text-center leading-relaxed">
+                * Note: Sizing can vary slightly by 0.5 inches due to the premium handcrafted fabrication. For a relaxed fit, we suggest choosing one size up.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sticky Mobile ATC Bar */}
+      {showStickyAtc && (
+        <div
+          id="sticky-atc"
+          className="fixed bottom-[0px] left-0 right-0 bg-white border-t border-[var(--color-border)] z-[1000] flex items-center justify-between px-4 pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)] transition-transform duration-200"
+          style={{ height: "calc(64px + env(safe-area-inset-bottom))" }}
+        >
+          <div className="flex flex-col justify-center min-w-0 mr-4 pt-[env(safe-area-inset-bottom)]">
+            <h4 className="text-[13px] font-medium text-[var(--color-dark)] truncate max-w-[160px] xs:max-w-[200px]">
+              {product?.name}
+            </h4>
+            <div className="flex items-center gap-1.5 flex-wrap min-w-0">
+              <span className="text-[15px] font-bold text-[var(--color-dark)] leading-none shrink-0">
+                {formatPrice(product?.price || 0)}
+              </span>
+              {product?.originalPrice && product.originalPrice > product.price && (
+                <>
+                  <span className="text-[11px] text-[#59524A] line-through font-normal shrink-0 leading-none">
+                    {formatPrice(product.originalPrice)}
+                  </span>
+                  <span className="text-[9px] font-extrabold text-[#8C1D18] bg-[#FFF1F2] border border-[#FECDD3] rounded-[4px] px-1.5 py-0.5 tracking-[0.05em] uppercase shrink-0 leading-none">
+                    {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+          
+          <button
+            onClick={handleAddToCart}
+            disabled={isOutOfStock}
+            className="mt-[env(safe-area-inset-bottom)] bg-[#C8A96B] hover:bg-[#B3965D] text-white px-6 h-[40px] rounded-sm text-[13px] uppercase tracking-[0.12em] font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap min-w-[140px]"
+          >
+            {isOutOfStock ? "Sold Out" : "Add to Cart"}
+          </button>
+        </div>
+      )}
 
       {/* Quick Checkout Modal */}
-      <AnimatePresence>
-        {showQuickCheckout && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 xs:p-4 overflow-hidden"
-            onClick={() => setShowQuickCheckout(false)}
+      {showQuickCheckout && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 xs:p-4 overflow-hidden transition-opacity duration-200"
+          onClick={() => setShowQuickCheckout(false)}
+        >
+          <div
+            className="bg-white rounded-t-xl sm:rounded-lg shadow-xl w-full max-w-md h-[95vh] sm:h-auto max-h-[92vh] sm:max-h-[85vh] flex flex-col overflow-hidden relative border border-[#2C241B]/10 my-auto"
+            onClick={(e) => e.stopPropagation()}
           >
-            <motion.div
-              initial={{ scale: 0.95, y: 15 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              transition={{ type: "spring", duration: 0.5, bounce: 0.15 }}
-              className="bg-white rounded-t-xl sm:rounded-lg shadow-xl w-full max-w-md h-[95vh] sm:h-auto max-h-[92vh] sm:max-h-[85vh] flex flex-col overflow-hidden relative border border-[#2C241B]/10 my-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
               {/* Header */}
               <div className="bg-[#FAF9F5] border-b border-[#2C241B]/10 px-4 py-2.5 sm:px-6 sm:py-3.5 flex items-center justify-between shrink-0">
                 <div>
@@ -1929,7 +1885,7 @@ export default function ProductPage() {
                   <div className="mt-1 border-t border-[#2C241B]/5 pt-1.5 font-sans space-y-0.5 text-[10px] sm:text-xs text-[#2C241B]/80">
                     <div className="flex justify-between items-center">
                       <span>MRP Total:</span>
-                      <span className="line-through text-black/40">{formatPrice(mrpPrice * quantity)}</span>
+                      <span className="line-through text-[#59524A]">{formatPrice(mrpPrice * quantity)}</span>
                     </div>
                     <div className="flex justify-between items-center text-emerald-600 font-medium">
                       <span>Discount:</span>
@@ -2222,10 +2178,9 @@ export default function ProductPage() {
                   </button>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
 
       {showCheckout && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.7)',zIndex:9999,

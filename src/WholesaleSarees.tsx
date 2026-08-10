@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import { SEO } from "./components/SEO";
 
 export default function WholesaleSarees() {
@@ -345,28 +344,20 @@ export default function WholesaleSarees() {
             })}
           </div>
 
-          <AnimatePresence mode="wait">
             {/* 1-4 Stars Error Message Area */}
             {rating !== null && rating < 5 && ratingError && (
-              <motion.div
-                key="rating-error-msg"
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                className="p-4 bg-red-50 rounded-xl text-red-800 text-xs text-center border border-red-150 flex flex-col items-center gap-1"
+              <div
+                className="p-4 bg-red-50 rounded-xl text-red-800 text-xs text-center border border-red-150 flex flex-col items-center gap-1 transition-all duration-200"
               >
                 <div className="font-bold text-sm text-[#8C1D2F]">Verification Flag</div>
                 <p className="leading-relaxed">Wholesale VIP Group Access Is Available Only After Selecting 5 Stars.</p>
-              </motion.div>
+              </div>
             )}
 
             {/* 5 Stars Dynamic Access Unlock Steps */}
             {rating === 5 && (
-              <motion.div
-                key="success-portal-steps"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="mt-2 space-y-5"
+              <div
+                className="mt-2 space-y-5 transition-all duration-200"
               >
                 {/* success affirmation */}
                 <div className="p-4 bg-emerald-50 text-emerald-800 rounded-xl text-xs leading-relaxed border border-emerald-150 font-medium">
@@ -394,10 +385,8 @@ export default function WholesaleSarees() {
 
                   {/* Step 2: Have You Submitted Your Review? Confirmed step flow */}
                   {googleClicked && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-left bg-gradient-to-br from-[#FAF6F0] to-white rounded-xl p-4 border border-[#C5A059]/20"
+                    <div
+                      className="text-left bg-gradient-to-br from-[#FAF6F0] to-white rounded-xl p-4 border border-[#C5A059]/20 transition-all duration-200"
                     >
                       <span className="inline-block px-2.5 py-0.5 bg-[#5C0612]/10 text-[#5C0612] text-[9px] tracking-wider font-bold rounded-md uppercase mb-2">
                         Step 2
@@ -420,15 +409,13 @@ export default function WholesaleSarees() {
                           ✓ Review submission confirmed by user!
                         </div>
                       )}
-                    </motion.div>
+                    </div>
                   )}
 
                   {/* Step 3: Revel VIP Wholesale WhatsApp Join Group Button */}
                   {submittedReview && isUnlocked && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-center bg-[#25D366]/5 rounded-xl p-4 border border-[#25D366]/20"
+                    <div
+                      className="text-center bg-[#25D366]/5 rounded-xl p-4 border border-[#25D366]/20 transition-all duration-200"
                     >
                       <div className="mb-2.5 text-[10px] text-emerald-800 font-bold uppercase tracking-[2px] block">
                         Final VIP Link Unlocked!
@@ -450,7 +437,7 @@ export default function WholesaleSarees() {
                       <div className="text-[10px] text-emerald-800/80 leading-normal italic text-center mt-2.5 max-w-xs mx-auto">
                         "By clicking this button, you confirm that you have submitted your Google review."
                       </div>
-                    </motion.div>
+                    </div>
                   )}
 
                   {/* Dev / User Reset trigger */}
@@ -463,9 +450,8 @@ export default function WholesaleSarees() {
                     </button>
                   )}
                 </div>
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
         </div>
       </section>
 

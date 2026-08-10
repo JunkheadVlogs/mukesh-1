@@ -70,14 +70,16 @@ export const ProductCard = memo(function ProductCard({
         <OptimizedImage
           src={product.image}
           width={400}
-          height={500}
-          srcSet={`${optimizeImage(product.image, 300)} 300w, ${optimizeImage(product.image, 600)} 600w`}
+          height={533}
+          srcSet={`${optimizeImage(product.image, 300, 'webp')} 300w, ${optimizeImage(product.image, 450, 'webp')} 450w, ${optimizeImage(product.image, 600, 'webp')} 600w`}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt={getImageAlt(product)}
           priority={priority}
           loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "low"}
           decoding="async"
           className="w-full h-full object-cover object-top transform-gpu transition-all duration-700 ease-out group-hover:scale-105"
+          style={{ aspectRatio: '3/4' }}
         />
 
         {/* Floating Badges — bottom-left */}
@@ -131,7 +133,7 @@ export const ProductCard = memo(function ProductCard({
           </span>
           {product.originalPrice && product.originalPrice > product.price && (
             <>
-              <span className="text-[10px] sm:text-[11px] md:text-[12px] text-[#8C8276] line-through font-normal shrink-0">
+              <span className="text-[10px] sm:text-[11px] md:text-[12px] text-[#59524A] line-through font-normal shrink-0">
                 {formatPrice(product.originalPrice)}
               </span>
               {discountPercentage !== null && (

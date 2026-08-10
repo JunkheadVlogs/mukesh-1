@@ -23,7 +23,6 @@ import {
 import { useStore } from "./store";
 import { useState, useEffect, useRef, Suspense } from "react";
 import type { FormEvent } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { CONFIG, getWhatsAppNumber } from "./config";
 import { formatPrice, getImageAlt } from "./utils";
 import { searchProducts } from "./services/search";
@@ -53,7 +52,6 @@ export default function Layout() {
 
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
-  const { scrollY } = useScroll();
   const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
   const [logoRetryStep, setLogoRetryStep] = useState(0);
   const [logoError, setLogoError] = useState(false);
@@ -509,27 +507,18 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col font-sans">
       {/* Search Overlay */}
-      <AnimatePresence>
-        {isSearchOpen && (
-          <motion.div
-            id="search-overlay"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Search Shop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[100] bg-[#FAF8F4]/98 backdrop-blur-md flex flex-col text-primary-950 overflow-y-auto no-scrollbar scrollbar-hide"
+      {isSearchOpen && (
+        <div
+          id="search-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search Shop"
+          className="fixed inset-0 z-[100] bg-[#FAF8F4]/98 backdrop-blur-md flex flex-col text-primary-950 overflow-y-auto no-scrollbar scrollbar-hide transition-opacity duration-200"
+        >
+          {/* Smooth-sliding inner container */}
+          <div
+            className="w-full max-w-4xl mx-auto px-5 sm:px-8 flex flex-col h-full min-h-screen py-4"
           >
-            {/* Smooth-sliding inner container */}
-            <motion.div
-              initial={{ y: -30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -30, opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full max-w-4xl mx-auto px-5 sm:px-8 flex flex-col h-full min-h-screen py-4"
-            >
               {/* Top area - Elegant Close button, Centered logo branding and centered alignment */}
               <div className="h-[75px] flex items-center justify-between border-b border-[#C8A96B]/10 mb-6 flex-shrink-0">
                 {/* Left decorative label */}
@@ -622,12 +611,9 @@ export default function Layout() {
                       </div>
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-                        {filteredProducts.map((product, idx) => (
-                          <motion.div
+                        {filteredProducts.map((product) => (
+                          <div
                             key={product.id}
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.35, delay: idx * 0.05, ease: "easeOut" }}
                           >
                             <Link
                               to={`/product/${product.slug}`}
@@ -663,14 +649,12 @@ export default function Layout() {
                                 className="text-primary-950/20 group-hover:text-gold-600 group-hover:translate-x-0.5 transition-all md:hidden pr-1"
                               />
                             </Link>
-                          </motion.div>
+                          </div>
                         ))}
                       </div>
                     </div>
                   ) : searchQuery ? (
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                    <div 
                       className="text-center py-12 md:py-16 bg-white border border-[#C8A96B]/15 rounded-2xl p-6 shadow-sm"
                     >
                       <Search
@@ -690,7 +674,7 @@ export default function Layout() {
                       >
                         Reset Search
                       </button>
-                    </motion.div>
+                    </div>
                   ) : (
                     <div className="space-y-7 animate-fade-in animate-gpu">
                       {/* Recent Search Section */}
@@ -711,9 +695,8 @@ export default function Layout() {
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {recentSearches.map((term, i) => (
-                              <motion.button
+                              <button
                                 key={`${term}-${i}`}
-                                whileTap={{ scale: 0.97 }}
                                 type="button"
                                 onClick={() => {
                                   setSearchQuery(term);
@@ -723,7 +706,7 @@ export default function Layout() {
                                 className="inline-flex items-center bg-white border border-[#C8A96B]/10 rounded-full py-1.5 px-3.5 text-[11px] tracking-wide text-primary-950/85 hover:border-gold-500 hover:text-gold-600 transition-all font-medium whitespace-nowrap active:scale-[0.98]"
                               >
                                 {term}
-                              </motion.button>
+                              </button>
                             ))}
                           </div>
                         </div>
@@ -743,9 +726,8 @@ export default function Layout() {
                             { title: "Soft Silk", tag: "Silk" },
                             { title: "Wedding", tag: "Wedding" },
                           ].map((item) => (
-                            <motion.button
+                            <button
                               key={item.title}
-                              whileTap={{ scale: 0.96 }}
                               type="button"
                               onClick={() => {
                                 setSearchQuery(item.tag);
@@ -761,7 +743,7 @@ export default function Layout() {
                               <span className="text-[8px] tracking-[1.5px] uppercase font-light text-primary-950/40 mt-1 block">
                                 Collection →
                               </span>
-                            </motion.button>
+                            </button>
                           ))}
                         </div>
                       </div>
@@ -780,9 +762,8 @@ export default function Layout() {
                             { name: "Cotton Sarees", query: "Cotton" },
                             { name: "Party Collection", query: "Party" },
                           ].map((item) => (
-                            <motion.button
+                            <button
                               key={item.name}
-                              whileTap={{ scale: 0.96 }}
                               type="button"
                               onClick={() => {
                                 setSearchQuery(item.query);
@@ -793,7 +774,7 @@ export default function Layout() {
                               className="px-3.5 py-1.5 bg-[#F7F4EF] hover:bg-white border border-[#C8A96B]/10 hover:border-gold-500 rounded-full text-[10.5px] tracking-[1px] hover:text-gold-600 transition-all font-medium text-primary-950/80 active:scale-[0.98]"
                             >
                               {item.name}
-                            </motion.button>
+                            </button>
                           ))}
                         </div>
                       </div>
@@ -801,10 +782,9 @@ export default function Layout() {
                   )}
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
 
       {/* Navigation Wrapper */}
       <div
@@ -815,17 +795,9 @@ export default function Layout() {
       >
         {/* Dynamic Announcement Bar */}
         <div className="announcement-bar bg-[#2B2B2B] text-[#C8A96B] w-full flex items-center justify-center z-50">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={announcements[announcementIndex]}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span>{announcements[announcementIndex]}</span>
-            </motion.div>
-          </AnimatePresence>
+          <div key={announcements[announcementIndex]}>
+            <span>{announcements[announcementIndex]}</span>
+          </div>
         </div>
 
         {/* Site Header */}
@@ -911,61 +883,40 @@ export default function Layout() {
               className={`${iconColor} hover:text-gold-500 transition-all relative h-11 w-11 flex items-center justify-end md:justify-center`}
               aria-label="Cart"
             >
-              <motion.div
-                animate={
-                  cartBadgeHighlight
-                    ? { scale: [1, 1.2, 1], rotate: [0, -10, 10, -10, 0] }
-                    : {}
-                }
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+              <div
+                className={`transition-transform duration-300 ${
+                  cartBadgeHighlight ? "scale-110" : ""
+                }`}
               >
                 <ShoppingBag size={22} strokeWidth={1.5} />
-              </motion.div>
-              <AnimatePresence>
-                {cartItemCount > 0 && (
-                  <motion.span
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{
-                      scale: cartBadgeHighlight ? [1, 1.3, 1] : 1,
-                      opacity: 1,
-                    }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className={`absolute top-1 right-1 text-white text-[9px] px-1 md:px-1.5 py-[1px] md:py-0.5 rounded-full min-w-[16px] text-center font-medium shadow-sm transition-colors ${cartBadgeHighlight ? "bg-black" : "bg-gold-600"}`}
-                  >
-                    {cartItemCount}
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              </div>
+              {cartItemCount > 0 && (
+                <span
+                  className={`absolute top-1 right-1 text-white text-[9px] px-1 md:px-1.5 py-[1px] md:py-0.5 rounded-full min-w-[16px] text-center font-medium shadow-sm transition-colors ${cartBadgeHighlight ? "bg-black" : "bg-gold-600"}`}
+                >
+                  {cartItemCount}
+                </span>
+              )}
             </Link>
           </div>
         </header>
       </div>
 
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            {/* Solid Dark Backdrop Overlay to completely block out Home/homepage behind it */}
-            <motion.div
-              key="mobile-menu-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 w-full h-full bg-black/95 z-[9998] md:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
+      {/* Solid Dark Backdrop Overlay to completely block out Home/homepage behind it */}
+      <div
+        className={`fixed inset-0 w-full h-full bg-black/95 z-[9998] md:hidden transition-opacity duration-300 ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
 
-            {/* Premium Solid Slide-out Sidebar Panel */}
-            <motion.div
-              key="mobile-menu-panel"
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="mobile-nav-panel fixed inset-y-0 left-0 z-[9999] w-[300px] xs:w-[320px] sm:w-[340px] h-full md:hidden bg-[#FAF8F4] overflow-y-auto shadow-2xl"
-              style={{ backgroundColor: "#FAF8F4", opacity: 1, visibility: "visible" }}
-            >
+      {/* Premium Solid Slide-out Sidebar Panel */}
+      <div
+        className={`mobile-nav-panel fixed inset-y-0 left-0 z-[9999] w-[300px] xs:w-[320px] sm:w-[340px] h-full md:hidden bg-[#FAF8F4] overflow-y-auto shadow-2xl transition-transform duration-300 ease-in-out ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        style={{ backgroundColor: "#FAF8F4" }}
+      >
               <div style={{
                 display: "flex",
                 flexDirection: "column",
@@ -1218,10 +1169,7 @@ export default function Layout() {
                   }}>NAGPUR, INDIA • EST. 1978</p>
                 </div>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+            </div>
 
       {/* Main Content */}
       <main

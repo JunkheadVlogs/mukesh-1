@@ -22,14 +22,11 @@
         };
       }
     </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1LMBHFFF1F"></script>
+    <!-- Analytics DataLayer & Stub Initializer (Non-blocking) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      gtag('config', 'G-1LMBHFFF1F');
     </script>
     <!-- Google Tag Manager -->
     <script>
@@ -73,21 +70,18 @@
       })();
     </script>
     <!-- End Microsoft Clarity -->
-    <!-- Google tag (gtag.js) -->
+    <!-- GA4 Lazy Loader (Non-blocking) -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      
-      // Lazily load GA4 after page load to prevent render-blocking and speed up mobile first paint
       window.addEventListener('load', function() {
-        const gaId = "%VITE_GA4_ID%";
+        if (window._ga4_loaded) return;
+        var gaId = "%VITE_GA4_ID%";
         if (!gaId || gaId.startsWith('%VITE_') || gaId.includes('your_ga4_measurement_id') || gaId.includes('G_GA4_MEASUREMENT_ID') || !gaId.startsWith('G-')) {
-          console.warn("GA4 Measurement ID not configured or is placeholder. Skipping initialization.");
-          return;
+          gaId = "G-1LMBHFFF1F";
         }
-        const gaScript = document.createElement('script');
+        window._ga4_loaded = true;
+        var gaScript = document.createElement('script');
         gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
-        gaScript.defer = true;
+        gaScript.async = true;
         document.head.appendChild(gaScript);
         
         gtag('js', new Date());
@@ -128,9 +122,8 @@
     <link rel="dns-prefetch" href="https://ik.imagekit.io" />
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
     <link rel="dns-prefetch" href="https://wsrv.nl" />
-    <!-- Preload actual hero images from ImageKit and size them appropriately for screen dimensions -->
-    <link rel="preload" as="image" href="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469" media="(max-width: 767px)" fetchpriority="high" />
-    <link rel="preload" as="image" href="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp" media="(min-width: 768px)" fetchpriority="high" />
+    <!-- Preload exact above-the-fold mobile hero image for mobile devices -->
+    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" imagesizes="(max-width: 768px) 100vw, 768px" media="(max-width: 767px)" fetchpriority="high" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",

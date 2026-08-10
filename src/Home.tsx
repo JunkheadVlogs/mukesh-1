@@ -6,7 +6,6 @@ const LookReelCard = lazy(() => import("./components/LookReelCard").then(m => ({
 import { ProductCardSkeleton } from "./components/ProductCardSkeleton";
 import { SEO } from "./components/SEO";
 import { CONFIG } from "./config";
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import {
   ArrowRight,
   Star,
@@ -341,12 +340,6 @@ export default function Home() {
     }
   };
 
-  const { scrollY } = useScroll();
-  const heroTextOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const heroTextY = useTransform(scrollY, [0, 300], [0, 50]);
-  const heroOverlayOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const heroImageY = useTransform(scrollY, [0, 800], [0, 150]);
-
   return (
     <div className="flex flex-col">
       <SEO
@@ -358,11 +351,8 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative w-full h-[85vh] md:h-[90vh] bg-[#1A0A00] flex items-center overflow-hidden">
-        <motion.div
-          className="absolute inset-0 w-full h-full z-0 overflow-hidden"
-          style={{ y: heroImageY }}
-        >
-          {/* Mobile Hero Image (hidden on desktop) */}
+        <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+          {/* Mobile Hero Image (hidden on desktop) - Static, instant paint, zero motion/transition delay */}
           <img
             src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75"
             srcSet="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w"
@@ -372,8 +362,8 @@ export default function Home() {
             alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978"
             loading="eager"
             fetchPriority="high"
-            decoding="sync"
-            className="block md:hidden w-full h-full object-cover object-[72%_bottom] opacity-100 transition-opacity duration-700"
+            decoding="async"
+            className="block md:hidden w-full h-full object-cover object-[72%_bottom]"
           />
           {/* Desktop Hero Image (hidden on mobile) */}
           <img
@@ -383,12 +373,11 @@ export default function Home() {
             width={1200}
             height={1000}
             alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978"
-            loading="eager"
-            fetchPriority="high"
-            decoding="sync"
-            className="hidden md:block w-full h-full object-cover object-bottom opacity-100 transition-opacity duration-700"
+            loading="lazy"
+            decoding="async"
+            className="hidden md:block w-full h-full object-cover object-bottom"
           />
-        </motion.div>
+        </div>
 
         {/* Cinematic gradient overlay */}
         <div
@@ -399,15 +388,11 @@ export default function Home() {
           }}
         />
 
-        <motion.div
+        <div
           className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-center items-start h-full pt-[100px] md:pt-[110px] pb-12"
-          style={{ opacity: heroTextOpacity, y: heroTextY }}
         >
           <div className="max-w-[280px] xs:max-w-[320px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[640px] text-left mb-4 md:mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+            <div
               className="text-[10px] xs:text-[11px] sm:text-[12px] md:text-[13px] font-sans font-semibold tracking-[0.22em] sm:tracking-[0.25em] uppercase mb-2 md:mb-3 text-[var(--color-gold-light)]"
               style={{
                 textShadow: "0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)",
@@ -415,12 +400,9 @@ export default function Home() {
               }}
             >
               MUKESH SAREE CENTRE · EST. 1978
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
+            <h1
               className="text-[24px] xs:text-[28px] sm:text-[38px] md:text-[48px] lg:text-[56px] font-serif mb-2.5 md:mb-4 leading-[1.25] sm:leading-[1.15] font-normal tracking-[0.06em] sm:tracking-[0.08em]"
               style={{
                 textShadow: "0 2px 10px rgba(0,0,0,0.45), 0 4px 24px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.2)",
@@ -428,12 +410,9 @@ export default function Home() {
               }}
             >
               The Art of the Drape
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+            <p
               className="text-[11px] xs:text-[12px] sm:text-[14px] md:text-[16px] leading-[1.7] mb-8 md:mb-10 max-w-[220px] xs:max-w-[260px] sm:max-w-[380px] md:max-w-[440px] lg:max-w-[500px] font-sans font-light tracking-[0.04em] opacity-95"
               style={{
                 textShadow: "0 2px 8px rgba(0,0,0,0.4), 0 4px 18px rgba(0,0,0,0.25)",
@@ -441,12 +420,9 @@ export default function Home() {
               }}
             >
               Handcrafted silks and linens, styled for the modern woman.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+            <div
               className="flex justify-start"
             >
               <Link
@@ -456,13 +432,12 @@ export default function Home() {
               >
                 SHOP NOW
               </Link>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
+        <div
           className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer z-20 p-4"
-          style={{ opacity: heroTextOpacity }}
           onClick={() => {
             const nextSec = document.getElementById("next-section");
             if (nextSec) {
@@ -473,17 +448,11 @@ export default function Home() {
               });
             }
           }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
         >
-          <motion.div
-            animate={{ y: [0, 5, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          >
+          <div className="animate-bounce">
             <ChevronDown className="text-white/90 w-5 h-5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </section>
 
       {/* Shop by Category */}
@@ -623,7 +592,7 @@ export default function Home() {
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : trendingProducts.map((product, index) => (
                   <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
-                    <ProductCard product={product} priority={index < 2} />
+                    <ProductCard product={product} priority={false} />
                   </Suspense>
                 ))}
           </div>
@@ -671,8 +640,9 @@ export default function Home() {
                       <LookReelCard
                         reel={reel}
                         onVisibilityChange={handleReelVisibilityChange}
-                        shouldRenderIframe={!!visibleReelIds[reel.id] || activeReelId === reel.id}
+                        shouldRenderIframe={!!visibleReelIds[reel.id]}
                         isActive={activeReelId === reel.id}
+                        onSelectReel={(id) => setActiveReelId(id)}
                       />
                     </Suspense>
                   );
@@ -803,12 +773,8 @@ export default function Home() {
               className="flex gap-3 md:gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide no-scrollbar h-[270px] sm:h-[340px] md:h-[450px] lg:h-[480px] touch-pan-x touch-pan-y will-change-scroll"
             >
               {shopImages.map((image, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08, duration: 0.5 }}
                   className="flex-none w-[82%] sm:w-[500px] md:w-[600px] h-full relative overflow-hidden group/item rounded-xl md:rounded-2xl shadow-md border border-[#C8A96B]/10 cursor-zoom-in snap-center"
                   onClick={() => setSelectedShopImage(image.url)}
                 >
@@ -834,7 +800,7 @@ export default function Home() {
                       {image.label}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
@@ -843,19 +809,9 @@ export default function Home() {
               {shopImages.map((_, i) => (
                 <div
                   key={i}
-                  className="w-8 sm:w-12 h-[2px] bg-primary-950/5 rounded-full overflow-hidden"
+                  className="w-8 sm:w-12 h-[2px] bg-[#C8A96B]/30 rounded-full overflow-hidden"
                 >
-                  <motion.div
-                    className="h-full bg-[#C8A96B]"
-                    initial={{ translateX: "-100%" }}
-                    whileInView={{ translateX: "0%" }}
-                    viewport={{ once: true }}
-                    transition={{
-                      delay: 0.3 + i * 0.08,
-                      duration: 0.8,
-                      ease: "easeOut",
-                    }}
-                  />
+                  <div className="h-full bg-[#C8A96B] w-full" />
                 </div>
               ))}
             </div>
@@ -938,46 +894,35 @@ export default function Home() {
       </section>
 
       {/* Lightbox Modal */}
-      <AnimatePresence>
-        {selectedShopImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12 bg-primary-950/95 backdrop-blur-md"
-            onClick={() => setSelectedShopImage(null)}
+      {selectedShopImage && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12 bg-primary-950/95 backdrop-blur-md transition-opacity duration-200"
+          onClick={() => setSelectedShopImage(null)}
+        >
+          <button
+            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-[101]"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedShopImage(null);
+            }}
           >
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-[101]"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedShopImage(null);
-              }}
-            >
-              <X size={32} strokeWidth={1.5} />
-            </motion.button>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative max-w-full max-h-full shadow-2xl flex items-center justify-center"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <OptimizedImage
-                src={selectedShopImage}
-                alt="Store View"
-                width={1200}
-                height={900}
-                className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-white/10"
-                priority
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <X size={32} strokeWidth={1.5} />
+          </button>
+          <div
+            className="relative max-w-full max-h-full shadow-2xl flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <OptimizedImage
+              src={selectedShopImage}
+              alt="Store View"
+              width={1200}
+              height={900}
+              className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-white/10"
+              priority
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

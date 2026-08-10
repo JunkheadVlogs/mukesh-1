@@ -111,9 +111,12 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
   const sanitized = sanitizeUrl(src);
   const candidates: string[] = [];
 
-  // If it's a video file or an ImageKit video thumbnail, try loading the exact sanitized URL first,
-  // and then fallback to beautiful pre-mapped store section WebP images instead of generic local asset directories
-  if (sanitized.includes('ik-thumbnail.jpg') || sanitized.endsWith('.mp4') || sanitized.includes('.mp4')) {
+  // If it's an ImageKit video thumbnail or video file, handle appropriately
+  if (sanitized.includes('ik-thumbnail.jpg')) {
+    const optThumb = optimizeImage(sanitized, width, 'webp');
+    if (optThumb) candidates.push(optThumb);
+    candidates.push(sanitized);
+  } else if (sanitized.endsWith('.mp4') || sanitized.includes('.mp4')) {
     candidates.push(sanitized);
     
     // Find matching video-specific premium WebP image
@@ -255,6 +258,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   srcSet?: string;
   sizes?: string;
   priority?: boolean;
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 export function OptimizedImage({ 
@@ -268,6 +272,7 @@ export function OptimizedImage({
   priority = false, 
   loading,
   decoding,
+  fetchPriority,
   onError, 
   ...props 
 }: OptimizedImageProps) {
@@ -293,7 +298,7 @@ export function OptimizedImage({
     processedAlt = processedAlt.substring(0, maxBaseLen).trim().replace(/[\s,\-_|]+$/, "");
   }
   
-  const finalAlt = processedAlt + suffix;  // Derived state: calculate candidates list synchronously on render
+  const finalAlt = processedAlt + suffix;
   const candidates = getCandidateUrls(src, width);
 
   // Use synchronous state tracking to reset states on source changed
@@ -303,51 +308,13 @@ export function OptimizedImage({
   const [hasFailedAll, setHasFailedAll] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Intersection Observer implementation for lazy loading
   const imageRef = useRef<HTMLImageElement | null>(null);
-  const [isInView, setIsInView] = useState(() => {
-    if (priority) return true;
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return true;
-    return false;
-  });
-
-  useEffect(() => {
-    if (priority || isInView) return;
-
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-      setIsInView(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
-      },
-      {
-        rootMargin: '300px', // Preload images 300px before entering viewport for seamless scrolling
-        threshold: 0.01
-      }
-    );
-
-    const el = imageRef.current;
-    if (el) {
-      observer.observe(el);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [priority, isInView]);
 
   if (src !== prevSrc) {
     setPrevSrc(src);
     setCandidateIndex(0);
     setRetryCount(0);
     setHasFailedAll(false);
-    setIsInView(priority || typeof window === 'undefined' || !('IntersectionObserver' in window));
     setIsLoaded(false);
   }
 
@@ -397,6 +364,7 @@ export function OptimizedImage({
           width: '100%', 
           height: calculatedHeight ? `${calculatedHeight}px` : '100%', 
           minHeight: '260px',
+          aspectRatio: `${width}/${calculatedHeight}`,
           ...(props.style || {}) 
         }}
       >
@@ -414,11 +382,15 @@ export function OptimizedImage({
   const isGoogleDrive = src.includes('drive.google.com') || src.includes('googleusercontent.com') || currentSrc.includes('drive.google.com') || currentSrc.includes('googleusercontent.com');
   const isRelative = currentSrc.startsWith('/');
   
-  // Google Drive logic or relative references loading directly with the specific custom key to force refresh
+  const finalLoading = loading !== undefined ? loading : (priority ? "eager" : "lazy");
+  const finalFetchPriority = fetchPriority !== undefined ? fetchPriority : (priority ? "high" : "low");
+  const finalDecoding = decoding !== undefined ? decoding : "async";
+
+  // Google Drive logic or relative references
   if (isGoogleDrive || isRelative) {
     const driveId = extractGoogleDriveId(src) || extractGoogleDriveId(currentSrc);
     const driveSrcSet = (isGoogleDrive && driveId)
-      ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w300 300w, https://drive.google.com/thumbnail?id=${driveId}&sz=w450 450w, https://drive.google.com/thumbnail?id=${driveId}&sz=w600 600w, https://drive.google.com/thumbnail?id=${driveId}&sz=w800 800w, https://drive.google.com/thumbnail?id=${driveId}&sz=w1200 1200w`
+      ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w300 300w, https://drive.google.com/thumbnail?id=${driveId}&sz=w450 450w, https://drive.google.com/thumbnail?id=${driveId}&sz=w600 600w, https://drive.google.com/thumbnail?id=${driveId}&sz=w800 800w`
       : undefined;
 
     const finalRenderSrc = (isGoogleDrive && driveId)
@@ -429,18 +401,18 @@ export function OptimizedImage({
       <img
         ref={imageRef}
         key={`${currentSrc}-${retryCount}`}
-        src={isInView ? finalRenderSrc : PLACEHOLDER_1X1}
-        srcSet={isInView ? (srcSet || driveSrcSet) : undefined}
-        sizes={isInView ? (sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw") : undefined}
+        src={finalRenderSrc}
+        srcSet={srcSet || driveSrcSet}
+        sizes={sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"}
         alt={finalAlt}
         width={width}
         height={calculatedHeight}
         className={className || ''}
-        loading={loading !== undefined ? loading : (priority ? "eager" : "lazy")}
-        fetchPriority={priority ? "high" : "auto"}
+        loading={finalLoading}
+        fetchPriority={finalFetchPriority}
         referrerPolicy="no-referrer"
-        decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}
-        style={{ backgroundColor: '#FAF6F0', objectFit: 'cover', ...(props.style || {}) }}
+        decoding={finalDecoding}
+        style={{ backgroundColor: '#FAF6F0', objectFit: 'cover', aspectRatio: `${width}/${calculatedHeight}`, ...(props.style || {}) }}
         onLoad={handleImageLoad}
         onError={handleImageError}
         {...props}
@@ -462,26 +434,27 @@ export function OptimizedImage({
   let generatedSrcSetWebp = srcSet;
   
   if (!srcSet && !isDirectBypass) {
-    generatedSrcSetWebp = `${optimizeImage(currentSrc, 300, 'webp')} 300w, ${optimizeImage(currentSrc, 600, 'webp')} 600w, ${optimizeImage(currentSrc, 1000, 'webp')} 1000w`;
+    generatedSrcSetWebp = `${optimizeImage(currentSrc, 300, 'webp')} 300w, ${optimizeImage(currentSrc, 450, 'webp')} 450w, ${optimizeImage(currentSrc, 600, 'webp')} 600w, ${optimizeImage(currentSrc, 800, 'webp')} 800w`;
   }
 
-  const defaultSizes = sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw";
+  const defaultSizes = sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw";
 
   return (
     <img
       ref={imageRef}
-      src={isInView ? webpUrl : PLACEHOLDER_1X1}
-      srcSet={isInView ? generatedSrcSetWebp : undefined}
-      sizes={isInView && generatedSrcSetWebp ? defaultSizes : undefined}
+      key={`${currentSrc}-${retryCount}`}
+      src={webpUrl}
+      srcSet={generatedSrcSetWebp}
+      sizes={defaultSizes}
       alt={finalAlt}
       width={width}
       height={calculatedHeight}
       className={className || ''}
-      loading={loading !== undefined ? loading : (priority ? "eager" : "lazy")}
-      fetchPriority={priority ? "high" : "auto"}
+      loading={finalLoading}
+      fetchPriority={finalFetchPriority}
       referrerPolicy="no-referrer"
-      decoding={decoding !== undefined ? decoding : (priority ? "sync" : "async")}
-      style={{ backgroundColor: '#FAF6F0', objectFit: 'cover', ...(props.style || {}) }}
+      decoding={finalDecoding}
+      style={{ backgroundColor: '#FAF6F0', objectFit: 'cover', aspectRatio: `${width}/${calculatedHeight}`, ...(props.style || {}) }}
       onLoad={handleImageLoad}
       onError={handleImageError}
       {...props}

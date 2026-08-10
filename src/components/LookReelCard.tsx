@@ -18,6 +18,7 @@ interface LookReelCardProps {
   onVisibilityChange: (id: string, isVisible: boolean) => void;
   shouldRenderIframe: boolean;
   isActive: boolean;
+  onSelectReel?: (id: string) => void;
 }
 
 /**
@@ -48,7 +49,7 @@ function parseYouTubeVideoID(input: string): string {
   return trimmed;
 }
 
-export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isActive }: LookReelCardProps) {
+export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isActive, onSelectReel }: LookReelCardProps) {
   const videoId = parseYouTubeVideoID(reel.youtubeId);
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -62,7 +63,7 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
   const [isMuted, setIsMuted] = useState(true);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [videoReadyToFade, setVideoReadyToFade] = useState(false);
-  const isIframeMounted = shouldRenderIframe;
+  const isIframeMounted = shouldRenderIframe || hasBeenVisible;
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(15);
@@ -127,7 +128,7 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
         }
       },
       {
-        threshold: 0.1, // Trigger. Trigger when at least 10% of the video card is visible
+        threshold: 0.1, // Trigger when at least 10% of the video card is visible
         rootMargin: "150px", // Preload much earlier before entering
       }
     );
@@ -142,25 +143,24 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
     };
   }, [reel.id, onVisibilityChange]);
 
-  // Handle active status, play, and sound state elegantly
+  // Handle play and sound state when card is visible
   useEffect(() => {
-    if (isActive && isVisible && isIframeMounted) {
+    if (isVisible && isIframeMounted) {
       setIsPlaying(true);
       
-      // Force initial mute behavior to bypass strict mobile/desktop browser autoplay policies.
-      // This is the ONLY way to guarantee the video starts playing automatically on modern devices.
-      // If the user has already unmuted a video since landing, we can keep it unmuted since browser allows gesture-associated sound.
       const previouslyUnmuted = !!(window as any).__userHasUnmutedReels;
-      setIsMuted(!previouslyUnmuted);
-      
       if (previouslyUnmuted) {
+        setIsMuted(false);
         window.dispatchEvent(new CustomEvent("unmute-reel", { detail: { id: reel.id } }));
+      } else if (isActive) {
+        setIsMuted(false);
+      } else {
+        setIsMuted(true);
       }
 
-      // Automatically fade out the poster after a short duration (at most 500ms) to ensure instant play
       const timer = setTimeout(() => {
         setVideoReadyToFade(true);
-      }, 500);
+      }, 300);
 
       return () => clearTimeout(timer);
     } else {
@@ -170,18 +170,27 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
     }
   }, [isActive, isVisible, isIframeMounted, reel.id]);
 
-  // Sync HTML5 video play/pause
+  // Sync HTML5 video play/pause & audio handling
   useEffect(() => {
     if (isMp4 && videoRef.current) {
       if (isPlaying) {
-        videoRef.current.play().catch((err) => {
-          console.log("HTML5 Video play failed: ", err);
-        });
+        videoRef.current.muted = isMuted;
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.log("HTML5 Video play failed, retrying muted:", err);
+            if (videoRef.current) {
+              videoRef.current.muted = true;
+              setIsMuted(true);
+              videoRef.current.play().catch((e) => console.log("Muted fallback play error:", e));
+            }
+          });
+        }
       } else {
         videoRef.current.pause();
       }
     }
-  }, [isPlaying, isMp4]);
+  }, [isPlaying, isMp4, isMuted]);
 
   // Sync HTML5 video audio/sound
   useEffect(() => {
@@ -264,6 +273,23 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
 
     if (!targetMute) {
       window.dispatchEvent(new CustomEvent("unmute-reel", { detail: { id: reel.id } }));
+      if (videoRef.current) {
+        videoRef.current.muted = false;
+        videoRef.current.play().catch((err) => console.log("Unmute play error:", err));
+      }
+    }
+  };
+
+  const handleCardClick = () => {
+    onSelectReel?.(reel.id);
+    if (isMuted) {
+      setIsMuted(false);
+      (window as any).__userHasUnmutedReels = true;
+      window.dispatchEvent(new CustomEvent("unmute-reel", { detail: { id: reel.id } }));
+      if (videoRef.current) {
+        videoRef.current.muted = false;
+        videoRef.current.play().catch((err) => console.log("Card click play error:", err));
+      }
     }
   };
 
@@ -295,6 +321,9 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
               muted={isMuted}
               playsInline
               autoPlay
+              preload="auto"
+              onPlay={() => setVideoReadyToFade(true)}
+              onPlaying={() => setVideoReadyToFade(true)}
               onTimeUpdate={handleTimeUpdate}
               onLoadedMetadata={handleLoadedMetadata}
               className="absolute w-full h-full object-cover pointer-events-none select-none rounded-[16px]"
@@ -331,9 +360,10 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
         <OptimizedImage
           src={reel.poster}
           alt={reel.title}
-          width={600}
-          height={800}
+          width={400}
+          height={711}
           loading="lazy"
+          fetchPriority="low"
           decoding="async"
           className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.04]"
         />
@@ -346,7 +376,8 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
 
       {/* 4. Complete Silent Protective Overlay to completely absorb all touch elements and prevent native YT interaction/overlays on mobile, whilst bubbling standard scroll container swipe events */}
       <div 
-        className="absolute inset-0 w-full h-full z-20 select-none border-0 m-0 p-0"
+        onClick={handleCardClick}
+        className="absolute inset-0 w-full h-full z-20 select-none border-0 m-0 p-0 cursor-pointer"
         style={{ 
           background: 'rgba(0, 0, 0, 0.001)', // Semi-opaque browser rendering layer to forcefully block all interactions and prevent native YouTube play/pause toggling overlays
           pointerEvents: 'auto', 

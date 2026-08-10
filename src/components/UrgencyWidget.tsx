@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "motion/react";
 
 interface Props {
   productId?: string;
@@ -125,23 +124,17 @@ export const LiveViewerCounter: React.FC<Props> = ({ productId, category }) => {
 
   return (
     <div className="inline-flex items-center min-h-[20px] select-none">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`${productId}_${currentIndex}`}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="urgency-badge inline-flex items-center gap-1.5 bg-[#FAF6F0] border border-[#C8A96B]/25 rounded-full px-3.5 py-1 text-[10.5px] sm:text-[11px] font-medium tracking-wide text-[#2b2b2b] shadow-[0_2px_8px_rgba(200,169,107,0.06)] hover:scale-[1.01] hover:border-[#C8A96B]/40 hover:shadow-[0_4px_12px_rgba(200,169,107,0.1)] transition-all duration-300 cursor-default"
-        >
-          <span className="text-[12px] leading-none filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.08)]">
-            {currentMessage.icon}
-          </span>
-          <span className="font-sans leading-none mt-[0.5px]">
-            {currentMessage.text}
-          </span>
-        </motion.div>
-      </AnimatePresence>
+      <div
+        key={`${productId}_${currentIndex}`}
+        className="urgency-badge inline-flex items-center gap-1.5 bg-[#FAF6F0] border border-[#C8A96B]/25 rounded-full px-3.5 py-1 text-[10.5px] sm:text-[11px] font-medium tracking-wide text-[#2b2b2b] shadow-[0_2px_8px_rgba(200,169,107,0.06)] hover:scale-[1.01] hover:border-[#C8A96B]/40 hover:shadow-[0_4px_12px_rgba(200,169,107,0.1)] transition-all duration-300 cursor-default"
+      >
+        <span className="text-[12px] leading-none filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.08)]">
+          {currentMessage.icon}
+        </span>
+        <span className="font-sans leading-none mt-[0.5px]">
+          {currentMessage.text}
+        </span>
+      </div>
     </div>
   );
 };

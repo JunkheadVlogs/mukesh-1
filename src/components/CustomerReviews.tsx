@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { motion } from "motion/react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
 const REVIEWS = [
@@ -129,13 +128,9 @@ export function CustomerReviews() {
             style={{ touchAction: "pan-x pan-y pinch-zoom" }}
             className="-mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 flex gap-4 md:gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scrollbar-hide no-scrollbar touch-pan-x touch-pan-y"
           >
-            {REVIEWS.map((review, index) => (
-              <motion.article
+            {REVIEWS.map((review) => (
+              <article
                 key={review.id}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
                 className="flex-none w-[78vw] sm:w-[350px] md:w-[400px] snap-center bg-white p-4 sm:p-5 md:p-6 border border-[#C8A96B]/10 shadow-[0_2px_12px_rgba(200,169,107,0.03)] rounded-xl relative flex flex-col justify-between"
               >
                 <div>
@@ -163,7 +158,7 @@ export function CustomerReviews() {
                     </span>
                   )}
                 </div>
-              </motion.article>
+              </article>
             ))}
           </div>
 

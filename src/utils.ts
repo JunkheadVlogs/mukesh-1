@@ -124,7 +124,7 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
 
   // 1. Handle Native ImageKit optimization (and transform existing ImageKit URLs)
   if (url.includes('ik.imagekit.io') || url.includes('imagekit.io')) {
-    if (url.includes('ik-thumbnail.jpg') || url.endsWith('.mp4') || url.includes('.mp4')) {
+    if ((url.endsWith('.mp4') || url.includes('.mp4')) && !url.includes('ik-thumbnail.jpg')) {
       return url;
     }
     try {

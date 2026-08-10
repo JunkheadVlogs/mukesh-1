@@ -1,5 +1,3 @@
-import { motion } from "motion/react";
-
 export function ProductCardSkeleton() {
   return (
     <div className="group relative flex flex-col pointer-events-none">

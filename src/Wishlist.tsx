@@ -11,7 +11,6 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
 import { products } from "./mockData";
@@ -153,9 +152,7 @@ export default function Wishlist() {
         </header>
 
         {isSharedView && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
+          <div
             className="mb-32 p-12 border border-onyx/5 bg-white shadow-luxury rounded-sm flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden group"
           >
             <div className="space-y-4">
@@ -176,7 +173,7 @@ export default function Wishlist() {
                 My Wishlist
               </Link>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {displayProducts.length === 0 ? (
@@ -187,63 +184,47 @@ export default function Wishlist() {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            <AnimatePresence mode="popLayout">
-              {displayProducts.map((product, idx) => (
-                <motion.div
-                  key={product.id}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.05 }}
-                  className="group"
-                >
-                  <div className="relative group" key={product.id}>
-                    <ProductCard product={product} priority={idx < 2} />
-                    {!isSharedView && (
-                      <button
-                        onClick={() => toggleWishlist(product.id)}
-                        className="absolute top-2 right-2 p-2 bg-white/40 hover:bg-white text-onyx/40 hover:text-red-500 transition-all rounded-full border border-onyx/5 backdrop-blur-sm shadow-luxury z-20 group-hover:opacity-100 lg:opacity-0"
-                      >
-                        <X size={14} />
-                      </button>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            {displayProducts.map((product, idx) => (
+              <div
+                key={product.id}
+                className="group"
+              >
+                <div className="relative group" key={product.id}>
+                  <ProductCard product={product} priority={idx < 2} />
+                  {!isSharedView && (
+                    <button
+                      onClick={() => toggleWishlist(product.id)}
+                      className="absolute top-2 right-2 p-2 bg-white/40 hover:bg-white text-onyx/40 hover:text-red-500 transition-all rounded-full border border-onyx/5 backdrop-blur-sm shadow-luxury z-20 group-hover:opacity-100 lg:opacity-0"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
 
       {toastMessage && (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[150]">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-gold-500 text-white px-10 py-5 rounded-sm text-[13px] font-bold uppercase tracking-[2px] flex items-center shadow-luxury"
+          <div 
+            className="bg-gold-500 text-white px-10 py-5 rounded-sm text-[13px] font-bold uppercase tracking-[2px] flex items-center shadow-luxury animate-fade-in"
           >
             {toastMessage}
-          </motion.div>
+          </div>
         </div>
       )}
 
-      <AnimatePresence>
-        {isShareModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsShareModalOpen(false)}
-              className="absolute inset-0 bg-onyx/60 backdrop-blur-xl"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 40 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 40 }}
-              className="relative bg-ivory w-full max-w-lg p-10 md:p-14 rounded-sm shadow-luxury overflow-hidden border border-onyx/10"
-            >
+      {isShareModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div
+            onClick={() => setIsShareModalOpen(false)}
+            className="absolute inset-0 bg-onyx/60 backdrop-blur-xl transition-opacity duration-200"
+          />
+          <div
+            className="relative bg-ivory w-full max-w-lg p-10 md:p-14 rounded-sm shadow-luxury overflow-hidden border border-onyx/10 transition-all duration-200"
+          >
               <div className="absolute top-0 right-0 w-48 h-48 bg-gold-500/5 rounded-full blur-3xl"></div>
               
               <button
@@ -305,10 +286,9 @@ export default function Wishlist() {
                   </a>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         )}
-      </AnimatePresence>
     </div>
   );
 }

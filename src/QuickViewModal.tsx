@@ -10,7 +10,6 @@ import {
   ShieldCheck,
   ShoppingBag,
 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import { Product, useStore } from "./store";
 import { formatPrice, optimizeImage, getImageAlt } from "./utils";
 import { ProductDescription } from "./components/ProductDescription";
@@ -77,23 +76,15 @@ export default function QuickViewModal({
   };
 
   return (
-    <AnimatePresence>
-      {product && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="absolute inset-0 bg-primary-950/40 backdrop-blur-sm"
-          />
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div
+        onClick={onClose}
+        className="absolute inset-0 bg-primary-950/40 backdrop-blur-sm transition-opacity duration-200"
+      />
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative bg-white w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col md:flex-row rounded-sm border border-black/5"
-          >
+      <div
+        className="relative bg-white w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col md:flex-row rounded-sm border border-black/5 transition-all duration-200"
+      >
             <button
               onClick={onClose}
               aria-label="Close quick view"
@@ -142,8 +133,8 @@ export default function QuickViewModal({
                  <h2 className="text-xl sm:text-2xl md:text-3xl font-serif text-primary-950 mb-4 font-semibold tracking-[1px] text-center overflow-visible break-words whitespace-normal leading-snug">{product.name}</h2>
                  <div className="flex items-center justify-center gap-3 mb-5 flex-wrap w-full">
                     <span className="text-[24px] font-bold text-price font-price whitespace-nowrap">{formatPrice(product.price)}</span>
-                    <span className="text-[15px] md:text-xl text-primary-950/40 line-through font-medium font-price whitespace-nowrap">MRP {formatPrice(product.originalPrice || product.price * 2)}</span>
-                    <span className="text-[10px] font-sans font-bold text-[#8A6A4A] bg-[#F7F3EE] px-[8px] py-[4px] rounded-[8px] uppercase tracking-[1px] whitespace-nowrap">
+                    <span className="text-[15px] md:text-xl text-[#59524A] line-through font-medium font-price whitespace-nowrap">MRP {formatPrice(product.originalPrice || product.price * 2)}</span>
+                    <span className="text-[10px] font-sans font-bold text-[#6B4C2F] bg-[#F7F3EE] px-[8px] py-[4px] rounded-[8px] uppercase tracking-[1px] whitespace-nowrap">
                       {Math.round((1 - product.price / (product.originalPrice || product.price * 2)) * 100)}% OFF
                     </span>
                  </div>
@@ -215,9 +206,7 @@ export default function QuickViewModal({
                  </div>
               </footer>
             </div>
-          </motion.div>
+          </div>
         </div>
-      )}
-    </AnimatePresence>
   );
 }

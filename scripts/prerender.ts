@@ -299,12 +299,14 @@ export function getFooterHtml(): string {
 
 // Format product card for general grid view
 function getProductCardHtml(p: any): string {
-  const wsrvImg = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=500&fit=contain&output=webp`;
+  const img400 = p.image.includes('ik.imagekit.io') ? (p.image.includes('?') ? `${p.image}&tr=w-400,f-webp,q-75` : `${p.image}?tr=w-400,f-webp,q-75`) : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=400&output=webp`;
+  const img300 = p.image.includes('ik.imagekit.io') ? (p.image.includes('?') ? `${p.image}&tr=w-300,f-webp,q-75` : `${p.image}?tr=w-300,f-webp,q-75`) : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=300&output=webp`;
+  const img600 = p.image.includes('ik.imagekit.io') ? (p.image.includes('?') ? `${p.image}&tr=w-600,f-webp,q-75` : `${p.image}?tr=w-600,f-webp,q-75`) : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=600&output=webp`;
   return `
     <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
       <a href="/product/${p.slug}" style="text-decoration: none; color: inherit; display: block;">
          <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="${wsrvImg}" alt="${sanitize(p.name)}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
+          <img src="${img400}" srcset="${img300} 300w, ${img400} 400w, ${img600} 600w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="${sanitize(p.name)}" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
         <div style="padding: 16px; text-align: left;">
           <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">${sanitize(p.name)}</h3>
@@ -391,8 +393,8 @@ async function runPrerender() {
           }
         </style>
         <div style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden;">
-          <img src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" sizes="(max-width: 768px) 100vw, 768px" width="768" height="1000" fetchpriority="high" loading="eager" decoding="sync" alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978" class="mobile-hero" />
-          <img src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" sizes="(min-width: 768px) 100vw, 1200px" width="1200" height="1000" fetchpriority="high" loading="eager" decoding="sync" alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978" class="desktop-hero" />
+          <img src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" sizes="(max-width: 768px) 100vw, 768px" width="768" height="1000" fetchpriority="high" loading="eager" decoding="async" alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978" class="mobile-hero" />
+          <img src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" sizes="(min-width: 768px) 100vw, 1200px" width="1200" height="1000" loading="lazy" decoding="async" alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978" class="desktop-hero" />
         </div>
         <div style="max-width: 800px; margin: 0 auto; z-index: 10; position: relative;">
           <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED ${BUSINESS_INFO.established}</span>

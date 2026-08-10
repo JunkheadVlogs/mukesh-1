@@ -161,19 +161,19 @@ export default function Cart() {
                           </p>
                           {item.originalPrice && (
                             <>
-                              <p className="text-[9px] sm:text-xs text-primary-950/40 line-through font-medium leading-none mt-0.5">
+                              <p className="text-[9px] sm:text-xs text-[#59524A] line-through font-medium leading-none mt-0.5">
                                 {formatPrice(itemMRP)}
                               </p>
-                              <p className="text-[8px] sm:text-[10px] uppercase tracking-[0.5px] sm:tracking-[1px] font-bold text-[#8A6A4A] mt-0.5 leading-none">
+                              <p className="text-[8px] sm:text-[10px] uppercase tracking-[0.5px] sm:tracking-[1px] font-bold text-[#6B4C2F] mt-0.5 leading-none">
                                 {Math.round((1 - item.price / item.originalPrice) * 100)}% OFF
                               </p>
                             </>
                           )}
                         </div>
                       </div>
-                      <div className="flex flex-wrap gap-x-2 gap-y-0.5 sm:gap-4 text-[9.5px] sm:text-xs font-medium uppercase tracking-wider text-primary-950/50">
+                      <div className="flex flex-wrap gap-x-2 gap-y-0.5 sm:gap-4 text-[9.5px] sm:text-xs font-medium uppercase tracking-wider text-primary-950/80">
                         <p>Category: {item.category}</p>
-                        {item.size && <p className="text-[#8A6A4A] font-semibold">Size: {item.size}</p>}
+                        {item.size && <p className="text-[#6B4C2F] font-semibold">Size: {item.size}</p>}
                       </div>
                     </div>
 

@@ -8,10 +8,49 @@ import { onCLS, onINP, onLCP, onFCP, onTTFB } from 'web-vitals';
 // Startup Diagnostic Hooks
 console.log("[DIAGNOSTIC] Initializing main.tsx...");
 
+let isAppBootstrapped = false;
+
+const isBenignError = (msgStr: string, err?: any, filename?: string): boolean => {
+  const msgLower = String(msgStr || "").toLowerCase();
+  const fileLower = String(filename || "").toLowerCase();
+  const errStr = String(err?.message || err?.stack || err || "").toLowerCase();
+  const text = `${msgLower} ${fileLower} ${errStr}`;
+
+  // 1. Cross-origin script error masking (e.g. Meta Pixel, Meta Event Setup Tool, GTM, Clarity, Extensions)
+  if (
+    msgLower.includes("script error") || 
+    fileLower === ":0" || 
+    fileLower === "" || 
+    fileLower === "null" || 
+    (!err && (!filename || filename === ":0"))
+  ) {
+    return true;
+  }
+
+  // 2. Common third-party SDKs, extension, HMR, WebSocket, or DOM noise
+  const benignPhrases = [
+    "websocket", "web socket", "failed to connect to websocket", "hmr", "hot module", "hot-reload", 
+    "socket closed", "ws://", "wss://", "fbq", "fbevents", "facebook", "connect.facebook.net",
+    "google-analytics", "pinterest", "gtag", "gtm", "clarity", "razorpay", "extensions", "chrome-extension",
+    "moz-extension", "removechild", "not a child of this node", "resizeobserver", "cross-origin", "blocked a frame"
+  ];
+
+  return benignPhrases.some(phrase => text.includes(phrase));
+};
+
 const showErrorOnScreen = (message: string, error?: any) => {
   try {
     console.error("[DIAGNOSTIC CRITICAL FAILURE]", message, error);
     
+    // Once React app has successfully bootstrapped, do not display full-screen overlay for runtime errors
+    if (isAppBootstrapped) {
+      return;
+    }
+
+    if (document.getElementById("diagnostic-error-overlay")) {
+      return;
+    }
+
     // Create a dynamic, highly-visible overlay to bypass the loading screen and show the error details directly in preview
     const errorBox = document.createElement("div");
     errorBox.id = "diagnostic-error-overlay";
@@ -29,8 +68,10 @@ const showErrorOnScreen = (message: string, error?: any) => {
     let stack = "";
     if (error && error.stack) {
       stack = error.stack;
-    } else if (typeof error === 'object') {
+    } else if (error && typeof error === 'object') {
       stack = JSON.stringify(error, null, 2);
+    } else if (error) {
+      stack = String(error);
     }
     
     errorBox.innerHTML = `
@@ -55,32 +96,14 @@ const showErrorOnScreen = (message: string, error?: any) => {
 };
 
 window.addEventListener('error', (event) => {
-  const isBenignError = (msgStr: string, err?: any): boolean => {
-    const text = (msgStr + " " + (err?.message || "") + " " + (err?.stack || "")).toLowerCase();
-    return [
-      "websocket", "web socket", "failed to connect to websocket", "hmr", "hot module", "hot-reload", 
-      "socket closed", "ws://", "wss://", "fbq", "google-analytics", "pinterest", "gtag", "extensions",
-      "removechild", "not a child of this node"
-    ].some(phrase => text.includes(phrase));
-  };
-
-  if (isBenignError(event.message || "", event.error)) {
-    console.warn("[DIAGNOSTIC SILENT] Ignored benign/HMR WebSocket or DOM extension error:", event.message);
+  if (isBenignError(event.message || "", event.error, event.filename)) {
+    console.warn("[DIAGNOSTIC SILENT] Ignored benign/HMR or cross-origin script error:", event.message);
     return;
   }
   showErrorOnScreen(`Global Error: ${event.message} in ${event.filename}:${event.lineno}`, event.error);
 });
 
 window.addEventListener('unhandledrejection', (event) => {
-  const isBenignError = (reasonStr: string, err?: any): boolean => {
-    const text = (reasonStr + " " + (err?.message || "") + " " + (err?.stack || "")).toLowerCase();
-    return [
-      "websocket", "web socket", "failed to connect to websocket", "hmr", "hot module", "hot-reload", 
-      "socket closed", "ws://", "wss://", "fbq", "google-analytics", "pinterest", "gtag", "extensions",
-      "removechild", "not a child of this node"
-    ].some(phrase => text.includes(phrase));
-  };
-
   const reasonMsg = event.reason?.message || String(event.reason);
   if (isBenignError(reasonMsg, event.reason)) {
     console.warn("[DIAGNOSTIC SILENT] Ignored benign/HMR unhandled promise rejection:", reasonMsg);
@@ -119,6 +142,7 @@ try {
     </StrictMode>,
   );
   console.log("[DIAGNOSTIC] App main render call completed successfully.");
+  isAppBootstrapped = true;
 
   // Safely dismiss initial page loader after React mounts
   setTimeout(() => {

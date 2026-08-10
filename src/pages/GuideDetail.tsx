@@ -667,7 +667,7 @@ export default function GuideDetail() {
                             ₹{product.price}
                           </span>
                           {product.originalPrice && product.originalPrice > product.price && (
-                            <span className="text-xs text-[#8C827A] line-through">
+                            <span className="text-xs text-[#59524A] line-through">
                               ₹{product.originalPrice}
                             </span>
                           )}

@@ -1,6 +1,5 @@
 import type { FormEvent } from "react";
 import { useEffect, useState, useRef } from "react";
-import { motion } from "motion/react";
 import { SEO } from "./components/SEO";
 import { Link, useNavigate } from "react-router";
 import { useStore } from "./store";

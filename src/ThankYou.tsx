@@ -1,4 +1,3 @@
-import { motion } from "motion/react";
 import { Link, useLocation } from "react-router";
 import { CheckCircle2, Printer, MapPin, Phone, Mail, Calendar, CreditCard, ShoppingBag, ArrowLeft } from "lucide-react";
 import { SEO } from "./components/SEO";
@@ -680,22 +679,14 @@ export default function ThankYou() {
         url="/thank-you"
       />
 
-      {/* Confetti Animation Layer (Hidden on print) */}
+      {/* Confetti Layer (Hidden on print) */}
       <div className="no-print">
-        {[...Array(12)].map((_, i) => (
-          <motion.div
+        {[...Array(6)].map((_, i) => (
+          <div
             key={i}
-            initial={{ opacity: 0, y: 0, x: 0, scale: 0 }}
-            animate={{ 
-              opacity: [0, 1, 0], 
-              y: -120 - Math.random() * 120, 
-              x: (Math.random() - 0.5) * 240,
-              scale: [0, 1.4, 0.4] 
-            }}
-            transition={{ duration: 2.2, ease: "easeOut", delay: i * 0.12 }}
             className={`absolute w-2 h-2 rounded-full ${['bg-gold-400', 'bg-gold-600', 'bg-amber-700'][i % 3]} opacity-60`}
             style={{ 
-              top: '25%', left: '50%', 
+              top: '25%', left: `${40 + i * 4}%`, 
               marginTop: '-50px',
               zIndex: 1
             }}
@@ -706,52 +697,38 @@ export default function ThankYou() {
       <div className="max-w-3xl mx-auto z-10 relative">
         
         {isPaidOnline && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="no-print mb-6 p-4 bg-[#2D452F] text-amber-50 rounded-sm text-center text-xs sm:text-sm font-semibold tracking-wide shadow-md border border-[#2D452F]/20 flex items-center justify-center gap-2 animate-bounce-short"
+          <div
+            className="no-print mb-6 p-4 bg-[#2D452F] text-amber-50 rounded-sm text-center text-xs sm:text-sm font-semibold tracking-wide shadow-md border border-[#2D452F]/20 flex items-center justify-center gap-2"
           >
             <span className="text-sm">🎉</span> Your order has been placed successfully and payment has been received.
-          </motion.div>
+          </div>
         )}
 
         {/* SUCCESS HEADER - HIDDEN ON PRINT */}
         <div className="no-print text-center mb-6 md:mb-8">
-          <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          <div 
             className="w-12 h-12 md:w-14 md:h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3.5 border border-green-200 shadow-sm"
           >
             <CheckCircle2 size={24} className="text-green-500" strokeWidth={1.5} />
-          </motion.div>
+          </div>
           
-          <motion.h1 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
+          <h1 
             className="text-xl md:text-2xl font-serif text-[#1A0A00] tracking-wide mb-2 font-medium"
           >
             Order Confirmed
-          </motion.h1>
+          </h1>
           
-          <motion.p 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
+          <p 
             className="text-[#1A0A00]/70 max-w-md mx-auto text-xs sm:text-sm leading-relaxed mb-4"
           >
             Thank you for shopping at Mukesh Saree Centre! Your payment and order details have been secured. We are now preparing your heritage sarees for delivery.
-          </motion.p>
+          </p>
 
-          <motion.div
-             initial={{ y: 20, opacity: 0 }}
-             animate={{ y: 0, opacity: 1 }}
-             transition={{ delay: 0.25 }}
+          <div
              className="inline-block bg-white border border-[#2D452F]/15 text-[#2D452F] text-[11px] sm:text-xs px-4 py-1.5 rounded-full font-medium shadow-sm mb-2"
           >
              Estimated Dispatch: <strong className="font-semibold">3-5 Business Days</strong>
-          </motion.div>
+          </div>
         </div>
 
         {/* PRINT CONTROLS / NAVIGATION TABS - HIDDEN ON PRINT */}
@@ -786,9 +763,7 @@ export default function ThankYou() {
 
         {/* PAYMENT STATUS BANNERS */}
         {isPaidOnline && (
-          <motion.div
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
+          <div
             className="no-print mb-6 p-5 bg-gradient-to-r from-emerald-50/40 to-teal-50/40 border border-emerald-600/20 rounded-sm text-emerald-900 text-left flex items-start gap-3.5 shadow-sm bg-white"
           >
             <div className="w-9 h-9 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0 text-emerald-600">
@@ -814,13 +789,11 @@ export default function ThankYou() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {!isPaidOnline && printableCustomer.paymentMethod !== 'cod' && (
-          <motion.div
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
+          <div
             className="no-print mb-6 p-4 sm:p-5 bg-gradient-to-r from-amber-50/50 to-orange-50/50 border border-amber-500/20 rounded-sm text-amber-800 text-left flex items-start gap-3.5 shadow-sm bg-white"
           >
             <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0 text-amber-600">
@@ -848,7 +821,7 @@ export default function ThankYou() {
                 </Link>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* PRINTABLE BOUTIQUE INVOICE CARD */}

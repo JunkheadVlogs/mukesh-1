@@ -2,7 +2,6 @@ import type { ChangeEvent } from "react";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useSearchParams, Link } from "react-router";
 import { Filter, ChevronDown, Eye, X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import { products } from "./mockData";
 import { formatPrice, optimizeImage } from "./utils";
 import { searchProducts } from "./services/search";
@@ -558,17 +557,12 @@ export default function Shop() {
 
         <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-12">
           {/* Mobile Filter Backdrop */}
-          <AnimatePresence>
-            {isFilterOpen && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/40 z-[60] lg:hidden backdrop-blur-sm"
-                onClick={() => setIsFilterOpen(false)}
-              />
-            )}
-          </AnimatePresence>
+          {isFilterOpen && (
+            <div
+              className="fixed inset-0 bg-black/40 z-[60] lg:hidden backdrop-blur-sm transition-opacity duration-200"
+              onClick={() => setIsFilterOpen(false)}
+            />
+          )}
 
           {/* Sidebar Filters */}
           <aside
@@ -591,13 +585,13 @@ export default function Shop() {
             <div className="space-y-4 lg:space-y-10">
               {/* Category */}
               <section className="category-filter-section">
-                <h3 className="category-filter-heading text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-1.5 lg:mb-6">
+                <h3 className="category-filter-heading text-[10px] uppercase tracking-[2px] font-bold text-primary-950/75 mb-1.5 lg:mb-6">
                   Category
                 </h3>
                 <div className="category-filter-links flex flex-col gap-1.5 lg:gap-3">
                   <button
                     onClick={() => handleCategoryChange(null)}
-                    className={`category-filter-btn text-left text-sm font-medium transition-all ${!categoryFilter ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
+                    className={`category-filter-btn text-left text-sm font-medium transition-all ${!categoryFilter ? "text-gold-600 font-bold" : "text-primary-950/80 hover:text-primary-950"}`}
                   >
                     All Collection
                   </button>
@@ -605,30 +599,28 @@ export default function Shop() {
                   <div className="flex flex-col gap-1 lg:gap-2">
                     <button
                       onClick={() => handleCategoryChange("Sarees")}
-                      className={`category-filter-btn text-left text-sm font-medium transition-all ${categoryFilter === "Sarees" || categoryFilter === "Linen Sarees" ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
+                      className={`category-filter-btn text-left text-sm font-medium transition-all ${categoryFilter === "Sarees" || categoryFilter === "Linen Sarees" ? "text-gold-600 font-bold" : "text-primary-950/80 hover:text-primary-950"}`}
                     >
                       Sarees
                     </button>
                     {(categoryFilter === "Sarees" ||
                       categoryFilter === "Linen Sarees") && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        className="pl-4 flex flex-col gap-1 lg:gap-2 border-l border-gold-500/20 ml-1 overflow-hidden"
+                      <div
+                        className="pl-4 flex flex-col gap-1 lg:gap-2 border-l border-gold-500/20 ml-1 overflow-hidden transition-all duration-200"
                       >
                         <button
                           onClick={() => handleCategoryChange("Linen Sarees")}
-                          className={`category-filter-btn text-left text-xs font-medium transition-all py-0.5 lg:py-1 ${categoryFilter === "Linen Sarees" ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
+                          className={`category-filter-btn text-left text-xs font-medium transition-all py-0.5 lg:py-1 ${categoryFilter === "Linen Sarees" ? "text-gold-600 font-bold" : "text-primary-950/80 hover:text-primary-950"}`}
                         >
                           — Linen Sarees
                         </button>
-                      </motion.div>
+                      </div>
                     )}
                   </div>
 
                   <button
                     onClick={() => handleCategoryChange("Co-Ord Sets")}
-                    className={`category-filter-btn text-left text-sm font-medium transition-all ${categoryFilter === "Co-Ord Sets" ? "text-gold-600 font-bold" : "text-primary-950/60 hover:text-primary-950"}`}
+                    className={`category-filter-btn text-left text-sm font-medium transition-all ${categoryFilter === "Co-Ord Sets" ? "text-gold-600 font-bold" : "text-primary-950/80 hover:text-primary-950"}`}
                   >
                     Co-Ord Sets
                   </button>
@@ -637,7 +629,7 @@ export default function Shop() {
 
               {/* Fabric */}
               <section className="fabric-filter-section !mt-4 lg:!mt-10">
-                <h3 className="fabric-filter-heading text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-6">
+                <h3 className="fabric-filter-heading text-[10px] uppercase tracking-[2px] font-bold text-primary-950/75 mb-6">
                   Fabric
                 </h3>
                 <div className="fabric-filter-options flex flex-col gap-3">
@@ -651,7 +643,7 @@ export default function Shop() {
                         className={`w-4 h-4 border rounded-sm transition-all ${fabricFilter.includes(fabric) ? "bg-gold-500 border-gold-500" : "border-black/10 group-hover:border-black/30"}`}
                       />
                       <span
-                        className={`text-sm transition-colors ${fabricFilter.includes(fabric) ? "text-primary-950 font-bold" : "text-primary-950/60 group-hover:text-primary-950"}`}
+                        className={`text-sm transition-colors ${fabricFilter.includes(fabric) ? "text-primary-950 font-bold" : "text-primary-950/80 group-hover:text-primary-950"}`}
                       >
                         {fabric}
                       </span>
@@ -662,7 +654,7 @@ export default function Shop() {
 
               {/* Price Range Placeholder */}
               <section>
-                <h3 className="text-[10px] uppercase tracking-[2px] font-bold text-primary-950/30 mb-6">
+                <h3 className="text-[10px] uppercase tracking-[2px] font-bold text-primary-950/75 mb-6">
                   Selection Benefit
                 </h3>
                 <div className="bg-discount-bg p-4 rounded-sm border border-discount/10">

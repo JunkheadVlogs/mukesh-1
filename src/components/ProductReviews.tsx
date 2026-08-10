@@ -2,7 +2,6 @@ import React, { useMemo, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Product, Review } from "../store";
 import { Star, ShieldCheck, ChevronDown, X, Camera, Image as ImageIcon, Loader2, Trash2 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import { getProductReviewStats, getSeededRandom } from "../utils";
 import { safeLocalStorage } from "../utils/safeStorage";
 
@@ -412,16 +411,11 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
       </div>
 
       {createPortal(
-        <AnimatePresence>
-          {isWritingReview && (
-            <div className="fixed inset-0 z-[1005] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-[2px]">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                className="bg-[#FCFAF7] w-full max-w-[450px] max-h-[92vh] sm:max-h-[90vh] overflow-hidden rounded-[20px] shadow-2xl relative flex flex-col border border-[#C8A96B]/20"
-              >
+        isWritingReview && (
+          <div className="fixed inset-0 z-[1005] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-[2px]">
+            <div
+              className="bg-[#FCFAF7] w-full max-w-[450px] max-h-[92vh] sm:max-h-[90vh] overflow-hidden rounded-[20px] shadow-2xl relative flex flex-col border border-[#C8A96B]/20 transition-all duration-200"
+            >
                 {/* Header - Fixed & Compact */}
                 <div className="bg-white px-4 sm:px-6 py-3 sm:py-4 border-b border-[#C8A96B]/15 flex justify-between items-center flex-shrink-0">
                   <div>
@@ -628,10 +622,9 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
                     </form>
                   )}
                 </div>
-              </motion.div>
+              </div>
             </div>
-          )}
-        </AnimatePresence>,
+          ),
         document.body,
       )}
 
@@ -695,17 +688,13 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
         {/* Review List */}
         <div className="lg:col-span-8">
           <div className="flex flex-col gap-3">
-            <AnimatePresence initial={false}>
               {reviews.slice(0, visibleCount).map((review: EnhancedReview) => {
                 const initial = review.author.charAt(0).toUpperCase();
 
                 return (
-                  <motion.div
+                  <div
                     key={review.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="pb-3 border-b border-[var(--color-border)] last:border-0"
+                    className="pb-3 border-b border-[var(--color-border)] last:border-0 transition-opacity duration-200"
                   >
                     <div className="flex items-start gap-3 md:gap-4">
                       <div className="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center font-serif text-[13px] md:text-[14px] bg-[var(--color-bg)] text-[var(--color-dark)] border border-[var(--color-border)] flex-shrink-0">
@@ -792,10 +781,9 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
                         )}
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
-            </AnimatePresence>
           </div>
 
           {visibleCount < reviews.length && (
@@ -816,34 +804,28 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
       </div>
 
       {createPortal(
-        <AnimatePresence>
-          {selectedFullImage && (
-            <div
-              className="fixed inset-0 z-[1100] bg-black/95 backdrop-blur-xs flex items-center justify-center p-4 cursor-zoom-out"
+        selectedFullImage && (
+          <div
+            className="fixed inset-0 z-[1100] bg-black/95 backdrop-blur-xs flex items-center justify-center p-4 cursor-zoom-out"
+            onClick={() => setSelectedFullImage(null)}
+          >
+            <button
               onClick={() => setSelectedFullImage(null)}
+              className="absolute top-4 right-4 text-white/75 hover:text-white bg-white/10 p-2.5 rounded-full backdrop-blur-md transition-all duration-200 z-50 hover:bg-white/20"
+              aria-label="Close image"
             >
-              <button
-                onClick={() => setSelectedFullImage(null)}
-                className="absolute top-4 right-4 text-white/75 hover:text-white bg-white/10 p-2.5 rounded-full backdrop-blur-md transition-all duration-200 z-50 hover:bg-white/20"
-                aria-label="Close image"
-              >
-                <X size={20} strokeWidth={2} />
-              </button>
-              <motion.img
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                src={selectedFullImage}
-                alt="Enlarged Review Saree Drape attachment"
-                className="max-w-full max-h-[85vh] sm:max-h-[90vh] object-contain rounded-lg shadow-2xl"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-                onClick={(e) => e.stopPropagation()}
-              />
-            </div>
-          )}
-        </AnimatePresence>,
+              <X size={20} strokeWidth={2} />
+            </button>
+            <img
+              src={selectedFullImage}
+              alt="Enlarged Review Saree Drape attachment"
+              className="max-w-full max-h-[85vh] sm:max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-200"
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        ),
         document.body,
       )}
     </div>
