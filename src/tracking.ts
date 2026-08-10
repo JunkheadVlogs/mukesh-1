@@ -126,7 +126,7 @@ export const initMetaPixel = () => {
     }
   })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
 
-  const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1361999902797117"; // Fallback to provided defaults if none configured
+  const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984"; // Fallback to provided defaults if none configured
   if (pixelId) {
     const extId = getExternalId();
     const initUserData: any = { external_id: extId };
@@ -163,7 +163,7 @@ if (typeof window !== "undefined") {
 // Dynamically updates Meta Pixel user properties matching the active session
 export const updateTrackerUserData = (userData: { email?: string; phone?: string; name?: string; city?: string; zip?: string }) => {
   if (typeof window !== "undefined") {
-    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1361999902797117";
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984";
     if (pixelId && (window as any).fbq) {
       const extId = getExternalId();
       const pixelUserData: any = { external_id: extId };
@@ -315,7 +315,7 @@ export const trackViewContent = (product: any) => {
     const userMatch = getAdvancedMatchingData();
 
     // Reinit Pixel to boost EMQ before track
-    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1361999902797117";
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984";
     if ((window as any).fbq) {
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
@@ -380,7 +380,7 @@ export const trackAddToCart = (product: any, quantity: number = 1) => {
     const userMatch = getAdvancedMatchingData();
 
     // Reinit Pixel to boost EMQ before track
-    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1361999902797117";
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984";
     if ((window as any).fbq) {
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
@@ -444,7 +444,7 @@ export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
     const userMatch = getAdvancedMatchingData();
 
     // Reinit Pixel to boost EMQ before track
-    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1361999902797117";
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984";
     if ((window as any).fbq) {
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
@@ -515,7 +515,7 @@ export const trackPurchase = (totalValue: number, items: any[], transactionId: s
     const userMatch = getAdvancedMatchingData();
 
     // Reinit Pixel to boost EMQ before track
-    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1361999902797117";
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984";
     if ((window as any).fbq) {
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
@@ -672,7 +672,7 @@ export const trackLead = (userData?: { email?: string; phone?: string; name?: st
     const userMatch = getAdvancedMatchingData();
 
     // Reinit Pixel to boost EMQ before track
-    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1361999902797117";
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984";
     if ((window as any).fbq) {
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }
@@ -714,7 +714,7 @@ export const trackContact = (userData?: { email?: string; phone?: string; name?:
     const userMatch = getAdvancedMatchingData();
 
     // Reinit Pixel to boost EMQ before track
-    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1361999902797117";
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984";
     if ((window as any).fbq) {
       (window as any).fbq("init", pixelId, { external_id: extId, ...userMatch });
     }

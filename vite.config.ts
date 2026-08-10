@@ -12,7 +12,7 @@ export default defineConfig(({mode}) => {
   // This satisfies Cause B by hardcoding fallbacks in vite.config.ts define block 
   // while keeping them fully overridable when .env or environment variables are supplied.
   const fallbacks: Record<string, string> = {
-    VITE_META_PIXEL_ID: '1361999902797117',
+    VITE_META_PIXEL_ID: '1458541922085984',
     VITE_FB_DOMAIN_VERIFY: 'kjvbvikfmctlsdfygll3tadkpzty8a',
     VITE_GTM_ID: '',
     VITE_GA4_ID: '',

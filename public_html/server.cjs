@@ -915,7 +915,7 @@ async function setupServer() {
         }
         let html = import_fs.default.readFileSync(selectedIndexPath, "utf-8");
         const fallbacks = {
-          VITE_META_PIXEL_ID: "1361999902797117",
+          VITE_META_PIXEL_ID: "1458541922085984",
           VITE_FB_DOMAIN_VERIFY: "",
           VITE_GTM_ID: "GTM-WMG3G6SM",
           VITE_GA4_ID: "G_GA4_MEASUREMENT_ID",
