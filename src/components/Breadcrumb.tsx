@@ -14,7 +14,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
     <nav 
       aria-label="Breadcrumb" 
-      className="bg-white px-4 sm:px-6 lg:px-8 pt-6 pb-4 border-b border-[#FAF8F5] relative z-20 w-full"
+      className="bg-white px-4 sm:px-6 lg:px-8 pt-2 md:pt-6 pb-2 md:pb-4 border-b border-[#FAF8F5] relative z-20 w-full"
       style={{ 
         overflow: 'visible',
         display: 'block'

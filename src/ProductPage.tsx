@@ -1088,39 +1088,39 @@ export default function ProductPage() {
           <div className="w-full lg:w-[46%] xl:w-[48%] px-0">
             <div className="pb-4 lg:pb-12">
               <header className="product-info-section flex flex-col items-start text-left mt-0 mb-1">
-                {/* SKU + Category row compact */}
-                <div className="product-meta-row select-none">
+                {/* SKU + Category row - Centered, small font, breathable spacing */}
+                <div className="product-meta-row w-full flex flex-wrap items-center justify-center text-center gap-2 sm:gap-2.5 my-2.5 py-1 select-none text-[10px] sm:text-[11px] text-neutral-500 font-medium tracking-wider uppercase">
                   <span className="category">
                     {product.category}
                   </span>
                   {product.sku && (
                     <>
-                      <span className="separator">|</span>
-                      <span className="sku">
+                      <span className="text-neutral-300 font-normal">•</span>
+                      <span className="sku font-mono tracking-wider">
                         SKU: {product.sku}
                       </span>
                     </>
                   )}
                   {product.isNew && (
                     <>
-                      <span className="separator">|</span>
-                      <span className="trending-tag">
+                      <span className="text-neutral-300 font-normal">•</span>
+                      <span className="trending-tag text-[9px] font-bold text-[#C8A96B] bg-[#C8A96B]/10 px-2 py-0.5 rounded-full tracking-widest">
                         NEW
                       </span>
                     </>
                   )}
                   {product.isTrending && (
                     <>
-                      <span className="separator">|</span>
-                      <span className="trending-tag">
+                      <span className="text-neutral-300 font-normal">•</span>
+                      <span className="trending-tag text-[9px] font-bold text-[#C8A96B] bg-[#C8A96B]/10 px-2 py-0.5 rounded-full tracking-widest">
                         TRENDING
                       </span>
                     </>
                   )}
                   {product.isBestSelling && (
                     <>
-                      <span className="separator">|</span>
-                      <span className="trending-tag">
+                      <span className="text-neutral-300 font-normal">•</span>
+                      <span className="trending-tag text-[9px] font-bold text-[#C8A96B] bg-[#C8A96B]/10 px-2 py-0.5 rounded-full tracking-widest">
                         BEST SELLER
                       </span>
                     </>
@@ -1128,7 +1128,7 @@ export default function ProductPage() {
                 </div>
 
                 <h1
-                  className="product-title font-serif text-[var(--color-dark)] font-normal"
+                  className="product-title font-serif text-[var(--color-dark)] font-normal text-[18px] sm:text-[22px] lg:text-[28px] leading-[1.25] lg:leading-[1.2] mb-1.5 lg:mb-3"
                   title={product.name}
                 >
                   {product.name}
@@ -1138,63 +1138,43 @@ export default function ProductPage() {
               </header>
 
               {/* Product Info Section wrapping clean, non-overlapping rows */}
-              <div className="product-info-section px-0 py-2 border-b border-[var(--color-border)] mb-4">
-                {/* ROW 1 — Price + Share + WhatsApp all on ONE single line */}
-                <div className="price-action-row price-section">
-                  <div className="price-group">
-                    <span className="price-main text-[var(--color-dark)] font-serif leading-none tracking-wide text-[22px]">
-                      {formatPrice(product.price)}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="price-mrp line-through font-light leading-none">
-                        MRP {formatPrice(product.originalPrice)}
-                      </span>
-                    )}
-                    {product.originalPrice &&
-                    product.originalPrice > product.price && (
-                      <span className="price-off-badge font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] tracking-wide">
-                        {Math.round(
-                          ((product.originalPrice - product.price) /
-                            product.originalPrice) *
-                            100,
-                        )}
-                        % OFF
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="buttons-group">
-                    <button
-                      onClick={handleShare}
-                      className="share-btn border border-[var(--color-border)] bg-transparent hover:bg-[var(--color-gold-light)]/10 text-[var(--color-gold-dark)] transition-colors"
-                      aria-label="Share Product"
-                      title={copied ? "Link Copied!" : "Share Product"}
-                    >
-                      {copied ? (
-                        <CheckCircle className="w-[18px] h-[18px] text-emerald-600" />
-                      ) : (
-                        <Share2 className="w-[18px] h-[18px]" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1 bg-emerald-50 text-emerald-700 px-1.5 py-0 rounded-sm border border-emerald-100/50 w-fit">
-                  <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  <span className="text-[9.5px] sm:text-[10px] font-medium tracking-wide leading-none py-0.5">
-                    Save <strong className="font-bold">₹50 EXTRA</strong> on Prepaid Online Orders
+              <div className="product-info-section px-0 py-1.5 border-b border-[var(--color-border)] mb-3 space-y-2">
+                {/* ROW 1 — Price Row with % OFF + Urgency Pop on the SAME line */}
+                <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap sm:flex-nowrap leading-none">
+                  <span className="text-[20px] sm:text-[22px] font-serif font-medium text-[var(--color-dark)] leading-none tracking-wide">
+                    {formatPrice(product.price)}
                   </span>
+                  {product.originalPrice && (
+                    <span className="text-[12px] sm:text-[13px] text-gray-400 line-through font-light leading-none whitespace-nowrap">
+                      MRP {formatPrice(product.originalPrice)}
+                    </span>
+                  )}
+                  {product.originalPrice &&
+                  product.originalPrice > product.price && (
+                    <span className="text-[10px] font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] px-1.5 py-0.5 rounded-sm tracking-wider uppercase leading-none whitespace-nowrap flex-shrink-0">
+                      {Math.round(
+                        ((product.originalPrice - product.price) /
+                          product.originalPrice) *
+                          100,
+                      )}
+                      % OFF
+                    </span>
+                  )}
+
+                  {/* Urgency Pop on the SAME line after % OFF */}
+                  <div className="flex-shrink-0">
+                    <LiveViewerCounter productId={product.id} category={product.category} />
+                  </div>
                 </div>
 
-                {/* ROW 2 — Ratings + urgency badge */}
-                <div className="rating-badge-row rating-section badge-section">
+                {/* ROW 2 — Combined Row: Star rating + Prepaid Savings Badge + Share Button */}
+                <div className="flex items-center justify-between gap-1.5 sm:gap-3 w-full pt-0.5">
+                  {/* a) Star rating + review count */}
                   <a
                     href="#reviews"
-                    className="flex items-center gap-1.5 hover:opacity-80 transition-opacity flex-shrink-0"
+                    className="flex items-center gap-1 hover:opacity-80 transition-opacity flex-shrink-0"
                   >
-                    <div className="flex items-center gap-[2px] rating-stars">
+                    <div className="flex items-center gap-[1px]">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
@@ -1208,14 +1188,34 @@ export default function ProductPage() {
                         />
                       ))}
                     </div>
-                    <span className="text-[11px] sm:text-[12px] text-[#9CA3AF] font-medium leading-none hover:underline underline-offset-4 decoration-[#9CA3AF] whitespace-nowrap">
+                    <span className="text-[10px] sm:text-[11px] text-[#9CA3AF] font-medium leading-none whitespace-nowrap">
                       ({product.reviewsCount || stats.reviewCount})
                     </span>
                   </a>
-                  <span className="text-[#9CA3AF] text-[11px] sm:text-[12px] font-light flex-shrink-0 px-0.5 select-none opacity-60">|</span>
-                  <div className="flex-shrink-0">
-                    <LiveViewerCounter productId={product.id} category={product.category} />
+
+                  {/* b) "⚡ Save ₹50 Extra on Prepaid Online Orders" badge */}
+                  <div className="flex items-center gap-1 bg-emerald-50 text-emerald-800 px-1.5 py-0.5 rounded-sm border border-emerald-200/60 flex-shrink min-w-0">
+                    <svg className="w-2.5 h-2.5 flex-shrink-0 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span className="text-[9px] sm:text-[10px] font-medium tracking-wide leading-none whitespace-nowrap truncate">
+                      Save <strong className="font-bold">₹50 EXTRA</strong> on Prepaid
+                    </span>
                   </div>
+
+                  {/* c) Share button — compact icon-only button */}
+                  <button
+                    onClick={handleShare}
+                    className="flex items-center justify-center p-1 sm:p-1.5 text-gray-500 hover:text-[var(--color-gold-dark)] hover:bg-black/5 rounded-full transition-colors flex-shrink-0"
+                    aria-label="Share Product"
+                    title={copied ? "Link Copied!" : "Share Product"}
+                  >
+                    {copied ? (
+                      <CheckCircle className="w-4 h-4 text-emerald-600" />
+                    ) : (
+                      <Share2 className="w-4 h-4" />
+                    )}
+                  </button>
                 </div>
               </div>
 
@@ -1452,7 +1452,7 @@ export default function ProductPage() {
         {/* Related Section */}
         <section className="mt-2 md:mt-12 px-4 md:px-0 pb-4 md:pb-12">
           <div className="flex justify-between items-center mb-4 md:mb-6">
-            <h2 className="text-xl md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide">
+            <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide leading-tight md:leading-normal">
               Similar & Related Products
             </h2>
             <Link

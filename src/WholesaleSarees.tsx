@@ -220,7 +220,7 @@ export default function WholesaleSarees() {
       </header>
 
       {/* HERO SECTION */}
-      <section className="relative px-4 pt-12 pb-14 text-center overflow-hidden bg-gradient-to-b from-white to-[#FAF6F0]">
+      <section className="relative px-4 pt-4 md:pt-12 pb-8 md:pb-14 text-center overflow-hidden bg-gradient-to-b from-white to-[#FAF6F0]">
         <div className="max-w-2xl mx-auto">
           {/* Authentic Minimal VIP club tag */}
           <span className="inline-block px-4 py-1.5 bg-[#5C0612]/5 text-[#5C0612] text-[10px] tracking-[4px] uppercase font-bold rounded-full mb-5 border border-[#5C0612]/10">

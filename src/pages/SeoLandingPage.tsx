@@ -1263,7 +1263,7 @@ export default function SeoLandingPage() {
       />
 
       {/* Header Section */}
-      <div className="bg-[#2C241B] text-white py-16 md:py-24">
+      <div className="bg-[#2C241B] text-white py-8 md:py-24">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <nav
             className="flex text-sm text-[var(--color-light)]/60 mb-6"

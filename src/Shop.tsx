@@ -440,25 +440,16 @@ export default function Shop() {
         className="shop-container max-w-[1600px] mx-auto pt-0 pb-8 mt-0 w-full"
         style={{ minHeight: "auto" }}
       >
-        {/* ROW 1: Shop All Heading */}
-        <div className="collection-header-wrapper" style={{ margin: "4px 0", padding: "0 8px" }}>
-          <h1
-            className="collection-hero__title for-seo-only font-serif text-[var(--color-dark)] tracking-wide flex items-baseline gap-2"
-            style={{ fontSize: "18px", margin: "0", lineHeight: "1.2", fontWeight: "normal" }}
-          >
-            <span className="collection-title-text">
-              {seoData.heading}
-            </span>
-            <span className="product-count product-count__text text-[12px] font-sans text-neutral-500 tracking-wider font-normal lowercase normal-case whitespace-nowrap">
-              ({filteredAndSortedProducts.length} items)
-            </span>
-          </h1>
-          {(categoryFilter === "Linen Sarees" || path.includes("linen-sarees") || fabricFilter.includes("Linen")) && (
-            <LinenStylingGuide />
-          )}
-        </div>
+        {/* SEO Header (visually hidden to avoid empty gap) */}
+        <h1 className="sr-only">{seoData.heading}</h1>
 
-        {/* ROW 2: Filters and Sort by Buttons */}
+        {(categoryFilter === "Linen Sarees" || path.includes("linen-sarees") || fabricFilter.includes("Linen")) && (
+          <div className="mb-2">
+            <LinenStylingGuide />
+          </div>
+        )}
+
+        {/* ROW 1: Filters and Sort by Buttons */}
         <div className="controls-bar flex flex-row items-center gap-2" style={{ display: "flex", flexDirection: "row", gap: "8px", alignItems: "center", margin: "0 0 2px 0", width: "100%" }}>
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -521,7 +512,7 @@ export default function Shop() {
         </div>
 
         {/* ROW 3: Category Filter Pills Row (Sticky and Mobile-optimized scrollable row) */}
-        <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto select-none scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto sticky top-[91px] z-40 bg-[#FAF7F2] border-b border-gray-100/80" style={{ marginBottom: "2px", marginTop: "0", paddingTop: "2px", paddingBottom: "2px" }}>
+        <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto select-none scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto sticky top-[76px] md:top-[91px] z-40 bg-[#FAF7F2] border-b border-gray-100/80" style={{ marginBottom: "2px", marginTop: "0", paddingTop: "2px", paddingBottom: "2px" }}>
           {[
             { label: "All", value: null },
             { label: "Co-Ord Sets", value: "Co-Ord Sets" },
@@ -683,14 +674,14 @@ export default function Shop() {
               </div>
             )}
             {isLoading ? (
-              <div className="product-grid">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full">
                 {[...Array(8)].map((_, i) => (
                   <ProductCardSkeleton key={i} />
                 ))}
               </div>
             ) : filteredAndSortedProducts.length > 0 ? (
               <div className="flex flex-col items-center w-full">
-                <div className="product-grid w-full">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full">
                   {visible.map((product, idx) => (
                     <ProductCard
                       key={product.id}
@@ -745,7 +736,7 @@ export default function Shop() {
                   <h4 className="text-xs uppercase tracking-[2px] font-bold text-primary-950/40 mb-6 text-center">
                     Discover Our Bestselling Masterpieces
                   </h4>
-                  <div className="product-grid">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full">
                     {products
                       .filter((p) => !p.isVariant && (p.isBestSelling || p.isTrending || p.isNew))
                       .slice(0, 4)

@@ -123,12 +123,12 @@ export const LiveViewerCounter: React.FC<Props> = ({ productId, category }) => {
   if (!currentMessage) return null;
 
   return (
-    <div className="inline-flex items-center min-h-[20px] select-none">
+    <div className="inline-flex items-center select-none">
       <div
         key={`${productId}_${currentIndex}`}
-        className="urgency-badge inline-flex items-center gap-1.5 bg-[#FAF6F0] border border-[#C8A96B]/25 rounded-full px-3.5 py-1 text-[10.5px] sm:text-[11px] font-medium tracking-wide text-[#2b2b2b] shadow-[0_2px_8px_rgba(200,169,107,0.06)] hover:scale-[1.01] hover:border-[#C8A96B]/40 hover:shadow-[0_4px_12px_rgba(200,169,107,0.1)] transition-all duration-300 cursor-default"
+        className="urgency-badge inline-flex items-center gap-1 bg-[#FAF6F0] border border-[#C8A96B]/30 rounded-full px-2 sm:px-2.5 py-0.5 text-[9.5px] sm:text-[10.5px] font-medium tracking-wide text-[#2b2b2b] shadow-xs hover:border-[#C8A96B]/50 transition-all duration-300 cursor-default whitespace-nowrap"
       >
-        <span className="text-[12px] leading-none filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.08)]">
+        <span className="text-[11px] sm:text-[12px] leading-none filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.08)]">
           {currentMessage.icon}
         </span>
         <span className="font-sans leading-none mt-[0.5px]">

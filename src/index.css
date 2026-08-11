@@ -96,9 +96,16 @@ h3 {
 }
 .product-title {
   font-family: var(--font-display);
-  font-size: clamp(24px, 5vw, 36px);
+  font-size: clamp(18px, 4.5vw, 36px);
   font-weight: 400;
   color: var(--color-dark);
+}
+@media (max-width: 767px) {
+  .product-title {
+    font-size: 18px !important;
+    line-height: 1.25 !important;
+    margin-bottom: 6px !important;
+  }
 }
 input,
 select,
@@ -273,11 +280,14 @@ button[data-action="buy-now"],
   border-radius: 2px;
   text-transform: uppercase;
 }
-nav a {
-  color: rgba(250, 246, 240, 0.8) !important;
+.mobile-nav-panel nav a {
+  color: #2C241B !important;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
-nav a:hover {
-  color: var(--color-gold-light) !important;
+.mobile-nav-panel nav a:hover,
+.mobile-nav-panel nav a:focus,
+.mobile-nav-panel nav a:active {
+  color: #C8A96B !important;
 }
 
 .btn-hero-white {
@@ -1160,3 +1170,26 @@ video::-webkit-media-controls-fullscreen-button {
     line-height: 48px !important;
   }
 }
+
+/* ==========================================================================
+   📱 FLOATING WHATSAPP BUTTON POSITIONING
+   ========================================================================== */
+#whatsapp-float-container {
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  right: 16px;
+  position: fixed;
+  z-index: 9999;
+}
+
+body.has-sticky-atc #whatsapp-float-container {
+  bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  #whatsapp-float-container,
+  body.has-sticky-atc #whatsapp-float-container {
+    bottom: 24px !important;
+    right: 20px !important;
+  }
+}
+

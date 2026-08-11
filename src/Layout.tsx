@@ -75,7 +75,9 @@ export default function Layout() {
   const hasStickyBar = location.pathname.startsWith("/product") || location.pathname === "/checkout";
 
   const headerRef = useRef<HTMLDivElement>(null);
-  const [headerHeight, setHeaderHeight] = useState(101);
+  const [headerHeight, setHeaderHeight] = useState(() =>
+    typeof window !== "undefined" && window.innerWidth < 768 ? 76 : 101
+  );
 
   useEffect(() => {
     const measureHeader = () => {
@@ -976,7 +978,7 @@ export default function Layout() {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      color: "#111",
+                      color: "#2C241B",
                       textDecoration: "none"
                     }}
                   >
@@ -997,7 +999,7 @@ export default function Layout() {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      color: "#111",
+                      color: "#2C241B",
                       textDecoration: "none"
                     }}
                   >
@@ -1018,7 +1020,7 @@ export default function Layout() {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      color: "#111",
+                      color: "#2C241B",
                       textDecoration: "none"
                     }}
                   >
@@ -1039,7 +1041,7 @@ export default function Layout() {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      color: "#111",
+                      color: "#2C241B",
                       textDecoration: "none"
                     }}
                   >
@@ -1177,11 +1179,11 @@ export default function Layout() {
           isHomePage
             ? ""
             : location.pathname.startsWith("/product/")
-            ? "pt-[101px]"
+            ? "pt-[76px] md:pt-[101px]"
             : (location.pathname.startsWith("/shop") ||
                location.pathname.startsWith("/search"))
-            ? "pt-[100px]"
-            : "pt-[101px]"
+            ? "pt-[76px] md:pt-[100px]"
+            : "pt-[76px] md:pt-[101px]"
         }`}
         style={
           isHomePage
@@ -1671,8 +1673,12 @@ export default function Layout() {
 
       <div 
         id="whatsapp-float-container"
-        className="group fixed right-[20px] z-[9999] flex items-center justify-end pointer-events-none transition-all duration-300"
-        style={{ bottom: "var(--whatsapp-bottom)" }}
+        className="group fixed right-[16px] sm:right-[20px] z-[9999] flex items-center justify-end pointer-events-none transition-all duration-300"
+        style={{ 
+          bottom: hasStickyBar 
+            ? "calc(78px + env(safe-area-inset-bottom, 0px))" 
+            : "calc(20px + env(safe-area-inset-bottom, 0px))" 
+        }}
       >
         <div className="mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/80 text-white text-xs px-3 py-1.5 rounded pointer-events-none shadow-lg whitespace-nowrap">
           Chat with us
