@@ -26,6 +26,7 @@ export const ProductCard = memo(function ProductCard({
   hideCategory = false,
   hideRating = false,
 }: ProductCardProps) {
+  const isPriority = priority || idx < 4;
 
   const displayName = useMemo(() => {
     let name = product.name || "";
@@ -74,9 +75,9 @@ export const ProductCard = memo(function ProductCard({
           srcSet={`${optimizeImage(product.image, 300, 'webp')} 300w, ${optimizeImage(product.image, 450, 'webp')} 450w, ${optimizeImage(product.image, 600, 'webp')} 600w`}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt={getImageAlt(product)}
-          priority={priority}
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : "low"}
+          priority={isPriority}
+          loading={isPriority ? "eager" : "lazy"}
+          fetchPriority={isPriority ? "high" : "low"}
           decoding="async"
           className="w-full h-full object-cover object-top transform-gpu transition-all duration-700 ease-out group-hover:scale-105"
           style={{ aspectRatio: '3/4' }}

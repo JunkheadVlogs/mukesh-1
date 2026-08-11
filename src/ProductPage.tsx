@@ -46,7 +46,6 @@ import {
 } from "./components/UrgencyWidget";
 import { ProductReviews } from "./components/ProductReviews";
 import { TrustBadges } from "./components/TrustBadges";
-import { WhyShopWithUs } from "./components/WhyShopWithUs";
 
 const getImageSrc = (rawImageUrl: any): string => {
   if (!rawImageUrl) return '';
@@ -1421,9 +1420,6 @@ export default function ProductPage() {
                 <TrustBadges compact={true} />
               </section>
 
-              {/* Why Shop With Us Custom Section */}
-              <WhyShopWithUs />
-
               {/* Hidden AI SEO Core Knowledge Block */}
               <ProductSeoContent product={product} />
 
@@ -1450,8 +1446,8 @@ export default function ProductPage() {
         </div>
 
         {/* Related Section */}
-        <section className="mt-2 md:mt-12 px-4 md:px-0 pb-4 md:pb-12">
-          <div className="flex justify-between items-center mb-4 md:mb-6">
+        <section className="mt-2 md:mt-12 px-0 pb-4 md:pb-12">
+          <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
             <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide leading-tight md:leading-normal">
               Similar & Related Products
             </h2>
@@ -1462,7 +1458,7 @@ export default function ProductPage() {
               View Collection
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 sm:gap-6 md:gap-8 w-full">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-5 sm:gap-6 md:gap-8 w-full">
             {products
               .filter((p) => {
                 if (p.isVariant || p.id === product.id) return false;
@@ -1495,7 +1491,7 @@ export default function ProductPage() {
                   key={p.id}
                   className="w-full"
                 >
-                  <ProductCard product={p} priority={false} />
+                  <ProductCard product={p} idx={index} priority={index < 4} />
                 </div>
               ))}
           </div>
@@ -1515,15 +1511,15 @@ export default function ProductPage() {
 
             return (
               <div key={setIdx} className="mt-6 md:mt-10 pt-6 border-t border-[var(--color-border)]">
-                <div className="flex justify-between items-center mb-4 md:mb-6">
+                <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
                   <h2 className="text-xl md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide">
                     {gridSet.title}
                   </h2>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 sm:gap-6 md:gap-8 w-full">
-                  {gridProducts.map((p) => (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-5 sm:gap-6 md:gap-8 w-full">
+                  {gridProducts.map((p, index) => (
                     <div key={p.id} className="w-full">
-                      <ProductCard product={p} priority={false} />
+                      <ProductCard product={p} idx={index} priority={false} />
                     </div>
                   ))}
                 </div>

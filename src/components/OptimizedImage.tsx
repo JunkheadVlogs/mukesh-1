@@ -149,28 +149,19 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
   const driveId = extractGoogleDriveId(sanitized);
 
   if (isDrive && driveId) {
-    // 1. High-speed, lightweight pre-resized Google Drive thumbnail (direct from Google CDN, no redirects, fastest fallback render!) - FIRST CHOICE TO PREVENT BLUR
-    candidates.push(`https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`);
-
-    // 2. Direct static cookieless Google CDN download cache with on-the-fly resizing - fastest possible delivery with no authentication checks
+    // 1. Direct static cookieless Google Edge CDN download cache - fastest possible delivery with zero redirects
     candidates.push(`https://lh3.googleusercontent.com/d/${driveId}=w${width}`);
 
-    // 3. High-speed, dynamically compressed WebP from wsrv.nl proxying the non-redirecting thumbnail URL with encoded high-res size
-    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D${driveId}%26sz%3Dw1200&w=${width}&output=webp&q=80`);
-    
-    // 4. High-speed, dynamically compressed WebP from wsrv.nl proxying lh3 direct CDN
+    // 2. High-speed, dynamically compressed WebP from wsrv.nl proxying lh3 direct CDN
     candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F${driveId}&w=${width}&output=webp&q=80`);
+
+    // 3. High-speed, lightweight pre-resized Google Drive thumbnail fallback
+    candidates.push(`https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`);
     
-    // 5. WSRV webp from redirect export URL (slower fallback)
-    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D${driveId}&w=${width}&output=webp&q=80`);
-    
-    // 6. Direct Export Link (always works for public Google Drive items as fallback)
+    // 4. Direct Export Link fallback
     candidates.push(`https://drive.google.com/uc?export=view&id=${driveId}`);
     
-    // 7. Simple layout query parameter alternative
-    candidates.push(`https://drive.google.com/uc?id=${driveId}`);
-    
-    // 8. Original sanitized input
+    // 5. Original sanitized input
     if (!candidates.includes(sanitized)) {
       candidates.push(sanitized);
     }
@@ -335,22 +326,12 @@ export function OptimizedImage({
   };
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    if (retryCount < 1) {
-      // Retry once for the current candidate URL
-      console.log(`Image failed to load: ${currentSrc}. Retrying once...`);
-      setRetryCount((prev) => prev + 1);
+    if (candidateIndex < candidates.length - 1) {
+      setCandidateIndex((prev) => prev + 1);
     } else {
-      // Already tried. Reset retry count and advance to the next candidate URL
-      setRetryCount(0);
-      if (candidateIndex < candidates.length - 1) {
-        console.log(`Fallback retry also failed. Loading candidate ${candidateIndex + 1} for [${finalAlt}]: ${candidates[candidateIndex + 1]}`);
-        setCandidateIndex((prev) => prev + 1);
-      } else {
-        console.warn(`All image candidates and retries failed to load for [${finalAlt}]. Triggering emergency boutique brand card.`);
-        setHasFailedAll(true);
-        if (onError) {
-          onError(e);
-        }
+      setHasFailedAll(true);
+      if (onError) {
+        onError(e);
       }
     }
   };
@@ -390,17 +371,17 @@ export function OptimizedImage({
   if (isGoogleDrive || isRelative) {
     const driveId = extractGoogleDriveId(src) || extractGoogleDriveId(currentSrc);
     const driveSrcSet = (isGoogleDrive && driveId)
-      ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w300 300w, https://drive.google.com/thumbnail?id=${driveId}&sz=w450 450w, https://drive.google.com/thumbnail?id=${driveId}&sz=w600 600w, https://drive.google.com/thumbnail?id=${driveId}&sz=w800 800w`
+      ? `https://lh3.googleusercontent.com/d/${driveId}=w300 300w, https://lh3.googleusercontent.com/d/${driveId}=w450 450w, https://lh3.googleusercontent.com/d/${driveId}=w600 600w, https://lh3.googleusercontent.com/d/${driveId}=w800 800w`
       : undefined;
 
     const finalRenderSrc = (isGoogleDrive && driveId)
-      ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`
+      ? `https://lh3.googleusercontent.com/d/${driveId}=w${width}`
       : currentSrc;
 
     return (
       <img
         ref={imageRef}
-        key={`${currentSrc}-${retryCount}`}
+        key={currentSrc}
         src={finalRenderSrc}
         srcSet={srcSet || driveSrcSet}
         sizes={sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"}

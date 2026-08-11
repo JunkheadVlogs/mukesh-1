@@ -592,7 +592,7 @@ export default function Home() {
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : trendingProducts.map((product, index) => (
                   <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
-                    <ProductCard product={product} priority={false} />
+                    <ProductCard product={product} idx={index} priority={index < 4} />
                   </Suspense>
                 ))}
           </div>
@@ -701,7 +701,7 @@ export default function Home() {
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : newArrivals.map((product, index) => (
                   <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
-                    <ProductCard product={product} priority={false} />
+                    <ProductCard product={product} idx={index} priority={index < 4} />
                   </Suspense>
                 ))}
           </div>

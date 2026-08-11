@@ -1,11 +1,18 @@
-import { ShieldCheck, Users, CheckCircle2, Award, Truck } from "lucide-react";
-import { Link } from "react-router";
+import { ShieldCheck, Users, CheckCircle2, Award, Truck, RotateCcw } from "lucide-react";
 
 export function TrustBadges({ compact = false }: { compact?: boolean }) {
   const allBadges = [
     {
       icon: <Award size={20} strokeWidth={1} />,
       title: "Trusted Since 1978",
+    },
+    {
+      icon: <Truck size={20} strokeWidth={1} />,
+      title: "COD & Free Shipping Above ₹499",
+    },
+    {
+      icon: <RotateCcw size={20} strokeWidth={1} />,
+      title: "7-Day Easy Returns",
     },
     {
       icon: <Users size={20} strokeWidth={1} />,
@@ -19,17 +26,14 @@ export function TrustBadges({ compact = false }: { compact?: boolean }) {
       icon: <CheckCircle2 size={20} strokeWidth={1} />,
       title: "Premium Fabric Selection",
     },
-    {
-      icon: <Truck size={20} strokeWidth={1} />,
-      title: "COD & Free Shipping",
-    },
   ];
 
   const badges = compact
     ? allBadges.filter(
         (b) =>
           b.title !== "Quality Assured" &&
-          b.title !== "Premium Fabric Selection"
+          b.title !== "Premium Fabric Selection" &&
+          b.title !== "Thousands of Happy Customers"
       )
     : allBadges;
 
