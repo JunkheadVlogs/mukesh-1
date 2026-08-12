@@ -23,6 +23,30 @@ export function isPinterestBrowser(): boolean {
 }
 
 /**
+ * Detects if the current visitor arrived from Meta Ads (Facebook/Instagram/Messenger)
+ */
+export function isMetaAdsVisitor(): boolean {
+  if (typeof window === 'undefined') return false;
+  const search = window.location.search || '';
+  const ref = document.referrer || '';
+  const ua = navigator?.userAgent || '';
+
+  const hasMetaParam = /[?&](fbclid|utm_source=(meta|facebook|fb|instagram|ig)|utm_medium=(cpc|paid|meta|paidads))/i.test(search);
+  const isMetaRef = /facebook\.com|instagram\.com|l\.instagram\.com|l\.facebook\.com|lm\.facebook\.com|m\.facebook\.com/i.test(ref);
+  const isMetaUa = /FBAN|FBAV|FB_IAB|FB4A|Instagram/i.test(ua);
+
+  return hasMetaParam || isMetaRef || isMetaUa;
+}
+
+/**
+ * Detects if the current page is a product detail page (e.g. /product/pure-linen-saree-natural-bird-print-woven-design)
+ */
+export function isProductPage(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.location.pathname.includes('/product/');
+}
+
+/**
  * Detects if the current user agent belongs to a known in-app browser WebView
  * (Pinterest, Instagram, Facebook, WhatsApp, TikTok, LinkedIn, Twitter/X, Snapchat, etc.)
  */
@@ -49,13 +73,8 @@ export function detectInAppBrowser(): { isInApp: boolean; name: string | null } 
 }
 
 export function isExitPopupAlreadyShown(): boolean {
-  // Layer 3: In-Memory check (guaranteed to work across SPA page transitions)
-  if (globalSessionExitPopupShown) return true;
-
   try {
     const now = Date.now();
-    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-    const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
     const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
     // 1. Converted Visitor Suppression (Form Submitted or Purchased -> permanent / min 90 days)
@@ -68,11 +87,24 @@ export function isExitPopupAlreadyShown(): boolean {
     const hasPurchased = safeLocalStorage.getItem('hasPurchased');
     if (hasPurchased === 'true') return true;
 
-    // 2. Session Check (Once per active browser session)
+    // 2. FOR PRODUCT PAGES & META ADS TRAFFIC: ALWAYS ALLOW EXIT INTENT FORM COMPULSORY
+    // Override 24h cooldowns and previous store session suppressions if they haven't submitted lead yet!
+    if (isProductPage() || isMetaAdsVisitor()) {
+      if (globalSessionExitPopupShown) return true; // Only prevent repeat popups on the exact same active page view
+      return false; // Force compulsory display
+    }
+
+    // 3. In-Memory check for standard browsing
+    if (globalSessionExitPopupShown) return true;
+
+    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+    const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+    // 4. Session Check
     const sessionShown = safeSessionStorage.getItem('exit_intent_shown') || safeSessionStorage.getItem('exitPopupShown');
     if (sessionShown === '1' || sessionShown === 'true') return true;
 
-    // 3. 3-Dismissal 30-Day Suppression Check
+    // 5. 3-Dismissal 30-Day Suppression Check
     const dismissCountStr = safeLocalStorage.getItem('exit_intent_dismiss_count');
     const dismissCount = dismissCountStr ? parseInt(dismissCountStr, 10) : 0;
     const last3rdDismissTimeStr = safeLocalStorage.getItem('exit_intent_3rd_dismiss_time');
@@ -81,28 +113,26 @@ export function isExitPopupAlreadyShown(): boolean {
       if (last3rdDismissTimeStr) {
         const last3rdDismissTime = parseInt(last3rdDismissTimeStr, 10);
         if (now - last3rdDismissTime < THIRTY_DAYS_MS) {
-          return true; // Suppressed for 30 days after 3rd dismissal
+          return true;
         } else {
-          // 30 days elapsed since 3rd dismissal: reset counter for a fresh cycle
           safeLocalStorage.removeItem('exit_intent_dismiss_count');
           safeLocalStorage.removeItem('exit_intent_3rd_dismiss_time');
         }
       } else {
-        return true; // Dismissed 3+ times, suppress
+        return true;
       }
     }
 
-    // 4. 24-Hour Cooldown Check (Enforce 24h gap between impressions across sessions)
+    // 6. 24-Hour Cooldown Check
     const lastShownTimeStr = safeLocalStorage.getItem('exit_intent_last_shown_time');
     if (lastShownTimeStr) {
       const lastShownTime = parseInt(lastShownTimeStr, 10);
       if (now - lastShownTime < ONE_DAY_MS) {
-        return true; // 24-hour cooldown active
+        return true;
       }
     }
   } catch {
-    // Fail gracefully if storage access throws errors or is blocked
-    return true;
+    return false;
   }
 
   return false;
@@ -145,10 +175,15 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
   const hasInteractedRef = useRef(false);
 
   useEffect(() => {
+    const isPriorityTarget = isProductPage() || isMetaAdsVisitor();
+
     // 1. Check layered storage before attaching any event triggers
     if (isExitPopupAlreadyShown()) {
       return;
     }
+
+    // Eagerly prefetch popup component
+    import('../components/ExitIntentPopup').catch(() => {});
 
     const trigger = () => {
       if (hasTriggeredRef.current || isExitPopupAlreadyShown()) return;
@@ -157,19 +192,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
       setTriggered(true);
     };
 
-    // PINTEREST IN-APP BROWSER DIRECT GUARANTEED TRIGGER:
-    // Bypasses complex event listeners (scroll velocity, mousemove, popstate, interaction guards)
-    let pinterestTimer: ReturnType<typeof setTimeout> | null = null;
-    if (isPinterestBrowser()) {
-      // Eagerly prefetch popup code chunk
-      import('../components/ExitIntentPopup').catch(() => {});
-
-      pinterestTimer = setTimeout(() => {
-        trigger();
-      }, 15000);
-    }
-
-    // Track user engagement/interaction (touch, click, scroll, keydown)
+    // Track user engagement/interaction
     const recordInteraction = () => {
       hasInteractedRef.current = true;
     };
@@ -181,29 +204,25 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
     // 1. DESKTOP TRIGGER: Mouse leaves top of viewport
     let mouseMoveAttached = false;
     const handleMouseMove = (e: MouseEvent) => {
-      // Only trigger if mouse moves above the viewport (Y <= 5)
-      if (e.clientY <= 5) {
+      if (e.clientY <= 10) {
         trigger();
       }
     };
-    
+
+    const effectiveDelay = isPriorityTarget ? 0 : delay;
     const mouseMoveTimer = setTimeout(() => {
       document.addEventListener('mousemove', handleMouseMove);
       mouseMoveAttached = true;
-    }, delay);
+    }, effectiveDelay);
 
-
-    // 2. MOBILE TRIGGER: Fast upward scroll velocity after scrolling down
+    // 2. MOBILE SCROLL TRIGGER
     let lastScrollY = window.scrollY;
     let maxScrollY = window.scrollY;
-    let lastScrollTime = Date.now();
     
     const handleScroll = () => {
       const currentY = window.scrollY;
-      const now = Date.now();
-      const timeDiff = now - lastScrollTime;
       
-      if (currentY > 40) {
+      if (currentY > 30) {
         hasInteractedRef.current = true;
       }
       
@@ -211,57 +230,61 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
         maxScrollY = currentY;
       }
       
-      // If user has scrolled down past 100px and rapidly scrolls up (> 45px in < 300ms)
-      if (maxScrollY > 100 && timeDiff > 0 && timeDiff < 300) {
-        const scrollDiff = lastScrollY - currentY;
-        if (scrollDiff > 45) {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (currentY / docHeight) * 100 : 0;
+
+      if (isPriorityTarget) {
+        // For product/meta ad visitors: trigger on 20% scroll or gentle upward scroll
+        if (scrollPercent >= 20 || (maxScrollY > 80 && lastScrollY - currentY > 15)) {
           trigger();
+        }
+      } else {
+        // Standard trigger: rapid scroll up after scrolling down past 100px
+        if (maxScrollY > 100) {
+          const scrollDiff = lastScrollY - currentY;
+          if (scrollDiff > 35) {
+            trigger();
+          }
         }
       }
       
       lastScrollY = currentY;
-      lastScrollTime = now;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // 3. BACK-BUTTON (POPSTATE) TRIGGER for Mobile & In-App WebViews
+    // 3. BACK-BUTTON (POPSTATE) TRIGGER for Mobile & WebViews
     try {
       if (!window.history.state?.exitGuarded) {
         window.history.pushState({ exitGuarded: true }, '', window.location.href);
       }
     } catch {
-      // Ignore history pushState errors in sandboxed frames
+      // Ignore pushState errors in sandboxed frames
     }
 
     const handlePopState = () => {
-      if (!hasTriggeredRef.current && hasInteractedRef.current) {
+      if (!hasTriggeredRef.current) {
         trigger();
       }
     };
     window.addEventListener('popstate', handlePopState);
 
-    // 4. TIME-DELAY FALLBACK TRIGGER: 22s safety net
-    // Only fires after visitor has interacted or scrolled
-    const timeDelayTimer = setTimeout(() => {
-      if (hasInteractedRef.current || window.scrollY > 40 || isPinterestBrowser()) {
+    // 4. TAB VISIBILITY CHANGE TRIGGER (e.g. user switching tabs or opening another app)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden' && (isPriorityTarget || hasInteractedRef.current)) {
         trigger();
-      } else {
-        // Wait for first interaction if visitor was completely idle
-        const onFirstInteraction = () => {
-          trigger();
-          window.removeEventListener('scroll', onFirstInteraction);
-          window.removeEventListener('touchstart', onFirstInteraction);
-          window.removeEventListener('click', onFirstInteraction);
-        };
-        
-        window.addEventListener('scroll', onFirstInteraction, { passive: true });
-        window.addEventListener('touchstart', onFirstInteraction, { passive: true });
-        window.addEventListener('click', onFirstInteraction, { passive: true });
       }
-    }, 22000);
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // 5. COMPULSORY TIME-DELAY FALLBACK TRIGGER
+    // Product Page & Meta Ads visitors: 5 seconds compulsory fallback
+    // General visitors: 18 seconds fallback
+    const fallbackDelayMs = isPriorityTarget ? 5000 : 18000;
+    const timeDelayTimer = setTimeout(() => {
+      trigger();
+    }, fallbackDelayMs);
 
     return () => {
-      if (pinterestTimer) clearTimeout(pinterestTimer);
       clearTimeout(mouseMoveTimer);
       clearTimeout(timeDelayTimer);
       if (mouseMoveAttached) {
@@ -269,6 +292,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
       }
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('touchstart', recordInteraction);
       window.removeEventListener('click', recordInteraction);
       window.removeEventListener('keydown', recordInteraction);
