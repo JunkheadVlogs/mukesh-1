@@ -949,7 +949,7 @@ try {
 }
 
 const getWhatsAppSafeServerImageUrl = (imageUrl) => {
-  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  if (!imageUrl) return 'https://mukeshsarees.com/og-image.jpg';
   
   let targetUrl = imageUrl;
   
@@ -982,7 +982,7 @@ const getWhatsAppSafeServerImageUrl = (imageUrl) => {
 };
 
 const getSquareServerImageUrl = (imageUrl) => {
-  if (!imageUrl) return 'https://mukeshsarees.com/images/og-home.jpg';
+  if (!imageUrl) return 'https://mukeshsarees.com/og-image.jpg';
   
   let targetUrl = imageUrl;
   
@@ -1064,10 +1064,10 @@ const getWhatsAppSafeServerDescription = (text, productContext) => {
 };
 
 const injectOGTags = (html, reqPath, originalUrl) => {
-  let ogTitle = "Mukesh Saree Centre – Premium Silk Sarees Since 1978";
-  let ogDesc = "Mukesh Saree Centre, Nagpur — Premium sarees, linen sarees & co-ord sets since 1978. Cash on Delivery. Free shipping on orders over ₹499. Shop 100+ authentic ethnic wear styles.";
+  let ogTitle = "Mukesh Saree Centre | Wholesale & Retail Sarees Since 1978";
+  let ogDesc = "🏬 Wholesale & Retail Sarees Since 1978 | 📦 Bulk Orders & Single Pieces | 💵 COD Available | 🚚 Free Shipping | Nagpur";
   
-  const defaultBannerUrl = "https://mukeshsarees.com/images/og-home.jpg";
+  const defaultBannerUrl = "https://mukeshsarees.com/og-image.jpg";
   // Fallback banner optimized to 1200x630 landscape JPG for standard page sharing
   let ogImg = defaultBannerUrl;
   let ogUrl = "https://mukeshsarees.com" + originalUrl;
@@ -1091,7 +1091,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
         ? `💰 ₹${prod.price} (${discountPercent}% OFF)` 
         : `💰 ₹${prod.price}`;
         
-      ogDesc = `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since 1978`;
+      ogDesc = `${fabricItem} | 🚚 Free Shipping | 💵 COD Available | ${priceText} | 🏬 Trusted Since 1978`;
  
       // Serve dedicated social sharing portrait image
       ogImg = `https://mukeshsarees.com/og-images/${prod.slug}.jpg`;
@@ -1103,6 +1103,14 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   } else if (reqPath.startsWith('/shop')) {
     ogTitle = "Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre";
     ogDesc = "Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978.";
+    ogImg = defaultBannerUrl;
+  } else if (reqPath.startsWith('/wholesale-sarees')) {
+    ogTitle = "Wholesale Sarees VIP Club — Mukesh Saree Centre Nagpur";
+    ogDesc = "Direct manufacturer wholesale saree rates, daily new arrivals & bulk order catalog. Join VIP Club. Trusted Since 1978.";
+    ogImg = defaultBannerUrl;
+  } else if (reqPath.startsWith('/uniform-saree-bulk-orders')) {
+    ogTitle = "Uniform Sarees & Bulk Orders — Mukesh Saree Centre Nagpur";
+    ogDesc = "Wholesale uniform sarees for schools, colleges, institutions & events. Direct weaver pricing, custom design & pan-India delivery.";
     ogImg = defaultBannerUrl;
   } else if (reqPath.startsWith('/contact')) {
     ogTitle = "Contact Us";
@@ -1142,7 +1150,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
 
   // Replace standard meta description
   injectedHtml = injectedHtml.replace(
-    /<meta name="description" content="[^"]*"\s*\/>/,
+    /<meta (?:data-rh="[^"]*"\s+)?name="description" content="[^"]*"\s*\/?>/,
     `<meta name="description" content="${ogDesc.replace(/"/g, '&quot;').replace(/\n/g, ' ')}" />`
   );
 
@@ -1180,7 +1188,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
 app.get('/og-images/:slug.jpg', (req, res) => {
   const slug = req.params.slug;
   if (!slug) {
-    return res.redirect(302, 'https://mukeshsarees.com/images/og-home.jpg');
+    return res.redirect(302, 'https://mukeshsarees.com/og-image.jpg');
   }
   const cleanSlug = slug.replace(/\.jpg$/, '').trim().toLowerCase();
   
@@ -1199,7 +1207,7 @@ app.get('/og-images/:slug.jpg', (req, res) => {
   
   const prod = preParsedProducts.find(p => p.slug && p.slug.trim().toLowerCase() === cleanSlug);
   if (prod) {
-    let targetUrl = prod.image || 'https://mukeshsarees.com/images/og-home.jpg';
+    let targetUrl = prod.image || 'https://mukeshsarees.com/og-image.jpg';
     if (targetUrl.includes('wsrv.nl')) {
       const match = targetUrl.match(/[?&]url=([^&]+)/);
       if (match) {
@@ -1262,7 +1270,7 @@ app.get('/og-images/:slug.jpg', (req, res) => {
     return res.redirect(302, finalUrl);
   }
   
-  res.redirect(302, 'https://mukeshsarees.com/images/og-home.jpg');
+  res.redirect(302, 'https://mukeshsarees.com/og-image.jpg');
 });
 
 app.get('/robots.txt', (req, res) => {

@@ -1,101 +1,52 @@
 import { useState, useEffect } from 'react';
 import { useStore } from '../store';
 import { safeLocalStorage } from '../utils/safeStorage';
-import { isExitPopupAlreadyShown, markExitPopupAsShown, recordExitPopupDismissal, detectInAppBrowser } from '../hooks/useExitIntent';
+import { recordExitPopupDismissal, detectInAppBrowser } from '../hooks/useExitIntent';
 
 export interface ExitIntentPopupProps {
   onDismiss: () => void;
-  onSubmit: (name: string, phone: string) => Promise<void>;
+  onSubmit?: (name: string, phone: string) => Promise<void>;
 }
-
-// Pure CSS Confetti Component
-const ConfettiDot = ({ delay, color, x, y }: { delay: number; color: string; x: number; y: number }) => {
-  return (
-    <div
-      className="absolute rounded-full pointer-events-none"
-      style={{
-        width: (Math.random() * 6 + 4) + 'px',
-        height: (Math.random() * 6 + 4) + 'px',
-        backgroundColor: color,
-        left: '50%',
-        top: '40%',
-        opacity: 0,
-        animation: `confetti-burst 1.8s ease-out ${delay}s forwards`,
-        '--target-x': `${x}px`,
-        '--target-y': `${y}px`,
-      } as React.CSSProperties}
-    />
-  );
-};
-
-const Confetti = () => {
-  const colors = ['#E8B84B', '#FF3B30', '#4CD964', '#5AC8FA', '#5856D6', '#FF9500'];
-  const dots = Array.from({ length: 45 }).map((_, i) => {
-    const angle = Math.random() * 2 * Math.PI;
-    const distance = 30 + Math.random() * 140;
-    const x = Math.cos(angle) * distance;
-    const y = Math.sin(angle) * distance + (40 + Math.random() * 90); // gravity drift down
-    const delay = Math.random() * 0.25;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    return <ConfettiDot key={i} delay={delay} color={color} x={x} y={y} />;
-  });
-  return <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-[16px]">{dots}</div>;
-};
 
 export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
   const applyCoupon = useStore((state) => state.applyCoupon);
-  const [isVisible, setIsVisible] = useState(false);
-  const [hasShown, setHasShown] = useState(false);
-
+  const [isVisible, setIsVisible] = useState(true);
   const [stage, setStage] = useState<'capture' | 'revealed'>('capture');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
 
-  const checkShouldShow = () => {
-    if (hasShown) return false;
-
+  useEffect(() => {
     // Do not show on thank you or order success pages
     if (window.location.pathname.includes('/thank-you') || window.location.pathname.includes('/success')) {
-      return false;
-    }
-
-    if (isExitPopupAlreadyShown()) {
-      return false;
-    }
-
-    return true;
-  };
-
-  useEffect(() => {
-    if (checkShouldShow()) {
-      setIsVisible(true);
-      setHasShown(true);
-      markExitPopupAsShown();
-      
-      const inApp = detectInAppBrowser();
-
-      // Track impressions
-      if ((window as any).fbq) {
-        (window as any).fbq('trackCustom', 'ExitIntentShown', {
-          in_app_browser: inApp.name || 'None'
-        });
-      }
-      if ((window as any).gtag) {
-        (window as any).gtag('event', 'view_promotion', {
-          promotions: [
-            {
-              promotion_id: 'VIP50',
-              promotion_name: 'Exit Intent Discount'
-            }
-          ]
-        });
-      }
-    } else {
-      // If we shouldn't show, let the parent know immediately so it can unrender us.
+      setIsVisible(false);
       onDismiss();
+      return;
+    }
+
+    if (safeLocalStorage.getItem('exitIntentSubmitted') === 'true') {
+      setIsVisible(false);
+      onDismiss();
+      return;
+    }
+
+    const inApp = detectInAppBrowser();
+
+    // Track impressions asynchronously
+    if ((window as any).fbq) {
+      (window as any).fbq('trackCustom', 'ExitIntentShown', {
+        in_app_browser: inApp.name || 'None'
+      });
+    }
+    if ((window as any).gtag) {
+      (window as any).gtag('event', 'view_promotion', {
+        promotions: [
+          {
+            promotion_id: 'VIPCLUB60',
+            promotion_name: 'Exit Intent 60% Discount'
+          }
+        ]
+      });
     }
   }, [onDismiss]);
 
@@ -131,158 +82,144 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
     onDismiss();
   };
 
-  const handleUnlock = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  // INSTANT REVEAL HANDLER (ZERO ARTIFICIAL DELAY, NO NETWORK BLOCKING)
+  const handleUnlock = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
 
+    // 1. INSTANTLY SWITCH STATE AND APPLY COUPON IN STORE
+    setStage('revealed');
+    applyCoupon('VIPCLUB60');
+    setSuccessStorage();
+
+    // 2. NON-BLOCKING BACKGROUND PROCESSING (AFTER REVEAL IS SHOWN)
     const trimmedName = name.trim();
     const trimmedPhone = phone.trim();
 
-    // 1. Validate name (min 2 characters)
-    if (trimmedName.length < 2) {
-      setError('Please enter a valid name and 10-digit WhatsApp number');
-      return;
-    }
+    setTimeout(() => {
+      // Background onSubmit if provided
+      if (onSubmit) {
+        onSubmit(trimmedName || 'VIP Guest', trimmedPhone || '').catch(() => {});
+      }
 
-    // 2. Validate WhatsApp Number starts with 6,7,8,9 and has 10 digits
-    const phonePattern = /^[6-9]\d{9}$/;
-    if (!phonePattern.test(trimmedPhone)) {
-      setError('Please enter a valid name and 10-digit WhatsApp number');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const sheetsUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL || import.meta.env.VITE_SHEETS_WEBHOOK_URL;
-      if (sheetsUrl) {
-        const isMobile = window.innerWidth <= 768;
-        try {
+      // Background Google Sheets logging
+      try {
+        const sheetsUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL || import.meta.env.VITE_SHEETS_WEBHOOK_URL;
+        if (sheetsUrl && (trimmedName || trimmedPhone)) {
           const inApp = detectInAppBrowser();
-          await fetch(sheetsUrl, {
+          const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+          fetch(sheetsUrl, {
             method: 'POST',
             mode: 'no-cors',
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               type: 'exit_lead',
-              name: trimmedName,
+              name: trimmedName || 'VIP Guest',
               phone: trimmedPhone,
               page: window.location.pathname,
               device: isMobile ? (inApp.isInApp ? `Mobile (${inApp.name})` : 'Mobile') : 'Desktop',
-              request: 'Exit Intent Discount Coupon VIP50',
+              request: 'Exit Intent Discount Coupon VIPCLUB60',
               requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000),
               source: inApp.isInApp ? `Exit Intent Popup (${inApp.name})` : 'Exit Intent Popup'
             })
-          });
-        } catch (fetchErr) {
-          console.warn('Silent exit intent sheet capture error:', fetchErr);
+          }).catch(() => {});
         }
+      } catch (err) {
+        // Silent fail in background
       }
 
-      await onSubmit(trimmedName, trimmedPhone);
-      applyCoupon('VIP50');
-      setSuccessStorage();
-      setStage('revealed');
-    } catch (err: any) {
-      console.error("Popup submission error:", err);
-      setError('Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+      // Background analytics
+      try {
+        if ((window as any).fbq) {
+          (window as any).fbq('trackCustom', 'ExitIntentUnlocked', { coupon: 'VIPCLUB60' });
+        }
+        if ((window as any).gtag) {
+          (window as any).gtag('event', 'select_promotion', {
+            promotions: [
+              {
+                promotion_id: 'VIPCLUB60',
+                promotion_name: 'Exit Intent 60% Discount'
+              }
+            ]
+          });
+        }
+      } catch (err) {
+        // Silent fail
+      }
+    }, 0);
   };
 
+  // CLIPBOARD COPY HANDLER
   const handleCopyCode = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText('VIP50').then(() => {
+    const codeToCopy = 'VIPCLUB60';
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(codeToCopy).then(() => {
         setCopied(true);
       }).catch(() => {
-        // Fallback
-        const textArea = document.createElement("textarea");
-        textArea.value = 'VIP50';
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        try {
-          if (textArea && textArea.parentNode) {
-            try {
-              (textArea.parentNode && textArea.parentNode.removeChild(textArea));
-            } catch (e) {}
-          }
-        } catch (e) {}
-        setCopied(true);
+        fallbackCopy(codeToCopy);
       });
     } else {
+      fallbackCopy(codeToCopy);
+    }
+
+    // Background analytics
+    try {
+      if ((window as any).fbq) {
+        (window as any).fbq('trackCustom', 'ExitIntentCouponCopy', { coupon: 'VIPCLUB60' });
+      }
+      if ((window as any).gtag) {
+        (window as any).gtag('event', 'select_promotion', {
+          promotions: [
+            {
+              promotion_id: 'VIPCLUB60',
+              promotion_name: 'Exit Intent 60% Discount'
+            }
+          ]
+        });
+      }
+    } catch (err) {}
+
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  const fallbackCopy = (text: string) => {
+    try {
       const textArea = document.createElement("textarea");
-      textArea.value = 'VIP50';
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand('copy');
-      try {
-        if (textArea && textArea.parentNode) { try { (textArea.parentNode && textArea.parentNode.removeChild(textArea)); } catch(e){} }
-      } catch (e) {}
+      document.body.removeChild(textArea);
+      setCopied(true);
+    } catch (e) {
       setCopied(true);
     }
-
-    if ((window as any).fbq) {
-      (window as any).fbq('trackCustom', 'ExitIntentCouponCopy');
-    }
-    if ((window as any).gtag) {
-      (window as any).gtag('event', 'select_promotion', {
-        promotions: [
-          {
-            promotion_id: 'VIP50',
-            promotion_name: 'Exit Intent Discount'
-          }
-        ]
-      });
-    }
-    
-    setTimeout(() => setCopied(false), 2000);
   };
 
   if (!isVisible) return null;
 
   return (
     <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-      {/* Local custom keyframe definitions */}
+      {/* Local keyframe definitions */}
       <style>{`
-        @keyframes exitFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
         @keyframes exitSlideUp {
-          from { transform: translateY(60px); opacity: 0; }
+          from { transform: translateY(50px); opacity: 0; }
           to { transform: translateY(0); opacity: 1; }
         }
-        @keyframes coupon-bounce-in {
-          0% { transform: scale(0.5); opacity: 0; }
-          75% { transform: scale(1.07); opacity: 1; }
+        @keyframes couponPop {
+          0% { transform: scale(0.92); opacity: 0; }
           100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes confetti-burst {
-          0% {
-            transform: translate(0, 0) scale(1);
-            opacity: 1;
-          }
-          100% {
-            transform: translate(var(--target-x), var(--target-y)) scale(0.3);
-            opacity: 0;
-          }
-        }
-        .stage-transition-enter {
-          animation: exitFadeIn 0.35s ease-out forwards;
         }
       `}</style>
 
       {/* Dimmed backdrop area for clicking to close */}
       <div className="absolute inset-0 bg-transparent" onClick={handleClose} />
 
-      {/* MODAL: Dark Luxury Theme */}
+      {/* MODAL CARD: Dark Luxury Boutique Aesthetic */}
       <div 
         className="relative w-full max-w-[440px] bg-[#0F0A00] border border-[#E8B84B] rounded-[16px] overflow-hidden shadow-2xl z-10"
-        style={{ animation: 'exitSlideUp 0.4s cubic-bezier(0.25, 1, 0.5, 1.1) forwards' }}
+        style={{ animation: 'exitSlideUp 0.35s cubic-bezier(0.25, 1, 0.5, 1.1) forwards' }}
       >
         {/* Close Button top right */}
         <button 
@@ -294,35 +231,40 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
         </button>
 
         {stage === 'capture' ? (
-          /* ================= STAGE 1: Lead Capture ================= */
+          /* ================= STAGE 1: Lead Capture / Offer ================= */
           <div className="flex flex-col text-center w-full">
-            {/* Red urgency banner at top */}
+            {/* Top red banner */}
             <div className="bg-[#FF3B30] text-white font-sans font-extrabold text-[11px] sm:text-xs py-2 px-4 uppercase tracking-widest text-center shadow-inner select-none">
-              ⚡ You're about to miss 50% OFF!
+              ⚡ Exclusive 60% Off VIP Pass
             </div>
 
             <div className="p-6 sm:p-8 flex flex-col items-center">
+              {/* Eyebrow Badge */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1A1200] border border-[#E8B84B]/30 text-[#E8B84B] text-[11px] sm:text-xs font-serif font-medium tracking-wide mb-3 select-none">
+                <span>✨</span>
+                <span>46 Years of Trust · Est. 1978 · Nagpur</span>
+              </div>
+
               {/* Headline */}
-              <h2 className="text-2xl sm:text-3xl font-serif font-semibold text-white mb-2.5 tracking-wide">
+              <h2 className="text-2xl sm:text-[26px] font-serif font-semibold text-white mb-2 leading-snug tracking-wide max-w-[360px]">
                 Wait! Before You Go...
               </h2>
 
               {/* Sub-headline */}
-              <p className="text-neutral-350 font-sans text-xs sm:text-[13px] mb-5 leading-relaxed max-w-[320px]">
-                Enter your details below to unlock an exclusive 50% discount
+              <p className="text-neutral-300 font-sans text-xs sm:text-[13px] mb-5 leading-relaxed max-w-[320px]">
+                Enter your details to instantly reveal your exclusive 60% discount code:
               </p>
 
-              <form onSubmit={handleUnlock} className="w-full flex flex-col text-left space-y-3.5">
+              <form onSubmit={handleUnlock} className="w-full flex flex-col text-left space-y-3">
                 {/* Name Input */}
                 <div>
                   <label className="sr-only">Full Name</label>
                   <input
                     type="text"
-                    placeholder="Your Name"
+                    placeholder="Your Name (Optional)"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-4 py-3 bg-[#1A1200] border border-[#E8B84B]/20 focus:border-[#E8B84B] focus:ring-1 focus:ring-[#E8B84B] outline-none transition-all placeholder:text-white/30 rounded-[10px] font-sans text-xs sm:text-sm text-white"
-                    required
                   />
                 </div>
 
@@ -333,47 +275,35 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                     <span className="bg-[#150E00] px-4 py-3 text-[#E8B84B] text-xs sm:text-sm border-r border-[#E8B84B]/10 flex items-center font-sans font-medium select-none">+91</span>
                     <input
                       type="tel"
-                      placeholder="WhatsApp Number (10 digits)"
+                      placeholder="WhatsApp Number (Optional)"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                       maxLength={10}
                       className="flex-grow bg-transparent px-4 py-3 text-white outline-none font-sans text-xs sm:text-sm placeholder:text-white/30"
-                      required
                     />
                   </div>
                 </div>
 
-                {/* Error Banner */}
-                {error && (
-                  <p className="text-[#FF3B30] text-center text-xs font-semibold mt-1 font-sans">
-                    {error}
-                  </p>
-                )}
-
-                {/* Primary CTA */}
+                {/* Instant Reveal CTA Button */}
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="w-full flex items-center justify-center gap-2 bg-[#E8B84B] hover:bg-[#F2C968] disabled:opacity-75 disabled:cursor-not-allowed text-black font-extrabold text-sm sm:text-base tracking-wide uppercase rounded-[10px] py-3.5 transition-all shadow-lg active:scale-[0.99] cursor-pointer mt-1"
+                  className="w-full flex items-center justify-center gap-2 bg-[#E8B84B] hover:bg-[#F2C968] text-black font-extrabold text-sm sm:text-base tracking-wide uppercase rounded-[10px] py-3.5 px-6 transition-all shadow-lg active:scale-[0.99] cursor-pointer mt-1"
                 >
-                  {loading ? (
-                    <svg className="animate-spin h-5 w-5 text-black" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                  ) : (
-                    '🎁 Unlock My 50% Off Code'
-                  )}
+                  UNLOCK MY 60% OFF →
                 </button>
               </form>
 
-              {/* Spam note */}
-              <p className="text-[10px] text-neutral-400 mt-3 font-sans">
-                ✅ Free to unlock. No spam, ever.
-              </p>
+              {/* Secondary dismiss */}
+              <button
+                type="button"
+                onClick={handleClose}
+                className="mt-3.5 text-xs sm:text-[13px] text-neutral-400 hover:text-[#E8B84B] transition-colors font-sans underline underline-offset-4 cursor-pointer bg-transparent border-0 py-1"
+              >
+                No thanks, continue browsing
+              </button>
 
               {/* Trust strip */}
-              <div className="flex items-center justify-center gap-1 sm:gap-2 flex-wrap text-[10px] sm:text-[11px] text-[#E8B84B]/80 font-medium mt-6 pt-4 border-t border-[#E8B84B]/10 w-full select-none font-sans">
+              <div className="flex items-center justify-center gap-1 sm:gap-2 flex-wrap text-[10px] sm:text-[11px] text-[#E8B84B]/80 font-medium mt-5 pt-3.5 border-t border-[#E8B84B]/10 w-full select-none font-sans">
                 <span>⭐ 4.8/5 Rating</span>
                 <span className="text-neutral-500">•</span>
                 <span>📦 Free Shipping ₹499+</span>
@@ -383,73 +313,54 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
             </div>
           </div>
         ) : (
-          /* ================= STAGE 2: Coupon Reveal ================= */
-          <div className="flex flex-col items-center text-center w-full p-6 sm:p-8 stage-transition-enter relative">
-            {/* Confetti Explosion Component */}
-            <Confetti />
-
-            {/* Success emoji */}
-            <div className="text-5xl mt-3 animate-bounce select-none">🎊</div>
-
+          /* ================= STAGE 2: Success State (Exact PART 3 UI) ================= */
+          <div 
+            className="flex flex-col items-center text-center w-full p-6 sm:p-8"
+            style={{ animation: 'couponPop 0.3s ease-out forwards' }}
+          >
             {/* Headline */}
-            <h2 className="text-xl sm:text-2xl font-serif font-semibold text-[#E8B84B] mt-4 mb-1.5 leading-tight tracking-wide">
-              Your Exclusive Code is Unlocked!
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white mb-4 leading-tight tracking-wide">
+              🎉 YOUR 60% OFF IS UNLOCKED!
             </h2>
 
-            {/* Sub-text */}
-            <p className="text-neutral-350 font-sans text-xs sm:text-[13px] mb-4 leading-relaxed">
-              Use this code at checkout to get 50% OFF on original MRP:
+            {/* Label */}
+            <p className="text-neutral-300 font-sans text-xs sm:text-sm mb-2">
+              Your Exclusive Coupon Code:
             </p>
 
-            {/* THE COUPON BOX */}
+            {/* THE COUPON CODE BOX */}
             <div 
-              className="relative w-full mt-1 mb-4 p-4 sm:p-5 bg-[#1A1200] rounded-[10px] text-center overflow-hidden"
-              style={{ 
-                border: '2px dashed #E8B84B',
-                animation: 'coupon-bounce-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
-              }}
+              className="relative w-full my-2 p-4 sm:p-5 bg-[#1A1200] rounded-[12px] text-center border-2 border-dashed border-[#E8B84B]"
             >
-              {/* Semi-circle ticket notches */}
-              <div className="absolute -left-3.5 top-1/2 -translate-y-1/2 w-7 h-7 bg-[#0F0A00] rounded-full border-r border-[#E8B84B]/30" />
-              <div className="absolute -right-3.5 top-1/2 -translate-y-1/2 w-7 h-7 bg-[#0F0A00] rounded-full border-l border-[#E8B84B]/30" />
-              
-              <div className="flex justify-between items-center px-2.5">
-                <span className="font-mono text-lg sm:text-xl font-black text-[#E8B84B] tracking-wider select-all">
-                  🎁 VIP50
-                </span>
-                <span className="bg-[#FF3B30] text-white font-extrabold text-[9px] sm:text-xs px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md">
-                  50% OFF
-                </span>
+              <div className="font-mono text-2xl sm:text-3xl font-black text-[#E8B84B] tracking-widest select-all">
+                VIPCLUB60
               </div>
-              <p className="text-[10px] sm:text-[11px] text-[#E8B84B]/60 tracking-widest font-serif font-medium uppercase mt-2">
-                Valid on ALL Products
-              </p>
             </div>
 
-            {/* Copy Code button side-by-side or styled elegantly */}
-            <button
-              onClick={handleCopyCode}
-              className="w-full max-w-[220px] bg-neutral-900 hover:bg-neutral-850 border border-[#E8B84B]/30 text-[#E8B84B] hover:text-white font-semibold py-2 px-4 rounded-lg text-xs sm:text-sm tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 mb-4 shadow"
-            >
-              {copied ? '✓ Copied!' : '📋 Copy Coupon'}
-            </button>
+            {/* Action Buttons */}
+            <div className="w-full flex flex-col gap-2.5 mt-4">
+              {/* COPY CODE BUTTON */}
+              <button
+                type="button"
+                onClick={handleCopyCode}
+                className="w-full flex items-center justify-center gap-2 bg-[#1A1200] hover:bg-[#251b03] border border-[#E8B84B] text-[#E8B84B] hover:text-[#F2C968] font-bold text-sm sm:text-base tracking-wider uppercase rounded-[10px] py-3 px-6 transition-all shadow active:scale-[0.99] cursor-pointer"
+              >
+                {copied ? '✓ COPIED!' : 'COPY CODE'}
+              </button>
 
-            {/* Expiry text */}
-            <p className="text-xs text-[#FF3B30] font-bold mb-4 font-sans uppercase tracking-[0.1em]">
-              ⏰ Valid for 24 hours only
-            </p>
+              {/* SHOP NOW BUTTON */}
+              <button
+                type="button"
+                onClick={handleClose}
+                className="w-full flex items-center justify-center gap-2 bg-[#E8B84B] hover:bg-[#F2C968] text-black font-extrabold text-sm sm:text-base tracking-wider uppercase rounded-[10px] py-3.5 px-6 transition-all shadow-lg active:scale-[0.99] cursor-pointer"
+              >
+                SHOP NOW →
+              </button>
+            </div>
 
-            {/* CTA Button */}
-            <button
-              onClick={handleClose}
-              className="w-full bg-[#E8B84B] hover:bg-[#F2C968] text-black font-extrabold py-3.5 px-6 rounded-[10px] text-sm sm:text-base tracking-wide uppercase transition-all active:scale-[0.98] cursor-pointer shadow-lg"
-            >
-              Shop Now & Save 50% →
-            </button>
-
-            {/* WhatsApp confirmation note */}
-            <p className="text-[10px] sm:text-xs text-neutral-400 mt-4 leading-relaxed font-sans max-w-[300px]">
-              📱 We've also sent this code to your WhatsApp for safekeeping
+            {/* Small text below */}
+            <p className="text-[11px] sm:text-xs text-neutral-400 mt-4 leading-relaxed font-sans max-w-[320px]">
+              Apply VIPCLUB60 at checkout to get your discount.
             </p>
           </div>
         )}

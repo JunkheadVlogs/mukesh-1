@@ -260,8 +260,10 @@ export function SEO({
         targetUrl = absoluteImage.split('=')[0]; // strip existing resize parameters
       }
       
-      // Check if wsrv is already wrapping this URL
-      if (targetUrl.includes('wsrv.nl')) {
+      // Check if wsrv is already wrapping this URL or if it is the direct og-image banner
+      if (targetUrl.includes('og-image.jpg') || targetUrl.includes('og-home.jpg')) {
+        displayImage = targetUrl;
+      } else if (targetUrl.includes('wsrv.nl')) {
         // Just make sure it uses 1200x630 cover crop
         displayImage = targetUrl
           .replace(/w=\d+/, 'w=1200')

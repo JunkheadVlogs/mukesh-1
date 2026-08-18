@@ -343,8 +343,8 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <SEO
-        title="Mukesh Saree Centre | Wholesale & Retail Sarees in Nagpur"
-        description="Buy premium sarees online from Mukesh Saree Centre. Wholesale & retail sarees, designer sarees, cotton, linen, silk, party wear and more. Cash on Delivery available across India."
+        title="Mukesh Saree Centre | Wholesale & Retail Sarees Since 1978"
+        description="🏬 Wholesale & Retail Sarees Since 1978 | 📦 Bulk Orders & Single Pieces | 💵 COD Available | 🚚 Free Shipping | Nagpur"
         image="https://mukeshsarees.com/og-image.jpg"
         url="/"
       />

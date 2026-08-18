@@ -126,7 +126,7 @@ export const useStore = create<AppState>()(
       cartTotal: () => {
         const state = get();
         const activeCoupon = state.appliedCoupon ? state.appliedCoupon.trim().toUpperCase() : 'VIP50';
-        const discountRate = (activeCoupon === 'VIPCLUB60' || activeCoupon === 'VIBCLUB60') ? 0.60 : 0.50;
+        const discountRate = (activeCoupon === 'VIPCLUB60' || activeCoupon === 'VIP60' || activeCoupon === 'VIBCLUB60') ? 0.60 : 0.50;
         
         return state.cart.reduce((total, item) => {
           const mrp = item.originalPrice || item.price * 2;

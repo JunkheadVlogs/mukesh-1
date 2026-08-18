@@ -72,7 +72,7 @@ function LoadingScreen() {
 }
 
 export default function App() {
-  const { triggered, dismiss } = useExitIntent({ delay: 5000, sensitivity: 20 });
+  const { triggered, dismiss } = useExitIntent({ delay: 0, sensitivity: 20 });
 
   useEffect(() => {
     if (isPinterestBrowser()) {
@@ -174,7 +174,7 @@ export default function App() {
       deviceType: deviceType,
       source: "Popup",
       leadSource: "Exit Intent Popup",
-      request: 'Exit Intent Discount Coupon VIP50',
+      request: 'Exit Intent Discount Coupon VIPCLUB60',
       requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000)
     };
 

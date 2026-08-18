@@ -21,7 +21,9 @@ try {
       slug: p.slug,
       description: cleanDesc,
       image: p.image,
-      price: String(p.price || "")
+      price: String(p.price || ""),
+      originalPrice: p.originalPrice ? Number(p.originalPrice) : undefined,
+      fabric: p.fabric || undefined
     };
   });
 

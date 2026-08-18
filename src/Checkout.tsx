@@ -69,7 +69,7 @@ export default function Checkout() {
   const shipping = 0;
   const activeCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
 
-  const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
+  const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
 
   const totalRaw = cart.reduce((sum, item) => {
     const mrp = item.originalPrice || item.price * 2;
@@ -79,18 +79,19 @@ export default function Checkout() {
   
   const finalTotal = paymentMethod === "online" ? Math.max(0, totalRaw - 50) : totalRaw;
 
-  const displayDiscountPercent = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 60 : 50;
+  const displayDiscountPercent = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60") ? 60 : 50;
 
   const handleApplyCoupon = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const code = couponInput.trim().toUpperCase();
     if (!code) return;
 
-    if (code === "VIP50" || code === "VIPCLUB65" || code === "VIPCLUB60" || code === "VIBCLUB60") {
+    if (code === "VIP50" || code === "VIPCLUB65" || code === "VIPCLUB60" || code === "VIP60" || code === "VIBCLUB60") {
       try {
         sessionStorage.removeItem('coupon_removed');
       } catch (e) {}
-      applyCoupon(code === "VIBCLUB60" ? "VIPCLUB60" : code);
+      const normalizedCode = (code === "VIP60" || code === "VIBCLUB60") ? "VIPCLUB60" : code;
+      applyCoupon(normalizedCode);
       setCouponError("");
     } else {
       setCouponError("Invalid Coupon Code");
@@ -946,7 +947,7 @@ export default function Checkout() {
                     </div>
                   )}
 
-                  {(activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") && (
+                  {(activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60") && (
                     <div className="flex justify-between items-center text-[#1E7E34]">
                       <span>VIPCLUB60 Applied</span>
                       <span className="font-bold">-{formatPrice(Math.round(subtotalMRP * 0.60))}</span>

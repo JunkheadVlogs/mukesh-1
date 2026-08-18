@@ -86,7 +86,7 @@ export default function Cart() {
   const subtotalMRP = cart.reduce((total, item) => total + (item.originalPrice || item.price * 2) * item.quantity, 0);
   const activeCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
 
-  const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
+  const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
   const discountAmount = Math.round(subtotalMRP * discountRate);
   const total = subtotalMRP - discountAmount;
 
@@ -95,11 +95,12 @@ export default function Cart() {
     const code = couponCode.trim().toUpperCase();
     if (!code) return;
 
-    if (code === "VIP50" || code === "VIPCLUB65" || code === "VIPCLUB60" || code === "VIBCLUB60") {
+    if (code === "VIP50" || code === "VIPCLUB65" || code === "VIPCLUB60" || code === "VIP60" || code === "VIBCLUB60") {
       try {
         sessionStorage.removeItem('coupon_removed');
       } catch (e) {}
-      useStore.getState().applyCoupon(code === "VIBCLUB60" ? "VIPCLUB60" : code);
+      const normalizedCode = (code === "VIP60" || code === "VIBCLUB60") ? "VIPCLUB60" : code;
+      useStore.getState().applyCoupon(normalizedCode);
       setCouponCode("");
       setCouponError("");
     } else {

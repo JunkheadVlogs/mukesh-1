@@ -154,10 +154,11 @@ export default function ProductPage() {
 
   useEffect(() => {
     const mappedCoupon = storeCoupon ? storeCoupon.trim().toUpperCase() : '';
-    if (mappedCoupon && (mappedCoupon === 'VIP50' || mappedCoupon === 'VIPCLUB60' || mappedCoupon === 'VIBCLUB60')) {
-      setAppliedCoupon(mappedCoupon);
-      setCouponMsg(mappedCoupon === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
-      setCouponInput(mappedCoupon);
+    if (mappedCoupon && (mappedCoupon === 'VIP50' || mappedCoupon === 'VIPCLUB60' || mappedCoupon === 'VIP60' || mappedCoupon === 'VIBCLUB60')) {
+      const normalized = (mappedCoupon === 'VIP60' || mappedCoupon === 'VIBCLUB60') ? 'VIPCLUB60' : mappedCoupon;
+      setAppliedCoupon(normalized);
+      setCouponMsg(normalized === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
+      setCouponInput(normalized);
     } else if (!storeCoupon) {
       setAppliedCoupon(null);
       setCouponMsg('');
@@ -167,14 +168,15 @@ export default function ProductPage() {
 
   const applyCoupon = () => {
     const code = couponInput.trim().toUpperCase();
-    if (code === 'VIP50' || code === 'VIPCLUB60' || code === 'VIBCLUB60') {
+    if (code === 'VIP50' || code === 'VIPCLUB60' || code === 'VIP60' || code === 'VIBCLUB60') {
       try {
         sessionStorage.removeItem('coupon_removed');
       } catch (e) {}
-      setAppliedCoupon(code);
+      const normalized = (code === 'VIP60' || code === 'VIBCLUB60') ? 'VIPCLUB60' : code;
+      setAppliedCoupon(normalized);
       setCouponError(false);
-      setCouponMsg(code === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
-      useStore.getState().applyCoupon(code); // Update global store
+      setCouponMsg(normalized === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
+      useStore.getState().applyCoupon(normalized); // Update global store
     } else {
       setCouponError(true);
       setAppliedCoupon(null);
@@ -185,7 +187,7 @@ export default function ProductPage() {
 
   const mrpPrice = product ? (product.originalPrice || product.price * 2) : 0;
   const currentCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
-  const discountRate = currentCoupon === 'VIP50' ? 0.50 : (currentCoupon === 'VIPCLUB60' || currentCoupon === 'VIBCLUB60') ? 0.60 : 0.0;
+  const discountRate = currentCoupon === 'VIP50' ? 0.50 : (currentCoupon === 'VIPCLUB60' || currentCoupon === 'VIP60' || currentCoupon === 'VIBCLUB60') ? 0.60 : 0.0;
   const finalPrice = mrpPrice - Math.round(mrpPrice * discountRate);
   const savedAmount = mrpPrice - finalPrice;
 

@@ -109,7 +109,7 @@ export default function ThankYou() {
     let discountRate = 0.0;
     if (activeCouponOnPage === "VIP50") {
       discountRate = 0.50;
-    } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") {
+    } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60") {
       discountRate = 0.60;
     }
     const calculatedPrice = mrp - Math.round(mrp * discountRate);
@@ -262,7 +262,7 @@ export default function ThankYou() {
       let discountRate = 0.0;
       if (activeCouponOnPage === "VIP50") {
         discountRate = 0.50;
-      } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") {
+      } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60") {
         discountRate = 0.60;
       }
       const calculatedPrice = mrp - Math.round(mrp * discountRate);
@@ -299,7 +299,7 @@ export default function ThankYou() {
           <span>-₹${printableDiscount.toLocaleString("en-IN")}</span>
         </div>
       `;
-    } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") {
+    } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60") {
       couponRowHtml = `
         <div class="pricing-row" style="color: #2D452F; font-weight: 500;">
           <span>VIPCLUB60 Coupon Applied</span>
@@ -949,7 +949,7 @@ export default function ThankYou() {
                   <span className="font-bold">-₹{printableDiscount.toLocaleString("en-IN")}</span>
                 </div>
               )}
-              {(activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") && (
+              {(activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60") && (
                 <div className="flex justify-between text-[#1E7E34]">
                   <span>VIPCLUB60 Applied</span>
                   <span className="font-bold">-₹{printableDiscount.toLocaleString("en-IN")}</span>

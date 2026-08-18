@@ -88,10 +88,10 @@ export async function sendExitLeadToSheets({ name, phone, request, requestId, so
         type: 'exit_lead',
         name,
         phone: phone.startsWith('+91') ? phone : '+91' + phone,
-        couponCode: source === 'Contact Page' ? 'N/A (Contact Form)' : 'VIP50',
+        couponCode: source === 'Contact Page' ? 'N/A (Contact Form)' : 'VIPCLUB60',
         page: window.location.pathname,
         device,
-        request: request || 'Exit Intent Discount Coupon VIP50',
+        request: request || 'Exit Intent Discount Coupon VIPCLUB60',
         requestId: requestId || ('REQ-' + Math.floor(100000 + Math.random() * 900000)),
         source: source || 'Exit Intent Popup'
       })

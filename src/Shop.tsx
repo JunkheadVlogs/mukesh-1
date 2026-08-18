@@ -443,13 +443,48 @@ export default function Shop() {
         {/* SEO Header (visually hidden to avoid empty gap) */}
         <h1 className="sr-only">{seoData.heading}</h1>
 
+        {/* ROW 1: Category Filter Pills Row (Category Navigation - Attached directly to Header with ZERO gap) */}
+        <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto select-none scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full sticky top-[76px] md:top-[101px] z-40 bg-[#FAF7F2] border-b border-gray-100/80 py-1" style={{ marginBottom: "6px", marginTop: "0px", paddingTop: "0px" }}>
+          {[
+            { label: "All", value: null },
+            { label: "Co-Ord Sets", value: "Co-Ord Sets" },
+            { label: "Sarees", value: "Sarees" },
+            { label: "Linen Sarees", value: "Linen Sarees" },
+            { label: "Lehengas", value: "Lehengas" }
+          ].map((pill) => {
+            const isActive = (!pill.value && !categoryFilter) || (categoryFilter === pill.value);
+            return (
+              <button
+                key={pill.label || "all"}
+                onClick={() => handleCategoryChange(pill.value)}
+                className={`filter-pill category-pill shrink-0 flex-shrink-0 rounded-full font-normal uppercase tracking-wider whitespace-nowrap transition-all border duration-200 cursor-pointer ${
+                  isActive
+                     ? "bg-gold-500 border-gold-500 text-white shadow-sm font-medium"
+                     : "bg-white border-black/5 text-[#2b2b2b]/70 hover:text-[#2b2b2b] hover:border-black/20"
+                }`}
+                style={{
+                  height: "28px",
+                  fontSize: "11px",
+                  padding: "0 12px",
+                  borderRadius: "20px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                {pill.label}
+              </button>
+            );
+          })}
+        </div>
+
         {(categoryFilter === "Linen Sarees" || path.includes("linen-sarees") || fabricFilter.includes("Linen")) && (
           <div className="mb-2">
             <LinenStylingGuide />
           </div>
         )}
 
-        {/* ROW 1: Filters and Sort by Buttons */}
+        {/* ROW 2: Filters and Sort by Buttons */}
         <div className="controls-bar flex flex-row items-center gap-2" style={{ display: "flex", flexDirection: "row", gap: "8px", alignItems: "center", margin: "0 0 2px 0", width: "100%" }}>
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -509,41 +544,6 @@ export default function Shop() {
               }}
             />
           </div>
-        </div>
-
-        {/* ROW 3: Category Filter Pills Row (Sticky and Mobile-optimized scrollable row) */}
-        <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto select-none scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-screen sm:w-auto sticky top-[76px] md:top-[91px] z-40 bg-[#FAF7F2] border-b border-gray-100/80" style={{ marginBottom: "2px", marginTop: "0", paddingTop: "2px", paddingBottom: "2px" }}>
-          {[
-            { label: "All", value: null },
-            { label: "Co-Ord Sets", value: "Co-Ord Sets" },
-            { label: "Sarees", value: "Sarees" },
-            { label: "Linen Sarees", value: "Linen Sarees" },
-            { label: "Lehengas", value: "Lehengas" }
-          ].map((pill) => {
-            const isActive = (!pill.value && !categoryFilter) || (categoryFilter === pill.value);
-            return (
-              <button
-                key={pill.label || "all"}
-                onClick={() => handleCategoryChange(pill.value)}
-                className={`filter-pill category-pill shrink-0 flex-shrink-0 rounded-full font-normal uppercase tracking-wider whitespace-nowrap transition-all border duration-200 cursor-pointer ${
-                  isActive
-                     ? "bg-gold-500 border-gold-500 text-white shadow-sm font-medium"
-                     : "bg-white border-black/5 text-[#2b2b2b]/70 hover:text-[#2b2b2b] hover:border-black/20"
-                }`}
-                style={{
-                  height: "28px",
-                  fontSize: "11px",
-                  padding: "0 12px",
-                  borderRadius: "20px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                {pill.label}
-              </button>
-            );
-          })}
         </div>
 
         <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-12">

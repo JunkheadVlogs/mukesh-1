@@ -74,60 +74,21 @@ export function detectInAppBrowser(): { isInApp: boolean; name: string | null } 
 
 export function isExitPopupAlreadyShown(): boolean {
   try {
-    const now = Date.now();
-    const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
-
-    // 1. Converted Visitor Suppression (Form Submitted or Purchased -> permanent / min 90 days)
-    const submittedTime = safeLocalStorage.getItem('exitIntentSubmittedTime');
+    // 1. Converted Visitor Suppression (Form Submitted -> do not show again)
     const isSubmitted = safeLocalStorage.getItem('exitIntentSubmitted');
-    if (isSubmitted === 'true' || (submittedTime && (now - parseInt(submittedTime, 10)) < NINETY_DAYS_MS)) {
+    if (isSubmitted === 'true') {
       return true;
     }
 
-    const hasPurchased = safeLocalStorage.getItem('hasPurchased');
-    if (hasPurchased === 'true') return true;
-
-    // 2. FOR PRODUCT PAGES & META ADS TRAFFIC: ALWAYS ALLOW EXIT INTENT FORM COMPULSORY
-    // Override 24h cooldowns and previous store session suppressions if they haven't submitted lead yet!
-    if (isProductPage() || isMetaAdsVisitor()) {
-      if (globalSessionExitPopupShown) return true; // Only prevent repeat popups on the exact same active page view
-      return false; // Force compulsory display
+    // 2. Prevent repeat popups within the same active session once shown
+    if (globalSessionExitPopupShown) {
+      return true;
     }
 
-    // 3. In-Memory check for standard browsing
-    if (globalSessionExitPopupShown) return true;
-
-    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-    const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
-
-    // 4. Session Check
-    const sessionShown = safeSessionStorage.getItem('exit_intent_shown') || safeSessionStorage.getItem('exitPopupShown');
-    if (sessionShown === '1' || sessionShown === 'true') return true;
-
-    // 5. 3-Dismissal 30-Day Suppression Check
-    const dismissCountStr = safeLocalStorage.getItem('exit_intent_dismiss_count');
-    const dismissCount = dismissCountStr ? parseInt(dismissCountStr, 10) : 0;
-    const last3rdDismissTimeStr = safeLocalStorage.getItem('exit_intent_3rd_dismiss_time');
-
-    if (dismissCount >= 3) {
-      if (last3rdDismissTimeStr) {
-        const last3rdDismissTime = parseInt(last3rdDismissTimeStr, 10);
-        if (now - last3rdDismissTime < THIRTY_DAYS_MS) {
-          return true;
-        } else {
-          safeLocalStorage.removeItem('exit_intent_dismiss_count');
-          safeLocalStorage.removeItem('exit_intent_3rd_dismiss_time');
-        }
-      } else {
-        return true;
-      }
-    }
-
-    // 6. 24-Hour Cooldown Check
-    const lastShownTimeStr = safeLocalStorage.getItem('exit_intent_last_shown_time');
-    if (lastShownTimeStr) {
-      const lastShownTime = parseInt(lastShownTimeStr, 10);
-      if (now - lastShownTime < ONE_DAY_MS) {
+    // 3. Do not show on conversion/order success pages
+    if (typeof window !== 'undefined') {
+      const pathname = window.location.pathname || '';
+      if (pathname.includes('/thank-you') || pathname.includes('/success')) {
         return true;
       }
     }
@@ -169,15 +130,13 @@ export function recordExitPopupDismissal(): void {
   }
 }
 
-export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentOptions = {}) {
+export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOptions = {}) {
   const [triggered, setTriggered] = useState(false);
   const hasTriggeredRef = useRef(false);
   const hasInteractedRef = useRef(false);
 
   useEffect(() => {
-    const isPriorityTarget = isProductPage() || isMetaAdsVisitor();
-
-    // 1. Check layered storage before attaching any event triggers
+    // 1. Check if already submitted or already displayed in current session
     if (isExitPopupAlreadyShown()) {
       return;
     }
@@ -201,19 +160,19 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
     window.addEventListener('click', recordInteraction, { passive: true });
     window.addEventListener('keydown', recordInteraction, { passive: true });
 
-    // 1. DESKTOP TRIGGER: Mouse leaves top of viewport
-    let mouseMoveAttached = false;
+    // 1. DESKTOP TRIGGER: Mouse moves to top or leaves window
     const handleMouseMove = (e: MouseEvent) => {
-      if (e.clientY <= 10) {
+      if (e.clientY <= 15) {
         trigger();
       }
     };
-
-    const effectiveDelay = isPriorityTarget ? 0 : delay;
-    const mouseMoveTimer = setTimeout(() => {
-      document.addEventListener('mousemove', handleMouseMove);
-      mouseMoveAttached = true;
-    }, effectiveDelay);
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 10 || e.clientX <= 0 || e.clientX >= window.innerWidth) {
+        trigger();
+      }
+    };
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('mouseleave', handleMouseLeave, { passive: true });
 
     // 2. MOBILE SCROLL TRIGGER
     let lastScrollY = window.scrollY;
@@ -222,7 +181,7 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
     const handleScroll = () => {
       const currentY = window.scrollY;
       
-      if (currentY > 30) {
+      if (currentY > 20) {
         hasInteractedRef.current = true;
       }
       
@@ -233,19 +192,9 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = docHeight > 0 ? (currentY / docHeight) * 100 : 0;
 
-      if (isPriorityTarget) {
-        // For product/meta ad visitors: trigger on 20% scroll or gentle upward scroll
-        if (scrollPercent >= 20 || (maxScrollY > 80 && lastScrollY - currentY > 15)) {
-          trigger();
-        }
-      } else {
-        // Standard trigger: rapid scroll up after scrolling down past 100px
-        if (maxScrollY > 100) {
-          const scrollDiff = lastScrollY - currentY;
-          if (scrollDiff > 35) {
-            trigger();
-          }
-        }
+      // Trigger if visitor has scrolled 15%+ of the page or scrolls up by 20px after scrolling down
+      if (scrollPercent >= 15 || (maxScrollY > 60 && lastScrollY - currentY > 20)) {
+        trigger();
       }
       
       lastScrollY = currentY;
@@ -270,26 +219,22 @@ export function useExitIntent({ delay = 3000, sensitivity = 20 }: UseExitIntentO
 
     // 4. TAB VISIBILITY CHANGE TRIGGER (e.g. user switching tabs or opening another app)
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden' && (isPriorityTarget || hasInteractedRef.current)) {
+      if (document.visibilityState === 'hidden') {
         trigger();
       }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // 5. COMPULSORY TIME-DELAY FALLBACK TRIGGER
-    // Product Page & Meta Ads visitors: 5 seconds compulsory fallback
-    // General visitors: 18 seconds fallback
-    const fallbackDelayMs = isPriorityTarget ? 5000 : 18000;
+    // 5. GUARANTEE FALLBACK TIMER (6.5s)
+    // Ensures EVERY visitor gets the exit intent offer at least once even if no exit gesture occurred yet
     const timeDelayTimer = setTimeout(() => {
       trigger();
-    }, fallbackDelayMs);
+    }, 6500);
 
     return () => {
-      clearTimeout(mouseMoveTimer);
       clearTimeout(timeDelayTimer);
-      if (mouseMoveAttached) {
-        document.removeEventListener('mousemove', handleMouseMove);
-      }
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('visibilitychange', handleVisibilityChange);
