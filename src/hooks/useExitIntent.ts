@@ -17,7 +17,7 @@ export function isPinterestBrowser(): boolean {
 
   const isUaPinterest = /Pinterest/i.test(ua);
   const isRefPinterest = /pinterest\.com|pin\.it/i.test(ref);
-  const isUtmPinterest = /[?&]utm_source=pinterest/i.test(search);
+  const isUtmPinterest = /[?&]utm_source=pinterest/i.test(search) || /[?&]utm_medium=pinterest/i.test(search) || search.toLowerCase().includes('pinterest');
 
   return isUaPinterest || isRefPinterest || isUtmPinterest;
 }
@@ -82,6 +82,11 @@ export function isExitPopupAlreadyShown(): boolean {
 
     // 2. Prevent repeat popups within the same active session once shown
     if (globalSessionExitPopupShown) {
+      return true;
+    }
+
+    const sessionShown = safeSessionStorage.getItem('exit_intent_shown') || safeSessionStorage.getItem('exitPopupShown');
+    if (sessionShown === '1' || sessionShown === 'true') {
       return true;
     }
 

@@ -1080,8 +1080,9 @@ async function runPrerender() {
     },
     {
       dir: "wholesalesarees",
-      title: "${BUSINESS_INFO.name} Wholesale VIP Club",
-      desc: "Join ${BUSINESS_INFO.name} Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers.",
+      title: "Wholesale Sarees VIP Club — Mukesh Saree Centre Nagpur",
+      desc: "Exclusive saree dealer community in Nagpur since 1978. Get daily new arrivals, manufacturer-direct wholesale rates & bulk catalog updates on WhatsApp.",
+      ogImage: "https://mukeshsarees.com/og-images/wholesale-vip-club.jpg",
       body: `
         <div style="background-color: #FAF6F0; min-height: 100vh; font-family: 'Playfair Display', serif; text-align: center; padding: 80px 24px; color: #1A0A00;">
           <span style="display: inline-block; padding: 6px 16px; background-color: rgba(92, 6, 18, 0.05); color: #5C0612; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; border-radius: 99px; border: 1px solid rgba(92, 6, 18, 0.1); margin-bottom: 24px;">Wholesale Dealer Portal</span>
@@ -1131,10 +1132,12 @@ async function runPrerender() {
 
   console.log("[PRERENDER] Compiling static policies...");
   for (const page of staticPages) {
+    const pageImage = (page as any).ogImage || "https://mukeshsarees.com/og-image.jpg";
     const pageOgTags = `<!-- Dynamic OG Tags -->
     <meta data-rh="true" property="og:title" content="${page.title}" />
     <meta data-rh="true" property="og:description" content="${page.desc}" />
-    <meta data-rh="true" property="og:image" content="https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+    <meta data-rh="true" property="og:image" content="${pageImage}" />
+    <meta data-rh="true" property="og:image:secure_url" content="${pageImage}" />
     <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${page.dir}" />
     <meta data-rh="true" property="og:type" content="website" />
     <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
@@ -1144,7 +1147,7 @@ async function runPrerender() {
     <meta data-rh="true" name="twitter:card" content="summary_large_image" />
     <meta data-rh="true" name="twitter:title" content="${page.title}" />
     <meta data-rh="true" name="twitter:description" content="${page.desc}" />
-    <meta data-rh="true" name="twitter:image" content="https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85" />
+    <meta data-rh="true" name="twitter:image" content="${pageImage}" />
     <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}" />
     <!-- End Dynamic OG Tags -->`;
 

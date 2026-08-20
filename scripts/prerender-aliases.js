@@ -51,4 +51,11 @@ for (const a of shopAliases) {
     }
 }
 
+// 3. Wholesale route aliases
+const wholesaleSrc = path.join(distDir, "wholesalesarees", "index.html");
+if (fs.existsSync(wholesaleSrc)) {
+  copyIfExists(wholesaleSrc, path.join(distDir, "wholesale-sarees"), "wholesale-sarees");
+  copyIfExists(wholesaleSrc, path.join(distDir, "wholesale"), "wholesale");
+}
+
 console.log("[PRERENDER ALIASES] Finished creating route aliases.");

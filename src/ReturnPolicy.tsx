@@ -4,6 +4,7 @@ import { SEO } from './components/SEO';
 import { ShieldCheck, RefreshCcw, HandCoins, AlertCircle, FileText, PackageX, HelpCircle, ChevronDown, ChevronUp, CheckCircle2, Loader2 } from 'lucide-react';
 import { Link } from 'react-router';
 import { getApiUrl } from "./config";
+import { formatMobileInput, normalizeMobileNumber, isValidIndianMobileNumber } from './utils/phoneValidation';
 
 export default function ReturnPolicy() {
   const [isFormExpanded, setIsFormExpanded] = useState(false);
@@ -34,7 +35,7 @@ export default function ReturnPolicy() {
     const newErrors = {
       orderId: !oId.trim() ? "Order ID is required" : "",
       fullName: !name.trim() ? "Full Name is required" : name.trim().length < 2 ? "Name must be at least 2 characters long" : "",
-      phone: !mob.trim() ? "Mobile number is required" : !/^[0-9]{10}$/.test(mob.trim()) ? "Mobile number must be exactly 10 digits" : "",
+      phone: !mob.trim() ? "Mobile number is required" : !isValidIndianMobileNumber(mob) ? "Mobile number must be exactly 10 digits" : "",
       reason: !reas ? "Please select a reason for return" : ""
     };
     setErrors(newErrors);
@@ -64,13 +65,14 @@ export default function ReturnPolicy() {
     setError("");
     setSubmitting(true);
     try {
+      const normalizedPhone = normalizeMobileNumber(phone);
       const response = await fetch(getApiUrl("api/return-request"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           orderId,
           fullName,
-          phone,
+          phone: normalizedPhone,
           reason,
           comments
         })
@@ -275,7 +277,7 @@ export default function ReturnPolicy() {
                               value={phone}
                               onBlur={() => handleFieldBlur('phone')}
                               onChange={(e) => {
-                                const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                const val = formatMobileInput(e.target.value);
                                 setPhone(val);
                                 if (touched.phone) {
                                   validateForm(orderId, fullName, val, reason);

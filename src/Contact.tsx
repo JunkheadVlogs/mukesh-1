@@ -5,6 +5,7 @@ import { SEO } from './components/SEO';
 import { CONFIG, getWhatsAppNumber } from './config';
 import { trackContact } from './tracking';
 import { sendExitLeadToSheets } from './utils/googleSheets';
+import { formatMobileInput, normalizeMobileNumber, isValidIndianMobileNumber } from './utils/phoneValidation';
 
 export default function Contact() {
   const [name, setName] = useState('');
@@ -21,21 +22,15 @@ export default function Contact() {
 
     setError('');
     const trimmedName = name.trim();
-    const trimmedPhone = phone.trim();
+    const normalizedPhone = normalizeMobileNumber(phone);
     const trimmedMsg = messageText.trim();
 
-    if (!trimmedName || !trimmedPhone || !trimmedMsg) {
+    if (!trimmedName || !normalizedPhone || !trimmedMsg) {
       setError('Please fill in all fields.');
       return;
     }
 
-    // Indian 10-digit validation
-    let cleanPhone = trimmedPhone.replace(/\D/g, '');
-    if (cleanPhone.length === 12 && cleanPhone.startsWith('91')) {
-      cleanPhone = cleanPhone.substring(2);
-    }
-
-    if (cleanPhone.length !== 10) {
+    if (!isValidIndianMobileNumber(phone)) {
       setError('Please enter a valid 10-digit WhatsApp number.');
       return;
     }
@@ -46,7 +41,7 @@ export default function Contact() {
     try {
       trackContact({
         name: trimmedName,
-        phone: trimmedPhone
+        phone: normalizedPhone
       });
     } catch (trackErr) {
       console.warn("Contact tracking failed:", trackErr);
@@ -56,7 +51,7 @@ export default function Contact() {
     try {
       await sendExitLeadToSheets({
         name: trimmedName,
-        phone: trimmedPhone,
+        phone: normalizedPhone,
         request: `[${requestType}] ${trimmedMsg}`,
         requestId: requestId,
         source: 'Contact Page'
@@ -193,9 +188,8 @@ export default function Contact() {
                         type="tel"
                         placeholder="WhatsApp Number"
                         value={phone}
-                        onChange={e => setPhone(e.target.value.replace(/\D/g,'').slice(0,10))}
+                        onChange={e => setPhone(formatMobileInput(e.target.value))}
                         className="flex-1 px-3.5 py-2.5 bg-transparent outline-none font-sans text-xs sm:text-sm text-neutral-900"
-                        maxLength={10}
                         required
                       />
                     </div>

@@ -4,6 +4,7 @@ import { SEO } from "./components/SEO";
 import { Link, useNavigate } from "react-router";
 import { useStore } from "./store";
 import { formatPrice, optimizeImage, getImageAlt } from "./utils";
+import { formatMobileInput, normalizeMobileNumber, isValidIndianMobileNumber } from "./utils/phoneValidation";
 import { OptimizedImage } from "./components/OptimizedImage";
 import {
   CheckCircle2,
@@ -121,7 +122,8 @@ export default function Checkout() {
     try {
       const formData = new FormData(e.currentTarget);
       const fullName = formData.get("firstName")?.toString() || "";
-      const mobileNumber = formData.get("mobileNumber")?.toString() || "";
+      const rawMobileNumber = formData.get("mobileNumber")?.toString() || "";
+      const mobileNumber = normalizeMobileNumber(rawMobileNumber);
       const email = formData.get("email")?.toString() || "";
       const streetAddress = formData.get("streetAddress")?.toString() || "";
       const city = formData.get("city")?.toString() || "";
@@ -129,7 +131,7 @@ export default function Checkout() {
 
       const errors: Record<string, string> = {};
       if (!fullName.trim()) errors.firstName = "Please enter your full name";
-      if (!/^\d{10}$/.test(mobileNumber.trim()))
+      if (!isValidIndianMobileNumber(rawMobileNumber))
         errors.mobileNumber = "Please enter a valid 10-digit mobile number";
       if (!streetAddress.trim())
         errors.address = "Please enter your shipping address";
@@ -546,6 +548,10 @@ export default function Checkout() {
                         name="mobileNumber"
                         id="mobileNumber"
                         type="tel"
+                        onChange={(e) => {
+                          e.target.value = formatMobileInput(e.target.value);
+                          if (formErrors.mobileNumber) setFormErrors({ ...formErrors, mobileNumber: "" });
+                        }}
                         className={`w-full bg-primary-50/20 border ${formErrors.mobileNumber ? "border-red-500 ring-1 ring-red-500/20" : "border-black/10 focus:border-gold-500"} px-2.5 sm:px-4 py-1.5 sm:py-2.5 md:py-3 text-primary-950 focus:ring-1 focus:ring-gold-500/30 outline-none transition-all rounded-sm font-medium text-xs sm:text-sm md:text-base placeholder:text-primary-950/50`}
                         placeholder="10-digit number"
                       />

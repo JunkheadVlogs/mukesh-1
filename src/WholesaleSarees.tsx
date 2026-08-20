@@ -165,16 +165,21 @@ export default function WholesaleSarees() {
   return (
     <div className="relative min-h-screen bg-[#FAF6F0] text-[#1A0A00] font-sans overflow-x-hidden pb-16">
       <SEO 
-        title="Mukesh Saree Centre Wholesale VIP Club" 
-        description="Join Mukesh Saree Centre Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers." 
-        url="/wholesale-sarees"
+        title="Wholesale Sarees VIP Club — Mukesh Saree Centre Nagpur" 
+        description="Exclusive saree dealer community in Nagpur since 1978. Get daily new arrivals, manufacturer-direct wholesale rates & bulk catalog updates on WhatsApp." 
+        image="https://mukeshsarees.com/og-images/wholesale-vip-club.jpg"
+        url="/wholesalesarees"
+        type="website"
+        imageWidth="1200"
+        imageHeight="630"
         schema={[
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             "name": "Wholesale Sarees VIP Club",
             "description": "Join Mukesh Saree Centre Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers.",
-            "url": "https://mukeshsarees.com/wholesale-sarees"
+            "url": "https://mukeshsarees.com/wholesalesarees",
+            "image": "https://mukeshsarees.com/og-images/wholesale-vip-club.jpg"
           },
           {
             "@context": "https://schema.org",
@@ -190,7 +195,7 @@ export default function WholesaleSarees() {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Wholesale VIP Club",
-                "item": "https://mukeshsarees.com/wholesale-sarees"
+                "item": "https://mukeshsarees.com/wholesalesarees"
               }
             ]
           }

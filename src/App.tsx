@@ -264,6 +264,8 @@ export default function App() {
             <Route path=":slug" element={<SeoLandingPage />} />
           </Route>
           <Route path="wholesalesarees" element={<WholesaleSarees />} />
+          <Route path="wholesale-sarees" element={<WholesaleSarees />} />
+          <Route path="wholesale" element={<WholesaleSarees />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

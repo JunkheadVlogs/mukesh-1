@@ -1104,10 +1104,17 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     ogTitle = "Shop Sarees, Co-Ord Sets & Ethnic Wear — Mukesh Saree Centre";
     ogDesc = "Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above ₹499. Trusted since 1978.";
     ogImg = defaultBannerUrl;
-  } else if (reqPath.startsWith('/wholesale-sarees')) {
+  } else if (
+    reqPath.startsWith('/wholesalesarees') ||
+    reqPath.startsWith('/wholesale-sarees') ||
+    reqPath.startsWith('/wholesale')
+  ) {
     ogTitle = "Wholesale Sarees VIP Club — Mukesh Saree Centre Nagpur";
-    ogDesc = "Direct manufacturer wholesale saree rates, daily new arrivals & bulk order catalog. Join VIP Club. Trusted Since 1978.";
-    ogImg = defaultBannerUrl;
+    ogDesc = "🏬 Exclusive Saree Wholesaler in Nagpur Since 1978 | 📦 Daily Catalog & Bulk Dealer Rates | 📲 Join WhatsApp VIP Club | 🚚 Pan-India Delivery";
+    ogImg = "https://mukeshsarees.com/og-images/wholesale-vip-club.jpg";
+    ogUrl = "https://mukeshsarees.com/wholesalesarees";
+    ogWidth = "1200";
+    ogHeight = "630";
   } else if (reqPath.startsWith('/uniform-saree-bulk-orders')) {
     ogTitle = "Uniform Sarees & Bulk Orders — Mukesh Saree Centre Nagpur";
     ogDesc = "Wholesale uniform sarees for schools, colleges, institutions & events. Direct weaver pricing, custom design & pan-India delivery.";

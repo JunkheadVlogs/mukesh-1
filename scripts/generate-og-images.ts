@@ -139,6 +139,46 @@ async function main() {
 
   await Promise.all(pool);
 
+  // Generate Wholesale VIP Club dedicated 1200x630 OG image
+  try {
+    const wholesaleUrl = "https://wsrv.nl/?url=https%3A%2F%2Fik.imagekit.io%2Ftus1loev9%2Fhomepage%2Fheroimage.webp&w=1200&h=630&fit=cover&output=jpg&q=80";
+    const destWholesalePublic = path.join(publicOgDir, 'wholesale-vip-club.jpg');
+    const destWholesaleDist = path.join(distOgDir, 'wholesale-vip-club.jpg');
+    const wholesaleSuccess = await downloadFile(wholesaleUrl, destWholesalePublic);
+    if (wholesaleSuccess) {
+      fs.copyFileSync(destWholesalePublic, destWholesaleDist);
+      // Also copy to root public/og-wholesale.jpg for extra safety
+      fs.copyFileSync(destWholesalePublic, path.join(rootDir, 'public', 'og-wholesale.jpg'));
+      if (fs.existsSync(path.join(rootDir, 'dist'))) {
+        fs.copyFileSync(destWholesalePublic, path.join(rootDir, 'dist', 'og-wholesale.jpg'));
+      }
+      console.log('✅ Generated wholesale-vip-club.jpg Open Graph Image');
+    }
+  } catch (err: any) {
+    console.error('Warning: could not download wholesale-vip-club.jpg:', err?.message || err);
+  }
+
+  // Generate / Update Main Homepage Hero 1200x630 Open Graph Image (under 100KB for WhatsApp & Social bots)
+  try {
+    const heroOgUrl = "https://wsrv.nl/?url=https%3A%2F%2Fik.imagekit.io%2Ftus1loev9%2Fhomepage%2Fheroimage.webp&w=1200&h=630&fit=cover&output=jpg&q=82";
+    const destHeroPublic = path.join(rootDir, 'public', 'og-image.jpg');
+    const heroSuccess = await downloadFile(heroOgUrl, destHeroPublic);
+    if (heroSuccess) {
+      if (fs.existsSync(path.join(rootDir, 'public', 'images'))) {
+        fs.copyFileSync(destHeroPublic, path.join(rootDir, 'public', 'images', 'og-home.jpg'));
+      }
+      if (fs.existsSync(path.join(rootDir, 'dist'))) {
+        fs.copyFileSync(destHeroPublic, path.join(rootDir, 'dist', 'og-image.jpg'));
+        if (fs.existsSync(path.join(rootDir, 'dist', 'images'))) {
+          fs.copyFileSync(destHeroPublic, path.join(rootDir, 'dist', 'images', 'og-home.jpg'));
+        }
+      }
+      console.log('✅ Generated og-image.jpg (Hero Open Graph Banner, ~91KB)');
+    }
+  } catch (err: any) {
+    console.error('Warning: could not download og-image.jpg:', err?.message || err);
+  }
+
   console.log('\n======================================================');
   console.log('🎉 [GEN-OG-IMAGES] POOL PROCESS COMPLETE!');
   console.log('======================================================');

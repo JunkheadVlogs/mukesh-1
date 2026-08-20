@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useStore } from '../store';
 import { safeLocalStorage } from '../utils/safeStorage';
+import { formatMobileInput, normalizeMobileNumber } from '../utils/phoneValidation';
 import { recordExitPopupDismissal, detectInAppBrowser } from '../hooks/useExitIntent';
 
 export interface ExitIntentPopupProps {
@@ -93,18 +94,18 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
 
     // 2. NON-BLOCKING BACKGROUND PROCESSING (AFTER REVEAL IS SHOWN)
     const trimmedName = name.trim();
-    const trimmedPhone = phone.trim();
+    const normalizedPhone = normalizeMobileNumber(phone);
 
     setTimeout(() => {
       // Background onSubmit if provided
       if (onSubmit) {
-        onSubmit(trimmedName || 'VIP Guest', trimmedPhone || '').catch(() => {});
+        onSubmit(trimmedName || 'VIP Guest', normalizedPhone || '').catch(() => {});
       }
 
       // Background Google Sheets logging
       try {
         const sheetsUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL || import.meta.env.VITE_SHEETS_WEBHOOK_URL;
-        if (sheetsUrl && (trimmedName || trimmedPhone)) {
+        if (sheetsUrl && (trimmedName || normalizedPhone)) {
           const inApp = detectInAppBrowser();
           const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
           fetch(sheetsUrl, {
@@ -114,7 +115,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
             body: JSON.stringify({
               type: 'exit_lead',
               name: trimmedName || 'VIP Guest',
-              phone: trimmedPhone,
+              phone: normalizedPhone,
               page: window.location.pathname,
               device: isMobile ? (inApp.isInApp ? `Mobile (${inApp.name})` : 'Mobile') : 'Desktop',
               request: 'Exit Intent Discount Coupon VIPCLUB60',
@@ -245,13 +246,19 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                 <span>46 Years of Trust · Est. 1978 · Nagpur</span>
               </div>
 
-              {/* Headline */}
-              <h2 className="text-2xl sm:text-[26px] font-serif font-semibold text-white mb-2 leading-snug tracking-wide max-w-[360px]">
+              {/* Headline: High Contrast Bright White with font styling */}
+              <h2 
+                className="text-2xl sm:text-[26px] font-serif font-semibold !text-white mb-2 leading-snug tracking-wide max-w-[360px]"
+                style={{ color: '#FFFFFF' }}
+              >
                 Wait! Before You Go...
               </h2>
 
-              {/* Sub-headline */}
-              <p className="text-neutral-300 font-sans text-xs sm:text-[13px] mb-5 leading-relaxed max-w-[320px]">
+              {/* Sub-headline: High contrast light off-white */}
+              <p 
+                className="font-sans text-xs sm:text-[13px] mb-5 leading-relaxed max-w-[320px]"
+                style={{ color: '#E0DCD5' }}
+              >
                 Enter your details to instantly reveal your exclusive 60% discount code:
               </p>
 
@@ -277,8 +284,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                       type="tel"
                       placeholder="WhatsApp Number (Optional)"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                      maxLength={10}
+                      onChange={(e) => setPhone(formatMobileInput(e.target.value))}
                       className="flex-grow bg-transparent px-4 py-3 text-white outline-none font-sans text-xs sm:text-sm placeholder:text-white/30"
                     />
                   </div>
@@ -319,12 +325,18 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
             style={{ animation: 'couponPop 0.3s ease-out forwards' }}
           >
             {/* Headline */}
-            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white mb-4 leading-tight tracking-wide">
+            <h2 
+              className="text-xl sm:text-2xl font-serif font-bold !text-white mb-4 leading-tight tracking-wide"
+              style={{ color: '#FFFFFF' }}
+            >
               🎉 YOUR 60% OFF IS UNLOCKED!
             </h2>
 
             {/* Label */}
-            <p className="text-neutral-300 font-sans text-xs sm:text-sm mb-2">
+            <p 
+              className="font-sans text-xs sm:text-sm mb-2"
+              style={{ color: '#E0DCD5' }}
+            >
               Your Exclusive Coupon Code:
             </p>
 

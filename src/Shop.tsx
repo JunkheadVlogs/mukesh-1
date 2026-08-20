@@ -478,12 +478,6 @@ export default function Shop() {
           })}
         </div>
 
-        {(categoryFilter === "Linen Sarees" || path.includes("linen-sarees") || fabricFilter.includes("Linen")) && (
-          <div className="mb-2">
-            <LinenStylingGuide />
-          </div>
-        )}
-
         {/* ROW 2: Filters and Sort by Buttons */}
         <div className="controls-bar flex flex-row items-center gap-2" style={{ display: "flex", flexDirection: "row", gap: "8px", alignItems: "center", margin: "0 0 2px 0", width: "100%" }}>
           <button
@@ -757,6 +751,12 @@ export default function Shop() {
             )}
           </main>
         </div>
+
+        {(categoryFilter === "Linen Sarees" || path.includes("linen-sarees") || fabricFilter.includes("Linen")) && (
+          <div className="mt-8 mb-4">
+            <LinenStylingGuide />
+          </div>
+        )}
       </div>
 
       <QuickViewModal

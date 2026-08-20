@@ -35,6 +35,7 @@ import {
   getImageAlt,
 } from "./utils";
 import { CONFIG, submitToGoogleSheets, getApiUrl, getWhatsAppNumber } from "./config";
+import { formatMobileInput, normalizeMobileNumber, isValidIndianMobileNumber } from "./utils/phoneValidation";
 import { sendOrderToSheets } from "./utils/googleSheets";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { ProductCard } from "./components/ProductCard";
@@ -404,7 +405,7 @@ export default function ProductPage() {
   const handleBuyNowPayment = async (method: "online" | "cod") => {
     const errors: Record<string, string> = {};
     if (!checkoutForm.fullName.trim()) errors.fullName = "Full name is required";
-    if (!/^\d{10}$/.test(checkoutForm.mobileNumber.trim())) {
+    if (!isValidIndianMobileNumber(checkoutForm.mobileNumber)) {
       errors.mobileNumber = "Enter a valid 10-digit mobile number";
     }
     if (!checkoutForm.streetAddress.trim()) errors.streetAddress = "Delivery address is required";
@@ -419,11 +420,13 @@ export default function ProductPage() {
     setCheckoutErrors({});
     setIsSubmittingOrder(true);
 
+    const normalizedPhone = normalizeMobileNumber(checkoutForm.mobileNumber);
+
     // Save client data for future quick auto-fills
     try {
       localStorage.setItem('customer_checkout_info', JSON.stringify({
         email: checkoutForm.email || "",
-        phone: checkoutForm.mobileNumber,
+        phone: normalizedPhone,
         name: checkoutForm.fullName,
         city: checkoutForm.city,
         zip: checkoutForm.zipCode,
@@ -447,7 +450,7 @@ export default function ProductPage() {
       const googleSheetsData = {
         orderId: newOrderId,
         firstName: checkoutForm.fullName,
-        mobileNumber: checkoutForm.mobileNumber,
+        mobileNumber: normalizedPhone,
         email: checkoutForm.email || "N/A",
         streetAddress: checkoutForm.streetAddress,
         city: checkoutForm.city,
@@ -472,7 +475,7 @@ export default function ProductPage() {
       const sheetPayload = {
         type: 'order' as const,
         firstName: checkoutForm.fullName,
-        phone: checkoutForm.mobileNumber,
+        phone: normalizedPhone,
         email: checkoutForm.email || "N/A",
         address: checkoutForm.streetAddress,
         city: checkoutForm.city,
@@ -511,7 +514,7 @@ export default function ProductPage() {
           }],
           customer: {
             fullName: checkoutForm.fullName,
-            mobileNumber: checkoutForm.mobileNumber,
+            mobileNumber: normalizedPhone,
             email: checkoutForm.email || "",
             streetAddress: checkoutForm.streetAddress,
             city: checkoutForm.city,
@@ -557,7 +560,7 @@ export default function ProductPage() {
               size: selectedSize || "Standard",
               coupon_used: appliedCoupon || "None",
               customer_name: checkoutForm.fullName,
-              customer_phone: checkoutForm.mobileNumber
+              customer_phone: normalizedPhone
             }
           })
         });
@@ -586,7 +589,7 @@ export default function ProductPage() {
           prefill: {
             name: checkoutForm.fullName,
             email: checkoutForm.email || "",
-            contact: checkoutForm.mobileNumber
+            contact: normalizedPhone
           },
           theme: { color: "#C8A96E" },
           notes: {
@@ -1937,11 +1940,9 @@ export default function ProductPage() {
                     <input
                       type="tel"
                       required
-                      pattern="[0-9]{10}"
-                      maxLength={10}
                       value={checkoutForm.mobileNumber}
                       onChange={(e) => {
-                        const val = e.target.value.replace(/\D/g, "");
+                        const val = formatMobileInput(e.target.value);
                         setCheckoutForm({ ...checkoutForm, mobileNumber: val });
                         if (checkoutErrors.mobileNumber) {
                           const { mobileNumber, ...rest } = checkoutErrors;
@@ -2210,7 +2211,7 @@ export default function ProductPage() {
                     borderRadius:'8px',marginBottom:'12px',fontSize:'14px', outline: 'none'}} />
                 <input placeholder="WhatsApp Number * (10 digits)" 
                   value={form.phone} type="tel"
-                  onChange={e=>setForm({...form,phone:e.target.value.replace(/\D/g,'').slice(0,10)})}
+                  onChange={e=>setForm({...form,phone:formatMobileInput(e.target.value)})}
                   style={{width:'100%',padding:'12px',border:'1px solid #ddd',
                     borderRadius:'8px',marginBottom:'12px',fontSize:'14px', outline: 'none'}} />
                 <input placeholder="Delivery Address *"
@@ -2220,15 +2221,16 @@ export default function ProductPage() {
                     borderRadius:'8px',marginBottom:'16px',fontSize:'14px', outline: 'none'}} />
                 <button disabled={submitting}
                   onClick={async()=>{
+                    const normalizedPhone = normalizeMobileNumber(form.phone);
                     if(!form.name.trim()||!form.phone.trim()||!form.address.trim()) return alert('Fill all fields')
-                    if(form.phone.trim().length !== 10) return alert('Enter a valid 10-digit phone number')
+                    if(!isValidIndianMobileNumber(form.phone)) return alert('Enter a valid 10-digit phone number')
                     setSubmitting(true)
                     try {
                       await fetch(import.meta.env.VITE_SHEETS_WEBHOOK_URL || '', {
                         method:'POST', mode:'no-cors',
                         headers:{'Content-Type':'application/json'},
                         body: JSON.stringify({
-                          name: form.name, phone: form.phone,
+                          name: form.name, phone: normalizedPhone,
                           address: form.address, size: selectedSize || 'Standard',
                           product: product?.name, amount: finalPrice,
                           type: 'COD_ORDER',
