@@ -239,19 +239,19 @@ export default function GuideDetail() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://mukeshsarees.com"
+        "item": "https://mukeshsarees.com/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Knowledge Hub",
-        "item": "https://mukeshsarees.com/guides"
+        "item": "https://mukeshsarees.com/guides/"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": guide.title,
-        "item": `https://mukeshsarees.com/guides/${guide.slug}`
+        "item": `https://mukeshsarees.com/guides/${guide.slug}/`
       }
     ]
   };
@@ -303,7 +303,7 @@ export default function GuideDetail() {
       <Helmet>
         <title>{guide.title} - Mukesh Saree Centre</title>
         <meta name="description" content={guide.description} />
-        <link rel="canonical" href={`https://mukeshsarees.com/guides/${guide.slug}`} />
+        <link rel="canonical" href={`https://mukeshsarees.com/guides/${guide.slug}/`} />
         <script type="application/ld+json">{JSON.stringify(schemaMarkup)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
         {guide.faqs.length > 0 && (

@@ -85,13 +85,13 @@ export default function Contact() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://mukeshsarees.com"
+          "item": "https://mukeshsarees.com/"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Contact Us",
-          "item": "https://mukeshsarees.com/contact"
+          "item": "https://mukeshsarees.com/contact/"
         }
       ]
     }

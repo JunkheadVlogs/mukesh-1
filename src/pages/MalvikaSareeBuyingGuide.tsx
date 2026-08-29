@@ -22,13 +22,13 @@ export default function MalvikaSareeBuyingGuide() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": BUSINESS_INFO.website
+          "item": `${BUSINESS_INFO.website}/`
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Malvika Saree Buying Guide",
-          "item": `${BUSINESS_INFO.website}/malvika-saree-buying-guide`
+          "item": `${BUSINESS_INFO.website}/malvika-saree-buying-guide/`
         }
       ]
     },

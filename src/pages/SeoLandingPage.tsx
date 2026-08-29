@@ -1133,13 +1133,13 @@ export default function SeoLandingPage() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://mukeshsarees.com"
+          "item": "https://mukeshsarees.com/"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": pageData.h1,
-          "item": `https://mukeshsarees.com/${slug}`
+          "item": `https://mukeshsarees.com/${slug}/`
         }
       ]
     };

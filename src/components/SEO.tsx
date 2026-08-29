@@ -136,7 +136,12 @@ export function SEO({
   imageHeight,
 }: SEOProps) {
   const siteUrl = "https://mukeshsarees.com";
-  const absoluteUrl = url.startsWith("http") ? url : `${siteUrl}${url}`;
+  
+  let validUrl = url || siteUrl;
+  let normalizedUrl = validUrl.endsWith('/') ? validUrl : `${validUrl}/`;
+  if (normalizedUrl === '//') normalizedUrl = '/';
+  
+  const absoluteUrl = normalizedUrl.startsWith("http") ? normalizedUrl : `${siteUrl}${normalizedUrl}`;
 
   useEffect(() => {
     if (typeof document !== 'undefined') {

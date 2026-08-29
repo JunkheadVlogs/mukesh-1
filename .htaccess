@@ -98,7 +98,12 @@ RewriteRule ^$ dist/index.html [L]
 RewriteCond %{DOCUMENT_ROOT}/dist/$1/index.html -f
 RewriteRule ^([^/]+)/?$ dist/$1/index.html [L]
 
-# Serve pre-rendered product pages
+# Serve pre-rendered product pages without trailing slash redirect
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{DOCUMENT_ROOT}/dist/product/$1/index.html -f
+RewriteRule ^product/([^/]+)$ dist/product/$1/index.html [L]
+
+# Serve pre-rendered product pages with trailing slash
 RewriteCond %{DOCUMENT_ROOT}/dist/product/$1/index.html -f
 RewriteRule ^product/([^/]+)/?$ dist/product/$1/index.html [L]
 

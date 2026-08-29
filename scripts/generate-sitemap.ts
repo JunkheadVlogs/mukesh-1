@@ -16,11 +16,13 @@ async function generateSitemap() {
   const addedPaths = new Set<string>();
 
   function addRoute(routePath: string, changefreq: string, priority: string) {
-    // Ensure routePath starts with / and has no trailing slash (except root /)
+    // Ensure routePath has a trailing slash (except root /)
     let cleanPath = routePath.trim();
-    if (cleanPath.length > 1 && cleanPath.endsWith("/")) {
-      cleanPath = cleanPath.slice(0, -1);
+    if (!cleanPath.endsWith("/")) {
+      cleanPath = cleanPath + "/";
     }
+    if (cleanPath === "//") cleanPath = "/";
+
     if (!addedPaths.has(cleanPath)) {
       addedPaths.add(cleanPath);
       routes.push({ path: cleanPath, changefreq, priority });

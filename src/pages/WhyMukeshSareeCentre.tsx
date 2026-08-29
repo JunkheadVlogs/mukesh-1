@@ -22,13 +22,13 @@ export default function WhyMukeshSareeCentre() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": BUSINESS_INFO.website
+          "item": `${BUSINESS_INFO.website}/`
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Why Mukesh Saree Centre",
-          "item": `${BUSINESS_INFO.website}/why-mukesh-saree-centre`
+          "item": `${BUSINESS_INFO.website}/why-mukesh-saree-centre/`
         }
       ]
     },

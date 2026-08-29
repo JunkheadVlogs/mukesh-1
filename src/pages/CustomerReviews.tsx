@@ -22,13 +22,13 @@ export default function CustomerReviews() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": BUSINESS_INFO.website
+          "item": `${BUSINESS_INFO.website}/`
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Customer Reviews",
-          "item": `${BUSINESS_INFO.website}/reviews`
+          "item": `${BUSINESS_INFO.website}/reviews/`
         }
       ]
     },

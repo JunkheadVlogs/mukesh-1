@@ -6,7 +6,12 @@ import { BUSINESS_INFO } from "../config/business";
 export function GlobalSchema() {
   const location = useLocation();
   const isHome = location.pathname === '/' || location.pathname === '';
-  const currentUrl = `${BUSINESS_INFO.website}${isHome ? '' : location.pathname}`;
+  let normalizedPathname = location.pathname;
+  if (!normalizedPathname.endsWith('/')) {
+    normalizedPathname += '/';
+  }
+  
+  const currentUrl = `${BUSINESS_INFO.website}${isHome ? '/' : normalizedPathname}`;
 
   const organizationSchema = {
     "@context": "https://schema.org",

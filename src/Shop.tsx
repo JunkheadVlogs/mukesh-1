@@ -405,7 +405,7 @@ export default function Shop() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://mukeshsarees.com"
+        "item": "https://mukeshsarees.com/"
       },
       {
         "@type": "ListItem",

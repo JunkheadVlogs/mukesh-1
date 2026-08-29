@@ -248,9 +248,9 @@ export function getHeaderHtml(): string {
       </div>
       <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
         <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
-        <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
-        <a href="/shop?category=Co-Ord-Sets" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Co-Ord Sets</a>
-        <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
+        <a href="/shop/?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
+        <a href="/shop/?category=Co-Ord-Sets" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Co-Ord Sets</a>
+        <a href="/contact/" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
       </nav>
     </header>
   `;
@@ -268,19 +268,19 @@ export function getFooterHtml(): string {
         <div>
           <h4 style="font-family: 'Playfair Display', serif; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: #faf6f0; margin: 0 0 20px 0;">Shop Categories</h4>
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2.2;">
-            <li><a href="/shop?category=Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Classic Silk Sarees</a></li>
+            <li><a href="/shop/?category=Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Classic Silk Sarees</a></li>
             <li><a href="/shop?category=Linen Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Premium Linen Sarees</a></li>
-            <li><a href="/shop?category=Co-Ord-Sets" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Cotton Co-Ord Sets</a></li>
-            <li><a href="/shop?category=Lehengas" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Bridal & Designer Lehengas</a></li>
+            <li><a href="/shop/?category=Co-Ord-Sets" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Cotton Co-Ord Sets</a></li>
+            <li><a href="/shop/?category=Lehengas" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Bridal & Designer Lehengas</a></li>
           </ul>
         </div>
         <div>
           <h4 style="font-family: 'Playfair Display', serif; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: #faf6f0; margin: 0 0 20px 0;">Policies</h4>
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2.2;">
-            <li><a href="/shipping-policy" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Shipping & Cash on Delivery Policy</a></li>
-            <li><a href="/return-policy" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Returns & Refund Guidelines</a></li>
-            <li><a href="/terms" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Terms of Service</a></li>
-            <li><a href="/contact" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Support & Contact Us</a></li>
+            <li><a href="/shipping-policy/" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Shipping & Cash on Delivery Policy</a></li>
+            <li><a href="/return-policy/" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Returns & Refund Guidelines</a></li>
+            <li><a href="/terms/" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Terms of Service</a></li>
+            <li><a href="/contact/" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Support & Contact Us</a></li>
           </ul>
         </div>
         <div>
@@ -402,7 +402,7 @@ async function runPrerender() {
           <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop ${BUSINESS_INFO.address.city}'s premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, bridal lehengas, and stylish breathable co-ord sets. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹499.</p>
           <div style="display: flex; gap: 16px; justify-content: center;">
             <a href="/shop" style="background: #faf6f0; color: #1a0a00; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Explore Collection</a>
-            <a href="/contact" style="border: 1px solid rgba(250, 246, 240, 0.4); color: #faf6f0; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Contact Boutique</a>
+            <a href="/contact/" style="border: 1px solid rgba(250, 246, 240, 0.4); color: #faf6f0; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Contact Boutique</a>
           </div>
         </div>
       </section>
@@ -411,19 +411,19 @@ async function runPrerender() {
       <section style="max-width: 1200px; margin: 60px auto; padding: 0 24px;">
         <h2 style="font-family: 'Playfair Display', serif; text-align: center; font-size: 28px; margin-bottom: 40px; color: #1a0a00;">Browse By Collection</h2>
         <div class="collection-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;">
-          <a class="collection-card" href="/shop?category=Sarees" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+          <a class="collection-card" href="/shop/?category=Sarees" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
             <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Designer Sarees</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Pure Silks & Linens</span>
           </a>
-          <a class="collection-card" href="/shop?category=Co-Ord-Sets" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+          <a class="collection-card" href="/shop/?category=Co-Ord-Sets" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
             <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Co-Ord Sets</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Luxe Cotton & Linen Pairs</span>
           </a>
-          <a class="collection-card" href="/shop?category=Lehengas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+          <a class="collection-card" href="/shop/?category=Lehengas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
             <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Lehengas</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Grand Wedding Attire</span>
           </a>
-          <a class="collection-card" href="/shop?category=Kurtas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+          <a class="collection-card" href="/shop/?category=Kurtas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
             <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Kurtas & Suits</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Comfortable Everyday Elegance</span>
           </a>
@@ -466,7 +466,7 @@ async function runPrerender() {
             <div>
               <h3 style="font-weight: 600; color: #1a0a00; margin-bottom: 16px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">B2B & Wholesale</h3>
               <ul style="list-style: none; padding: 0; margin: 0;">
-                <li style="margin-bottom: 8px;"><a href="/wholesalesarees" style="color: inherit; text-decoration: none;">Wholesale Sarees Direct</a></li>
+                <li style="margin-bottom: 8px;"><a href="/wholesalesarees/" style="color: inherit; text-decoration: none;">Wholesale Sarees Direct</a></li>
                 <li style="margin-bottom: 8px;"><a href="/school-uniform-sarees" style="color: inherit; text-decoration: none;">School Uniform Sarees</a></li>
                 <li style="margin-bottom: 8px;"><a href="/teacher-uniform-sarees" style="color: inherit; text-decoration: none;">Teacher Uniform Sarees</a></li>
                 <li style="margin-bottom: 8px;"><a href="/corporate-uniform-sarees" style="color: inherit; text-decoration: none;">Corporate Uniform Sarees</a></li>
@@ -481,7 +481,7 @@ async function runPrerender() {
                 <li style="margin-bottom: 8px;"><a href="/guides/saree-fabric-guide" style="color: inherit; text-decoration: none;">Saree Fabric Guide</a></li>
                 <li style="margin-bottom: 8px;"><a href="/faqs" style="color: inherit; text-decoration: none;">Frequently Asked Questions</a></li>
                 <li style="margin-bottom: 8px;"><a href="/about" style="color: inherit; text-decoration: none;">About Mukesh Saree Centre</a></li>
-                <li style="margin-bottom: 8px;"><a href="/contact" style="color: inherit; text-decoration: none;">Contact Us</a></li>
+                <li style="margin-bottom: 8px;"><a href="/contact/" style="color: inherit; text-decoration: none;">Contact Us</a></li>
               </ul>
             </div>
 
@@ -504,7 +504,7 @@ async function runPrerender() {
   <meta property="og:site_name" content="Mukesh Saree Centre">
   <meta property="og:title" content="Mukesh Saree Centre | Wholesale & Retail Sarees in Nagpur">
   <meta property="og:description" content="Wholesale & Retail Sarees. Cash on Delivery Available Across India.">
-  <meta property="og:url" content="https://mukeshsarees.com">
+  <meta property="og:url" content="https://mukeshsarees.com/">
   <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -685,7 +685,7 @@ async function runPrerender() {
               <a href="/sarees/linen-sarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Linen Sarees</a>
               <a href="/sarees/cotton-sarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Cotton Sarees</a>
               <a href="/lehengas" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Lehengas</a>
-              <a href="/wholesalesarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Wholesale Enquiries</a>
+              <a href="/wholesalesarees/" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Wholesale Enquiries</a>
             </div>
           </section>
 
@@ -699,7 +699,7 @@ async function runPrerender() {
       <meta data-rh="true" property="og:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
       <meta data-rh="true" property="og:description" content="${collection.description}" />
       <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/og-image.jpg" />
-      <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${collection.route}" />
+      <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${collection.route}/" />
       <meta data-rh="true" property="og:type" content="website" />
       <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
       <meta data-rh="true" property="og:image:width" content="1200" />
@@ -709,7 +709,7 @@ async function runPrerender() {
       <meta data-rh="true" name="twitter:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
       <meta data-rh="true" name="twitter:description" content="${collection.description}" />
       <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
-      <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}" />
+      <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}/" />
       <!-- End Dynamic OG Tags -->`;
 
     const shopHtml = createStaticPage({
@@ -897,7 +897,7 @@ async function runPrerender() {
       : `💰 ₹${p.price}`;
 
     const prodDesc = `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since ${BUSINESS_INFO.established}`;
-    const pageTitle = `${p.name} | ${BUSINESS_INFO.name}`;
+    const pageTitle = `${p.name} - ₹${p.price} | ${BUSINESS_INFO.name}`;
     
     const dynamicTags = `<!-- Dynamic OG Tags -->
     <meta data-rh="true" property="og:title" content="${sanitize(pageTitle)}" />
@@ -1117,8 +1117,8 @@ async function runPrerender() {
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
             <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shop By Category</h1>
             <ul>
-               <li><a href="/shop?category=Sarees">Premium Sarees</a></li>
-               <li><a href="/shop?category=Co-Ord-Sets">Co-Ord Sets</a></li>
+               <li><a href="/shop/?category=Sarees">Premium Sarees</a></li>
+               <li><a href="/shop/?category=Co-Ord-Sets">Co-Ord Sets</a></li>
                <li><a href="/malvika-saree">Malvika Saree</a></li>
                <li><a href="/uniform-saree">Uniform Sarees</a></li>
                <li><a href="/wedding-sarees">Wedding & Bridal</a></li>
@@ -1138,7 +1138,7 @@ async function runPrerender() {
     <meta data-rh="true" property="og:description" content="${page.desc}" />
     <meta data-rh="true" property="og:image" content="${pageImage}" />
     <meta data-rh="true" property="og:image:secure_url" content="${pageImage}" />
-    <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${page.dir}" />
+    <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${page.dir}/" />
     <meta data-rh="true" property="og:type" content="website" />
     <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
     <meta data-rh="true" property="og:image:width" content="1200" />
@@ -1148,7 +1148,7 @@ async function runPrerender() {
     <meta data-rh="true" name="twitter:title" content="${page.title}" />
     <meta data-rh="true" name="twitter:description" content="${page.desc}" />
     <meta data-rh="true" name="twitter:image" content="${pageImage}" />
-    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}" />
+    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}/" />
     <!-- End Dynamic OG Tags -->`;
 
     const phtml = createStaticPage({
@@ -1184,24 +1184,24 @@ Sitemap: https://mukeshsarees.com/sitemap.xml`;
   // Dynamic Sitemap links builder with the exact requested URLs and configurations
   const sitemapRoutes = [
     { path: "/", changefreq: "daily", priority: "1.0" },
-    { path: "/shop", changefreq: "weekly", priority: "0.9" },
-    { path: "/shop?category=Sarees", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Co-Ord-Sets", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Lehengas", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Kurtas", changefreq: "weekly", priority: "0.8" },
-    { path: "/product/premium-pure-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/pure-beige-cotton-floral-coord-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/pure-cotton-floral-coord-set-white", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/premium-pure-cotton-coord-set-grey", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/elegant-forest-green-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/contact", changefreq: "monthly", priority: "0.5" },
-    { path: "/wholesalesarees", changefreq: "daily", priority: "0.8" },
-    { path: "/shipping-policy", changefreq: "yearly", priority: "0.4" },
-    { path: "/return-policy", changefreq: "yearly", priority: "0.4" },
-    { path: "/terms", changefreq: "yearly", priority: "0.3" }
+    { path: "/shop/", changefreq: "weekly", priority: "0.9" },
+    { path: "/shop/?category=Sarees", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop/?category=Co-Ord-Sets", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop/?category=Lehengas", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop/?category=Kurtas", changefreq: "weekly", priority: "0.8" },
+    { path: "/product/premium-pure-cotton-coord-set/", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set/", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/pure-beige-cotton-floral-coord-set/", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/pure-cotton-floral-coord-set-white/", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/premium-pure-cotton-coord-set-grey/", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral/", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu/", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/elegant-forest-green-cotton-coord-set/", changefreq: "monthly", priority: "0.7" },
+    { path: "/contact/", changefreq: "monthly", priority: "0.5" },
+    { path: "/wholesalesarees/", changefreq: "daily", priority: "0.8" },
+    { path: "/shipping-policy/", changefreq: "yearly", priority: "0.4" },
+    { path: "/return-policy/", changefreq: "yearly", priority: "0.4" },
+    { path: "/terms/", changefreq: "yearly", priority: "0.3" }
   ];
 
   let sitemapLines = sitemapRoutes.map(route => 

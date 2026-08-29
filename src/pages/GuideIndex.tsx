@@ -10,7 +10,7 @@ export default function GuideIndex() {
       <Helmet>
         <title>Saree Buying Guides & Knowledge Hub - Mukesh Saree Centre</title>
         <meta name="description" content="Explore our comprehensive collection of saree buying guides, fabric care tutorials, and draping instructions. Master the art of choosing the perfect saree." />
-        <link rel="canonical" href="https://mukeshsarees.com/guides" />
+        <link rel="canonical" href="https://mukeshsarees.com/guides/" />
       </Helmet>
 
       {/* Header */}

@@ -142,7 +142,7 @@ function main() {
 
     // D. Build corresponding dynamic head parameters
     const titleText = `${name} ${price ? `– ₹${price}` : ''} | Mukesh Saree Centre`;
-    const canonicalUrl = `https://mukeshsarees.com/product/${slug}`;
+    const canonicalUrl = `https://mukeshsarees.com/product/${slug}/`;
 
     const productOgImage = `https://mukeshsarees.com/og-images/${slug}.jpg`;
 

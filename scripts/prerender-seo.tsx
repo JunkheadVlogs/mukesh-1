@@ -1065,14 +1065,14 @@ async function run() {
     <meta property="og:title" content="${pData.title}" />
     <meta property="og:description" content="${pData.description}" />
     <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg" />
-    <meta property="og:url" content="https://mukeshsarees.com/${slug}" />
+    <meta property="og:url" content="https://mukeshsarees.com/${slug}/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="${BUSINESS_INFO.name}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${pData.title}" />
     <meta name="twitter:description" content="${pData.description}" />
     <meta name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
-    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${slug}" />
+    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${slug}/" />
     <!-- End Dynamic OG Tags -->`;
 
     const graph = [];

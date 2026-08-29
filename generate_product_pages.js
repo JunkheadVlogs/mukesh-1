@@ -122,6 +122,57 @@ function runGenerator() {
   <link rel="canonical" href="${docCanonicalUrl}" />
   <!-- End Dynamic OG Tags -->`;
 
+    // Google Product SEO JSON-LD schema
+    const prodSchema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "image": product.image,
+      "description": shortDesc,
+      "sku": product.sku || `MSC-${product.id}`,
+      "mpn": product.sku || `MSC-${product.id}`,
+      "brand": {
+        "@type": "Brand",
+        "name": "Mukesh Saree Centre"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": docCanonicalUrl,
+        "priceCurrency": "INR",
+        "price": String(product.price),
+        "priceValidUntil": "2030-01-01",
+        "itemCondition": "https://schema.org/NewCondition",
+        "availability": product.stock === 0 ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "Mukesh Saree Centre"
+        }
+      }
+    };
+
+    if (product.reviews && product.reviews.length > 0) {
+      const totalReviews = product.reviews.length;
+      const avgRating = product.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews;
+      prodSchema.aggregateRating = {
+        "@type": "AggregateRating",
+        "ratingValue": avgRating.toFixed(1),
+        "reviewCount": totalReviews.toString()
+      };
+    }
+
+    const prodBreadcrumb = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://mukeshsarees.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Shop", "item": "https://mukeshsarees.com/shop" },
+        { "@type": "ListItem", "position": 3, "name": product.category, "item": `https://mukeshsarees.com/shop?category=${encodeURIComponent(product.category)}` },
+        { "@type": "ListItem", "position": 4, "name": product.name, "item": docCanonicalUrl }
+      ]
+    };
+
+    const schemaTags = `\n<script type="application/ld+json">${JSON.stringify(prodBreadcrumb)}</script>\n<script type="application/ld+json">${JSON.stringify(prodSchema)}</script>\n`;
+
     let outHtml = baseTemplateHtml;
 
     outHtml = outHtml.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
@@ -133,6 +184,12 @@ function runGenerator() {
     } else {
       outHtml = outHtml.replace('<head>', `<head>\n  ${customOgTags}`);
     }
+
+    outHtml = outHtml.replace('</head>', `${schemaTags}</head>`);
+
+    // Inject H1 into the root for crawlers
+    const h1Injection = `<div style="display:none;"><h1>${product.name}</h1></div>`;
+    outHtml = outHtml.replace(/<div id="root">.*?<\/div>/is, `<div id="root">${h1Injection}</div>`);
 
     if (!fs.existsSync(targetFolder)) {
       fs.mkdirSync(targetFolder, { recursive: true });

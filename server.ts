@@ -1071,6 +1071,9 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   // Fallback banner optimized to 1200x630 landscape JPG for standard page sharing
   let ogImg = defaultBannerUrl;
   let ogUrl = "https://mukeshsarees.com" + originalUrl;
+  if (!ogUrl.endsWith('/')) {
+    ogUrl += '/';
+  }
   let price = "";
   let isProduct = false;
   let ogWidth = "1200";
@@ -1112,7 +1115,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     ogTitle = "Wholesale Sarees VIP Club — Mukesh Saree Centre Nagpur";
     ogDesc = "🏬 Exclusive Saree Wholesaler in Nagpur Since 1978 | 📦 Daily Catalog & Bulk Dealer Rates | 📲 Join WhatsApp VIP Club | 🚚 Pan-India Delivery";
     ogImg = "https://mukeshsarees.com/og-images/wholesale-vip-club.jpg";
-    ogUrl = "https://mukeshsarees.com/wholesalesarees";
+    ogUrl = "https://mukeshsarees.com/wholesalesarees/";
     ogWidth = "1200";
     ogHeight = "630";
   } else if (reqPath.startsWith('/uniform-saree-bulk-orders')) {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useStore } from '../store';
 import { safeLocalStorage } from '../utils/safeStorage';
-import { formatMobileInput, normalizeMobileNumber } from '../utils/phoneValidation';
+import { formatMobileInput, normalizeMobileNumber, isValidIndianMobileNumber } from '../utils/phoneValidation';
 import { recordExitPopupDismissal, detectInAppBrowser } from '../hooks/useExitIntent';
 
 export interface ExitIntentPopupProps {
@@ -15,6 +15,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
   const [stage, setStage] = useState<'capture' | 'revealed'>('capture');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -83,9 +84,16 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
     onDismiss();
   };
 
-  // INSTANT REVEAL HANDLER (ZERO ARTIFICIAL DELAY, NO NETWORK BLOCKING)
+  // INSTANT REVEAL HANDLER (VALIDATES PHONE FIRST BEFORE UNLOCKING)
   const handleUnlock = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+
+    const normalizedPhone = normalizeMobileNumber(phone);
+    if (!normalizedPhone || !isValidIndianMobileNumber(phone)) {
+      setPhoneError('Please enter a valid 10-digit WhatsApp number to unlock offer');
+      return;
+    }
+    setPhoneError('');
 
     // 1. INSTANTLY SWITCH STATE AND APPLY COUPON IN STORE
     setStage('revealed');
@@ -94,18 +102,17 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
 
     // 2. NON-BLOCKING BACKGROUND PROCESSING (AFTER REVEAL IS SHOWN)
     const trimmedName = name.trim();
-    const normalizedPhone = normalizeMobileNumber(phone);
 
     setTimeout(() => {
       // Background onSubmit if provided
       if (onSubmit) {
-        onSubmit(trimmedName || 'VIP Guest', normalizedPhone || '').catch(() => {});
+        onSubmit(trimmedName || 'VIP Guest', normalizedPhone).catch(() => {});
       }
 
       // Background Google Sheets logging
       try {
         const sheetsUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL || import.meta.env.VITE_SHEETS_WEBHOOK_URL;
-        if (sheetsUrl && (trimmedName || normalizedPhone)) {
+        if (sheetsUrl) {
           const inApp = detectInAppBrowser();
           const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
           fetch(sheetsUrl, {
@@ -278,16 +285,28 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                 {/* WhatsApp Phone Input */}
                 <div>
                   <label className="sr-only">WhatsApp Number</label>
-                  <div className="flex border border-[#E8B84B]/20 focus-within:border-[#E8B84B] focus-within:ring-1 focus-within:ring-[#E8B84B] rounded-[10px] overflow-hidden bg-[#1A1200] transition-all">
+                  <div className={`flex border ${phoneError ? 'border-red-500 ring-1 ring-red-500' : 'border-[#E8B84B]/20 focus-within:border-[#E8B84B] focus-within:ring-1 focus-within:ring-[#E8B84B]'} rounded-[10px] overflow-hidden bg-[#1A1200] transition-all`}>
                     <span className="bg-[#150E00] px-4 py-3 text-[#E8B84B] text-xs sm:text-sm border-r border-[#E8B84B]/10 flex items-center font-sans font-medium select-none">+91</span>
                     <input
                       type="tel"
-                      placeholder="WhatsApp Number (Optional)"
+                      placeholder="WhatsApp Number (10 digits) *"
                       value={phone}
-                      onChange={(e) => setPhone(formatMobileInput(e.target.value))}
+                      required
+                      onChange={(e) => {
+                        const formatted = formatMobileInput(e.target.value);
+                        setPhone(formatted);
+                        if (phoneError && isValidIndianMobileNumber(formatted)) {
+                          setPhoneError('');
+                        }
+                      }}
                       className="flex-grow bg-transparent px-4 py-3 text-white outline-none font-sans text-xs sm:text-sm placeholder:text-white/30"
                     />
                   </div>
+                  {phoneError && (
+                    <p className="text-red-400 text-[11px] sm:text-xs mt-1.5 font-sans flex items-center gap-1 font-medium">
+                      <span>⚠️</span> {phoneError}
+                    </p>
+                  )}
                 </div>
 
                 {/* Instant Reveal CTA Button */}

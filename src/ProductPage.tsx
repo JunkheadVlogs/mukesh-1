@@ -862,7 +862,7 @@ export default function ProductPage() {
         "@type": "ListItem",
         "position": breadcrumbItems.length + 1,
         "name": product.name,
-        "item": `https://mukeshsarees.com/product/${product.slug}`
+        "item": `https://mukeshsarees.com/product/${product.slug}/`
       }
     ])
   };

@@ -22,13 +22,13 @@ export default function UniformSareeBulkOrders() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": BUSINESS_INFO.website
+          "item": `${BUSINESS_INFO.website}/`
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Uniform Saree Bulk Orders",
-          "item": `${BUSINESS_INFO.website}/uniform-saree-bulk-orders`
+          "item": `${BUSINESS_INFO.website}/uniform-saree-bulk-orders/`
         }
       ]
     },
