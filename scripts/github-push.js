@@ -500,7 +500,7 @@ export async function executeGitHubPush(options = {}) {
     // 7. Create single atomic commit referencing new tree & parent commit
     onProgress({ phase: "creating_commit", message: "Creating atomic commit object..." });
     const productWebpCount = diff.added.filter(f => f.path.startsWith("public/images/products")).length;
-    const commitMessage = `feat: sync ${diff.totalChanged} changes including ${productWebpCount} optimized product webp assets [skip ci]`;
+    const commitMessage = `feat: sync ${diff.totalChanged} changes including ${productWebpCount} optimized product webp assets`;
     const commitPayload = {
       message: commitMessage,
       tree: newTreeSha,

@@ -4,6 +4,9 @@
   "description": "Mukesh Saree Centre - Premium Indian Ethnic Wear",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "tsx server.ts",
     "start": "node dist/server.cjs",

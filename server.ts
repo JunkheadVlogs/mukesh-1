@@ -48,7 +48,8 @@ process.on('uncaughtException', (error) => {
 const isCompiledCjs = (typeof __filename !== "undefined" && (__filename.endsWith(".cjs") || __filename.includes("dist"))) ||
   (typeof process.argv[1] === "string" && (process.argv[1].endsWith(".cjs") || process.argv[1].includes("dist")));
 
-const isProduction = process.env.NODE_ENV === "production" || isCompiledCjs;
+const isCloudRunProd = !!process.env.K_SERVICE && process.env.NODE_ENV !== "development";
+const isProduction = process.env.NODE_ENV === "production" || isCompiledCjs || isCloudRunProd;
 if (isProduction && process.env.NODE_ENV !== "production") {
   process.env.NODE_ENV = "production";
 }
@@ -62,14 +63,16 @@ const app = express();
 // Cloud Run injects process.env.PORT (typically 8080) and expects containers to listen on 0.0.0.0:$PORT.
 // AI Studio dev container uses port 3000 behind an Nginx reverse proxy listening on 8080.
 // To ensure 100% compatibility in both AI Studio dev environment and live Cloud Run production deployments,
-// we bind to port 3000 FIRST (required by AI Studio reverse proxy), then attempt envPort/8080.
+// we bind to envPort (if specified) and port 3000, then 8080.
 function startListening() {
-  const portsToListen: number[] = [3000];
-
-  // Also support Cloud Run ingress port if distinct from 3000
   const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : NaN;
-  if (!isNaN(envPort) && envPort > 0 && !portsToListen.includes(envPort)) {
+  const portsToListen: number[] = [];
+
+  if (!isNaN(envPort) && envPort > 0) {
     portsToListen.push(envPort);
+  }
+  if (!portsToListen.includes(3000)) {
+    portsToListen.push(3000);
   }
   if (!portsToListen.includes(8080)) {
     portsToListen.push(8080);
@@ -83,9 +86,13 @@ function startListening() {
         console.log(`[SERVER] Active and listening on http://0.0.0.0:${port} (${isProduction ? "production" : "development"})`);
       });
 
+      // Keep connection timeouts slightly above Google Cloud Run load balancer's 60-second idle timeout
+      server.keepAliveTimeout = 65000;
+      server.headersTimeout = 66000;
+
       server.on("error", (err: any) => {
         if (err.code === "EADDRINUSE") {
-          // Expected in dev container where Nginx is already bound to 8080, or if port is already bound.
+          // Expected when another process/proxy is already bound to this port.
           console.log(`[SERVER] Port ${port} is occupied (expected if reverse proxy is running on this port).`);
         } else {
           console.error(`[SERVER] Error on port ${port}:`, err);
@@ -1749,7 +1756,7 @@ async function setupServer() {
         }
 
         if (!fs.existsSync(selectedIndexPath)) {
-          return res.status(404).send('Not built yet.');
+          return res.status(200).set({ 'Content-Type': 'text/html' }).send('<!doctype html><html lang="en"><head><meta charset="UTF-8"><title>Mukesh Saree Centre</title></head><body><div id="root"></div></body></html>');
         }
         let html = fs.readFileSync(selectedIndexPath, 'utf-8');
         // Substitute %VITE_...% style placeholders with process.env properties for runtime environment injection
@@ -1825,9 +1832,13 @@ async function setupServer() {
   }
 }
 
-if (!process.env.VERCEL) {
+async function startServer() {
+  await setupServer();
   startListening();
-  setupServer().catch((err) => {
+}
+
+if (!process.env.VERCEL) {
+  startServer().catch((err) => {
     console.error("[CRITICAL] setupServer failed to initialize:", err);
   });
 } else {
