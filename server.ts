@@ -62,21 +62,18 @@ const app = express();
 // Cloud Run injects process.env.PORT (typically 8080) and expects containers to listen on 0.0.0.0:$PORT.
 // AI Studio dev container uses port 3000 behind an Nginx reverse proxy listening on 8080.
 // To ensure 100% compatibility in both AI Studio dev environment and live Cloud Run production deployments,
-// we bind to both port 3000 and process.env.PORT (default 8080) simultaneously.
+// we bind to port 3000 FIRST (required by AI Studio reverse proxy), then attempt envPort/8080.
 function startListening() {
-  const portsToListen = new Set<number>();
+  const portsToListen: number[] = [3000];
 
-  // 1. Prioritize Cloud Run environment PORT if provided (typically 8080)
+  // Also support Cloud Run ingress port if distinct from 3000
   const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : NaN;
-  if (!isNaN(envPort) && envPort > 0) {
-    portsToListen.add(envPort);
+  if (!isNaN(envPort) && envPort > 0 && !portsToListen.includes(envPort)) {
+    portsToListen.push(envPort);
   }
-
-  // 2. Cloud Run default ingress port 8080
-  portsToListen.add(8080);
-
-  // 3. Port 3000 (AI Studio internal dev port & reverse proxy target)
-  portsToListen.add(3000);
+  if (!portsToListen.includes(8080)) {
+    portsToListen.push(8080);
+  }
 
   const servers: any[] = [];
 
@@ -89,7 +86,7 @@ function startListening() {
       server.on("error", (err: any) => {
         if (err.code === "EADDRINUSE") {
           // Expected in dev container where Nginx is already bound to 8080, or if port is already bound.
-          console.log(`[SERVER] Port ${port} is occupied (expected if reverse proxy is running on 8080).`);
+          console.log(`[SERVER] Port ${port} is occupied (expected if reverse proxy is running on this port).`);
         } else {
           console.error(`[SERVER] Error on port ${port}:`, err);
         }
@@ -1829,11 +1826,9 @@ async function setupServer() {
 }
 
 if (!process.env.VERCEL) {
-  setupServer().then(() => {
-    startListening();
-  }).catch((err) => {
+  startListening();
+  setupServer().catch((err) => {
     console.error("[CRITICAL] setupServer failed to initialize:", err);
-    startListening();
   });
 } else {
   // Synchronous execution for Vercel
