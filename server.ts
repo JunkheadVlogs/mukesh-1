@@ -59,54 +59,64 @@ process.env.VITE_FB_DOMAIN_VERIFY = 'kjvbvikfmctlsdfygll3tadkpzty8a';
 
 const app = express();
 
-// Detect AI Studio dev container environment vs Cloud Run deployed production
-const isDevContainer = Boolean(
-  typeof fs !== "undefined" && 
-  fs.existsSync && 
-  (fs.existsSync("/app/control-plane-api") || fs.existsSync("/app/start.sh"))
-);
-
 // Cloud Run injects process.env.PORT (typically 8080) and expects containers to listen on 0.0.0.0:$PORT.
-// In the AI Studio dev container, port 8080 is already occupied by the Nginx reverse proxy, so the dev server must use port 3000.
-const PORT = (() => {
+// AI Studio dev container uses port 3000 behind an Nginx reverse proxy listening on 8080.
+// To ensure 100% compatibility in both AI Studio dev environment and live Cloud Run production deployments,
+// we bind to both port 3000 and process.env.PORT (default 8080) simultaneously.
+function startListening() {
+  const portsToListen = new Set<number>();
+
+  // 1. Port 3000 is always listened to (AI Studio internal dev port & reverse proxy target)
+  portsToListen.add(3000);
+
+  // 2. Cloud Run default ingress port 8080
+  portsToListen.add(8080);
+
+  // 3. Any explicitly configured environment PORT
   const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : NaN;
   if (!isNaN(envPort) && envPort > 0) {
-    if (isDevContainer && envPort === 8080) {
-      return 3000;
-    }
-    return envPort;
+    portsToListen.add(envPort);
   }
-  return 3000;
-})();
 
-function startListening(port: number) {
-  const server = app.listen(port, "0.0.0.0", () => {
-    console.log(`Server running on http://0.0.0.0:${port}`);
-  });
+  const servers: any[] = [];
 
-  server.on("error", (err: any) => {
-    console.error(`[CRITICAL] Error starting server on port ${port}:`, err);
-  });
-
-  // If running in deployed production on Cloud Run and primary PORT is not 3000, also bind 3000 if available
-  if (port !== 3000 && !isDevContainer) {
+  for (const port of portsToListen) {
     try {
-      const secondary = app.listen(3000, "0.0.0.0", () => {
-        console.log(`Secondary listener active on http://0.0.0.0:3000`);
+      const server = app.listen(port, "0.0.0.0", () => {
+        console.log(`[SERVER] Active and listening on http://0.0.0.0:${port} (${isProduction ? "production" : "development"})`);
       });
-      secondary.on("error", (err: any) => {
-        console.warn(`[INFO] Secondary port 3000 listener: ${err.message}`);
+
+      server.on("error", (err: any) => {
+        if (err.code === "EADDRINUSE") {
+          // Expected in dev container where Nginx is already bound to 8080.
+          console.log(`[SERVER] Port ${port} is occupied (expected if reverse proxy is running on 8080).`);
+        } else {
+          console.error(`[SERVER] Error on port ${port}:`, err);
+        }
       });
+
+      servers.push(server);
     } catch (e: any) {
-      // Non-fatal
+      console.warn(`[SERVER] Could not bind to port ${port}:`, e.message);
     }
   }
 
-  return server;
+  return servers;
 }
 
+// Graceful container shutdown handlers for Cloud Run
+process.on('SIGTERM', () => {
+  console.log('[SERVER] SIGTERM received, exiting cleanly...');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('[SERVER] SIGINT received, exiting cleanly...');
+  process.exit(0);
+});
+
 // Immediate health check endpoints for Cloud Run container probes
-app.get(["/api/health", "/health"], (req, res) => {
+app.get(["/api/health", "/health", "/_ah/health", "/healthz"], (req, res) => {
   res.status(200).json({ status: "ok", mode: isProduction ? "production" : "development", timestamp: new Date().toISOString() });
 });
 
@@ -1811,10 +1821,10 @@ async function setupServer() {
 
 if (!process.env.VERCEL) {
   setupServer().then(() => {
-    startListening(PORT);
+    startListening();
   }).catch((err) => {
     console.error("[CRITICAL] setupServer failed to initialize:", err);
-    startListening(PORT);
+    startListening();
   });
 } else {
   // Synchronous execution for Vercel
