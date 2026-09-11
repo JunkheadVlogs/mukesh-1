@@ -8,6 +8,15 @@ import dotenv from "dotenv";
 import fs from "fs";
 import { fileURLToPath } from 'url';
 import https from "https";
+import {
+  executeGitHubPush,
+  detectChanges,
+  requestWithRetry,
+  resolveGitHubToken,
+  OWNER_REPO,
+  TARGET_BRANCH,
+  LOCK_FILE,
+} from "./scripts/github-push.js";
 
 let _filename = "";
 let _dirname = "";
@@ -26,12 +35,80 @@ try {
 const __filename = _filename;
 const __dirname = _dirname;
 
+// Global process error handlers to prevent unhandled errors from crashing Cloud Run
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[SERVER] Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('[SERVER] Uncaught Exception thrown:', error);
+});
+
+// Detect compiled production server vs dev server
+const isCompiledCjs = (typeof __filename !== "undefined" && (__filename.endsWith(".cjs") || __filename.includes("dist"))) ||
+  (typeof process.argv[1] === "string" && (process.argv[1].endsWith(".cjs") || process.argv[1].includes("dist")));
+
+const isProduction = process.env.NODE_ENV === "production" || isCompiledCjs;
+if (isProduction && process.env.NODE_ENV !== "production") {
+  process.env.NODE_ENV = "production";
+}
+
 dotenv.config();
 
 process.env.VITE_FB_DOMAIN_VERIFY = 'kjvbvikfmctlsdfygll3tadkpzty8a';
 
 const app = express();
-const PORT = 3000;
+
+// Detect AI Studio dev container environment vs Cloud Run deployed production
+const isDevContainer = Boolean(
+  typeof fs !== "undefined" && 
+  fs.existsSync && 
+  (fs.existsSync("/app/control-plane-api") || fs.existsSync("/app/start.sh"))
+);
+
+// Cloud Run injects process.env.PORT (typically 8080) and expects containers to listen on 0.0.0.0:$PORT.
+// In the AI Studio dev container, port 8080 is already occupied by the Nginx reverse proxy, so the dev server must use port 3000.
+const PORT = (() => {
+  const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : NaN;
+  if (!isNaN(envPort) && envPort > 0) {
+    if (isDevContainer && envPort === 8080) {
+      return 3000;
+    }
+    return envPort;
+  }
+  return 3000;
+})();
+
+function startListening(port: number) {
+  const server = app.listen(port, "0.0.0.0", () => {
+    console.log(`Server running on http://0.0.0.0:${port}`);
+  });
+
+  server.on("error", (err: any) => {
+    console.error(`[CRITICAL] Error starting server on port ${port}:`, err);
+  });
+
+  // If running in deployed production on Cloud Run and primary PORT is not 3000, also bind 3000 if available
+  if (port !== 3000 && !isDevContainer) {
+    try {
+      const secondary = app.listen(3000, "0.0.0.0", () => {
+        console.log(`Secondary listener active on http://0.0.0.0:3000`);
+      });
+      secondary.on("error", (err: any) => {
+        console.warn(`[INFO] Secondary port 3000 listener: ${err.message}`);
+      });
+    } catch (e: any) {
+      // Non-fatal
+    }
+  }
+
+  return server;
+}
+
+// Immediate health check endpoints for Cloud Run container probes
+app.get(["/api/health", "/health"], (req, res) => {
+  res.status(200).json({ status: "ok", mode: isProduction ? "production" : "development", timestamp: new Date().toISOString() });
+});
 
 app.use((req, res, next) => {
   const logStr = `[${new Date().toISOString()}] ${req.method} ${req.url} (User-Agent: ${req.headers['user-agent']})\n`;
@@ -921,6 +998,177 @@ apiRouter.get("/geolocation", async (req, res) => {
   }
 });
 
+// ==== GITHUB ATOMIC SYNC & STATUS API ====
+interface GitHubProgressState {
+  inProgress: boolean;
+  phase: string;
+  percent: number;
+  uploadedCount: number;
+  totalFiles: number;
+  lastFile: string;
+  message: string;
+  startedAt: number | null;
+  completedAt: number | null;
+  error: any | null;
+  result: any | null;
+}
+
+let githubPushProgress: GitHubProgressState = {
+  inProgress: false,
+  phase: "idle",
+  percent: 0,
+  uploadedCount: 0,
+  totalFiles: 0,
+  lastFile: "",
+  message: "GitHub push system ready.",
+  startedAt: null,
+  completedAt: null,
+  error: null,
+  result: null,
+};
+
+// GET /api/github/status - Real-time repository diff against GitHub remote
+apiRouter.get("/github/status", async (req, res) => {
+  try {
+    const token = resolveGitHubToken(req.query.token as string);
+    const repo = (req.query.repo as string) || OWNER_REPO;
+    const branch = (req.query.branch as string) || TARGET_BRANCH;
+
+    const branchRes = await requestWithRetry(`/repos/${repo}/branches/${branch}`, "GET", null, token);
+    const parentCommitSha = branchRes.data.commit.sha;
+    const parentTreeSha = branchRes.data.commit.commit.tree.sha;
+
+    const diff = await detectChanges(parentTreeSha, token);
+    const mbTotal = (diff.totalBytesToUpload / (1024 * 1024)).toFixed(2);
+    const productWebpCount = diff.added.filter(f => f.path.startsWith("public/images/products")).length;
+
+    res.json({
+      success: true,
+      repo,
+      branch,
+      remoteParentSha: parentCommitSha,
+      remoteBaseTreeSha: parentTreeSha,
+      totalChanged: diff.totalChanged,
+      addedCount: diff.added.length,
+      productWebpCount,
+      modifiedCount: diff.modified.length,
+      deletedCount: diff.deleted.length,
+      approximateSizeMb: mbTotal,
+      tokenConfigured: !!token,
+      isPushInProgress: githubPushProgress.inProgress || fs.existsSync(LOCK_FILE),
+      progress: githubPushProgress,
+    });
+  } catch (error: any) {
+    console.error("[API-GITHUB-STATUS] Error:", error);
+    res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message,
+      statusCode: error.statusCode || 500,
+      operation: error.operation || "get_status",
+      apiMessage: error.apiMessage || error.message,
+      documentation_url: error.documentation_url || null,
+    });
+  }
+});
+
+// GET /api/github/progress - Polling progress of active push
+apiRouter.get("/github/progress", (req, res) => {
+  res.json({
+    success: true,
+    progress: githubPushProgress,
+  });
+});
+
+// POST /api/github/push - Trigger atomic push with validation & conflict safeguards
+apiRouter.post("/github/push", async (req, res) => {
+  const token = resolveGitHubToken(req.body?.token);
+  const repo = req.body?.repo || OWNER_REPO;
+  const branch = req.body?.branch || TARGET_BRANCH;
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      statusCode: 401,
+      error: "GitHub Token required. Provide token in body ({ token: 'ghp_xxx' }) or set GITHUB_TOKEN environment variable.",
+      documentation_url: "https://docs.github.com/rest",
+    });
+  }
+
+  if (githubPushProgress.inProgress || fs.existsSync(LOCK_FILE)) {
+    return res.status(409).json({
+      success: false,
+      statusCode: 409,
+      error: "A GitHub push operation is already in progress. Please wait for it to finish.",
+      progress: githubPushProgress,
+    });
+  }
+
+  githubPushProgress = {
+    inProgress: true,
+    phase: "starting",
+    percent: 0,
+    uploadedCount: 0,
+    totalFiles: 0,
+    lastFile: "",
+    message: "Initializing atomic push...",
+    startedAt: Date.now(),
+    completedAt: null,
+    error: null,
+    result: null,
+  };
+
+  try {
+    const result = await executeGitHubPush({
+      token,
+      repo,
+      branch,
+      onProgress: (p) => {
+        githubPushProgress.phase = p.phase || githubPushProgress.phase;
+        githubPushProgress.message = p.message || githubPushProgress.message;
+        if (typeof p.percent === "number") githubPushProgress.percent = p.percent;
+        if (typeof p.uploadedCount === "number") githubPushProgress.uploadedCount = p.uploadedCount;
+        if (typeof p.totalFiles === "number") githubPushProgress.totalFiles = p.totalFiles;
+        if (p.lastFile) githubPushProgress.lastFile = p.lastFile;
+      }
+    });
+
+    githubPushProgress.inProgress = false;
+    githubPushProgress.phase = "complete";
+    githubPushProgress.percent = 100;
+    githubPushProgress.completedAt = Date.now();
+    githubPushProgress.result = result;
+    githubPushProgress.message = `Successfully pushed ${result.totalChanged} files to ${repo} (${branch})!`;
+
+    res.json({
+      success: true,
+      ...result,
+    });
+  } catch (error: any) {
+    console.error("[API-GITHUB-PUSH] Error:", error);
+    githubPushProgress.inProgress = false;
+    githubPushProgress.phase = "error";
+    githubPushProgress.completedAt = Date.now();
+    githubPushProgress.error = {
+      statusCode: error.statusCode,
+      message: error.message,
+      apiMessage: error.apiMessage,
+      operation: error.operation,
+      documentation_url: error.documentation_url,
+    };
+    githubPushProgress.message = `Push failed: ${error.apiMessage || error.message}`;
+
+    res.status(error.statusCode || 500).json({
+      success: false,
+      statusCode: error.statusCode || 500,
+      error: error.message,
+      apiMessage: error.apiMessage || error.message,
+      operation: error.operation || "push",
+      documentation_url: error.documentation_url || null,
+      responseBody: error.responseBody || null,
+    });
+  }
+});
+
 // Mount API router
 app.use("/api", apiRouter);
 
@@ -1399,7 +1647,7 @@ async function setupServer() {
     next();
   });
 
-  if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+  if (!isProduction && !process.env.VERCEL) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "custom",
@@ -1563,9 +1811,10 @@ async function setupServer() {
 
 if (!process.env.VERCEL) {
   setupServer().then(() => {
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
+    startListening(PORT);
+  }).catch((err) => {
+    console.error("[CRITICAL] setupServer failed to initialize:", err);
+    startListening(PORT);
   });
 } else {
   // Synchronous execution for Vercel

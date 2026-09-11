@@ -3,7 +3,7 @@
     "name": "Cocoa Brown Cotton Co-Ord Set",
     "slug": "premium-pure-cotton-coord-set",
     "description": "DESCRIPTION: This beautiful Cocoa Brown Cotton Co-Ord Set is meticulously fashioned from premium long-staple 100% pure cotton fabric, offering a sooth",
-    "image": "https://drive.google.com/thumbnail?id=1Yy5HQ-XE4aulexv5D7WXiewiVYPHp52F&sz=w500",
+    "image": "/images/products/p4.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -12,7 +12,7 @@
     "name": "White & Pink Cotton Floral Co-Ord Set",
     "slug": "elegant-white-pink-embroidered-pure-cotton-kurta-pant-set",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated White & Pink Cotton Floral Co-Ord Set is made from refined slub-textured premium organi",
-    "image": "https://drive.google.com/thumbnail?id=1dOSHikQpkj8XdIkDyHsoSbx4te1hIBXj&sz=w500",
+    "image": "/images/products/p6.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -21,7 +21,7 @@
     "name": "Beige Cotton Floral Co-Ord Set",
     "slug": "pure-beige-cotton-floral-coord-set",
     "description": "DESCRIPTION: For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Beige Cotton",
-    "image": "https://drive.google.com/thumbnail?id=1ZSy1eQVSYFjEycvOwGeYq8d9REgMYaa3&sz=w500",
+    "image": "/images/products/p7.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -30,7 +30,7 @@
     "name": "White Cotton Floral Co-Ord Set",
     "slug": "pure-cotton-floral-coord-set-white",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke White Cotton Floral Co-Ord Set, woven carefully with richly woven high-density organic",
-    "image": "https://drive.google.com/thumbnail?id=1FkeDrcESuS03jcvuFtZCPOL7mcmvUDGD&sz=w500",
+    "image": "/images/products/p8.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -39,7 +39,7 @@
     "name": "Grey Cotton Embroidered Co-Ord Set",
     "slug": "premium-pure-cotton-coord-set-grey",
     "description": "DESCRIPTION: This beautiful Grey Cotton Embroidered Co-Ord Set is meticulously fashioned from exceptionally soft-washed mercerized pure cotton, showca",
-    "image": "https://drive.google.com/thumbnail?id=1mwE1Gh-CoCjC1swlQMQ1JgkOCy_skAoe&sz=w500",
+    "image": "/images/products/p9.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -48,7 +48,7 @@
     "name": "Sunshine Yellow Chiffon Saree",
     "slug": "sunshine-yellow-chiffon-saree-hand-brush-floral",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Sunshine Yellow Chiffon Saree is made from an ultra-delicate and gossamer premium-grade",
-    "image": "https://drive.google.com/thumbnail?id=1_nSy0f7pCTZX5S7R2I7pYjGSUSA39tyZ&sz=w500",
+    "image": "/images/products/p10.webp",
     "price": "2099",
     "originalPrice": 4199,
     "fabric": "Premium Chiffon"
@@ -57,7 +57,7 @@
     "name": "Black Khadi Cotton Saree",
     "slug": "black-khadi-cotton-saree-multicolor-striped-pallu",
     "description": "DESCRIPTION: For your next laid-back daytime business meetings, sophisticated gallery walks, or cozy family lunches, opt for this premium Black Khadi",
-    "image": "https://drive.google.com/thumbnail?id=1pfrQ3N5-EBwWOy4DiyS8_0jqVw_jbIc8&sz=w500",
+    "image": "/images/products/p11.webp",
     "price": "749",
     "originalPrice": 1499,
     "fabric": "Khadi Cotton"
@@ -66,7 +66,7 @@
     "name": "Elegant Forest Green Cotton Co-Ord Set",
     "slug": "elegant-forest-green-cotton-coord-set",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Elegant Forest Green Cotton Co-Ord Set, woven carefully with pure organic cotton fabri",
-    "image": "https://drive.google.com/thumbnail?id=1r0D-1RA8fSbXkhKrhvkNz91Ny9yRE_DI&sz=w500",
+    "image": "/images/products/p12.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -75,7 +75,7 @@
     "name": "Royal Plum Cotton Co-Ord Set Embroidered",
     "slug": "royal-plum-cotton-coord-set-embroidery",
     "description": "DESCRIPTION: This beautiful Royal Plum Cotton Co-Ord Set Embroidered is meticulously fashioned from luxuriously soft, premium-weight cotton with a str",
-    "image": "https://drive.google.com/thumbnail?id=1T30aeMCN2CKJk7sOszn2zaap__mDXp9p&sz=w500",
+    "image": "/images/products/p13.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -84,7 +84,7 @@
     "name": "Elegant Teal Green Cotton Co-Ord Set Embroidered",
     "slug": "elegant-teal-green-cotton-coord-set-floral-embroidery",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Elegant Teal Green Cotton Co-Ord Set Embroidered is made from breathable premium pure c",
-    "image": "https://drive.google.com/thumbnail?id=1OklbiWw6fH97r8mCWsw3VxdkvwAqvxFe&sz=w500",
+    "image": "/images/products/p14.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -93,7 +93,7 @@
     "name": "Wine Berry Cotton Co-Ord Set Embroidered",
     "slug": "wine-berry-cotton-coord-set-elegant-embroidery",
     "description": "DESCRIPTION: For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Wine Berry Co",
-    "image": "https://drive.google.com/thumbnail?id=1yqH8sha_dRXlYAOzvSP5Cu-ucdvMM-7x&sz=w500",
+    "image": "/images/products/p15.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -102,7 +102,7 @@
     "name": "Soft Blush Pink Co-Ord Set — Delicate Floral Embroidery",
     "slug": "soft-blush-pink-cotton-coord-set-delicate-embroidery",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Soft Blush Pink Co-Ord Set — Delicate Floral Embroidery, woven carefully with premium",
-    "image": "https://drive.google.com/thumbnail?id=1GQSTuioaQUwqW5dZ44_S5yLjk6ysO-IP&sz=w500",
+    "image": "/images/products/p16.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -111,7 +111,7 @@
     "name": "Soft Blush Pink Co-Ord Set — Multicolor Embroidery",
     "slug": "soft-blush-pink-cotton-coord-set-multicolor-embroidery",
     "description": "DESCRIPTION: This beautiful Soft Blush Pink Co-Ord Set — Multicolor Embroidery is meticulously fashioned from premium long-staple 100% pure cotton fab",
-    "image": "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w500",
+    "image": "/images/products/p17.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -120,7 +120,7 @@
     "name": "Soft Blush Pink Co-Ord Set — Multicolor Embroidery Vol. 2",
     "slug": "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Soft Blush Pink Co-Ord Set — Multicolor Embroidery Vol. 2 is made from refined slub-tex",
-    "image": "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w500",
+    "image": "/images/products/p18.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "100% Pure Cotton"
@@ -129,7 +129,7 @@
     "name": "Summer Bouquet Linen Saree",
     "slug": "off-white-soft-linen-saree-digital-floral-print",
     "description": "DESCRIPTION: For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Summe",
-    "image": "https://drive.google.com/thumbnail?id=10sTYtNVliX2-pcwfkZDvYOJvglyexpME&sz=w500",
+    "image": "/images/products/p19.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Soft Linen"
@@ -138,7 +138,7 @@
     "name": "Golden Sunshine Linen Saree",
     "slug": "yellow-soft-linen-saree-digital-floral-print",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Golden Sunshine Linen Saree, woven carefully with handloaded premium natural linen wov",
-    "image": "https://drive.google.com/thumbnail?id=1-O_XsnPg-kdC1pg-bZcCwqOtYFJFAHj8&sz=w500",
+    "image": "/images/products/p20.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Soft Linen"
@@ -147,7 +147,7 @@
     "name": "Festive Yellow Georgette Saree",
     "slug": "festive-yellow-georgette-saree-digital-foil-print",
     "description": "DESCRIPTION: This beautiful Festive Yellow Georgette Saree is meticulously fashioned from supremely fluid, high-twist premium georgette fabric that ca",
-    "image": "https://drive.google.com/thumbnail?id=1xmONKdYlc6VJQ15qwnsTtjMaOUHzy4QP&sz=w500",
+    "image": "/images/products/p21.webp",
     "price": "749",
     "originalPrice": 1499,
     "fabric": "Premium Georgette"
@@ -156,7 +156,7 @@
     "name": "Elegant Green Georgette Saree",
     "slug": "elegant-green-georgette-saree-digital-print-zari-border",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Elegant Green Georgette Saree is made from sheer, featherlight georgette weave featurin",
-    "image": "https://drive.google.com/thumbnail?id=1tZtZSwoe-Bl1vz84Dfs1fmO5vHnLW6PF&sz=w500",
+    "image": "/images/products/p22.webp",
     "price": "749",
     "originalPrice": 1499,
     "fabric": "Premium Georgette"
@@ -165,7 +165,7 @@
     "name": "Stunning Red Georgette Saree",
     "slug": "stunning-red-georgette-saree-digital-print-jacquard-border",
     "description": "DESCRIPTION: For your next contemporary wedding bashes, upscale festive card parties, and grand evening functions, opt for this premium Stunning Red G",
-    "image": "https://drive.google.com/thumbnail?id=1LjT61r8jWSf8Dc51dKaa5y9pZlYWFlhd&sz=w500",
+    "image": "/images/products/p23.webp",
     "price": "749",
     "originalPrice": 1499,
     "fabric": "Premium Georgette"
@@ -174,7 +174,7 @@
     "name": "Elegant Green Georgette Saree — Pink Foil Border",
     "slug": "elegant-green-georgette-saree-foil-design-pink-border",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Elegant Green Georgette Saree — Pink Foil Border, woven carefully with highly durable,",
-    "image": "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
+    "image": "/images/products/p24.webp",
     "price": "749",
     "originalPrice": 1499,
     "fabric": "Premium Georgette"
@@ -183,7 +183,7 @@
     "name": "Lavender Fields Floral Linen Saree",
     "slug": "lavender-floral-linen-saree",
     "description": "DESCRIPTION: This beautiful Lavender Fields Floral Linen Saree is meticulously fashioned from artisanal slub linen offering exceptional breathability",
-    "image": "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
+    "image": "/images/products/p25.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen"
@@ -192,7 +192,7 @@
     "name": "Pink Floral Linen Saree",
     "slug": "pink-floral-linen-saree",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Pink Floral Linen Saree is made from select high-twist pure linen yarn with a lightweig",
-    "image": "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
+    "image": "/images/products/p26.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen"
@@ -201,7 +201,7 @@
     "name": "Peach Floral Linen Saree",
     "slug": "peach-floral-linen-saree",
     "description": "DESCRIPTION: For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Peach",
-    "image": "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
+    "image": "/images/products/p27.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen"
@@ -210,7 +210,7 @@
     "name": "Rani Pink Floral Linen Saree",
     "slug": "rani-pink-floral-linen-saree",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Rani Pink Floral Linen Saree, woven carefully with luxurious linen-cotton slub present",
-    "image": "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
+    "image": "/images/products/p28.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen"
@@ -219,7 +219,7 @@
     "name": "Lime Green Floral Linen Saree",
     "slug": "lime-green-floral-linen-saree",
     "description": "DESCRIPTION: This beautiful Lime Green Floral Linen Saree is meticulously fashioned from breathable natural linen weave pre-washed for exceptionally s",
-    "image": "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
+    "image": "/images/products/p29.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen"
@@ -228,7 +228,7 @@
     "name": "Sky Blue Floral Linen Saree",
     "slug": "sky-blue-floral-linen-saree",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Sky Blue Floral Linen Saree is made from hand-loomed organic linen characterized by hig",
-    "image": "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
+    "image": "/images/products/p30.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen"
@@ -237,7 +237,7 @@
     "name": "Aqua Breeze Pure Linen Saree",
     "slug": "pure-linen-printed-saree-white-aqua-green",
     "description": "DESCRIPTION: For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Aqua Breeze P",
-    "image": "https://drive.google.com/thumbnail?id=1QsLdWEebrbwPGcsA1HunX7IEeaiW8HM0&sz=w500",
+    "image": "/images/products/p31.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Pure Linen"
@@ -246,7 +246,7 @@
     "name": "Rose Petal White Linen Saree",
     "slug": "pure-linen-floral-printed-saree-white-pink",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Rose Petal White Linen Saree, woven carefully with refined flax linen fabric with a li",
-    "image": "https://drive.google.com/thumbnail?id=1bFJUo-dQrcWxXpINaXG4XnsFs03H2b62&sz=w500",
+    "image": "/images/products/p32.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Pure Linen"
@@ -255,7 +255,7 @@
     "name": "Blue Soft Linen Saree with Digital Elephant Print",
     "slug": "blue-soft-linen-saree-with-digital-elephant-print",
     "description": "DESCRIPTION: This beautiful Blue Soft Linen Saree with Digital Elephant Print is meticulously fashioned from soft-washed natural slub linen combining",
-    "image": "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500",
+    "image": "/images/products/p33.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -264,7 +264,7 @@
     "name": "Daffodil White Floral Linen Saree",
     "slug": "elegant-white-floral-linen-saree-yellow-white",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Daffodil White Floral Linen Saree is made from premium-grade natural linen offering an",
-    "image": "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500",
+    "image": "/images/products/p34.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Soft Linen"
@@ -273,7 +273,7 @@
     "name": "Marigold White Floral Linen Saree",
     "slug": "elegant-white-floral-linen-saree-orange-white",
     "description": "DESCRIPTION: For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Marig",
-    "image": "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500",
+    "image": "/images/products/p35.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Soft Linen"
@@ -282,7 +282,7 @@
     "name": "Elegant White & Pink Floral Linen Saree",
     "slug": "elegant-white-floral-linen-saree-pink-white",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Elegant White & Pink Floral Linen Saree, woven carefully with breathable and crisp nat",
-    "image": "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500",
+    "image": "/images/products/p36.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Soft Linen"
@@ -291,7 +291,7 @@
     "name": "Contemporary Tribal Art Ivory Linen Saree",
     "slug": "contemporary-tribal-art-ivory-linen-saree",
     "description": "DESCRIPTION: This beautiful Contemporary Tribal Art Ivory Linen Saree is meticulously fashioned from premium-grade linen displaying characteristic slu",
-    "image": "https://drive.google.com/thumbnail?id=18M0Otdeax-m-Db3rDSCYinsZ-wm7Uut4&sz=w800",
+    "image": "/images/products/p37.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen Cotton Blend"
@@ -300,7 +300,7 @@
     "name": "Plum Shibori Chevron Linen Saree",
     "slug": "plum-shibori-chevron-linen-saree",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Plum Shibori Chevron Linen Saree is made from incredibly soft finished, lightweight lin",
-    "image": "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
+    "image": "/images/products/p38.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen"
@@ -309,7 +309,7 @@
     "name": "Tropical Ivory Ethnic Fusion Linen Saree",
     "slug": "tropical-ivory-ethnic-fusion-linen-saree",
     "description": "DESCRIPTION: For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Tropical Ivor",
-    "image": "https://drive.google.com/thumbnail?id=1MHnxEfj5Eatj3Tny9gpjZ-FkudzBhzCG&sz=w800",
+    "image": "/images/products/p40.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Linen Cotton Blend"
@@ -318,7 +318,7 @@
     "name": "Silver Mist Floral Linen Saree",
     "slug": "sophisticated-grey-floral-pure-linen-saree",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Silver Mist Floral Linen Saree, woven carefully with artisanal slub linen offering exc",
-    "image": "https://drive.google.com/thumbnail?id=1gP52ny_Iu-XIg0mDvE7LrvKXa020zzhe&sz=w500",
+    "image": "/images/products/p41.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Pure Linen"
@@ -327,7 +327,7 @@
     "name": "Ivory Linen Saree with Maroon Tribal Geometric Border and Ethnic Woven Pallu",
     "slug": "ivory-linen-maroon-tribal-geometric-border-saree",
     "description": "DESCRIPTION: This beautiful Ivory Linen Saree with Maroon Tribal Geometric Border and Ethnic Woven Pallu is meticulously fashioned from select high-tw",
-    "image": "https://drive.google.com/thumbnail?id=1It7fxGgBu83mqNn7Ah7c5xaCF5638WV4&sz=w800",
+    "image": "/images/products/p42.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen Cotton Blend"
@@ -336,7 +336,7 @@
     "name": "Sunshine Harvest Yellow & Green Saree",
     "slug": "yellow-green-floral-pure-linen-saree",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Sunshine Harvest Yellow & Green Saree is made from premium combed natural flax linen sh",
-    "image": "https://drive.google.com/thumbnail?id=1YSKHaVlWLpNVhN4qmnptmabV7UpVQeky&sz=w500",
+    "image": "/images/products/p43.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Pure Linen"
@@ -345,7 +345,7 @@
     "name": "Cerulean Classic Blue & White Saree",
     "slug": "blue-white-floral-pure-linen-saree",
     "description": "DESCRIPTION: For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Cerul",
-    "image": "https://drive.google.com/thumbnail?id=1qVDTYZTUeeBTnk730HFrqOWhU_t4HESX&sz=w500",
+    "image": "/images/products/p44.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Pure Linen"
@@ -354,7 +354,7 @@
     "name": "Madhubani Art Blush Linen Saree with Folk-Art Detail",
     "slug": "madhubani-art-blush-linen-saree",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Madhubani Art Blush Linen Saree with Folk-Art Detail, woven carefully with breathable",
-    "image": "https://drive.google.com/thumbnail?id=1N6zBqH_99XSpqhb37dz04WUO4YcemuTZ&sz=w800",
+    "image": "/images/products/p45.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen Cotton Blend"
@@ -363,7 +363,7 @@
     "name": "Abstract Charcoal Artistic Linen Saree",
     "slug": "abstract-charcoal-artistic-linen-saree",
     "description": "DESCRIPTION: This beautiful Abstract Charcoal Artistic Linen Saree is meticulously fashioned from hand-loomed organic linen characterized by high mois",
-    "image": "https://drive.google.com/thumbnail?id=14eONZVJHxuXP_Mknm9sfuMFAoGULq1oX&sz=w800",
+    "image": "/images/products/p46.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen Cotton Blend"
@@ -372,7 +372,7 @@
     "name": "Elegant Floral Garden-Inspired Ivory Linen Saree",
     "slug": "elegant-floral-garden-ivory-scenic-linen-saree",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Elegant Floral Garden-Inspired Ivory Linen Saree is made from premium light-weave linen",
-    "image": "https://drive.google.com/thumbnail?id=14hI_eCK72N2hYireybWOpcnzRlA5Gvy6&sz=w1000",
+    "image": "/images/products/p47.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen Cotton Blend"
@@ -381,7 +381,7 @@
     "name": "Enchanted Garden Sea Green Saree",
     "slug": "sea-green-botanical-pure-linen-saree",
     "description": "DESCRIPTION: For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Enchanted Gar",
-    "image": "https://drive.google.com/thumbnail?id=1gi8s8ufouBf_4qSpQwz1PxIuyRx1hgTK&sz=w500",
+    "image": "/images/products/p48.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Pure Linen"
@@ -390,7 +390,7 @@
     "name": "Ice Blue Botanical Floral Linen Saree",
     "slug": "ice-blue-botanical-floral-linen-saree",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Ice Blue Botanical Floral Linen Saree, woven carefully with soft-washed natural slub l",
-    "image": "https://drive.google.com/thumbnail?id=1mrBPQ5J4T4vxWBztzs2ZltVF5eR9SCPN&sz=w1000",
+    "image": "/images/products/p49.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Premium Linen Cotton Blend"
@@ -399,7 +399,7 @@
     "name": "Elegant Beige & Grey Linen Saree with Pastel Tribal Floral Weaving",
     "slug": "elegant-beige-grey-linen-saree-pastel-tribal-floral",
     "description": "DESCRIPTION: This beautiful Elegant Beige & Grey Linen Saree with Pastel Tribal Floral Weaving is meticulously fashioned from premium-grade natural li",
-    "image": "https://drive.google.com/thumbnail?id=1s6Yw5bZ4lsNVtSSIXrIgPyLBGQkmyrP1&sz=w1000",
+    "image": "/images/products/p50.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -408,7 +408,7 @@
     "name": "Elegant Off White & Steel Blue Linen Saree with Floral Paisley Weaving",
     "slug": "elegant-off-white-steel-blue-linen-saree-floral-paisley",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Elegant Off White & Steel Blue Linen Saree with Floral Paisley Weaving is made from han",
-    "image": "https://drive.google.com/thumbnail?id=1faouBJX53ZOI3oMOvIarct56E959USJU&sz=w1000",
+    "image": "/images/products/p51.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -417,7 +417,7 @@
     "name": "Elegant Mist Grey Linen Saree with Pink Geometric Woven Design",
     "slug": "elegant-mist-grey-linen-saree-pink-geometric",
     "description": "DESCRIPTION: For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Elega",
-    "image": "https://drive.google.com/thumbnail?id=1p5w5cutPIw19vqOhW36z8yxMzGYxkDYP&sz=w1000",
+    "image": "/images/products/p52.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -426,7 +426,7 @@
     "name": "Elegant Wine Mauve Linen Saree with Floral Woven Design",
     "slug": "elegant-wine-mauve-linen-saree-floral-woven",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Elegant Wine Mauve Linen Saree with Floral Woven Design, woven carefully with premium-",
-    "image": "https://drive.google.com/thumbnail?id=1VZ0IyqP2B_0yV2V5io6IG_ojQgNDkCCN&sz=w1000",
+    "image": "/images/products/p53.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -435,7 +435,7 @@
     "name": "Elegant Beige & Royal Blue Linen Saree with Peacock Floral Artistic Print",
     "slug": "elegant-beige-royal-blue-linen-saree-peacock-floral",
     "description": "DESCRIPTION: This beautiful Elegant Beige & Royal Blue Linen Saree with Peacock Floral Artistic Print is meticulously fashioned from incredibly soft f",
-    "image": "https://drive.google.com/thumbnail?id=17tkWt4h141fcEBga4oKLGwvD9eR1Ica1&sz=w1000",
+    "image": "/images/products/p54.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -444,7 +444,7 @@
     "name": "Elegant Blush Pink Linen Saree with Silver Stripe Weaving",
     "slug": "elegant-blush-pink-linen-saree-silver-stripe",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Elegant Blush Pink Linen Saree with Silver Stripe Weaving is made from pure organic lin",
-    "image": "https://drive.google.com/thumbnail?id=1FF5bugsFm5ww4UPaDOjIsy4tGcuKNnAm&sz=w1000",
+    "image": "/images/products/p55.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -453,7 +453,7 @@
     "name": "Elegant Charcoal Grey Linen Saree with Rustic Floral Woven Design",
     "slug": "elegant-charcoal-grey-linen-saree-rustic-floral",
     "description": "DESCRIPTION: For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Elegant Charc",
-    "image": "https://drive.google.com/thumbnail?id=10JwW8G8YgJfHxyhYH3iXL4SHNPME461v&sz=w1000",
+    "image": "/images/products/p56.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -462,7 +462,7 @@
     "name": "Elegant Rust Brown & Slate Grey Linen Saree with Traditional Woven Design",
     "slug": "elegant-rust-brown-slate-grey-linen-saree-traditional-woven",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Elegant Rust Brown & Slate Grey Linen Saree with Traditional Woven Design, woven caref",
-    "image": "https://drive.google.com/thumbnail?id=1BHeeRcB79OQgPJ2V2XtbtZ7fJr45jqlx&sz=w1000",
+    "image": "/images/products/p57.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -471,7 +471,7 @@
     "name": "Beige Cream Floral Printed Linen Saree",
     "slug": "beige-cream-floral-printed-linen-saree",
     "description": "DESCRIPTION: This beautiful Beige Cream Floral Printed Linen Saree is meticulously fashioned from premium combed natural flax linen showcasing a fine",
-    "image": "https://drive.google.com/thumbnail?id=1k-NEFKmgrVgDxjEqZ3otVUyKjBTeCLND&sz=w1000",
+    "image": "/images/products/p58.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Linen Blend"
@@ -480,7 +480,7 @@
     "name": "Elegant Beige Floral Printed Linen Saree",
     "slug": "elegant-beige-floral-printed-linen-saree",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Elegant Beige Floral Printed Linen Saree is made from luxurious linen-cotton slub prese",
-    "image": "https://drive.google.com/thumbnail?id=1ZCkHoxkhNHC9TxJRRRr93LFbtWMpvkAs&sz=w1000",
+    "image": "/images/products/p59.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Linen Blend"
@@ -489,7 +489,7 @@
     "name": "Tissue Cotton Digital Floral Print Saree with Blouse Piece",
     "slug": "tissue-cotton-digital-floral-print-saree-with-blouse-piece",
     "description": "DESCRIPTION: For your next dazzling festive celebrations, cocktail parties, and spectacular traditional holiday dinners, opt for this premium Tissue C",
-    "image": "https://drive.google.com/thumbnail?id=1KHXfsoBBBAhhsn7t2nbRIGoG7U2Go9bd&sz=w1000",
+    "image": "/images/products/p60.webp",
     "price": "999",
     "originalPrice": 1999,
     "fabric": "Tissue Cotton"
@@ -498,7 +498,7 @@
     "name": "Linen Saree with Warli Digital Print & Mirror Work",
     "slug": "linen-saree-with-warli-digital-print-and-mirror-work",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Linen Saree with Warli Digital Print & Mirror Work, woven carefully with hand-loomed o",
-    "image": "https://drive.google.com/thumbnail?id=1ICWEzHpRhrDb_1Uor6pHJME17k6qkge_&sz=w1000",
+    "image": "/images/products/p61.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Linen"
@@ -516,7 +516,7 @@
     "name": "Soft Linen Saree with Elephant Digital Print & Tribal Border",
     "slug": "soft-linen-saree-with-elephant-digital-print-and-tribal-border",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Soft Linen Saree with Elephant Digital Print & Tribal Border is made from refined flax",
-    "image": "https://drive.google.com/thumbnail?id=1zgyqrDJ-noXDHb-In0M8xAhdXP6x8m-s&sz=w1000",
+    "image": "/images/products/p63.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Linen"
@@ -525,7 +525,7 @@
     "name": "White Soft Linen Saree with Digital Elephant Print",
     "slug": "white-soft-linen-saree-with-digital-elephant-print",
     "description": "DESCRIPTION: For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium White Soft Li",
-    "image": "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w500",
+    "image": "/images/products/p64.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -534,7 +534,7 @@
     "name": "Red Soft Linen Saree with Digital Elephant Print",
     "slug": "red-soft-linen-saree-with-digital-elephant-print",
     "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Red Soft Linen Saree with Digital Elephant Print, woven carefully with premium-grade n",
-    "image": "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500",
+    "image": "/images/products/p65.webp",
     "price": "699",
     "originalPrice": 1399,
     "fabric": "Soft Breathable Linen"
@@ -646,6 +646,15 @@
     "price": "1399",
     "originalPrice": 2799,
     "fabric": "Soft Spun Cotton"
+  },
+  {
+    "name": "Soft Georgette Embroidery Bobby Butta Saree",
+    "slug": "soft-georgette-embroidery-bobby-butta-saree",
+    "description": "DESCRIPTION: A gorgeous Ivory Cream Soft Georgette Saree featuring delicate Embroidered Bobby Butta all over the saree. The beautiful scalloped embroi",
+    "image": "https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/753225175_1611388514358680_4567259932068222474_n.jpg",
+    "price": "1175",
+    "originalPrice": 2349,
+    "fabric": "Soft Georgette"
   },
   {
     "name": "Payment Test Product",

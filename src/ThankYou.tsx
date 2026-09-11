@@ -543,7 +543,7 @@ export default function ThankYou() {
       <div>
         <h1 class="store-title">MUKESH SAREE CENTRE</h1>
         <p class="store-subtitle">Heritage Artistry & Organic Silks</p>
-        <p class="store-address">Jagannath Road, Gandhibagh, Nagpur – 440002</p>
+        <p class="store-address">Jagnath Road, Gandhibagh, Nagpur, Maharashtra 440002, India</p>
       </div>
       <div style="text-align: right;">
         <span class="receipt-badge">Official Receipt</span>
@@ -832,7 +832,7 @@ export default function ThankYou() {
             <div>
               <h2 className="font-serif text-2xl md:text-3xl text-[#1A0A00] tracking-wide font-medium">MUKESH SAREE CENTRE</h2>
               <p className="text-[10px] md:text-xs uppercase tracking-widest text-amber-800 font-semibold mt-1">Heritage Artistry & Organic Silks</p>
-              <p className="text-xs text-[#1A0A00]/60 mt-1 max-w-sm">Jagannath Road, Gandhibagh, Nagpur – 440002</p>
+              <p className="text-xs text-[#1A0A00]/60 mt-1 max-w-sm">Jagnath Road, Gandhibagh, Nagpur, Maharashtra 440002, India</p>
             </div>
             <div className="text-left md:text-right">
               <span className="inline-block bg-amber-500/10 text-amber-800 text-[10px] sm:text-xs uppercase tracking-widest font-semibold px-3 py-1 rounded-sm mb-2">

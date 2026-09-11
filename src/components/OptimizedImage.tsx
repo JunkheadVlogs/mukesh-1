@@ -152,16 +152,13 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
     // 1. Direct static cookieless Google Edge CDN download cache - fastest possible delivery with zero redirects
     candidates.push(`https://lh3.googleusercontent.com/d/${driveId}=w${width}`);
 
-    // 2. High-speed, dynamically compressed WebP from wsrv.nl proxying lh3 direct CDN
-    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F${driveId}&w=${width}&output=webp&q=80`);
-
-    // 3. High-speed, lightweight pre-resized Google Drive thumbnail fallback
+    // 2. High-speed, lightweight pre-resized Google Drive thumbnail fallback
     candidates.push(`https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`);
     
-    // 4. Direct Export Link fallback
+    // 3. Direct Export Link fallback
     candidates.push(`https://drive.google.com/uc?export=view&id=${driveId}`);
     
-    // 5. Original sanitized input
+    // 4. Original sanitized input
     if (!candidates.includes(sanitized)) {
       candidates.push(sanitized);
     }
@@ -370,21 +367,28 @@ export function OptimizedImage({
   // Google Drive logic or relative references
   if (isGoogleDrive || isRelative) {
     const driveId = extractGoogleDriveId(src) || extractGoogleDriveId(currentSrc);
-    const driveSrcSet = (isGoogleDrive && driveId)
-      ? `https://lh3.googleusercontent.com/d/${driveId}=w300 300w, https://lh3.googleusercontent.com/d/${driveId}=w450 450w, https://lh3.googleusercontent.com/d/${driveId}=w600 600w, https://lh3.googleusercontent.com/d/${driveId}=w800 800w`
-      : undefined;
+    const isProductAsset = currentSrc.includes('/images/products/');
+    
+    let defaultResponsiveSrcSet: string | undefined = undefined;
+    if (isProductAsset) {
+      defaultResponsiveSrcSet = `${optimizeImage(currentSrc, 320, 'webp')} 320w, ${optimizeImage(currentSrc, 480, 'webp')} 480w, ${optimizeImage(currentSrc, 640, 'webp')} 640w, ${optimizeImage(currentSrc, 800, 'webp')} 800w`;
+    } else if (isGoogleDrive && driveId) {
+      defaultResponsiveSrcSet = `https://lh3.googleusercontent.com/d/${driveId}=w320 320w, https://lh3.googleusercontent.com/d/${driveId}=w480 480w, https://lh3.googleusercontent.com/d/${driveId}=w600 600w, https://lh3.googleusercontent.com/d/${driveId}=w800 800w`;
+    }
 
-    const finalRenderSrc = (isGoogleDrive && driveId)
-      ? `https://lh3.googleusercontent.com/d/${driveId}=w${width}`
-      : currentSrc;
+    const finalRenderSrc = isProductAsset
+      ? optimizeImage(currentSrc, width, 'webp')
+      : (isGoogleDrive && driveId)
+        ? `https://lh3.googleusercontent.com/d/${driveId}=w${width}`
+        : currentSrc;
 
     return (
       <img
         ref={imageRef}
         key={currentSrc}
         src={finalRenderSrc}
-        srcSet={srcSet || driveSrcSet}
-        sizes={sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"}
+        srcSet={srcSet || defaultResponsiveSrcSet}
+        sizes={sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 300px"}
         alt={finalAlt}
         width={width}
         height={calculatedHeight}
@@ -415,10 +419,10 @@ export function OptimizedImage({
   let generatedSrcSetWebp = srcSet;
   
   if (!srcSet && !isDirectBypass) {
-    generatedSrcSetWebp = `${optimizeImage(currentSrc, 300, 'webp')} 300w, ${optimizeImage(currentSrc, 450, 'webp')} 450w, ${optimizeImage(currentSrc, 600, 'webp')} 600w, ${optimizeImage(currentSrc, 800, 'webp')} 800w`;
+    generatedSrcSetWebp = `${optimizeImage(currentSrc, 320, 'webp')} 320w, ${optimizeImage(currentSrc, 480, 'webp')} 480w, ${optimizeImage(currentSrc, 640, 'webp')} 640w, ${optimizeImage(currentSrc, 800, 'webp')} 800w`;
   }
 
-  const defaultSizes = sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw";
+  const defaultSizes = sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 300px";
 
   return (
     <img

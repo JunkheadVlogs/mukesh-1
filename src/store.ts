@@ -35,6 +35,7 @@ export interface Product {
   category: 'Sarees' | 'Co-Ord Sets' | string;
   fabric: string;
   color: string;
+  blouseDetails?: string;
   colorVariants?: ColorVariant[];
   isNew?: boolean;
   isTrending?: boolean;

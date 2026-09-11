@@ -59,11 +59,12 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
 
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
+  const [userClicked, setUserClicked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [videoReadyToFade, setVideoReadyToFade] = useState(false);
-  const isIframeMounted = shouldRenderIframe || hasBeenVisible;
+  const isIframeMounted = userClicked || isVisible || (isActive && shouldRenderIframe);
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(15);
@@ -129,7 +130,7 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
       },
       {
         threshold: 0.1, // Trigger when at least 10% of the video card is visible
-        rootMargin: "150px", // Preload much earlier before entering
+        rootMargin: "50px", // Load video only when near viewport
       }
     );
 
@@ -281,6 +282,7 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
   };
 
   const handleCardClick = () => {
+    setUserClicked(true);
     onSelectReel?.(reel.id);
     if (isMuted) {
       setIsMuted(false);
@@ -297,6 +299,7 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
     <article
       ref={containerRef}
       data-reel-id={reel.id}
+      onClick={handleCardClick}
       style={{ scrollSnapStop: 'always', touchAction: 'pan-x pan-y pinch-zoom' }}
       className={`LookReelCard w-[80%] sm:w-[260px] lg:w-full h-auto sm:h-[58vh] md:h-[62vh] max-h-[460px] min-h-[300px] aspect-[9/16] flex-none snap-center snap-always touch-pan-x touch-pan-y rounded-[16px] overflow-hidden bg-black relative group transition-all duration-500 select-none border-0 outline-none pointer-events-auto
         ${isActive 
@@ -317,11 +320,12 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
             <video
               ref={videoRef}
               src={reel.youtubeId}
+              poster={reel.poster}
               loop
               muted={isMuted}
               playsInline
-              autoPlay
-              preload="auto"
+              autoPlay={isPlaying}
+              preload="none"
               onPlay={() => setVideoReadyToFade(true)}
               onPlaying={() => setVideoReadyToFade(true)}
               onTimeUpdate={handleTimeUpdate}

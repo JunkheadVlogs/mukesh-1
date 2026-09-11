@@ -131,12 +131,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20Malvika%20sarees."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20Malvika%20sarees."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              Chat on WhatsApp (+91 9325034636)
+              Chat on WhatsApp (+91 70206 64641)
             </a>
             <Link
               to="/contact"
@@ -310,12 +310,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20see%20your%20saree%20collection."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20see%20your%20saree%20collection."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              WhatsApp Us (+91 9325034636)
+              WhatsApp Us (+91 70206 64641)
             </a>
             <Link
               to="/contact"
@@ -358,7 +358,7 @@ const seoPagesData: Record<
       {
         question: "Do you offer video shopping for customers outside Nagpur?",
         answer:
-          "Yes! We offer live video call shopping via WhatsApp (+91 9325034636). Our team shows fabrics, colors, and drapes in real-time with full home delivery."
+          "Yes! We offer live video call shopping via WhatsApp (+91 70206 64641). Our team shows fabrics, colors, and drapes in real-time with full home delivery."
       },
       {
         question: "Are all silk sarees at Mukesh Saree Centre authentic?",
@@ -368,7 +368,7 @@ const seoPagesData: Record<
       {
         question: "How can I place a bulk or wholesale order?",
         answer:
-          "You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 9325034636)."
+          "You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 70206 64641)."
       }
     ],
     relatedKeywords: [
@@ -497,12 +497,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20need%20a%20quote%20for%20bulk%20uniform%20sarees."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20need%20a%20quote%20for%20bulk%20uniform%20sarees."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              Get Wholesale Quote (+91 9325034636)
+              Get Wholesale Quote (+91 70206 64641)
             </a>
             <Link
               to="/contact"
@@ -570,7 +570,7 @@ const seoPagesData: Record<
   },
   "saree-shop-in-nagpur": {
     title: "Best Saree Shop in Nagpur | Saree Wholesaler Nagpur - Mukesh Saree Centre",
-    description: "Looking for the best saree shop in Nagpur or a trusted saree wholesaler in Nagpur? Read our ultimate 6,000-word guide on Paithani, Banarasi, Cotton, Malvika, and Uniform sarees on Jagnath Road, Itwari.",
+    description: "Looking for the best saree shop in Nagpur or a trusted saree wholesaler in Nagpur? Read our ultimate 6,000-word guide on Paithani, Banarasi, Cotton, Malvika, and Uniform sarees on Jagnath Road, Gandhibagh.",
     h1: "Best Saree Shop in Nagpur",
     intro: "The ultimate 6,000-word definitive guide to buying, sourcing, and styling the finest sarees in Nagpur. Written by generational textile experts at Mukesh Saree Centre.",
     filterCategory: "sarees",
@@ -594,7 +594,7 @@ const seoPagesData: Record<
       },
       {
         question: "Can I order sarees online or schedule a WhatsApp video call?",
-        answer: "Yes, we offer live WhatsApp video shopping (+91 9325034636) so customers across India can view fabrics, drapes, and colors with fast home delivery."
+        answer: "Yes, we offer live WhatsApp video shopping (+91 70206 64641) so customers across India can view fabrics, drapes, and colors with fast home delivery."
       }
     ],
     relatedKeywords: [
@@ -614,7 +614,7 @@ const seoPagesData: Record<
   },
   "saree-wholesaler-nagpur": {
     title: "Saree Wholesaler Nagpur | Best Saree Shop in Nagpur - Mukesh Saree Centre",
-    description: "Sourcing premium sarees in bulk? Mukesh Saree Centre is the leading Saree Wholesaler in Nagpur, offering Paithani, cotton, and uniform sarees on Jagnath Road, Itwari.",
+    description: "Sourcing premium sarees in bulk? Mukesh Saree Centre is the leading Saree Wholesaler in Nagpur, offering Paithani, cotton, and uniform sarees on Jagnath Road, Gandhibagh.",
     h1: "Saree Wholesaler Nagpur",
     intro: "The premier bulk sourcing destination for boutiques, retailers, and online resellers in Central India. Explore Nagpur's best-priced wholesale collection.",
     filterCategory: "sarees",
@@ -638,7 +638,7 @@ const seoPagesData: Record<
   },
   "wholesale-saree-shop-nagpur": {
     title: "Wholesale Saree Shop Nagpur | Direct Factory Prices | Mukesh Saree Centre",
-    description: "Visit our wholesale saree shop in Nagpur for unbeatable rates on bulk wedding sarees, cotton drapes, and high-quality staff uniforms on Jagnath Road, Itwari.",
+    description: "Visit our wholesale saree shop in Nagpur for unbeatable rates on bulk wedding sarees, cotton drapes, and high-quality staff uniforms on Jagnath Road, Gandhibagh.",
     h1: "Wholesale Saree Shop Nagpur",
     intro: "Access direct-from-weaver wholesale prices on traditional Maharashtrian silks, soft summer cottons, and custom uniform solutions.",
     filterCategory: "sarees",
@@ -1175,14 +1175,14 @@ export default function SeoLandingPage() {
       },
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+91-9325034636",
+        "telephone": "+91 70206 64641",
         "contactType": "sales",
         "areaServed": "IN",
         "availableLanguage": ["en", "hi", "mr"]
       },
       "sameAs": [
-        "https://www.facebook.com/mukeshsareecentre",
-        "https://www.instagram.com/mukeshsareecentre"
+        "https://www.facebook.com/Mukeshsareesindia/",
+        "https://www.instagram.com/mukeshsarees_nagpur"
       ]
     };
     graph.push(organizationSchema);
@@ -1192,11 +1192,11 @@ export default function SeoLandingPage() {
       "@id": "https://mukeshsarees.com/#localbusiness",
       "name": "Mukesh Saree Centre",
       "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
-      "telephone": "+919325034636",
+      "telephone": "+91 70206 64641",
       "url": "https://mukeshsarees.com",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Jagnath Road, Itwari",
+        "streetAddress": "Jagnath Road, Gandhibagh",
         "addressLocality": "Nagpur",
         "addressRegion": "Maharashtra",
         "postalCode": "440002",

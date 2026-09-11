@@ -239,7 +239,11 @@ export function SEO({
     }
 
     // Optimized 1200x630 format to show the full vertical image without cropping or cutoffs on WhatsApp & social platforms
-    displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=contain&cbg=ffffff&output=jpg&q=90`;
+    if (targetUrl.includes('mukeshsarees.com') || !targetUrl.startsWith('http')) {
+      displayImage = targetUrl.startsWith('http') ? targetUrl : `https://mukeshsarees.com${targetUrl.startsWith('/') ? '' : '/'}${targetUrl}`;
+    } else {
+      displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=contain&cbg=ffffff&output=jpg&q=90`;
+    }
     finalImageWidth = "1200";
     finalImageHeight = "630";
     imageType = "image/jpeg";
@@ -275,6 +279,8 @@ export function SEO({
           .replace(/h=\d+/, 'h=630')
           .replace(/fit=[a-z]+/, 'fit=cover')
           .replace('output=webp', 'output=jpg');
+      } else if (targetUrl.includes('mukeshsarees.com') || !targetUrl.startsWith('http')) {
+        displayImage = targetUrl.startsWith('http') ? targetUrl : `https://mukeshsarees.com${targetUrl.startsWith('/') ? '' : '/'}${targetUrl}`;
       } else {
         displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85`;
       }

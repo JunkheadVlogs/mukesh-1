@@ -144,7 +144,7 @@ export default function Contact() {
                      <a href={`tel:${CONFIG.STORE_PHONE.replace(/[^0-9+]/g, '')}`} className="text-[14px] text-primary-950/70 font-light hover:text-gold-600 transition-colors block">
                        {CONFIG.STORE_PHONE}
                      </a>
-                     <p className="text-[11px] text-primary-950/40 font-light mt-0.5">Available 10:30 AM — 9:00 PM IST</p>
+                     <p className="text-[11px] text-primary-950/40 font-light mt-0.5">Available 11:00 AM — 9:00 PM IST</p>
                   </div>
                </div>
 

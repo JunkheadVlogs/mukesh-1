@@ -26,7 +26,7 @@ export const ProductCard = memo(function ProductCard({
   hideCategory = false,
   hideRating = false,
 }: ProductCardProps) {
-  const isPriority = priority || idx < 4;
+  const isPriority = priority === true;
 
   const displayName = useMemo(() => {
     let name = product.name || "";
@@ -72,8 +72,8 @@ export const ProductCard = memo(function ProductCard({
           src={product.image}
           width={400}
           height={533}
-          srcSet={`${optimizeImage(product.image, 300, 'webp')} 300w, ${optimizeImage(product.image, 450, 'webp')} 450w, ${optimizeImage(product.image, 600, 'webp')} 600w`}
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          srcSet={`${optimizeImage(product.image, 320, 'webp')} 320w, ${optimizeImage(product.image, 480, 'webp')} 480w, ${optimizeImage(product.image, 640, 'webp')} 640w, ${optimizeImage(product.image, 800, 'webp')} 800w`}
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 300px"
           alt={getImageAlt(product)}
           priority={isPriority}
           loading={isPriority ? "eager" : "lazy"}

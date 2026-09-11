@@ -41,10 +41,7 @@ async function generateSitemap() {
   addRoute("/lehengas", "weekly", "0.8");
   addRoute("/suits", "weekly", "0.8");
   addRoute("/coord-sets", "weekly", "0.8");
-  addRoute("/wholesalesarees", "monthly", "0.9");
   addRoute("/categories", "weekly", "0.8");
-  addRoute("/about", "yearly", "0.7");
-  addRoute("/contact", "monthly", "0.7");
   addRoute("/faqs", "monthly", "0.7");
   addRoute("/shipping-policy", "yearly", "0.4");
   addRoute("/return-policy", "yearly", "0.4");
@@ -62,26 +59,10 @@ async function generateSitemap() {
     "ethnic-wear-nagpur",
     "saree-buying-guide",
     "saree-care-guide",
-    "corporate-uniform-sarees",
-    "school-uniform-sarees",
-    "teacher-uniform-sarees",
-    "hospital-uniform-sarees",
-    "pure-linen-sarees",
-    "soft-cotton-sarees",
-    "banarasi-silk-sarees",
-    "designer-party-wear-sarees"
   ];
 
   for (const page of aiPages) {
     addRoute(`/${page}`, "monthly", "0.9");
-  }
-
-  // 3. Knowledge Base Guides
-  addRoute("/guides", "weekly", "0.8");
-  for (const guide of guidesMeta) {
-    if (guide && guide.slug) {
-      addRoute(`/guides/${guide.slug}`, "monthly", "0.8");
-    }
   }
 
   // 4. Dynamic Product URLs from mockData

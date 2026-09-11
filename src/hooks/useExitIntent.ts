@@ -139,6 +139,8 @@ export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOpti
   const [triggered, setTriggered] = useState(false);
   const hasTriggeredRef = useRef(false);
   const hasInteractedRef = useRef(false);
+  const mountTimeRef = useRef(Date.now());
+  const MIN_POPUP_DELAY_MS = 9000; // Enforce minimum 9s delay so product content is fully usable first
 
   useEffect(() => {
     // 1. Check if already submitted or already displayed in current session
@@ -146,11 +148,20 @@ export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOpti
       return;
     }
 
+    mountTimeRef.current = Date.now();
+
     // Eagerly prefetch popup component
     import('../components/ExitIntentPopup').catch(() => {});
 
-    const trigger = () => {
+    const trigger = (isFallback = false) => {
       if (hasTriggeredRef.current || isExitPopupAlreadyShown()) return;
+      
+      const elapsed = Date.now() - mountTimeRef.current;
+      // Do not show popup immediately before product content is usable (delay at least 8-10 seconds or after interaction)
+      if (elapsed < MIN_POPUP_DELAY_MS && !isFallback) {
+        return;
+      }
+
       hasTriggeredRef.current = true;
       markExitPopupAsShown();
       setTriggered(true);
@@ -230,11 +241,11 @@ export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOpti
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // 5. GUARANTEE FALLBACK TIMER (6.5s)
-    // Ensures EVERY visitor gets the exit intent offer at least once even if no exit gesture occurred yet
+    // 5. GUARANTEE FALLBACK TIMER (9.5s)
+    // Ensures offer appears after product content is fully usable and engagement period has passed
     const timeDelayTimer = setTimeout(() => {
-      trigger();
-    }, 6500);
+      trigger(true);
+    }, 9500);
 
     return () => {
       clearTimeout(timeDelayTimer);

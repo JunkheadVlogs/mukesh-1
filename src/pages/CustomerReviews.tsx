@@ -308,7 +308,7 @@ export default function CustomerReviews() {
                   Where can I visit your physical showroom?
                 </h4>
                 <p className="text-[12.5px] text-primary-950/70 font-light leading-relaxed">
-                  Our showroom is located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002. Open Monday to Saturday, 10:00 AM – 8:00 PM IST.
+                  Our showroom is located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002. Open Monday to Sunday, 11:00 AM – 9:00 PM IST.
                 </p>
               </div>
             </div>

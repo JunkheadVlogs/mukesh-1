@@ -171,6 +171,10 @@ function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string 
     targetUrl = targetUrl.split('=')[0]; // strip existing params
   }
   
+  if (targetUrl.startsWith('/') || targetUrl.includes('mukeshsarees.com')) {
+    return targetUrl.startsWith('http') ? targetUrl : `https://mukeshsarees.com${targetUrl.startsWith('/') ? '' : '/'}${targetUrl}`;
+  }
+  
   return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=cover&a=center&output=jpg&q=90`;
 }
 
@@ -202,6 +206,10 @@ function getSquarePrerenderImageUrl(imageUrl: string | undefined): string {
     }
   } else if (targetUrl.includes('lh3.googleusercontent.com')) {
     targetUrl = targetUrl.split('=')[0]; // strip existing params
+  }
+  
+  if (targetUrl.startsWith('/') || targetUrl.includes('mukeshsarees.com')) {
+    return targetUrl.startsWith('http') ? targetUrl : `https://mukeshsarees.com${targetUrl.startsWith('/') ? '' : '/'}${targetUrl}`;
   }
   
   return `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=1200&fit=contain&cbg=ffffff&output=jpg&q=90`;
@@ -299,9 +307,10 @@ export function getFooterHtml(): string {
 
 // Format product card for general grid view
 function getProductCardHtml(p: any): string {
-  const img400 = p.image.includes('ik.imagekit.io') ? (p.image.includes('?') ? `${p.image}&tr=w-400,f-webp,q-75` : `${p.image}?tr=w-400,f-webp,q-75`) : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=400&output=webp`;
-  const img300 = p.image.includes('ik.imagekit.io') ? (p.image.includes('?') ? `${p.image}&tr=w-300,f-webp,q-75` : `${p.image}?tr=w-300,f-webp,q-75`) : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=300&output=webp`;
-  const img600 = p.image.includes('ik.imagekit.io') ? (p.image.includes('?') ? `${p.image}&tr=w-600,f-webp,q-75` : `${p.image}?tr=w-600,f-webp,q-75`) : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=600&output=webp`;
+  const isLocal = p.image && (p.image.startsWith('/') || p.image.includes('mukeshsarees.com'));
+  const img400 = isLocal ? p.image : (p.image.includes('ik.imagekit.io') ? (p.image.includes('?') ? `${p.image}&tr=w-400,f-webp,q-75` : `${p.image}?tr=w-400,f-webp,q-75`) : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=400&output=webp`);
+  const img300 = isLocal ? p.image : (p.image.includes('ik.imagekit.io') ? (p.image.includes('?') ? `${p.image}&tr=w-300,f-webp,q-75` : `${p.image}?tr=w-300,f-webp,q-75`) : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=300&output=webp`);
+  const img600 = isLocal ? p.image : (p.image.includes('ik.imagekit.io') ? (p.image.includes('?') ? `${p.image}&tr=w-600,f-webp,q-75` : `${p.image}?tr=w-600,f-webp,q-75`) : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=600&output=webp`);
   return `
     <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
       <a href="/product/${p.slug}" style="text-decoration: none; color: inherit; display: block;">
@@ -793,37 +802,12 @@ async function runPrerender() {
         }
       }
     };
-    
-    // Only include Review and AggregateRating schema if the product has real, verified reviews
-    if (p.reviews && p.reviews.length > 0) {
-      const totalReviews = p.reviews.length;
-      const avgRating = p.reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / totalReviews;
-      const bestReview = p.reviews.reduce((prev: any, current: any) => (prev.rating > current.rating) ? prev : current);
-      
-      prodSchema.aggregateRating = {
-        "@type": "AggregateRating",
-        "ratingValue": avgRating.toFixed(1),
-        "reviewCount": totalReviews.toString()
-      };
-      
-      prodSchema.review = {
-        "@type": "Review",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": bestReview.rating.toString(),
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "author": {
-          "@type": "Person",
-          "name": bestReview.author || "Verified Customer"
-        },
-        "reviewBody": bestReview.text || "I bought this product.",
-        "datePublished": bestReview.date ? new Date(bestReview.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
-      };
-    }
 
-    const wsrvImgMain = `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=800&output=webp&q=85`;
+    const wsrvImgMain = (p.image && (p.image.startsWith('/') || p.image.includes('mukeshsarees.com')))
+      ? p.image
+      : (p.image.includes('ik.imagekit.io')
+          ? (p.image.includes('?') ? `${p.image}&tr=w-800,f-webp,q-85` : `${p.image}?tr=w-800,f-webp,q-85`)
+          : `https://wsrv.nl/?url=${encodeURIComponent(p.image)}&w=800&output=webp&q=85`);
 
     // Dynamic clean structured product layout
     const productBody = `

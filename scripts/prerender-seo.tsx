@@ -170,12 +170,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20Malvika%20sarees."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20Malvika%20sarees."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              Chat on WhatsApp (+91 9325034636)
+              Chat on WhatsApp (+91 70206 64641)
             </a>
             <a
               href="/contact"
@@ -337,12 +337,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20see%20your%20saree%20collection."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20see%20your%20saree%20collection."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              WhatsApp Us (+91 9325034636)
+              WhatsApp Us (+91 70206 64641)
             </a>
             <a
               href="/contact"
@@ -385,7 +385,7 @@ const seoPagesData: Record<
       {
         question: "Do you offer video shopping for customers outside Nagpur?",
         answer:
-          "Yes! We offer live video call shopping via WhatsApp (+91 9325034636). Our team shows fabrics, colors, and drapes in real-time with full home delivery.",
+          "Yes! We offer live video call shopping via WhatsApp (+91 70206 64641). Our team shows fabrics, colors, and drapes in real-time with full home delivery.",
       },
       {
         question: "Are all silk sarees at Mukesh Saree Centre authentic?",
@@ -395,7 +395,7 @@ const seoPagesData: Record<
       {
         question: "How can I place a bulk or wholesale order?",
         answer:
-          "You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 9325034636).",
+          "You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 70206 64641).",
       },
     ],
   },
@@ -515,12 +515,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20need%20a%20quote%20for%20bulk%20uniform%20sarees."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20need%20a%20quote%20for%20bulk%20uniform%20sarees."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              Get Wholesale Quote (+91 9325034636)
+              Get Wholesale Quote (+91 70206 64641)
             </a>
             <a
               href="/contact"
@@ -614,12 +614,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20want%20to%20view%20your%20latest%20saree%20collection."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20want%20to%20view%20your%20latest%20saree%20collection."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              Chat on WhatsApp (+91 9325034636)
+              Chat on WhatsApp (+91 70206 64641)
             </a>
             <a
               href="/contact"
@@ -646,7 +646,7 @@ const seoPagesData: Record<
       },
       {
         question: "Can I order online or schedule a video shopping call?",
-        answer: "Yes! We offer live WhatsApp video shopping (+91 9325034636) and ship tracked orders across India.",
+        answer: "Yes! We offer live WhatsApp video shopping (+91 70206 64641) and ship tracked orders across India.",
       },
     ],
   },
@@ -1125,14 +1125,14 @@ async function run() {
       },
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+91-9325034636",
+        "telephone": "+91 70206 64641",
         "contactType": "sales",
         "areaServed": "IN",
         "availableLanguage": ["en", "hi", "mr"]
       },
       "sameAs": [
-        "https://www.facebook.com/mukeshsareecentre",
-        "https://www.instagram.com/mukeshsareecentre"
+        "https://www.facebook.com/Mukeshsareesindia/",
+        "https://www.instagram.com/mukeshsarees_nagpur"
       ]
     });
 
@@ -1141,11 +1141,11 @@ async function run() {
       "@id": "https://mukeshsarees.com/#localbusiness",
       "name": "Mukesh Saree Centre",
       "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
-      "telephone": "+919325034636",
+      "telephone": "+91 70206 64641",
       "url": "https://mukeshsarees.com",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Jagnath Road, Itwari",
+        "streetAddress": "Jagnath Road, Gandhibagh",
         "addressLocality": "Nagpur",
         "addressRegion": "Maharashtra",
         "postalCode": "440002",

@@ -644,7 +644,7 @@ export function SareeShopInNagpurArticle() {
             Visit Our Store
           </Link>
           <a
-            href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20viewing%20your%20latest%20saree%20catalogue."
+            href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20viewing%20your%20latest%20saree%20catalogue."
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto px-8 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all"
