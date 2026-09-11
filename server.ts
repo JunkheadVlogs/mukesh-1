@@ -66,17 +66,17 @@ const app = express();
 function startListening() {
   const portsToListen = new Set<number>();
 
-  // 1. Port 3000 is always listened to (AI Studio internal dev port & reverse proxy target)
-  portsToListen.add(3000);
-
-  // 2. Cloud Run default ingress port 8080
-  portsToListen.add(8080);
-
-  // 3. Any explicitly configured environment PORT
+  // 1. Prioritize Cloud Run environment PORT if provided (typically 8080)
   const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : NaN;
   if (!isNaN(envPort) && envPort > 0) {
     portsToListen.add(envPort);
   }
+
+  // 2. Cloud Run default ingress port 8080
+  portsToListen.add(8080);
+
+  // 3. Port 3000 (AI Studio internal dev port & reverse proxy target)
+  portsToListen.add(3000);
 
   const servers: any[] = [];
 
@@ -88,7 +88,7 @@ function startListening() {
 
       server.on("error", (err: any) => {
         if (err.code === "EADDRINUSE") {
-          // Expected in dev container where Nginx is already bound to 8080.
+          // Expected in dev container where Nginx is already bound to 8080, or if port is already bound.
           console.log(`[SERVER] Port ${port} is occupied (expected if reverse proxy is running on 8080).`);
         } else {
           console.error(`[SERVER] Error on port ${port}:`, err);
@@ -103,6 +103,15 @@ function startListening() {
 
   return servers;
 }
+
+// Global exception safety to prevent container crashes on transient errors
+process.on('uncaughtException', (err) => {
+  console.error('[SERVER] Uncaught exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[SERVER] Unhandled rejection at:', promise, 'reason:', reason);
+});
 
 // Graceful container shutdown handlers for Cloud Run
 process.on('SIGTERM', () => {
