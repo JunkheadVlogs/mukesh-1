@@ -39,13 +39,13 @@ export default function About() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": `${BUSINESS_INFO.website}/`
+          "item": BUSINESS_INFO.website
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "About Us",
-          "item": `${BUSINESS_INFO.website}/about/`
+          "item": `${BUSINESS_INFO.website}/about`
         }
       ]
     },
@@ -74,7 +74,7 @@ export default function About() {
           "name": "Where is the physical store located?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Our store is located on Jagnath Road, Gandhibagh, Nagpur, Maharashtra 440002, India."
+            "text": "Our store is located on Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India."
           }
         }
       ]
@@ -225,7 +225,7 @@ export default function About() {
                   Where is Mukesh Saree Centre located in Nagpur?
                 </h4>
                 <p className="text-[12.5px] text-primary-950/70 font-light leading-relaxed">
-                  Our flagship store is located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra 440002, India.
+                  Our flagship store is located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India.
                 </p>
               </div>
 
@@ -266,7 +266,7 @@ export default function About() {
                 <div className="flex items-center gap-2.5">
                   <Clock className="text-gold-500 shrink-0" size={16} />
                   <span>
-                    <strong>Business Hours:</strong> Monday to Sunday, 11:00 AM – 9:00 PM IST
+                    <strong>Business Hours:</strong> Monday to Saturday, 10:00 AM – 8:00 PM IST
                   </span>
                 </div>
               </div>

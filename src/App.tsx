@@ -6,7 +6,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { Suspense, useEffect, useState, lazy } from 'react';
 import Layout from './Layout';
-const Home = lazy(() => import('./Home'));
+import Home from './Home';
 const ExitIntentPopup = lazy(() => import('./components/ExitIntentPopup').then(m => ({ default: m.ExitIntentPopup })));
 import { useExitIntent, isPinterestBrowser } from './hooks/useExitIntent';
 import { trackWhatsAppClick, trackLead } from './tracking';

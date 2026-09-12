@@ -85,7 +85,7 @@ const LOOK_REELS = [
   },
   {
     q: "Where is your physical saree shop located?",
-    a: "Our landmark physical retail flagship is proudly located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Sunday from 11:00 AM to 9:00 PM."
+    a: "Our landmark physical retail flagship is proudly located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Saturday from 10:00 AM to 8:00 PM."
   },
   {
     q: "Do you provide Cash on Delivery (COD) for online saree shopping?",
@@ -373,8 +373,7 @@ export default function Home() {
             width={1200}
             height={1000}
             alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978"
-            loading="eager"
-            fetchPriority="high"
+            loading="lazy"
             decoding="async"
             className="hidden md:block w-full h-full object-cover object-bottom"
           />
@@ -702,7 +701,7 @@ export default function Home() {
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : newArrivals.map((product, index) => (
                   <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
-                    <ProductCard product={product} idx={index} priority={false} />
+                    <ProductCard product={product} idx={index} priority={index < 4} />
                   </Suspense>
                 ))}
           </div>

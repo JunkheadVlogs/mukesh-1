@@ -606,8 +606,6 @@ async function runCli() {
       console.log(`   GITHUB_TOKEN=ghp_xxx npm run push:github`);
       console.log("or via command line flag:");
       console.log(`   node scripts/github-push.js --token=ghp_xxx`);
-      console.log("or save your token into .github-token (gitignored)");
-      console.log("or trigger the push via the application API: POST /api/github/push");
       return;
     } catch (err) {
       console.error(`- Error querying public repository: ${err.message}`);

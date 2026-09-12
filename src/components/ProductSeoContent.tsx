@@ -10,10 +10,10 @@ export function ProductSeoContent({ product }: { product: Product }) {
       {/* 5. AI-friendly introduction above the product description */}
       <h2>About the {product.name}</h2>
       <p>
-        Discover exquisite craftsmanship with this masterpiece, curated for those who appreciate fine ethnic wear. 
-        At Mukesh Saree Centre, we understand that traditional clothing goes beyond simple attire—it is an expression of heritage, elegance, and personal style. 
-        This luxurious garment feels incredibly soft against the skin, offering an unmatched level of comfort without sacrificing its regal appeal. 
-        The elegant drape naturally flatters your silhouette, while its inherent breathability ensures you stay comfortable during long events, whether in the heat of a summer daytime festival or the cool air of an evening reception.
+        Discover the exquisite craftsmanship of the {product.name}, a masterpiece curated for those who appreciate fine authentic {fabric}. 
+        At Mukesh Saree Centre, we understand that traditional and ethnic wear goes beyond simple clothing—it is an expression of heritage, elegance, and personal style. 
+        This luxurious {product.category} feels incredibly soft against the skin, offering an unmatched level of comfort without sacrificing its regal appeal. 
+        The natural drape of the {fabric} naturally flatters your silhouette, while its inherent breathability ensures you stay comfortable during long events, whether in the heat of a summer daytime festival or the cool air of an evening reception.
         Perfectly suited for our target audience—discerning women, modern professionals, beautiful brides, and boutique resellers—this piece gracefully bridges the gap between classic artistry and contemporary fashion requirements.
         Depending on your styling, it's a superb choice year-round, making it highly versatile for any seasonal wardrobe update.
       </p>
@@ -38,8 +38,8 @@ export function ProductSeoContent({ product }: { product: Product }) {
         <li>Daily Wear: Breathable and comfortable for everyday errands and home wear.</li>
         <li>Wedding: Opulent and striking, ideal for brides, bridesmaids, and wedding guests.</li>
         <li>Festival: Auspicious and bright, perfect for Diwali, Eid, Durga Puja, and cultural celebrations.</li>
-        <li>School Uniform: Clean and modest, ideal for school uniform saree requirements.</li>
-        <li>Teacher Uniform: Professional and dignified, often selected as a preferred uniform saree for educators.</li>
+        <li>School Uniform: Clean, uniform, and modest.</li>
+        <li>Teacher Uniform: Professional, dignified, and easy to maintain throughout the school day.</li>
         <li>Boutique Resellers: High-margin premium inventory for discerning boutique clients.</li>
         <li>Wholesale Buyers: Available for bulk purchase with superb quality consistency.</li>
       </ul>
@@ -93,7 +93,7 @@ export function ProductSeoContent({ product }: { product: Product }) {
         <dd>Yes, Cash on Delivery is available across all serviceable pincodes in India for this item.</dd>
 
         <dt>3. How do I know if this {fabric} is authentic?</dt>
-        <dd>As a leading saree shop in Nagpur, Mukesh Saree Centre has been a highly trusted name since 1978. Every piece, including our exclusive Malvika saree collections, undergoes rigorous quality checks to authenticate the weave and material.</dd>
+        <dd>Mukesh Saree Centre has been a highly trusted name since 1978. Every piece undergoes rigorous quality checks to authenticate the weave and material.</dd>
 
         <dt>4. Can I get the blouse stitched before delivery?</dt>
         <dd>Currently, this is provided as an unstitched blouse piece. However, you can contact our WhatsApp support team to inquire about custom tailoring options prior to dispatch.</dd>

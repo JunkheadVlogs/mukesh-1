@@ -100,10 +100,6 @@ const coordReviewTemplates = [
 ];
 
 function generateReviews(product: Product): EnhancedReview[] {
-  if (product.id === "p78" || product.sku === "SAR-GEO-IVO-078" || (product.reviewsCount === 0 && product.rating === 0)) {
-    return [];
-  }
-
   const seed = getSeededRandom(product.id + "-revs");
   const stats = getProductReviewStats(product);
 
@@ -254,17 +250,6 @@ const ratingLabels = [
 ];
 
 export const ProductReviews: React.FC<ProductReviewsProps> = ({ product }) => {
-  if (product.id === "p78" || product.sku === "SAR-GEO-IVO-078" || (product.reviewsCount === 0 && product.rating === 0)) {
-    try {
-      safeLocalStorage.removeItem(`reviews-${product.id}`);
-      safeLocalStorage.removeItem("reviews-p78");
-      safeLocalStorage.removeItem("reviews-SAR-GEO-IVO-078");
-    } catch {
-      // safe no-op
-    }
-    return null;
-  }
-
   const [visibleCount, setVisibleCount] = useState(3);
   const [isWritingReview, setIsWritingReview] = useState(false);
   const [reviewForm, setReviewForm] = useState<{

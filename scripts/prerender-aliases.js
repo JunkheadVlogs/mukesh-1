@@ -15,9 +15,9 @@ function copyIfExists(src, destPath, aliasName) {
       // Create a titlecased version for the title
       const titleName = aliasName.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
       // Replace canonical link
-      content = content.replace(/<link[^>]*rel="canonical"[^>]*>/i, `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${aliasName}/" />`);
+      content = content.replace(/<link[^>]*rel="canonical"[^>]*>/i, `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${aliasName}" />`);
       // Update og:url
-      content = content.replace(/<meta[^>]*property="og:url"[^>]*>/i, `<meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${aliasName}/" />`);
+      content = content.replace(/<meta[^>]*property="og:url"[^>]*>/i, `<meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${aliasName}" />`);
       // Update titles for category aliases to be more relevant
       if (['sarees', 'lehengas', 'suits', 'coord-sets'].includes(aliasName)) {
         content = content.replace(/<title>.*?<\/title>/is, `<title>${titleName} | Mukesh Saree Centre</title>`);

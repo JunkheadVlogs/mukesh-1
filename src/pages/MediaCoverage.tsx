@@ -22,13 +22,13 @@ export default function MediaCoverage() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": `${BUSINESS_INFO.website}/`
+          "item": BUSINESS_INFO.website
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Media Coverage",
-          "item": `${BUSINESS_INFO.website}/media/`
+          "item": `${BUSINESS_INFO.website}/media`
         }
       ]
     },

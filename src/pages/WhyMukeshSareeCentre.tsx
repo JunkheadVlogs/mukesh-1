@@ -22,13 +22,13 @@ export default function WhyMukeshSareeCentre() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": `${BUSINESS_INFO.website}/`
+          "item": BUSINESS_INFO.website
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Why Mukesh Saree Centre",
-          "item": `${BUSINESS_INFO.website}/why-mukesh-saree-centre/`
+          "item": `${BUSINESS_INFO.website}/why-mukesh-saree-centre`
         }
       ]
     },
@@ -190,7 +190,7 @@ export default function WhyMukeshSareeCentre() {
               <p className="font-semibold text-primary-950">{BUSINESS_INFO.name}</p>
               <p>{BUSINESS_INFO.address.street}, {BUSINESS_INFO.address.area}</p>
               <p>{BUSINESS_INFO.address.city}, {BUSINESS_INFO.address.region} - {BUSINESS_INFO.address.postalCode}, India</p>
-              <p className="text-[12px] text-primary-950/70 pt-1">Business Hours: Monday to Sunday, 11:00 AM – 9:00 PM IST</p>
+              <p className="text-[12px] text-primary-950/70 pt-1">Business Hours: Monday to Saturday, 10:00 AM – 8:00 PM IST (Closed Sunday)</p>
             </div>
           </div>
 

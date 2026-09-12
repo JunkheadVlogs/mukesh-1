@@ -189,13 +189,13 @@ export default function WholesaleSarees() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://mukeshsarees.com/"
+                "item": "https://mukeshsarees.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Wholesale VIP Club",
-                "item": "https://mukeshsarees.com/wholesalesarees/"
+                "item": "https://mukeshsarees.com/wholesalesarees"
               }
             ]
           }

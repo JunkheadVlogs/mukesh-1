@@ -13,7 +13,7 @@ export const faqs: FAQ[] = [
   {
     category: "support",
     q: "Where is your physical saree shop located?",
-    a: "Our landmark physical retail flagship is proudly located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Sunday from 11:00 AM to 9:00 PM."
+    a: "Our landmark physical retail flagship is proudly located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India. As a trusted physical saree shop in Nagpur since 1978, we welcome customers to explore our premium collection of handloom masterpieces, bridal lehengas, party wear sarees, and traditional silk sarees in person. Our central Nagpur location is fully air-conditioned and staffed by custom ethnic wear consultants ready to guide you through fabric selections, intricate embroidery details, and draping techniques, making it the perfect destination for wedding sarees shopping. We are open Monday to Saturday from 10:00 AM to 8:00 PM."
   },
   {
     category: "payments",

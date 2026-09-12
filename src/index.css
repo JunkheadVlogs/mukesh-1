@@ -1,6 +1,4 @@
-@source not "../dist";
-@source not "../scripts";
-@source not "./mockData.ts";
+@import url('/fonts/fonts.css');
 @import "tailwindcss";
 
 :root {
@@ -1049,8 +1047,8 @@ video::-webkit-media-controls-fullscreen-button {
   .product-actions, 
   .atc-buttons, 
   .buy-buttons {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
+    display: flex !important;
+    flex-direction: row !important;
     gap: 12px !important;
     margin-top: 16px !important;
     margin-bottom: 16px !important;
@@ -1060,15 +1058,12 @@ video::-webkit-media-controls-fullscreen-button {
   .buy-now-btn,
   button[data-action="add-to-cart"],
   button[data-action="buy-now"] {
-    width: 100% !important;
+    flex: 1 !important;
     min-height: 48px !important;
     height: 48px !important;
     font-size: 13px !important;
-    padding: 0 12px !important;
+    padding: 0 16px !important;
     border-radius: 4px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
   }
 
   /* 3. Product image sizing to look premium but not oversized */
@@ -1134,7 +1129,7 @@ video::-webkit-media-controls-fullscreen-button {
   /* 2. Main Page Spacing (Homepage sections) */
   #next-section,
   .bg-white:has(.grid),
-  [class*="bg-[#FAF8F5]"]:has(h2),
+  .bg-\\[\\#FAF8F5\\]:has(h2),
   .bg-primary-50:has(.grid),
   section.bg-\\[var\\(--color-surface\\)\\] {
     padding-top: 72px !important;

@@ -200,14 +200,6 @@ export default function ProductPage() {
     [product?.id],
   );
 
-  const hasReviews = Boolean(
-    product &&
-    product.sku !== "SAR-GEO-IVO-078" &&
-    product.id !== "p78" &&
-    (product.reviewsCount ?? stats.reviewCount) > 0 &&
-    stats.reviewCount > 0
-  );
-
   const isSaree = product ? product.category.toLowerCase().includes("saree") : false;
   const isCoOrdSet = product ? (product.category === "Co-Ord Sets" || product.category.toLowerCase().includes("co-ord")) : false;
   const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Free Size'].filter(s => !(isCoOrdSet && s === 'Free Size'));
@@ -828,6 +820,35 @@ export default function ProductPage() {
     "offers": detailedProductSchema.offers
   };
 
+  // Only include Review and AggregateRating schema if the product has real, verified reviews
+  if (product.reviews && product.reviews.length > 0) {
+    const totalReviews = product.reviews.length;
+    const avgRating = product.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews;
+    const bestReview = product.reviews.reduce((prev, current) => (prev.rating > current.rating) ? prev : current);
+    
+    productSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: avgRating.toFixed(1),
+      reviewCount: totalReviews.toString(),
+    };
+
+    productSchema.review = {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": bestReview.rating.toString(),
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "author": {
+        "@type": "Person",
+        "name": bestReview.author || "Verified Customer"
+      },
+      "reviewBody": bestReview.text || "I bought this product.",
+      "datePublished": bestReview.date ? new Date(bestReview.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+    };
+  }
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -848,9 +869,95 @@ export default function ProductPage() {
 
   const isSareeProduct = product.category.toLowerCase().includes("saree") || product.name.toLowerCase().includes("saree");
   
-  
-  const seoTitle = product.metaTitle || product.seoTitle || `${product.name} - ₹${product.price} | Mukesh Saree Centre`;
-  const seoDescription = product.metaDescription || product.seoDescription || `Buy ${product.name} online at Mukesh Saree Centre. High-quality fabric perfect for elegant occasions. Free Shipping & COD across India.`;
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `Is the color of the ${product.name} exactly as shown in the picture?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `We strive for 95% color accuracy. Due to bright studio lighting and individual monitor settings, very slight variations may occur, but the genuine beauty of the ${product.fabric} is always preserved.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Cash on Delivery (COD) available for this item?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Cash on Delivery is available across all serviceable pincodes in India for this item."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `How do I know if this ${product.fabric} is authentic?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mukesh Saree Centre has been a highly trusted name since 1978. Every piece undergoes rigorous quality checks to authenticate the weave and material."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I get the blouse stitched before delivery?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Currently, this is provided as an unstitched blouse piece. However, you can contact our WhatsApp support team to inquire about custom tailoring options prior to dispatch."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will this fabric shrink after washing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Premium ${product.fabric} usually does not shrink if care instructions are strictly followed. Professional dry cleaning is highly recommended.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `Is this ${product.category} suitable for plus-size women?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": isSareeProduct ? "Absolutely. A 5.5-meter drape is universally flattering, easily accommodating and elegantly draping around all body types." : "Please refer to our detailed size chart. We ensure our cuts are flattering and comfortable across our entire size range."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How fast will my order be dispatched?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Orders are typically processed and dispatched within 24 to 48 hours from our Nagpur facility."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer wholesale or bulk discounts for this product?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we cater to boutique owners and bulk buyers. Please reach out to our wholesale department via our Contact Us page for specialized pricing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What do I do if I receive a damaged product?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "While rare, if you receive a defective item, simply share an unboxing video via WhatsApp within 24 hours of delivery, and we will arrange a swift replacement or refund."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I wear this for a full-day event without feeling uncomfortable?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Without a doubt! This piece was selected specifically for its breathability and light weight, ensuring it remains comfortable even during 12-hour events."
+        }
+      }
+    ]
+  };
+
+  const seoTitle = product.metaTitle || product.seoTitle || `${product.name} | Authentic ${product.fabric} ${product.category}`.substring(0, 60);
+  const seoDescription = product.metaDescription || product.seoDescription || `Buy ${product.name} online. Premium ${product.fabric} ${product.category} perfect for elegant occasions, weddings, and daily wear. Free Shipping & COD.`.substring(0, 160);
 
   return (
     <div className="bg-primary-50 product-page-content pb-[70px] md:pb-0">
@@ -862,13 +969,13 @@ export default function ProductPage() {
         url={`/product/${product.slug}`}
         type="product"
         product={product}
-        schema={[productSchema, breadcrumbSchema] as any}
+        schema={[productSchema, breadcrumbSchema, faqSchema] as any}
       />
 
-      <div className="max-w-[1280px] mx-auto px-2.5 sm:px-4 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
-        <div className="flex flex-col lg:flex-row gap-1.5 md:gap-8 lg:gap-10 xl:gap-14">
+      <div className="max-w-[1400px] mx-auto px-2.5 sm:px-4 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
+        <div className="flex flex-col lg:flex-row gap-1.5 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
-          <div className="w-full lg:w-[48%] lg:sticky lg:top-28 lg:self-start space-y-2 md:space-y-4">
+          <div className="w-full lg:w-[54%] xl:w-[52%] lg:sticky lg:top-28 lg:self-start space-y-2 md:space-y-4">
             <div
               className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y p-2 sm:p-3 md:p-4"
               style={{
@@ -982,7 +1089,7 @@ export default function ProductPage() {
           </div>
 
           {/* Details Section */}
-          <div className="w-full lg:w-[52%] px-0">
+          <div className="w-full lg:w-[46%] xl:w-[48%] px-0">
             <div className="pb-4 lg:pb-12">
               <header className="product-info-section flex flex-col items-start text-left mt-0 mb-1">
                 {/* SKU + Category row - Centered, small font, breathable spacing */}
@@ -1029,6 +1136,7 @@ export default function ProductPage() {
                   title={product.name}
                 >
                   {product.name}
+                  <span className="sr-only"> - Premium {product.fabric} {product.category} for Women</span>
                 </h1>
 
               </header>
@@ -1066,30 +1174,28 @@ export default function ProductPage() {
                 {/* ROW 2 — Combined Row: Star rating + Prepaid Savings Badge + Share Button */}
                 <div className="flex items-center justify-between gap-1.5 sm:gap-3 w-full pt-0.5">
                   {/* a) Star rating + review count */}
-                  {hasReviews && (
-                    <a
-                      href="#reviews"
-                      className="flex items-center gap-1 hover:opacity-80 transition-opacity flex-shrink-0"
-                    >
-                      <div className="flex items-center gap-[1px]">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-[10px] h-[10px] sm:w-[11px] sm:h-[11px] ${
-                              stats.rating >= i + 1
-                                ? "fill-[#F4B63D] text-[#F4B63D]"
-                                : stats.rating >= i + 0.5
-                                  ? "fill-[#F4B63D] text-[#F4B63D] opacity-50"
-                                  : "fill-[#E6DEC8] text-[#E6DEC8]"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-[10px] sm:text-[11px] text-[#9CA3AF] font-medium leading-none whitespace-nowrap">
-                        ({product.reviewsCount || stats.reviewCount})
-                      </span>
-                    </a>
-                  )}
+                  <a
+                    href="#reviews"
+                    className="flex items-center gap-1 hover:opacity-80 transition-opacity flex-shrink-0"
+                  >
+                    <div className="flex items-center gap-[1px]">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-[10px] h-[10px] sm:w-[11px] sm:h-[11px] ${
+                            stats.rating >= i + 1
+                              ? "fill-[#F4B63D] text-[#F4B63D]"
+                              : stats.rating >= i + 0.5
+                                ? "fill-[#F4B63D] text-[#F4B63D] opacity-50"
+                                : "fill-[#E6DEC8] text-[#E6DEC8]"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-[10px] sm:text-[11px] text-[#9CA3AF] font-medium leading-none whitespace-nowrap">
+                      ({product.reviewsCount || stats.reviewCount})
+                    </span>
+                  </a>
 
                   {/* b) "⚡ Save ₹50 Extra on Prepaid Online Orders" badge */}
                   <div className="flex items-center gap-1 bg-emerald-50 text-emerald-800 px-1.5 py-0.5 rounded-sm border border-emerald-200/60 flex-shrink min-w-0">
@@ -1153,7 +1259,7 @@ export default function ProductPage() {
                             Blouse Details
                           </td>
                           <td className="text-[var(--color-dark)] align-middle">
-                            {product.blouseDetails || (product.sku === "SAR-GEO-IVO-078" ? "Comes with Self Blouse Piece" : "Comes with Contrast Blouse Piece")}
+                            Comes with Contrast Blouse Piece
                           </td>
                         </tr>
                       </>
@@ -1252,20 +1358,20 @@ export default function ProductPage() {
                   {/* Quantity selector */}
                   <div className="qty-selector-row flex items-center gap-3 mb-1">
                     <span className="text-[10px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-medium">Quantity:</span>
-                    <div className="flex items-center justify-between px-1.5 border border-[var(--color-border)] bg-transparent w-[88px] h-[36px] rounded-sm">
+                    <div className="flex items-center justify-between px-1.5 border border-[var(--color-border)] bg-transparent w-24 h-[40px] rounded-sm">
                       <button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="text-[var(--color-muted)] hover:text-[var(--color-dark)] transition-colors w-7 h-full flex items-center justify-center pt-0.5"
+                        className="text-[var(--color-muted)] hover:text-[var(--color-dark)] transition-colors w-8 h-full flex items-center justify-center pt-0.5"
                         aria-label="Decrease quantity"
                       >
                         <span className="text-xl leading-none select-none">&minus;</span>
                       </button>
-                      <span className="text-[12px] font-medium text-[var(--color-dark)] w-4 text-center">
+                      <span className="text-[13px] font-medium text-[var(--color-dark)] w-4 text-center">
                         {quantity}
                       </span>
                       <button
                         onClick={() => setQuantity(Math.min(maxStock, quantity + 1))}
-                        className="text-[var(--color-muted)] hover:text-[var(--color-dark)] transition-colors w-7 h-full flex items-center justify-center pt-0.5"
+                        className="text-[var(--color-muted)] hover:text-[var(--color-dark)] transition-colors w-8 h-full flex items-center justify-center pt-0.5"
                         aria-label="Increase quantity"
                       >
                         <span className="text-xl leading-none select-none">+</span>
@@ -1301,7 +1407,7 @@ export default function ProductPage() {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full h-[44px] md:h-[46px] border border-[#2D452F]/20 bg-[#f4f7f4] text-[#2D452F] text-[11px] md:text-[12px] uppercase tracking-[0.18em] font-medium hover:bg-[#e8ede8] transition-all rounded-sm flex items-center justify-center gap-2 group style-none no-underline"
+                    className="w-full h-[44px] md:h-[52px] border border-[#2D452F]/20 bg-[#f4f7f4] text-[#2D452F] text-[11px] md:text-[12px] uppercase tracking-[0.18em] font-medium hover:bg-[#e8ede8] transition-all rounded-sm flex items-center justify-center gap-2 group style-none no-underline"
                     style={{ textDecoration: 'none' }}
                   >
                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current opacity-80 group-hover:opacity-100 transition-opacity" xmlns="http://www.w3.org/2000/svg">
@@ -1321,29 +1427,28 @@ export default function ProductPage() {
 
               {/* Hidden AI SEO Core Knowledge Block */}
               <ProductSeoContent product={product} />
+
+              {/* Description */}
+              <section className="product-info product-description-section pt-1 border-t border-[var(--color-border)] mt-1 mb-0 pb-0">
+                <ProductDescription description={product.description} product={product} />
+              </section>
+
+              {/* Collapsible Accordion */}
+              <section className="product-info product-accordion-section mt-0 mb-0 pt-0 pb-0">
+                <ProductAccordion category={product.category} product={product} />
+              </section>
             </div>
           </div>
         </div>
 
-        {/* Full Width Sections: Description & Accordion */}
-        <div className="mt-4 md:mt-8 pt-4 md:pt-8 border-t border-[var(--color-border)] px-4 md:px-0 flex flex-col gap-6">
-          <section className="product-info product-description-section">
-            <ProductDescription description={product.description} product={product} />
-          </section>
-          <section className="product-info product-accordion-section">
-            <ProductAccordion category={product.category} product={product} />
-          </section>
-        </div>
 
         {/* Product Reviews */}
-        {hasReviews && (
-          <div
-            id="reviews"
-            className="mt-2 md:mt-6 pt-2 md:pt-4 border-t border-[var(--color-border)] px-4 md:px-0"
-          >
-            <ProductReviews product={product} />
-          </div>
-        )}
+        <div
+          id="reviews"
+          className="mt-2 md:mt-6 pt-2 md:pt-4 border-t border-[var(--color-border)] px-4 md:px-0"
+        >
+          <ProductReviews product={product} />
+        </div>
 
         {/* Related Section */}
         <section className="mt-2 md:mt-12 px-0 pb-4 md:pb-12">

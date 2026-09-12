@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,8 +57,8 @@ async function downloadFile(url: string, destPath: string): Promise<boolean> {
       fs.writeFileSync(destPath, buffer);
       return true;
     } catch (error: any) {
+      console.error(`Attempt ${attempt} failed for url ${url}:`, error.message || error);
       if (attempt === maxRetries) {
-        console.warn(`[GEN-OG-IMAGES] Download failed for url ${url}:`, error.message || error);
         return false;
       }
     }
@@ -98,91 +97,46 @@ async function main() {
   let successCount = 0;
   let failCount = 0;
 
-  // Separate local products and remote products for ultra-fast and reliable processing
-  const localTasks: any[] = [];
-  const remoteTasks: any[] = [];
-
-  for (const p of products) {
+  // Run downloads concurrently in batches of 15 to stay within limits and complete in <5 seconds
+  const concurrency = 15;
+  const tasks = products.map((p: any) => async () => {
     const slug = p.slug;
-    if (!slug) continue;
+    if (!slug) return;
+
+    const cleanImgUrl = getCleanDirectImageUrl(p.image);
+    
+    // Construct the single-wrapped centering-pad formula for 800x1200 portrait (2:3 aspect ratio):
+    const finalUrl = `https://wsrv.nl/?url=${encodeURIComponent(cleanImgUrl)}&w=800&h=1200&fit=contain&cbg=ffffff&output=jpg&q=85`;
 
     const destPublicFile = path.join(publicOgDir, `${slug}.jpg`);
     const destDistFile = path.join(distOgDir, `${slug}.jpg`);
 
-    const isLocal = p.image && (p.image.startsWith('/') || !p.image.startsWith('http'));
-    if (isLocal) {
-      localTasks.push({ p, slug, destPublicFile, destDistFile });
+    const success = await downloadFile(finalUrl, destPublicFile);
+    if (success) {
+      fs.copyFileSync(destPublicFile, destDistFile);
+      successCount++;
     } else {
-      remoteTasks.push({ p, slug, destPublicFile, destDistFile });
+      failCount++;
     }
-  }
+  });
 
-  // 1. Process local image assets with ImageMagick convert (offline, 0 network requests, 0 failures)
-  console.log(`⚡ Processing ${localTasks.length} local product images offline...`);
-  for (const item of localTasks) {
-    const localRelative = item.p.image.replace(/^\//, '');
-    const localFilePath = path.join(rootDir, 'public', localRelative);
-    let converted = false;
-
-    if (fs.existsSync(localFilePath)) {
-      try {
-        execSync(`convert "${localFilePath}" -resize 800x1200 -background white -gravity center -extent 800x1200 -quality 85 "${item.destPublicFile}"`, { stdio: 'pipe' });
-        if (fs.existsSync(item.destPublicFile)) {
-          fs.copyFileSync(item.destPublicFile, item.destDistFile);
-          successCount++;
-          converted = true;
-        }
-      } catch (e: any) {
-        console.warn(`[GEN-OG-IMAGES] Local convert failed for ${item.slug}:`, e?.message || e);
-      }
-    }
-
-    if (!converted) {
-      const fallbackOg = path.join(rootDir, 'public', 'og-image.jpg');
-      if (fs.existsSync(fallbackOg)) {
-        fs.copyFileSync(fallbackOg, item.destPublicFile);
-        fs.copyFileSync(fallbackOg, item.destDistFile);
-        successCount++;
-      } else {
-        failCount++;
-      }
-    }
-  }
-
-  // 2. Process remote products concurrently with pool
-  console.log(`🌐 Processing ${remoteTasks.length} remote product images...`);
-  const concurrency = 15;
-  const activeRemote = [...remoteTasks];
-
-  async function remoteWorker() {
-    while (activeRemote.length > 0) {
-      const item = activeRemote.shift();
-      if (!item) break;
-
-      const cleanImgUrl = getCleanDirectImageUrl(item.p.image);
-      const finalUrl = `https://wsrv.nl/?url=${encodeURIComponent(cleanImgUrl)}&w=800&h=1200&fit=contain&cbg=ffffff&output=jpg&q=85`;
-
-      const success = await downloadFile(finalUrl, item.destPublicFile);
-      if (success) {
-        fs.copyFileSync(item.destPublicFile, item.destDistFile);
-        successCount++;
-      } else {
-        const fallbackOg = path.join(rootDir, 'public', 'og-image.jpg');
-        if (fs.existsSync(fallbackOg)) {
-          fs.copyFileSync(fallbackOg, item.destPublicFile);
-          fs.copyFileSync(fallbackOg, item.destDistFile);
-          successCount++;
-        } else {
-          failCount++;
-        }
-      }
-    }
-  }
-
+  // Execute concurrently with a pool
   const pool: Promise<void>[] = [];
-  for (let i = 0; i < concurrency; i++) {
-    pool.push(remoteWorker());
+  const activeTasks = [...tasks];
+  
+  async function worker() {
+    while (activeTasks.length > 0) {
+      const task = activeTasks.shift();
+      if (task) {
+        await task();
+      }
+    }
   }
+
+  for (let i = 0; i < concurrency; i++) {
+    pool.push(worker());
+  }
+
   await Promise.all(pool);
 
   // Generate Wholesale VIP Club dedicated 1200x630 OG image
@@ -229,7 +183,7 @@ async function main() {
   console.log('🎉 [GEN-OG-IMAGES] POOL PROCESS COMPLETE!');
   console.log('======================================================');
   console.log(`- Successfully processed: ${successCount}`);
-  console.log(`- Unsuccessful/Skipped: ${failCount}`);
+  console.log(`- Failed/Skipped: ${failCount}`);
   console.log('======================================================\n');
 }
 

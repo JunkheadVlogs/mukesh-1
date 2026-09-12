@@ -1092,7 +1092,7 @@ export default function Layout() {
                   justifyContent: "center"
                 }}>
                   <a 
-                    href={BUSINESS_INFO.social[1]}
+                    href="https://www.instagram.com/mukesh_saree_centre_"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -1111,7 +1111,7 @@ export default function Layout() {
                     <Instagram size={15} />
                   </a>
                   <a 
-                    href={BUSINESS_INFO.social[0]}
+                    href="https://www.facebook.com/109033288599426"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -1129,7 +1129,25 @@ export default function Layout() {
                   >
                     <Facebook size={15} />
                   </a>
-                  
+                  <a 
+                    href="https://youtube.com/@mukeshsarees?si=aMljrBMnIJYQDGDI"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "50%",
+                      border: "1px solid #e5e5e5",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#fff",
+                      color: "#111"
+                    }}
+                    aria-label="YouTube"
+                  >
+                    <Youtube size={15} />
+                  </a>
                 </div>
 
                 {/* Footer text */}
@@ -1243,7 +1261,7 @@ export default function Layout() {
             <div className="border-b border-white/10 md:border-b-0 py-0">
               <button
                 onClick={() => toggleFooterAccordion("quick-links")}
-                className="w-full flex items-center justify-between py-4 md:py-0 md:mb-4 md:pointer-events-none text-left"
+                className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
               >
                 <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
                   Collection
@@ -1259,31 +1277,31 @@ export default function Layout() {
               <div
                 className={`transition-all duration-300 ${
                   openFooterAccordion === "quick-links" ? "block animate-fadeIn" : "hidden"
-                } md:block pb-4 md:pb-0`}
+                } md:block pb-1 md:pb-0`}
               >
-                <ul className="space-y-3 md:space-y-4 text-[12.5px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-none pb-1">
+                <ul className="space-y-0 md:space-y-4 text-[12.5px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-none pb-1">
                   <li>
-                    <Link to="/shop?category=Sarees" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/shop?category=Sarees" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Sarees
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?category=Lehengas" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/shop?category=Lehengas" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Lehengas
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?category=Co-Ord-Sets" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/shop?category=Co-Ord-Sets" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Co-Ord Sets
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?sort=new" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/shop?sort=new" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       New Arrivals
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?sort=best-selling" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/shop?sort=best-selling" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Best Sellers
                     </Link>
                   </li>
@@ -1295,7 +1313,7 @@ export default function Layout() {
             <div className="border-b border-white/10 md:border-b-0 py-0">
               <button
                 onClick={() => toggleFooterAccordion("support")}
-                className="w-full flex items-center justify-between py-4 md:py-0 md:mb-4 md:pointer-events-none text-left"
+                className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
               >
                 <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
                   SUPPORT
@@ -1311,66 +1329,66 @@ export default function Layout() {
               <div
                 className={`transition-all duration-300 ${
                   openFooterAccordion === "support" ? "block animate-fadeIn" : "hidden"
-                } md:block pb-4 md:pb-0`}
+                } md:block pb-1 md:pb-0`}
               >
-                <ul className="space-y-3 md:space-y-4 text-[12.5px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-none pb-1">
+                <ul className="space-y-0 md:space-y-4 text-[12.5px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-none pb-1">
                   <li>
-                    <Link to="/about" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/about" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       About Us
                     </Link>
                   </li>
                   <li>
-                    <Link to="/why-mukesh-saree-centre" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/why-mukesh-saree-centre" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Why Choose Us
                     </Link>
                   </li>
                   <li>
-                    <Link to="/reviews" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/reviews" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Customer Reviews
                     </Link>
                   </li>
                   <li>
-                    <Link to="/contact" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/contact" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Contact Us
                     </Link>
                   </li>
                   <li>
-                    <Link to="/media" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/media" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Media & Press Proof
                     </Link>
                   </li>
                   <li>
-                    <Link to="/uniform-saree-bulk-orders" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/uniform-saree-bulk-orders" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Uniform Sarees Bulk
                     </Link>
                   </li>
                   <li>
-                    <Link to="/malvika-saree-buying-guide" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/malvika-saree-buying-guide" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Malvika Saree Guide
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shipping-policy" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/shipping-policy" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Shipping Policy
                     </Link>
                   </li>
                   <li>
-                    <Link to="/return-policy" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/return-policy" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Returns & Exchanges
                     </Link>
                   </li>
                   <li>
-                    <Link to="/faqs" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/faqs" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Frequently Asked Questions
                     </Link>
                   </li>
                   <li>
-                    <Link to="/guides" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/guides" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Knowledge Hub / Guides
                     </Link>
                   </li>
                   <li>
-                    <Link to="/terms" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-1.5 md:py-0.5">
+                    <Link to="/terms" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Terms of Service
                     </Link>
                   </li>
@@ -1382,7 +1400,7 @@ export default function Layout() {
             <div className="border-b border-white/10 md:border-b-0 py-0" itemScope itemType="https://schema.org/ClothingStore">
               <button
                 onClick={() => toggleFooterAccordion("contact")}
-                className="w-full flex items-center justify-between py-4 md:py-0 md:mb-4 md:pointer-events-none text-left"
+                className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
               >
                 <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]" itemProp="name">
                   Mukesh Saree Centre
@@ -1398,9 +1416,9 @@ export default function Layout() {
               <div
                 className={`transition-all duration-300 ${
                   openFooterAccordion === "contact" ? "block animate-fadeIn" : "hidden"
-                } md:block pb-4 md:pb-0`}
+                } md:block pb-1 md:pb-0`}
               >
-                <div className="flex flex-col space-y-6 md:space-y-3.5 text-xs tracking-wider leading-relaxed pt-1.5 text-[#eae6df]/85">
+                <div className="flex flex-col space-y-3.5 text-xs tracking-wider leading-relaxed pt-1.5 text-[#eae6df]/85">
                   
                   {/* Address */}
                   <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
@@ -1409,13 +1427,13 @@ export default function Layout() {
                     </h5>
                     <p className="text-[#FAF8F4]/90 text-[12px] md:text-[12.5px] leading-relaxed">
                       <span itemProp="streetAddress">{BUSINESS_INFO.address.street}, {BUSINESS_INFO.address.area}</span>, <br />
-                      <span itemProp="addressLocality">Nagpur</span>, <span itemProp="addressRegion">Maharashtra</span> <span itemProp="postalCode">440002</span>, <br />
-                      <span itemProp="addressCountry">India</span>
+                      <span itemProp="addressLocality">Nagpur</span> - <span itemProp="postalCode">440002</span>, <br />
+                      <span itemProp="addressRegion">Maharashtra</span>, India
                     </p>
                   </div>
 
                   {/* Phone & WhatsApp Support */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 md:gap-y-1">
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                     <div>
                       <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-[#C8A96B] mb-1">
                         Call Us
@@ -1444,7 +1462,7 @@ export default function Layout() {
                   </div>
 
                   {/* Email & Opening Hours */}
-                  <div className="grid grid-cols-1 gap-y-4 md:gap-y-3 gap-x-2">
+                  <div className="grid grid-cols-1 gap-y-3 gap-x-2">
                     <div>
                       <h5 className="text-[8.5px] font-bold uppercase tracking-widest text-[#C8A96B] mb-1">
                         Email Us
@@ -1462,7 +1480,7 @@ export default function Layout() {
                         Store Hours
                       </h5>
                       <p className="text-[11.5px] text-[#FAF8F4]/80 leading-normal">
-                        Monday to Sunday, 11:00 AM – 9:00 PM <br />
+                        Monday to Saturday, 10 AM – 8 PM <br />
                         <span className="text-neutral-500 font-medium">(Closed Sunday)</span>
                       </p>
                     </div>
@@ -1477,7 +1495,7 @@ export default function Layout() {
               <button
                 type="button"
                 onClick={() => toggleFooterAccordion("tracking")}
-                className="w-full flex items-center justify-between py-4 md:py-0 md:mb-4 md:pointer-events-none text-left"
+                className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"
               >
                 <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96B]">
                   ORDER TRACKING
@@ -1493,7 +1511,7 @@ export default function Layout() {
               <div
                 className={`transition-all duration-300 ${
                   openFooterAccordion === "tracking" ? "block animate-fadeIn" : "hidden"
-                } md:block pb-4 md:pb-0`}
+                } md:block pb-1 md:pb-0`}
               >
                 <p className="text-[11px] text-[#eae6df]/70 tracking-wider mb-3 leading-relaxed">
                   Enter your order ID to view real-time shipment status and delivery details.
@@ -1581,7 +1599,7 @@ export default function Layout() {
           {/* Social Icons Section */}
           <div className="flex justify-center items-center gap-6 mt-2 md:mt-12 border-t border-white/10 pt-2.5 md:pt-6">
             <a
-              href={BUSINESS_INFO.social[1]}
+              href="https://www.instagram.com/Mukeshsarees_Nagpur"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
@@ -1590,7 +1608,7 @@ export default function Layout() {
               <Instagram size={20} strokeWidth={1.5} />
             </a>
             <a
-              href={BUSINESS_INFO.social[0]}
+              href="https://www.facebook.com/Mukeshsareesindia/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
@@ -1598,8 +1616,31 @@ export default function Layout() {
             >
               <Facebook size={20} strokeWidth={1.5} />
             </a>
-            
-            
+            <a
+              href="https://www.pinterest.com/MukeshSareesdotcom/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1.5 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
+              aria-label="Pinterest"
+            >
+              <svg
+                className="w-5 h-5 flex-shrink-0"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M12 0a12 12 0 0 0-4.37 23.17c-.07-.63-.13-1.61.03-2.3l1.41-5.96s-.36-.72-.36-1.78c0-1.66.97-2.91 2.17-2.91 1.02 0 1.52.77 1.52 1.69 0 1.03-.66 2.56-.99 3.99-.28 1.19.6 2.16 1.77 2.16 2.12 0 3.76-2.24 3.76-5.47 0-2.86-2.06-4.86-5-4.86-3.4 0-5.4 2.56-5.4 5.2 0 1.03.4 2.14.9 2.74.1.12.11.23.08.35l-.34 1.39c-.05.23-.18.28-.41.17-1.53-.71-2.48-2.93-2.48-4.73 0-3.85 2.8-7.38 8.06-7.38 4.23 0 7.52 3.01 7.52 7.04 0 4.2-2.65 7.59-6.32 7.59-1.24 0-2.4-.64-2.8-1.4l-.76 2.91c-.28 1.06-1.02 2.39-1.52 3.2A12 12 0 1 0 12 0z"/>
+              </svg>
+            </a>
+            <a
+              href="https://www.youtube.com/@mukeshsarees"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#FAF8F4] hover:text-[#C8A96B] transition-colors p-1 md:p-2 hover:scale-105 transform active:scale-95 duration-200"
+              aria-label="YouTube"
+            >
+              <Youtube size={20} strokeWidth={1.5} />
+            </a>
             <a
               href={`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}`}
               target="_blank"
@@ -1618,7 +1659,7 @@ export default function Layout() {
           </div>
 
           {/* Copyright Section */}
-          <div className="mt-1.5 md:mt-4 pt-4 md:pt-4 border-t border-white/5 flex flex-col items-center">
+          <div className="mt-1.5 md:mt-4 pt-1.5 md:pt-4 border-t border-white/5 flex flex-col items-center">
             <p className="text-[9.5px] md:text-[10px] text-white/45 tracking-[0.15em] font-medium uppercase text-center leading-normal">
               © 2025 Mukesh Saree Centre. All Rights Reserved. | Nagpur, Maharashtra, India
             </p>

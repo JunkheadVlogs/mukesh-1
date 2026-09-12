@@ -1,53 +1,11 @@
 import fs from "fs";
 import path from "path";
-import { PurgeCSS } from "purgecss";
 
-console.log("\n--- [BUILD] Running Post-Build HTML & CSS Performance Optimizations & Validation ---");
+console.log("\n--- [BUILD] Running Post-Build HTML Performance Optimizations & Validation ---");
 
 const distDir = path.resolve(process.cwd(), "dist");
 
 let hasValidationErrors = false;
-
-async function purgeUnusedCss() {
-  const distAssets = path.join(distDir, "assets");
-  if (!fs.existsSync(distAssets)) return;
-
-  const cssFiles = fs.readdirSync(distAssets).filter(f => f.endsWith(".css") && !f.endsWith(".min.css.br") && !f.endsWith(".min.css.gz"));
-  for (const cssFile of cssFiles) {
-    const cssPath = path.join(distAssets, cssFile);
-    const originalCss = fs.readFileSync(cssPath, "utf-8");
-    try {
-      const purgeResults = await new PurgeCSS().purge({
-        content: [
-          path.resolve(process.cwd(), "src/**/*.{ts,tsx,html}"),
-          path.resolve(distDir, "**/*.html"),
-          path.resolve(distAssets, "*.js")
-        ],
-        css: [cssPath],
-        safelist: {
-          standard: [
-            /^[a-z0-9_-]+$/,
-            /^active/, /^open/, /^show/, /^loaded/, /^animate-/, /^fade-/, /^slide-/,
-            /^bg-/, /^text-/, /^border-/, /^shadow-/, /^btn-/, /^font-/,
-            /^product-/, /^sticky-/, /^gallery-/, /^need-help-/, /^accordion-/,
-            /^LookReelCard/, /^ytp-/, /^mobile-nav-panel/, /^line-clamp-/,
-            "html", "body", "#root", "svg", "path", "img", "iframe", "video", "button", "input"
-          ],
-          deep: [/dialog/, /modal/, /popup/, /drawer/, /toast/, /carousel/, /swiper/],
-          greedy: [/^data-/, /^aria-/, /^hover:/, /^focus:/, /^sm:/, /^md:/, /^lg:/, /^xl:/, /^2xl:/]
-        },
-        defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
-      });
-
-      if (purgeResults && purgeResults[0] && purgeResults[0].css) {
-        fs.writeFileSync(cssPath, purgeResults[0].css, "utf-8");
-        console.log(`[PURGECSS] Successfully purged unused classes in ${cssFile}: ${(originalCss.length / 1024).toFixed(1)}KB -> ${(purgeResults[0].css.length / 1024).toFixed(1)}KB`);
-      }
-    } catch (err) {
-      console.warn(`[PURGECSS WARNING] Could not purge ${cssFile}:`, err.message);
-    }
-  }
-}
 
 function walkDir(dir, callback) {
   const files = fs.readdirSync(dir);
@@ -63,7 +21,6 @@ function walkDir(dir, callback) {
 }
 
 if (fs.existsSync(distDir)) {
-  await purgeUnusedCss();
   let count = 0;
   walkDir(distDir, (filePath) => {
     if (filePath.endsWith(".html")) {

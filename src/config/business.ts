@@ -9,13 +9,15 @@ export const BUSINESS_INFO = {
     region: "Maharashtra",
     postalCode: "440002",
     country: "IN",
-    fullAddress: "Jagnath Road, Gandhibagh, Nagpur, Maharashtra 440002, India"
+    fullAddress: "Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India"
   },
   phone: "+91 7020664641",
   email: "info@mukeshsarees.com",
   website: "https://mukeshsarees.com",
   social: [
     "https://www.facebook.com/Mukeshsareesindia/",
-    "https://www.instagram.com/mukeshsarees_nagpur"
+    "https://www.instagram.com/mukeshsarees_nagpur",
+    "https://www.youtube.com/@mukeshsarees",
+    "https://www.pinterest.com/MukeshSareesdotcom"
   ]
 };

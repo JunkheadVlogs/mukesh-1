@@ -7,26 +7,46 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getImageAlt(product: Partial<Product>) {
-  if (!product) return "Authentic Traditional Indian Clothing - Mukesh Saree Centre";
+  if (!product) return "Authentic Premium Traditional Indian Clothing from Mukesh Saree Centre";
   
   const name = (product.name || "").trim();
   const color = (product.color || "").trim();
   const fabric = (product.fabric || "").trim();
+  const category = (product.category || "").trim();
   
-  const parts = [];
-  parts.push(name);
-  
-  if (color && !name.toLowerCase().includes(color.toLowerCase())) {
-    parts.push(`in ${color}`);
+  let categoryDisplay = category;
+  if (category.toLowerCase() === "sarees") {
+    categoryDisplay = "Saree";
+  } else if (category.toLowerCase() === "co-ord sets") {
+    categoryDisplay = "Co-Ord Set";
+  } else if (category.toLowerCase() === "lehengas") {
+    categoryDisplay = "Lehenga";
   }
+
+  const parts = [];
+  parts.push("High-Quality Authentic");
   
   if (fabric && !name.toLowerCase().includes(fabric.toLowerCase())) {
-    parts.push(`crafted from ${fabric}`);
+    parts.push(fabric);
   }
   
-  parts.push("- Mukesh Saree Centre Nagpur");
+  if (color && !name.toLowerCase().includes(color.toLowerCase())) {
+    parts.push(`${color} Color`);
+  }
   
+  parts.push(name);
+  
+  if (!name.toLowerCase().includes(categoryDisplay.toLowerCase())) {
+    parts.push(categoryDisplay);
+  }
+  
+  parts.push("perfect for Wedding, Festival, or Party Wear from Mukesh Saree Centre");
+
   let altText = parts.join(" ").replace(/\s+/g, " ").trim();
+  
+  if (altText.length > 200) {
+    altText = `${name} in ${color} ${fabric} ${categoryDisplay} - Mukesh Saree Centre`;
+  }
   
   return altText;
 }
@@ -62,14 +82,7 @@ export function getSeededRandom(seed: string) {
   return Math.abs(hash);
 }
 
-export function getProductReviewStats(product: { id: string, sku?: string, name?: string, fabric?: string, category?: string, price?: number, reviewsCount?: number, rating?: number }) {
-  if (product.id === "p78" || product.sku === "SAR-GEO-IVO-078" || (product.reviewsCount === 0 && product.rating === 0)) {
-    return {
-      rating: 0,
-      reviewCount: 0
-    };
-  }
-
+export function getProductReviewStats(product: { id: string, name?: string, fabric?: string, category?: string, price?: number }) {
   const seed = getSeededRandom(product.id + "-revs");
   
   // Check if it is a Raga Tissue Saree
@@ -144,20 +157,7 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     }
   }
 
-  // 2. Handle local product optimized WebP assets with responsive sizes (320, 480, 640, 800)
-  if (url.includes('/images/products/')) {
-    let cleanPath = url;
-    try {
-      if (url.startsWith('http')) {
-        cleanPath = new URL(url).pathname;
-      }
-    } catch (e) {}
-    const base = cleanPath.replace(/-(320|480|640|800)\.webp$/, '').replace(/\.(webp|jpg|png|jpeg)$/, '');
-    const targetSize = width <= 320 ? 320 : width <= 480 ? 480 : width <= 640 ? 640 : 800;
-    return `${base}-${targetSize}.webp`;
-  }
-
-  // 3. Transform relative, localhost, or production-hosted paths into optimized ImageKit URLs
+  // 2. Transform relative, localhost, or production-hosted paths into optimized ImageKit URLs
   const isRelative = url.startsWith('/');
   const isLocalOrMs = url.includes('localhost') || 
                       url.includes('127.0.0.1') || 

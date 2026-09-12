@@ -43,12 +43,6 @@ const categoryDescriptions = {
     metaDescription: "Shop elegant daily wear cotton sarees at Mukesh Saree Centre, the best saree shop in Nagpur. Lightweight, comfortable & durable weaves. COD available.",
     heading: "Cotton Sarees — Comfortable, Stylish & Made for Every Day",
     description: "Cotton sarees are the most comfortable and versatile sarees you can own. Our cotton saree collection covers mulmul cotton, handloom cotton, printed cotton, and pure cotton in a wide range of designs, colours, and patterns. These sarees are perfect for daily wear, office, and casual occasions. Lightweight and easy to drape, cotton sarees from Mukesh Saree Centre combine comfort with timeless Indian style."
-  },
-  "georgette-sarees": {
-    title: "Georgette Sarees Online | Best Saree Shop in Nagpur",
-    metaDescription: "Shop graceful Georgette sarees at Mukesh Saree Centre, Nagpur's trusted saree destination. Lightweight, flowing drapes with COD & Free Shipping.",
-    heading: "Georgette Sarees — Lightweight Grace & Flowing Elegance",
-    description: "Georgette sarees are renowned for their feather-light feel, fluid drape, and effortless elegance. Perfect for parties, festive celebrations, weddings, and formal events, our georgette collection showcases delicate embroidery, bobby butta motifs, and designer scalloped borders. Buy georgette sarees online with Cash on Delivery and free shipping across India."
   }
 };
 
@@ -75,8 +69,6 @@ export default function Shop() {
           fabs = ["Silk"];
         } else if (path.includes("cotton-sarees")) {
           fabs = ["Cotton"];
-        } else if (path.includes("georgette-sarees") || path.includes("georgette")) {
-          fabs = ["Georgette"];
         }
       } else if (path.includes("/lehengas")) {
         cat = "Lehengas";
@@ -218,10 +210,6 @@ export default function Shop() {
       if (categoryFilter === "Sarees") {
         result = result.filter(
           (p) => p.category === "Sarees" || p.category === "Linen Sarees",
-        );
-      } else if (categoryFilter.toLowerCase().includes("georgette")) {
-        result = result.filter(
-          (p) => (p.category === "Sarees" || p.category === "Georgette Sarees") && p.fabric.toLowerCase().includes("georgette"),
         );
       } else {
         result = result.filter((p) => p.category === categoryFilter);
@@ -417,7 +405,7 @@ export default function Shop() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://mukeshsarees.com/"
+        "item": "https://mukeshsarees.com"
       },
       {
         "@type": "ListItem",

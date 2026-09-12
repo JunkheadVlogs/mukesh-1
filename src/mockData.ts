@@ -13,13 +13,14 @@ export const products: Product[] = [
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p4.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1Yy5HQ-XE4aulexv5D7WXiewiVYPHp52F&sz=w500",
     images: [
-      "/images/products/p4.webp",
-      "/images/products/p4-gallery-1.webp",
-      "/images/products/p4-gallery-2.webp",
-      "/images/products/p4-gallery-3.webp",
-      "/images/products/p4-gallery-4.webp",
+      "https://drive.google.com/thumbnail?id=1Yy5HQ-XE4aulexv5D7WXiewiVYPHp52F&sz=w500",
+      "https://drive.google.com/thumbnail?id=1gT31UpvuqF8vOmybcbB76pOC5BlOglXt&sz=w500",
+      "https://drive.google.com/thumbnail?id=1PnwnuImlpe5timCAG0W5sp_T1_BIriSw&sz=w500",
+      "https://drive.google.com/thumbnail?id=1tvMt5vmwlcTA5XTjkRq4X2JYld8bj4vE&sz=w500",
+      "https://drive.google.com/thumbnail?id=12SkOGyNTHBVv1HgLKT24Eoep7AUlXNc_&sz=w500",
     ],
     category: "Co-Ord Sets",
     stock: 2,
@@ -63,13 +64,14 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p6.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1dOSHikQpkj8XdIkDyHsoSbx4te1hIBXj&sz=w500",
     images: [
-      "/images/products/p6.webp",
-      "/images/products/p6-gallery-1.webp",
-      "/images/products/p6-gallery-2.webp",
-      "/images/products/p6-gallery-3.webp",
-      "/images/products/p6-gallery-4.webp",
+      "https://drive.google.com/thumbnail?id=1dOSHikQpkj8XdIkDyHsoSbx4te1hIBXj&sz=w500",
+      "https://drive.google.com/thumbnail?id=1MrrD2gKFPj3tSpMtxpBDT4rbLgVVKPqR&sz=w500",
+      "https://drive.google.com/thumbnail?id=1pGfP3TKVO6duc4BWd9f4JWnVS-55tPM9&sz=w500",
+      "https://drive.google.com/thumbnail?id=1i8zRKcuxg_O7bhTQrASGUCxBG8HguW4W&sz=w500",
+      "https://drive.google.com/thumbnail?id=1QVYSXSR1ddqW6p6BzGqN5h-XihreG_V5&sz=w500",
     ],
     category: "Co-Ord Sets",
     stock: 10,
@@ -113,13 +115,14 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p7.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1ZSy1eQVSYFjEycvOwGeYq8d9REgMYaa3&sz=w500",
     images: [
-      "/images/products/p7.webp",
-      "/images/products/p7-gallery-1.webp",
-      "/images/products/p7-gallery-2.webp",
-      "/images/products/p7-gallery-3.webp",
-      "/images/products/p7-gallery-4.webp",
+      "https://drive.google.com/thumbnail?id=1ZSy1eQVSYFjEycvOwGeYq8d9REgMYaa3&sz=w500",
+      "https://drive.google.com/thumbnail?id=1Grn6uYRC6X9AtmGmzP4GY-KDzkBXVuE3&sz=w500",
+      "https://drive.google.com/thumbnail?id=11Bf04qJVYLGvJUCUR9_tfSMJPDw09LR2&sz=w500",
+      "https://drive.google.com/thumbnail?id=1LSf4FPQ8VkA3IBjWggwHHE5RqcshduY4&sz=w500",
+      "https://drive.google.com/thumbnail?id=1EP4816boEnFBxCeBURNW2HY4J6KlrzTa&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -161,13 +164,14 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p8.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1FkeDrcESuS03jcvuFtZCPOL7mcmvUDGD&sz=w500",
     images: [
-      "/images/products/p8.webp",
-      "/images/products/p8-gallery-1.webp",
-      "/images/products/p8-gallery-2.webp",
-      "/images/products/p8-gallery-3.webp",
-      "/images/products/p8-gallery-4.webp",
+      "https://drive.google.com/thumbnail?id=1FkeDrcESuS03jcvuFtZCPOL7mcmvUDGD&sz=w500",
+      "https://drive.google.com/thumbnail?id=1y9KKJf-phv9XdzHWYnH7yvHAypVxDvao&sz=w500",
+      "https://drive.google.com/thumbnail?id=17B7Qkr-9UUusHkk35V3G-p1vfay3RNbZ&sz=w500",
+      "https://drive.google.com/thumbnail?id=1qiYPizvt2vAke95mmvOpKsKbGYhr5MSq&sz=w500",
+      "https://drive.google.com/thumbnail?id=1PSPhXNYVZr2OLyegiMYZuOV1vmiyyH08&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -210,11 +214,12 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p9.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1mwE1Gh-CoCjC1swlQMQ1JgkOCy_skAoe&sz=w500",
     images: [
-      "/images/products/p9.webp",
-      "/images/products/p9-gallery-1.webp",
-      "/images/products/p9-gallery-2.webp",
+      "https://drive.google.com/thumbnail?id=1mwE1Gh-CoCjC1swlQMQ1JgkOCy_skAoe&sz=w500",
+      "https://drive.google.com/thumbnail?id=1zDEw1tbLGjkPZh30r0cuJA8FR25L-I-o&sz=w500",
+      "https://drive.google.com/thumbnail?id=1u815wg_ZXQcjZ0jw1RjAq1mIlclEGySy&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -255,11 +260,12 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "sunshine-yellow-chiffon-saree-hand-brush-floral",
     price: 2099,
     originalPrice: 4199,
-    image: "/images/products/p10.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1_nSy0f7pCTZX5S7R2I7pYjGSUSA39tyZ&sz=w500",
     images: [
-      "/images/products/p10.webp",
-      "/images/products/p10-gallery-1.webp",
-      "/images/products/p10-gallery-2.webp",
+      "https://drive.google.com/thumbnail?id=1_nSy0f7pCTZX5S7R2I7pYjGSUSA39tyZ&sz=w500",
+      "https://drive.google.com/thumbnail?id=1OZrBsubaLtkCZCRnfV1Ade6py1TCPDbU&sz=w500",
+      "https://drive.google.com/thumbnail?id=1xiBCbmLkoZejVxknGBU-hT6GZs5zh2A8&sz=w500",
     ],
     category: "Sarees",
     fabric: "Premium Chiffon",
@@ -302,12 +308,13 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "black-khadi-cotton-saree-multicolor-striped-pallu",
     price: 749,
     originalPrice: 1499,
-    image: "/images/products/p11.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1pfrQ3N5-EBwWOy4DiyS8_0jqVw_jbIc8&sz=w500",
     images: [
-      "/images/products/p11.webp",
-      "/images/products/p11-gallery-1.webp",
-      "/images/products/p11-gallery-2.webp",
-      "/images/products/p11-gallery-3.webp",
+      "https://drive.google.com/thumbnail?id=1pfrQ3N5-EBwWOy4DiyS8_0jqVw_jbIc8&sz=w500",
+      "https://drive.google.com/thumbnail?id=1YjrY7MATmMVh-tm2JhjyexEkbsZNeDeJ&sz=w500",
+      "https://drive.google.com/thumbnail?id=1msHXwXFMNetKGcd2-WHdJMsBBD6Hem9w&sz=w500",
+      "https://drive.google.com/thumbnail?id=1FjOREPOJBJkT9j0mN-mqiziPUVsFZBjP&sz=w500",
     ],
     category: "Sarees",
     fabric: "Khadi Cotton",
@@ -352,13 +359,13 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p12.webp",
+    image: "https://drive.google.com/thumbnail?id=1r0D-1RA8fSbXkhKrhvkNz91Ny9yRE_DI&sz=w500",
     images: [
-      "/images/products/p12.webp",
-      "/images/products/p12-gallery-1.webp",
-      "/images/products/p12-gallery-2.webp",
-      "/images/products/p12-gallery-3.webp",
-      "/images/products/p12-gallery-4.webp",
+      "https://drive.google.com/thumbnail?id=1r0D-1RA8fSbXkhKrhvkNz91Ny9yRE_DI&sz=w500",
+      "https://drive.google.com/thumbnail?id=1qfQZvzJQPab0QlcINbsjgCh6kQeutAJY&sz=w500",
+      "https://drive.google.com/thumbnail?id=1HlM_u0slGVfZWdpgFLcMg0WFVmjSUh29&sz=w500",
+      "https://drive.google.com/thumbnail?id=18srERYjKuIELFTTzCXit35IaKIsfs2dA&sz=w500",
+      "https://drive.google.com/thumbnail?id=1T08ow0naChxmcmaHWF0obgrTWxoOxJ4p&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -400,12 +407,12 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p13.webp",
+    image: "https://drive.google.com/thumbnail?id=1T30aeMCN2CKJk7sOszn2zaap__mDXp9p&sz=w500",
     images: [
-      "/images/products/p13.webp",
-      "/images/products/p13-gallery-1.webp",
-      "/images/products/p13-gallery-2.webp",
-      "/images/products/p13-gallery-3.webp",
+      "https://drive.google.com/thumbnail?id=1T30aeMCN2CKJk7sOszn2zaap__mDXp9p&sz=w500",
+      "https://drive.google.com/thumbnail?id=1JpHRTktD6rVlh_KXyHiCxeT_3E0jnsFO&sz=w500",
+      "https://drive.google.com/thumbnail?id=1JpHRTktD6rVlh_KXyHiCxeT_3E0jnsFO&sz=w500",
+      "https://drive.google.com/thumbnail?id=1qESm_8sI7Sg3EITr6J95CNema5rBGgjp&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -448,13 +455,13 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p14.webp",
+    image: "https://drive.google.com/thumbnail?id=1OklbiWw6fH97r8mCWsw3VxdkvwAqvxFe&sz=w500",
     images: [
-      "/images/products/p14.webp",
-      "/images/products/p14-gallery-1.webp",
-      "/images/products/p14-gallery-2.webp",
-      "/images/products/p14-gallery-3.webp",
-      "/images/products/p14-gallery-4.webp",
+      "https://drive.google.com/thumbnail?id=1OklbiWw6fH97r8mCWsw3VxdkvwAqvxFe&sz=w500",
+      "https://drive.google.com/thumbnail?id=1bAiYGBel9puchLJB6IVQcqu3UWgwdR7K&sz=w500",
+      "https://drive.google.com/thumbnail?id=12LyH1wKEcDzPTOCQBp1V65_HUMVaW--R&sz=w500",
+      "https://drive.google.com/thumbnail?id=1hL1D0BS0VnDjpY89dKvggC4y6RDjgwTT&sz=w500",
+      "https://drive.google.com/thumbnail?id=1Pr4m0BgmiMkeXTGEaDCMvTpmHKO8rbL7&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -497,14 +504,14 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p15.webp",
+    image: "https://drive.google.com/thumbnail?id=1yqH8sha_dRXlYAOzvSP5Cu-ucdvMM-7x&sz=w500",
     images: [
-      "/images/products/p15.webp",
-      "/images/products/p15-gallery-1.webp",
-      "/images/products/p15-gallery-2.webp",
-      "/images/products/p15-gallery-3.webp",
-      "/images/products/p15-gallery-4.webp",
-      "/images/products/p15-gallery-5.webp",
+      "https://drive.google.com/thumbnail?id=1yqH8sha_dRXlYAOzvSP5Cu-ucdvMM-7x&sz=w500",
+      "https://drive.google.com/thumbnail?id=1FSrFlQRKkMoNBoc1bex-gEiINpQeXOeg&sz=w500",
+      "https://drive.google.com/thumbnail?id=1iTaGXvaQDcVSrAN3vo59DLS3hvV4xH6k&sz=w500",
+      "https://drive.google.com/thumbnail?id=11-lRwsgIsQyIj1asOuiQn8_HAPqGCCpE&sz=w500",
+      "https://drive.google.com/thumbnail?id=1Xhi1D_HKGUX1N5HjC_rkiGRgVX7FgaFQ&sz=w500",
+      "https://drive.google.com/thumbnail?id=1HAqjqXlLucAT8tyiTKZGMK0S9w0EZ-qZ&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -547,14 +554,14 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p16.webp",
+    image: "https://drive.google.com/thumbnail?id=1GQSTuioaQUwqW5dZ44_S5yLjk6ysO-IP&sz=w500",
     images: [
-      "/images/products/p16.webp",
-      "/images/products/p16-gallery-1.webp",
-      "/images/products/p16-gallery-2.webp",
-      "/images/products/p16-gallery-3.webp",
-      "/images/products/p16-gallery-4.webp",
-      "/images/products/p16-gallery-5.webp",
+      "https://drive.google.com/thumbnail?id=1GQSTuioaQUwqW5dZ44_S5yLjk6ysO-IP&sz=w500",
+      "https://drive.google.com/thumbnail?id=1pKDVbgrW8qwVsrWTrkXYtyDy9fcatLOe&sz=w500",
+      "https://drive.google.com/thumbnail?id=1x9GqdyVPVUYcVzIJFutVpkGhqhECMnnm&sz=w500",
+      "https://drive.google.com/thumbnail?id=1AWh2w1Mtg8FEykbe2P0dIDHkpg7CCRT1&sz=w500",
+      "https://drive.google.com/thumbnail?id=1YIf3riaIkjfwATNYslM59hxwRJKFb7Kh&sz=w500",
+      "https://drive.google.com/thumbnail?id=1fvlwRdE0d8l0AmLteYgWcgyjBnKXaStO&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -596,14 +603,14 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p17.webp",
+    image: "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w500",
     images: [
-      "/images/products/p17.webp",
-      "/images/products/p17-gallery-1.webp",
-      "/images/products/p17-gallery-2.webp",
-      "/images/products/p17-gallery-3.webp",
-      "/images/products/p17-gallery-4.webp",
-      "/images/products/p17-gallery-5.webp",
+      "https://drive.google.com/thumbnail?id=1kd_DfaDfoE8QDUtgnwghy8P2yINg6JMm&sz=w500",
+      "https://drive.google.com/thumbnail?id=1_qowkT1LDbp8B_97--PYFuMXBCkXGUfA&sz=w500",
+      "https://drive.google.com/thumbnail?id=1OLERymsyf9vBPk1_8I4P5MIOCTTJuPfu&sz=w500",
+      "https://drive.google.com/thumbnail?id=1Y6ogWifxnKHHcc3VDT8gucHVFZMwhiEu&sz=w500",
+      "https://drive.google.com/thumbnail?id=1ks6iOw6adzw-t1-tS2FjIgPJvPI42FJy&sz=w500",
+      "https://drive.google.com/thumbnail?id=1qW0cyad3kR8kchqnu6oGHBWIPtt8w19g&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -646,13 +653,13 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     price: 999,
     originalPrice: 1999,
     availableSizes: ["S", "M", "L", "XL", "XXL"],
-    image: "/images/products/p18.webp",
+    image: "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w500",
     images: [
-      "/images/products/p18.webp",
-      "/images/products/p18-gallery-1.webp",
-      "/images/products/p18-gallery-2.webp",
-      "/images/products/p18-gallery-3.webp",
-      "/images/products/p18-gallery-4.webp",
+      "https://drive.google.com/thumbnail?id=1FBDhDE-bgCLEmRNLLijehssSMcJHxYGN&sz=w500",
+      "https://drive.google.com/thumbnail?id=17I-fL14z52Az0uoF1_SrXp3PTIGV0-76&sz=w500",
+      "https://drive.google.com/thumbnail?id=161BmZUR6cer27ZbVv-ZA9L2IY8DhKb6w&sz=w500",
+      "https://drive.google.com/thumbnail?id=1Nj9fpBem6iQ3epd4JwIWtegGMlYkIwpQ&sz=w500",
+      "https://drive.google.com/thumbnail?id=1QqBnN4hxj0Jzb93PfWqhmKbuXDtVtCsY&sz=w500",
     ],
     category: "Co-Ord Sets",
     fabric: "100% Pure Cotton",
@@ -694,9 +701,10 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "off-white-soft-linen-saree-digital-floral-print",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p19.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=10sTYtNVliX2-pcwfkZDvYOJvglyexpME&sz=w500",
     images: [
-      "/images/products/p19.webp",
+      "https://drive.google.com/thumbnail?id=10sTYtNVliX2-pcwfkZDvYOJvglyexpME&sz=w500",
     ],
     category: "Linen Sarees",
     fabric: "Premium Soft Linen",
@@ -737,9 +745,10 @@ Perfect for:
     slug: "yellow-soft-linen-saree-digital-floral-print",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p20.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1-O_XsnPg-kdC1pg-bZcCwqOtYFJFAHj8&sz=w500",
     images: [
-      "/images/products/p20.webp",
+      "https://drive.google.com/thumbnail?id=1-O_XsnPg-kdC1pg-bZcCwqOtYFJFAHj8&sz=w500",
     ],
     category: "Linen Sarees",
     fabric: "Premium Soft Linen",
@@ -778,9 +787,10 @@ Ideal for:
     slug: "festive-yellow-georgette-saree-digital-foil-print",
     price: 749,
     originalPrice: 1499,
-    image: "/images/products/p21.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1xmONKdYlc6VJQ15qwnsTtjMaOUHzy4QP&sz=w500",
     images: [
-      "/images/products/p21.webp",
+      "https://drive.google.com/thumbnail?id=1xmONKdYlc6VJQ15qwnsTtjMaOUHzy4QP&sz=w500",
     ],
     category: "Sarees",
     fabric: "Premium Georgette",
@@ -824,9 +834,10 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "elegant-green-georgette-saree-digital-print-zari-border",
     price: 749,
     originalPrice: 1499,
-    image: "/images/products/p22.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1tZtZSwoe-Bl1vz84Dfs1fmO5vHnLW6PF&sz=w500",
     images: [
-      "/images/products/p22.webp",
+      "https://drive.google.com/thumbnail?id=1tZtZSwoe-Bl1vz84Dfs1fmO5vHnLW6PF&sz=w500",
     ],
     category: "Sarees",
     fabric: "Premium Georgette",
@@ -870,9 +881,10 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "stunning-red-georgette-saree-digital-print-jacquard-border",
     price: 749,
     originalPrice: 1499,
-    image: "/images/products/p23.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1LjT61r8jWSf8Dc51dKaa5y9pZlYWFlhd&sz=w500",
     images: [
-      "/images/products/p23.webp",
+      "https://drive.google.com/thumbnail?id=1LjT61r8jWSf8Dc51dKaa5y9pZlYWFlhd&sz=w500",
     ],
     category: "Sarees",
     fabric: "Premium Georgette",
@@ -916,9 +928,10 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "elegant-green-georgette-saree-foil-design-pink-border",
     price: 749,
     originalPrice: 1499,
-    image: "/images/products/p24.webp",
+    image:
+      "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
     images: [
-      "/images/products/p24.webp",
+      "https://drive.google.com/thumbnail?id=1drPWpOwRHvOrMU_7aEO8mNrYaQj_ELHM&sz=w500",
     ],
     category: "Sarees",
     fabric: "Premium Georgette",
@@ -962,22 +975,22 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "lavender-floral-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p25.webp",
+    image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
     images: [
-      "/images/products/p25.webp",
-      "/images/products/p25-gallery-1.webp",
-      "/images/products/p25-gallery-2.webp",
+      "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500",
+      "https://drive.google.com/thumbnail?id=12PWfrmxUN3a68SJp7gc2_hO1bObEt0_n&sz=w500",
+      "https://drive.google.com/thumbnail?id=10tE2QOg_tS7f0to9djZKJLHwUwcGZW_0&sz=w500"
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Lavender",
     colorVariants: [
-      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "/images/products/p25-variant-0.webp" },
-      { color: "Pink", slug: "pink-floral-linen-saree", image: "/images/products/p25-variant-1.webp" },
-      { color: "Peach", slug: "peach-floral-linen-saree", image: "/images/products/p25-variant-2.webp" },
-      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "/images/products/p25-variant-3.webp" },
-      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "/images/products/p25-variant-4.webp" },
-      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "/images/products/p25-variant-5.webp" }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
     isBestSelling: true,
 
@@ -1014,22 +1027,22 @@ Suggested occasions:
     slug: "pink-floral-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p26.webp",
+    image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
     images: [
-      "/images/products/p26.webp",
-      "/images/products/p26-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500",
+      "https://drive.google.com/thumbnail?id=1y3o_cgdZ1eE7hHKSKiIlWUTmAB6Mi_4K&sz=w500"
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Pink",
     isVariant: true,
     colorVariants: [
-      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "/images/products/p26-variant-0.webp" },
-      { color: "Pink", slug: "pink-floral-linen-saree", image: "/images/products/p26-variant-1.webp" },
-      { color: "Peach", slug: "peach-floral-linen-saree", image: "/images/products/p26-variant-2.webp" },
-      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "/images/products/p26-variant-3.webp" },
-      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "/images/products/p26-variant-4.webp" },
-      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "/images/products/p26-variant-5.webp" }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
     isNew: true,
 
@@ -1069,22 +1082,22 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "peach-floral-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p27.webp",
+    image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
     images: [
-      "/images/products/p27.webp",
-      "/images/products/p27-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500",
+      "https://drive.google.com/thumbnail?id=1L9fkrCWzbIPWw0KL5PEy3DZ7zZQYahHx&sz=w500"
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Peach",
     isVariant: true,
     colorVariants: [
-      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "/images/products/p27-variant-0.webp" },
-      { color: "Pink", slug: "pink-floral-linen-saree", image: "/images/products/p27-variant-1.webp" },
-      { color: "Peach", slug: "peach-floral-linen-saree", image: "/images/products/p27-variant-2.webp" },
-      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "/images/products/p27-variant-3.webp" },
-      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "/images/products/p27-variant-4.webp" },
-      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "/images/products/p27-variant-5.webp" }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
     isTrending: true,
 
@@ -1124,24 +1137,24 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "rani-pink-floral-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p28.webp",
+    image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
     images: [
-      "/images/products/p28.webp",
-      "/images/products/p28-gallery-1.webp",
-      "/images/products/p28-gallery-2.webp",
-      "/images/products/p28-gallery-3.webp",
+      "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500",
+      "https://drive.google.com/thumbnail?id=1VfwBNpRmu59w4zz8po2jZOb0gtADBWnj&sz=w500",
+      "https://drive.google.com/thumbnail?id=1FnbLkQrzjbJFsWQ9NypbwlC2YPsmTZaM&sz=w500",
+      "https://drive.google.com/thumbnail?id=1OFYZngEwVtBupxT3jgItxNeN_mgM3rtl&sz=w500"
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Rani Pink",
     isVariant: true,
     colorVariants: [
-      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "/images/products/p28-variant-0.webp" },
-      { color: "Pink", slug: "pink-floral-linen-saree", image: "/images/products/p28-variant-1.webp" },
-      { color: "Peach", slug: "peach-floral-linen-saree", image: "/images/products/p28-variant-2.webp" },
-      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "/images/products/p28-variant-3.webp" },
-      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "/images/products/p28-variant-4.webp" },
-      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "/images/products/p28-variant-5.webp" }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
     
     description: `**DESCRIPTION:**
@@ -1180,22 +1193,22 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "lime-green-floral-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p29.webp",
+    image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
     images: [
-      "/images/products/p29.webp",
-      "/images/products/p29-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500",
+      "https://drive.google.com/thumbnail?id=1oumxqdVSj82YHacUObv5XOfZUriXi5uw&sz=w500"
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Lime Green",
     isVariant: true,
     colorVariants: [
-      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "/images/products/p29-variant-0.webp" },
-      { color: "Pink", slug: "pink-floral-linen-saree", image: "/images/products/p29-variant-1.webp" },
-      { color: "Peach", slug: "peach-floral-linen-saree", image: "/images/products/p29-variant-2.webp" },
-      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "/images/products/p29-variant-3.webp" },
-      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "/images/products/p29-variant-4.webp" },
-      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "/images/products/p29-variant-5.webp" }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
     isBestSelling: true,
 
@@ -1235,22 +1248,22 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "sky-blue-floral-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p30.webp",
+    image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
     images: [
-      "/images/products/p30.webp",
-      "/images/products/p30-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500",
+      "https://drive.google.com/thumbnail?id=1ORuFO71G6JyOCiyGm5haVqgv5oMhq8cU&sz=w500"
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen",
     color: "Sky Blue",
     isVariant: true,
     colorVariants: [
-      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "/images/products/p30-variant-0.webp" },
-      { color: "Pink", slug: "pink-floral-linen-saree", image: "/images/products/p30-variant-1.webp" },
-      { color: "Peach", slug: "peach-floral-linen-saree", image: "/images/products/p30-variant-2.webp" },
-      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "/images/products/p30-variant-3.webp" },
-      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "/images/products/p30-variant-4.webp" },
-      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "/images/products/p30-variant-5.webp" }
+      { color: "Lavender", slug: "lavender-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1AnYlb1RIcu8K_ThBJ2Hbbqul5NqeAvts&sz=w500" },
+      { color: "Pink", slug: "pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1s_cVhnrTYn6daRPcDzSprehFf9NlaVwm&sz=w500" },
+      { color: "Peach", slug: "peach-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1e7U_JWPjFapGuUn68OeVQB6JGfREahXw&sz=w500" },
+      { color: "Rani Pink", slug: "rani-pink-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1E-zt8vsHpghpyhZ_ylNzkrJ0xmxxtpTe&sz=w500" },
+      { color: "Lime Green", slug: "lime-green-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=1r3dgs7o21HMKqqeQDwK1Ufdczymv-ng7&sz=w500" },
+      { color: "Sky Blue", slug: "sky-blue-floral-linen-saree", image: "https://drive.google.com/thumbnail?id=14KbkQuJrhbRDcp_Sb8U7bGwxcIHwMxmg&sz=w500" }
     ],
     isNew: true,
 
@@ -1291,10 +1304,10 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "pure-linen-printed-saree-white-aqua-green",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p31.webp",
+    image: "https://drive.google.com/thumbnail?id=1QsLdWEebrbwPGcsA1HunX7IEeaiW8HM0&sz=w500",
     images: [
-      "/images/products/p31.webp",
-      "/images/products/p31-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1QsLdWEebrbwPGcsA1HunX7IEeaiW8HM0&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1LNZjkqG2t02FAOurLsDIKlC0rYv50Epv&sz=w1000"
     ],
     stock: 12,
     category: "Linen Sarees",
@@ -1335,11 +1348,11 @@ Recommended for:
     slug: "pure-linen-floral-printed-saree-white-pink",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p32.webp",
+    image: "https://drive.google.com/thumbnail?id=1bFJUo-dQrcWxXpINaXG4XnsFs03H2b62&sz=w500",
     images: [
-      "/images/products/p32.webp",
-      "/images/products/p32-gallery-1.webp",
-      "/images/products/p32-gallery-2.webp",
+      "https://drive.google.com/thumbnail?id=1bFJUo-dQrcWxXpINaXG4XnsFs03H2b62&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1_UgeqhWDYaq4ZbTHKCB4i9Z8lDC_9m7I&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Up75AmF9Vd8p6n4_c1221WX51F8h6kuD&sz=w1000"
     ],
     stock: 12,
     category: "Linen Sarees",
@@ -1365,12 +1378,12 @@ Understated luxury meets tradition in this bespoke Rose Petal White Linen Saree,
     slug: "blue-soft-linen-saree-with-digital-elephant-print",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p33.webp",
+    image: "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500",
     images: [
-      "/images/products/p33.webp",
-      "/images/products/p33-gallery-1.webp",
-      "/images/products/p33-gallery-2.webp",
-      "/images/products/p33-gallery-3.webp",
+      "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w1000",
+      "https://drive.google.com/thumbnail?id=19Ttzbno_KN4iGWWPYThO_i0IJKqCn0sy&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1hFrK47cf5j2dnIY_diITuKSiUIB9hnLz&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Pf-_cVlPEAOWkz54D5kItrLN_8Ril2UM&sz=w1000"
     ],
     stock: 12,
     category: "Linen Sarees",
@@ -1378,9 +1391,9 @@ Understated luxury meets tradition in this bespoke Rose Petal White Linen Saree,
     color: "Blue",
     isBestSelling: true,
     colorVariants: [
-      { color: "Blue", slug: "blue-soft-linen-saree-with-digital-elephant-print", image: "/images/products/p33-variant-0.webp" },
-      { color: "White", slug: "white-soft-linen-saree-with-digital-elephant-print", image: "/images/products/p33-variant-1.webp" },
-      { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "/images/products/p33-variant-2.webp" }
+      { color: "Blue", slug: "blue-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500" },
+      { color: "White", slug: "white-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w500" },
+      { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500" }
     ],
     description: `**DESCRIPTION:**
 This beautiful Blue Soft Linen Saree with Digital Elephant Print is meticulously fashioned from soft-washed natural slub linen combining a breezy open weave with a premium luxurious handle, showcasing a lightweight texture of pure quality. Adorned with colorful, spectacular digital elephant drawings and artistic geometric tribal border printing, it adds a layered touch of classic charm and visual richness to your look. It is an exceptional choice for formal daytime business seminars, elegance garden lunches, and high-end boutique openings, while the ultra-lightweight fabric acts as a natural thermoregulator to keep you fresh and comfortable for a truly delightful wearing experience.
@@ -1406,9 +1419,9 @@ This beautiful Blue Soft Linen Saree with Digital Elephant Print is meticulously
     slug: "elegant-white-floral-linen-saree-yellow-white",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p34.webp",
+    image: "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500",
     images: [
-      "/images/products/p34.webp",
+      "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500",
     ],
     category: "Linen Sarees",
     fabric: "Premium Soft Linen",
@@ -1416,9 +1429,9 @@ This beautiful Blue Soft Linen Saree with Digital Elephant Print is meticulously
     isNew: true,
 
     colorVariants: [
-      { color: "Yellow White", slug: "elegant-white-floral-linen-saree-yellow-white", image: "/images/products/p34-variant-0.webp" },
-      { color: "Orange White", slug: "elegant-white-floral-linen-saree-orange-white", image: "/images/products/p34-variant-1.webp" },
-      { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "/images/products/p34-variant-2.webp" }
+      { color: "Yellow White", slug: "elegant-white-floral-linen-saree-yellow-white", image: "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500" },
+      { color: "Orange White", slug: "elegant-white-floral-linen-saree-orange-white", image: "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500" },
+      { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500" }
     ],
     description: `**DESCRIPTION:**
 Imbued with boutique elegance, this sophisticated Daffodil White Floral Linen Saree is made from premium-grade natural linen offering an exceptionally cool feel and a fluid, non-stiff drape that offers high tactile comfort and a graceful frame. The design spotlights delicate paisley woven borders and artistic botanical leaf silhouettes on the drape, showcasing incredible artistic detailing that commands quiet attention. This piece is perfect to style for traditional morning prayer ceremonies, cultural panel events, or elegant family get-togethers, and is distinguished by the fact that requires absolutely no starching or heavy maintenance to maintain its pristine, fall-prone fluid drape.
@@ -1439,9 +1452,9 @@ Imbued with boutique elegance, this sophisticated Daffodil White Floral Linen Sa
     slug: "elegant-white-floral-linen-saree-orange-white",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p35.webp",
+    image: "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500",
     images: [
-      "/images/products/p35.webp",
+      "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500",
     ],
     category: "Linen Sarees",
     fabric: "Premium Soft Linen",
@@ -1450,9 +1463,9 @@ Imbued with boutique elegance, this sophisticated Daffodil White Floral Linen Sa
 
     isVariant: true,
     colorVariants: [
-      { color: "Yellow White", slug: "elegant-white-floral-linen-saree-yellow-white", image: "/images/products/p35-variant-0.webp" },
-      { color: "Orange White", slug: "elegant-white-floral-linen-saree-orange-white", image: "/images/products/p35-variant-1.webp" },
-      { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "/images/products/p35-variant-2.webp" }
+      { color: "Yellow White", slug: "elegant-white-floral-linen-saree-yellow-white", image: "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500" },
+      { color: "Orange White", slug: "elegant-white-floral-linen-saree-orange-white", image: "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500" },
+      { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500" }
     ],
     description: `**DESCRIPTION:**
 For your next sophisticated daytime birthday celebrations, botanical garden walks, and refined casual outings, opt for this premium Marigold White Floral Linen Saree beautifully crafted in handloaded premium natural linen woven from the finest organic flax fibers. Highlighted by delicate watercolor garden peonies and contrasting botanical vine prints across the body, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that engineered with smart-crease properties to stay flawless from busy morning hours to cozy evening settings, keeping you stress-free and elegant.
@@ -1473,9 +1486,9 @@ For your next sophisticated daytime birthday celebrations, botanical garden walk
     slug: "elegant-white-floral-linen-saree-pink-white",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p36.webp",
+    image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500",
     images: [
-      "/images/products/p36.webp",
+      "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500",
     ],
     category: "Linen Sarees",
     fabric: "Premium Soft Linen",
@@ -1483,9 +1496,9 @@ For your next sophisticated daytime birthday celebrations, botanical garden walk
     
     isVariant: true,
     colorVariants: [
-      { color: "Yellow White", slug: "elegant-white-floral-linen-saree-yellow-white", image: "/images/products/p36-variant-0.webp" },
-      { color: "Orange White", slug: "elegant-white-floral-linen-saree-orange-white", image: "/images/products/p36-variant-1.webp" },
-      { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "/images/products/p36-variant-2.webp" }
+      { color: "Yellow White", slug: "elegant-white-floral-linen-saree-yellow-white", image: "https://drive.google.com/thumbnail?id=1t9UPRm6XfJAPJtApMy6Igy4BLXUGqByL&sz=w500" },
+      { color: "Orange White", slug: "elegant-white-floral-linen-saree-orange-white", image: "https://drive.google.com/thumbnail?id=1OpEDc56Zw_ka1IZfjUrmkgkQkTYg34g9&sz=w500" },
+      { color: "Pink White", slug: "elegant-white-floral-linen-saree-pink-white", image: "https://drive.google.com/thumbnail?id=1qAPbt7_1oDsR8suZSzOeqrLHGrICr59z&sz=w500" }
     ],
     description: `**DESCRIPTION:**
 Understated luxury meets tradition in this bespoke Elegant White & Pink Floral Linen Saree, woven carefully with breathable and crisp natural linen-cotton blend that softens beautifully with every wear for maximum breathability. The drape is elegantly elevated by stunning hand-screened watercolor-style botanical scroll patterns and floral leaf designs, evoking an aura of premium handcrafted couture. Perfect for wearing to exclusive corporate lunches, professional conferences, or casual elegant dinner dates, it features the outstanding benefit that featuring a perfectly balanced weight distribution that naturally stays in place without constant adjustment.
@@ -1524,10 +1537,10 @@ We recommend a gentle hand wash or dry clean to maintain the luxury feel and lon
     slug: "contemporary-tribal-art-ivory-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p37.webp",
+    image: "https://drive.google.com/thumbnail?id=18M0Otdeax-m-Db3rDSCYinsZ-wm7Uut4&sz=w800",
     images: [
-      "/images/products/p37.webp",
-      "/images/products/p37-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=18M0Otdeax-m-Db3rDSCYinsZ-wm7Uut4&sz=w800",
+      "https://drive.google.com/thumbnail?id=1t_MHZaxnqz-2zqNDsrOUWkZSK02sLUNM&sz=w800",
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen Cotton Blend",
@@ -1576,10 +1589,10 @@ Ideal for:
     slug: "plum-shibori-chevron-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p38.webp",
+    image: "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
     images: [
-      "/images/products/p38.webp",
-      "/images/products/p38-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1r95qTSf2LNr9reMDZPE0vYdW2W050Cuw&sz=w500",
+      "https://drive.google.com/thumbnail?id=1tTM8OPJRov7-kitZaOP476DIci3lpA4R&sz=w500",
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen",
@@ -1623,9 +1636,9 @@ Ideal for:
     slug: "tropical-ivory-ethnic-fusion-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p40.webp",
+    image: "https://drive.google.com/thumbnail?id=1MHnxEfj5Eatj3Tny9gpjZ-FkudzBhzCG&sz=w800",
     images: [
-      "/images/products/p40.webp",
+      "https://drive.google.com/thumbnail?id=1MHnxEfj5Eatj3Tny9gpjZ-FkudzBhzCG&sz=w800",
     ],
     category: "Linen Sarees",
     fabric: "Soft Linen Cotton Blend",
@@ -1668,9 +1681,9 @@ Ideal for:
     slug: "sophisticated-grey-floral-pure-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p41.webp",
+    image: "https://drive.google.com/thumbnail?id=1gP52ny_Iu-XIg0mDvE7LrvKXa020zzhe&sz=w500",
     images: [
-      "/images/products/p41.webp",
+      "https://drive.google.com/thumbnail?id=1gP52ny_Iu-XIg0mDvE7LrvKXa020zzhe&sz=w500",
     ],
     category: "Linen Sarees",
     fabric: "Pure Linen",
@@ -1696,10 +1709,10 @@ Understated luxury meets tradition in this bespoke Silver Mist Floral Linen Sare
     slug: "ivory-linen-maroon-tribal-geometric-border-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p42.webp",
+    image: "https://drive.google.com/thumbnail?id=1It7fxGgBu83mqNn7Ah7c5xaCF5638WV4&sz=w800",
     images: [
-      "/images/products/p42.webp",
-      "/images/products/p42-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1It7fxGgBu83mqNn7Ah7c5xaCF5638WV4&sz=w800",
+      "https://drive.google.com/thumbnail?id=1ilAUNpTx5RK6OHg8tqOA4FCPQ_sm0VeJ&sz=w800",
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen Cotton Blend",
@@ -1749,10 +1762,8 @@ Ideal for:
     slug: "yellow-green-floral-pure-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p43.webp",
-    images: [
-      "/images/products/p43.webp",
-    ],
+    image: "https://drive.google.com/thumbnail?id=1YSKHaVlWLpNVhN4qmnptmabV7UpVQeky&sz=w500",
+    images: ["https://drive.google.com/thumbnail?id=1YSKHaVlWLpNVhN4qmnptmabV7UpVQeky&sz=w1000"],
     category: "Linen Sarees",
     fabric: "Pure Linen",
     color: "Yellow & Green Floral",
@@ -1777,10 +1788,8 @@ Imbued with boutique elegance, this sophisticated Sunshine Harvest Yellow & Gree
     slug: "blue-white-floral-pure-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p44.webp",
-    images: [
-      "/images/products/p44.webp",
-    ],
+    image: "https://drive.google.com/thumbnail?id=1qVDTYZTUeeBTnk730HFrqOWhU_t4HESX&sz=w500",
+    images: ["https://drive.google.com/thumbnail?id=1qVDTYZTUeeBTnk730HFrqOWhU_t4HESX&sz=w1000"],
     category: "Linen Sarees",
     fabric: "Pure Linen",
     color: "Blue & White Floral",
@@ -1804,10 +1813,10 @@ For your next sophisticated daytime birthday celebrations, botanical garden walk
     slug: "madhubani-art-blush-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p45.webp",
+    image: "https://drive.google.com/thumbnail?id=1N6zBqH_99XSpqhb37dz04WUO4YcemuTZ&sz=w800",
     images: [
-      "/images/products/p45.webp",
-      "/images/products/p45-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1N6zBqH_99XSpqhb37dz04WUO4YcemuTZ&sz=w800",
+      "https://drive.google.com/thumbnail?id=1wFA_YXesJKu-BV7tC0kP3ndkmUVx2woV&sz=w800",
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen Cotton Blend",
@@ -1856,10 +1865,10 @@ Perfect for:
     slug: "abstract-charcoal-artistic-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p46.webp",
+    image: "https://drive.google.com/thumbnail?id=14eONZVJHxuXP_Mknm9sfuMFAoGULq1oX&sz=w800",
     images: [
-      "/images/products/p46.webp",
-      "/images/products/p46-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=14eONZVJHxuXP_Mknm9sfuMFAoGULq1oX&sz=w800",
+      "https://drive.google.com/thumbnail?id=1RQqEXJG9yBpFUqMvZ0_dxIBp6frXHz_B&sz=w800",
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen Cotton Blend",
@@ -1903,10 +1912,10 @@ Ideal for:
     slug: "elegant-floral-garden-ivory-scenic-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p47.webp",
+    image: "https://drive.google.com/thumbnail?id=14hI_eCK72N2hYireybWOpcnzRlA5Gvy6&sz=w1000",
     images: [
-      "/images/products/p47.webp",
-      "/images/products/p47-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=14hI_eCK72N2hYireybWOpcnzRlA5Gvy6&sz=w1000",
+      "https://drive.google.com/thumbnail?id=12N-5f9LwboAoBNOyKRggEldvhDcrlnLP&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen Cotton Blend",
@@ -1954,10 +1963,10 @@ Ideal for:
     slug: "sea-green-botanical-pure-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p48.webp",
+    image: "https://drive.google.com/thumbnail?id=1gi8s8ufouBf_4qSpQwz1PxIuyRx1hgTK&sz=w500",
     images: [
-      "/images/products/p48.webp",
-      "/images/products/p48-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1gi8s8ufouBf_4qSpQwz1PxIuyRx1hgTK&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1AS441jlkGmxuB1_-Z9apkC2kiqGKIkoq&sz=w1000"
     ],
     category: "Linen Sarees",
     fabric: "Pure Linen",
@@ -1982,10 +1991,10 @@ For your next upscale high-tea gatherings, festive daytime celebrations, and sty
     slug: "ice-blue-botanical-floral-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p49.webp",
+    image: "https://drive.google.com/thumbnail?id=1mrBPQ5J4T4vxWBztzs2ZltVF5eR9SCPN&sz=w1000",
     images: [
-      "/images/products/p49.webp",
-      "/images/products/p49-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1mrBPQ5J4T4vxWBztzs2ZltVF5eR9SCPN&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1YiyHGBCDaODnv9fyRIuAhZq4NEzD0iUo&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Premium Linen Cotton Blend",
@@ -2034,10 +2043,10 @@ Perfect for:
     slug: "elegant-beige-grey-linen-saree-pastel-tribal-floral",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p50.webp",
+    image: "https://drive.google.com/thumbnail?id=1s6Yw5bZ4lsNVtSSIXrIgPyLBGQkmyrP1&sz=w1000",
     images: [
-      "/images/products/p50.webp",
-      "/images/products/p50-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1s6Yw5bZ4lsNVtSSIXrIgPyLBGQkmyrP1&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1jYcuZoqzyG_xdOdrvHZfgDYGMyhfHD_5&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Soft Breathable Linen",
@@ -2070,10 +2079,10 @@ This beautiful Elegant Beige & Grey Linen Saree with Pastel Tribal Floral Weavin
     slug: "elegant-off-white-steel-blue-linen-saree-floral-paisley",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p51.webp",
+    image: "https://drive.google.com/thumbnail?id=1faouBJX53ZOI3oMOvIarct56E959USJU&sz=w1000",
     images: [
-      "/images/products/p51.webp",
-      "/images/products/p51-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1faouBJX53ZOI3oMOvIarct56E959USJU&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1HiqBm7XEkAIh86wu4wqw5IDU2_c1NPoG&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Soft Breathable Linen",
@@ -2107,10 +2116,10 @@ Imbued with boutique elegance, this sophisticated Elegant Off White & Steel Blue
     slug: "elegant-mist-grey-linen-saree-pink-geometric",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p52.webp",
+    image: "https://drive.google.com/thumbnail?id=1p5w5cutPIw19vqOhW36z8yxMzGYxkDYP&sz=w1000",
     images: [
-      "/images/products/p52.webp",
-      "/images/products/p52-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1p5w5cutPIw19vqOhW36z8yxMzGYxkDYP&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1EowFuIBWDFxPoS97AYWpqL1mDnxXcFdn&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Soft Breathable Linen",
@@ -2143,10 +2152,10 @@ For your next sophisticated daytime birthday celebrations, botanical garden walk
     slug: "elegant-wine-mauve-linen-saree-floral-woven",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p53.webp",
+    image: "https://drive.google.com/thumbnail?id=1VZ0IyqP2B_0yV2V5io6IG_ojQgNDkCCN&sz=w1000",
     images: [
-      "/images/products/p53.webp",
-      "/images/products/p53-gallery-1.webp",
+      "https://drive.google.com/thumbnail?id=1VZ0IyqP2B_0yV2V5io6IG_ojQgNDkCCN&sz=w1000",
+      "https://drive.google.com/thumbnail?id=14NR5FAQxNcRghqylFsneJyDNg_cB6W1e&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Soft Breathable Linen",
@@ -2180,9 +2189,9 @@ Understated luxury meets tradition in this bespoke Elegant Wine Mauve Linen Sare
     slug: "elegant-beige-royal-blue-linen-saree-peacock-floral",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p54.webp",
+    image: "https://drive.google.com/thumbnail?id=17tkWt4h141fcEBga4oKLGwvD9eR1Ica1&sz=w1000",
     images: [
-      "/images/products/p54.webp",
+      "https://drive.google.com/thumbnail?id=17tkWt4h141fcEBga4oKLGwvD9eR1Ica1&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Soft Breathable Linen",
@@ -2216,9 +2225,9 @@ This beautiful Elegant Beige & Royal Blue Linen Saree with Peacock Floral Artist
     slug: "elegant-blush-pink-linen-saree-silver-stripe",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p55.webp",
+    image: "https://drive.google.com/thumbnail?id=1FF5bugsFm5ww4UPaDOjIsy4tGcuKNnAm&sz=w1000",
     images: [
-      "/images/products/p55.webp",
+      "https://drive.google.com/thumbnail?id=1FF5bugsFm5ww4UPaDOjIsy4tGcuKNnAm&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Soft Breathable Linen",
@@ -2252,9 +2261,9 @@ Imbued with boutique elegance, this sophisticated Elegant Blush Pink Linen Saree
     slug: "elegant-charcoal-grey-linen-saree-rustic-floral",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p56.webp",
+    image: "https://drive.google.com/thumbnail?id=10JwW8G8YgJfHxyhYH3iXL4SHNPME461v&sz=w1000",
     images: [
-      "/images/products/p56.webp",
+      "https://drive.google.com/thumbnail?id=10JwW8G8YgJfHxyhYH3iXL4SHNPME461v&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Soft Breathable Linen",
@@ -2287,9 +2296,9 @@ For your next upscale high-tea gatherings, festive daytime celebrations, and sty
     slug: "elegant-rust-brown-slate-grey-linen-saree-traditional-woven",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p57.webp",
+    image: "https://drive.google.com/thumbnail?id=1BHeeRcB79OQgPJ2V2XtbtZ7fJr45jqlx&sz=w1000",
     images: [
-      "/images/products/p57.webp",
+      "https://drive.google.com/thumbnail?id=1BHeeRcB79OQgPJ2V2XtbtZ7fJr45jqlx&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Soft Breathable Linen",
@@ -2323,9 +2332,9 @@ Understated luxury meets tradition in this bespoke Elegant Rust Brown & Slate Gr
     slug: "beige-cream-floral-printed-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p58.webp",
+    image: "https://drive.google.com/thumbnail?id=1k-NEFKmgrVgDxjEqZ3otVUyKjBTeCLND&sz=w1000",
     images: [
-      "/images/products/p58.webp",
+      "https://drive.google.com/thumbnail?id=1k-NEFKmgrVgDxjEqZ3otVUyKjBTeCLND&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Linen Blend",
@@ -2362,9 +2371,9 @@ Pair it with pearl jewelry or minimal golden accessories for a classy and elegan
     slug: "elegant-beige-floral-printed-linen-saree",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p59.webp",
+    image: "https://drive.google.com/thumbnail?id=1ZCkHoxkhNHC9TxJRRRr93LFbtWMpvkAs&sz=w1000",
     images: [
-      "/images/products/p59.webp",
+      "https://drive.google.com/thumbnail?id=1ZCkHoxkhNHC9TxJRRRr93LFbtWMpvkAs&sz=w1000",
     ],
     category: "Linen Sarees",
     fabric: "Linen Blend",
@@ -2402,14 +2411,14 @@ Style it with oxidised earrings or minimal gold jewelry along with heels for a c
     slug: "tissue-cotton-digital-floral-print-saree-with-blouse-piece",
     price: 999,
     originalPrice: 1999,
-    image: "/images/products/p60.webp",
+    image: "https://drive.google.com/thumbnail?id=1KHXfsoBBBAhhsn7t2nbRIGoG7U2Go9bd&sz=w1000",
     images: [
-      "/images/products/p60.webp",
-      "/images/products/p60-gallery-1.webp",
-      "/images/products/p60-gallery-2.webp",
-      "/images/products/p60-gallery-3.webp",
-      "/images/products/p60-gallery-4.webp",
-      "/images/products/p60-gallery-5.webp",
+      "https://drive.google.com/thumbnail?id=1KHXfsoBBBAhhsn7t2nbRIGoG7U2Go9bd&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1hWOLWucUmrJNFFqXDujB00i7jLwb3mHg&sz=w1000",
+      "https://drive.google.com/thumbnail?id=13JWJZJTGSA33ZfcOd20d9jrUMGt5IybU&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1v2wzQ_IIbKC_07VYRkj5Xlc9xAwyolUu&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1RuPRcn_0Dxrpyd4DoqMVW_ckZcoOizJg&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1Pl6PFuQEDvmd_jewIvs-4L01-fpNPk1e&sz=w1000"
     ],
     category: "Sarees",
     fabric: "Tissue Cotton",
@@ -2445,12 +2454,12 @@ Style this majestic digital floral printed saree with elegant minimal jewelry an
     slug: "linen-saree-with-warli-digital-print-and-mirror-work",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p61.webp",
+    image: "https://drive.google.com/thumbnail?id=1ICWEzHpRhrDb_1Uor6pHJME17k6qkge_&sz=w1000",
     images: [
-      "/images/products/p61.webp",
-      "/images/products/p61-gallery-1.webp",
-      "/images/products/p61-gallery-2.webp",
-      "/images/products/p61-gallery-3.webp",
+      "https://drive.google.com/thumbnail?id=1ICWEzHpRhrDb_1Uor6pHJME17k6qkge_&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1YNRBtlhzn4USA3TWafQ0eYE3uRR7XlCy&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1dlpczE5Uy_mRg8A5qPDzYU_5QvUwKHUM&sz=w1000",
+      "https://drive.google.com/thumbnail?id=1vbKIoEH6g-9orqzWboQjfa2u7X0c5oa0&sz=w1000"
     ],
     category: "Linen Sarees",
     fabric: "Linen",
@@ -2528,9 +2537,9 @@ Style this original pure linen saree with minimalist traditional jewelry and a s
     slug: "soft-linen-saree-with-elephant-digital-print-and-tribal-border",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p63.webp",
+    image: "https://drive.google.com/thumbnail?id=1zgyqrDJ-noXDHb-In0M8xAhdXP6x8m-s&sz=w1000",
     images: [
-      "/images/products/p63.webp",
+      "https://drive.google.com/thumbnail?id=1zgyqrDJ-noXDHb-In0M8xAhdXP6x8m-s&sz=w1000"
     ],
     category: "Linen Sarees",
     fabric: "Soft Linen",
@@ -2569,9 +2578,9 @@ Style this beautiful white elephant tribal digital print saree with a high-contr
     slug: "white-soft-linen-saree-with-digital-elephant-print",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p64.webp",
+    image: "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w500",
     images: [
-      "/images/products/p64.webp",
+      "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w1000"
     ],
     stock: 12,
     category: "Linen Sarees",
@@ -2579,9 +2588,9 @@ Style this beautiful white elephant tribal digital print saree with a high-contr
     color: "White",
     isVariant: true,
     colorVariants: [
-      { color: "Blue", slug: "blue-soft-linen-saree-with-digital-elephant-print", image: "/images/products/p64-variant-0.webp" },
-      { color: "White", slug: "white-soft-linen-saree-with-digital-elephant-print", image: "/images/products/p64-variant-1.webp" },
-      { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "/images/products/p64-variant-2.webp" }
+      { color: "Blue", slug: "blue-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500" },
+      { color: "White", slug: "white-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w500" },
+      { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500" }
     ],
     description: `**DESCRIPTION:**
 For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium White Soft Linen Saree with Digital Elephant Print beautifully crafted in soft-washed natural slub linen combining a breezy open weave with a premium luxurious handle. Highlighted by colorful, spectacular digital elephant drawings and artistic geometric tribal border printing, it celebrates timeless handcrafting legacies while keeping the silhouette highly modern. A major highlight of this ensemble is that the elegant fabric finish prevents linting and color fading, preserving its rich boutique look for years to come, keeping you stress-free and elegant.
@@ -2607,9 +2616,9 @@ For your next upscale high-tea gatherings, festive daytime celebrations, and sty
     slug: "red-soft-linen-saree-with-digital-elephant-print",
     price: 699,
     originalPrice: 1399,
-    image: "/images/products/p65.webp",
+    image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500",
     images: [
-      "/images/products/p65.webp",
+      "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w1000"
     ],
     stock: 12,
     category: "Linen Sarees",
@@ -2617,9 +2626,9 @@ For your next upscale high-tea gatherings, festive daytime celebrations, and sty
     color: "Red",
     isVariant: true,
     colorVariants: [
-      { color: "Blue", slug: "blue-soft-linen-saree-with-digital-elephant-print", image: "/images/products/p65-variant-0.webp" },
-      { color: "White", slug: "white-soft-linen-saree-with-digital-elephant-print", image: "/images/products/p65-variant-1.webp" },
-      { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "/images/products/p65-variant-2.webp" }
+      { color: "Blue", slug: "blue-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16gYUIa5uVUXp0JAwLvuwmp4WbFvke4xw&sz=w500" },
+      { color: "White", slug: "white-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=16z6PY2XPZ8Sx6t5LDUxDwrPTi_n3slLS&sz=w500" },
+      { color: "Red", slug: "red-soft-linen-saree-with-digital-elephant-print", image: "https://drive.google.com/thumbnail?id=1IZA2VYGymKtBKHKsNW7aok2x0JmQKC4J&sz=w500" }
     ],
     description: `**DESCRIPTION:**
 Understated luxury meets tradition in this bespoke Red Soft Linen Saree with Digital Elephant Print, woven carefully with premium-grade natural linen offering an exceptionally cool feel and a fluid, non-stiff drape for maximum breathability. The drape is elegantly elevated by colorful, spectacular digital elephant drawings and artistic geometric tribal border printing, evoking an aura of premium handcrafted couture. Perfect for wearing to chic airport looks, elevated working days, or an interactive cultural panel discussion, it features the outstanding benefit that accentuated with custom-milled reinforcing weaves that prevent tearing and offer long-lasting durability.
@@ -3204,61 +3213,6 @@ Make a graceful statement with this stunning Red Jamdani Cotton Saree. Crafted f
 **STYLING TIP:**
 Style this gorgeous red Jamdani cotton saree with gold traditional jewelry, contrasting golden or rich red blouse, and matching heels or flats for a classic, sophisticated festive look.`,
     rating: 4.9,
-  },
-  {
-    id: "p78",
-    sku: "SAR-GEO-IVO-078",
-    name: "Soft Georgette Embroidery Bobby Butta Saree",
-    tagline: "Classy, Elegant & Lightweight Georgette Drape",
-    slug: "soft-georgette-embroidery-bobby-butta-saree",
-    price: 1175,
-    originalPrice: 2349,
-    availableSizes: ["Free Size"],
-    image: "https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/753225175_1611388514358680_4567259932068222474_n.jpg",
-    images: [
-      "https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/753225175_1611388514358680_4567259932068222474_n.jpg",
-      "https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/752903802_1611388311025367_3216943773208341162_n.jpg",
-      "https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/753164181_1611388367692028_8253627946068068529_n.jpg",
-      "https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/753905184_1611388454358686_6941941465573122122_n.jpg"
-    ],
-    stock: 15,
-    category: "Sarees",
-    fabric: "Soft Georgette",
-    color: "Ivory Cream",
-    blouseDetails: "Comes with Self Blouse Piece",
-    isNew: true,
-    isTrending: true,
-    keywords: "Soft Georgette Saree, Ivory Cream Georgette Saree, Embroidered Bobby Butta Saree, Scalloped Border Georgette Saree, Self Blouse Piece Saree, Party Wear Georgette Saree, Festive Wear Georgette Saree, Wedding Saree, Georgette Sarees Online, Soft Georgette Embroidery Bobby Butta Saree, Bobby Butta Saree, Ivory Saree",
-    description: `**DESCRIPTION:**
-A gorgeous Ivory Cream Soft Georgette Saree featuring delicate Embroidered Bobby Butta all over the saree. The beautiful scalloped embroidered border adds an elegant finishing touch, and it comes with a Self Blouse Piece for a graceful, refined look. Perfect for women who love a subtle, sophisticated and cohesive ethnic ensemble.
-
-**HIGHLIGHTS:**
-- Color: Ivory Cream
-- Fabric: Soft Georgette
-- Design: All-Over Embroidered Bobby Butta
-- Border: Scalloped Embroidered Border
-- Blouse: Comes with Self Blouse Piece
-- Drape/Feel: Lightweight & Graceful Drape
-- Occasion: Party Wear, Festive Wear, Functions, Weddings, Special Occasions
-
-**FABRIC DETAILS:**
-- Saree Fabric: Soft Georgette
-- Blouse Piece: Comes with Self Blouse Piece Included
-- Drape & Feel: Lightweight, Fluid, and Graceful Drape
-- Work & Craft: All-Over Delicate Bobby Butta Embroidery with Designer Scalloped Border
-
-**OCCASIONS:**
-- Party Wear
-- Festive Wear
-- Functions
-- Weddings
-- Special Occasions
-
-**STYLING TIP:**
-Pair this Ivory Cream Georgette Saree with statement pearl or gold-toned earrings, an embellished clutch, and elegant heels for a timeless and refined party or wedding look.`,
-    rating: 0,
-    reviewsCount: 0,
-    reviews: [],
   },
   {
     id: "p-test-payment",

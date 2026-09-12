@@ -113,26 +113,11 @@ export default defineConfig(({mode}) => {
       rollupOptions: {
         output: {
           manualChunks(id) {
-            if (id.includes('src/Home.tsx')) {
-              return 'route-homepage';
-            }
-            if (id.includes('src/Shop.tsx')) {
-              return 'route-shop';
-            }
-            if (id.includes('src/ProductPage.tsx')) {
-              return 'route-product';
-            }
-            if (id.includes('src/pages/Guide') || id.includes('src/pages/MalvikaSareeBuyingGuide')) {
-              return 'route-guides';
-            }
             if (id.includes('mockData.ts')) {
               return 'mock-data';
             }
             if (id.includes('node_modules')) {
-              if (id.includes('react-markdown') || id.includes('micromark') || id.includes('remark') || id.includes('unified') || id.includes('mdast') || id.includes('unist')) {
-                return 'vendor-markdown';
-              }
-              if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/react-router/')) {
+              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
                 return 'vendor-react';
               }
               if (id.includes('motion')) {
