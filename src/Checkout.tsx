@@ -335,33 +335,60 @@ export default function Checkout() {
 
           // Create the order on the server
           console.log(`[PAYMENT ACTION LOG] Creating Razorpay order on server. Amount: ₹${finalTotal}, Order Number ID: ${newOrderId}`);
-          const res = await fetch(getApiUrl("api/create-order"), {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              amount: finalTotal,
-              notes: {
-                order_id: newOrderId,
-                customer_name: fullName,
-                customer_phone: mobileNumber,
-                items: productName
-              }
-            })
-          });
+          
+          const makeOrderRequest = async (endpoint: string) => {
+            return await fetch(getApiUrl(endpoint), {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                amount: finalTotal,
+                notes: {
+                  order_id: newOrderId,
+                  customer_name: fullName,
+                  customer_phone: mobileNumber,
+                  items: productName
+                }
+              })
+            });
+          };
 
-          if (!res.ok) {
-            const errData = await res.json().catch(() => ({}));
-            throw new Error(errData.error || "Failed to create payment order on the server. Please match server keys or choose Cash on Delivery.");
+          let res = await makeOrderRequest("api/create-order");
+          let contentType = res.headers.get("content-type") || "";
+
+          // If the response is HTML (e.g. Hostinger SPA fallback rewrite), retry directly to .php endpoint
+          if (contentType.includes("text/html")) {
+            console.warn("[PAYMENT ACTION LOG] /api/create-order returned HTML. Attempting direct /api/create-order.php endpoint...");
+            try {
+              const fallbackRes = await makeOrderRequest("api/create-order.php");
+              if (fallbackRes) {
+                res = fallbackRes;
+                contentType = res.headers.get("content-type") || "";
+              }
+            } catch (fbErr) {
+              console.warn("[PAYMENT ACTION LOG] Direct .php fallback fetch failed:", fbErr);
+            }
           }
 
-          const orderData = await res.json();
+          let orderData: any = null;
+          try {
+            const rawText = await res.text();
+            orderData = JSON.parse(rawText);
+          } catch {
+            orderData = null;
+          }
+
+          if (!res.ok || !orderData || orderData.success === false) {
+            const errorMsg = orderData?.error || "Failed to create payment order on the server. Please match server keys or choose Cash on Delivery.";
+            throw new Error(errorMsg);
+          }
+
           const serverKey = orderData.key;
           const serverOrderId = orderData.id || orderData.orderId;
 
-          if (!serverKey) {
-            throw new Error("Razorpay Client Key is not configured on the server.");
+          if (!serverKey || !serverOrderId) {
+            throw new Error("Razorpay Client Key or Order ID is not configured on the server.");
           }
 
           // Fire Meta Pixel Initiate Checkout event

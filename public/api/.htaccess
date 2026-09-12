@@ -1,0 +1,12 @@
+# Mukesh Saree Centre - Clean API Subdirectory Routing Engine
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Route short clean URLs directly to the actual PHP scripts inside /api/
+  RewriteRule ^create-order/?$ create-order.php [QSA,L]
+  RewriteRule ^verify-payment/?$ verify-payment.php [QSA,L]
+  RewriteRule ^sys-metric/?$ sys-metric.php [QSA,L]
+  RewriteRule ^meta-capi/?$ sys-metric.php [QSA,L]
+</IfModule>

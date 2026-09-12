@@ -95,6 +95,8 @@
   # Skip rewriting index.html directly
   RewriteRule ^index\.html$ - [L]
 
+  # Never rewrite API endpoints to the SPA shell HTML
+  RewriteCond %{REQUEST_URI} !^/api/
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /shell.html [L]

@@ -34,6 +34,30 @@ try {
   console.log("\n--- [BUILD] Step 6: Running CSS performance optimization ---");
   execSync("node scripts/post-build-optimize.js", { stdio: "inherit" });
 
+  // Step 7: Run SEO deep pre-rendering
+  console.log("\n--- [BUILD] Step 7: Running SEO deep pre-rendering ---");
+  execSync(`${findBin("tsx")} scripts/prerender-seo.tsx`, { stdio: "inherit" });
+
+  // Step 8: Run guide pre-rendering
+  console.log("\n--- [BUILD] Step 8: Running guide pre-rendering ---");
+  execSync(`${findBin("tsx")} scripts/prerender-guides.tsx`, { stdio: "inherit" });
+
+  // Step 9: Replicate aliases
+  console.log("\n--- [BUILD] Step 9: Replicating prerendered aliases ---");
+  execSync("node scripts/prerender-aliases.js", { stdio: "inherit" });
+
+  // Step 10: Validate encoding
+  console.log("\n--- [BUILD] Step 10: Validating generated HTML encoding ---");
+  execSync("node scripts/validate_encoding.js", { stdio: "inherit" });
+
+  // Step 11: Ensure public/api backend endpoints are present in dist/api for Hostinger
+  const apiSrc = path.join(process.cwd(), "public", "api");
+  const apiDest = path.join(process.cwd(), "dist", "api");
+  if (fs.existsSync(apiSrc)) {
+    fs.cpSync(apiSrc, apiDest, { recursive: true });
+    console.log("--- [BUILD] Step 11: Verified dist/api backend synced successfully ---");
+  }
+
   console.log("\n[BUILD] Unified build process completed successfully!");
 } catch (error) {
   console.error("\n[BUILD] Build failed with error:");
