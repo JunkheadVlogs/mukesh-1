@@ -1,5 +1,4 @@
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import path from "path";
 import crypto from "crypto";
 import Razorpay from "razorpay";
@@ -13,22 +12,28 @@ import https from "https";
 delete process.env.GITHUB_TOKEN;
 delete process.env.GH_TOKEN;
 
+// Injected by esbuild in scripts/build.js for compiled production bundle
+declare const IS_COMPILED_BUNDLE: boolean | undefined;
+
 let _filename = "";
 let _dirname = "";
 try {
   if (typeof import.meta !== "undefined" && import.meta.url) {
     _filename = fileURLToPath(import.meta.url);
     _dirname = path.dirname(_filename);
+  } else if (typeof __filename !== "undefined" && typeof __dirname !== "undefined") {
+    _filename = __filename;
+    _dirname = __dirname;
   } else {
-    _filename = typeof __filename !== "undefined" ? __filename : process.cwd();
-    _dirname = typeof __dirname !== "undefined" ? __dirname : process.cwd();
+    _filename = process.cwd();
+    _dirname = process.cwd();
   }
 } catch (e) {
   _filename = process.cwd();
   _dirname = process.cwd();
 }
-const __filename = _filename;
-const __dirname = _dirname;
+const currentFilePath = _filename;
+const currentDirPath = _dirname;
 
 // Global process error handlers to prevent unhandled errors from crashing Cloud Run
 process.on('unhandledRejection', (reason, promise) => {
@@ -40,20 +45,22 @@ process.on('uncaughtException', (error) => {
 });
 
 // Detect compiled production server vs dev server
-const isCompiledCjs = (typeof __filename !== "undefined" && (__filename.endsWith(".cjs") || __filename.includes("dist"))) ||
+const isCompiledBundle = typeof IS_COMPILED_BUNDLE !== "undefined" && IS_COMPILED_BUNDLE === true;
+const isCompiledCjs = isCompiledBundle ||
+  (typeof currentFilePath === "string" && (currentFilePath.endsWith(".cjs") || currentFilePath.includes("dist"))) ||
   (typeof process.argv[1] === "string" && (process.argv[1].endsWith(".cjs") || process.argv[1].includes("dist")));
 
 const distHtmlPath = path.join(process.cwd(), "dist", "index.html");
 const isDistReady = fs.existsSync(distHtmlPath);
 
-// Explicit dev command indicators
-const isExplicitDev = process.env.NODE_ENV === "development" || 
-  process.env.npm_lifecycle_event === "dev" || 
-  process.argv.some(arg => arg.includes("vite") || arg.includes("tsx"));
+// In Cloud Run, K_SERVICE or K_REVISION is defined, or Cloud Run environment
+const isCloudRun = !!process.env.K_SERVICE || !!process.env.K_REVISION || !!process.env.CLOUD_RUN_JOB;
 
-// In Cloud Run, K_SERVICE or K_REVISION is defined, or PORT is defined in production containers.
-const isCloudRun = !!process.env.K_SERVICE || !!process.env.K_REVISION;
-const isProduction = !isExplicitDev && (process.env.NODE_ENV === "production" || isCompiledCjs || isCloudRun || isDistReady);
+// Explicit dev command indicator: ONLY when explicitly running with tsx/vite and not compiled and not Cloud Run
+const isRunningWithTsx = process.argv.some(arg => arg.includes("tsx")) || process.env.npm_lifecycle_event === "dev";
+const isDev = isRunningWithTsx && !isCompiledCjs && !isCloudRun;
+
+const isProduction = !isDev || process.env.NODE_ENV === "production" || isCompiledCjs || isCloudRun;
 
 if (isProduction) {
   process.env.NODE_ENV = "production";
@@ -1474,6 +1481,7 @@ async function setupServer() {
   });
 
   if (!isProduction && !process.env.VERCEL) {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "custom",
@@ -1510,11 +1518,11 @@ async function setupServer() {
     });
   } else {
     let distPath = path.join(process.cwd(), 'dist');
-    if (!fs.existsSync(distPath) && typeof __dirname !== 'undefined') {
-      if (fs.existsSync(path.join(__dirname, 'dist'))) {
-        distPath = path.join(__dirname, 'dist');
-      } else if (__dirname.endsWith('dist') && fs.existsSync(path.join(__dirname, 'index.html'))) {
-        distPath = __dirname;
+    if (!fs.existsSync(distPath) && typeof currentDirPath !== 'undefined') {
+      if (fs.existsSync(path.join(currentDirPath, 'dist'))) {
+        distPath = path.join(currentDirPath, 'dist');
+      } else if (currentDirPath.endsWith('dist') && fs.existsSync(path.join(currentDirPath, 'index.html'))) {
+        distPath = currentDirPath;
       }
     }
     const indexPath = path.join(distPath, 'index.html');

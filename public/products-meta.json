@@ -661,8 +661,8 @@
     "slug": "payment-test-product",
     "description": "DESCRIPTION: This is a secure, hidden payment testing product configured specifically for live environment transaction validation, gateway handshake v",
     "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
-    "price": "1",
-    "originalPrice": 2,
+    "price": "70",
+    "originalPrice": 140,
     "fabric": "Premium Secure weave"
   }
 ]

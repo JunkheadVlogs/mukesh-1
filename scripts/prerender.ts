@@ -862,8 +862,6 @@ async function runPrerender() {
               <table style="width: 100%; font-size: 13px; margin-bottom: 32px; border-collapse: collapse;">
                 ${p.fabric ? `<tr style="border-bottom: 1px solid rgba(0,0,0,0.04);"><td style="padding: 10px 0; font-weight: bold; color: #1a0a00; width: 30%;">Fabric</td><td style="padding: 10px 0; color: #4a4a4a;">${sanitize(p.fabric)}</td></tr>` : ""}
                 ${p.color ? `<tr style="border-bottom: 1px solid rgba(0,0,0,0.04);"><td style="padding: 10px 0; font-weight: bold; color: #1a0a00;">Color</td><td style="padding: 10px 0; color: #4a4a4a;">${sanitize(p.color)}</td></tr>` : ""}
-                <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);"><td style="padding: 10px 0; font-weight: bold; color: #1a0a00;">Availability</td><td style="padding: 10px 0; color: #2e7d32; font-weight: 500;">In Stock (Ready to Dispatch)</td></tr>
-                <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);"><td style="padding: 10px 0; font-weight: bold; color: #1a0a00;">Payment</td><td style="padding: 10px 0; color: #4a4a4a;">Cash on Delivery (COD) & Online Payments supported</td></tr>
               </table>
 
               <!-- Description -->

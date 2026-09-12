@@ -1285,7 +1285,7 @@ export default function ProductPage() {
                             Blouse Details
                           </td>
                           <td className="text-[var(--color-dark)] align-middle">
-                            Comes with Contrast Blouse Piece
+                            {product.blouseDetails || "Comes with Contrast Blouse Piece"}
                           </td>
                         </tr>
                       </>
@@ -1297,24 +1297,6 @@ export default function ProductPage() {
                       </td>
                       <td className="text-[var(--color-dark)] align-middle">
                         {product.color}
-                      </td>
-                    </tr>
-
-                    <tr className="border-none">
-                      <td className="product-details-label font-light uppercase">
-                        Availability
-                      </td>
-                      <td className="text-[var(--color-dark)] align-middle">
-                        In Stock (Ready to Ship)
-                      </td>
-                    </tr>
-
-                    <tr className="border-none">
-                      <td className="product-details-label font-light uppercase">
-                        Payment
-                      </td>
-                      <td className="text-[var(--color-dark)] align-middle">
-                        Cash on Delivery Available
                       </td>
                     </tr>
                   </tbody>
