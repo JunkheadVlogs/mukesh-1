@@ -16,6 +16,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [copied, setCopied] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     // Do not show on thank you or order success pages
@@ -83,9 +84,25 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
     onDismiss();
   };
 
-  // INSTANT REVEAL HANDLER (ZERO ARTIFICIAL DELAY, NO NETWORK BLOCKING)
+  // INSTANT REVEAL HANDLER (WITH MANDATORY NAME & PHONE VALIDATION)
   const handleUnlock = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+
+    const trimmedName = name.trim();
+    const rawDigits = phone.replace(/\D/g, '');
+    const cleanPhone = rawDigits.length === 12 && rawDigits.startsWith('91') ? rawDigits.slice(2) : rawDigits;
+
+    if (!trimmedName || trimmedName.length < 2) {
+      setErrorMessage('Please enter your name to unlock the code');
+      return;
+    }
+
+    if (cleanPhone.length !== 10) {
+      setErrorMessage('Please enter a valid 10-digit WhatsApp number');
+      return;
+    }
+
+    setErrorMessage('');
 
     // 1. INSTANTLY SWITCH STATE AND APPLY COUPON IN STORE
     setStage('revealed');
@@ -93,39 +110,42 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
     setSuccessStorage();
 
     // 2. NON-BLOCKING BACKGROUND PROCESSING (AFTER REVEAL IS SHOWN)
-    const trimmedName = name.trim();
-    const normalizedPhone = normalizeMobileNumber(phone);
-
     setTimeout(() => {
-      // Background onSubmit if provided
+      // Primary onSubmit if provided (handled securely by App.tsx)
       if (onSubmit) {
-        onSubmit(trimmedName || 'VIP Guest', normalizedPhone || '').catch(() => {});
-      }
-
-      // Background Google Sheets logging
-      try {
-        const sheetsUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL || import.meta.env.VITE_SHEETS_WEBHOOK_URL;
-        if (sheetsUrl && (trimmedName || normalizedPhone)) {
-          const inApp = detectInAppBrowser();
-          const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-          fetch(sheetsUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              type: 'exit_lead',
-              name: trimmedName || 'VIP Guest',
-              phone: normalizedPhone,
-              page: window.location.pathname,
-              device: isMobile ? (inApp.isInApp ? `Mobile (${inApp.name})` : 'Mobile') : 'Desktop',
-              request: 'Exit Intent Discount Coupon VIPCLUB60',
-              requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000),
-              source: inApp.isInApp ? `Exit Intent Popup (${inApp.name})` : 'Exit Intent Popup'
-            })
-          }).catch(() => {});
+        onSubmit(trimmedName, cleanPhone).catch(() => {});
+      } else {
+        // Fallback standalone Google Sheets logging (only when onSubmit is not provided)
+        try {
+          const sheetsUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL || import.meta.env.VITE_SHEETS_WEBHOOK_URL;
+          if (sheetsUrl) {
+            const inApp = detectInAppBrowser();
+            const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+            fetch(sheetsUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                type: 'exit_lead',
+                name: trimmedName,
+                firstName: trimmedName,
+                fullName: trimmedName,
+                phone: cleanPhone,
+                mobileNumber: cleanPhone,
+                couponCode: 'VIPCLUB60',
+                couponUsed: 'VIPCLUB60',
+                page: window.location.pathname,
+                device: isMobile ? (inApp.isInApp ? `Mobile (${inApp.name})` : 'Mobile') : 'Desktop',
+                request: 'Exit Intent Discount Coupon VIPCLUB60',
+                requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000),
+                source: inApp.isInApp ? `Exit Intent Popup (${inApp.name})` : 'Exit Intent Popup',
+                leadSource: 'Exit Intent Popup'
+              })
+            }).catch(() => {});
+          }
+        } catch (err) {
+          // Silent fail in background
         }
-      } catch (err) {
-        // Silent fail in background
       }
 
       // Background analytics
@@ -268,9 +288,12 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                   <label className="sr-only">Full Name</label>
                   <input
                     type="text"
-                    placeholder="Your Name (Optional)"
+                    placeholder="Enter Your Name"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      if (errorMessage) setErrorMessage('');
+                    }}
                     className="w-full px-4 py-3 bg-[#1A1200] border border-[#E8B84B]/20 focus:border-[#E8B84B] focus:ring-1 focus:ring-[#E8B84B] outline-none transition-all placeholder:text-white/30 rounded-[10px] font-sans text-xs sm:text-sm text-white"
                   />
                 </div>
@@ -282,13 +305,23 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                     <span className="bg-[#150E00] px-4 py-3 text-[#E8B84B] text-xs sm:text-sm border-r border-[#E8B84B]/10 flex items-center font-sans font-medium select-none">+91</span>
                     <input
                       type="tel"
-                      placeholder="WhatsApp Number (Optional)"
+                      placeholder="10-Digit WhatsApp Number"
                       value={phone}
-                      onChange={(e) => setPhone(formatMobileInput(e.target.value))}
+                      onChange={(e) => {
+                        setPhone(formatMobileInput(e.target.value));
+                        if (errorMessage) setErrorMessage('');
+                      }}
                       className="flex-grow bg-transparent px-4 py-3 text-white outline-none font-sans text-xs sm:text-sm placeholder:text-white/30"
                     />
                   </div>
                 </div>
+
+                {/* Inline Error Message */}
+                {errorMessage && (
+                  <p className="text-[#FF6B6B] text-xs font-sans text-center -mt-1 mb-1 font-medium">
+                    {errorMessage}
+                  </p>
+                )}
 
                 {/* Instant Reveal CTA Button */}
                 <button

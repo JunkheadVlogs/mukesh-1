@@ -295,7 +295,7 @@ apiRouter.get("/drive-proxy", async (req, res) => {
 // ==== capture lead to firestore and trigger whatsapp via interakt ====
 apiRouter.post("/capture-lead", async (req, res) => {
   try {
-    const { phone, source, page } = req.body;
+    const { name, phone, source, page } = req.body;
 
     if (!phone) {
       return res.status(400).json({ success: false, error: "Missing required WhatsApp phone number" });
@@ -319,11 +319,12 @@ apiRouter.post("/capture-lead", async (req, res) => {
           });
         }
         await admin.default.firestore().collection('exit_intent_leads').add({
+          name: name || '',
           phone: `+91${finalPhone}`,
           source: source || 'Exit Intent Popup',
           page: page || 'N/A',
           capturedAt: new Date().toISOString(),
-          discountCode: 'MUKESH150',
+          discountCode: 'VIPCLUB60',
           converted: false
         });
         firestoreSaved = true;
@@ -385,6 +386,25 @@ apiRouter.post("/submit-order", async (req, res) => {
   try {
     const rawUrl = process.env.VITE_GOOGLE_SHEETS_URL || process.env.VITE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbydYk2OFJIkU0i3yb1a0XAVqzJP73H8Gbuzqf102TtUkCyRcsL5F9Zc-DesrgP_ZVA/exec';
     const urlStr = rawUrl.trim().replace(/^['"]|['"]$/g, '');
+
+    // Normalize exit lead payload aliases
+    const isExitLead = req.body.type === 'exit_lead' ||
+                       req.body.leadSource === 'Exit Intent Popup' ||
+                       req.body.source === 'Exit Intent Popup' ||
+                       req.body.source === 'Popup';
+    if (isExitLead) {
+      req.body.type = 'exit_lead';
+      const leadName = req.body.name || req.body.firstName || req.body.fullName || req.body.customerName || '';
+      const leadPhone = req.body.phone || req.body.mobileNumber || req.body.contact || '';
+      req.body.name = leadName;
+      req.body.firstName = leadName;
+      req.body.fullName = leadName;
+      req.body.phone = leadPhone;
+      req.body.mobileNumber = leadPhone;
+      req.body.couponCode = req.body.couponCode || req.body.couponUsed || 'VIPCLUB60';
+      req.body.couponUsed = req.body.couponCode;
+    }
+
     console.log(`[PAYMENT ACTION LOG] [SERVER] Order Submission update. Order ID: ${req.body.orderId || 'no-id'}, Status: ${req.body.status || 'N/A'}, Payment Status: ${req.body.paymentStatus || 'N/A'}`);
     console.log(`[PROXY] Submitting order to Google Sheets... (${req.body.orderId || 'no-id'})`);
     

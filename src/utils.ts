@@ -157,40 +157,7 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     }
   }
 
-  // 2. Transform relative, localhost, or production-hosted paths into optimized ImageKit URLs
-  const isRelative = url.startsWith('/');
-  const isLocalOrMs = url.includes('localhost') || 
-                      url.includes('127.0.0.1') || 
-                      url.includes('3000') || 
-                      url.includes('run.app') || 
-                      url.includes('mukeshsarees.com');
-
-  if (isRelative || isLocalOrMs) {
-    let pathname = '';
-    try {
-      if (isRelative) {
-        pathname = url;
-      } else {
-        pathname = new URL(url).pathname;
-      }
-    } catch (e) {
-      pathname = url;
-    }
-
-    // Clean leading slashes and map asset path directly to the ImageKit endpoint
-    const cleanPath = pathname.replace(/^\/+/, '');
-    
-    // Ensure all local media assets map directly to our ImageKit instance for premium delivery
-    const finalUrl = `${IMAGEKIT_ENDPOINT}/${cleanPath}`;
-    try {
-      const urlObj = new URL(finalUrl);
-      urlObj.searchParams.set('tr', `w-${width},f-${format},q-75`);
-      return urlObj.toString();
-    } catch (e) {
-      return `${finalUrl}?tr=w-${width},f-${format},q-75`;
-    }
-  }
-  
+  // 2. Handle Google Drive URLs: Use Google Edge CDN direct thumbnail
   const isGoogle = url.includes('drive.google.com') || 
                    url.includes('googleusercontent.com') ||
                    url.includes('drive.usercontent.google.com') ||
@@ -212,11 +179,16 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     }
 
     if (driveId) {
-      // Direct Google Edge CDN URL: Zero 302 redirects, CORS enabled, instant 50ms load
+      // Direct Google Edge CDN URL: Zero 302 redirects, CORS enabled, instant load
       return `https://lh3.googleusercontent.com/d/${driveId}=w${width}`;
     }
     
-    // Safety guarantee: Do not let any Google URL fall through to the wsrv.nl proxy block
+    return url;
+  }
+
+  // 3. Local relative paths (/images/products/*.webp, /images/logo.webp, etc.)
+  // Served directly from local/public directory with high performance and zero CDN overhead
+  if (url.startsWith('/')) {
     return url;
   }
   

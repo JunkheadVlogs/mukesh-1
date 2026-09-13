@@ -72,7 +72,11 @@ export const ProductCard = memo(function ProductCard({
           src={product.image}
           width={400}
           height={533}
-          srcSet={`${optimizeImage(product.image, 300, 'webp')} 300w, ${optimizeImage(product.image, 450, 'webp')} 450w, ${optimizeImage(product.image, 600, 'webp')} 600w`}
+          srcSet={
+            product.image.startsWith('/')
+              ? undefined
+              : `${optimizeImage(product.image, 300, 'webp')} 300w, ${optimizeImage(product.image, 450, 'webp')} 450w, ${optimizeImage(product.image, 600, 'webp')} 600w`
+          }
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt={getImageAlt(product)}
           priority={isPriority}

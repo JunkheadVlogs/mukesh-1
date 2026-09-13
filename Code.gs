@@ -53,6 +53,38 @@ const SHEET_ID = '1gXj7GffWnC1smyrbP3ExeoqzFpdNHn8PMdcd_zGOH8I';
 const SHEET_LEADS_TAB = 'Exit Intent Leads';
 
 /**
+ * Handles incoming GET requests (supports URL query parameter submissions)
+ */
+function doGet(e) {
+  try {
+    const params = (e && e.parameter) ? e.parameter : {};
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    
+    // Resilient detection of exit intent leads vs actual orders
+    const isExitLead = params.type === 'exit_lead' || 
+                       params.leadSource === 'Exit Intent Popup' || 
+                       params.source === 'Exit Intent Popup' || 
+                       params.source === 'exit_intent' ||
+                       params.source === 'Popup' ||
+                       Boolean(params.name || params.phone || params.mobileNumber);
+
+    if (isExitLead) {
+      handleExitLead(ss, params);
+    } else if (params.type === 'order') {
+      handleOrder(ss, params);
+    }
+    
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: true }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: false, error: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+/**
  * Handles incoming POST requests from the React application
  */
 function doPost(e) {
@@ -60,9 +92,16 @@ function doPost(e) {
     const data = JSON.parse(e.postData.contents);
     const ss = SpreadsheetApp.openById(SHEET_ID);
     
-    if (data.type === 'exit_lead') {
+    // Resilient detection of exit intent leads vs actual orders
+    const isExitLead = data.type === 'exit_lead' || 
+                       data.leadSource === 'Exit Intent Popup' || 
+                       data.source === 'Exit Intent Popup' || 
+                       data.source === 'Popup' ||
+                       Boolean(data.request && String(data.request).toLowerCase().includes('exit intent'));
+
+    if (isExitLead) {
       handleExitLead(ss, data);
-    } else if (data.type === 'order') {
+    } else {
       handleOrder(ss, data);
     }
     
@@ -93,13 +132,19 @@ function handleExitLead(ss, data) {
     sheet.setFrozenRows(1);
   }
   
+  const leadName = data.name || data.firstName || data.fullName || data.customerName || '';
+  const leadPhone = data.phone || data.mobileNumber || data.contact || '';
+  const leadCoupon = data.couponCode || data.coupon || data.couponUsed || 'VIPCLUB60';
+  const leadPage = data.page || data.pageUrl || '';
+  const leadDevice = data.device || data.deviceType || 'Unknown';
+
   sheet.appendRow([
     new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'}),
-    data.name || '',
-    data.phone || '',
-    data.couponCode || 'VIPCLUB60',
-    data.page || '',
-    data.device || 'Unknown',
+    leadName,
+    leadPhone,
+    leadCoupon,
+    leadPage,
+    leadDevice,
     'No'
   ]);
 }
@@ -108,6 +153,11 @@ function handleExitLead(ss, data) {
  * Handles saving Checkout/COD/Prepaid order data (Tab 1)
  */
 function handleOrder(ss, data) {
+  // Prevent any exit lead from accidentally being written to Orders
+  if (data.type === 'exit_lead' || data.leadSource === 'Exit Intent Popup' || data.source === 'Exit Intent Popup') {
+    return;
+  }
+
   // The first tab (existing Orders tab)
   const sheet = ss.getSheets()[0];
   if (!sheet) return;

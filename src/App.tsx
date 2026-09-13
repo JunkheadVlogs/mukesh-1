@@ -165,14 +165,22 @@ export default function App() {
       : 'N/A';
 
     const payload = {
+      type: 'exit_lead',
+      name: name,
       firstName: name,
+      fullName: name,
+      customerName: name,
+      phone: phone,
       mobileNumber: phone,
+      contact: phone,
+      couponCode: 'VIPCLUB60',
+      couponUsed: 'VIPCLUB60',
       productViewed: viewedProduct,
       pageUrl: window.location.href,
       date: new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }),
       time: new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" }),
       deviceType: deviceType,
-      source: "Popup",
+      source: "Exit Intent Popup",
       leadSource: "Exit Intent Popup",
       request: 'Exit Intent Discount Coupon VIPCLUB60',
       requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000)
@@ -209,6 +217,7 @@ export default function App() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          name: name,
           phone: phone,
           source: "Exit Intent Popup",
           page: window.location.href

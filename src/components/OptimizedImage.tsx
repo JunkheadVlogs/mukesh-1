@@ -169,6 +169,14 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
     // Hostinger or general local image asset path
     candidates.push(sanitized);
 
+    // If it's a local product image path, also add production domain candidate as reliable fallback
+    if (sanitized.startsWith('/images/products/')) {
+      const prodUrl = `https://mukeshsarees.com${sanitized}`;
+      if (!candidates.includes(prodUrl)) {
+        candidates.push(prodUrl);
+      }
+    }
+
     // Get filename to see if we have predefined mapping in LOCAL_IMAGE_FALLBACKS
     const parts = sanitized.split('/');
     let filename = parts.pop() || '';
@@ -336,26 +344,25 @@ export function OptimizedImage({
     }
   };
 
-  // If all candidates and retries failed, display a gorgeous boutique brand card placeholder
+  // If all candidates and retries failed, display a clean, elegant boutique placeholder
   if (hasFailedAll) {
     return (
       <div 
-        className={`flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#1E0E05] to-[#3D1D0B] border border-[#D4AF37]/30 text-white select-none ${className || ''}`}
+        className={`flex flex-col items-center justify-center p-4 text-center bg-[#FAF6F0] border border-[#EADBCE] text-[#4A3B32] select-none ${className || ''}`}
         style={{ 
           width: '100%', 
           height: calculatedHeight ? `${calculatedHeight}px` : '100%', 
-          minHeight: '260px',
+          minHeight: '220px',
           aspectRatio: `${width}/${calculatedHeight}`,
           ...(props.style || {}) 
         }}
       >
-        <span className="font-serif text-[#D4AF37] font-semibold text-[13px] md:text-sm tracking-[4px] uppercase block mb-2">
-          MUKESH SAREE CENTRE
+        <span className="font-serif text-[#C8A96B] font-semibold text-xs tracking-[2px] uppercase block mb-1">
+          Mukesh Saree Centre
         </span>
-        <span className="text-[10px] text-white/50 tracking-widest uppercase block max-w-[85%] mx-auto">
-          {finalAlt}
+        <span className="text-[11px] text-[#7A6B5D] tracking-wide block max-w-[85%] mx-auto line-clamp-1">
+          {alt || "Traditional Wear"}
         </span>
-        <div className="w-8 h-[1px] bg-[#D4AF37]/40 mt-3"></div>
       </div>
     );
   }

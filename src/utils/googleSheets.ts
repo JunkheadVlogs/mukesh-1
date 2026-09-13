@@ -87,7 +87,12 @@ export async function sendExitLeadToSheets({ name, phone, request, requestId, so
       body: JSON.stringify({
         type: 'exit_lead',
         name,
+        firstName: name,
+        fullName: name,
+        customerName: name,
         phone: phone.startsWith('+91') ? phone : '+91' + phone,
+        mobileNumber: phone.startsWith('+91') ? phone : '+91' + phone,
+        contact: phone.startsWith('+91') ? phone : '+91' + phone,
         couponCode: source === 'Contact Page' ? 'N/A (Contact Form)' : 'VIPCLUB60',
         page: window.location.pathname,
         device,

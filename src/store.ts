@@ -56,6 +56,7 @@ export interface Product {
   availableSizes?: string[];
   stock?: number;
   keywords?: string;
+  blouseDetails?: string;
 }
 
 interface CartItem extends Product {
