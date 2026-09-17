@@ -16,8 +16,6 @@ const LOCAL_IMAGE_FALLBACKS: Record<string, string> = {
   'logo.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217',
   'hero.webp': 'https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469',
   'hero.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469',
-  'coordset.webp': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
-  'coordset.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
   'saree-bg.webp': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
   'saree-bg.jpg': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
   'main_shop_entrance.webp': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
@@ -25,14 +23,12 @@ const LOCAL_IMAGE_FALLBACKS: Record<string, string> = {
   'saree_section.webp': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695',
   'lehenga_section.webp': 'https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691',
   'hero_exhibition.webp': 'https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469',
-  'category_coord_sets.webp': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
   'category_sarees.webp': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695',
   'saree_category_backgroung_image.webp': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
   'saree_category_background_image.webp': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
   'saree_category_background.webp': 'https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790',
   'best-saree-shop-in-nagpur-logo.webp': 'https://ik.imagekit.io/tus1loev9/homepage/logo.webp?updatedAt=1779907895217',
   'hero-image-best-saree-shop-nagpur.webp': 'https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469',
-  'best-co-ord-set-shop-in-nagpur-category-image.webp': 'https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090',
   'shop-main-enterence.webp': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
 };
 
@@ -43,33 +39,6 @@ const VIDEO_THUMB_FALLBACKS: Record<string, string> = {
   'VID-20260513-WA0025': 'https://ik.imagekit.io/tus1loev9/homepage/shopenterence.webp?updatedAt=1779907894298',
   'VID_20260124_071257_055': 'https://ik.imagekit.io/tus1loev9/homepage/sareesection.webp?updatedAt=1779907895695'
 };
-
-/**
- * Robustly extracts the Google Drive File ID from Google Drive URLs.
- */
-function extractGoogleDriveId(url: string): string | null {
-  if (!url) return null;
-  
-  // Match "/d/FILE_ID" (most common format for view/share links)
-  const dMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if (dMatch && dMatch[1]) {
-    return dMatch[1];
-  }
-  
-  // Match "id=FILE_ID" (common for uc, open, or download endpoints)
-  const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) || url.match(/id%3D([a-zA-Z0-9_-]+)/);
-  if (idMatch && idMatch[1]) {
-    return idMatch[1];
-  }
-  
-  // Match "lh3.googleusercontent.com/d/FILE_ID" or similar googleusercontent patterns
-  const lhMatch = url.match(/googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
-  if (lhMatch && lhMatch[1]) {
-    return lhMatch[1];
-  }
-  
-  return null;
-}
 
 /**
  * Sanitizes and properly URL encodes any image URL.
@@ -140,36 +109,10 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
     return candidates;
   }
 
-  // Determine if it is a Google Drive asset
-  const isDrive = sanitized.includes('drive.google.com') || 
-                  sanitized.includes('googleusercontent.com') || 
-                  sanitized.includes('lh3.googleusercontent.com') || 
-                  sanitized.includes('drive.usercontent.google.com');
+  // Hostinger or general image asset path
+  candidates.push(sanitized);
 
-  const driveId = extractGoogleDriveId(sanitized);
-
-  if (isDrive && driveId) {
-    // 1. Direct static cookieless Google Edge CDN download cache - fastest possible delivery with zero redirects
-    candidates.push(`https://lh3.googleusercontent.com/d/${driveId}=w${width}`);
-
-    // 2. High-speed, dynamically compressed WebP from wsrv.nl proxying lh3 direct CDN
-    candidates.push(`https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F${driveId}&w=${width}&output=webp&q=80`);
-
-    // 3. High-speed, lightweight pre-resized Google Drive thumbnail fallback
-    candidates.push(`https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`);
-    
-    // 4. Direct Export Link fallback
-    candidates.push(`https://drive.google.com/uc?export=view&id=${driveId}`);
-    
-    // 5. Original sanitized input
-    if (!candidates.includes(sanitized)) {
-      candidates.push(sanitized);
-    }
-  } else {
-    // Hostinger or general local image asset path
-    candidates.push(sanitized);
-
-    // If it's a local product image path, also add production domain candidate as reliable fallback
+  // If it's a local product image path, also add production domain candidate as reliable fallback
     if (sanitized.startsWith('/images/products/')) {
       const prodUrl = `https://mukeshsarees.com${sanitized}`;
       if (!candidates.includes(prodUrl)) {
@@ -237,7 +180,6 @@ function getCandidateUrls(src: string, width: number = 800): string[] {
         }
       }
     }
-  }
 
   // Unsplash fallback placeholder as final backup if everything fails
   const fallbackUnsplash = 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=45';
@@ -367,30 +309,20 @@ export function OptimizedImage({
     );
   }
 
-  const isGoogleDrive = src.includes('drive.google.com') || src.includes('googleusercontent.com') || currentSrc.includes('drive.google.com') || currentSrc.includes('googleusercontent.com');
   const isRelative = currentSrc.startsWith('/');
   
   const finalLoading = loading !== undefined ? loading : (priority ? "eager" : "lazy");
   const finalFetchPriority = fetchPriority !== undefined ? fetchPriority : (priority ? "high" : "low");
   const finalDecoding = decoding !== undefined ? decoding : "async";
 
-  // Google Drive logic or relative references
-  if (isGoogleDrive || isRelative) {
-    const driveId = extractGoogleDriveId(src) || extractGoogleDriveId(currentSrc);
-    const driveSrcSet = (isGoogleDrive && driveId)
-      ? `https://lh3.googleusercontent.com/d/${driveId}=w300 300w, https://lh3.googleusercontent.com/d/${driveId}=w450 450w, https://lh3.googleusercontent.com/d/${driveId}=w600 600w, https://lh3.googleusercontent.com/d/${driveId}=w800 800w`
-      : undefined;
-
-    const finalRenderSrc = (isGoogleDrive && driveId)
-      ? `https://lh3.googleusercontent.com/d/${driveId}=w${width}`
-      : currentSrc;
-
+  // Local relative references (/images/products/*.webp, /images/logo.webp, etc.)
+  if (isRelative) {
     return (
       <img
         ref={imageRef}
         key={currentSrc}
-        src={finalRenderSrc}
-        srcSet={srcSet || driveSrcSet}
+        src={currentSrc}
+        srcSet={srcSet}
         sizes={sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"}
         alt={finalAlt}
         width={width}
@@ -410,10 +342,8 @@ export function OptimizedImage({
 
   // Custom live Hostinger links or external bypass optimization logic
   const isDirectBypass = (currentSrc.startsWith('http') && 
-                          !currentSrc.includes('drive.google.com') && 
-                          !currentSrc.includes('googleusercontent.com') &&
-                          !currentSrc.includes('ik.imagekit.io') &&
-                          !currentSrc.includes('imagekit.io') &&
+                          !currentSrc.includes('ik.imagekit.io') && 
+                          !currentSrc.includes('imagekit.io') && 
                           !currentSrc.includes('mukeshsarees.com')) ||
                           currentSrc.includes('wsrv.nl');
 

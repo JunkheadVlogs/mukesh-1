@@ -72,21 +72,6 @@ if (!empty($image_field)) {
         // Strip any existing query params to avoid duplicate transforms
         $clean_image = strtok($image_field, '?');
         $image_url = $clean_image . '?tr=w-1200,h-630,c-maintain_ratio,bg-F0F0F0';
-    } elseif (strpos($image_field, 'drive.google.com') !== false) {
-        // GOOGLE DRIVE URL: Extract ID to use wsrv.nl proxy (works like a public CDN fallback)
-        $doc_id = '';
-        if (preg_match('/id=([a-zA-Z0-9_-]+)/', $image_field, $matches)) {
-            $doc_id = $matches[1];
-        } elseif (preg_match('/\/d\/([a-zA-Z0-9_-]+)/', $image_field, $matches)) {
-            $doc_id = $matches[1];
-        }
-        
-        if (!empty($doc_id)) {
-            $raw_drive = "https://lh3.googleusercontent.com/d/" . $doc_id;
-            $image_url = "https://wsrv.nl/?url=" . urlencode($raw_drive) . "&w=1200&h=630&fit=contain&cbg=ffffff&output=jpg&q=90";
-        } else {
-            $image_url = $image_field;
-        }
     } else {
         // Fallback for relative or general URLs
         if (strpos($image_field, 'http') === 0) {

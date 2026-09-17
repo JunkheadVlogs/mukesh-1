@@ -27,18 +27,13 @@ export default function QuickViewModal({
 }: QuickViewModalProps) {
   const navigate = useNavigate();
   const { addToCart, toggleWishlist, wishlist } = useStore();
-  const [selectedSize, setSelectedSize] = useState<string>("");
   const [isAdded, setIsAdded] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [sizeError, setSizeError] = useState(false);
-  const sizeSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (product) {
       document.body.style.overflow = "hidden";
-      setSelectedSize("");
       setActiveImageIndex(0);
-      setSizeError(false);
     } else {
       document.body.style.overflow = "unset";
     }
@@ -49,8 +44,6 @@ export default function QuickViewModal({
 
   if (!product) return null;
 
-  const isCoOrd = product.category === "Co-Ord Sets" || product.category.toLowerCase().includes("co-ord");
-  const sizes = (product.availableSizes || ["M", "L", "XL", "XXL", "XXXL"]).filter(s => s !== "Free Size");
   const productImages =
     product.images && product.images.length > 0
       ? [...product.images]
@@ -59,13 +52,7 @@ export default function QuickViewModal({
   const finalPrice = product.price;
 
   const handleAddToCart = (): boolean => {
-    if (isCoOrd && !selectedSize) {
-      setSizeError(true);
-      return false;
-    }
-
-    setSizeError(false);
-    addToCart(product, isCoOrd ? selectedSize : undefined, 1);
+    addToCart(product, undefined, 1);
     trackAddToCart(product, 1);
     setIsAdded(true);
     setTimeout(() => {
@@ -151,27 +138,6 @@ export default function QuickViewModal({
                     <p className="text-[12px] font-semibold text-primary-950">{product.sku}</p>
                   </div>
                 </div>
-
-                {isCoOrd && (
-                  <div>
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-xs uppercase tracking-wider text-primary-950/40 font-bold">Size</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {sizes.map((size) => (
-                        <button
-                          key={size}
-                          onClick={() => { setSelectedSize(size); setSizeError(false); }}
-                          className={`h-[32px] sm:h-[34px] min-w-[34px] sm:min-w-[36px] px-2.5 border text-[11px] font-semibold tracking-wider transition-all rounded-sm
-                            ${selectedSize === size ? "border-primary-950 bg-primary-950 text-white" : "border-black/5 text-primary-950/60 hover:border-black/20"}`}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                    {sizeError && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest mt-2 ml-1">Please select size</p>}
-                  </div>
-                )}
 
                 <div className="space-y-4">
                    <button

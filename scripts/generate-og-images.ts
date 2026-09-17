@@ -19,24 +19,6 @@ function getCleanDirectImageUrl(imageUrl: string | undefined): string {
     }
   }
 
-  if (targetUrl.includes('drive.google.com')) {
-    let fileId = '';
-    const idMatch = targetUrl.match(/[?&]id=([^&]+)/);
-    if (idMatch) {
-      fileId = idMatch[1];
-    } else {
-      const dMatch = targetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if (dMatch) {
-        fileId = dMatch[1];
-      }
-    }
-    if (fileId) {
-      targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
-    }
-  } else if (targetUrl.includes('lh3.googleusercontent.com')) {
-    targetUrl = targetUrl.split('=')[0]; // strip existing params
-  }
-
   if (!targetUrl.startsWith('http')) {
     targetUrl = `https://mukeshsarees.com/${targetUrl.replace(/^\/+/, '')}`;
   }

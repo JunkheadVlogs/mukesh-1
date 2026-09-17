@@ -211,7 +211,7 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
             {/* Search Input Selector */}
             <div className="max-w-xl">
               <label className="block text-[11px] font-sans font-bold uppercase tracking-wider text-primary-950/80 mb-2">
-                Select Saree or Co-Ord Set to Compare
+                Select Saree to Compare
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-primary-950/40">

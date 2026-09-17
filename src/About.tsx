@@ -66,7 +66,7 @@ export default function About() {
           "name": "What products does Mukesh Saree Centre sell?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "We sell over 30 varieties of sarees including Linen, Cotton, Pure Silk, Paithani, Banarasi, Kanjivaram, Malvika tissue sarees, Georgette, Organza, custom lehengas, suits, co-ord sets, and uniform sarees."
+            "text": "We sell over 30 varieties of sarees including Linen, Cotton, Pure Silk, Paithani, Banarasi, Kanjivaram, Malvika tissue sarees, Georgette, Organza, custom lehengas, suits, and uniform sarees."
           }
         },
         {
@@ -125,7 +125,7 @@ export default function About() {
                 <h3>What We Sell</h3>
               </div>
               <p className="font-light text-[13.5px] sm:text-[14px] text-primary-950/75 text-justify">
-                We design and distribute an exquisite collection of <Link to="/sarees" className="text-gold-600 hover:underline font-medium">sarees</Link> (including <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Pure Silk</Link>, <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika Tissue</Link>, Paithani, Banarasi, Kanjivaram, Organza, and Georgette), custom-designed lehengas, co-ord sets, readymade suits, and <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline font-medium">uniform sarees for institutions</Link>.
+                We design and distribute an exquisite collection of <Link to="/sarees" className="text-gold-600 hover:underline font-medium">sarees</Link> (including <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Pure Silk</Link>, <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika Tissue</Link>, Paithani, Banarasi, Kanjivaram, Organza, and Georgette), custom-designed lehengas, readymade suits, and <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline font-medium">uniform sarees for institutions</Link>.
               </p>
             </div>
             <div className="space-y-3">

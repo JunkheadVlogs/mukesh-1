@@ -41,7 +41,7 @@ const traverse = (dir) => {
       }
       
       // Additional checks for specific pages
-      if (fullPath.includes('/shop/') || fullPath.includes('/sarees/') || fullPath.includes('/coord-sets/')) {
+      if (fullPath.includes('/shop/') || fullPath.includes('/sarees/')) {
         if (!content.includes('style="background-color: #faf6f0')) {
              console.error(`Validation Error: Missing content in shop/collection page: ${fullPath}`);
              hasError = true;

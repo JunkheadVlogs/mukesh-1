@@ -19,7 +19,7 @@ function copyIfExists(src, destPath, aliasName) {
       // Update og:url
       content = content.replace(/<meta[^>]*property="og:url"[^>]*>/i, `<meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${aliasName}" />`);
       // Update titles for category aliases to be more relevant
-      if (['sarees', 'lehengas', 'suits', 'coord-sets'].includes(aliasName)) {
+      if (['sarees', 'lehengas', 'suits'].includes(aliasName)) {
         content = content.replace(/<title>.*?<\/title>/is, `<title>${titleName} | Mukesh Saree Centre</title>`);
         content = content.replace(/<meta[^>]*property="og:title"[^>]*>/i, `<meta data-rh="true" property="og:title" content="${titleName} | Mukesh Saree Centre" />`);
         content = content.replace(/<meta[^>]*name="twitter:title"[^>]*>/i, `<meta data-rh="true" name="twitter:title" content="${titleName} | Mukesh Saree Centre" />`);
@@ -42,7 +42,7 @@ for (const a of shellAliases) {
 
 // 2. Specialized SEO aliases
 // Use the statically rendered shop page for these, since React will instantly hydrate them and load the right category filters
-const shopAliases = ["sarees", "lehengas", "suits", "coord-sets"];
+const shopAliases = ["sarees", "lehengas", "suits"];
 for (const a of shopAliases) {
     if (fs.existsSync(shopSrc)) {
          copyIfExists(shopSrc, path.join(distDir, a), a);

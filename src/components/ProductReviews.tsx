@@ -76,29 +76,6 @@ const sareeReviewTemplates = [
   "Highly elegant and premium quality saree. Perfect experience."
 ];
 
-const coordReviewTemplates = [
-  "The fit of this {category} is incredible! The {fabric} fabric is extremely breathable and perfect for humid summer afternoons. Fits like custom tailoring.",
-  "Such a smart look. I bought the {color} shade for office wear, and it looks highly professional and neat. Paired it with simple flats.",
-  "Fabric feels highly premium and lightweight. It doesn't crush easily even after hours of sitting in meetings. The {color} is very classy.",
-  "Extremely stylish and comfy!",
-  "My absolute favorite for traveling now. The {fabric} is so airy, and the trousers have a very comfortable soft elastic waistband that doesn't pinch.",
-  "Stitching around the collar and buttons is done with absolute perfection. Mukesh Saree Centre's boutique-grade craftsmanship shines in this {color} set.",
-  "Excellent fit and premium fabric quality. Highly recommend.",
-  "Love the modern contemporary silhouette of this outfit. It hides bloated days perfectly and drapes nicely on the shoulders. The {color} is exact as pictured.",
-  "This {color} {category} is an absolute summer essential. The material is so soft to touch and has a beautiful natural fall that doesn't cling.",
-  "Highly elegant! Washed it once already and there was completely zero color bleeding or shrinkage. True value for money.",
-  "Perfect addition to my workwear closet. Received so many beautiful compliments from my colleagues on the sleek sleeve design.",
-  "Super comfortable daily wear set. The {fabric} texture feels like second skin.",
-  "Got the package in just 2 days. The styling is highly classy and matches global boutique standards. Will definitely buy more patterns of this {category}.",
-  "Stunning style and very breezy fabric.",
-  "Highly impressed by the boutique tailoring of this {fabric} piece. The {color} color is highly sophisticated. Perfect size fit as per the chart.",
-  "Very classy premium look for casual dinners or brunch with friends. Easy to carry and style.",
-  "The pockets are a highly welcome and functional addition to these smart trousers! The styling details of this {color} set are very elegant.",
-  "Buttery soft and looks highly expensive. Extremely happy with my purchase of this {fabric} {category}.",
-  "Perfect fusion of style and absolute comfort. The {color} tone matches the web photos 100%.",
-  "Incredible boutique-grade product. Very happy with the comfort of this {category}."
-];
-
 function generateReviews(product: Product): EnhancedReview[] {
   const seed = getSeededRandom(product.id + "-revs");
   const stats = getProductReviewStats(product);
@@ -107,11 +84,10 @@ function generateReviews(product: Product): EnhancedReview[] {
   const catParts = (product.category || "").toLowerCase();
   const fabricParts = (product.fabric || "").toLowerCase();
 
-  const isCoOrd = catParts.includes("co-ord") || catParts.includes("kurti") || catParts.includes("suit") || catParts.includes("set") || catParts.includes("tunic");
-  const isSaree = !isCoOrd || catParts.includes("saree") || nameParts.includes("saree");
+  const isSaree = true;
 
-  // Format category name for Co-Ord/Tunic sets logically
-  const categoryTerm = isCoOrd ? "co-ord set" : (product.category || "outfit").toLowerCase().replace(/s$/, "");
+  // Format category name for saree products logically
+  const categoryTerm = (product.category || "saree").toLowerCase().replace(/s$/, "");
 
   // Clear and premium formatting for colors and fabrics
   let color = (product.color || "beautiful").trim();
@@ -136,14 +112,8 @@ function generateReviews(product: Product): EnhancedReview[] {
     const author = `${firstFemaleNames[firstIdx]} ${lastFemaleNames[lastIdx]}`;
 
     // Select the template and perform replacements
-    let text = "";
-    if (isSaree) {
-      const templateIndex = i % sareeReviewTemplates.length;
-      text = sareeReviewTemplates[templateIndex];
-    } else {
-      const templateIndex = i % coordReviewTemplates.length;
-      text = coordReviewTemplates[templateIndex];
-    }
+    const templateIndex = i % sareeReviewTemplates.length;
+    let text = sareeReviewTemplates[templateIndex];
 
     // Replace placeholders safely
     text = text

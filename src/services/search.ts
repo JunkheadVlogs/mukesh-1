@@ -121,12 +121,6 @@ export function calculateSearchScore(product: Product, query: string): number {
       fieldsToQuery.push(['sarees', 8]);
       fieldsToQuery.push(['saree', 8]);
     }
-    if (token === 'coord' || token === 'co-ord' || token === 'set' || token === 'sets' || token === 'suit' || token === 'suits') {
-      if (pCat.includes('co-ord')) {
-        tokenMatched = true;
-        tokenBestScore = Math.max(tokenBestScore, 20 * 8);
-      }
-    }
 
     for (const [fieldValue, weight] of fieldsToQuery) {
       if (!fieldValue) continue;

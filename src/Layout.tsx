@@ -570,7 +570,7 @@ export default function Layout() {
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Discover Banarasi, Linen, Co-Ords, Silk, Sarees..."
+                      placeholder="Discover Banarasi, Linen, Silk, Paithani, Sarees..."
                       aria-label="Search for products"
                       className="w-full h-14 sm:h-16 pl-12 pr-28 text-[13.5px] sm:text-[15px] font-sans bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-primary-950 placeholder-primary-950/35"
                     />
@@ -668,7 +668,7 @@ export default function Layout() {
                         No Collections Match
                       </h4>
                       <p className="text-primary-950/45 font-light text-[12.5px] max-w-sm mx-auto">
-                        We couldn't find matches for "{searchQuery}". Try browsing beautiful Banarasi, Linen, or Co-Ord selections instead.
+                        We couldn't find matches for "{searchQuery}". Try browsing beautiful Banarasi, Linen, or Silk selections instead.
                       </p>
                       <button
                         onClick={() => setSearchQuery("")}
@@ -724,7 +724,7 @@ export default function Layout() {
                           {[
                             { title: "Banarasi", tag: "Banarasi" },
                             { title: "Linen", tag: "Linen" },
-                            { title: "Co-Ord Sets", tag: "Co-Ord" },
+                            { title: "Paithani", tag: "Paithani" },
                             { title: "Soft Silk", tag: "Silk" },
                             { title: "Wedding", tag: "Wedding" },
                           ].map((item) => (
@@ -841,10 +841,10 @@ export default function Layout() {
                 Sarees
               </Link>
               <Link
-                to="/shop?category=Co-Ord-Sets"
+                to="/shop?category=Linen-Sarees"
                 className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
-                Co-Ord Sets
+                Linen Sarees
               </Link>
               <Link
                 to="/contact"
@@ -987,7 +987,7 @@ export default function Layout() {
                   </Link>
 
                   <Link 
-                    to="/shop?category=Co-Ord-Sets" 
+                    to="/shop?category=Linen-Sarees" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
                       padding: "13px 20px",
@@ -1003,7 +1003,7 @@ export default function Layout() {
                       textDecoration: "none"
                     }}
                   >
-                    <span>Co-Ord Sets</span>
+                    <span>Linen Sarees</span>
                     <ChevronRight size={13} className="text-neutral-400" />
                   </Link>
 
@@ -1291,8 +1291,8 @@ export default function Layout() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?category=Co-Ord-Sets" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
-                      Co-Ord Sets
+                    <Link to="/shop?category=Linen-Sarees" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Linen Sarees
                     </Link>
                   </li>
                   <li>

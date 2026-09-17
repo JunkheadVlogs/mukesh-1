@@ -245,7 +245,7 @@ export default function App() {
             <Route path="sarees/:subcategory" element={<Shop />} />
             <Route path="lehengas" element={<Shop />} />
             <Route path="suits" element={<Shop />} />
-            <Route path="coord-sets" element={<Shop />} />
+            <Route path="coord-sets" element={<Navigate to="/shop" replace />} />
             <Route path="search" element={<Shop />} />
             <Route path="wishlist" element={<Wishlist />} />
             <Route path="wishlist/:shareId" element={<Wishlist />} />

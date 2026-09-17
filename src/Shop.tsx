@@ -53,7 +53,7 @@ export default function Shop() {
   const path = window.location.pathname.toLowerCase();
   
   const { categoryFilter, fabricFilter } = useMemo(() => {
-    let cat = rawCategoryFilter === "Co-Ord-Sets" ? "Co-Ord Sets" : rawCategoryFilter;
+    let cat = rawCategoryFilter === "Linen-Sarees" ? "Linen Sarees" : rawCategoryFilter;
     let fabs = searchParams.get("fabric") ? (searchParams.get("fabric") || "").split(",") : [];
 
     if (!cat) {
@@ -74,8 +74,6 @@ export default function Shop() {
         cat = "Lehengas";
       } else if (path.includes("/suits")) {
         cat = "Kurtas";
-      } else if (path.includes("/coord-sets")) {
-        cat = "Co-Ord Sets";
       }
     }
 
@@ -326,7 +324,7 @@ export default function Shop() {
   const handleCategoryChange = (cat: string | null) => {
     const newParams = new URLSearchParams(searchParams);
     if (cat) {
-      newParams.set("category", cat === "Co-Ord Sets" ? "Co-Ord-Sets" : cat);
+      newParams.set("category", cat === "Linen Sarees" ? "Linen-Sarees" : cat);
     } else {
       newParams.delete("category");
     }
@@ -387,9 +385,8 @@ export default function Shop() {
   const categoryOgImages: Record<string, string> = {
     "Sarees": "https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790",
     "Linen Sarees": "https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790",
-    "Co-Ord Sets": "https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090",
     "Lehengas": "https://ik.imagekit.io/tus1loev9/homepage/lehengasection.webp?updatedAt=1779907894691",
-    "default": "https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1NmruXVYozTPtYyuyipddgCODomwUd2me&w=1200&h=630&fit=cover&a=attention&output=jpg&q=85",
+    "default": "https://mukeshsarees.com/og-image.jpg",
   };
 
   const activeCategory = categoryFilter || "default";
@@ -447,7 +444,6 @@ export default function Shop() {
         <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto select-none scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full sticky top-[76px] md:top-[101px] z-40 bg-[#FAF7F2] border-b border-gray-100/80 py-1" style={{ marginBottom: "6px", marginTop: "0px", paddingTop: "0px" }}>
           {[
             { label: "All", value: null },
-            { label: "Co-Ord Sets", value: "Co-Ord Sets" },
             { label: "Sarees", value: "Sarees" },
             { label: "Linen Sarees", value: "Linen Sarees" },
             { label: "Lehengas", value: "Lehengas" }
@@ -602,13 +598,6 @@ export default function Shop() {
                       </div>
                     )}
                   </div>
-
-                  <button
-                    onClick={() => handleCategoryChange("Co-Ord Sets")}
-                    className={`category-filter-btn text-left text-sm font-medium transition-all ${categoryFilter === "Co-Ord Sets" ? "text-gold-600 font-bold" : "text-primary-950/80 hover:text-primary-950"}`}
-                  >
-                    Co-Ord Sets
-                  </button>
                 </div>
               </section>
 

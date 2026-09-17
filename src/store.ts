@@ -32,7 +32,7 @@ export interface Product {
   image: string;
   images?: string[];
   videoUrl?: string;
-  category: 'Sarees' | 'Co-Ord Sets' | string;
+  category: 'Sarees' | string;
   fabric: string;
   color: string;
   colorVariants?: ColorVariant[];

@@ -123,8 +123,8 @@ export default function Wishlist() {
         title={`${isSharedView ? "Shared Selection" : "My Wishlist"} | Mukesh Saree Centre`}
         description={
           isSharedView
-            ? "Discover a list of favorite sarees from Mukesh Saree Centre shared with you. Shop these elegant sarees and co-ord sets directly from this list."
-            : "View and manage your favorite picks from Mukesh Saree Centre. Create your dream wishlist of elegant sarees and designer co-ord sets."
+            ? "Discover a list of favorite sarees from Mukesh Saree Centre shared with you. Shop these elegant sarees and linen collections directly from this list."
+            : "View and manage your favorite picks from Mukesh Saree Centre. Create your dream wishlist of elegant sarees and designer collections."
         }
         url="/wishlist"
       />

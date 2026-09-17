@@ -275,7 +275,7 @@ export default function WholesaleSarees() {
             { title: "Festival Collections", desc: "Secure highest-demand inventories ahead of Diwali, Karwa Chauth, Eid, Weddings." },
             { title: "Premium Sarees", desc: "Traditional Banarasis, lightweight linens, delicate kora organza weave sets." },
             { title: "Fancy Sarees", desc: "Modern georgettes with jacquard borders, sequin works, and elegant drapes." },
-            { title: "Co-Ord Sets", desc: "Contemporary silhouettes in breathable linens and high-fashion comfort wear." },
+            { title: "Linen Sarees", desc: "Contemporary silhouettes in breathable pure flax linens and effortless luxury comfort wear." },
             { title: "Suits & Dress Materials", desc: "High-margin options of unstitched salwar kameez sets, matching pieces." },
             { title: "Limited Stock Alerts", desc: "Never miss out on fast-moving restocks with priority real-time stock indicators." },
             { title: "Early Access To New Collections", desc: "Place preorder requests 48 hours before collections open to secondary wholesalers." },

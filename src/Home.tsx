@@ -176,8 +176,8 @@ const LOOK_REELS = [
     a: "Yes, you can easily request a change or cancellation for your order, provided our warehouse team has not yet packed and dispatched the parcel. Because we strive to deliver your gorgeous sarees as quickly as possible, orders are often prepared for shipping within 3 to 12 hours. If you need to update the delivery address, change the saree color, swap items, or cancel the order entirely, please contact us immediately on WhatsApp at +91 70206 64641 with your Order ID. Once our courier team has picked up and dispatched the parcel, we cannot alter or stop the delivery in transit."
   },
   {
-    q: "Do you sell readymade designer blouses and ethnic co-ord sets?",
-    a: "Yes! Beyond our world-class linen sarees and silk sarees, Mukesh Saree Centre showcases a highly curated modern collection of premium breathable co-ord sets, stylish ladies' readymade suits, and designer blouses in elegant fabrics. Our co-ord sets are incredibly popular for everyday loungewear, travel comfort, and stylish daytime social meets. Our readymade blouses come with flexible margin stitches so they can be adjusted effortlessly to match any saree drape. Explore our category sections today to build the ultimate contemporary ethnic wardrobe that effortlessly blends traditional artisan values with active modern aesthetics."
+    q: "Do you sell readymade designer blouses and ethnic wear?",
+    a: "Yes! Beyond our world-class linen sarees and silk sarees, Mukesh Saree Centre showcases a curated collection of stylish ladies' readymade blouses and accessories in elegant fabrics. Our readymade blouses come with flexible margin stitches so they can be adjusted effortlessly to match any saree drape. Explore our category sections today to build the ultimate contemporary ethnic wardrobe that effortlessly blends traditional artisan values with active modern aesthetics."
   },
   {
     q: "How can I identify the authenticity of a pure silk saree?",
@@ -472,40 +472,40 @@ export default function Home() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-5">
             <div className="sr-only">
-              <h3>Designer Co-Ord Sets Collection</h3>
+              <h3>Designer Linen Sarees Collection</h3>
               <p>
-                Who it is for: Modern women looking for chic, effortless, and coordinated everyday wear.
-                Fabric highlights: Premium breathable cottons, high-quality linen blends, and soft rayon.
-                Best occasions: Office wear, casual outings, daytime parties, and semi-formal events.
-                Benefits: Ready-to-wear comfort with perfectly matched tops and bottoms for an instantly put-together look.
-                Styling tips: Pair with minimal jewelry and block heels for an elegant contemporary outfit.
+                Who it is for: Modern women looking for chic, effortless, and breathable authentic linen sarees.
+                Fabric highlights: Premium breathable natural flax linen, soft textures, and artisan digital prints.
+                Best occasions: Office wear, daytime festivities, high-profile events, and summer elegance.
+                Benefits: Ultra-comfortable all-day drape with lightweight softness and timeless style.
+                Styling tips: Pair with minimal jewelry and statement blouses for an elegant contemporary outfit.
               </p>
             </div>
             <Link
-              to="/shop?category=Co-Ord-Sets"
+              to="/shop?category=Linen-Sarees"
               className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-2xl"
-              aria-label="Shop our Designer Co-Ord Sets Collection"
+              aria-label="Shop our Designer Linen Sarees Collection"
             >
               <div className="absolute inset-0">
                 <OptimizedImage
-                  src="https://ik.imagekit.io/tus1loev9/homepage/coordsetcategory.webp?updatedAt=1779907895090"
+                  src="https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/Black_with_rainbow_colour_in_the_mul_cotton_handloom_sarees_right.jpg"
                   width={800}
                   height={600}
-                  alt="Women wearing premium Co-Ord sets from Mukesh Saree Centre"
+                  alt="Women wearing premium Linen Sarees from Mukesh Saree Centre"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
               <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
                 <h3 className="text-2xl md:text-3xl font-serif mb-2 text-white font-semibold tracking-wide" style={{ color: "#ffffff", textShadow: "0 2px 10px rgba(0,0,0,0.95), 0 1px 4px rgba(0,0,0,0.85), 0 0 1px rgba(0,0,0,0.95)" }}>
-                  Co-Ord Sets
+                  Linen Sarees
                 </h3>
                 <div className="text-[13px] md:text-[14px] font-sans font-normal tracking-wide text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.85)" }}>
                   Best Sellers |{" "}
                   <span className="font-discount font-semibold">50% OFF</span>
                 </div>
                 <div className="text-[14px] font-sans font-semibold text-[var(--color-gold-light)] mb-4" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.85)" }}>
-                  Starting at ₹995
+                  Starting at ₹699
                 </div>
                 <div>
                   <span className="text-[11px] uppercase tracking-widest text-white border-b border-white pb-1 group-hover:text-[var(--color-gold-light)] group-hover:border-[var(--color-gold-light)] transition-colors" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.85)" }}>

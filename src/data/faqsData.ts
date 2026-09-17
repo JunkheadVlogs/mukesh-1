@@ -127,8 +127,8 @@ export const faqs: FAQ[] = [
   },
   {
     category: "fabrics",
-    q: "Do you sell readymade designer blouses and ethnic co-ord sets?",
-    a: "Yes! Beyond our world-class linen sarees and silk sarees, Mukesh Saree Centre showcases a highly curated modern collection of premium breathable co-ord sets, stylish ladies' readymade suits, and designer blouses in elegant fabrics. Our co-ord sets are incredibly popular for everyday loungewear, travel comfort, and stylish daytime social meets. Our readymade blouses come with flexible margin stitches so they can be adjusted effortlessly to match any saree drape. Explore our category sections today to build the ultimate contemporary ethnic wardrobe that effortlessly blends traditional artisan values with active modern aesthetics."
+    q: "Do you sell readymade designer blouses and unstitched blouse pieces?",
+    a: "Yes! Beyond our world-class linen sarees and silk sarees, Mukesh Saree Centre showcases matching unstitched blouse pieces included with every saree, along with a curated collection of designer blouses in elegant fabrics. Our blouses come with generous running fabric and flexible margin stitches so they can be tailored effortlessly to match any saree drape. Explore our shop categories today to build the ultimate traditional ethnic wardrobe that blends timeless artisan weaving with effortless elegance."
   },
   {
     category: "guides",

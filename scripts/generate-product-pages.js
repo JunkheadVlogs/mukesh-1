@@ -102,31 +102,12 @@ function main() {
     // C. Process image formats and enforce ImageKit resizing transforms
     const imageField = product.image || '';
     let ogImageUrl = '';
-    let isGoogleDriveLink = false;
 
     if (imageField) {
       if (imageField.includes('ik.imagekit.io')) {
         // IMAGEKIT DIRECT CDN URL: Extract base and enforce high-res 1200x630 sizing parameter
         const baseUrl = imageField.split('?')[0];
         ogImageUrl = `${baseUrl}?tr=w-1200,h-630,c-maintain_ratio,bg-F0F0F0`;
-      } else if (imageField.includes('drive.google.com')) {
-        isGoogleDriveLink = true;
-        // GOOGLE DRIVE URL: Flag it and use a high-performance proxy overlay natively
-        let docId = '';
-        const idMatch = imageField.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-        const urlMatch = imageField.match(/\/d\/([a-zA-Z0-9_-]+)/);
-
-        if (idMatch) docId = idMatch[1];
-        else if (urlMatch) docId = urlMatch[1];
-
-        if (docId) {
-          googleDriveWarnings.push({ name, slug, imageField, docId });
-          // Fallback proxy (wsrv.nl) that fetches the public drive thumbnail and sizes it perfectly
-          const directDriveLink = `https://lh3.googleusercontent.com/d/${docId}`;
-          ogImageUrl = `https://wsrv.nl/?url=${encodeURIComponent(directDriveLink)}&w=1200&h=630&fit=contain&cbg=ffffff&output=jpg&q=90`;
-        } else {
-          ogImageUrl = imageField; // Absolute raw fallback
-        }
       } else {
         // Normal absolute or relative link
         if (imageField.startsWith('http')) {

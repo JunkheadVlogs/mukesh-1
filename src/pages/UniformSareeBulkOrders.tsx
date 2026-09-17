@@ -135,7 +135,7 @@ export default function UniformSareeBulkOrders() {
               What We Sell for Bulk & Uniform Orders
             </h3>
             <p className="text-[13.5px] font-light text-primary-950/80 text-justify leading-relaxed">
-              Our specialized uniform saree division offers custom-dyed <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika tissue sarees</Link>, <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen sarees</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton sarees</Link>, crepe blends, and <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">silk blends</Link>. Beyond uniform sarees, our inventory includes custom lehengas, readymade suits, and co-ord sets for institutional events and celebrations.
+              Our specialized uniform saree division offers custom-dyed <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika tissue sarees</Link>, <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen sarees</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton sarees</Link>, crepe blends, and <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">silk blends</Link>. Beyond uniform sarees, our inventory includes custom lehengas and festive ethnic sarees for institutional events and celebrations.
             </p>
           </div>
 

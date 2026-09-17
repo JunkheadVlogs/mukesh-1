@@ -14,7 +14,7 @@ const REVIEWS = [
     name: "Anjali Joshi",
     location: "Nagpur",
     verified: true,
-    text: "Mukesh Saree Centre has been our family's trusted destination since my grandmother's wedding in 1980. Their beautiful designer Co-Ord sets and Readymade suits are modern yet elegant.",
+    text: "Mukesh Saree Centre has been our family's trusted destination since my grandmother's wedding in 1980. Their beautiful designer Linen sarees and Readymade suits are modern yet elegant.",
   },
   {
     id: 3,

@@ -24,7 +24,7 @@ interface SEOProps {
 }
 
 export function getWhatsAppSafeDescription(text: string, productContext?: any): string {
-  if (!text) return "Shop premium Indian ethnic wear, sarees, and co-ord sets at Mukesh Saree Centre.";
+  if (!text) return "Shop premium Indian ethnic wear, sarees, and linen collections at Mukesh Saree Centre.";
   
   // Clean HTML, Markdown, and other clutter
   let clean = text
@@ -215,24 +215,6 @@ export function SEO({
       }
     }
 
-    if (targetUrl.includes('drive.google.com')) {
-      let fileId = '';
-      const idMatch = targetUrl.match(/[?&]id=([^&]+)/);
-      if (idMatch) {
-        fileId = idMatch[1];
-      } else {
-        const dMatch = targetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-        if (dMatch) {
-          fileId = dMatch[1];
-        }
-      }
-      if (fileId) {
-        targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
-      }
-    } else if (targetUrl.includes('lh3.googleusercontent.com')) {
-      targetUrl = targetUrl.split('=')[0]; // strip existing params
-    }
-
     // Optimized 1200x630 format to show the full vertical image without cropping or cutoffs on WhatsApp & social platforms
     displayImage = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&w=1200&h=630&fit=contain&cbg=ffffff&output=jpg&q=90`;
     finalImageWidth = "1200";
@@ -242,23 +224,6 @@ export function SEO({
     // Standard logic
     if (absoluteImage) {
       let targetUrl = absoluteImage;
-      if (absoluteImage.includes('drive.google.com')) {
-        let fileId = '';
-        const idMatch = absoluteImage.match(/[?&]id=([^&]+)/);
-        if (idMatch) {
-          fileId = idMatch[1];
-        } else {
-          const dMatch = absoluteImage.match(/\/d\/([a-zA-Z0-9_-]+)/);
-          if (dMatch) {
-            fileId = dMatch[1];
-          }
-        }
-        if (fileId) {
-          targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
-        }
-      } else if (absoluteImage.includes('lh3.googleusercontent.com')) {
-        targetUrl = absoluteImage.split('=')[0]; // strip existing resize parameters
-      }
       
       // Check if wsrv is already wrapping this URL or if it is the direct og-image banner
       if (targetUrl.includes('og-image.jpg') || targetUrl.includes('og-home.jpg')) {

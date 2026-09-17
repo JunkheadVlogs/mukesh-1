@@ -73,21 +73,6 @@ function runGenerator() {
       if (imageInput.includes('ik.imagekit.io')) {
         const baseImgUrl = imageInput.split('?')[0];
         ogImageUrl = `${baseImgUrl}?tr=w-1200,h-630,c-maintain_ratio,bg-F0F0F0`;
-      } else if (imageInput.includes('drive.google.com')) {
-        let docId = '';
-        const rawIdMatch = imageInput.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-        const slashIdMatch = imageInput.match(/\/d\/([a-zA-Z0-9_-]+)/);
-
-        if (rawIdMatch) docId = rawIdMatch[1];
-        else if (slashIdMatch) docId = slashIdMatch[1];
-
-        if (docId) {
-          driveWarnings.push({ name: product.name, slug, imageInput });
-          const driveSrc = `https://lh3.googleusercontent.com/d/${docId}`;
-          ogImageUrl = `https://wsrv.nl/?url=${encodeURIComponent(driveSrc)}&w=1200&h=630&fit=contain&cbg=ffffff&output=jpg&q=90`;
-        } else {
-          ogImageUrl = imageInput;
-        }
       } else {
         if (imageInput.startsWith('http')) {
           ogImageUrl = imageInput;

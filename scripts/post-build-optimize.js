@@ -33,7 +33,7 @@ if (fs.existsSync(distDir)) {
       const rootRegex = /<div id="root">\s*(?:<div class="loading-wrapper">[\s\S]*?<\/div>\s*|(?:Loading\.\.\.)?\s*)<\/div>/i;
       const isEmpty = rootRegex.test(content) || content.includes('<div id="root"></div>') || content.includes('<div id="root">\n</div>') || content.includes('Loading...');
       
-      const isShopOrCollection = filePath.includes('/shop/index.html') || filePath.includes('/sarees/') || filePath.includes('/lehengas/index.html') || filePath.includes('/suits/index.html') || filePath.includes('/coord-sets/index.html');
+      const isShopOrCollection = filePath.includes('/shop/index.html') || filePath.includes('/sarees/') || filePath.includes('/lehengas/index.html') || filePath.includes('/suits/index.html');
 
       let missingShopContent = false;
       if (isShopOrCollection) {

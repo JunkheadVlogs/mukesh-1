@@ -93,7 +93,7 @@ function cleanDescriptionForPrerender(rawDesc: string): string {
 }
 
 function getWhatsAppSafePrerenderDescription(text: string, productContext?: any): string {
-  if (!text) return "Shop premium Indian ethnic wear, sarees, and co-ord sets at ${BUSINESS_INFO.name}.";
+  if (!text) return "Shop premium Indian ethnic wear, sarees, and linen collections at ${BUSINESS_INFO.name}.";
   
   // Clean HTML, Markdown, and other clutter
   let clean = text
@@ -153,24 +153,6 @@ function getWhatsAppSafePrerenderImageUrl(imageUrl: string | undefined): string 
     }
   }
 
-  if (targetUrl.includes('drive.google.com')) {
-    let fileId = '';
-    const idMatch = imageUrl.match(/[?&]id=([^&]+)/);
-    if (idMatch) {
-      fileId = idMatch[1];
-    } else {
-      const dMatch = imageUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if (dMatch) {
-        fileId = dMatch[1];
-      }
-    }
-    if (fileId) {
-      targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
-    }
-  } else if (targetUrl.includes('lh3.googleusercontent.com')) {
-    targetUrl = targetUrl.split('=')[0]; // strip existing params
-  }
-  
   if (targetUrl.startsWith('/')) {
     targetUrl = `https://mukeshsarees.com${targetUrl}`;
   }
@@ -190,24 +172,6 @@ function getSquarePrerenderImageUrl(imageUrl: string | undefined): string {
     }
   }
 
-  if (targetUrl.includes('drive.google.com')) {
-    let fileId = '';
-    const idMatch = targetUrl.match(/[?&]id=([^&]+)/);
-    if (idMatch) {
-      fileId = idMatch[1];
-    } else {
-      const dMatch = targetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if (dMatch) {
-        fileId = dMatch[1];
-      }
-    }
-    if (fileId) {
-      targetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
-    }
-  } else if (targetUrl.includes('lh3.googleusercontent.com')) {
-    targetUrl = targetUrl.split('=')[0]; // strip existing params
-  }
-  
   if (targetUrl.startsWith('/')) {
     targetUrl = `https://mukeshsarees.com${targetUrl}`;
   }
@@ -257,7 +221,7 @@ export function getHeaderHtml(): string {
       <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
         <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
         <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
-        <a href="/shop?category=Co-Ord-Sets" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Co-Ord Sets</a>
+        <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
         <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
       </nav>
     </header>
@@ -270,7 +234,7 @@ export function getFooterHtml(): string {
       <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 48px; text-align: left;">
         <div>
           <h3 style="font-family: 'Playfair Display', serif; color: #d4af37; font-size: 20px; font-weight: 500; margin: 0 0 24px 0; letter-spacing: 2px;">${BUSINESS_INFO.name.toUpperCase()}</h3>
-          <p style="opacity: 0.7; font-size: 13px; line-height: 1.8; color: #e5dfd5;">Premium luxury Indian ethnic wear, specializing in pure silk sarees, designer Banarasi, and high-quality contemporary co-ord sets. ${BUSINESS_INFO.address.city}'s trusted fashion boutique since ${BUSINESS_INFO.established}.</p>
+          <p style="opacity: 0.7; font-size: 13px; line-height: 1.8; color: #e5dfd5;">Premium luxury Indian ethnic wear, specializing in pure silk sarees, designer Banarasi, and high-quality handcrafted drapes. ${BUSINESS_INFO.address.city}'s trusted fashion boutique since ${BUSINESS_INFO.established}.</p>
           <p style="margin-top: 24px; font-size: 13px; color: #d4af37;">📍 ${BUSINESS_INFO.address.area}, ${BUSINESS_INFO.address.city}, ${BUSINESS_INFO.address.region}</p>
         </div>
         <div>
@@ -278,7 +242,6 @@ export function getFooterHtml(): string {
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2.2;">
             <li><a href="/shop?category=Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Classic Silk Sarees</a></li>
             <li><a href="/shop?category=Linen Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Premium Linen Sarees</a></li>
-            <li><a href="/shop?category=Co-Ord-Sets" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Cotton Co-Ord Sets</a></li>
             <li><a href="/shop?category=Lehengas" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Bridal & Designer Lehengas</a></li>
           </ul>
         </div>
@@ -418,7 +381,7 @@ async function runPrerender() {
         <div style="max-width: 800px; margin: 0 auto; z-index: 10; position: relative;">
           <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED ${BUSINESS_INFO.established}</span>
           <h1 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">${BUSINESS_INFO.name}</h1>
-          <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop ${BUSINESS_INFO.address.city}'s premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, bridal lehengas, and stylish breathable co-ord sets. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹499.</p>
+          <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop ${BUSINESS_INFO.address.city}'s premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, and bridal lehengas. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹499.</p>
           <div style="display: flex; gap: 16px; justify-content: center;">
             <a href="/shop" style="background: #faf6f0; color: #1a0a00; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Explore Collection</a>
             <a href="/contact" style="border: 1px solid rgba(250, 246, 240, 0.4); color: #faf6f0; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Contact Boutique</a>
@@ -434,9 +397,9 @@ async function runPrerender() {
             <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Designer Sarees</h3>
             <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Pure Silks & Linens</span>
           </a>
-          <a class="collection-card" href="/shop?category=Co-Ord-Sets" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
-            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Co-Ord Sets</h3>
-            <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Luxe Cotton & Linen Pairs</span>
+          <a class="collection-card" href="/shop?category=Linen Sarees" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
+            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Linen Sarees</h3>
+            <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Pure Breathable Flax</span>
           </a>
           <a class="collection-card" href="/shop?category=Lehengas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
             <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Lehengas</h3>
@@ -462,7 +425,7 @@ async function runPrerender() {
       <section style="background-color: white; border-top: 1px solid rgba(0,0,0,0.04); border-bottom: 1px solid rgba(0,0,0,0.04); padding: 80px 24px;">
         <div style="max-width: 800px; margin: 0 auto; text-align: center; font-family: 'Playfair Display', serif;">
           <h2 style="font-size: 30px; margin-bottom: 24px; color: #1a0a00;">Our Legacy Since ${BUSINESS_INFO.established}</h2>
-          <p style="font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.8; color: #4a4a4a; margin-bottom: 24px;">Founded in the heart of ${BUSINESS_INFO.address.city}'s historic textile market, ${BUSINESS_INFO.name} has been the premier destination for premium silk sarees, bridal trousseaus, and custom handloom drapes for over four decades. We bring together time-tested weaver traditions with premium fabrics like <a href="/banarasi-silk-sarees" style="color: inherit; text-decoration: underline;">Banarasi Georgette</a>, pure Organza silks, high-density <a href="/pure-linen-sarees" style="color: inherit; text-decoration: underline;">Linens</a>, and premium co-ord sets. As a leading manufacturer and wholesaler, we specialize in bulk uniform solutions spanning <a href="/school-uniform-sarees" style="color: inherit; text-decoration: underline;">School Uniform Sarees</a> to <a href="/corporate-uniform-sarees" style="color: inherit; text-decoration: underline;">Corporate Attire</a>.</p>
+          <p style="font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.8; color: #4a4a4a; margin-bottom: 24px;">Founded in the heart of ${BUSINESS_INFO.address.city}'s historic textile market, ${BUSINESS_INFO.name} has been the premier destination for premium silk sarees, bridal trousseaus, and custom handloom drapes for over four decades. We bring together time-tested weaver traditions with premium fabrics like <a href="/banarasi-silk-sarees" style="color: inherit; text-decoration: underline;">Banarasi Georgette</a>, pure Organza silks, high-density <a href="/pure-linen-sarees" style="color: inherit; text-decoration: underline;">Linens</a>, and breathable handlooms. As a leading manufacturer and wholesaler, we specialize in bulk uniform solutions spanning <a href="/school-uniform-sarees" style="color: inherit; text-decoration: underline;">School Uniform Sarees</a> to <a href="/corporate-uniform-sarees" style="color: inherit; text-decoration: underline;">Corporate Attire</a>.</p>
           <p style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: bold; color: #8c7355; letter-spacing: 1.5px; text-transform: uppercase;">A Heritage of Trust, Originality, and Royal Appeal.</p>
         </div>
       </section>
@@ -554,7 +517,7 @@ async function runPrerender() {
     {
       route: "shop",
       title: "Shop Premium Indian Ethnic Ensembles",
-      description: "Browse our complete collection of 100+ premium sarees, linen sarees, and co-ord sets at Mukesh Saree Centre. Cash on Delivery available.",
+      description: "Browse our complete collection of 100+ premium sarees, linen sarees, and handloom silks at Mukesh Saree Centre. Cash on Delivery available.",
       h1: "Complete Collection",
       introTitle: "Premium Luxury Catalogue",
       introBody: "Find your perfect match from our extensive collection of traditional and modern ethnic wear. We offer the finest silks, breathable cottons, and heavy bridal lehengas, meticulously woven to celebrate Indian heritage.",
@@ -631,15 +594,6 @@ async function runPrerender() {
       introTitle: "Comfortable Everyday Elegance",
       introBody: "Our beautifully tailored kurtas and suit sets blend traditional prints with modern silhouettes. Available in breathable cottons, rich muslins, and soft silks for perfect all-day comfort.",
       filterFn: (p: any) => p.category === "Kurtas" || p.category === "Suits"
-    },
-    {
-      route: "coord-sets",
-      title: "Premium Co-Ord Sets Online",
-      description: "Shop fashionable ethnic and fusion co-ord sets. Luxe cotton and linen pairs for contemporary styling.",
-      h1: "Co-Ord Sets",
-      introTitle: "Luxe Cotton & Linen Pairs",
-      introBody: "Step out in style with our matching co-ord sets. Fusing traditional craftsmanship with modern silhouettes, these coordinated pieces are perfect for lounging, vacations, or casual work wear.",
-      filterFn: (p: any) => p.category === "Co-Ord Sets" || p.category === "Co-Ord Set" || p.category === "Co-Ords"
     }
   ];
 
@@ -774,7 +728,7 @@ async function runPrerender() {
           "@type": "ListItem",
           "position": 3,
           "name": p.category,
-          "item": `https://mukeshsarees.com/shop?category=${encodeURIComponent(p.category === "Co-Ord Sets" ? "Co-Ord-Sets" : p.category)}`
+          "item": `https://mukeshsarees.com/shop?category=${encodeURIComponent(p.category)}`
         },
         {
           "@type": "ListItem",
@@ -856,7 +810,7 @@ async function runPrerender() {
           <nav style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; margin-bottom: 24px;">
             <a href="/" style="color: inherit; text-decoration: none;">Home</a> / 
             <a href="/shop" style="color: inherit; text-decoration: none;">Shop</a> / 
-            <a href="/shop?category=${encodeURIComponent(p.category === "Co-Ord Sets" ? "Co-Ord-Sets" : p.category)}" style="color: inherit; text-decoration: none;">${sanitize(p.category)}</a> / 
+            <a href="/shop?category=${encodeURIComponent(p.category)}" style="color: inherit; text-decoration: none;">${sanitize(p.category)}</a> / 
             <span style="color: #1a0a00; font-weight: bold;">${sanitize(p.name)}</span>
           </nav>
 
@@ -1137,7 +1091,7 @@ async function runPrerender() {
             <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shop By Category</h1>
             <ul>
                <li><a href="/shop?category=Sarees">Premium Sarees</a></li>
-               <li><a href="/shop?category=Co-Ord-Sets">Co-Ord Sets</a></li>
+               <li><a href="/shop?category=Linen Sarees">Linen Sarees</a></li>
                <li><a href="/malvika-saree">Malvika Saree</a></li>
                <li><a href="/uniform-saree">Uniform Sarees</a></li>
                <li><a href="/wedding-sarees">Wedding & Bridal</a></li>
@@ -1205,17 +1159,12 @@ Sitemap: https://mukeshsarees.com/sitemap.xml`;
     { path: "/", changefreq: "daily", priority: "1.0" },
     { path: "/shop", changefreq: "weekly", priority: "0.9" },
     { path: "/shop?category=Sarees", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Co-Ord-Sets", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop?category=Linen Sarees", changefreq: "weekly", priority: "0.8" },
     { path: "/shop?category=Lehengas", changefreq: "weekly", priority: "0.8" },
     { path: "/shop?category=Kurtas", changefreq: "weekly", priority: "0.8" },
-    { path: "/product/premium-pure-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
     { path: "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/pure-beige-cotton-floral-coord-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/pure-cotton-floral-coord-set-white", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/premium-pure-cotton-coord-set-grey", changefreq: "monthly", priority: "0.7" },
     { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral", changefreq: "monthly", priority: "0.7" },
     { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/elegant-forest-green-cotton-coord-set", changefreq: "monthly", priority: "0.7" },
     { path: "/contact", changefreq: "monthly", priority: "0.5" },
     { path: "/wholesalesarees", changefreq: "daily", priority: "0.8" },
     { path: "/shipping-policy", changefreq: "yearly", priority: "0.4" },

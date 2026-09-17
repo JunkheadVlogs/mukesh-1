@@ -17,8 +17,6 @@ export function getImageAlt(product: Partial<Product>) {
   let categoryDisplay = category;
   if (category.toLowerCase() === "sarees") {
     categoryDisplay = "Saree";
-  } else if (category.toLowerCase() === "co-ord sets") {
-    categoryDisplay = "Co-Ord Set";
   } else if (category.toLowerCase() === "lehengas") {
     categoryDisplay = "Lehenga";
   }
@@ -157,36 +155,7 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     }
   }
 
-  // 2. Handle Google Drive URLs: Use Google Edge CDN direct thumbnail
-  const isGoogle = url.includes('drive.google.com') || 
-                   url.includes('googleusercontent.com') ||
-                   url.includes('drive.usercontent.google.com') ||
-                   url.includes('lh3.googleusercontent.com');
-
-  if (isGoogle) {
-    // Extract the raw file ID from the Google Drive URL robustly
-    let driveId = '';
-    const dMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) || url.match(/id%3D([a-zA-Z0-9_-]+)/);
-    const lhMatch = url.match(/googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
-
-    if (dMatch && dMatch[1]) {
-      driveId = dMatch[1];
-    } else if (idMatch && idMatch[1]) {
-      driveId = idMatch[1];
-    } else if (lhMatch && lhMatch[1]) {
-      driveId = lhMatch[1];
-    }
-
-    if (driveId) {
-      // Direct Google Edge CDN URL: Zero 302 redirects, CORS enabled, instant load
-      return `https://lh3.googleusercontent.com/d/${driveId}=w${width}`;
-    }
-    
-    return url;
-  }
-
-  // 3. Local relative paths (/images/products/*.webp, /images/logo.webp, etc.)
+  // 2. Local relative paths (/images/products/*.webp, /images/logo.webp, etc.)
   // Served directly from local/public directory with high performance and zero CDN overhead
   if (url.startsWith('/')) {
     return url;

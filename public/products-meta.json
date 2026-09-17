@@ -1,50 +1,5 @@
 [
   {
-    "name": "Cocoa Brown Cotton Co-Ord Set",
-    "slug": "premium-pure-cotton-coord-set",
-    "description": "DESCRIPTION: This beautiful Cocoa Brown Cotton Co-Ord Set is meticulously fashioned from premium long-staple 100% pure cotton fabric, offering a sooth",
-    "image": "/images/products/p4.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "White & Pink Cotton Floral Co-Ord Set",
-    "slug": "elegant-white-pink-embroidered-pure-cotton-kurta-pant-set",
-    "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated White & Pink Cotton Floral Co-Ord Set is made from refined slub-textured premium organi",
-    "image": "/images/products/p6.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "Beige Cotton Floral Co-Ord Set",
-    "slug": "pure-beige-cotton-floral-coord-set",
-    "description": "DESCRIPTION: For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Beige Cotton",
-    "image": "/images/products/p7.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "White Cotton Floral Co-Ord Set",
-    "slug": "pure-cotton-floral-coord-set-white",
-    "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke White Cotton Floral Co-Ord Set, woven carefully with richly woven high-density organic",
-    "image": "/images/products/p8.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "Grey Cotton Embroidered Co-Ord Set",
-    "slug": "premium-pure-cotton-coord-set-grey",
-    "description": "DESCRIPTION: This beautiful Grey Cotton Embroidered Co-Ord Set is meticulously fashioned from exceptionally soft-washed mercerized pure cotton, showca",
-    "image": "/images/products/p9.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
     "name": "Sunshine Yellow Chiffon Saree",
     "slug": "sunshine-yellow-chiffon-saree-hand-brush-floral",
     "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Sunshine Yellow Chiffon Saree is made from an ultra-delicate and gossamer premium-grade",
@@ -61,69 +16,6 @@
     "price": "749",
     "originalPrice": 1499,
     "fabric": "Khadi Cotton"
-  },
-  {
-    "name": "Elegant Forest Green Cotton Co-Ord Set",
-    "slug": "elegant-forest-green-cotton-coord-set",
-    "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Elegant Forest Green Cotton Co-Ord Set, woven carefully with pure organic cotton fabri",
-    "image": "/images/products/p12.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "Royal Plum Cotton Co-Ord Set Embroidered",
-    "slug": "royal-plum-cotton-coord-set-embroidery",
-    "description": "DESCRIPTION: This beautiful Royal Plum Cotton Co-Ord Set Embroidered is meticulously fashioned from luxuriously soft, premium-weight cotton with a str",
-    "image": "/images/products/p13.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "Elegant Teal Green Cotton Co-Ord Set Embroidered",
-    "slug": "elegant-teal-green-cotton-coord-set-floral-embroidery",
-    "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Elegant Teal Green Cotton Co-Ord Set Embroidered is made from breathable premium pure c",
-    "image": "/images/products/p14.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "Wine Berry Cotton Co-Ord Set Embroidered",
-    "slug": "wine-berry-cotton-coord-set-elegant-embroidery",
-    "description": "DESCRIPTION: For your next upscale high-tea gatherings, festive daytime celebrations, and stylish weekend brunches, opt for this premium Wine Berry Co",
-    "image": "/images/products/p15.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "Soft Blush Pink Co-Ord Set — Delicate Floral Embroidery",
-    "slug": "soft-blush-pink-cotton-coord-set-delicate-embroidery",
-    "description": "DESCRIPTION: Understated luxury meets tradition in this bespoke Soft Blush Pink Co-Ord Set — Delicate Floral Embroidery, woven carefully with premium",
-    "image": "/images/products/p16.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "Soft Blush Pink Co-Ord Set — Multicolor Embroidery",
-    "slug": "soft-blush-pink-cotton-coord-set-multicolor-embroidery",
-    "description": "DESCRIPTION: This beautiful Soft Blush Pink Co-Ord Set — Multicolor Embroidery is meticulously fashioned from premium long-staple 100% pure cotton fab",
-    "image": "/images/products/p17.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
-  },
-  {
-    "name": "Soft Blush Pink Co-Ord Set — Multicolor Embroidery Vol. 2",
-    "slug": "soft-blush-pink-cotton-coord-set-multicolor-embroidery-2",
-    "description": "DESCRIPTION: Imbued with boutique elegance, this sophisticated Soft Blush Pink Co-Ord Set — Multicolor Embroidery Vol. 2 is made from refined slub-tex",
-    "image": "/images/products/p18.webp",
-    "price": "999",
-    "originalPrice": 1999,
-    "fabric": "100% Pure Cotton"
   },
   {
     "name": "Summer Bouquet Linen Saree",

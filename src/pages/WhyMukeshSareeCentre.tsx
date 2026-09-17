@@ -57,7 +57,7 @@ export default function WhyMukeshSareeCentre() {
           "name": "What categories of sarees and ethnic wear are available?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "We offer over 30 categories including Linen sarees, Cotton sarees, Pure Silk sarees, Paithani, Banarasi, Kanjivaram, Malvika tissue sarees, Georgette, Organza, Lehengas, Readymade Suits, Co-ord sets, and Uniform sarees."
+            "text": "We offer over 30 categories including Linen sarees, Cotton sarees, Pure Silk sarees, Paithani, Banarasi, Kanjivaram, Malvika tissue sarees, Georgette, Organza, Lehengas, Readymade Suits, and Uniform sarees."
           }
         }
       ]
@@ -83,7 +83,7 @@ export default function WhyMukeshSareeCentre() {
     {
       icon: Layers,
       title: "30+ Curated Saree & Ethnic Collections",
-      desc: "From breathable daily Linen and soft Cotton to royal Kanjivaram silk, Paithani, tissue Malvika, co-ord sets, and designer lehengas, our showroom houses over 30 versatile varieties."
+      desc: "From breathable daily Linen and soft Cotton to royal Kanjivaram silk, Paithani, tissue Malvika, and designer lehengas, our showroom houses over 30 versatile varieties."
     },
     {
       icon: ShieldCheck,
@@ -150,7 +150,7 @@ export default function WhyMukeshSareeCentre() {
               What We Sell
             </h3>
             <p className="text-[13.5px] font-light text-primary-950/80 text-justify leading-relaxed">
-              Our showroom and online store specialize in authentic <Link to="/sarees" className="text-gold-600 hover:underline">sarees</Link> across every major Indian weave: <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen Sarees</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton Sarees</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Pure Silk Sarees</Link>, <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika Sarees</Link>, Paithani, Banarasi, Kanjivaram, Georgette, and Organza. In addition, we supply designer lehengas, suits, co-ord sets, <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline">uniform sarees for institutions</Link>, and <Link to="/wholesalesarees" className="text-gold-600 hover:underline">wholesale saree bulk orders</Link>.
+              Our showroom and online store specialize in authentic <Link to="/sarees" className="text-gold-600 hover:underline">sarees</Link> across every major Indian weave: <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen Sarees</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton Sarees</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Pure Silk Sarees</Link>, <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika Sarees</Link>, Paithani, Banarasi, Kanjivaram, Georgette, and Organza. In addition, we supply designer lehengas, suits, <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline">uniform sarees for institutions</Link>, and <Link to="/wholesalesarees" className="text-gold-600 hover:underline">wholesale saree bulk orders</Link>.
             </p>
           </div>
 

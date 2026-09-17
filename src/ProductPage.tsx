@@ -66,29 +66,13 @@ const isVideoUrl = (url: any): boolean => {
 const getWhatsAppSafeImageUrl = (imageUrl: string | undefined): string => {
   if (!imageUrl) return 'https://mukeshsarees.com/og-image.jpg';
   
-  // If already a clean URL (Cloudinary, direct hosting), use as-is
-  if (imageUrl.includes('cloudinary.com') || imageUrl.includes('mukeshsarees.com/images')) {
+  // If already a clean URL (ImageKit, Cloudinary, direct hosting), use as-is
+  if (imageUrl.includes('ik.imagekit.io') || imageUrl.includes('cloudinary.com') || imageUrl.includes('mukeshsarees.com/images')) {
     return imageUrl;
   }
   
-  // For Google Drive URLs — extract the file ID and use the direct export URL
-  // Direct export URLs work better for WhatsApp crawlers than thumbnail URLs
-  const driveIdMatch = imageUrl.match(/[?&]id=([^&]+)/);
-  if (driveIdMatch) {
-    const fileId = driveIdMatch[1];
-    // Use the direct download/view URL format which WhatsApp handles better:
-    return `https://drive.google.com/uc?export=view&id=${fileId}`;
-  }
-  
-  // For lh3.googleusercontent.com URLs (already processed Drive images)
-  if (imageUrl.includes('lh3.googleusercontent.com')) {
-    // These can be resized by appending =w1200-h630 at the end
-    const cleanUrl = imageUrl.split('=')[0]; // remove any existing size params
-    return `${cleanUrl}=w1200-h630`;
-  }
-  
   // Fallback to wsrv with better params for WhatsApp
-  if (imageUrl.includes('wsrv.nl') || imageUrl.includes('drive.google.com')) {
+  if (imageUrl.includes('wsrv.nl')) {
     return imageUrl.replace('output=webp', 'output=jpg').replace('w=600', 'w=1200').replace('w=800', 'w=1200');
   }
   
@@ -132,11 +116,6 @@ export default function ProductPage() {
         items.push({ label: "Linen Sarees", to: "/shop?category=Linen Sarees" });
       } else if (fabric) {
         items.push({ label: `${fabric} Sarees`, to: `/shop?category=Sarees&fabric=${encodeURIComponent(fabric)}` });
-      }
-    } else if (category === "Co-Ord Sets") {
-      items.push({ label: "Co-Ord Sets", to: "/shop?category=Co-Ord Sets" });
-      if (fabric.toLowerCase().includes("cotton")) {
-        items.push({ label: "Cotton Co-Ord Sets", to: "/shop?category=Co-Ord Sets&fabric=Cotton" });
       }
     } else if (category) {
       items.push({ label: category, to: `/shop?category=${encodeURIComponent(category)}` });
@@ -200,8 +179,8 @@ export default function ProductPage() {
     [product?.id],
   );
 
-  const isSaree = product ? product.category.toLowerCase().includes("saree") : false;
-  const isCoOrdSet = product ? (product.category === "Co-Ord Sets" || product.category.toLowerCase().includes("co-ord")) : false;
+  const isSaree = product ? product.category.toLowerCase().includes("saree") : true;
+  const isCoOrdSet = false;
   const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Free Size'].filter(s => !(isCoOrdSet && s === 'Free Size'));
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
@@ -673,7 +652,7 @@ export default function ProductPage() {
     );
   }
 
-  const isCoOrd = product.category === "Co-Ord Sets";
+  const isCoOrd = false;
   const sizes = product.availableSizes || ["M", "L", "XL", "XXL", "XXXL"];
 
   const productImages =
@@ -1708,7 +1687,7 @@ export default function ProductPage() {
                   Size Guide
                 </h3>
                 <p className="text-[10px] text-[var(--color-muted)] tracking-wider uppercase mt-0.5">
-                  Co-Ord Sets & Apparel
+                  Apparel & Blouse Sizes
                 </p>
               </div>
               <button

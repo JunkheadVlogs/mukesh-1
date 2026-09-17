@@ -10,8 +10,7 @@ export function ProductAccordion({ category, product }: { category?: string; pro
     setOpenPanel(openPanel === index ? null : index);
   };
 
-  const isCoOrdSet = category?.toLowerCase().includes("co-ord");
-  const isSaree = !isCoOrdSet && (category?.toLowerCase().includes("saree") || product?.name?.toLowerCase().includes("saree"));
+  const isSaree = category?.toLowerCase().includes("saree") || product?.name?.toLowerCase().includes("saree") || true;
   
   const fabricRaw = product?.fabric || "Premium Blended Fabric";
   const cat = category || "Sarees";

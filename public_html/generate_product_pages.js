@@ -107,24 +107,6 @@ function runGenerator() {
         const baseImgUrl = imageInput.split('?')[0];
         // Apply optimal aspect ratio fit at 1200x630px over custom card aspect (at least 300x300 for WhatsApp)
         ogImageUrl = `${baseImgUrl}?tr=w-1200,h-630,c-maintain_ratio,bg-F0F0F0`;
-      } else if (imageInput.includes('drive.google.com')) {
-        // GOOGLE DRIVE DETECTED: Drive URLs are not hot-linkable static image assets
-        // We parse drive document ID and generate a reliable cross-network proxy
-        let docId = '';
-        const rawIdMatch = imageInput.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-        const slashIdMatch = imageInput.match(/\/d\/([a-zA-Z0-9_-]+)/);
-
-        if (rawIdMatch) docId = rawIdMatch[1];
-        else if (slashIdMatch) docId = slashIdMatch[1];
-
-        if (docId) {
-          driveWarnings.push({ id: docId, name, slug, imageInput });
-          // Route through wsrv.nl proxy to render thumbnail at ideal 1200x630 aspect ratio safely
-          const driveSrc = `https://drive.google.com/uc?export=download&id=${docId}`;
-          ogImageUrl = `https://wsrv.nl/?url=${encodeURIComponent(driveSrc)}&w=1200&h=630&fit=contain&cbg=ffffff&output=jpg&q=90`;
-        } else {
-          ogImageUrl = imageInput; // Absolute raw fallback
-        }
       } else {
         // Standard relative or external URLs
         if (imageInput.startsWith('http')) {

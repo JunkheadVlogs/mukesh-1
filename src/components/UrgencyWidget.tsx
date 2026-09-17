@@ -22,14 +22,14 @@ const SAREES_POOL: UrgencyMessage[] = [
   { icon: "🔥", text: "Viral Saree Collection" },
 ];
 
-const CO_ORD_POOL: UrgencyMessage[] = [
-  { icon: "🛍️", text: "Bestselling Co-Ord Set" },
+const LINEN_POOL: UrgencyMessage[] = [
+  { icon: "🛍️", text: "Bestselling Linen Saree" },
   { icon: "⚡", text: "Selling Out Quickly" },
-  { icon: "🔥", text: "Trending Co-Ord Style" },
-  { icon: "💎", text: "Premium Fashion Pick" },
-  { icon: "👑", text: "Most Loved Co-Ord Set" },
-  { icon: "✨", text: "Fast Moving Style" },
-  { icon: "⭐", text: "Top Rated Collection" },
+  { icon: "🔥", text: "Trending Linen Style" },
+  { icon: "💎", text: "Pure Breathable Flax" },
+  { icon: "👑", text: "Most Loved Linen Saree" },
+  { icon: "✨", text: "Fast Moving Collection" },
+  { icon: "⭐", text: "Top Rated Linen" },
   { icon: "🖤", text: "Premium Bestseller" },
 ];
 
@@ -72,8 +72,8 @@ export const LiveViewerCounter: React.FC<Props> = ({ productId, category }) => {
   const selectedPool = useMemo(() => {
     const rawCat = (category || "").toLowerCase();
     
-    if (rawCat.includes("co-ord")) {
-      return CO_ORD_POOL;
+    if (rawCat.includes("linen")) {
+      return LINEN_POOL;
     }
     if (rawCat.includes("lehenga")) {
       return LEHENGAS_POOL;

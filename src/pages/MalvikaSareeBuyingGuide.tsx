@@ -123,7 +123,7 @@ export default function MalvikaSareeBuyingGuide() {
               What We Sell
             </h3>
             <p className="text-[13.5px] font-light text-primary-950/80 text-justify leading-relaxed">
-              In addition to our renowned <Link to="/malvika-saree" className="text-gold-600 hover:underline">Malvika Saree collection</Link>, we curate and supply over 30 categories of ethnic wear including <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen sarees</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton sarees</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Pure Silk sarees</Link>, Paithani, Banarasi, Kanjivaram, Georgette, Organza, custom lehengas, suits, co-ord sets, and <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline">uniform sarees in bulk</Link>.
+              In addition to our renowned <Link to="/malvika-saree" className="text-gold-600 hover:underline">Malvika Saree collection</Link>, we curate and supply over 30 categories of ethnic wear including <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen sarees</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton sarees</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Pure Silk sarees</Link>, Paithani, Banarasi, Kanjivaram, Georgette, Organza, custom lehengas, suits, and <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline">uniform sarees in bulk</Link>.
             </p>
           </div>
 
