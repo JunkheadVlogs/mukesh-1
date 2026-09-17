@@ -45,7 +45,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
         promotions: [
           {
             promotion_id: 'VIPCLUB60',
-            promotion_name: 'Exit Intent 60% Discount'
+            promotion_name: 'Exit Intent Surprise Gift'
           }
         ]
       });
@@ -136,10 +136,10 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                 couponUsed: 'VIPCLUB60',
                 page: window.location.pathname,
                 device: isMobile ? (inApp.isInApp ? `Mobile (${inApp.name})` : 'Mobile') : 'Desktop',
-                request: 'Exit Intent Discount Coupon VIPCLUB60',
+                request: 'Exit Intent Surprise Gift VIPCLUB60',
                 requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000),
-                source: inApp.isInApp ? `Exit Intent Popup (${inApp.name})` : 'Exit Intent Popup',
-                leadSource: 'Exit Intent Popup'
+                source: inApp.isInApp ? `Exit Intent Surprise Gift (${inApp.name})` : 'Exit Intent Surprise Gift',
+                leadSource: 'Exit Intent Surprise Gift'
               })
             }).catch(() => {});
           }
@@ -151,14 +151,14 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
       // Background analytics
       try {
         if ((window as any).fbq) {
-          (window as any).fbq('trackCustom', 'ExitIntentUnlocked', { coupon: 'VIPCLUB60' });
+          (window as any).fbq('trackCustom', 'ExitIntentUnlocked', { coupon: 'VIPCLUB60', gift: 'surprise_gift' });
         }
         if ((window as any).gtag) {
           (window as any).gtag('event', 'select_promotion', {
             promotions: [
               {
                 promotion_id: 'VIPCLUB60',
-                promotion_name: 'Exit Intent 60% Discount'
+                promotion_name: 'Exit Intent Surprise Gift'
               }
             ]
           });
@@ -254,9 +254,10 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
         {stage === 'capture' ? (
           /* ================= STAGE 1: Lead Capture / Offer ================= */
           <div className="flex flex-col text-center w-full">
-            {/* Top red banner */}
-            <div className="bg-[#FF3B30] text-white font-sans font-extrabold text-[11px] sm:text-xs py-2 px-4 uppercase tracking-widest text-center shadow-inner select-none">
-              ⚡ Exclusive 60% Off VIP Pass
+            {/* Top surprise gift banner */}
+            <div className="bg-[#B5894A] text-white font-sans font-extrabold text-[11px] sm:text-xs py-2 px-4 uppercase tracking-widest text-center shadow-inner select-none flex items-center justify-center gap-1.5">
+              <span>🎁</span>
+              <span>Special Surprise Gift Unlocked For You</span>
             </div>
 
             <div className="p-6 sm:p-8 flex flex-col items-center">
@@ -279,7 +280,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                 className="font-sans text-xs sm:text-[13px] mb-5 leading-relaxed max-w-[320px]"
                 style={{ color: '#E0DCD5' }}
               >
-                Enter your details to instantly reveal your exclusive 60% discount code:
+                We have reserved an exclusive surprise gift for your visit today! Enter your details to reveal & claim it instantly:
               </p>
 
               <form onSubmit={handleUnlock} className="w-full flex flex-col text-left space-y-3">
@@ -328,7 +329,7 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                   type="submit"
                   className="w-full flex items-center justify-center gap-2 bg-[#E8B84B] hover:bg-[#F2C968] text-black font-extrabold text-sm sm:text-base tracking-wide uppercase rounded-[10px] py-3.5 px-6 transition-all shadow-lg active:scale-[0.99] cursor-pointer mt-1"
                 >
-                  UNLOCK MY 60% OFF →
+                  CLAIM MY SURPRISE GIFT →
                 </button>
               </form>
 
@@ -352,25 +353,25 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
             </div>
           </div>
         ) : (
-          /* ================= STAGE 2: Success State (Exact PART 3 UI) ================= */
+          /* ================= STAGE 2: Success State ================= */
           <div 
             className="flex flex-col items-center text-center w-full p-6 sm:p-8"
             style={{ animation: 'couponPop 0.3s ease-out forwards' }}
           >
             {/* Headline */}
             <h2 
-              className="text-xl sm:text-2xl font-serif font-bold !text-white mb-4 leading-tight tracking-wide"
+              className="text-xl sm:text-2xl font-serif font-bold !text-white mb-2 leading-tight tracking-wide"
               style={{ color: '#FFFFFF' }}
             >
-              🎉 YOUR 60% OFF IS UNLOCKED!
+              🎉 YOUR SURPRISE GIFT IS REVEALED!
             </h2>
 
             {/* Label */}
             <p 
-              className="font-sans text-xs sm:text-sm mb-2"
+              className="font-sans text-xs sm:text-sm mb-3 leading-relaxed max-w-[340px]"
               style={{ color: '#E0DCD5' }}
             >
-              Your Exclusive Coupon Code:
+              Congratulations! Your surprise gift is an exclusive <span className="text-[#E8B84B] font-bold">60% OFF VIP Discount</span> on your entire order:
             </p>
 
             {/* THE COUPON CODE BOX */}
@@ -399,13 +400,13 @@ export function ExitIntentPopup({ onDismiss, onSubmit }: ExitIntentPopupProps) {
                 onClick={handleClose}
                 className="w-full flex items-center justify-center gap-2 bg-[#E8B84B] hover:bg-[#F2C968] text-black font-extrabold text-sm sm:text-base tracking-wider uppercase rounded-[10px] py-3.5 px-6 transition-all shadow-lg active:scale-[0.99] cursor-pointer"
               >
-                SHOP NOW →
+                USE SURPRISE GIFT & SHOP NOW →
               </button>
             </div>
 
             {/* Small text below */}
             <p className="text-[11px] sm:text-xs text-neutral-400 mt-4 leading-relaxed font-sans max-w-[320px]">
-              Apply VIPCLUB60 at checkout to get your discount.
+              Coupon <span className="text-[#E8B84B] font-semibold">VIPCLUB60</span> is automatically applied to your cart. Valid for today only!
             </p>
           </div>
         )}

@@ -146,6 +146,14 @@ export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOpti
       return;
     }
 
+    // Clean up any old static HTML modal if React has mounted
+    if (typeof document !== 'undefined') {
+      const staticModal = document.getElementById('exitIntentModal');
+      if (staticModal) {
+        staticModal.remove();
+      }
+    }
+
     // Eagerly prefetch popup component
     import('../components/ExitIntentPopup').catch(() => {});
 
@@ -159,13 +167,37 @@ export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOpti
     // Track user engagement/interaction
     const recordInteraction = () => {
       hasInteractedRef.current = true;
+      ensureBackGuard();
     };
+
+    const isProduct = isProductPage();
+
+    // 1. BACK-BUTTON (POPSTATE) GUARD for Mobile, In-App WebViews & Direct Links
+    const ensureBackGuard = () => {
+      try {
+        if (!window.history.state?.exitGuarded) {
+          window.history.pushState({ exitGuarded: true }, '', window.location.href);
+        }
+      } catch {
+        // Ignore pushState errors in sandboxed frames
+      }
+    };
+
+    ensureBackGuard();
+
+    const handlePopState = () => {
+      if (!hasTriggeredRef.current && !isExitPopupAlreadyShown()) {
+        ensureBackGuard();
+        trigger();
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
 
     window.addEventListener('touchstart', recordInteraction, { passive: true });
     window.addEventListener('click', recordInteraction, { passive: true });
     window.addEventListener('keydown', recordInteraction, { passive: true });
 
-    // 1. DESKTOP TRIGGER: Mouse moves to top or leaves window
+    // 2. DESKTOP TRIGGER: Mouse moves to top or leaves window
     const handleMouseMove = (e: MouseEvent) => {
       if (e.clientY <= 15) {
         trigger();
@@ -179,14 +211,17 @@ export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOpti
     document.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave, { passive: true });
 
-    // 2. MOBILE SCROLL TRIGGER
+    // 3. MOBILE SCROLL INTENT TRIGGER
     let lastScrollY = window.scrollY;
     let maxScrollY = window.scrollY;
+    let lastScrollTime = Date.now();
     
     const handleScroll = () => {
       const currentY = window.scrollY;
+      const now = Date.now();
+      const timeDiff = now - lastScrollTime;
       
-      if (currentY > 20) {
+      if (currentY > 30) {
         hasInteractedRef.current = true;
       }
       
@@ -194,47 +229,36 @@ export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOpti
         maxScrollY = currentY;
       }
       
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = docHeight > 0 ? (currentY / docHeight) * 100 : 0;
-
-      // Trigger if visitor has scrolled 15%+ of the page or scrolls up by 20px after scrolling down
-      if (scrollPercent >= 15 || (maxScrollY > 60 && lastScrollY - currentY > 20)) {
-        trigger();
+      // True Exit Gesture on Mobile:
+      // User has scrolled down to browse (maxScrollY > 80) and quickly scrolls up towards the top/header
+      if (maxScrollY > 80 && timeDiff > 0 && timeDiff < 400) {
+        const scrollDiff = lastScrollY - currentY;
+        if (scrollDiff > 35) {
+          trigger();
+        }
       }
       
       lastScrollY = currentY;
+      lastScrollTime = now;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // 3. BACK-BUTTON (POPSTATE) TRIGGER for Mobile & WebViews
-    try {
-      if (!window.history.state?.exitGuarded) {
-        window.history.pushState({ exitGuarded: true }, '', window.location.href);
-      }
-    } catch {
-      // Ignore pushState errors in sandboxed frames
-    }
-
-    const handlePopState = () => {
-      if (!hasTriggeredRef.current) {
-        trigger();
-      }
-    };
-    window.addEventListener('popstate', handlePopState);
-
     // 4. TAB VISIBILITY CHANGE TRIGGER (e.g. user switching tabs or opening another app)
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
+      if (document.visibilityState === 'hidden' && (hasInteractedRef.current || isProduct)) {
         trigger();
       }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // 5. GUARANTEE FALLBACK TIMER (6.5s)
-    // Ensures EVERY visitor gets the exit intent offer at least once even if no exit gesture occurred yet
+    // 5. SAFETY FALLBACK TIMER (Only after giving user ample time to browse product details)
+    // On product pages: 20s. On general pages: 15s.
+    const fallbackDelay = isProduct ? 20000 : 15000;
     const timeDelayTimer = setTimeout(() => {
-      trigger();
-    }, 6500);
+      if (hasInteractedRef.current || window.scrollY > 30) {
+        trigger();
+      }
+    }, fallbackDelay);
 
     return () => {
       clearTimeout(timeDelayTimer);

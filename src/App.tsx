@@ -180,9 +180,9 @@ export default function App() {
       date: new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }),
       time: new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" }),
       deviceType: deviceType,
-      source: "Exit Intent Popup",
-      leadSource: "Exit Intent Popup",
-      request: 'Exit Intent Discount Coupon VIPCLUB60',
+      source: "Exit Intent Surprise Gift",
+      leadSource: "Exit Intent Surprise Gift",
+      request: 'Exit Intent Surprise Gift VIPCLUB60',
       requestId: 'REQ-' + Math.floor(100000 + Math.random() * 900000)
     };
 
@@ -195,7 +195,7 @@ export default function App() {
 
     if ((window as any).fbq) {
       (window as any).fbq('track', 'CompleteRegistration', {
-        content_name: 'VIP Coupon Signup'
+        content_name: 'Surprise Gift Claim'
       });
     }
     
@@ -203,7 +203,7 @@ export default function App() {
       (window as any).gtag('event', 'generate_lead', {
         currency: 'INR',
         value: 60,
-        lead_type: 'Exit Intent'
+        lead_type: 'Exit Intent Surprise Gift'
       });
     }
 

@@ -77,44 +77,34 @@ const app = express();
 // To ensure 100% compatibility in both AI Studio dev environment and live Cloud Run production deployments,
 // we bind to envPort (if specified) and port 3000, then 8080.
 function startListening() {
-  const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : NaN;
-  const portsToListen: number[] = [];
-
-  if (!isNaN(envPort) && envPort > 0) {
-    portsToListen.push(envPort);
-  }
-  if (!portsToListen.includes(3000)) {
-    portsToListen.push(3000);
-  }
-  if (!portsToListen.includes(8080)) {
-    portsToListen.push(8080);
-  }
+  // In development (AI Studio), reverse proxy exclusively forwards to port 3000.
+  // In production (Cloud Run), bind to process.env.PORT if specified, otherwise 3000.
+  const targetPort = isProduction
+    ? (process.env.PORT ? parseInt(process.env.PORT, 10) : 3000)
+    : 3000;
 
   const servers: any[] = [];
 
-  for (const port of portsToListen) {
-    try {
-      const server = app.listen(port, "0.0.0.0", () => {
-        console.log(`[SERVER] Active and listening on http://0.0.0.0:${port} (${isProduction ? "production" : "development"})`);
-      });
+  try {
+    const server = app.listen(targetPort, "0.0.0.0", () => {
+      console.log(`[SERVER] Active and listening on http://0.0.0.0:${targetPort} (${isProduction ? "production" : "development"})`);
+    });
 
-      // Keep connection timeouts slightly above Google Cloud Run load balancer's 60-second idle timeout
-      server.keepAliveTimeout = 65000;
-      server.headersTimeout = 66000;
+    // Keep connection timeouts slightly above Google Cloud Run load balancer's 60-second idle timeout
+    server.keepAliveTimeout = 65000;
+    server.headersTimeout = 66000;
 
-      server.on("error", (err: any) => {
-        if (err.code === "EADDRINUSE") {
-          // Expected when another process/proxy is already bound to this port.
-          console.log(`[SERVER] Port ${port} is occupied (expected if reverse proxy is running on this port).`);
-        } else {
-          console.error(`[SERVER] Error on port ${port}:`, err);
-        }
-      });
+    server.on("error", (err: any) => {
+      if (err.code === "EADDRINUSE") {
+        console.log(`[SERVER] Port ${targetPort} is already in use.`);
+      } else {
+        console.error(`[SERVER] Error on port ${targetPort}:`, err);
+      }
+    });
 
-      servers.push(server);
-    } catch (e: any) {
-      console.warn(`[SERVER] Could not bind to port ${port}:`, e.message);
-    }
+    servers.push(server);
+  } catch (e: any) {
+    console.warn(`[SERVER] Could not bind to port ${targetPort}:`, e.message);
   }
 
   return servers;
