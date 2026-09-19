@@ -431,7 +431,7 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                               {row.val1}
                             </span>
                             {currentProduct.originalPrice && currentProduct.originalPrice > currentProduct.price && (
-                              <span className="text-[10px] text-[#59524A] line-through ml-2">
+                              <span className="text-[10px] text-[#59524A] line-through font-extrabold ml-2">
                                 ₹{formatPrice(currentProduct.originalPrice)}
                               </span>
                             )}
@@ -452,7 +452,7 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                               {row.val2}
                             </span>
                             {selectedProduct.originalPrice && selectedProduct.originalPrice > selectedProduct.price && (
-                              <span className="text-[10px] text-[#59524A] line-through ml-2">
+                              <span className="text-[10px] text-[#59524A] line-through font-extrabold ml-2">
                                 ₹{formatPrice(selectedProduct.originalPrice)}
                               </span>
                             )}

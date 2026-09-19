@@ -138,7 +138,7 @@ export const ProductCard = memo(function ProductCard({
           </span>
           {product.originalPrice && product.originalPrice > product.price && (
             <>
-              <span className="text-[10px] sm:text-[11px] md:text-[12px] text-[#59524A] line-through font-normal shrink-0">
+              <span className="text-[10px] sm:text-[11px] md:text-[12px] text-[#59524A] line-through font-extrabold shrink-0">
                 {formatPrice(product.originalPrice)}
               </span>
               {discountPercentage !== null && (

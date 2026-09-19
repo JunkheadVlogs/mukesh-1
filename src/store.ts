@@ -25,6 +25,7 @@ export interface ColorVariant {
 export interface Product {
   id: string;
   sku?: string;
+  codAvailable?: boolean;
   name: string;
   tagline?: string;
   price: number;
@@ -68,6 +69,8 @@ interface AppState {
   cart: CartItem[];
   wishlist: string[];
   appliedCoupon: string | null;
+  isCheckoutActive: boolean;
+  setCheckoutActive: (active: boolean) => void;
   addToCart: (product: Product, size?: string, quantity?: number) => void;
   removeFromCart: (productId: string, size?: string) => void;
   updateQuantity: (productId: string, size: string | undefined, qty: number) => void;
@@ -83,6 +86,8 @@ export const useStore = create<AppState>()(
       cart: [],
       wishlist: [],
       appliedCoupon: 'VIP50',
+      isCheckoutActive: false,
+      setCheckoutActive: (active: boolean) => set({ isCheckoutActive: active }),
       addToCart: (product, size, quantity = 1) => {
         set((state) => {
           const newState = { appliedCoupon: state.appliedCoupon, cart: state.cart };
@@ -131,8 +136,11 @@ export const useStore = create<AppState>()(
         
         return state.cart.reduce((total, item) => {
           const mrp = item.originalPrice || item.price * 2;
-          // Compute item price as MRP minus the relative discount
-          const calculatedPrice = mrp - Math.round(mrp * discountRate);
+          const standardCalculatedPrice = mrp - Math.round(mrp * discountRate);
+          // For items with a custom promotional price like SAR-LIN-BRD-062, respect item.price if lower
+          const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+            ? item.price
+            : standardCalculatedPrice;
           return total + calculatedPrice * item.quantity;
         }, 0);
       },
@@ -141,6 +149,11 @@ export const useStore = create<AppState>()(
     {
       name: 'mukesh-saree-storage',
       storage: createJSONStorage(() => safeLocalStorage),
+      partialize: (state) => ({
+        cart: state.cart,
+        wishlist: state.wishlist,
+        appliedCoupon: state.appliedCoupon,
+      }),
     }
   )
 );

@@ -1897,13 +1897,14 @@ Pair it with the matching black blouse piece and silver oxidised tribal jewelry 
   {
     id: "p62",
     sku: "SAR-LIN-BRD-062",
+    codAvailable: false,
     name: "Pure Linen Saree with Woven Bird Design & Print | 100% Original Mukesh Saree Centre",
     tagline: "Pure Linen Saree featuring an intricately Woven Bird Design complemented by elegant print details. A 100% original creation by Mukesh Saree Centre.",
     slug: "pure-linen-saree-natural-bird-print-woven-design",
     oldSlug: "chiku-linen-saree-with-bird-digital-print-and-foil-border",
     metaTitle: "Pure Linen Saree with Woven Bird Design & Print | Mukesh Saree Centre",
     metaDescription: "Shop our 100% original Pure Linen Saree featuring an intricately woven bird motif design with elegant print details. An original Mukesh Saree Centre creation made for a distinctive ethnic look.",
-    price: 999,
+    price: 599,
     originalPrice: 1999,
     image: "https://ik.imagekit.io/tus1loev9/beige-printed-cotton-saree-women-model.jpg.jpg",
     images: [

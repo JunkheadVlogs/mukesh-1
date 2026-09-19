@@ -45,6 +45,8 @@ import {
   LowStockMessage,
   CartActivityMessage,
 } from "./components/UrgencyWidget";
+import { FestiveOfferCountdown } from "./components/FestiveOfferCountdown";
+import { SkuUrgencyStock } from "./components/SkuUrgencyStock";
 import { ProductReviews } from "./components/ProductReviews";
 import { TrustBadges } from "./components/TrustBadges";
 
@@ -124,7 +126,7 @@ export default function ProductPage() {
     return items;
   }, [product]);
 
-  const { addToCart, toggleWishlist, wishlist } = useStore();
+  const { addToCart, toggleWishlist, wishlist, setCheckoutActive } = useStore();
 
   const storeCoupon = useStore((state) => state.appliedCoupon);
   const [couponInput, setCouponInput] = useState('');
@@ -166,9 +168,12 @@ export default function ProductPage() {
   };
 
   const mrpPrice = product ? (product.originalPrice || product.price * 2) : 0;
+  const isCodAvailable = product ? (product.codAvailable !== false && product.sku !== 'SAR-LIN-BRD-062') : true;
   const currentCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
   const discountRate = currentCoupon === 'VIP50' ? 0.50 : (currentCoupon === 'VIPCLUB60' || currentCoupon === 'VIP60' || currentCoupon === 'VIBCLUB60') ? 0.60 : 0.0;
-  const finalPrice = mrpPrice - Math.round(mrpPrice * discountRate);
+  const standardDiscountedPrice = mrpPrice - Math.round(mrpPrice * discountRate);
+  // For special promotional SKU SAR-LIN-BRD-062, price is fixed at promotional sale price (₹599)
+  const finalPrice = product && !isCodAvailable ? product.price : standardDiscountedPrice;
   const savedAmount = mrpPrice - finalPrice;
 
   const stats = useMemo(
@@ -353,6 +358,16 @@ export default function ProductPage() {
 
   // Quick Checkout States
   const [showQuickCheckout, setShowQuickCheckout] = useState(false);
+
+  // Synchronize global checkout active state with checkout modals
+  useEffect(() => {
+    const isModalActive = Boolean(showQuickCheckout || showCheckout);
+    setCheckoutActive(isModalActive);
+    return () => {
+      setCheckoutActive(false);
+    };
+  }, [showQuickCheckout, showCheckout, setCheckoutActive]);
+
   const [checkoutForm, setCheckoutForm] = useState({
     fullName: "",
     mobileNumber: "",
@@ -361,6 +376,26 @@ export default function ProductPage() {
     city: "",
     email: "",
   });
+
+  // Prefill checkout form from prior saved checkout info if available
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('customer_checkout_info');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setCheckoutForm(prev => ({
+          fullName: prev.fullName || parsed.name || parsed.fullName || '',
+          mobileNumber: prev.mobileNumber || parsed.phone || parsed.mobileNumber || '',
+          streetAddress: prev.streetAddress || parsed.address || parsed.streetAddress || '',
+          zipCode: prev.zipCode || parsed.zip || parsed.zipCode || '',
+          city: prev.city || parsed.city || '',
+          email: prev.email || parsed.email || '',
+        }));
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
   const [checkoutErrors, setCheckoutErrors] = useState<Record<string, string>>({});
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
 
@@ -710,6 +745,13 @@ export default function ProductPage() {
       return false;
     }
 
+    // For prepaid-only SKUs like SAR-LIN-BRD-062, bypass normal cart flow and open direct checkout
+    if (!isCodAvailable) {
+      setSizeError(false);
+      setShowQuickCheckout(true);
+      return true;
+    }
+
     setSizeError(false);
     addToCart(product, isSaree ? undefined : (selectedSize || undefined), quantity);
     trackAddToCart(product, quantity);
@@ -891,7 +933,9 @@ export default function ProductPage() {
         "name": "Is Cash on Delivery (COD) available for this item?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, Cash on Delivery is available across all serviceable pincodes in India for this item."
+          "text": isCodAvailable
+            ? "Yes, Cash on Delivery is available across all serviceable pincodes in India for this item."
+            : "This promotional item is offered at an exclusive discounted price for prepaid online orders only."
         }
       },
       {
@@ -978,9 +1022,9 @@ export default function ProductPage() {
       />
 
       <div className="max-w-[1400px] mx-auto px-2.5 sm:px-4 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
-        <div className="flex flex-col lg:flex-row gap-1.5 md:gap-12 xl:gap-16">
+        <div className="flex flex-col lg:flex-row gap-0 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
-          <div className="w-full lg:w-[54%] xl:w-[52%] lg:sticky lg:top-28 lg:self-start space-y-2 md:space-y-4">
+          <div className="w-full lg:w-[54%] xl:w-[52%] lg:sticky lg:top-28 lg:self-start space-y-0 md:space-y-4 mb-0">
             <div
               className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y p-2 sm:p-3 md:p-4"
               style={{
@@ -1060,7 +1104,7 @@ export default function ProductPage() {
 
             {productImages.length > 1 && (
               <div 
-                className="product-thumbnails-container flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 pt-1 pb-1 md:py-2 touch-pan-x touch-pan-y"
+                className="product-thumbnails-container flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 pt-1 pb-0 md:py-2 touch-pan-x touch-pan-y"
                 style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
               >
                 {productImages.map((img, idx) => (
@@ -1096,9 +1140,9 @@ export default function ProductPage() {
           {/* Details Section */}
           <div className="w-full lg:w-[46%] xl:w-[48%] px-0">
             <div className="pb-4 lg:pb-12">
-              <header className="product-info-section flex flex-col items-start text-left mt-0 mb-1">
+              <header className="product-info-section flex flex-col items-start text-left mt-0 mb-0">
                 {/* SKU + Category row - Centered, small font, breathable spacing */}
-                <div className="product-meta-row w-full flex flex-wrap items-center justify-center text-center gap-2 sm:gap-2.5 my-2.5 py-1 select-none text-[10px] sm:text-[11px] text-neutral-500 font-medium tracking-wider uppercase">
+                <div className="product-meta-row w-full flex flex-wrap items-center justify-center text-center gap-2 sm:gap-2.5 mt-0.5 sm:mt-1 mb-1 sm:mb-1.5 py-0 select-none text-[10px] sm:text-[11px] text-neutral-500 font-medium tracking-wider uppercase">
                   <span className="category">
                     {product.category}
                   </span>
@@ -1137,7 +1181,7 @@ export default function ProductPage() {
                 </div>
 
                 <h1
-                  className="product-title font-serif text-[var(--color-dark)] font-normal text-[18px] sm:text-[22px] lg:text-[28px] leading-[1.25] lg:leading-[1.2] mb-1.5 lg:mb-3"
+                  className="product-title font-serif text-[var(--color-dark)] font-normal text-[18px] sm:text-[22px] lg:text-[28px] leading-[1.25] lg:leading-[1.2] mb-0"
                   title={product.name}
                 >
                   {product.name}
@@ -1147,37 +1191,9 @@ export default function ProductPage() {
               </header>
 
               {/* Product Info Section wrapping clean, non-overlapping rows */}
-              <div className="product-info-section px-0 py-1.5 border-b border-[var(--color-border)] mb-3 space-y-2">
-                {/* ROW 1 — Price Row with % OFF + Urgency Pop on the SAME line */}
-                <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap sm:flex-nowrap leading-none">
-                  <span className="text-[20px] sm:text-[22px] font-serif font-medium text-[var(--color-dark)] leading-none tracking-wide">
-                    {formatPrice(product.price)}
-                  </span>
-                  {product.originalPrice && (
-                    <span className="text-[12px] sm:text-[13px] text-gray-400 line-through font-light leading-none whitespace-nowrap">
-                      MRP {formatPrice(product.originalPrice)}
-                    </span>
-                  )}
-                  {product.originalPrice &&
-                  product.originalPrice > product.price && (
-                    <span className="text-[10px] font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] px-1.5 py-0.5 rounded-sm tracking-wider uppercase leading-none whitespace-nowrap flex-shrink-0">
-                      {Math.round(
-                        ((product.originalPrice - product.price) /
-                          product.originalPrice) *
-                          100,
-                      )}
-                      % OFF
-                    </span>
-                  )}
-
-                  {/* Urgency Pop on the SAME line after % OFF */}
-                  <div className="flex-shrink-0">
-                    <LiveViewerCounter productId={product.id} category={product.category} />
-                  </div>
-                </div>
-
-                {/* ROW 2 — Combined Row: Star rating + Prepaid Savings Badge + Share Button */}
-                <div className="flex items-center justify-between gap-1.5 sm:gap-3 w-full pt-0.5">
+              <div className="product-info-section px-0 pt-1 sm:pt-1.5 pb-1 border-b border-[var(--color-border)] mb-1.5 sm:mb-2 space-y-1 sm:space-y-1.5">
+                {/* ROW 1 — Star rating + Prepaid Savings Badge + Share Button (Product Information / Rating) */}
+                <div className="flex items-center justify-between gap-1.5 sm:gap-3 w-full">
                   {/* a) Star rating + review count */}
                   <a
                     href="#reviews"
@@ -1203,14 +1219,16 @@ export default function ProductPage() {
                   </a>
 
                   {/* b) "⚡ Save ₹50 Extra on Prepaid Online Orders" badge */}
-                  <div className="flex items-center gap-1 bg-emerald-50 text-emerald-800 px-1.5 py-0.5 rounded-sm border border-emerald-200/60 flex-shrink min-w-0">
-                    <svg className="w-2.5 h-2.5 flex-shrink-0 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                    <span className="text-[9px] sm:text-[10px] font-medium tracking-wide leading-none whitespace-nowrap truncate">
-                      Save <strong className="font-bold">₹50 EXTRA</strong> on Prepaid
-                    </span>
-                  </div>
+                  {isCodAvailable && (
+                    <div className="flex items-center gap-1 bg-emerald-50 text-emerald-800 px-1.5 py-0.5 rounded-sm border border-emerald-200/60 flex-shrink min-w-0">
+                      <svg className="w-2.5 h-2.5 flex-shrink-0 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      <span className="text-[9px] sm:text-[10px] font-medium tracking-wide leading-none whitespace-nowrap truncate">
+                        Save <strong className="font-bold">₹50 EXTRA</strong> on Prepaid
+                      </span>
+                    </div>
+                  )}
 
                   {/* c) Share button — compact icon-only button */}
                   <button
@@ -1226,11 +1244,46 @@ export default function ProductPage() {
                     )}
                   </button>
                 </div>
+
+                {/* SKU-Specific Festive Offer Countdown (ONLY for SAR-LIN-BRD-062) */}
+                {product.sku === "SAR-LIN-BRD-062" && (
+                  <div className="!mb-1 sm:!mb-1.5">
+                    <FestiveOfferCountdown initialMinutes={120} />
+                  </div>
+                )}
+
+                {/* ROW 2 — Price Row with % OFF + Urgency Pop on the SAME line */}
+                <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap sm:flex-nowrap leading-none pt-0">
+                  <span className="text-[20px] sm:text-[22px] font-serif font-medium text-[var(--color-dark)] leading-none tracking-wide">
+                    {formatPrice(product.price)}
+                  </span>
+                  {product.originalPrice && (
+                    <span className="text-[12px] sm:text-[13px] text-[#59524A] line-through font-extrabold leading-none whitespace-nowrap">
+                      MRP {formatPrice(product.originalPrice)}
+                    </span>
+                  )}
+                  {product.originalPrice &&
+                  product.originalPrice > product.price && (
+                    <span className="text-[10px] font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] px-1.5 py-0.5 rounded-sm tracking-wider uppercase leading-none whitespace-nowrap flex-shrink-0">
+                      {Math.round(
+                        ((product.originalPrice - product.price) /
+                          product.originalPrice) *
+                          100,
+                      )}
+                      % OFF
+                    </span>
+                  )}
+
+                  {/* Urgency Pop on the SAME line after % OFF */}
+                  <div className="flex-shrink-0">
+                    <LiveViewerCounter productId={product.id} category={product.category} />
+                  </div>
+                </div>
               </div>
 
               {/* Product Specifications - Clean Minimal List */}
               <div className="product-info product-specs-container">
-                <table className="product-details-table w-full mb-2 border-collapse">
+                <table className="product-details-table w-full mb-1 sm:mb-1.5 border-collapse">
                   <tbody>
                     <tr className="border-none">
                       <td className="product-details-label font-light uppercase">
@@ -1336,7 +1389,11 @@ export default function ProductPage() {
               )}
 
               <div className="product-info">
-                <LowStockMessage productId={product.id} />
+                {product.sku === "SAR-LIN-BRD-062" ? (
+                  <SkuUrgencyStock stockCount={product.stock ?? 9} />
+                ) : (
+                  <LowStockMessage productId={product.id} />
+                )}
               </div>
 
               {/* Actions */}
@@ -1384,7 +1441,7 @@ export default function ProductPage() {
                       data-action="buy-now"
                       id="buy-now"
                     >
-                      Buy Now — COD Available 🛍️
+                      {product.sku === 'SAR-LIN-BRD-062' ? "BUY NOW" : (isCodAvailable ? "Buy Now — COD Available 🛍️" : "Buy Now — Prepaid Only 🛍️")}
                     </button>
                   </div>
 
@@ -1801,7 +1858,7 @@ export default function ProductPage() {
               </span>
               {product?.originalPrice && product.originalPrice > product.price && (
                 <>
-                  <span className="text-[11px] text-[#59524A] line-through font-normal shrink-0 leading-none">
+                  <span className="text-[11px] text-[#59524A] line-through font-extrabold shrink-0 leading-none">
                     {formatPrice(product.originalPrice)}
                   </span>
                   <span className="text-[9px] font-extrabold text-[#8C1D18] bg-[#FFF1F2] border border-[#FECDD3] rounded-[4px] px-1.5 py-0.5 tracking-[0.05em] uppercase shrink-0 leading-none">
@@ -1825,11 +1882,11 @@ export default function ProductPage() {
       {/* Quick Checkout Modal */}
       {showQuickCheckout && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 xs:p-4 overflow-hidden transition-opacity duration-200"
+          className="fixed inset-0 bg-white sm:bg-black/60 sm:backdrop-blur-sm z-[9999] flex items-stretch sm:items-center justify-center p-0 sm:p-4 overflow-hidden transition-opacity duration-200"
           onClick={() => setShowQuickCheckout(false)}
         >
           <div
-            className="bg-white rounded-t-xl sm:rounded-lg shadow-xl w-full max-w-md h-[95vh] sm:h-auto max-h-[92vh] sm:max-h-[85vh] flex flex-col overflow-hidden relative border border-[#2C241B]/10 my-auto"
+            className="bg-white rounded-none sm:rounded-lg shadow-none sm:shadow-xl w-full sm:max-w-md h-full sm:h-auto sm:max-h-[85vh] flex flex-col overflow-hidden relative border-0 sm:border sm:border-[#2C241B]/10 my-0 sm:my-auto"
             onClick={(e) => e.stopPropagation()}
           >
               {/* Header */}
@@ -1873,12 +1930,12 @@ export default function ProductPage() {
                   <div className="mt-1 border-t border-[#2C241B]/5 pt-1.5 font-sans space-y-0.5 text-[10px] sm:text-xs text-[#2C241B]/80">
                     <div className="flex justify-between items-center">
                       <span>MRP Total:</span>
-                      <span className="line-through text-[#59524A]">{formatPrice(mrpPrice * quantity)}</span>
+                      <span className="line-through text-[#59524A] font-extrabold">{formatPrice(mrpPrice * quantity)}</span>
                     </div>
                     <div className="flex justify-between items-center text-emerald-600 font-medium">
                       <span>Discount:</span>
                       <span>
-                        {(currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") ? "60% OFF" : "50% OFF"}
+                        {!isCodAvailable ? "70% OFF" : ((currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") ? "60% OFF" : "50% OFF")}
                       </span>
                     </div>
                     <div className="flex justify-between items-center text-[#2C241B] font-bold mt-0.5 text-xs sm:text-sm">
@@ -2033,61 +2090,63 @@ export default function ProductPage() {
                   </div>
                 </div>
 
-                {/* Promo Code Section */}
-                <div className="border border-[#2C241B]/10 p-2.5 rounded-[3px] bg-[#FDFDFB] text-left">
-                  <span className="block text-[9px] uppercase tracking-[1px] font-semibold text-[#2C241B] mb-1.5">
-                    Promo Code
-                  </span>
-                  
-                  {!appliedCoupon ? (
-                    <div className="flex gap-2 items-stretch w-full">
-                      <input
-                        type="text"
-                        value={couponInput}
-                        onChange={(e) => setCouponInput(e.target.value)}
-                        placeholder="ENTER COUPON CODE"
-                        className="flex-grow min-w-0 bg-[#FAF9F5] border border-[#2C241B]/15 rounded-[3px] px-2.5 text-[9px] text-[#2C241B] placeholder-[#2C241B]/40 focus:outline-none focus:border-[#2C241B] uppercase font-medium tracking-wide h-8"
-                      />
-                      <button
-                        type="button"
-                        onClick={applyCoupon}
-                        className="bg-[#2C241B] hover:bg-black text-[9px] text-white px-3 font-bold uppercase tracking-wider rounded-[3px] shrink-0 flex items-center justify-center transition-colors h-8"
-                      >
-                        Apply
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-between gap-2.5 bg-[#E8F8EE] border border-[#3ECF6A]/20 px-2 py-1 rounded-[3px]">
-                      <div className="flex flex-col min-w-0">
-                        <span className="text-[9px] font-bold text-[#1E7E34] truncate">
-                          ✓ Applied: {appliedCoupon}
-                        </span>
-                        <span className="text-[8px] text-[#1E7E34] font-medium uppercase tracking-wide text-left">
-                          {(currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") ? "60% OFF ON MRP SUCCESSFULLY APPLIED" : "50% OFF ON MRP SUCCESSFULLY APPLIED"}
-                        </span>
+                {/* Promo Code Section - Hidden specifically for SKU SAR-LIN-BRD-062 */}
+                {product.sku !== 'SAR-LIN-BRD-062' && (
+                  <div className="border border-[#2C241B]/10 p-2.5 rounded-[3px] bg-[#FDFDFB] text-left">
+                    <span className="block text-[9px] uppercase tracking-[1px] font-semibold text-[#2C241B] mb-1.5">
+                      Promo Code
+                    </span>
+                    
+                    {!appliedCoupon ? (
+                      <div className="flex gap-2 items-stretch w-full">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          placeholder="ENTER COUPON CODE"
+                          className="flex-grow min-w-0 bg-[#FAF9F5] border border-[#2C241B]/15 rounded-[3px] px-2.5 text-[9px] text-[#2C241B] placeholder-[#2C241B]/40 focus:outline-none focus:border-[#2C241B] uppercase font-medium tracking-wide h-8"
+                        />
+                        <button
+                          type="button"
+                          onClick={applyCoupon}
+                          className="bg-[#2C241B] hover:bg-black text-[9px] text-white px-3 font-bold uppercase tracking-wider rounded-[3px] shrink-0 flex items-center justify-center transition-colors h-8"
+                        >
+                          Apply
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          try {
-                            sessionStorage.setItem('coupon_removed', 'true');
-                          } catch (e) {}
-                          useStore.getState().applyCoupon(null);
-                          setAppliedCoupon(null);
-                          setCouponInput("");
-                          setCouponMsg("");
-                          setCouponError(false);
-                        }}
-                        className="text-[9px] font-bold text-red-600 uppercase tracking-wider hover:underline"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  )}
-                  {couponError && (
-                    <p className="text-red-600 text-[10px] mt-1 text-left font-medium">✗ Invalid Coupon Code</p>
-                  )}
-                </div>
+                    ) : (
+                      <div className="flex items-center justify-between gap-2.5 bg-[#E8F8EE] border border-[#3ECF6A]/20 px-2 py-1 rounded-[3px]">
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-[9px] font-bold text-[#1E7E34] truncate">
+                            ✓ Applied: {appliedCoupon}
+                          </span>
+                          <span className="text-[8px] text-[#1E7E34] font-medium uppercase tracking-wide text-left">
+                            {(currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") ? "60% OFF ON MRP SUCCESSFULLY APPLIED" : "50% OFF ON MRP SUCCESSFULLY APPLIED"}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            try {
+                              sessionStorage.setItem('coupon_removed', 'true');
+                            } catch (e) {}
+                            useStore.getState().applyCoupon(null);
+                            setAppliedCoupon(null);
+                            setCouponInput("");
+                            setCouponMsg("");
+                            setCouponError(false);
+                          }}
+                          className="text-[9px] font-bold text-red-600 uppercase tracking-wider hover:underline"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    )}
+                    {couponError && (
+                      <p className="text-red-600 text-[10px] mt-1 text-left font-medium">✗ Invalid Coupon Code</p>
+                    )}
+                  </div>
+                )}
 
                 {/* Pricing Summary Breakdown */}
                 <div className="space-y-1.5 border-t border-[#2C241B]/10 pt-2.5 text-[10px] font-medium text-[#2C241B]/70 font-sans text-left pb-1">
@@ -2096,18 +2155,27 @@ export default function ProductPage() {
                     <span className="text-[#2C241B] font-bold">{formatPrice(mrpPrice * quantity)}</span>
                   </div>
 
-                  {currentCoupon === "VIP50" && (
+                  {!isCodAvailable ? (
                     <div className="flex justify-between text-[#1E7E34]">
-                      <span>VIP50 Applied</span>
-                      <span className="font-bold">-{formatPrice(Math.round(mrpPrice * 0.50) * quantity)}</span>
+                      <span>Special Promotional Discount (70% OFF)</span>
+                      <span className="font-bold">-{formatPrice((mrpPrice - finalPrice) * quantity)}</span>
                     </div>
-                  )}
+                  ) : (
+                    <>
+                      {currentCoupon === "VIP50" && (
+                        <div className="flex justify-between text-[#1E7E34]">
+                          <span>VIP50 Applied</span>
+                          <span className="font-bold">-{formatPrice(Math.round(mrpPrice * 0.50) * quantity)}</span>
+                        </div>
+                      )}
 
-                  {(currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") && (
-                    <div className="flex justify-between text-[#1E7E34]">
-                      <span>VIPCLUB60 Applied</span>
-                      <span className="font-bold">-{formatPrice(Math.round(mrpPrice * 0.60) * quantity)}</span>
-                    </div>
+                      {(currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") && (
+                        <div className="flex justify-between text-[#1E7E34]">
+                          <span>VIPCLUB60 Applied</span>
+                          <span className="font-bold">-{formatPrice(Math.round(mrpPrice * 0.60) * quantity)}</span>
+                        </div>
+                      )}
+                    </>
                   )}
 
                   <div className="flex justify-between">
@@ -2134,16 +2202,23 @@ export default function ProductPage() {
 
               {/* Sticky/Fixed Footer with buttons */}
               <div className="shrink-0 bg-[#FAF9F5] border-t border-[#2C241B]/10 p-3 sm:px-6 sm:py-3.5">
+                {!isCodAvailable && product.sku !== 'SAR-LIN-BRD-062' && (
+                  <div className="mb-2 text-[10px] text-[#2C241B]/80 bg-[#FFFDF8] border border-[#C9A84C]/35 rounded-[3px] px-2.5 py-1.5 text-center font-medium">
+                    ⚡ <strong>Special ₹599 Offer:</strong> Prepaid orders only via Razorpay (UPI, Google Pay, PhonePe, Cards, Net Banking). Cash on Delivery is disabled.
+                  </div>
+                )}
                 {/* Multi-payment Action Buttons */}
-                <div className="grid grid-cols-2 gap-2 font-sans-serif">
-                  <button
-                    type="button"
-                    disabled={isSubmittingOrder}
-                    onClick={() => handleBuyNowPayment("cod")}
-                    className="w-full h-11 bg-[#2C241B]/10 hover:bg-[#2C241B]/15 text-[#2C241B] tracking-[1px] font-bold text-[10px] uppercase transition-all rounded-[3px] active:scale-[0.99] flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50 border border-[#2C241B]/15"
-                  >
-                    {isSubmittingOrder ? "..." : "Cash on Delivery"}
-                  </button>
+                <div className={isCodAvailable ? "grid grid-cols-2 gap-2 font-sans-serif" : "w-full font-sans-serif"}>
+                  {isCodAvailable && (
+                    <button
+                      type="button"
+                      disabled={isSubmittingOrder}
+                      onClick={() => handleBuyNowPayment("cod")}
+                      className="w-full h-11 bg-[#2C241B]/10 hover:bg-[#2C241B]/15 text-[#2C241B] tracking-[1px] font-bold text-[10px] uppercase transition-all rounded-[3px] active:scale-[0.99] flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50 border border-[#2C241B]/15"
+                    >
+                      {isSubmittingOrder ? "..." : "Cash on Delivery"}
+                    </button>
+                  )}
                   <button
                     type="button"
                     disabled={isSubmittingOrder}
@@ -2159,7 +2234,7 @@ export default function ProductPage() {
                         opening...
                       </span>
                     ) : (
-                      "Pay Online (UPI)"
+                      product.sku === 'SAR-LIN-BRD-062' ? "DELIVER TO THIS ADDRESS" : (isCodAvailable ? "Pay Online (UPI)" : `Pay Online ₹${finalPrice * quantity} (Razorpay UPI / Cards)`)
                     )}
                   </button>
                 </div>

@@ -87,8 +87,16 @@ export default function Cart() {
   const activeCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
 
   const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
-  const discountAmount = Math.round(subtotalMRP * discountRate);
-  const total = subtotalMRP - discountAmount;
+  const hasPromotionalItem = cart.some(item => item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062');
+  const total = cart.reduce((sum, item) => {
+    const mrp = item.originalPrice || item.price * 2;
+    const standardPrice = mrp - Math.round(mrp * discountRate);
+    const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+      ? item.price
+      : standardPrice;
+    return sum + calculatedPrice * item.quantity;
+  }, 0);
+  const discountAmount = subtotalMRP - total;
 
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,7 +142,10 @@ export default function Cart() {
             {cart.map((item) => {
               const mrp = item.originalPrice || item.price * 2;
               const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
-              const calculatedPrice = mrp - Math.round(mrp * discountRate);
+              const standardPrice = mrp - Math.round(mrp * discountRate);
+              const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+                ? item.price
+                : standardPrice;
               const itemTotal = calculatedPrice * item.quantity;
               const itemMRP = mrp * item.quantity;
               return (
@@ -162,7 +173,7 @@ export default function Cart() {
                           </p>
                           {item.originalPrice && (
                             <>
-                              <p className="text-[9px] sm:text-xs text-[#59524A] line-through font-medium leading-none mt-0.5">
+                              <p className="text-[9px] sm:text-xs text-[#59524A] line-through font-extrabold leading-none mt-0.5">
                                 {formatPrice(itemMRP)}
                               </p>
                               <p className="text-[8px] sm:text-[10px] uppercase tracking-[0.5px] sm:tracking-[1px] font-bold text-[#6B4C2F] mt-0.5 leading-none">
@@ -272,17 +283,26 @@ export default function Cart() {
                   <span className="text-primary-950 font-bold">{formatPrice(subtotalMRP)}</span>
                 </div>
                 
-                {(activeCoupon === "VIP55" || activeCoupon === "VIP50" || !activeCoupon) && (
+                {hasPromotionalItem ? (
                   <div className="flex justify-between text-[#1E7E34]">
-                    <span>VIP50 Applied</span>
+                    <span>Discount Applied</span>
                     <span className="font-bold">-{formatPrice(discountAmount)}</span>
                   </div>
-                )}
-                {(activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") && (
-                  <div className="flex justify-between text-[#1E7E34]">
-                    <span>VIPCLUB60 Applied</span>
-                    <span className="font-bold">-{formatPrice(discountAmount)}</span>
-                  </div>
+                ) : (
+                  <>
+                    {(activeCoupon === "VIP55" || activeCoupon === "VIP50" || !activeCoupon) && (
+                      <div className="flex justify-between text-[#1E7E34]">
+                        <span>VIP50 Applied</span>
+                        <span className="font-bold">-{formatPrice(discountAmount)}</span>
+                      </div>
+                    )}
+                    {(activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") && (
+                      <div className="flex justify-between text-[#1E7E34]">
+                        <span>VIPCLUB60 Applied</span>
+                        <span className="font-bold">-{formatPrice(discountAmount)}</span>
+                      </div>
+                    )}
+                  </>
                 )}
 
                 <div className="flex justify-between">
@@ -294,11 +314,13 @@ export default function Cart() {
                   <span className="text-[#2C241B]/45 font-medium">Included</span>
                 </div>
                 
-                <div className="flex items-center justify-center gap-1 bg-emerald-50 text-emerald-700 px-1.5 py-0 rounded-sm border border-emerald-100/50">
-                  <span className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wide leading-none py-0.5">
-                    🎁 Save ₹50 EXTRA on prepaid online orders at checkout!
-                  </span>
-                </div>
+                {!hasPromotionalItem && (
+                  <div className="flex items-center justify-center gap-1 bg-emerald-50 text-emerald-700 px-1.5 py-0 rounded-sm border border-emerald-100/50">
+                    <span className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wide leading-none py-0.5">
+                      🎁 Save ₹50 EXTRA on prepaid online orders at checkout!
+                    </span>
+                  </div>
+                )}
 
                 <div className="pt-2.5 sm:pt-4 border-t border-black/5 flex justify-between items-center gap-2">
                   <span className="text-sm sm:text-base md:text-lg font-serif text-primary-950 font-normal">Grand Total</span>

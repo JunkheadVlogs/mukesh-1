@@ -120,7 +120,7 @@ export default function QuickViewModal({
                  <h2 className="text-xl sm:text-2xl md:text-3xl font-serif text-primary-950 mb-4 font-semibold tracking-[1px] text-center overflow-visible break-words whitespace-normal leading-snug">{product.name}</h2>
                  <div className="flex items-center justify-center gap-3 mb-5 flex-wrap w-full">
                     <span className="text-[24px] font-bold text-price font-price whitespace-nowrap">{formatPrice(product.price)}</span>
-                    <span className="text-[15px] md:text-xl text-[#59524A] line-through font-medium font-price whitespace-nowrap">MRP {formatPrice(product.originalPrice || product.price * 2)}</span>
+                    <span className="text-[15px] md:text-xl text-[#59524A] line-through font-extrabold font-price whitespace-nowrap">MRP {formatPrice(product.originalPrice || product.price * 2)}</span>
                     <span className="text-[10px] font-sans font-bold text-[#6B4C2F] bg-[#F7F3EE] px-[8px] py-[4px] rounded-[8px] uppercase tracking-[1px] whitespace-nowrap">
                       {Math.round((1 - product.price / (product.originalPrice || product.price * 2)) * 100)}% OFF
                     </span>

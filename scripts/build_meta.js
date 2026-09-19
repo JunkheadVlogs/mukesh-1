@@ -19,6 +19,8 @@ try {
     return {
       name: p.name,
       slug: p.slug,
+      sku: p.sku || undefined,
+      codAvailable: p.codAvailable !== undefined ? p.codAvailable : undefined,
       description: cleanDesc,
       image: p.image,
       price: String(p.price || ""),
@@ -37,9 +39,13 @@ try {
     fs.mkdirSync(publicPath, { recursive: true });
   }
 
-  // Write to both dist (production distribution) and public (fallback/dev server references)
+  // Write to dist, public, and public_html if exists
   fs.writeFileSync(path.join(distPath, "products-meta.json"), JSON.stringify(preParsedProducts, null, 2));
   fs.writeFileSync(path.join(publicPath, "products-meta.json"), JSON.stringify(preParsedProducts, null, 2));
+  const publicHtmlPath = path.join(process.cwd(), "public_html");
+  if (fs.existsSync(publicHtmlPath)) {
+    fs.writeFileSync(path.join(publicHtmlPath, "products-meta.json"), JSON.stringify(preParsedProducts, null, 2));
+  }
 
   console.log(`[build_meta] Successfully compiled and verified ${preParsedProducts.length} product metadata files.`);
 } catch (e) {

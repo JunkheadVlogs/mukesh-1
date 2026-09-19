@@ -104,7 +104,7 @@ h3 {
   .product-title {
     font-size: 18px !important;
     line-height: 1.25 !important;
-    margin-bottom: 6px !important;
+    margin-bottom: 0px !important;
   }
 }
 input,
@@ -342,10 +342,9 @@ video.product-main-img {
 .product-image-container,
 [class*="product-image-container"] {
   max-height: 60vh;
+  height: auto;
   width: 100%;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
+  display: block;
   background: #fafafa;
   overflow: hidden;
 }
@@ -424,13 +423,15 @@ video.product-main-img {
 }
 
 .product-details-table tr {
-  padding: 4px 0;
-  line-height: 1.4;
+  padding: 0;
+  line-height: 1.25;
 }
 
 .product-details-table td {
-  padding: 3px 8px 3px 0;
+  padding: 2px 8px 2px 0;
   font-size: 13px;
+  vertical-align: top;
+  line-height: 1.25;
 }
 
 .product-details-label {
@@ -438,6 +439,7 @@ video.product-main-img {
   letter-spacing: 0.05em;
   color: #59524A;
   min-width: 70px;
+  line-height: 1.25;
 }
 
 .need-help-bar {
@@ -1092,7 +1094,7 @@ video::-webkit-media-controls-fullscreen-button {
   .product-title {
     font-size: 28px !important;
     line-height: 1.2 !important;
-    margin-bottom: 12px !important;
+    margin-bottom: 6px !important;
   }
 
   /* 5. Clean up description and accordion spacing */
@@ -1190,6 +1192,75 @@ body.has-sticky-atc #whatsapp-float-container {
   body.has-sticky-atc #whatsapp-float-container {
     bottom: 24px !important;
     right: 20px !important;
+  }
+}
+
+/* ==========================================================================
+   📱 MOBILE PRODUCT PAGE STREAMLINED SPACING (BELOW 768px)
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* Parent containers: remove bottom padding/margins on gallery and info wrappers */
+  .gallery-main,
+  .product-image-container {
+    height: auto !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* 1. Thumbnails: sit tight to main image and ensure bottom spacing is 4px */
+  .product-thumbnails-container {
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Parent details section wrapper: reset top padding so first item starts immediately */
+  .product-info-section,
+  header.product-info-section,
+  div.product-info-section {
+    padding-top: 0 !important;
+  }
+
+  /* 2. SKU and Category row: exactly 4px below thumbnails, 4px above title */
+  .product-meta-row {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* 3. Product Title: 0 margin top, exactly 4px margin bottom to reviews row */
+  .product-title {
+    margin-top: 0 !important;
+    margin-bottom: 4px !important;
+  }
+
+  header.product-info-section {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* 4. Details inner section (holds reviews, countdown, price) */
+  div.product-info-section {
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+    padding-top: 0 !important;
+    padding-bottom: 6px !important;
+    gap: 4px !important;
+  }
+
+  div.product-info-section > * {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* 4 & 5. Countdown box: exactly 4-6px spacing above and below */
+  #festive-offer-countdown-box {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
   }
 }
 

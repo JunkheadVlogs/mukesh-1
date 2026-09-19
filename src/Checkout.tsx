@@ -37,7 +37,14 @@ export default function Checkout() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderId, setOrderId] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const hasNonCodItem = cart.some(
+    (item) => item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062'
+  );
+  const [paymentMethod, setPaymentMethod] = useState(() => {
+    return cart.some((item) => item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+      ? "online"
+      : "cod";
+  });
   const [couponInput, setCouponInput] = useState(appliedCoupon || "");
   const [couponError, setCouponError] = useState("");
   const [pinCode, setPinCode] = useState("");
@@ -62,6 +69,12 @@ export default function Checkout() {
     }
   }, [appliedCoupon]);
 
+  useEffect(() => {
+    if (hasNonCodItem && paymentMethod === "cod") {
+      setPaymentMethod("online");
+    }
+  }, [hasNonCodItem, paymentMethod]);
+
   const subtotalMRP = cart.reduce(
     (total, item) => total + (item.originalPrice || item.price * 2) * item.quantity,
     0,
@@ -74,11 +87,16 @@ export default function Checkout() {
 
   const totalRaw = cart.reduce((sum, item) => {
     const mrp = item.originalPrice || item.price * 2;
-    const calculatedPrice = mrp - Math.round(mrp * discountRate);
+    const standardPrice = mrp - Math.round(mrp * discountRate);
+    const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+      ? item.price
+      : standardPrice;
     return sum + calculatedPrice * item.quantity;
   }, 0);
   
-  const finalTotal = paymentMethod === "online" ? Math.max(0, totalRaw - 50) : totalRaw;
+  const isPrepaidDiscountEligible = !hasNonCodItem;
+  const prepaidDiscount = (paymentMethod === "online" && isPrepaidDiscountEligible) ? 50 : 0;
+  const finalTotal = Math.max(0, totalRaw - prepaidDiscount);
 
   const displayDiscountPercent = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60") ? 60 : 50;
 
@@ -724,38 +742,44 @@ export default function Checkout() {
                 </h2>
                 <div className="flex flex-col gap-2 md:gap-3">
                   {/* Cash on Delivery */}
-                  <div
-                    onClick={() => setPaymentMethod("cod")}
-                    className="payment-option transition-all p-2.5 sm:p-4 rounded-sm cursor-pointer hover:border-gold-500/40"
-                    style={{
-                      border: paymentMethod === "cod" ? "2px solid #C9A84C" : "1px solid rgba(0, 0, 0, 0.1)",
-                      background: paymentMethod === "cod" ? "#FFFDF8" : "transparent",
-                    }}
-                  >
-                    <label className="flex items-center gap-2.5 sm:gap-3 cursor-pointer m-0 w-full select-none">
-                      <input
-                        type="radio"
-                        name="payment_method"
-                        value="cod"
-                        checked={paymentMethod === "cod"}
-                        onChange={() => setPaymentMethod("cod")}
-                        style={{
-                          width: "16px",
-                          height: "16px",
-                          accentColor: "#C9A84C",
-                        }}
-                        className="cursor-pointer flex-shrink-0"
-                      />
-                      <div className="flex-grow">
-                        <strong className="text-[13px] sm:text-[15px] font-bold text-[#1A0A00] block leading-snug">
-                          💵 Cash on Delivery (COD)
-                        </strong>
-                        <div className="text-[11px] sm:text-[13px] text-[#6B5F4A] mt-0.5 leading-tight">
-                          Pay when your order arrives. 100% safe.
+                  {!hasNonCodItem ? (
+                    <div
+                      onClick={() => setPaymentMethod("cod")}
+                      className="payment-option transition-all p-2.5 sm:p-4 rounded-sm cursor-pointer hover:border-gold-500/40"
+                      style={{
+                        border: paymentMethod === "cod" ? "2px solid #C9A84C" : "1px solid rgba(0, 0, 0, 0.1)",
+                        background: paymentMethod === "cod" ? "#FFFDF8" : "transparent",
+                      }}
+                    >
+                      <label className="flex items-center gap-2.5 sm:gap-3 cursor-pointer m-0 w-full select-none">
+                        <input
+                          type="radio"
+                          name="payment_method"
+                          value="cod"
+                          checked={paymentMethod === "cod"}
+                          onChange={() => setPaymentMethod("cod")}
+                          style={{
+                            width: "16px",
+                            height: "16px",
+                            accentColor: "#C9A84C",
+                          }}
+                          className="cursor-pointer flex-shrink-0"
+                        />
+                        <div className="flex-grow">
+                          <strong className="text-[13px] sm:text-[15px] font-bold text-[#1A0A00] block leading-snug">
+                            💵 Cash on Delivery (COD)
+                          </strong>
+                          <div className="text-[11px] sm:text-[13px] text-[#6B5F4A] mt-0.5 leading-tight">
+                            Pay when your order arrives. 100% safe.
+                          </div>
                         </div>
-                      </div>
-                    </label>
-                  </div>
+                      </label>
+                    </div>
+                  ) : (
+                    <div className="p-3 bg-[#FFFDF8] border border-[#C9A84C]/30 rounded-sm text-xs text-[#2C241B]/80 font-medium">
+                      ℹ️ <strong>Cash on Delivery is disabled:</strong> Your order contains a promotional item (Pure Linen Saree - ₹599) which is eligible for prepaid online orders only.
+                    </div>
+                  )}
 
                   {/* Razorpay Online Payment */}
                   <div
@@ -783,7 +807,9 @@ export default function Checkout() {
                       <div className="flex-grow">
                         <strong className="text-[13px] sm:text-[15px] font-bold text-[#1A0A00] flex flex-wrap items-center gap-1.5 leading-snug">
                           💳 Pay Online (UPI, Cards, Wallets via Razorpay)
-                          <span className="text-[10px] sm:text-[11px] font-bold px-1.5 py-0 rounded-sm bg-emerald-100 text-emerald-800 uppercase tracking-wide leading-none">Save ₹50 Extra</span>
+                          {isPrepaidDiscountEligible && (
+                            <span className="text-[10px] sm:text-[11px] font-bold px-1.5 py-0 rounded-sm bg-emerald-100 text-emerald-800 uppercase tracking-wide leading-none">Save ₹50 Extra</span>
+                          )}
                         </strong>
                         <div className="text-[11px] sm:text-[13px] text-[#6B5F4A] mt-0.5 leading-tight">
                           Pay securely via UPI, Cards, NetBanking, or Wallets.
@@ -879,7 +905,10 @@ export default function Checkout() {
                 {cart.map((item) => {
                   const mrp = item.originalPrice || item.price * 2;
                   const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
-                  const calculatedPrice = mrp - Math.round(mrp * discountRate);
+                  const standardPrice = mrp - Math.round(mrp * discountRate);
+                  const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+                    ? item.price
+                    : standardPrice;
                   return (
                     <div
                       key={`${item.id}-${item.size}`}
@@ -973,21 +1002,30 @@ export default function Checkout() {
                     </span>
                   </div>
 
-                  {(activeCoupon === "VIP50" || !activeCoupon) && (
+                  {hasNonCodItem ? (
                     <div className="flex justify-between items-center text-[#1E7E34]">
-                      <span>VIP50 Applied</span>
-                      <span className="font-bold">-{formatPrice(Math.round(subtotalMRP * 0.50))}</span>
+                      <span>Discount Applied</span>
+                      <span className="font-bold">-{formatPrice(subtotalMRP - totalRaw)}</span>
                     </div>
+                  ) : (
+                    <>
+                      {(activeCoupon === "VIP50" || !activeCoupon) && (
+                        <div className="flex justify-between items-center text-[#1E7E34]">
+                          <span>VIP50 Applied</span>
+                          <span className="font-bold">-{formatPrice(Math.round(subtotalMRP * 0.50))}</span>
+                        </div>
+                      )}
+
+                      {(activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60") && (
+                        <div className="flex justify-between items-center text-[#1E7E34]">
+                          <span>VIPCLUB60 Applied</span>
+                          <span className="font-bold">-{formatPrice(Math.round(subtotalMRP * 0.60))}</span>
+                        </div>
+                      )}
+                    </>
                   )}
 
-                  {(activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60") && (
-                    <div className="flex justify-between items-center text-[#1E7E34]">
-                      <span>VIPCLUB60 Applied</span>
-                      <span className="font-bold">-{formatPrice(Math.round(subtotalMRP * 0.60))}</span>
-                    </div>
-                  )}
-
-                  {paymentMethod === "online" && (
+                  {prepaidDiscount > 0 && (
                     <div className="flex justify-between items-center text-[#1E7E34]">
                       <span>Prepaid Extra Discount</span>
                       <span className="font-bold">-₹50</span>
