@@ -46,21 +46,21 @@ export default function Cart() {
           </div>
           <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <Link 
-              to="/shop?category=Sarees" 
+              to="/shop/?category=Sarees" 
               className="px-6 py-4 bg-white border border-black/5 hover:border-gold-500/50 rounded-sm hover:shadow-lg transition-all duration-300 group flex flex-col items-center gap-2 transform hover:-translate-y-1"
             >
               <span className="text-sm font-bold uppercase tracking-wider text-primary-950 group-hover:text-gold-600 transition-colors">Sarees</span>
               <span className="text-[10px] uppercase font-medium text-primary-950/40 tracking-widest flex items-center gap-1 group-hover:text-gold-500 transition-colors">Shop Now <ArrowRight size={12} /></span>
             </Link>
             <Link 
-              to="/shop?category=Lehengas" 
+              to="/shop/?category=Lehengas" 
               className="px-6 py-4 bg-white border border-black/5 hover:border-gold-500/50 rounded-sm hover:shadow-lg transition-all duration-300 group flex flex-col items-center gap-2 transform hover:-translate-y-1"
             >
               <span className="text-sm font-bold uppercase tracking-wider text-primary-950 group-hover:text-gold-600 transition-colors">Lehengas</span>
               <span className="text-[10px] uppercase font-medium text-primary-950/40 tracking-widest flex items-center gap-1 group-hover:text-gold-500 transition-colors">Shop Now <ArrowRight size={12} /></span>
             </Link>
             <Link 
-              to="/shop?category=Linen-Sarees" 
+              to="/shop/?category=Linen-Sarees" 
               className="px-6 py-4 bg-white border border-black/5 hover:border-gold-500/50 rounded-sm hover:shadow-lg transition-all duration-300 group flex flex-col items-center gap-2 sm:col-span-2 md:col-span-1 transform hover:-translate-y-1"
             >
               <span className="text-sm font-bold uppercase tracking-wider text-primary-950 group-hover:text-gold-600 transition-colors">Linen Sarees</span>
@@ -69,7 +69,7 @@ export default function Cart() {
           </div>
           <div className="pt-8">
             <Link 
-              to="/shop" 
+              to="/shop/" 
               className="btn-primary inline-flex items-center justify-center gap-3 w-full sm:w-auto"
             >
               View All Products <ArrowRight size={18} />
@@ -165,7 +165,7 @@ export default function Cart() {
                     <div>
                       <div className="flex justify-between items-start mb-0.5 sm:mb-2 gap-2">
                         <h3 className="text-[12.5px] sm:text-base md:text-xl font-serif text-primary-950 font-medium line-clamp-2 md:line-clamp-none pr-1 focus:outline-none">
-                          <Link to={`/product/${item.slug}`} className="hover:text-gold-500 transition-colors">{item.name}</Link>
+                          <Link to={`/product/${item.slug}/`} className="hover:text-gold-500 transition-colors">{item.name}</Link>
                         </h3>
                         <div className="flex flex-col items-end whitespace-nowrap pl-1">
                           <p className="text-[13px] sm:text-base md:text-lg font-sans font-bold text-primary-950">
@@ -350,7 +350,7 @@ export default function Cart() {
                     </div>
                   </div>
                   <div className="flex justify-between items-center group">
-                    <Link to="/return-policy" className="flex items-center gap-2 mt-1 -ml-0.5 px-0.5 hover:opacity-80 transition-opacity">
+                    <Link to="/return-policy/" className="flex items-center gap-2 mt-1 -ml-0.5 px-0.5 hover:opacity-80 transition-opacity">
                       <span className="text-[9.5px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.1em] font-medium text-gold-600 underline underline-offset-4 decoration-gold-600/30">7-Day Easy Returns Policy</span>
                     </Link>
                   </div>

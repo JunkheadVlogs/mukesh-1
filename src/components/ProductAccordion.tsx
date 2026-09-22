@@ -48,6 +48,20 @@ export function ProductAccordion({ category, product }: { category?: string; pro
     });
   }
 
+  const productName = product?.name || "saree";
+  const productFabric = product?.fabric || "pure fabric";
+  const isCod = product?.codAvailable !== false;
+
+  const faqContent = product?.faqs && product.faqs.length > 0
+    ? product.faqs.map((f) => `Q: ${f.question}\nA: ${f.answer}`).join("\n\n")
+    : [
+    `Q: Is the color of the ${productName} exactly as pictured?\nA: We ensure 95%+ color fidelity under balanced studio lighting. Very slight variations might occur across mobile screens, but the true elegance, weave, and depth of the ${productFabric} remain true to the visuals.`,
+    `Q: Is Cash on Delivery (COD) available for this item?\nA: ${isCod ? "Yes, Cash on Delivery is supported across 25,000+ postal pincodes in India. You can inspect the parcel and pay upon doorstep arrival." : "This promotional direct-from-weaver piece is offered at a special discount for prepaid orders only."}`,
+    `Q: Does this include a matching blouse piece?\nA: ${isSaree ? "Yes, each saree comes with a matching unstitched blouse piece (approx. 0.8 to 1.0 meter). It can be tailored in your preferred neck, sleeve, and back design." : "Please refer to the detailed size and fit specifications above."}`,
+    `Q: What are the wash and care guidelines for this ${productFabric}?\nA: Professional dry cleaning is strongly recommended for the first wash to set the weave and color brilliance. Subsequent washes should be gentle cold hand washes with mild liquid detergent. Never bleach, wring, or dry in direct harsh sunlight.`,
+    `Q: How authentic is the fabric quality from ${BUSINESS_INFO.name}?\nA: Founded in 1978 in Gandhibagh, Nagpur, ${BUSINESS_INFO.name} upholds a 46-year heritage of weaver-direct trust. Every single garment undergoes hand inspection for weave density, finish, and durability before dispatch.`
+  ].join("\n\n");
+
   panels.push(
     {
       title: "Shipping & Delivery",
@@ -57,11 +71,11 @@ export function ProductAccordion({ category, product }: { category?: string; pro
     {
       title: "Returns & Exchange",
       content:
-        "Easy 7-day returns on all unworn, unwashed items with original tags intact. Customised or stitched blouses are non-returnable. To initiate a return, WhatsApp us at 7020664641 with your order ID and photos. Refunds securely processed to the original payment method.",
+        `Easy 7-day returns on all unworn, unwashed items with original tags intact. Customised or stitched blouses are non-returnable. To initiate a return, WhatsApp us at ${BUSINESS_INFO.phone} with your order ID and photos. Refunds securely processed to the original payment method.`,
     },
     {
       title: "Frequently Asked Questions (FAQs)",
-      content: "Q: Can I wash this at home?\nA: We recommend dry cleaning for the first wash. Subsequent washes can be gentle cold hand washes.\n\nQ: Is Cash on Delivery available?\nA: Yes, COD is available pan-India.\n\nQ: Does the product look exactly like the picture?\nA: We ensure 95% color accuracy. Due to studio lighting, slight variations might occur but the overall beauty and quality remain exactly as promised."
+      content: faqContent
     }
   );
 

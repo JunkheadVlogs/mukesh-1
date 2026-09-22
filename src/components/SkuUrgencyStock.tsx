@@ -12,7 +12,7 @@ export const SkuUrgencyStock: React.FC<SkuUrgencyStockProps> = ({ stockCount = 9
     >
       <span className="text-[14px] sm:text-[15px] leading-none shrink-0 select-none">⚠️</span>
       <span className="text-[12px] sm:text-[12.5px] font-semibold text-[#8A2B12] tracking-wide leading-snug">
-        Hurry! Only <span className="font-extrabold text-[#75210B]">{stockCount} sets</span> left at this offer price
+        Hurry! Only <span className="font-extrabold text-[#75210B]">{stockCount} sarees</span> left at this offer price
       </span>
     </div>
   );

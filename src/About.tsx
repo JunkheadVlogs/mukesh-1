@@ -125,7 +125,7 @@ export default function About() {
                 <h3>What We Sell</h3>
               </div>
               <p className="font-light text-[13.5px] sm:text-[14px] text-primary-950/75 text-justify">
-                We design and distribute an exquisite collection of <Link to="/sarees" className="text-gold-600 hover:underline font-medium">sarees</Link> (including <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Pure Silk</Link>, <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika Tissue</Link>, Paithani, Banarasi, Kanjivaram, Organza, and Georgette), custom-designed lehengas, readymade suits, and <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline font-medium">uniform sarees for institutions</Link>.
+                We design and distribute an exquisite collection of <Link to="/sarees/" className="text-gold-600 hover:underline font-medium">sarees</Link> (including <Link to="/sarees/linen-sarees/" className="text-gold-600 hover:underline">Linen</Link>, <Link to="/sarees/cotton-sarees/" className="text-gold-600 hover:underline">Cotton</Link>, <Link to="/sarees/silk-sarees/" className="text-gold-600 hover:underline">Pure Silk</Link>, <Link to="/malvika-saree-buying-guide/" className="text-gold-600 hover:underline">Malvika Tissue</Link>, Paithani, Banarasi, Kanjivaram, Organza, and Georgette), custom-designed lehengas, readymade suits, and <Link to="/uniform-saree-bulk-orders/" className="text-gold-600 hover:underline font-medium">uniform sarees for institutions</Link>.
               </p>
             </div>
             <div className="space-y-3">
@@ -134,7 +134,7 @@ export default function About() {
                 <h3>Who We Serve</h3>
               </div>
               <p className="font-light text-[13.5px] sm:text-[14px] text-primary-950/75 text-justify">
-                With over 500+ highly satisfied business retail clients and tens of thousands of individual families across India, we are honored to be a leading ethnic wear authority. We supply retail buyers across the nation through our seamless online store and bulk sarees directly to boutique owners via our <Link to="/wholesalesarees" className="text-gold-600 hover:underline font-medium">wholesale portal</Link>.
+                With over 500+ highly satisfied business retail clients and tens of thousands of individual families across India, we are honored to be a leading ethnic wear authority. We supply retail buyers across the nation through our seamless online store and bulk sarees directly to boutique owners via our <Link to="/wholesalesarees/" className="text-gold-600 hover:underline font-medium">wholesale portal</Link>.
               </p>
             </div>
           </div>
@@ -180,34 +180,34 @@ export default function About() {
               Explore Our Collections & Trust Pages
             </h3>
             <div className="flex flex-wrap gap-2 text-[12px]">
-              <Link to="/sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Sarees Collection
               </Link>
-              <Link to="/sarees/linen-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/linen-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Linen Sarees
               </Link>
-              <Link to="/sarees/cotton-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/cotton-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Cotton Sarees
               </Link>
-              <Link to="/sarees/silk-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/silk-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Silk Sarees
               </Link>
-              <Link to="/malvika-saree-buying-guide" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/malvika-saree-buying-guide/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Malvika Saree Guide
               </Link>
-              <Link to="/uniform-saree-bulk-orders" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/uniform-saree-bulk-orders/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Uniform Sarees Bulk
               </Link>
-              <Link to="/wholesalesarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/wholesalesarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Wholesale Saree Portal
               </Link>
-              <Link to="/why-mukesh-saree-centre" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/why-mukesh-saree-centre/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Why Choose Us
               </Link>
-              <Link to="/reviews" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/reviews/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Customer Reviews
               </Link>
-              <Link to="/media" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/media/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Media & Proof
               </Link>
             </div>

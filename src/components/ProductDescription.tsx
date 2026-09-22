@@ -10,6 +10,32 @@ export function ProductDescription({
   product?: Product;
   className?: string;
 }) {
+  const isWhatsAppStyle = description?.includes("*Fabric:*") || (description?.trim().startsWith("✨") && !description?.includes("**DESCRIPTION:**"));
+
+  if (isWhatsAppStyle) {
+    const lines = (description || "").split("\n");
+    return (
+      <div className={`pt-2 pb-1 font-sans text-[#2C241B] flex flex-col gap-1 ${className}`}>
+        {lines.map((line, idx) => {
+          const trimmed = line.trim();
+          if (!trimmed) return <div key={idx} className="h-1.5" />;
+          
+          const parts = line.split(/(\*[^*]+\*)/g);
+          return (
+            <p key={idx} className="text-[13.5px] sm:text-[14px] leading-relaxed text-[#2C241B]/90 m-0">
+              {parts.map((part, pIdx) => {
+                if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
+                  return <strong key={pIdx} className="font-semibold text-[#2C241B]">{part.slice(1, -1)}</strong>;
+                }
+                return part;
+              })}
+            </p>
+          );
+        })}
+      </div>
+    );
+  }
+
   // Parsing the raw description using a robust block-splitter
   const parseRawSections = (desc: string) => {
     let text = desc || "";

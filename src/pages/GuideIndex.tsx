@@ -10,7 +10,7 @@ export default function GuideIndex() {
       <Helmet>
         <title>Saree Buying Guides & Knowledge Hub - Mukesh Saree Centre</title>
         <meta name="description" content="Explore our comprehensive collection of saree buying guides, fabric care tutorials, and draping instructions. Master the art of choosing the perfect saree." />
-        <link rel="canonical" href="https://mukeshsarees.com/guides" />
+        <link rel="canonical" href="https://mukeshsarees.com/guides/" />
       </Helmet>
 
       {/* Header */}
@@ -32,7 +32,7 @@ export default function GuideIndex() {
             {guidesMeta.map((guide) => (
               <Link 
                 key={guide.id} 
-                to={`/guides/${guide.slug}`}
+                to={`/guides/${guide.slug}/`}
                 className="group flex flex-col h-full bg-white border border-[#2b2b2b]/5 rounded-xl overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-500"
               >
                 <div className="relative h-48 md:h-56 overflow-hidden">

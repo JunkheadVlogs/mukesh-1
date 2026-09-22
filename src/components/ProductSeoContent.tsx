@@ -120,10 +120,10 @@ export function ProductSeoContent({ product }: { product: Product }) {
       {/* 25. Internal Links for AI Indexing Context */}
       <h3>Explore More from Mukesh Saree Centre</h3>
       <ul>
-        <li><a href="/shop">View all our premium Category Collections</a></li>
-        <li><a href="/guides/saree-fabric-guide">Read our comprehensive Saree Fabric Guide</a></li>
-        <li><a href="/guides/saree-care-guide">Learn more from our Saree Care Guide</a></li>
-        <li><a href="/wholesale-sarees">Interested in bulk? Visit our Wholesale Page</a></li>
+        <li><a href="/shop/">View all our premium Category Collections</a></li>
+        <li><a href="/guides/saree-fabric-guide/">Read our comprehensive Saree Fabric Guide</a></li>
+        <li><a href="/guides/saree-care-guide/">Learn more from our Saree Care Guide</a></li>
+        <li><a href="/wholesalesarees/">Interested in bulk? Visit our Wholesale Page</a></li>
         <li><a href="/">Return to Mukesh Saree Centre Homepage</a></li>
       </ul>
     </div>

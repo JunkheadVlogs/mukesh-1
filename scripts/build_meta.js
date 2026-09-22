@@ -21,6 +21,8 @@ try {
       slug: p.slug,
       sku: p.sku || undefined,
       codAvailable: p.codAvailable !== undefined ? p.codAvailable : undefined,
+      metaTitle: p.metaTitle || undefined,
+      metaDescription: p.metaDescription || undefined,
       description: cleanDesc,
       image: p.image,
       price: String(p.price || ""),

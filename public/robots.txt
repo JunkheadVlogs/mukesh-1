@@ -1,13 +1,13 @@
 User-agent: *
 Allow: /
-Allow: /shop
+Allow: /shop/
 Allow: /product/*
 Allow: /sarees/*
-Allow: /malvika-saree
+Allow: /malvika-saree/
 Disallow: /admin
 Disallow: /dashboard
-Disallow: /cart
-Disallow: /checkout
-Disallow: /wishlist
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /wishlist/
 
 Sitemap: https://mukeshsarees.com/sitemap.xml

@@ -449,6 +449,7 @@ async function runPrerender() {
               <h3 style="font-weight: 600; color: #1a0a00; margin-bottom: 16px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">B2B & Wholesale</h3>
               <ul style="list-style: none; padding: 0; margin: 0;">
                 <li style="margin-bottom: 8px;"><a href="/wholesalesarees" style="color: inherit; text-decoration: none;">Wholesale Sarees Direct</a></li>
+                <li style="margin-bottom: 8px;"><a href="/wholesale-sarees-nagpur" style="color: inherit; text-decoration: none;">Wholesale Sarees Nagpur</a></li>
                 <li style="margin-bottom: 8px;"><a href="/school-uniform-sarees" style="color: inherit; text-decoration: none;">School Uniform Sarees</a></li>
                 <li style="margin-bottom: 8px;"><a href="/teacher-uniform-sarees" style="color: inherit; text-decoration: none;">Teacher Uniform Sarees</a></li>
                 <li style="margin-bottom: 8px;"><a href="/corporate-uniform-sarees" style="color: inherit; text-decoration: none;">Corporate Uniform Sarees</a></li>
@@ -603,7 +604,7 @@ async function runPrerender() {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       "name": `${collection.h1} — ${BUSINESS_INFO.name}`,
-      "url": `https://mukeshsarees.com/${collection.route}`,
+      "url": `https://mukeshsarees.com/${collection.route}/`,
       "description": collection.description,
       "breadcrumb": {
         "@type": "BreadcrumbList",
@@ -618,7 +619,7 @@ async function runPrerender() {
             "@type": "ListItem",
             "position": 2,
             "name": collection.h1,
-            "item": `https://mukeshsarees.com/${collection.route}`
+            "item": `https://mukeshsarees.com/${collection.route}/`
           }
         ]
       }
@@ -672,7 +673,7 @@ async function runPrerender() {
       <meta data-rh="true" property="og:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
       <meta data-rh="true" property="og:description" content="${collection.description}" />
       <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/og-image.jpg" />
-      <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${collection.route}" />
+      <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${collection.route}/" />
       <meta data-rh="true" property="og:type" content="website" />
       <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
       <meta data-rh="true" property="og:image:width" content="1200" />
@@ -682,7 +683,7 @@ async function runPrerender() {
       <meta data-rh="true" name="twitter:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
       <meta data-rh="true" name="twitter:description" content="${collection.description}" />
       <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
-      <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}" />
+      <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}/" />
       <!-- End Dynamic OG Tags -->`;
 
     const shopHtml = createStaticPage({
@@ -722,19 +723,19 @@ async function runPrerender() {
           "@type": "ListItem",
           "position": 2,
           "name": "Shop",
-          "item": "https://mukeshsarees.com/shop"
+          "item": "https://mukeshsarees.com/shop/"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": p.category,
-          "item": `https://mukeshsarees.com/shop?category=${encodeURIComponent(p.category)}`
+          "item": `https://mukeshsarees.com/shop/?category=${encodeURIComponent(p.category)}`
         },
         {
           "@type": "ListItem",
           "position": 4,
           "name": p.name,
-          "item": `https://mukeshsarees.com/product/${p.slug}`
+          "item": `https://mukeshsarees.com/product/${p.slug}/`
         }
       ]
     };
@@ -859,7 +860,7 @@ async function runPrerender() {
       </div>
     `;
 
-    const originalUrl = `https://mukeshsarees.com/product/${p.slug}`;
+    const originalUrl = `https://mukeshsarees.com/product/${p.slug}/`;
     const productOgImage = `https://mukeshsarees.com/og-images/${p.slug}.jpg`;
     const fabricItem = p.fabric ? `✨ ${p.fabric}` : "✨ Premium Fabric";
     const discountPercent = (p.originalPrice && p.price && p.originalPrice > p.price)
@@ -869,8 +870,8 @@ async function runPrerender() {
       ? `💰 ₹${p.price} (${discountPercent}% OFF)` 
       : `💰 ₹${p.price}`;
 
-    const prodDesc = `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since ${BUSINESS_INFO.established}`;
-    const pageTitle = `${p.name} | ${BUSINESS_INFO.name}`;
+    const pageTitle = p.metaTitle || p.seoTitle || `${p.name} | ${BUSINESS_INFO.name}`;
+    const prodDesc = p.metaDescription || p.seoDescription || `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since ${BUSINESS_INFO.established}`;
     
     const dynamicTags = `<!-- Dynamic OG Tags -->
     <meta data-rh="true" property="og:title" content="${sanitize(pageTitle)}" />
@@ -942,8 +943,8 @@ async function runPrerender() {
     },
     {
       dir: "contact",
-      title: "Contact Boutique — ${BUSINESS_INFO.name}, ${BUSINESS_INFO.address.area}, ${BUSINESS_INFO.address.city}",
-      desc: "Contact ${BUSINESS_INFO.name}, ${BUSINESS_INFO.address.area} ${BUSINESS_INFO.address.city}. Call ${BUSINESS_INFO.phone}. Open 11:30AM–9:30PM (closed Mondays). Bridal saree bookings, custom orders welcome.",
+      title: "Contact Us | Mukesh Saree Centre Nagpur — WhatsApp, Phone & Store Address",
+      desc: "Contact Mukesh Saree Centre in Nagpur. Call or WhatsApp +91 70206 64641. Visit our store on Jagnath Road, Gandhibagh, Nagpur 440002. Open Mon–Sat, 10AM–8PM.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
@@ -961,7 +962,34 @@ async function runPrerender() {
           </main>
           ${getFooterHtml()}
         </div>
-      `
+      `,
+      schemaJson: [
+        {
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "mainEntity": {
+            "@id": "https://mukeshsarees.com/#organization"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://mukeshsarees.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Contact Us",
+              "item": "https://mukeshsarees.com/contact"
+            }
+          ]
+        }
+      ]
     },
     {
       dir: "shipping-policy",
@@ -1067,18 +1095,128 @@ async function runPrerender() {
     },
     {
       dir: "about",
-      title: "About Our Saree Shop in Nagpur | ${BUSINESS_INFO.name} Est. 1978",
-      desc: "Looking for the best saree shop in Nagpur? Learn about the rich legacy of Mukesh Saree Centre, Nagpur's trusted saree destination since 1978.",
+      title: "About Our Saree Shop in Nagpur | Mukesh Saree Centre Est. 1978",
+      desc: "Discover the 46-year legacy of Mukesh Saree Centre in Gandhibagh, Nagpur. Founded in 1978 by Shri Nanakram Khemchandani, offering sarees, lehengas, & wholesale bulk orders.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
-          <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
-            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">About ${BUSINESS_INFO.name}</h1>
-            <p style="font-size: 16px; line-height: 1.8; color: #4a4a4a;">Established in ${BUSINESS_INFO.established}, ${BUSINESS_INFO.name} has been the heart of ethnic fashion in ${BUSINESS_INFO.address.city} for generations. We pride ourselves on offering meticulously curated collections of traditional silk, modern cotton, and designer lehengas.</p>
+          <main style="max-width: 860px; margin: 48px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <div style="text-align: center; margin-bottom: 36px;">
+              <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; color: #8c7355;">Our 46-Year Legacy</span>
+              <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin: 8px 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Our Story</h1>
+              <p style="color: #4a4a4a; font-size: 15px; font-weight: 300; max-width: 600px; margin: 0 auto; line-height: 1.6;">Serving Nagpur, Vidarbha, and Pan-India with timeless ethnic elegance since 1978.</p>
+            </div>
+
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 36px; line-height: 1.8; font-size: 15px; color: #3a3a3a; margin-bottom: 32px;">
+              <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; color: #1a0a00; margin-top: 0; margin-bottom: 16px; border-bottom: 1px solid rgba(0,0,0,0.06); pb: 8px;">Who is Mukesh Saree Centre?</h2>
+              <p style="margin-bottom: 24px;"><strong>Mukesh Saree Centre</strong> was established in 1978 on Jagnath Road, Gandhibagh, Nagpur, Maharashtra by Shri Nanakram Khemchandani. What began as a humble local endeavor has blossomed over the years into one of Vidarbha's largest and most trusted saree distribution landmarks. Currently managed and nurtured with dedication by the Khemchandani family, including Mohit Khemchandani, the store upholds a 46-year-old legacy of top-tier customer trust, exceptional fabric quality, and unbeatable wholesale pricing.</p>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 24px;">
+                <div>
+                  <h3 style="font-family: 'Playfair Display', serif; font-size: 18px; color: #8c7355; margin-top: 0; margin-bottom: 8px;">What We Sell</h3>
+                  <p style="font-size: 14px; color: #4a4a4a; margin: 0;">We design and distribute an exquisite collection of sarees (including Linen, Cotton, Pure Silk, Malvika Tissue, Paithani, Banarasi, Kanjivaram, Organza, and Georgette), custom-designed lehengas, readymade suits, and uniform sarees for institutions.</p>
+                </div>
+                <div>
+                  <h3 style="font-family: 'Playfair Display', serif; font-size: 18px; color: #8c7355; margin-top: 0; margin-bottom: 8px;">Who We Serve</h3>
+                  <p style="font-size: 14px; color: #4a4a4a; margin: 0;">With over 500+ highly satisfied business retail clients and tens of thousands of individual families across India, we are honored to be a leading ethnic wear authority. We supply retail buyers across the nation through our seamless online store and bulk sarees directly to boutique owners via our wholesale portal.</p>
+                </div>
+              </div>
+
+              <h3 style="font-family: 'Playfair Display', serif; font-size: 20px; color: #1a0a00; margin-bottom: 16px; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 24px;">Why Customers Trust Us</h3>
+              <ul style="padding-left: 20px; font-size: 14px; color: #4a4a4a; margin-bottom: 24px;">
+                <li style="margin-bottom: 8px;"><strong>46 Years of Heritage:</strong> Established in 1978 in Gandhibagh, Nagpur by Shri Nanakram Khemchandani.</li>
+                <li style="margin-bottom: 8px;"><strong>Cash On Delivery (COD):</strong> Shop with ultimate peace of mind and pay only when your order arrives.</li>
+                <li style="margin-bottom: 8px;"><strong>30+ Exquisite Varieties:</strong> Direct weaver sourcing from Surat, Varanasi, Kolkata, and Kanchipuram.</li>
+                <li style="margin-bottom: 8px;"><strong>Free Pan-India Delivery:</strong> Free doorstep delivery across all postal pin codes on orders above ₹499.</li>
+              </ul>
+
+              <h3 style="font-family: 'Playfair Display', serif; font-size: 20px; color: #1a0a00; margin-bottom: 16px; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 24px;">Frequently Asked Questions About Us</h3>
+              <div style="font-size: 14px; color: #4a4a4a;">
+                <p style="margin-bottom: 4px;"><strong>Where is Mukesh Saree Centre located in Nagpur?</strong></p>
+                <p style="margin-top: 0; margin-bottom: 16px; color: #666;">Our flagship store is located at Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India.</p>
+                <p style="margin-bottom: 4px;"><strong>Do you offer wholesale purchasing for saree boutiques?</strong></p>
+                <p style="margin-top: 0; margin-bottom: 0; color: #666;">Yes, we supply bulk sarees to over 500+ boutique owners and retail shops across Maharashtra, MP, Chhattisgarh, and all of India at direct weaver rates.</p>
+              </div>
+            </div>
           </main>
           ${getFooterHtml()}
         </div>
-      `
+      `,
+      schemaJson: [
+        {
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          "mainEntity": {
+            "@id": "https://mukeshsarees.com/#organization"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Shri Nanakram Khemchandani",
+          "jobTitle": "Founder",
+          "worksFor": {
+            "@id": "https://mukeshsarees.com/#organization"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Mohit Khemchandani",
+          "jobTitle": "Managing Partner",
+          "worksFor": {
+            "@id": "https://mukeshsarees.com/#organization"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://mukeshsarees.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "About Us",
+              "item": "https://mukeshsarees.com/about"
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "When was Mukesh Saree Centre established in Nagpur?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Mukesh Saree Centre was established in 1978 in Gandhibagh, Nagpur, Maharashtra by Shri Nanakram Khemchandani. It has served retail and wholesale saree customers for over 46 years."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What products does Mukesh Saree Centre sell?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "We sell over 30 varieties of sarees including Linen, Cotton, Pure Silk, Paithani, Banarasi, Kanjivaram, Malvika tissue sarees, Georgette, Organza, custom lehengas, suits, and uniform sarees."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Where is the physical store located?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our store is located on Jagnath Road, Gandhibagh, Nagpur, Maharashtra, 440002, India."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       dir: "categories",
@@ -1111,7 +1249,7 @@ async function runPrerender() {
     <meta data-rh="true" property="og:description" content="${page.desc}" />
     <meta data-rh="true" property="og:image" content="${pageImage}" />
     <meta data-rh="true" property="og:image:secure_url" content="${pageImage}" />
-    <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${page.dir}" />
+    <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${page.dir}/" />
     <meta data-rh="true" property="og:type" content="website" />
     <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
     <meta data-rh="true" property="og:image:width" content="1200" />
@@ -1121,7 +1259,7 @@ async function runPrerender() {
     <meta data-rh="true" name="twitter:title" content="${page.title}" />
     <meta data-rh="true" name="twitter:description" content="${page.desc}" />
     <meta data-rh="true" name="twitter:image" content="${pageImage}" />
-    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}" />
+    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}/" />
     <!-- End Dynamic OG Tags -->`;
 
     const phtml = createStaticPage({
@@ -1142,34 +1280,34 @@ async function runPrerender() {
   
   const robotsCompiled = `User-agent: *
 Allow: /
-Allow: /shop
+Allow: /shop/
 Allow: /product/*
 Allow: /sarees/*
-Allow: /malvika-saree
+Allow: /malvika-saree/
 Disallow: /admin
 Disallow: /dashboard
-Disallow: /cart
-Disallow: /checkout
-Disallow: /wishlist
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /wishlist/
 
 Sitemap: https://mukeshsarees.com/sitemap.xml`;
 
   // Dynamic Sitemap links builder with the exact requested URLs and configurations
   const sitemapRoutes = [
     { path: "/", changefreq: "daily", priority: "1.0" },
-    { path: "/shop", changefreq: "weekly", priority: "0.9" },
-    { path: "/shop?category=Sarees", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Linen Sarees", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Lehengas", changefreq: "weekly", priority: "0.8" },
-    { path: "/shop?category=Kurtas", changefreq: "weekly", priority: "0.8" },
-    { path: "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral", changefreq: "monthly", priority: "0.7" },
-    { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu", changefreq: "monthly", priority: "0.7" },
-    { path: "/contact", changefreq: "monthly", priority: "0.5" },
-    { path: "/wholesalesarees", changefreq: "daily", priority: "0.8" },
-    { path: "/shipping-policy", changefreq: "yearly", priority: "0.4" },
-    { path: "/return-policy", changefreq: "yearly", priority: "0.4" },
-    { path: "/terms", changefreq: "yearly", priority: "0.3" }
+    { path: "/shop/", changefreq: "weekly", priority: "0.9" },
+    { path: "/shop/?category=Sarees", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop/?category=Linen Sarees", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop/?category=Lehengas", changefreq: "weekly", priority: "0.8" },
+    { path: "/shop/?category=Kurtas", changefreq: "weekly", priority: "0.8" },
+    { path: "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set/", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral/", changefreq: "monthly", priority: "0.7" },
+    { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu/", changefreq: "monthly", priority: "0.7" },
+    { path: "/contact/", changefreq: "monthly", priority: "0.5" },
+    { path: "/wholesalesarees/", changefreq: "daily", priority: "0.8" },
+    { path: "/shipping-policy/", changefreq: "yearly", priority: "0.4" },
+    { path: "/return-policy/", changefreq: "yearly", priority: "0.4" },
+    { path: "/terms/", changefreq: "yearly", priority: "0.3" }
   ];
 
   let sitemapLines = sitemapRoutes.map(route => 

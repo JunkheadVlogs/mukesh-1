@@ -619,7 +619,7 @@ export default function Layout() {
                             key={product.id}
                           >
                             <Link
-                              to={`/product/${product.slug}`}
+                              to={`/product/${product.slug}/`}
                               onClick={() => {
                                 addRecentSearch(searchQuery);
                                 setIsSearchOpen(false);
@@ -830,25 +830,25 @@ export default function Layout() {
 
             <nav aria-label="Main Navigation" className="hidden md:flex space-x-6 items-center h-full">
               <Link
-                to="/shop"
+                to="/shop/"
                 className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
                 Shop
               </Link>
               <Link
-                to="/shop?category=Sarees"
+                to="/shop/?category=Sarees"
                 className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
                 Sarees
               </Link>
               <Link
-                to="/shop?category=Linen-Sarees"
+                to="/shop/?category=Linen-Sarees"
                 className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
                 Linen Sarees
               </Link>
               <Link
-                to="/contact"
+                to="/contact/"
                 className={`text-[13px] tracking-[1.5px] uppercase font-medium ${textColor} hover:text-gold-500 transition-colors py-4`}
               >
                 Contact
@@ -882,7 +882,7 @@ export default function Layout() {
             </button>
             {/* Wishlist Icon Removed */}
             <Link
-              to="/cart"
+              to="/cart/"
               className={`${iconColor} hover:text-gold-500 transition-all relative h-11 w-11 flex items-center justify-end md:justify-center`}
               aria-label="Cart"
             >
@@ -967,7 +967,7 @@ export default function Layout() {
                   flexDirection: "column"
                 }}>
                   <Link 
-                    to="/shop?category=Sarees" 
+                    to="/shop/?category=Sarees" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
                       padding: "13px 20px",
@@ -988,7 +988,7 @@ export default function Layout() {
                   </Link>
 
                   <Link 
-                    to="/shop?category=Linen-Sarees" 
+                    to="/shop/?category=Linen-Sarees" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
                       padding: "13px 20px",
@@ -1009,7 +1009,7 @@ export default function Layout() {
                   </Link>
 
                   <Link 
-                    to="/about" 
+                    to="/about/" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
                       padding: "13px 20px",
@@ -1030,7 +1030,7 @@ export default function Layout() {
                   </Link>
 
                   <Link 
-                    to="/contact" 
+                    to="/contact/" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     style={{
                       padding: "13px 20px",
@@ -1282,27 +1282,27 @@ export default function Layout() {
               >
                 <ul className="space-y-0 md:space-y-4 text-[12.5px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-none pb-1">
                   <li>
-                    <Link to="/shop?category=Sarees" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/shop/?category=Sarees" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Sarees
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?category=Lehengas" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/shop/?category=Lehengas" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Lehengas
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?category=Linen-Sarees" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/shop/?category=Linen-Sarees" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Linen Sarees
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?sort=new" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/shop/?sort=new" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       New Arrivals
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shop?sort=best-selling" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/shop/?sort=best-selling" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Best Sellers
                     </Link>
                   </li>
@@ -1334,62 +1334,67 @@ export default function Layout() {
               >
                 <ul className="space-y-0 md:space-y-4 text-[12.5px] md:text-[13px] text-[#eae6df]/85 tracking-wider leading-none pb-1">
                   <li>
-                    <Link to="/about" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/about/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       About Us
                     </Link>
                   </li>
                   <li>
-                    <Link to="/why-mukesh-saree-centre" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/why-mukesh-saree-centre/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Why Choose Us
                     </Link>
                   </li>
                   <li>
-                    <Link to="/reviews" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/reviews/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Customer Reviews
                     </Link>
                   </li>
                   <li>
-                    <Link to="/contact" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/contact/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Contact Us
                     </Link>
                   </li>
                   <li>
-                    <Link to="/media" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/media/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Media & Press Proof
                     </Link>
                   </li>
                   <li>
-                    <Link to="/uniform-saree-bulk-orders" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/uniform-saree-bulk-orders/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Uniform Sarees Bulk
                     </Link>
                   </li>
                   <li>
-                    <Link to="/malvika-saree-buying-guide" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/wholesale-sarees-nagpur/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Wholesale Sarees Nagpur
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/malvika-saree-buying-guide/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Malvika Saree Guide
                     </Link>
                   </li>
                   <li>
-                    <Link to="/shipping-policy" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/shipping-policy/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Shipping Policy
                     </Link>
                   </li>
                   <li>
-                    <Link to="/return-policy" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/return-policy/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Returns & Exchanges
                     </Link>
                   </li>
                   <li>
-                    <Link to="/faqs" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/faqs/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Frequently Asked Questions
                     </Link>
                   </li>
                   <li>
-                    <Link to="/guides" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/guides/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Knowledge Hub / Guides
                     </Link>
                   </li>
                   <li>
-                    <Link to="/terms" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                    <Link to="/terms/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Terms of Service
                     </Link>
                   </li>

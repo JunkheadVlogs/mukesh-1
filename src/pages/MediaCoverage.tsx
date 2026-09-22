@@ -101,7 +101,7 @@ export default function MediaCoverage() {
               Who is {BUSINESS_INFO.name}?
             </h2>
             <p className="text-justify font-light text-primary-950/90 leading-relaxed">
-              Established in 1978 in Gandhibagh, Nagpur, Maharashtra by Shri Nanakram Khemchandani, <strong>{BUSINESS_INFO.name}</strong> is an iconic 46-year-old retail and wholesale saree enterprise. Managed by the Khemchandani family, including Mohit Khemchandani, the firm supplies high-quality <Link to="/sarees" className="text-gold-600 hover:underline">sarees</Link> (including <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Silk</Link>, and <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika</Link>), custom lehengas, suits, and <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline">uniform sarees</Link> to over 500+ business clients and tens of thousands of families across India.
+              Established in 1978 in Gandhibagh, Nagpur, Maharashtra by Shri Nanakram Khemchandani, <strong>{BUSINESS_INFO.name}</strong> is an iconic 46-year-old retail and wholesale saree enterprise. Managed by the Khemchandani family, including Mohit Khemchandani, the firm supplies high-quality <Link to="/sarees/" className="text-gold-600 hover:underline">sarees</Link> (including <Link to="/sarees/linen-sarees/" className="text-gold-600 hover:underline">Linen</Link>, <Link to="/sarees/cotton-sarees/" className="text-gold-600 hover:underline">Cotton</Link>, <Link to="/sarees/silk-sarees/" className="text-gold-600 hover:underline">Silk</Link>, and <Link to="/malvika-saree-buying-guide/" className="text-gold-600 hover:underline">Malvika</Link>), custom lehengas, suits, and <Link to="/uniform-saree-bulk-orders/" className="text-gold-600 hover:underline">uniform sarees</Link> to over 500+ business clients and tens of thousands of families across India.
             </p>
           </div>
 
@@ -161,28 +161,28 @@ export default function MediaCoverage() {
               Explore Main Keyword Collections
             </h3>
             <div className="flex flex-wrap gap-2 text-[12px]">
-              <Link to="/sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Sarees Collection
               </Link>
-              <Link to="/sarees/linen-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/linen-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Linen Sarees
               </Link>
-              <Link to="/sarees/cotton-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/cotton-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Cotton Sarees
               </Link>
-              <Link to="/wholesalesarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/wholesalesarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Wholesale Saree Portal
               </Link>
-              <Link to="/uniform-saree-bulk-orders" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/uniform-saree-bulk-orders/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Uniform Sarees Bulk
               </Link>
-              <Link to="/malvika-saree-buying-guide" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/malvika-saree-buying-guide/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Malvika Saree Guide
               </Link>
-              <Link to="/reviews" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/reviews/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Customer Reviews
               </Link>
-              <Link to="/why-mukesh-saree-centre" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/why-mukesh-saree-centre/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Why Choose Us
               </Link>
             </div>

@@ -150,7 +150,7 @@ export default function QuickViewModal({
                     </button>
                     <div className="flex gap-4">
                       <Link
-                        to={`/product/${product.slug}`}
+                        to={`/product/${product.slug}/`}
                         onClick={onClose}
                         className="flex-1 border-2 border-primary-950 bg-primary-950 text-white flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all"
                         style={{ height: "44px", borderRadius: "12px" }}

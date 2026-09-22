@@ -150,7 +150,7 @@ export default function WhyMukeshSareeCentre() {
               What We Sell
             </h3>
             <p className="text-[13.5px] font-light text-primary-950/80 text-justify leading-relaxed">
-              Our showroom and online store specialize in authentic <Link to="/sarees" className="text-gold-600 hover:underline">sarees</Link> across every major Indian weave: <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen Sarees</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton Sarees</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Pure Silk Sarees</Link>, <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika Sarees</Link>, Paithani, Banarasi, Kanjivaram, Georgette, and Organza. In addition, we supply designer lehengas, suits, <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline">uniform sarees for institutions</Link>, and <Link to="/wholesalesarees" className="text-gold-600 hover:underline">wholesale saree bulk orders</Link>.
+              Our showroom and online store specialize in authentic <Link to="/sarees/" className="text-gold-600 hover:underline">sarees</Link> across every major Indian weave: <Link to="/sarees/linen-sarees/" className="text-gold-600 hover:underline">Linen Sarees</Link>, <Link to="/sarees/cotton-sarees/" className="text-gold-600 hover:underline">Cotton Sarees</Link>, <Link to="/sarees/silk-sarees/" className="text-gold-600 hover:underline">Pure Silk Sarees</Link>, <Link to="/malvika-saree-buying-guide/" className="text-gold-600 hover:underline">Malvika Sarees</Link>, Paithani, Banarasi, Kanjivaram, Georgette, and Organza. In addition, we supply designer lehengas, suits, <Link to="/uniform-saree-bulk-orders/" className="text-gold-600 hover:underline">uniform sarees for institutions</Link>, and <Link to="/wholesalesarees/" className="text-gold-600 hover:underline">wholesale saree bulk orders</Link>.
             </p>
           </div>
 
@@ -200,31 +200,31 @@ export default function WhyMukeshSareeCentre() {
               Discover Our Range & Helpful Guides
             </h3>
             <div className="flex flex-wrap gap-2 text-[12px]">
-              <Link to="/sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Sarees Collection
               </Link>
-              <Link to="/sarees/linen-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/linen-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Linen Sarees
               </Link>
-              <Link to="/sarees/cotton-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/cotton-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Cotton Sarees
               </Link>
-              <Link to="/sarees/silk-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/silk-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Silk Sarees
               </Link>
-              <Link to="/malvika-saree-buying-guide" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/malvika-saree-buying-guide/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Malvika Saree Guide
               </Link>
-              <Link to="/uniform-saree-bulk-orders" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/uniform-saree-bulk-orders/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Uniform Sarees Bulk
               </Link>
-              <Link to="/wholesalesarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/wholesalesarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Wholesale Saree Portal
               </Link>
-              <Link to="/reviews" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/reviews/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Customer Reviews
               </Link>
-              <Link to="/about" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/about/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Our About Us Story
               </Link>
             </div>

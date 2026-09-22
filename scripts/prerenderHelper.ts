@@ -54,7 +54,11 @@ export function createStaticPage({
   }
   
   if (schemaJson) {
-      baseHtml = baseHtml.replace("</head>", `\n<script type="application/ld+json">${JSON.stringify(schemaJson)}</script>\n</head>`);
+    const schemas = Array.isArray(schemaJson) ? schemaJson : [schemaJson];
+    const schemaScriptTags = schemas
+      .map(s => `<script type="application/ld+json">${JSON.stringify(s)}</script>`)
+      .join("\n");
+    baseHtml = baseHtml.replace("</head>", `\n${schemaScriptTags}\n</head>`);
   }
 
   // 3. Strip initial page loader for statically pre-rendered pages

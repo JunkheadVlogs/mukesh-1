@@ -59,7 +59,7 @@ export const ProductCard = memo(function ProductCard({
   return (
     <article className="h-full">
       <Link
-        to={`/product/${product.slug}`}
+        to={`/product/${product.slug}/`}
         onClick={() => trackSelectItem(product)}
         aria-label={`View ${product.name} - ${formatPrice(product.price)}`}
         className="product-card group flex flex-col h-full bg-white rounded-[18px] md:rounded-[24px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden hover:-translate-y-1 transform-gpu"

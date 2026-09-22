@@ -245,7 +245,7 @@ export default function App() {
             <Route path="sarees/:subcategory" element={<Shop />} />
             <Route path="lehengas" element={<Shop />} />
             <Route path="suits" element={<Shop />} />
-            <Route path="coord-sets" element={<Navigate to="/shop" replace />} />
+            <Route path="coord-sets" element={<Navigate to="/shop/" replace />} />
             <Route path="search" element={<Shop />} />
             <Route path="wishlist" element={<Wishlist />} />
             <Route path="wishlist/:shareId" element={<Wishlist />} />
@@ -261,7 +261,7 @@ export default function App() {
             <Route path="media" element={<MediaCoverage />} />
             <Route path="uniform-saree-bulk-orders" element={<UniformSareeBulkOrders />} />
             <Route path="malvika-saree-buying-guide" element={<MalvikaSareeBuyingGuide />} />
-            <Route path="privacy" element={<Navigate to="/contact" replace />} />
+            <Route path="privacy" element={<Navigate to="/contact/" replace />} />
             <Route path="terms" element={<Terms />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />
             <Route path="return-policy" element={<ReturnPolicy />} />

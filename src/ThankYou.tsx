@@ -734,7 +734,7 @@ export default function ThankYou() {
         {/* PRINT CONTROLS / NAVIGATION TABS - HIDDEN ON PRINT */}
         <div className="no-print flex flex-col sm:flex-row gap-3 items-center justify-between bg-white border border-[#1A0A00]/5 p-4 rounded-sm shadow-sm mb-6">
           <Link 
-            to="/shop" 
+            to="/shop/" 
             className="flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-[#1A0A00]/60 hover:text-[#1A0A00] transition-colors py-2"
           >
             <ArrowLeft size={16} />
@@ -814,7 +814,7 @@ export default function ThankYou() {
                   💳 Complete Online Payment
                 </a>
                 <Link
-                  to="/thank-you?success=true"
+                  to="/thank-you/?success=true"
                   className="inline-flex items-center justify-center border border-amber-700/20 bg-white hover:bg-amber-500/5 text-amber-900 rounded-sm py-2 px-4.5 font-bold text-[10px] uppercase tracking-widest transition-colors"
                 >
                   ✓ Click if already paid

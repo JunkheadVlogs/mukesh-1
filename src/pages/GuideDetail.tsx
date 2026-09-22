@@ -166,7 +166,7 @@ export default function GuideDetail() {
   }, [headings, content]);
 
   if (!guide) {
-    return <Navigate to="/guides" replace />;
+    return <Navigate to="/guides/" replace />;
   }
 
   // Next & Previous articles navigation
@@ -214,7 +214,7 @@ export default function GuideDetail() {
     "dateModified": guide.lastUpdated,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://mukeshsarees.com/guides/${guide.slug}`
+      "@id": `https://mukeshsarees.com/guides/${guide.slug}/`
     }
   };
 
@@ -239,19 +239,19 @@ export default function GuideDetail() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://mukeshsarees.com"
+        "item": "https://mukeshsarees.com/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Knowledge Hub",
-        "item": "https://mukeshsarees.com/guides"
+        "item": "https://mukeshsarees.com/guides/"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": guide.title,
-        "item": `https://mukeshsarees.com/guides/${guide.slug}`
+        "item": `https://mukeshsarees.com/guides/${guide.slug}/`
       }
     ]
   };
@@ -292,7 +292,7 @@ export default function GuideDetail() {
   const memoizedBreadcrumbs = useMemo(() => {
     const items = [
       { label: 'Home', path: '/' },
-      { label: 'Knowledge Hub', path: '/guides' },
+      { label: 'Knowledge Hub', path: '/guides/' },
       { label: guide.title }
     ];
     return <Breadcrumb items={items} />;
@@ -303,7 +303,7 @@ export default function GuideDetail() {
       <Helmet>
         <title>{guide.title} - Mukesh Saree Centre</title>
         <meta name="description" content={guide.description} />
-        <link rel="canonical" href={`https://mukeshsarees.com/guides/${guide.slug}`} />
+        <link rel="canonical" href={`https://mukeshsarees.com/guides/${guide.slug}/`} />
         <script type="application/ld+json">{JSON.stringify(schemaMarkup)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
         {guide.faqs.length > 0 && (
@@ -636,7 +636,7 @@ export default function GuideDetail() {
                     {relatedProducts.map(product => (
                       <Link 
                         key={product.id}
-                        to={`/product/${product.slug}`}
+                        to={`/product/${product.slug}/`}
                         className="group flex flex-col"
                       >
                         <div className="aspect-[3/4] overflow-hidden bg-[#FAF8F5] mb-4 relative border border-[#EAE6E1]">
@@ -682,7 +682,7 @@ export default function GuideDetail() {
               <div className="mt-16 pt-8 border-t border-[#FAF8F5] grid grid-cols-1 sm:grid-cols-2 gap-8">
                 {prevGuide ? (
                   <Link 
-                    to={`/guides/${prevGuide.slug}`}
+                    to={`/guides/${prevGuide.slug}/`}
                     className="group p-5 border border-[#EAE6E1] hover:border-[#C8A96B] transition-all duration-300 text-left flex flex-col justify-between"
                   >
                     <span className="text-[9px] uppercase tracking-widest font-sans text-[#8C827A] font-medium block mb-2">Previous Article</span>
@@ -692,7 +692,7 @@ export default function GuideDetail() {
 
                 {nextGuide ? (
                   <Link 
-                    to={`/guides/${nextGuide.slug}`}
+                    to={`/guides/${nextGuide.slug}/`}
                     className="group p-5 border border-[#EAE6E1] hover:border-[#C8A96B] transition-all duration-300 text-right flex flex-col justify-between"
                   >
                     <span className="text-[9px] uppercase tracking-widest font-sans text-[#8C827A] font-medium block mb-2">Next Article</span>
@@ -755,7 +755,7 @@ export default function GuideDetail() {
                   {guide.productCategories.map((cat, i) => (
                     <Link 
                       key={i} 
-                      to={`/shop?category=${cat.replace(/\s+/g, '-')}`}
+                      to={`/shop/?category=${cat.replace(/\s+/g, '-')}`}
                       className="px-3 py-2 bg-white border border-[#EAE6E1] rounded-none text-[10px] uppercase tracking-wider text-[#5F5A54] hover:text-[#C8A96B] hover:border-[#C8A96B] transition-colors duration-300"
                     >
                       {cat}
@@ -774,7 +774,7 @@ export default function GuideDetail() {
                     {relatedGuides.map(related => (
                       <Link 
                         key={related.id} 
-                        to={`/guides/${related.slug}`}
+                        to={`/guides/${related.slug}/`}
                         className="group flex gap-4 items-start"
                       >
                         <div className="w-16 h-16 flex-shrink-0 rounded-none overflow-hidden border border-[#EAE6E1]">
@@ -807,7 +807,7 @@ export default function GuideDetail() {
                 <p className="text-xs text-white/70 mb-6 relative z-10 font-sans tracking-wide leading-relaxed">
                   Explore our curated collection of premium sarees based on this guide.
                 </p>
-                <Link to="/shop" className="btn-primary w-full relative z-10 bg-[#C8A96B] text-white hover:bg-[#B29054] border-transparent uppercase tracking-widest text-[11px] py-3 rounded-none transition-colors duration-300">
+                <Link to="/shop/" className="btn-primary w-full relative z-10 bg-[#C8A96B] text-white hover:bg-[#B29054] border-transparent uppercase tracking-widest text-[11px] py-3 rounded-none transition-colors duration-300">
                   View Collections
                 </Link>
               </div>
@@ -818,7 +818,7 @@ export default function GuideDetail() {
           
           {/* Footer Nav */}
           <div className="mt-16 pt-8 border-t border-[#FAF8F5]">
-            <Link to="/guides" className="inline-flex items-center text-xs uppercase tracking-widest font-sans text-[#8C827A] hover:text-[#C8A96B] transition-colors">
+            <Link to="/guides/" className="inline-flex items-center text-xs uppercase tracking-widest font-sans text-[#8C827A] hover:text-[#C8A96B] transition-colors">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Knowledge Hub
             </Link>

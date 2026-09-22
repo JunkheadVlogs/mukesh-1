@@ -891,138 +891,576 @@ const seoPagesData: Record<
     ],
   },
   "corporate-uniform-sarees": {
-    title: `Corporate Uniform Sarees | Professional Wear | ${BUSINESS_INFO.name}`,
-    description: `Shop premium corporate uniform sarees at ${BUSINESS_INFO.name}. Wrinkle-free, elegant, and perfect for office professionals and corporate teams.`,
+    title: `Corporate Uniform Sarees for Front Desk & Staff | ${BUSINESS_INFO.name}`,
+    description: `Premium corporate uniform sarees for front-desk executives, hospitality staff, corporate events & banks. Crisp wrinkle-free crepe & georgette at wholesale rates.`,
     h1: "Corporate Uniform Sarees",
     intro:
-      "Enhance your corporate identity with our elegant corporate uniform sarees. Designed for comfort during long working hours and maintaining a crisp, professional look.",
+      "Project a cohesive, sophisticated corporate image with bespoke uniform sarees from Mukesh Saree Centre. Crafted from premium wrinkle-free crepe and georgette blends for executive teams, banks, and hospitality leaders.",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="bg-[#FAF6F0] p-6 rounded-md border border-[#E8DFD1] mb-8">
+          <h2 className="text-xl font-serif text-[var(--color-dark)] mt-0 mb-3 font-semibold">
+            Corporate Saree Standards: What Makes Professional Office Drapes
+          </h2>
+          <p className="text-[15px] leading-relaxed mb-0">
+            Corporate uniform sarees must achieve three non-negotiable standards: <strong>impeccable wrinkle recovery</strong> during 9-hour desk shifts, <strong>subtle modern aesthetics</strong> that complement corporate branding, and <strong>low-maintenance durability</strong> for frequent wearing. At <strong>{BUSINESS_INFO.name}</strong>, our corporate collection is designed for reception executives, flight hospitality, banking staff, and boardroom teams who need to look dignified and composed all day.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Wrinkle-Free Crepe & Georgette Engineered for Active Workdays
+        </h2>
         <p>
-          At <strong>{BUSINESS_INFO.name}</strong>, we provide high-quality{" "}
-          <strong>corporate uniform sarees</strong> crafted from premium crepe
-          and georgette blends. These fabrics offer a wrinkle-free finish that
-          ensures your team members always look their best.
+          Standard cottons crush within hours of commute or desk seating. For corporate environments, <strong>{BUSINESS_INFO.name}</strong> prioritizes high-twist poly-crepe, premium moss crepe, and matte georgette micro-blends. These textiles boast superior tensile resilience—falling into neat, sharp pleats that stay in place without multiple safety pins. Whether your staff travels by air, drives long commutes, or hosts corporate seminars, our drapes maintain a razor-crisp silhouette from morning check-in to evening wrap-up.
         </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Boardroom Color Palettes & Contemporary Geometric Accents
+        </h2>
         <p>
-          Whether for front-desk executives, hospitality staff, or corporate
-          teams, our corporate sarees bring consistency and professionalism. We
-          take bulk orders and offer customized color matching.
+          Corporate elegance demands understated authority. We curate uniform palettes including executive slate grey, deep navy, rich wine, muted bottle green, charcoal, and warm corporate beige. Embellishments are deliberately restrained—featuring clean geometric woven borders, fine metallic zari selvedges, or dual-tone contrast piping that look sharp on camera, in video conferences, and across luxury hotel reception lobbies.
         </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Corporate Procurement, Pantone Matching & GST Invoicing
+        </h2>
+        <p>
+          We simplify B2B procurement for HR directors, administrative heads, and facility managers across India:
+        </p>
+        <ul className="list-disc pl-5 space-y-2 mb-6">
+          <li><strong>Pantone & Brand Alignment:</strong> Custom border weaving and fabric dyeing to match your company logo and brand book standards.</li>
+          <li><strong>Compliant GST Billing:</strong> Full tax invoices for corporate input credit and transparent corporate auditing.</li>
+          <li><strong>Sample Approval Kits:</strong> Pre-production physical swatch books and complete drape samples dispatched directly to your office.</li>
+          <li><strong>Guaranteed Reorder Consistency:</strong> Archived mill dye-lot recipes ensure replacement sarees for new employee onboarding match existing team attire 100%.</li>
+        </ul>
       </div>
     ),
     faqs: [
       {
-        question: "What fabrics do you use for corporate sarees?",
+        question: "Can you match corporate brand guidelines and Pantone colors?",
         answer:
-          "We primarily use durable crepe, poly-crepe, and georgette blends that require minimal ironing and remain crisp all day.",
+          "Yes, we collaborate directly with corporate procurement and HR teams to match exact brand colors, contrast border specifications, and custom logos for batches of 15 sarees or more.",
       },
       {
-        question: "Do you take bulk orders for corporate teams?",
+        question: "Do you provide itemized GST invoices for corporate orders?",
         answer:
-          "Yes, we specialize in bulk and wholesale orders with customized patterns and company branding.",
+          "Yes, all corporate B2B orders include formal GST invoices with your company name and GSTIN, enabling full input tax credit eligibility.",
+      },
+      {
+        question: "How do corporate uniform sarees perform during travel and long shifts?",
+        answer:
+          "Our poly-crepe and matte georgette blends are wrinkle-resistant and lightweight, retaining clean pleats during flights, metro commutes, and 9-hour desk shifts without requiring daily ironing.",
+      },
+      {
+        question: "Can our management team evaluate fabric samples before ordering?",
+        answer:
+          "Yes, we dispatch fabric swatch cards and finished sample sarees via courier to corporate offices for HR, admin, and management review.",
+      },
+      {
+        question: "What is the turnaround time and reorder policy for new hires?",
+        answer:
+          "Ready-to-ship stock dispatches in 24 to 48 hours; custom weaves take 7 to 14 days. We store exact mill dye recipes so new employee uniforms match existing staff seamlessly.",
       },
     ],
   },
   "school-uniform-sarees": {
-    title: `School Uniform Sarees | Teachers & Staff | ${BUSINESS_INFO.name}`,
-    description: `Durable, professional school uniform sarees for teachers and administrative staff. Discover comfortable fabrics suited for everyday wear at ${BUSINESS_INFO.name}.`,
+    title: `School Uniform Sarees in Bulk & Wholesale | Mukesh Saree Centre Nagpur`,
+    description: `Supplying durable, breathable school uniform sarees for teachers, administrative staff, and school faculty. Direct weaver pricing, bulk discounts & custom color matching.`,
     h1: "School Uniform Sarees",
     intro:
-      "Empower your educational staff with comfortable and respectable school uniform sarees. Specially chosen fabrics to endure daily school activities.",
+      "Outfit your school faculty and administrative staff in cohesive, dignified, and exceptionally comfortable school uniform sarees from Mukesh Saree Centre, Nagpur. Sourced directly from premier textile hubs since 1978.",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="bg-[#FAF6F0] p-6 rounded-md border border-[#E8DFD1] mb-8">
+          <h2 className="text-xl font-serif text-[var(--color-dark)] mt-0 mb-3 font-semibold">
+            Institutional Dress Codes: Balancing Academic Authority with Active Comfort
+          </h2>
+          <p className="text-[15px] leading-relaxed mb-0">
+            A school uniform saree must project educator dignity while withstanding the physical demands of dynamic campus life. From morning assemblies and continuous classroom lectures to laboratory supervision and playground duties, teachers need sarees that remain <strong>breathable in tropical heat</strong>, <strong>free from heavy daily starching</strong>, and <strong>uniform in exact shade across the entire faculty</strong>.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Fabric Selection: Poly-Cotton, Soft Khadi & Non-Creasing Crepe
+        </h2>
         <p>
-          <strong>School uniform sarees</strong> need to strike the perfect
-          balance between comfort and authority. At{" "}
-          <strong>{BUSINESS_INFO.name}</strong>, we offer a specialized range of
-          sarees tailored for school environments.
+          At <strong>{BUSINESS_INFO.name}</strong>, our school uniform range is constructed using high-density poly-cotton weaves, pre-washed linen blends, and easy-drape poly-crepe. These fabrics offer high airflow for warm classroom months while resisting static cling. Unlike pure starched cottons that wrinkle and stiffen, our chosen blends wash out easily, dry quickly indoors, and maintain gentle, natural pleating through 8+ hour school days.
         </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Dye-Lot Consistency for Whole Faculty Uniformity
+        </h2>
         <p>
-          Our poly-cotton and crepe sarees are breathable, easy to maintain, and
-          come in subtle, elegant shades appropriate for educational
-          institutions.
+          Nothing compromises institutional aesthetics like mismatched shades among staff members. We dye entire school uniform batches in single, synchronized mill lots. This guarantees that all 20, 50, or 100+ teachers receive identical color tones and border finishes. Additionally, we preserve the technical dye-lot specifications so replacement sarees ordered for mid-term new joiners match the existing faculty attire with 100% precision.
         </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Low MOQs, Custom School House Borders & Weaver-Direct Pricing
+        </h2>
+        <p>
+          Located in Gandhibagh, Nagpur, we supply educational trusts, missionary schools, and private academies across Central India and nationwide with flexible wholesale terms:
+        </p>
+        <ul className="list-disc pl-5 space-y-2 mb-6">
+          <li><strong>Accessible Institutional MOQ:</strong> Orders start at just 15 to 20 sarees, accommodating small academic departments as easily as entire school bodies.</li>
+          <li><strong>Custom House & Crest Borders:</strong> Contrast border weaving or printing matched to your institution's crest, house divisions, or anniversary celebrations.</li>
+          <li><strong>Sample Approval Parcels:</strong> Physical swatch books and sample drape pieces couriered to school management prior to bulk production.</li>
+          <li><strong>Direct Gandhibagh Wholesale Rates:</strong> Sourced directly from master looms in Surat and Varanasi, eliminating retail middleman surcharges.</li>
+        </ul>
       </div>
     ),
     faqs: [
       {
-        question: "What makes a good school uniform saree?",
+        question: "What fabrics are recommended for daily school uniform sarees?",
         answer:
-          "A good school uniform saree should be made of breathable, low-maintenance fabric like poly-cotton or crepe, allowing teachers to move freely throughout the day.",
+          "We recommend durable poly-cotton blends, soft-spun khadi cotton, and micro-crepe. These fabrics are breathable for warm weather, resist creasing, and do not require time-consuming daily starching.",
       },
       {
-        question: "Can schools order specific border designs?",
+        question: "What is the Minimum Order Quantity (MOQ) for school uniform sarees?",
         answer:
-          "Yes, we can provide specific borders and color combinations to match your school's official colors.",
+          "Our institutional MOQ starts at just 15 to 20 sarees per order, making it accessible for small private academies, subject departments, and large school trusts alike.",
+      },
+      {
+        question: "Can you match our school's official house and crest colors?",
+        answer:
+          "Yes, we provide custom border weaving and contrast pallu combinations tailored to your school's official branding, crest colors, or house themes.",
+      },
+      {
+        question: "How do you handle saree reorders when new teachers join mid-year?",
+        answer:
+          "We archive the exact mill dye-lot recipes and retain reserve inventory, ensuring mid-academic year new hires receive sarees that match existing staff uniforms seamlessly.",
+      },
+      {
+        question: "How can school management review samples before finalizing the order?",
+        answer:
+          "We courier fabric swatch cards and complete sample sarees directly to your school principal or trustee board for hands-on review and fabric testing.",
       },
     ],
   },
   "teacher-uniform-sarees": {
-    title: `Teacher Uniform Sarees | Comfortable Educational Wear | ${BUSINESS_INFO.name}`,
-    description: `Browse our exclusive collection of teacher uniform sarees at ${BUSINESS_INFO.name}. Look professional while commanding respect and staying comfortable.`,
+    title: `Teacher Uniform Sarees for Schools & Colleges | Mukesh Saree Centre`,
+    description: `Comfortable, elegant teacher uniform sarees designed for all-day classroom lecturing and campus mobility. Breathable linen blends, micro-crepe & khadi cotton at wholesale rates.`,
     h1: "Teacher Uniform Sarees",
     intro:
-      "We honor educators by offering teacher uniform sarees that combine traditional grace with pragmatic comfort for the modern classroom.",
+      "Designed specifically for teachers, lecturers, and academic professors who spend long hours on their feet. Experience non-creasing, lightweight drapes that combine professional authority with effortless comfort.",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="bg-[#FAF6F0] p-6 rounded-md border border-[#E8DFD1] mb-8">
+          <h2 className="text-xl font-serif text-[var(--color-dark)] mt-0 mb-3 font-semibold">
+            All-Day Classroom Ergonomics: Sarees Designed for Educators
+          </h2>
+          <p className="text-[15px] leading-relaxed mb-0">
+            Teaching is a physically demanding profession requiring 6 to 8 hours of standing, whiteboard writing, walking between lectures, and engaging with students. A teacher's saree must offer <strong>ergonomic drape security</strong>—staying neatly tucked at the waist without slipping—while maintaining a graceful, authoritative academic presence that commands classroom respect.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Chalk Dust Resistance & Breathable Daily Fabrics
+        </h2>
         <p>
-          As a teacher, your attire speaks volumes.{" "}
-          <strong>Teacher uniform sarees</strong> from{" "}
-          <strong>{BUSINESS_INFO.name}</strong> are curated to provide an
-          authoritative yet approachable appearance.
+          Traditional heavy silks and clingy synthetics are impractical for daily chalk-and-board lecturing. At <strong>{BUSINESS_INFO.name}</strong>, our teacher collection highlights fine-spun khadi cottons, organic linen-cotton blends, and smooth micro-crepe weaves. These fabrics feature a tight, lint-free surface that naturally repels chalk dust and dry marker smudges. Teachers can effortlessly brush off dust between classes without leaving visible residue or permanent stains.
         </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Dignified Academic Aesthetics & Secure Pleat Retention
+        </h2>
         <p>
-          Our sarees reflect modesty and elegance. From subtle prints to solid
-          shades with contrasting borders, find the perfect uniform for your
-          teaching staff.
+          Our teacher sarees feature balanced 5.5-meter drapes with generous 0.8m to 1.0m unstitched matching blouse pieces. The lightweight weave falls naturally into uniform pleats that stay anchored throughout busy school periods. Our color palettes emphasize calm, focused classroom environments: sage greens, dusty pastels, earthy terracottas, elegant teals, and soft rose tones with understated woven zari or threadwork borders.
         </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Departmental Orders for Colleges & Degree Institutions
+        </h2>
+        <p>
+          We cater to university colleges, polytechnics, and higher secondary faculties across India:
+        </p>
+        <ul className="list-disc pl-5 space-y-2 mb-6">
+          <li><strong>Department-Specific Palettes:</strong> Choose distinct coordinated shades for Science, Arts, Commerce, or Engineering faculties.</li>
+          <li><strong>Zero-Starch Easy Care:</strong> Machine-washable or easy cold-water hand wash fabrics that dry fast indoors and need minimal ironing.</li>
+          <li><strong>WhatsApp Video Fabric Inspection:</strong> Connect directly with our team at +91 70206 64641 to see drape, pleat behavior, and border detailing on live video.</li>
+          <li><strong>Pan-India Doorstep Dispatch:</strong> Reliable courier and transport logistics with full tracking to schools and college campuses across India.</li>
+        </ul>
       </div>
     ),
     faqs: [
       {
-        question: `Why choose ${BUSINESS_INFO.name} for teacher uniforms?`,
-        answer: `With decades of experience since ${BUSINESS_INFO.established}, we understand the fabric durability and aesthetic required for daily academic use.`,
+        question: "Why are linen-cotton and micro-crepe ideal for teaching professionals?",
+        answer:
+          "These fabrics provide superior breathability during long lectures in warm classrooms, resist perspiration marks, and drape comfortably without clinginess or stiff starched discomfort.",
       },
       {
-        question: "What colors are best for teacher sarees?",
+        question: "Do teacher uniform sarees resist chalk dust and whiteboard marker stains?",
         answer:
-          "Muted tones, pastels, and earthy colors are most popular as they bring a calm and focused atmosphere to the classroom.",
+          "Yes, our tight-weave cotton blends and smooth poly-crepes do not trap chalk powder within the weave. Most superficial dust brushes off effortlessly with a light sweep of the hand.",
+      },
+      {
+        question: "Can college departments order distinct color combinations?",
+        answer:
+          "Yes, degree colleges and universities frequently order differentiated color themes for distinct academic faculties (such as blue for Science, maroon for Arts, and teal for Commerce).",
+      },
+      {
+        question: "How easy is daily maintenance for busy educators?",
+        answer:
+          "These sarees require zero starching, dry quickly indoors, and retain neat pleats with a quick, low-temperature iron, making them ideal for daily morning routines.",
+      },
+      {
+        question: "How can faculty committees inspect fabric quality before buying?",
+        answer:
+          "You can connect directly with our Gandhibagh team via WhatsApp video call at +91 70206 64641 to inspect fabric textures live, or request physical swatch parcels by courier.",
       },
     ],
   },
   "hospital-uniform-sarees": {
-    title: `Hospital Uniform Sarees | Healthcare Staff Wear | ${BUSINESS_INFO.name}`,
-    description: `Provide your hospital administration and healthcare staff with hygienic, comfortable, and unified hospital uniform sarees from ${BUSINESS_INFO.name}.`,
+    title: `Hospital Uniform Sarees for Nurses & Healthcare Staff | ${BUSINESS_INFO.name}`,
+    description: `Hygienic, easy-care hospital uniform sarees for nursing supervisors, healthcare administrators & hospital front desk teams. Stain-resistant, quick-drying poly-crepe.`,
     h1: "Hospital Uniform Sarees",
     intro:
-      "Clean, subtle, and exceptionally comfortable. Our hospital uniform sarees are chosen for their resilience in fast-paced healthcare environments.",
+      "Equip your hospital administration, nursing superintendents, and healthcare staff with hygienic, wrinkle-free, and stain-resistant uniform sarees from Nagpur's trusted textile distributor since 1978.",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="bg-[#FAF6F0] p-6 rounded-md border border-[#E8DFD1] mb-8">
+          <h2 className="text-xl font-serif text-[var(--color-dark)] mt-0 mb-3 font-semibold">
+            Clinical Standards: Hygiene, Stain Resistance & Shift Resilience
+          </h2>
+          <p className="text-[15px] leading-relaxed mb-0">
+            Healthcare settings demand the strictest standards of textile hygiene and physical resilience. Hospital uniform sarees must endure <strong>high-temperature commercial laundering</strong>, <strong>exposure to antiseptic cleansers</strong>, and <strong>strenuous 12-hour duty shifts</strong> without losing their color, thinning, or collecting clinical lint.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Poly-Crepe & Matte Georgette for Active 12-Hour Hospital Shifts
+        </h2>
         <p>
-          Healthcare professionals and administrative personnel require attire
-          that is both comforting to patients and easy for staff to wash
-          frequently. Our <strong>hospital uniform sarees</strong> are exactly
-          that.
+          At <strong>{BUSINESS_INFO.name}</strong>, our hospital uniform sarees are woven from premium poly-crepe and high-twist georgette microfibers. These specialized yarns are naturally fluid-repellent and quick-drying. When fluids or sanitizers splash onto the fabric, the tight weave prevents immediate soaking, allowing rapid cleaning. Unlike traditional cotton that wrinkles instantly and requires heavy starching, poly-crepe bounces back into shape, keeping nursing supervisors and administrative staff looking poised and professional through night shifts.
         </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Departmental Color Discipline & Soothing Medical Palettes
+        </h2>
         <p>
-          Available in soft blues, pristine whites, and gentle greens, our
-          selection of poly-blend sarees ensure that hospital staff look
-          unified, professional, and composed.
+          Visual distinction among healthcare departments improves hospital workflow and comforts arriving patients. We offer coordinated uniform sets in proven clinical palettes:
+        </p>
+        <ul className="list-disc pl-5 space-y-2 mb-6">
+          <li><strong>Serene Teal & Sky Blue:</strong> The international benchmark for nursing supervisors and in-patient ward leads.</li>
+          <li><strong>Soothing Mint & Sage Green:</strong> Calming tones for surgical recovery, pharmacy staff, and pediatric units.</li>
+          <li><strong>Warm Beige & Soft Lavender:</strong> Welcoming, dignified shades for front-desk patient reception, billing counters, and OPD coordinators.</li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Supplying Hospitals, Nursing Colleges & Diagnostic Centers Pan-India
+        </h2>
+        <p>
+          From multispeciality hospital chains in Nagpur to private nursing homes and diagnostics centers across Vidarbha, MP, and Chhattisgarh, we provide certified bulk wholesale supply:
+        </p>
+        <ul className="list-disc pl-5 space-y-2 mb-6">
+          <li><strong>Disinfection Tested:</strong> Tested for color-fastness against regular commercial detergents and hot-water wash cycles.</li>
+          <li><strong>Flexible MOQs:</strong> Orders starting from 15 sarees per shade with archived dye recipes for effortless future replenishment.</li>
+          <li><strong>Matching Blouse Pieces:</strong> Each saree includes 0.85m to 1.0m unstitched fabric to accommodate all staff body sizes.</li>
+          <li><strong>Fast Dispatch:</strong> Ready stock dispatches within 24 to 48 hours with full GST tax invoice documentation.</li>
+        </ul>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Can hospital uniform sarees withstand frequent commercial laundering?",
+        answer:
+          "Yes, our poly-crepe and high-twist georgette yarns are tested for high-temperature washes and disinfectant detergents without color fading, shrinking, or fiber degradation.",
+      },
+      {
+        question: "Are these sarees wrinkle-resistant during 12-hour shifts?",
+        answer:
+          "Yes, the micro-crepe weave offers instant wrinkle bounce-back, maintaining a crisp, lint-free, professional appearance throughout strenuous hospital duty shifts.",
+      },
+      {
+        question: "Do you provide color-coded sarees for different hospital designations?",
+        answer:
+          "Yes, we supply standardized color sets tailored to each department: nursing superintendents (teal/blue), reception executives (beige/peach), and administrative staff (lavender/grey).",
+      },
+      {
+        question: "What is the MOQ and reorder process for hospital staff uniforms?",
+        answer:
+          "Our MOQ starts at 15 sarees per shade. We archive exact mill dye-lot recipes so subsequent orders for newly hired medical personnel match existing staff attire perfectly.",
+      },
+      {
+        question: "How quickly can orders be delivered to hospitals across Central India?",
+        answer:
+          "Ready stock batches dispatch within 24 to 48 hours via fast road logistics and express couriers, reaching hospitals across Maharashtra, MP, and CG within 2 to 4 days.",
+      },
+    ],
+  },
+  "wholesale-sarees-nagpur": {
+    title: `Wholesale Sarees in Nagpur | Direct Weaver Rates | ${BUSINESS_INFO.name}`,
+    description: `Nagpur's premier wholesale saree dealer since 1978 in Gandhibagh & Itwari market. Bulk sarees, lehengas & uniform drapes at direct weaver prices with pan-India dispatch.`,
+    h1: "Wholesale Sarees in Nagpur",
+    intro:
+      `Sourcing directly from India's master weaving clusters in Surat, Varanasi, Kanchipuram, and Kolkata, ${BUSINESS_INFO.name} on Jagnath Road, Gandhibagh is Nagpur and Vidarbha's leading wholesale saree distributor since 1978.`,
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="bg-[#FAF6F0] p-6 rounded-md border border-[#E8DFD1] mb-8">
+          <h2 className="text-xl font-serif text-[var(--color-dark)] mt-0 mb-3 font-semibold">
+            Central India's Premier Wholesale Textile Hub: Gandhibagh & Itwari
+          </h2>
+          <p className="text-[15px] leading-relaxed mb-0">
+            For over 46 years, <strong>{BUSINESS_INFO.name}</strong> on Jagnath Road, Gandhibagh, has stood as the cornerstone of wholesale saree distribution in Nagpur and the wider Vidarbha, Madhya Pradesh, and Chhattisgarh regions. We supply more than <strong>500+ independent retail boutiques</strong>, regional saree showrooms, home-based women entrepreneurs, and institutional buyers with direct loom-finished textiles at genuine factory rates.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Direct Weaver Loom Sourcing: Zero Intermediary Brokerage
+        </h2>
+        <p>
+          Most regional wholesalers purchase through multi-tiered broker networks in Surat, Kolkata, or Varanasi, which inflates product costs by 20% to 35%. <strong>{BUSINESS_INFO.name}</strong> maintains established, direct-contract partnerships with loom clusters across Surat, Banaras, Kanchipuram, Chanderi, and Bengal. By eliminating commission agents and middleman markups, we pass maximum profit margins directly to our retail partners.
+        </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Ready 30+ Category Inventory Under One Roof
+        </h2>
+        <p>
+          Whether your store caters to luxury bridal trousseaus or budget-conscious everyday shoppers, our Gandhibagh showroom houses over 30 distinct product categories:
+        </p>
+        <ul className="list-disc pl-5 space-y-2 mb-6">
+          <li><strong>Pure Linen Sarees:</strong> 60s to 100s count organic flax linen with zari borders and contemporary digital prints.</li>
+          <li><strong>Signature Malvika Sarees:</strong> Silky-soft, wrinkle-free tissue blends that sell out rapidly across retail counters.</li>
+          <li><strong>Traditional Handlooms:</strong> Authentic Yeola Paithani, Kanjivaram silk, Banarasi brocades, and Chanderi drapes.</li>
+          <li><strong>Everyday Cotton & Daily Wear:</strong> Breathable soft cottons, Mulmul, Jamdani, and easy-care synthetic prints.</li>
+          <li><strong>Bridal & Party Wear:</strong> Heavily embroidered bridal lehengas, semi-stitched suits, and designer sequins drapes.</li>
+          <li><strong>Institutional Uniform Sarees:</strong> Bulk uniform drapes for schools, colleges, hospitals, and corporate organizations.</li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Low Starting MOQs, Transparent Slabs & Fast Logistics Dispatch
+        </h2>
+        <p>
+          We believe in nurturing growing businesses. Our wholesale catalog bundles start with <strong>minimum orders as low as 10 to 15 sarees</strong>, allowing new boutique owners to curate diverse collections without heavy capital outlay. We provide daily fresh arrivals via our WhatsApp dealer broadcast, real-time video inspections, itemized GST tax invoices, and same-day parcel dispatch via premier transport logistics (Delhivery, Blue Dart, and dedicated regional cargo lines).
+        </p>
+
+        <div className="bg-[#2C241B] text-white p-6 rounded-md mt-8 mb-4">
+          <h3 className="text-lg font-serif font-semibold text-[#D4AF37] mb-2">
+            Visit Our Gandhibagh Showroom or Order via WhatsApp
+          </h3>
+          <p className="text-sm text-white/80 mb-4 leading-relaxed">
+            Walk into our wholesale counter at Jagnath Road, Gandhibagh, Nagpur (Mon–Sat, 11 AM – 8:30 PM) for hands-on lot selection, or message our wholesale desk directly for instant catalog access.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent("Hi Mukesh Saree Centre, I am a retailer/buyer inquiring about your wholesale saree catalog and price list.")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-5 py-2.5 bg-[#D4AF37] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#e0be4d] transition-all"
+            >
+              WhatsApp Wholesale Catalog
+            </a>
+            <a
+              href="/contact/"
+              className="inline-flex items-center justify-center px-5 py-2.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all"
+            >
+              Store Location & Directions
+            </a>
+          </div>
+        </div>
+      </div>
+    ),
+    faqs: [
+      {
+        question: `Where is ${BUSINESS_INFO.name} located in Nagpur for wholesale purchases?`,
+        answer:
+          `Our wholesale showroom is located at Jagnath Road, Gandhibagh, Nagpur 440002, adjacent to the Itwari textile market. Boutique owners and retailers are welcome for in-person lot selection Monday through Saturday.`,
+      },
+      {
+        question: "What is the Minimum Order Quantity (MOQ) for wholesale buyers?",
+        answer:
+          "Our wholesale lots start at just 10 to 15 sarees per catalog bundle, making it simple for new boutique owners and home entrepreneurs to launch without huge capital commitments.",
+      },
+      {
+        question: "How can outstation retailers access the daily wholesale catalog?",
+        answer:
+          `Outstation buyers can message our wholesale department on WhatsApp at ${BUSINESS_INFO.phone}. We send daily fresh arrivals, wholesale price tiers, and offer live video call fabric inspections.`,
+      },
+      {
+        question: "What saree varieties are available at wholesale prices?",
+        answer:
+          "We supply over 30 categories including Pure Linen, Malvika Silk, Paithani, Banarasi Silk, Chanderi, Soft Cotton, Organza, Heavy Bridal Lehengas, and Institutional Uniform Sarees.",
+      },
+      {
+        question: "What payment terms and transport delivery methods do you support?",
+        answer:
+          "We accept RTGS, NEFT, UPI, and bank transfers, and ship daily via trusted transport networks and courier partners (Delhivery, Blue Dart, regional transport) across Maharashtra, MP, CG, and pan-India.",
+      },
+    ],
+  },
+  "pure-linen-sarees": {
+    title: `Pure Linen Sarees Online | Breathable Handcrafted Drapes | ${BUSINESS_INFO.name}`,
+    description: `Shop pure linen sarees online at ${BUSINESS_INFO.name}. Sourced from fine flax fibers, breathable organic weaves, digital prints & zari borders. Free shipping across India.`,
+    h1: "Pure Linen Sarees",
+    intro: "Celebrated for their natural texture, breathability, and timeless organic appeal, our pure linen sarees bring effortless elegance to modern Indian wardrobes. Handcrafted from premium organic flax fibers, each drape balances lightweight comfort with refined, contemporary aesthetics.",
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          The Art & Anatomy of Pure Linen Weaving
+        </h2>
+        <p>
+          At <strong>{BUSINESS_INFO.name}</strong>, our pure linen sarees are woven using high-grade European and indigenous flax yarn ranging from 60s to 100s count. This superior thread density yields an airy, breathable weave that softens organically with every drape. Unlike synthetic blends that trap humidity, pure linen naturally regulates body temperature, making it the premier choice for India's warm tropical climates. The collection features crisp selvage borders, delicate tissue zari detailing, woven geometric pallus, and artistic digital prints ranging from Warli motifs to soft botanical florals.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Styling & Everyday Versatility
+        </h2>
+        <p>
+          Pure linen's natural slub texture and structured drape make it exceptionally versatile across diverse settings. For professional boardroom settings and corporate elegance, pair a solid-toned pastel ivory, charcoal, or slate grey linen saree with a structured boat-neck blouse and minimalist silver jewelry. For daytime festive gatherings, gallery visits, or intimate family pujas, opt for our floral garden prints, vibrant sunshine yellows, or contrast tribal woven borders styled with oxidised silver jhumkas and block heels.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Draping Ease & Sustainable Fabric Care
+        </h2>
+        <p>
+          Draping a linen saree is straightforward because the natural fiber holds its shape with crisp, clean lines without requiring dozens of safety pins. The pallu falls gracefully over the shoulder, creating an elongated silhouette that flatters all body types. For care, we advise an initial dry clean followed by gentle cold-water hand washing with mild liquid detergents to preserve fiber strength and color depth.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Mukesh Saree Centre Craftsmanship Since 1978
+        </h2>
+        <p>
+          Serving discerning textile lovers since 1978 from Gandhibagh, Nagpur, {BUSINESS_INFO.name} inspects every linen weave for tensile strength, yarn purity, and print precision. With more than 30 curated linen styles in stock—spanning pure linens and premium linen-cotton blends—you enjoy authentic loom-finished textiles with dependable Cash on Delivery and pan-India doorstep delivery.
         </p>
       </div>
     ),
     faqs: [
       {
-        question: "Are the hospital sarees easily washable?",
-        answer:
-          "Yes, they are designed for frequent machine washing and quick drying, which is essential in a healthcare setting.",
+        question: "How do I care for and wash a pure linen saree?",
+        answer: "We recommend dry cleaning for the first wash to preserve the fabric's natural sheen and crisp texture. Subsequent washes can be done by gentle hand washing in cold water with a mild liquid detergent. Always shade-dry and iron while slightly damp using medium heat."
       },
       {
-        question: "Do you offer uniform sarees for reception staff?",
-        answer:
-          "Absolutely, we cater to all departments within a hospital, from nursing administration to front desk.",
+        question: "Are pure linen sarees comfortable for summer and office wear?",
+        answer: "Yes, pure linen is one of the most breathable natural textiles in the world. Its hollow flax fibers conduct heat away from the body, making it exceptionally comfortable for 8 to 10 hours of active office wear."
+      }
+    ],
+  },
+  "soft-cotton-sarees": {
+    title: `Soft Cotton Sarees Online | Daily Wear & Handloom | ${BUSINESS_INFO.name}`,
+    description: `Discover soft cotton sarees at ${BUSINESS_INFO.name}. Premium khadi cotton, Jamdani weaves, tissue cotton & breathable blends with COD and free shipping across India.`,
+    h1: "Soft Cotton Sarees",
+    intro: "Soft cotton sarees represent the cornerstone of authentic Indian comfort and graceful everyday dressing. Spun from long-staple natural cotton yarns, our collection offers unparalleled softness against the skin, effortless pleating, and enduring elegance for every season.",
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Natural Fibers & Gentle Comfort
+        </h2>
+        <p>
+          Nothing rivals the pure comfort of a soft cotton saree for daily life. At <strong>{BUSINESS_INFO.name}</strong>, our soft cotton drapes are spun from combed, long-staple cotton threads that eliminate scratchiness and stiffness. The collection features hand-spun Khadi cottons, fine Jamdani weaves like our Lal Pari artisan drape, delicate tissue-cotton blends with festive floral printing, and airy cotton-linen fusions. Each saree is pre-washed and treated for natural suppleness, allowing the fabric to drape gracefully without puffing or resisting pleat formation.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Styling for Daily Wear & Warm Climates
+        </h2>
+        <p>
+          Soft cotton sarees seamlessly transition from morning pujas and school lectures to corporate offices and casual weekend brunches. For a poised academic or office look, style a monochrome or striped Khadi cotton saree with a collared elbow-sleeve blouse and leather kolhapuris. For weekend outings or temple visits, choose a vibrant floral tissue-cotton or Jamdani drape with subtle zari selvage, complemented by terracotta earrings and a classic bindi.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Effortless Pleats & Zero-Stiff Maintenance
+        </h2>
+        <p>
+          Because our soft cottons are specially finished to eliminate rigidity, they do not require heavy starching to maintain a neat appearance. The fabric hugs the body naturally, making pleating quick and comfortable for daily morning routines. Simply hand-wash separately in cold salt water for the first cycle, dry in shaded breeze, and steam iron for a fresh, fluid finish.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Authentic Handloom Heritage in Nagpur
+        </h2>
+        <p>
+          Since 1978, {BUSINESS_INFO.name} in Gandhibagh, Nagpur has championed traditional weavers and ethical cotton textile production. Every cotton saree is tested for colorfastness, breathable weave openness, and structural durability so you can enjoy easy maintenance and lasting beauty wash after wash. Shop our ready inventory with Cash on Delivery and express nationwide shipping.
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Do soft cotton sarees require starching?",
+        answer: "Unlike stiff formal starch cottons, our soft cotton sarees are specially spun and finished for a soft, fluid drape right out of the box. You do not need to starch them unless you specifically prefer a razor-sharp, crisp finish."
       },
+      {
+        question: "Will the colors bleed upon washing?",
+        answer: "Our sarees use high-grade colorfast dyes. To ensure longevity, we advise soaking separately in cold salt water for the very first wash, followed by mild hand washing and shaded line drying."
+      }
+    ],
+  },
+  "banarasi-silk-sarees": {
+    title: `Banarasi Silk Sarees | Bridal & Festive Silks | ${BUSINESS_INFO.name} Nagpur`,
+    description: `Explore luxury Banarasi and festive silk sarees at ${BUSINESS_INFO.name}. Handpicked zari weaves, tissue silks & bridal collections. Visit Gandhibagh showroom or order online.`,
+    h1: "Banarasi Silk Sarees",
+    intro: "Renowned across the globe as the crown jewel of Indian heritage, Banarasi silk sarees capture regal grandeur through rich textures, luminous sheen, and exquisite zari craftsmanship. A must-have in every bridal trousseau, these timeless weaves celebrate centuries of textile mastery.",
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          The Regal Art of Banarasi & Silk Brocades
+        </h2>
+        <p>
+          Originating from the holy city of Varanasi, traditional Banarasi sarees are distinguished by their intricate brocade motifs—including kalga (mango), jhallar (floral net), and shikargah (hunting scenes)—woven into lustrous mulberry and tissue silk warps with metallic gold and silver zari. The heavy pallu and opulent borders create a majestic drape that holds its shape with imperial dignity, transforming every bride and festive host into a vision of classic grace.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Showroom Vault & Online Exclusive Silk Drapes
+        </h2>
+        <p>
+          While our digital catalog showcases selective contemporary festive silk and tissue drapes—such as our White Fendy Space Silk and Peacock Green Raga Tissue Silk—<strong>{BUSINESS_INFO.name}'s</strong> flagship multi-floor showroom in Gandhibagh, Nagpur houses an extensive physical vault of pure Katan silk Banarasis, lightweight georgette Banarasis, and traditional bridal ensembles. If you are seeking a specific weave, colorway, or bulk bridal trousseau order, our personal shopping team provides live video consultations directly from our Nagpur store.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Heirloom Preservation & Silk Care
+        </h2>
+        <p>
+          To preserve the intricate metallic zari and pure silk filaments, always store your Banarasi saree wrapped in breathable unbleached muslin cloth away from direct sunlight and humidity. Never spray perfumes directly onto the fabric, and schedule gentle dry cleaning after heavy wedding use. Refolding along alternative lines twice a year ensures the brocade stays pristine across generations.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Four Decades of Trust in Nagpur
+        </h2>
+        <p>
+          Founded in 1978, {BUSINESS_INFO.name} is Nagpur's premier family destination for wedding silks and festive wear. Every silk piece is hand-inspected for authentic zari purity, drape fluidity, and pristine finish. Enjoy transparent pricing, dedicated bridal consultation, Cash on Delivery, and pan-India insured shipping.
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Can I view more Banarasi silk sarees on video call?",
+        answer: "Yes! Because many of our high-end Banarasi bridal silks are exclusive single-piece drapes housed in our Gandhibagh showroom, we offer personalized WhatsApp video shopping sessions. Contact us at +91 7020664641 to schedule an appointment."
+      },
+      {
+        question: "How should I store and protect a pure Banarasi silk saree?",
+        answer: "Always wrap your Banarasi silk saree in a clean, breathable unbleached cotton or muslin cloth. Store it flat in a cool, dry wardrobe, away from moisture and direct sunlight. Refold along new creases every six months to prevent zari breakage."
+      }
+    ],
+  },
+  "designer-party-wear-sarees": {
+    title: `Designer Party Wear Sarees Online | Cocktail & Festive Drapes | ${BUSINESS_INFO.name}`,
+    description: `Shop designer party wear sarees online at ${BUSINESS_INFO.name}. Flowy georgettes, embroidered drapes, shimmer tissue & cocktail sarees with COD across India.`,
+    h1: "Designer Party Wear Sarees",
+    intro: "Make a captivating entrance at receptions, cocktail parties, and festive celebrations with our designer party wear sarees. Featuring fluid drapes, contemporary color palettes, and intricate artistic embellishments, these modern ensembles effortlessly blend glamour with comfort.",
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Couture Aesthetics & Modern Fabric Innovations
+        </h2>
+        <p>
+          Our designer party wear collection embraces fluid, modern fabrics engineered for movement and visual impact. From lightweight, gossamer georgettes and sheer festive chiffons to glamorous foil-accented drapes, delicate embroidery, and lustrous metallic tissue silks, each saree is designed to catch the evening light. Instead of heavy, cumbersome garments, our party wear drapes offer featherlight drapeability, allowing you to dance, celebrate, and socialize in complete comfort without compromising on high-fashion allure.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Styling for Sangeets, Receptions & Cocktails
+        </h2>
+        <p>
+          Designer party wear sarees lend themselves brilliantly to contemporary styling. For an evening cocktail or sangeet night, pair a rich emerald green or ruby red georgette drape with an embellished sleeveless bustier, statement chandelier earrings, and a metallic clutch. For daytime weddings or festive anniversary celebrations, choose a sunshine yellow chiffon or pastel tissue silk saree with subtle mirror work or foil borders, styled with sleek dewy makeup and delicate diamond or crystal accessories.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Fluid Movement & Wrinkle-Resistant Draping
+        </h2>
+        <p>
+          The lightweight composition of chiffon, georgette, and tissue silk ensures seamless pleating that stays secure throughout long celebrations. These resilient fabrics resist creasing even when seated for hours, maintaining a camera-ready silhouette from the grand entrance to the final farewell. We suggest professional dry cleaning or delicate hand steaming to keep foil borders and embroidery threads in mint condition.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Boutique Quality from Mukesh Saree Centre
+        </h2>
+        <p>
+          With over 45 years of textile leadership in Nagpur, <strong>{BUSINESS_INFO.name}</strong> curates trend-setting party wear sarees that deliver celebrity-inspired silhouettes at accessible direct-to-consumer pricing. Discover over a dozen handpicked designer drapes ready to ship with Cash on Delivery and complimentary delivery across India.
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Are designer party wear sarees heavy to carry during events?",
+        answer: "Not at all. Our designer collection prioritizes lightweight, flowing fabrics like premium georgette, chiffon, and soft tissue silk. They drape closely to the body and are comfortable to wear for hours of celebration."
+      },
+      {
+        question: "Do these sarees come with matching blouse pieces?",
+        answer: "Yes, all our designer party wear sarees include an unstitched matching or coordinated contrast 0.8-meter blouse piece with matching borders or embroidery accents."
+      }
     ],
   },
 };
@@ -1065,14 +1503,14 @@ async function run() {
     <meta property="og:title" content="${pData.title}" />
     <meta property="og:description" content="${pData.description}" />
     <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg" />
-    <meta property="og:url" content="https://mukeshsarees.com/${slug}" />
+    <meta property="og:url" content="https://mukeshsarees.com/${slug}/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="${BUSINESS_INFO.name}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${pData.title}" />
     <meta name="twitter:description" content="${pData.description}" />
     <meta name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
-    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${slug}" />
+    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${slug}/" />
     <!-- End Dynamic OG Tags -->`;
 
     const graph = [];
@@ -1080,19 +1518,19 @@ async function run() {
     // Breadcrumb Schema
     graph.push({
       "@type": "BreadcrumbList",
-      "@id": `https://mukeshsarees.com/${slug}#breadcrumb`,
+      "@id": `https://mukeshsarees.com/${slug}/#breadcrumb`,
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://mukeshsarees.com"
+          "item": "https://mukeshsarees.com/"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": pData.h1,
-          "item": `https://mukeshsarees.com/${slug}`
+          "item": `https://mukeshsarees.com/${slug}/`
         }
       ]
     });
@@ -1101,7 +1539,7 @@ async function run() {
     if (pData.faqs && pData.faqs.length > 0) {
       graph.push({
         "@type": "FAQPage",
-        "@id": `https://mukeshsarees.com/${slug}#faq`,
+        "@id": `https://mukeshsarees.com/${slug}/#faq`,
         "mainEntity": pData.faqs.map((faq: any) => ({
           "@type": "Question",
           "name": faq.question,
@@ -1118,7 +1556,7 @@ async function run() {
       "@type": "Organization",
       "@id": "https://mukeshsarees.com/#organization",
       "name": "Mukesh Saree Centre",
-      "url": "https://mukeshsarees.com",
+      "url": "https://mukeshsarees.com/",
       "logo": {
         "@type": "ImageObject",
         "url": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png"
@@ -1142,7 +1580,7 @@ async function run() {
       "name": "Mukesh Saree Centre",
       "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
       "telephone": "+919325034636",
-      "url": "https://mukeshsarees.com",
+      "url": "https://mukeshsarees.com/",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Jagnath Road, Itwari",
@@ -1175,16 +1613,16 @@ async function run() {
 
     graph.push({
       "@type": "Article",
-      "@id": `https://mukeshsarees.com/${slug}#article`,
+      "@id": `https://mukeshsarees.com/${slug}/#article`,
       "isPartOf": {
-        "@id": `https://mukeshsarees.com/${slug}`
+        "@id": `https://mukeshsarees.com/${slug}/`
       },
       "headline": pData.title,
       "description": pData.description,
       "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
       "datePublished": "2026-05-30T08:00:00+05:30",
       "dateModified": "2026-07-15T10:00:00+05:30",
-      "mainEntityOfPage": `https://mukeshsarees.com/${slug}`,
+      "mainEntityOfPage": `https://mukeshsarees.com/${slug}/`,
       "author": {
         "@id": "https://mukeshsarees.com/#organization"
       },

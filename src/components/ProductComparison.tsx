@@ -373,7 +373,7 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                         </button>
                       </div>
                       <div className="flex items-start gap-2.5">
-                        <Link to={`/product/${selectedProduct.slug}`} className="shrink-0">
+                        <Link to={`/product/${selectedProduct.slug}/`} className="shrink-0">
                           <img
                             src={optimizeImage(selectedProduct.image, 120, "webp")}
                             alt={selectedProduct.name}
@@ -387,7 +387,7 @@ export function ProductComparison({ currentProduct }: ProductComparisonProps) {
                         </Link>
                         <div className="min-w-0">
                           <Link
-                            to={`/product/${selectedProduct.slug}`}
+                            to={`/product/${selectedProduct.slug}/`}
                             className="font-serif font-medium text-primary-950 text-[12px] md:text-[13.5px] leading-tight line-clamp-2 hover:text-[#C8A96B] transition-colors"
                           >
                             {selectedProduct.name}

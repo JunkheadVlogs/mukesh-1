@@ -231,7 +231,7 @@ export default function Faq() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 max-w-xs sm:max-w-md mx-auto">
             <Link 
-              to="/contact" 
+              to="/contact/" 
               className="w-full sm:w-auto inline-block bg-white text-[var(--color-dark)] px-6 py-2.5 text-[10.5px] font-bold uppercase tracking-widest hover:bg-[#FAF8F4]/90 transition-all duration-300 shadow-sm rounded-[2px] cursor-pointer"
             >
               Get in Touch

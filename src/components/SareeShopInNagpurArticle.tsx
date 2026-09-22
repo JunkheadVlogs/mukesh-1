@@ -638,7 +638,7 @@ export function SareeShopInNagpurArticle() {
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
           <Link
-            to="/contact"
+            to="/contact/"
             className="w-full sm:w-auto px-8 py-3.5 bg-gold-600 text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-gold-500 transition-all shadow-sm"
           >
             Visit Our Store

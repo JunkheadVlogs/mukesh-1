@@ -1087,7 +1087,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
     const slug = productMatch[1].trim().toLowerCase();
     const prod = preParsedProducts.find(p => p.slug && p.slug.trim().toLowerCase() === slug);
     if (prod) {
-      ogTitle = `${prod.name} | Mukesh Saree Centre`;
+      ogTitle = prod.metaTitle || `${prod.name} | Mukesh Saree Centre`;
       
       const fabricItem = prod.fabric ? `✨ ${prod.fabric}` : "✨ Premium Fabric";
       const discountPercent = (prod.originalPrice && prod.price && prod.originalPrice > prod.price)
@@ -1097,7 +1097,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
         ? `💰 ₹${prod.price} (${discountPercent}% OFF)` 
         : `💰 ₹${prod.price}`;
         
-      ogDesc = `${fabricItem} | 🚚 Free Shipping | 💵 COD Available | ${priceText} | 🏬 Trusted Since 1978`;
+      ogDesc = prod.metaDescription || `${fabricItem} | 🚚 Free Shipping | 💵 COD Available | ${priceText} | 🏬 Trusted Since 1978`;
  
       // Serve dedicated social sharing portrait image
       ogImg = `https://mukeshsarees.com/og-images/${prod.slug}.jpg`;
@@ -1131,6 +1131,18 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   } else if (reqPath.startsWith('/return-policy')) {
     ogTitle = "Returns & Exchanges";
     ogDesc = "Mukesh Saree Centre return policy — 7-day returns on all products. Refund via UPI/Bank Transfer within 3-5 business days. Easy hassle-free process.";
+  } else if (reqPath.startsWith('/pure-linen-sarees')) {
+    ogTitle = "Pure Linen Sarees Online | Breathable Handcrafted Drapes | Mukesh Saree Centre";
+    ogDesc = "Shop pure linen sarees online at Mukesh Saree Centre. Sourced from fine flax fibers, breathable organic weaves, digital prints & zari borders. Free shipping across India.";
+  } else if (reqPath.startsWith('/soft-cotton-sarees')) {
+    ogTitle = "Soft Cotton Sarees Online | Daily Wear & Handloom | Mukesh Saree Centre";
+    ogDesc = "Discover soft cotton sarees at Mukesh Saree Centre. Premium khadi cotton, Jamdani weaves, tissue cotton & breathable blends with COD and free shipping across India.";
+  } else if (reqPath.startsWith('/banarasi-silk-sarees')) {
+    ogTitle = "Banarasi Silk Sarees | Bridal & Festive Silks | Mukesh Saree Centre Nagpur";
+    ogDesc = "Explore luxury Banarasi and festive silk sarees at Mukesh Saree Centre. Handpicked zari weaves, tissue silks & bridal collections. Visit Gandhibagh showroom or order online.";
+  } else if (reqPath.startsWith('/designer-party-wear-sarees')) {
+    ogTitle = "Designer Party Wear Sarees Online | Cocktail & Festive Drapes | Mukesh Saree Centre";
+    ogDesc = "Shop designer party wear sarees online at Mukesh Saree Centre. Flowy georgettes, embroidered drapes, shimmer tissue & cocktail sarees with COD across India.";
   }
 
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
@@ -1157,7 +1169,7 @@ const injectOGTags = (html, reqPath, originalUrl) => {
   
   // Replace standard title tag
   injectedHtml = injectedHtml.replace(
-    /<title>.*?<\/title>/,
+    /<title.*?>.*?<\/title>/,
     `<title>${ogTitle}</title>`
   );
 

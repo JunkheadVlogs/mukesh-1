@@ -167,7 +167,7 @@ export default function Wishlist() {
                 <Plus size={16} /> Add to My Wishlist
               </button>
               <Link
-                to="/wishlist"
+                to="/wishlist/"
                 className="btn-secondary px-12 h-16 !py-0 flex items-center justify-center"
               >
                 My Wishlist
@@ -180,7 +180,7 @@ export default function Wishlist() {
           <div className="py-48 text-center border border-dashed border-onyx/10 rounded-sm">
              <Heart className="text-onyx/5 mx-auto mb-10" size={64} strokeWidth={0.5} />
              <h2 className="mb-6 font-serif opacity-60 italic text-onyx">Your vault stands empty, awaiting beauty.</h2>
-             <Link to="/shop" className="text-[11px] uppercase tracking-[3px] font-bold text-gold-500 underline underline-offset-8">Discover our masterpieces</Link>
+             <Link to="/shop/" className="text-[11px] uppercase tracking-[3px] font-bold text-gold-500 underline underline-offset-8">Discover our masterpieces</Link>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">

@@ -11,7 +11,7 @@ export default function CustomerReviews() {
       "@type": "WebPage",
       "name": `Verified Customer Reviews | ${BUSINESS_INFO.name}`,
       "description": `Read genuine customer reviews, testimonials, and feedback for ${BUSINESS_INFO.name}, Nagpur's trusted saree shop since 1978.`,
-      "url": `${BUSINESS_INFO.website}/reviews`,
+      "url": `${BUSINESS_INFO.website}/reviews/`,
       "publisher": { "@id": `${BUSINESS_INFO.website}/#organization` }
     },
     {
@@ -28,7 +28,7 @@ export default function CustomerReviews() {
           "@type": "ListItem",
           "position": 2,
           "name": "Customer Reviews",
-          "item": `${BUSINESS_INFO.website}/reviews`
+          "item": `${BUSINESS_INFO.website}/reviews/`
         }
       ]
     },
@@ -132,7 +132,7 @@ export default function CustomerReviews() {
         <SEO 
           title={`Verified Customer Reviews & Feedback | ${BUSINESS_INFO.name} Nagpur`}
           description={`Read genuine customer reviews for ${BUSINESS_INFO.name} in Gandhibagh, Nagpur. Trusted saree store & wholesale supplier since 1978.`}
-          url="/reviews"
+          url="/reviews/"
           schema={customSchema}
         />
 
@@ -171,7 +171,7 @@ export default function CustomerReviews() {
             </div>
 
             <p className="text-[13.5px] text-primary-950/80 leading-relaxed text-justify">
-              Established in 1978 by Shri Nanakram Khemchandani on Jagnath Road, Gandhibagh, Nagpur, <strong>{BUSINESS_INFO.name}</strong> is a legendary retail and wholesale saree landmark in Vidarbha. Managed today by the Khemchandani family, including Mohit Khemchandani, we specialize in authentic <Link to="/sarees" className="text-gold-600 hover:underline">Indian sarees</Link> (including <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">Linen</Link>, <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">Cotton</Link>, <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">Silk</Link>, <Link to="/malvika-saree-buying-guide" className="text-gold-600 hover:underline">Malvika</Link>, Paithani, and Banarasi), custom lehengas, suits, and <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline">uniform sarees</Link>.
+              Established in 1978 by Shri Nanakram Khemchandani on Jagnath Road, Gandhibagh, Nagpur, <strong>{BUSINESS_INFO.name}</strong> is a legendary retail and wholesale saree landmark in Vidarbha. Managed today by the Khemchandani family, including Mohit Khemchandani, we specialize in authentic <Link to="/sarees/" className="text-gold-600 hover:underline">Indian sarees</Link> (including <Link to="/sarees/linen-sarees/" className="text-gold-600 hover:underline">Linen</Link>, <Link to="/sarees/cotton-sarees/" className="text-gold-600 hover:underline">Cotton</Link>, <Link to="/sarees/silk-sarees/" className="text-gold-600 hover:underline">Silk</Link>, <Link to="/malvika-saree-buying-guide/" className="text-gold-600 hover:underline">Malvika</Link>, Paithani, and Banarasi), custom lehengas, suits, and <Link to="/uniform-saree-bulk-orders/" className="text-gold-600 hover:underline">uniform sarees</Link>.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-[12px] text-primary-950/80 font-medium">
@@ -251,28 +251,28 @@ export default function CustomerReviews() {
               Explore Popular Collections & Trust Pages
             </h3>
             <div className="flex flex-wrap gap-2 text-[12px]">
-              <Link to="/sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Sarees Collection
               </Link>
-              <Link to="/sarees/linen-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/linen-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Linen Sarees
               </Link>
-              <Link to="/sarees/cotton-sarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/sarees/cotton-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Cotton Sarees
               </Link>
-              <Link to="/malvika-saree-buying-guide" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/malvika-saree-buying-guide/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Malvika Saree Guide
               </Link>
-              <Link to="/wholesalesarees" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/wholesalesarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Wholesale Saree Orders
               </Link>
-              <Link to="/uniform-saree-bulk-orders" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/uniform-saree-bulk-orders/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Uniform Sarees
               </Link>
-              <Link to="/why-mukesh-saree-centre" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/why-mukesh-saree-centre/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Why Choose Us
               </Link>
-              <Link to="/about" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link to="/about/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 About Our History
               </Link>
             </div>

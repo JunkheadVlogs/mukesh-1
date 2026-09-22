@@ -52,12 +52,12 @@ export default function Terms() {
 
           <section className="space-y-3">
             <h2 className="text-lg font-serif text-primary-950 border-b border-black/5 pb-2">5. Shipping & Delivery</h2>
-            <p>We provide free standard shipping across India. Delivery times range between 3 to 7 business days. While we partner with top-tier courier services, we are not liable for delayed deliveries due to unforeseen circumstances or force majeure events. For full details, please review our <Link to="/shipping-policy" className="text-gold-600 hover:underline">Shipping & Delivery Policy</Link>.</p>
+            <p>We provide free standard shipping across India. Delivery times range between 3 to 7 business days. While we partner with top-tier courier services, we are not liable for delayed deliveries due to unforeseen circumstances or force majeure events. For full details, please review our <Link to="/shipping-policy/" className="text-gold-600 hover:underline">Shipping & Delivery Policy</Link>.</p>
           </section>
 
           <section className="space-y-3">
             <h2 className="text-lg font-serif text-primary-950 border-b border-black/5 pb-2">6. Return, Refund & Exchange Policy</h2>
-            <p>We offer a 7-day easy return and exchange window on eligible orders, provided the garments are unused, unwashed, and have original tags intact. Products customized with Fall and Pico are strictly non-returnable. Refunds for prepaid orders will be credited to the original payment source. COD refunds require bank account provision. Please review our comprehensive <Link to="/return-policy" className="text-gold-600 hover:underline">Return & Refund Policy</Link> for exact guidelines.</p>
+            <p>We offer a 7-day easy return and exchange window on eligible orders, provided the garments are unused, unwashed, and have original tags intact. Products customized with Fall and Pico are strictly non-returnable. Refunds for prepaid orders will be credited to the original payment source. COD refunds require bank account provision. Please review our comprehensive <Link to="/return-policy/" className="text-gold-600 hover:underline">Return & Refund Policy</Link> for exact guidelines.</p>
           </section>
 
           <section className="space-y-3">

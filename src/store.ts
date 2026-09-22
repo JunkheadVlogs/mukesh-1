@@ -58,6 +58,7 @@ export interface Product {
   stock?: number;
   keywords?: string;
   blouseDetails?: string;
+  faqs?: { question: string; answer: string }[];
 }
 
 interface CartItem extends Product {
@@ -70,6 +71,7 @@ interface AppState {
   wishlist: string[];
   appliedCoupon: string | null;
   isCheckoutActive: boolean;
+  inventory?: Record<string, number>;
   setCheckoutActive: (active: boolean) => void;
   addToCart: (product: Product, size?: string, quantity?: number) => void;
   removeFromCart: (productId: string, size?: string) => void;
@@ -78,6 +80,9 @@ interface AppState {
   toggleWishlist: (productId: string) => void;
   cartTotal: () => number;
   applyCoupon: (code: string | null) => void;
+  getStock: (skuOrId: string, defaultStock?: number) => number;
+  reduceStock: (skuOrId: string, quantity?: number) => void;
+  setStock: (skuOrId: string, stock: number) => void;
 }
 
 export const useStore = create<AppState>()(
@@ -145,6 +150,43 @@ export const useStore = create<AppState>()(
         }, 0);
       },
       applyCoupon: (code) => set({ appliedCoupon: code }),
+      inventory: {
+        'SAR-LIN-BRD-062': 9,
+      },
+      getStock: (skuOrId: string, defaultStock?: number) => {
+        const state = get();
+        const currentInv = state.inventory || {};
+        if (typeof currentInv[skuOrId] === 'number') {
+          return currentInv[skuOrId];
+        }
+        if (defaultStock !== undefined) {
+          return defaultStock;
+        }
+        return skuOrId === 'SAR-LIN-BRD-062' ? 9 : 9;
+      },
+      reduceStock: (skuOrId: string, quantity = 1) => {
+        set((state) => {
+          const inv = state.inventory ? { ...state.inventory } : {};
+          const current = typeof inv[skuOrId] === 'number'
+            ? inv[skuOrId]
+            : (skuOrId === 'SAR-LIN-BRD-062' ? 9 : 9);
+          const nextStock = Math.max(0, current - quantity);
+          return {
+            inventory: {
+              ...inv,
+              [skuOrId]: nextStock,
+            },
+          };
+        });
+      },
+      setStock: (skuOrId: string, stock: number) => {
+        set((state) => ({
+          inventory: {
+            ...(state.inventory || {}),
+            [skuOrId]: Math.max(0, stock),
+          },
+        }));
+      },
     }),
     {
       name: 'mukesh-saree-storage',
@@ -153,6 +195,7 @@ export const useStore = create<AppState>()(
         cart: state.cart,
         wishlist: state.wishlist,
         appliedCoupon: state.appliedCoupon,
+        inventory: state.inventory,
       }),
     }
   )

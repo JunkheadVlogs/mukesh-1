@@ -398,7 +398,7 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
 
         {/* Shop Now pill redirects */}
         <Link
-          to="/shop"
+          to="/shop/"
           onClick={(e) => e.stopPropagation()} // Prevents toggling video playback when clicking link
           className="pointer-events-auto inline-flex items-center gap-1.5 text-[8.5px] md:text-[9.5px] text-white bg-black/25 hover:bg-[#C8A96B] hover:border-[#C8A96B]/25 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 shadow-sm transition-all duration-300"
         >

@@ -97,36 +97,42 @@ export default function ProductPage() {
     const fabric = product.fabric || "";
 
     if (category === "Linen Sarees") {
-      items.push({ label: "Sarees", to: "/shop?category=Sarees" });
-      items.push({ label: "Linen Sarees", to: "/shop?category=Linen Sarees" });
+      items.push({ label: "Sarees", to: "/shop/?category=Sarees" });
+      items.push({ label: "Linen Sarees", to: "/shop/?category=Linen Sarees" });
     } else if (category === "Sarees") {
-      items.push({ label: "Sarees", to: "/shop?category=Sarees" });
+      items.push({ label: "Sarees", to: "/shop/?category=Sarees" });
       
       // Map subcategories dynamically to match "Chiffon Sarees", "Georgette Sarees", etc.
       const fabLower = fabric.toLowerCase();
       if (fabLower.includes("chiffon")) {
-        items.push({ label: "Chiffon Sarees", to: "/shop?category=Sarees&fabric=Chiffon" });
+        items.push({ label: "Chiffon Sarees", to: "/shop/?category=Sarees&fabric=Chiffon" });
       } else if (fabLower.includes("georgette")) {
-        items.push({ label: "Georgette Sarees", to: "/shop?category=Sarees&fabric=Georgette" });
+        items.push({ label: "Georgette Sarees", to: "/shop/?category=Sarees&fabric=Georgette" });
       } else if (fabLower.includes("cotton") || fabLower.includes("khadi")) {
-        items.push({ label: "Cotton Sarees", to: "/shop?category=Sarees&fabric=Cotton" });
+        items.push({ label: "Cotton Sarees", to: "/shop/?category=Sarees&fabric=Cotton" });
       } else if (fabLower.includes("tissue")) {
-        items.push({ label: "Tissue Sarees", to: "/shop?category=Sarees&fabric=Tissue" });
+        items.push({ label: "Tissue Sarees", to: "/shop/?category=Sarees&fabric=Tissue" });
       } else if (fabLower.includes("silk")) {
-        items.push({ label: "Silk Sarees", to: "/shop?category=Sarees&fabric=Silk" });
+        items.push({ label: "Silk Sarees", to: "/shop/?category=Sarees&fabric=Silk" });
       } else if (fabLower.includes("linen")) {
-        items.push({ label: "Linen Sarees", to: "/shop?category=Linen Sarees" });
+        items.push({ label: "Linen Sarees", to: "/shop/?category=Linen Sarees" });
       } else if (fabric) {
-        items.push({ label: `${fabric} Sarees`, to: `/shop?category=Sarees&fabric=${encodeURIComponent(fabric)}` });
+        items.push({ label: `${fabric} Sarees`, to: `/shop/?category=Sarees&fabric=${encodeURIComponent(fabric)}` });
       }
     } else if (category) {
-      items.push({ label: category, to: `/shop?category=${encodeURIComponent(category)}` });
+      items.push({ label: category, to: `/shop/?category=${encodeURIComponent(category)}` });
     }
 
     return items;
   }, [product]);
 
-  const { addToCart, toggleWishlist, wishlist, setCheckoutActive } = useStore();
+  const { addToCart, toggleWishlist, wishlist, setCheckoutActive, reduceStock } = useStore();
+  const storeInventory = useStore((state) => state.inventory);
+  const effectiveStock = product ? (
+    storeInventory && typeof storeInventory[product.sku || product.id] === 'number'
+      ? storeInventory[product.sku || product.id]
+      : (product.stock ?? (product.sku === 'SAR-LIN-BRD-062' ? 9 : 9))
+  ) : 9;
 
   const storeCoupon = useStore((state) => state.appliedCoupon);
   const [couponInput, setCouponInput] = useState('');
@@ -513,6 +519,10 @@ export default function ProductPage() {
         console.warn("Direct Google Apps Script sheet POST failed:", sheetErr);
       }
 
+      if (product) {
+        reduceStock(product.sku || product.id, quantity);
+      }
+
       setIsSubmittingOrder(false);
       setShowQuickCheckout(false);
 
@@ -678,7 +688,7 @@ export default function ProductPage() {
       <div className="min-h-[60vh] flex flex-col items-center justify-center bg-primary-50">
         <h2 className="mb-4 text-2xl font-serif">Product Not Found</h2>
         <Link
-          to="/shop"
+          to="/shop/"
           className="text-gold-600 hover:text-gold-500 hover:underline font-bold uppercase tracking-widest text-xs"
         >
           Return to Shop
@@ -781,8 +791,8 @@ export default function ProductPage() {
   };
 
   const isWishlisted = wishlist.includes(product.id);
-  const isOutOfStock = product.stock === 0;
-  const maxStock = product.stock !== undefined ? product.stock : Infinity;
+  const isOutOfStock = effectiveStock === 0;
+  const maxStock = effectiveStock !== undefined ? effectiveStock : Infinity;
 
   const absoluteProductImages = productImages.map((img) =>
     img.startsWith("http") ? img : `https://mukeshsarees.com${img.startsWith("/") ? "" : "/"}${img}`
@@ -867,6 +877,10 @@ export default function ProductPage() {
     "offers": detailedProductSchema.offers
   };
 
+  if (product.color) productSchema.color = product.color;
+  if (product.fabric) productSchema.material = product.fabric;
+  if (product.keywords) productSchema.keywords = product.keywords;
+
   // Only include Review and AggregateRating schema if the product has real, verified reviews
   if (product.reviews && product.reviews.length > 0) {
     const totalReviews = product.reviews.length;
@@ -919,7 +933,16 @@ export default function ProductPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
+    "mainEntity": product.faqs && product.faqs.length > 0
+      ? product.faqs.map(f => ({
+          "@type": "Question",
+          "name": f.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": f.answer
+          }
+        }))
+      : [
       {
         "@type": "Question",
         "name": `Is the color of the ${product.name} exactly as shown in the picture?`,
@@ -1015,9 +1038,10 @@ export default function ProductPage() {
         description={seoDescription}
         keywords={product.keywords}
         image={product.image}
-        url={`/product/${product.slug}`}
+        url={`/product/${product.slug}/`}
         type="product"
         product={product}
+        preloadImage={productImages[0] ? optimizeImage(productImages[0], 800, 'webp') : undefined}
         schema={[productSchema, breadcrumbSchema, faqSchema] as any}
       />
 
@@ -1345,7 +1369,7 @@ export default function ProductPage() {
                     {product.colorVariants.map((v) => (
                       <Link
                         key={v.slug}
-                        to={`/product/${v.slug}`}
+                        to={`/product/${v.slug}/`}
                         className={`group relative w-[52px] h-[72px] transition-all overflow-hidden bg-[var(--color-surface)] border ${v.slug === slug ? "border-[var(--color-gold)]" : "border-transparent hover:border-[var(--color-border)]"}`}
                       >
                         <OptimizedImage
@@ -1390,7 +1414,7 @@ export default function ProductPage() {
 
               <div className="product-info">
                 {product.sku === "SAR-LIN-BRD-062" ? (
-                  <SkuUrgencyStock stockCount={product.stock ?? 9} />
+                  <SkuUrgencyStock stockCount={effectiveStock} />
                 ) : (
                   <LowStockMessage productId={product.id} />
                 )}
@@ -1501,7 +1525,7 @@ export default function ProductPage() {
               Similar & Related Products
             </h2>
             <Link
-              to="/shop"
+              to="/shop/"
               className="text-[10px] md:text-[11px] uppercase font-medium text-[var(--color-dark)] underline decoration-[var(--color-border)] underline-offset-4 hover:decoration-[var(--color-dark)] tracking-[0.1em] transition-colors"
             >
               View Collection
@@ -1540,7 +1564,7 @@ export default function ProductPage() {
                   key={p.id}
                   className="w-full"
                 >
-                  <ProductCard product={p} idx={index} priority={index < 4} />
+                  <ProductCard product={p} idx={index} priority={false} />
                 </div>
               ))}
           </div>
@@ -1580,12 +1604,12 @@ export default function ProductPage() {
           <div className="mt-4 pt-4 md:mt-12 md:pt-6 border-t border-[var(--color-border)] mb-[16px]">
             <h3 className="text-sm font-serif text-[var(--color-dark)] text-center mt-[16px] mb-[12px] leading-[1.2]">Explore More Collections & Guides</h3>
             <div className="grid grid-cols-2 md:flex md:flex-wrap gap-[10px]">
-              <Link to={`/shop?category=${product.category}`} className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">More {product.category}</Link>
-              <Link to="/guides/saree-fabric-guide" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Saree Fabric Guide</Link>
-              <Link to="/guides/saree-care-guide" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Saree Care Guide</Link>
-              <Link to="/wholesale-sarees" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Wholesale Buying</Link>
-              <Link to="/shop" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Similar Premium Products</Link>
-              <Link to="/about" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">About Mukesh Saree Centre</Link>
+              <Link to={`/shop/?category=${product.category}`} className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">More {product.category}</Link>
+              <Link to="/guides/saree-fabric-guide/" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Saree Fabric Guide</Link>
+              <Link to="/guides/saree-care-guide/" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Saree Care Guide</Link>
+              <Link to="/wholesalesarees/" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Wholesale Buying</Link>
+              <Link to="/shop/" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">Similar Premium Products</Link>
+              <Link to="/about/" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">About Mukesh Saree Centre</Link>
             </div>
           </div>
         </section>
@@ -1718,7 +1742,7 @@ export default function ProductPage() {
               Continue <span className="hidden sm:inline">Shopping</span>
             </button>
             <Link
-              to="/cart"
+              to="/cart/"
               className="bg-primary-950 hover:bg-gold-600 text-white text-[11px] md:text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-sm transition-colors shadow-md transform hover:-translate-y-0.5 active:translate-y-0 duration-200"
             >
               View Cart
@@ -2301,6 +2325,9 @@ export default function ProductPage() {
                       });
                     } catch (err) {
                       console.error("Sheets webhook failed:", err);
+                    }
+                    if (product) {
+                      reduceStock(product.sku || product.id, quantity);
                     }
                     setSubmitting(false)
                     setSubmitted(true)

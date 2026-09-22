@@ -426,7 +426,7 @@ export default function Home() {
               className="flex justify-start"
             >
               <Link
-                to="/shop"
+                to="/shop/"
                 className="btn-hero-white w-[145px] xs:w-[160px] sm:w-[220px] tracking-[0.2em] text-[9.5px] md:text-[11px]"
                 aria-label="Shop our entire collection of sarees and ethnic wear at Mukesh Saree Centre"
               >
@@ -463,7 +463,7 @@ export default function Home() {
               Shop by <span className="italic">Category</span>
             </h2>
             <Link
-              to="/shop"
+              to="/shop/"
               className="text-[12px] uppercase text-gold-600 tracking-[0.15em] hover:text-gold-500 transition-colors font-medium"
             >
               View Collection
@@ -482,7 +482,7 @@ export default function Home() {
               </p>
             </div>
             <Link
-              to="/shop?category=Linen-Sarees"
+              to="/shop/?category=Linen-Sarees"
               className="lg:col-span-7 xl:col-span-8 relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden group rounded-2xl"
               aria-label="Shop our Designer Linen Sarees Collection"
             >
@@ -526,7 +526,7 @@ export default function Home() {
               </p>
             </div>
             <Link
-              to="/shop?category=Sarees"
+              to="/shop/?category=Sarees"
               className="lg:col-span-5 xl:col-span-4 relative h-[450px] md:h-[550px] overflow-hidden group rounded-2xl"
               aria-label="Shop our Premium Sarees Collection"
             >
@@ -581,7 +581,7 @@ export default function Home() {
               </h2>
             </div>
             <Link
-              to="/shop?sort=trending"
+              to="/shop/?sort=trending"
               className="hidden md:block text-[12px] uppercase text-[var(--color-gold)] tracking-[0.15em] hover:text-[var(--color-gold-light)] transition-colors mt-4 md:mt-0 font-medium"
             >
               View Collection
@@ -597,7 +597,7 @@ export default function Home() {
                 ))}
           </div>
           <div className="text-center mt-3 md:mt-4">
-            <Link to="/shop?sort=trending" className="btn-primary" aria-label="Shop our top selling trending sarees and ethnic wear">
+            <Link to="/shop/?sort=trending" className="btn-primary" aria-label="Shop our top selling trending sarees and ethnic wear">
               Shop Top Sellers
             </Link>
           </div>
@@ -689,7 +689,7 @@ export default function Home() {
               New<span className="sr-only"> Saree</span> <span className="italic">Arrivals</span>
             </h2>
             <Link
-              to="/shop?sort=new"
+              to="/shop/?sort=new"
               className="hidden md:block text-[12px] uppercase text-[var(--color-gold)] tracking-[0.15em] hover:text-[var(--color-gold-light)] transition-colors mt-4 md:mt-0 font-medium"
             >
               Shop New Arrivals
@@ -706,7 +706,7 @@ export default function Home() {
                 ))}
           </div>
           <div className="text-center mt-4 md:mt-6">
-            <Link to="/shop?sort=new" className="btn-secondary" aria-label="Shop our newest arrivals of sarees and ethnic wear">
+            <Link to="/shop/?sort=new" className="btn-secondary" aria-label="Shop our newest arrivals of sarees and ethnic wear">
               Shop New Arrivals
             </Link>
           </div>
@@ -728,7 +728,7 @@ export default function Home() {
             Discover our selection of beautiful fabrics and sarees made with love. Don't miss out on our special sale of the season.
           </p>
           <div className="text-center mt-3 sm:mt-4 md:mt-6">
-            <Link to="/shop" className="btn-primary px-10" aria-label="Shop the special collection with 50% off">
+            <Link to="/shop/" className="btn-primary px-10" aria-label="Shop the special collection with 50% off">
               Shop Now
             </Link>
           </div>

@@ -16,10 +16,13 @@ async function generateSitemap() {
   const addedPaths = new Set<string>();
 
   function addRoute(routePath: string, changefreq: string, priority: string) {
-    // Ensure routePath starts with / and has no trailing slash (except root /)
+    // Ensure routePath starts with / and ends with a trailing slash / for all pages
     let cleanPath = routePath.trim();
-    if (cleanPath.length > 1 && cleanPath.endsWith("/")) {
-      cleanPath = cleanPath.slice(0, -1);
+    if (!cleanPath.startsWith("/")) {
+      cleanPath = "/" + cleanPath;
+    }
+    if (!cleanPath.endsWith("/")) {
+      cleanPath = cleanPath + "/";
     }
     if (!addedPaths.has(cleanPath)) {
       addedPaths.add(cleanPath);
@@ -120,6 +123,14 @@ ${sitemapLines.join("\n")}
     const distSitemapPath = path.join(distDir, "sitemap.xml");
     fs.writeFileSync(distSitemapPath, sitemapContent);
     console.log(`[SITEMAP] Synced copy saved to: ${distSitemapPath}`);
+  }
+
+  // Write to public_html/sitemap.xml if the folder exists (Hostinger root)
+  const publicHtmlDir = path.resolve(process.cwd(), "public_html");
+  if (fs.existsSync(publicHtmlDir)) {
+    const publicHtmlSitemapPath = path.join(publicHtmlDir, "sitemap.xml");
+    fs.writeFileSync(publicHtmlSitemapPath, sitemapContent);
+    console.log(`[SITEMAP] Synced copy saved to: ${publicHtmlSitemapPath}`);
   }
 
   console.log(`[SITEMAP] XML Generation Completed successfully. Total URLs: ${routes.length}`);

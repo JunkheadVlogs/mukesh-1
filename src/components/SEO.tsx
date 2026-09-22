@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
+import { getCanonicalUrl } from "../utils/url";
 
 interface SEOProps {
   title: string;
@@ -21,6 +22,7 @@ interface SEOProps {
   schema?: Record<string, any>;
   imageWidth?: string;
   imageHeight?: string;
+  preloadImage?: string;
 }
 
 export function getWhatsAppSafeDescription(text: string, productContext?: any): string {
@@ -134,9 +136,10 @@ export function SEO({
   schema,
   imageWidth,
   imageHeight,
+  preloadImage,
 }: SEOProps) {
   const siteUrl = "https://mukeshsarees.com";
-  const absoluteUrl = url.startsWith("http") ? url : `${siteUrl}${url}`;
+  const absoluteUrl = getCanonicalUrl(url, siteUrl);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -190,13 +193,23 @@ export function SEO({
     const pOriginalPrice = product.originalPrice || "";
     const pName = product.name || title.replace(" – Mukesh Saree Centre", "");
 
-    // Exact requested format: PRODUCT_NAME – ₹PRICE | Mukesh Saree Centre
-    displayTitle = `${pName} – ₹${pPrice} | Mukesh Saree Centre`;
+    const customTitle = product.metaTitle || product.seoTitle || (title && title !== `${siteUrl}` && title !== "Mukesh Saree Centre" && !title.endsWith(" – ₹") ? title : null);
+    if (customTitle) {
+      displayTitle = customTitle;
+    } else {
+      // Exact requested format: PRODUCT_NAME – ₹PRICE | Mukesh Saree Centre
+      displayTitle = `${pName} – ₹${pPrice} | Mukesh Saree Centre`;
+    }
 
-    // Exact requested format: ✨ PRODUCT_SHORT_DESCRIPTION | 💰 ₹PRICE (MRP ₹ORIGINAL_PRICE) | 🚚 Free Shipping | Cash on Delivery Available
-    const cleanShortDesc = cleanDescriptionText.replace(/\|/g, "").trim();
-    const mrpPart = pOriginalPrice ? ` (MRP ₹${pOriginalPrice})` : "";
-    finalDescriptionText = `✨ ${cleanShortDesc} | 💰 ₹${pPrice}${mrpPart} | 🚚 Free Shipping | Cash on Delivery Available`;
+    const customDesc = product.metaDescription || product.seoDescription || (description && description !== siteUrl ? description : null);
+    if (customDesc) {
+      finalDescriptionText = customDesc;
+    } else {
+      // Exact requested format: ✨ PRODUCT_SHORT_DESCRIPTION | 💰 ₹PRICE (MRP ₹ORIGINAL_PRICE) | 🚚 Free Shipping | Cash on Delivery Available
+      const cleanShortDesc = cleanDescriptionText.replace(/\|/g, "").trim();
+      const mrpPart = pOriginalPrice ? ` (MRP ₹${pOriginalPrice})` : "";
+      finalDescriptionText = `✨ ${cleanShortDesc} | 💰 ₹${pPrice}${mrpPart} | 🚚 Free Shipping | Cash on Delivery Available`;
+    }
 
     // Un-wrap if already wrapped in wsrv
     let targetUrl = absoluteImage;
@@ -252,6 +265,9 @@ export function SEO({
       {keywords && <meta name="keywords" content={keywords} />}
       <meta name="robots" content="index, follow" />
       <link rel="canonical" href={absoluteUrl} />
+      {preloadImage && (
+        <link rel="preload" as="image" href={preloadImage} fetchPriority="high" />
+      )}
 
       {/* Open Graph / Facebook / WhatsApp */}
       <meta property="og:type" content={finalType} />
