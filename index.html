@@ -33,7 +33,12 @@
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
       n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];}(window, document);
 
-      // Deferred non-blocking loader for GTM, GA4, Clarity, and Meta Pixel
+      // Pinterest Tag Stub
+      !function(e){if(!window.pintrk){window.pintrk = function () {
+        window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+        n=window.pintrk;n.queue=[],n.version="3.0";}}(window);
+
+      // Deferred non-blocking loader for GTM, GA4, Clarity, Meta Pixel, and Pinterest
       (function() {
         var initialized = false;
         function loadTrackingServices() {
@@ -42,7 +47,10 @@
 
           // 1. Google Tag Manager
           var gtmId = "%VITE_GTM_ID%";
-          if (gtmId && !gtmId.startsWith('%VITE_') && !gtmId.includes('your_gtm_id') && gtmId.includes('GTM-')) {
+          if (!gtmId || gtmId.startsWith('%VITE_') || gtmId.includes('your_gtm_id') || gtmId.includes('GTM-') === false) {
+            gtmId = "GTM-WMG3G6SM";
+          }
+          if (gtmId && !window._gtm_loaded) {
             window._gtm_loaded = true;
             window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
             var gtmScript = document.createElement('script');
@@ -88,6 +96,19 @@
             }
             if (window.fbq) {
               window.fbq('init', pixelId);
+            }
+          }
+
+          // 5. Pinterest Tag
+          if (!window._pinterest_loaded) {
+            window._pinterest_loaded = true;
+            var pinScript = document.createElement('script');
+            pinScript.async = true;
+            pinScript.src = "https://s.pinimg.com/ct/core.js";
+            document.head.appendChild(pinScript);
+            var pinTag = "%VITE_PINTEREST_TAG%";
+            if (pinTag && !pinTag.startsWith('%VITE_') && !pinTag.includes('your_pinterest_tag')) {
+              window.pintrk('load', pinTag);
             }
           }
         }
@@ -152,8 +173,33 @@
     <link rel="dns-prefetch" href="https://ik.imagekit.io" />
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
     <link rel="dns-prefetch" href="https://wsrv.nl" />
-    <!-- Preload exact above-the-fold mobile hero image for mobile devices -->
+    <!-- Preload exact above-the-fold mobile & desktop hero images -->
     <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" imagesizes="(max-width: 768px) 100vw, 768px" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" imagesizes="(min-width: 768px) 100vw, 1200px" media="(min-width: 768px)" fetchpriority="high" />
+    <!-- Critical Above-the-Fold Inline CSS (Eliminates FOUC during async CSS preload) -->
+    <style>
+      :root {
+        --color-bg: #faf8f4;
+        --color-surface: #f5efe6;
+        --color-dark: #2b2b2b;
+        --color-charcoal: #2b2b2b;
+        --color-gold: #c8a96b;
+      }
+      html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; box-sizing: border-box; }
+      *, *::before, *::after { box-sizing: inherit; }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #2b2b2b;
+        background-color: #faf8f4;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        width: 100%;
+      }
+    </style>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",

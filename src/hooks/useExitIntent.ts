@@ -154,8 +154,10 @@ export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOpti
       }
     }
 
-    // Eagerly prefetch popup component
-    import('../components/ExitIntentPopup').catch(() => {});
+    // Defer prefetching popup component until after initial render is completed
+    const prefetchTimer = setTimeout(() => {
+      import('../components/ExitIntentPopup').catch(() => {});
+    }, 2000);
 
     const trigger = () => {
       if (hasTriggeredRef.current || isExitPopupAlreadyShown()) return;
@@ -261,6 +263,7 @@ export function useExitIntent({ delay = 0, sensitivity = 20 }: UseExitIntentOpti
     }, fallbackDelay);
 
     return () => {
+      clearTimeout(prefetchTimer);
       clearTimeout(timeDelayTimer);
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);

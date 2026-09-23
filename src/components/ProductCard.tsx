@@ -26,7 +26,7 @@ export const ProductCard = memo(function ProductCard({
   hideCategory = false,
   hideRating = false,
 }: ProductCardProps) {
-  const isPriority = priority || idx < 4;
+  const isPriority = priority || idx < 2;
 
   const displayName = useMemo(() => {
     let name = product.name || "";

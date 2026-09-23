@@ -30,6 +30,10 @@ try {
   console.log("\n--- [BUILD] Step 5: Generating sitemap.xml and robots.txt ---");
   execSync(`${findBin("tsx")} scripts/generate-sitemap.ts`, { stdio: "inherit" });
 
+  // Step 5b: Generate Google Merchant Center product feed
+  console.log("\n--- [BUILD] Step 5b: Generating Google Merchant Center product-feed.xml ---");
+  execSync(`${findBin("tsx")} scripts/generate-product-feed.ts`, { stdio: "inherit" });
+
   // Step 6: Post-Build Performance Optimization (Async CSS & Fonts)
   console.log("\n--- [BUILD] Step 6: Running CSS performance optimization ---");
   execSync("node scripts/post-build-optimize.js", { stdio: "inherit" });

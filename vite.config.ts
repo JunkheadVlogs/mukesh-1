@@ -14,8 +14,8 @@ export default defineConfig(({mode}) => {
   const fallbacks: Record<string, string> = {
     VITE_META_PIXEL_ID: '1458541922085984',
     VITE_FB_DOMAIN_VERIFY: 'kjvbvikfmctlsdfygll3tadkpzty8a',
-    VITE_GTM_ID: '',
-    VITE_GA4_ID: '',
+    VITE_GTM_ID: 'GTM-WMG3G6SM',
+    VITE_GA4_ID: 'G-1LMBHFFF1F',
     VITE_PINTEREST_TAG: '',
     VITE_PINTEREST_DOMAIN: '',
     VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',

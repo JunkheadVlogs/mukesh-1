@@ -6,7 +6,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { Suspense, useEffect, useState, lazy } from 'react';
 import Layout from './Layout';
-import Home from './Home';
+const Home = lazy(() => import('./Home'));
 const ExitIntentPopup = lazy(() => import('./components/ExitIntentPopup').then(m => ({ default: m.ExitIntentPopup })));
 import { useExitIntent, isPinterestBrowser } from './hooks/useExitIntent';
 import { trackWhatsAppClick, trackLead } from './tracking';
@@ -83,59 +83,6 @@ export default function App() {
   // Version 1.0.1 - Cache Bust
   console.log("[DEBUG] BASE_URL:", import.meta.env.BASE_URL);
   console.log("[DEBUG] CONFIG API_BASE_URL:", CONFIG.API_BASE_URL);
-
-  // Dynamically load Google Tag Manager at runtime for extreme performance
-  useEffect(() => {
-    const gtmId = import.meta.env.VITE_GTM_ID;
-    if (gtmId && gtmId !== '%VITE_GTM_ID%' && !gtmId.startsWith('%')) {
-      const injectGTM = () => {
-        // Prevent duplicate injection
-        if ((window as any)._gtm_loaded) return;
-        (window as any)._gtm_loaded = true;
-
-        (window as any).dataLayer = (window as any).dataLayer || [];
-        (window as any).dataLayer.push({
-          'gtm.start': new Date().getTime(),
-          event: 'gtm.js'
-        });
-
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
-        
-        const firstScript = document.getElementsByTagName('script')[0];
-        if (firstScript && firstScript.parentNode) {
-          firstScript.parentNode.insertBefore(script, firstScript);
-        } else {
-          document.head.appendChild(script);
-        }
-      };
-
-      // Defer loading slightly to prevent render-blocking on mobile
-      if (document.readyState === 'complete') {
-        const deferTimer = setTimeout(() => {
-          if ('requestIdleCallback' in window) {
-            (window as any).requestIdleCallback(() => injectGTM());
-          } else {
-            injectGTM();
-          }
-        }, 800);
-        return () => clearTimeout(deferTimer);
-      } else {
-        const handleWindowLoad = () => {
-          setTimeout(() => {
-            if ('requestIdleCallback' in window) {
-              (window as any).requestIdleCallback(() => injectGTM());
-            } else {
-              injectGTM();
-            }
-          }, 800);
-        };
-        window.addEventListener('load', handleWindowLoad);
-        return () => window.removeEventListener('load', handleWindowLoad);
-      }
-    }
-  }, []);
 
   useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {

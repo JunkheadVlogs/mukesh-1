@@ -816,7 +816,7 @@ export default function ProductPage() {
     material: product.fabric,
     offers: {
       "@type": "Offer",
-      url: `https://mukeshsarees.com/product/${product.slug}`,
+      url: `https://mukeshsarees.com/product/${product.slug}/`,
       priceCurrency: "INR",
       price: product.price,
       priceValidUntil: "2027-12-31",
@@ -861,7 +861,8 @@ export default function ProductPage() {
         returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnPeriod",
         merchantReturnDays: 7,
         returnMethod: "https://schema.org/ReturnByMail",
-        returnFees: "https://schema.org/FreeReturn"
+        returnFees: "https://schema.org/FreeReturn",
+        merchantReturnLink: "https://mukeshsarees.com/return-policy/"
       }
     }
   };

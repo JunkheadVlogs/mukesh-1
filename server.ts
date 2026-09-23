@@ -1348,6 +1348,18 @@ app.get('/sitemap.xml', (req, res) => {
 </urlset>`);
 });
 
+app.get(['/product-feed.xml', '/product-feed', '/google-feed.xml'], (req, res) => {
+  res.type('application/xml');
+  const feedPath = path.join(process.cwd(), 'dist', 'product-feed.xml');
+  const publicFeedPath = path.join(process.cwd(), 'public', 'product-feed.xml');
+  if (fs.existsSync(feedPath)) {
+    return res.sendFile(feedPath);
+  } else if (fs.existsSync(publicFeedPath)) {
+    return res.sendFile(publicFeedPath);
+  }
+  return res.status(404).send('<?xml version="1.0" encoding="UTF-8"?><error>Product feed not found</error>');
+});
+
 async function setupServer() {
   // 1. Explicitly bypass any application-level cookie/auth checks for social bots and AI search crawlers
   app.use((req, res, next) => {
@@ -1497,8 +1509,8 @@ async function setupServer() {
         const fallbacks = {
           VITE_META_PIXEL_ID: '1458541922085984',
           VITE_FB_DOMAIN_VERIFY: 'kjvbvikfmctlsdfygll3tadkpzty8a',
-          VITE_GTM_ID: '',
-          VITE_GA4_ID: '',
+          VITE_GTM_ID: 'GTM-WMG3G6SM',
+          VITE_GA4_ID: 'G-1LMBHFFF1F',
           VITE_PINTEREST_TAG: '',
           VITE_PINTEREST_DOMAIN: '',
           VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',

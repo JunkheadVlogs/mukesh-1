@@ -14,8 +14,8 @@ function replaceEnvPlaceholders(html: string): string {
   const fallbacks: Record<string, string> = {
     VITE_META_PIXEL_ID: '1458541922085984',
     VITE_FB_DOMAIN_VERIFY: 'kjvbvikfmctlsdfygll3tadkpzty8a',
-    VITE_GTM_ID: '',
-    VITE_GA4_ID: '',
+    VITE_GTM_ID: 'GTM-WMG3G6SM',
+    VITE_GA4_ID: 'G-1LMBHFFF1F',
     VITE_PINTEREST_TAG: '',
     VITE_PINTEREST_DOMAIN: '',
     VITE_RAZORPAY_KEY_ID: 'rzp_live_Sw0OjZoidQe04p',
@@ -740,12 +740,20 @@ async function runPrerender() {
       ]
     };
 
+    const absoluteProductImage = p.image
+      ? (p.image.startsWith("http") ? p.image : `https://mukeshsarees.com${p.image.startsWith("/") ? "" : "/"}${p.image}`)
+      : "https://mukeshsarees.com/og-image.jpg";
+
+    const absoluteProductImages = (p.images && p.images.length > 0)
+      ? p.images.map((img: string) => img.startsWith("http") ? img : `https://mukeshsarees.com${img.startsWith("/") ? "" : "/"}${img}`)
+      : [absoluteProductImage];
+
     // Google Product SEO JSON-LD schema
     const prodSchema: any = {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": p.name,
-      "image": p.image,
+      "image": absoluteProductImages.length === 1 ? absoluteProductImages[0] : absoluteProductImages,
       "description": p.description ? p.description.replace(/\*\*/g, "").replace(/<[^>]*>?/gm, "").substring(0, 300) : p.name,
       "sku": p.sku || `MSC-${p.id}`,
       "mpn": p.sku || `MSC-${p.id}`,
@@ -755,7 +763,7 @@ async function runPrerender() {
       },
       "offers": {
         "@type": "Offer",
-        "url": `${BUSINESS_INFO.website}/product/${p.slug}`,
+        "url": `${BUSINESS_INFO.website}/product/${p.slug}/`,
         "priceCurrency": "INR",
         "price": String(p.price),
         "priceValidUntil": "2030-01-01",
@@ -764,9 +772,49 @@ async function runPrerender() {
         "seller": {
           "@type": "Organization",
           "name": BUSINESS_INFO.name
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0.00",
+            "currency": "INR"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "IN"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 2,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 2,
+              "maxValue": 5,
+              "unitCode": "DAY"
+            }
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "IN",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnPeriod",
+          "merchantReturnDays": 7,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/FreeReturn",
+          "merchantReturnLink": "https://mukeshsarees.com/return-policy/"
         }
       }
     };
+
+    if (p.color) prodSchema.color = p.color;
+    if (p.fabric) prodSchema.material = p.fabric;
+    if (p.category) prodSchema.category = p.category;
     
     // Only include Review and AggregateRating schema if the product has real, verified reviews
     if (p.reviews && p.reviews.length > 0) {

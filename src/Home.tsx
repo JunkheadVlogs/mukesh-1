@@ -373,7 +373,8 @@ export default function Home() {
             width={1200}
             height={1000}
             alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978"
-            loading="lazy"
+            loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="hidden md:block w-full h-full object-cover object-bottom"
           />
