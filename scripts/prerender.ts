@@ -324,6 +324,7 @@ async function runPrerender() {
   console.log(`[PRERENDER] Loaded raw base HTML and replaced placeholders.`);
 
   // Setup dynamic routing directory write-helper
+  const publicHtmlPath = path.resolve(process.cwd(), "public_html");
   const writePage = (dirName: string, htmlContent: string) => {
     const fullDir = path.join(distPath, dirName);
     if (!fs.existsSync(fullDir)) {
@@ -331,6 +332,14 @@ async function runPrerender() {
     }
     const processedHtml = replaceEnvPlaceholders(htmlContent);
     fs.writeFileSync(path.join(fullDir, "index.html"), processedHtml);
+
+    if (fs.existsSync(publicHtmlPath)) {
+      const pubDir = path.join(publicHtmlPath, dirName);
+      if (!fs.existsSync(pubDir)) {
+        fs.mkdirSync(pubDir, { recursive: true });
+      }
+      fs.writeFileSync(path.join(pubDir, "index.html"), processedHtml);
+    }
   };
 
   // 1. GENERATE HOMEPAGE (dist/index.html Overwrite)
@@ -508,6 +517,9 @@ async function runPrerender() {
   });
 
   fs.writeFileSync(baseHtmlPath, replaceEnvPlaceholders(updatedHomeHtml));
+  if (fs.existsSync(publicHtmlPath)) {
+    fs.writeFileSync(path.join(publicHtmlPath, "index.html"), replaceEnvPlaceholders(updatedHomeHtml));
+  }
   console.log("[PRERENDER] Index.html updated successfully with homepage static HTML.");
 
 

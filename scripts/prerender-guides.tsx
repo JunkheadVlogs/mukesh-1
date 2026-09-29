@@ -53,7 +53,14 @@ const indexHtml = createStaticPage({
   customOgTags: guideIndexOgTags
 });
 
+const publicHtmlPath = path.resolve(process.cwd(), "public_html");
+const guideIndexPubDir = path.join(publicHtmlPath, "guides");
+
 fs.writeFileSync(path.join(guideIndexDir, "index.html"), indexHtml);
+if (fs.existsSync(publicHtmlPath)) {
+  if (!fs.existsSync(guideIndexPubDir)) fs.mkdirSync(guideIndexPubDir, { recursive: true });
+  fs.writeFileSync(path.join(guideIndexPubDir, "index.html"), indexHtml);
+}
 
 for (const guide of guidesMeta) {
   const guideDir = path.join(distPath, "guides", guide.slug);
@@ -100,6 +107,13 @@ for (const guide of guidesMeta) {
   });
 
   fs.writeFileSync(path.join(guideDir, "index.html"), phtml);
+
+  if (fs.existsSync(publicHtmlPath)) {
+    const guidePubDir = path.join(publicHtmlPath, "guides", guide.slug);
+    if (!fs.existsSync(guidePubDir)) fs.mkdirSync(guidePubDir, { recursive: true });
+    fs.writeFileSync(path.join(guidePubDir, "index.html"), phtml);
+  }
+
   console.log(`[PRERENDER] Guide generated: /guides/${guide.slug}`);
 }
 

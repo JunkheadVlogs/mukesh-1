@@ -1,4 +1,4 @@
-# Mukesh Saree Centre - Hostinger Public HTML .htaccess Configuration
+# Mukesh Saree Centre - Hostinger / Apache .htaccess
 # Optimised for Vite React SPA + PageSpeed Performance & Caching
 
 # ----------------------------------------------------------------------
@@ -81,24 +81,26 @@
 </IfModule>
 
 # ----------------------------------------------------------------------
-# 4. Hostinger Public HTML Rewrite Rules
+# 4. Hostinger SPA Rewrite Rules
 # ----------------------------------------------------------------------
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  # Serve product pages through product API
-  RewriteRule ^product/([^/]+)/?$ api/product.php?slug=$1 [QSA,L]
+  # Serve pre-rendered product pages without trailing slash redirect
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}/product/$1/index.html -f
+  RewriteRule ^product/([^/]+)$ product/$1/index.html [L]
 
-  # Default rule to skip rewriting index.html directly
+  # Skip rewriting index.html directly
   RewriteRule ^index\.html$ - [L]
 
-  # Exclude API routes from redirecting to index.html
-  RewriteCond %{REQUEST_URI} !^/api/ [NC]
+  # Never rewrite API endpoints to the SPA shell HTML
+  RewriteCond %{REQUEST_URI} !^/api/
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  RewriteRule . /shell.html [L]
 </IfModule>
 
-# Restrict critical files from direct browser access
+# Restrict sensitive files
 RewriteRule ^\.builds - [F,L]

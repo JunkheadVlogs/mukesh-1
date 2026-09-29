@@ -1661,6 +1661,15 @@ async function run() {
       fs.mkdirSync(dirPath, { recursive: true });
     }
     fs.writeFileSync(path.join(dirPath, "index.html"), finalHtml);
+
+    const publicHtmlPath = path.resolve(process.cwd(), "public_html");
+    if (fs.existsSync(publicHtmlPath)) {
+      const pubDirPath = path.join(publicHtmlPath, slug);
+      if (!fs.existsSync(pubDirPath)) {
+        fs.mkdirSync(pubDirPath, { recursive: true });
+      }
+      fs.writeFileSync(path.join(pubDirPath, "index.html"), finalHtml);
+    }
   }
 }
 

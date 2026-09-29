@@ -62,6 +62,14 @@ try {
     console.log("--- [BUILD] Step 11: Verified dist/api backend synced successfully ---");
   }
 
+  // Step 12: Sync all built and prerendered static assets to public_html for Hostinger deployment
+  const publicHtmlDir = path.join(process.cwd(), "public_html");
+  if (fs.existsSync(publicHtmlDir)) {
+    console.log("\n--- [BUILD] Step 12: Syncing dist/ into public_html/ for Hostinger deployment ---");
+    fs.cpSync(path.join(process.cwd(), "dist"), publicHtmlDir, { recursive: true, force: true });
+    console.log("--- [BUILD] Step 12: Successfully synced dist/ into public_html/ ---");
+  }
+
   console.log("\n[BUILD] Unified build process completed successfully!");
 } catch (error) {
   console.error("\n[BUILD] Build failed with error:");

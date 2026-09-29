@@ -4,6 +4,7 @@ import path from "path";
 console.log("[PRERENDER ALIASES] Replicating prerendered base files for category aliases...");
 
 const distDir = path.resolve(process.cwd(), "dist");
+const publicHtmlDir = path.resolve(process.cwd(), "public_html");
 
 function copyIfExists(src, destPath, aliasName) {
   if (fs.existsSync(src)) {
@@ -26,6 +27,15 @@ function copyIfExists(src, destPath, aliasName) {
       }
     }
     fs.writeFileSync(path.join(destPath, "index.html"), content);
+
+    if (fs.existsSync(publicHtmlDir)) {
+      const pubDest = path.join(publicHtmlDir, path.basename(destPath));
+      if (!fs.existsSync(pubDest)) {
+        fs.mkdirSync(pubDest, { recursive: true });
+      }
+      fs.writeFileSync(path.join(pubDest, "index.html"), content);
+    }
+
     console.log(`[ALIAS OK] Created alias at /${path.basename(destPath)}`);
   }
 }
