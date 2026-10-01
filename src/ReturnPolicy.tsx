@@ -118,7 +118,7 @@ export default function ReturnPolicy() {
         />
 
         <div className="text-center mb-8 md:mb-10">
-          <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-3">Returns & Refunds Policy</h1>
+          <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-3">Return & Refund Policy</h1>
           <div className="w-16 h-[2px] bg-gold-200 mx-auto"></div>
           <p className="mt-4 text-primary-950/70 text-sm max-w-2xl mx-auto">
             We are committed to providing you with premium ethnic wear. If you are not entirely satisfied with your purchase, we're here to help.

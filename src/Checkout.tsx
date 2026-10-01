@@ -541,7 +541,7 @@ export default function Checkout() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-8">
         <header className="mb-2.5 md:mb-8 border-b border-black/5 pb-1.5 md:pb-5">
           <h1 className="text-lg md:text-2xl font-serif text-primary-950 font-medium">
-            Checkout
+            Secure Checkout
           </h1>
         </header>
 

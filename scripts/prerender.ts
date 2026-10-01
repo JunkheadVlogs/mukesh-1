@@ -194,7 +194,9 @@ function sanitize(text: string): string {
 
 function mdToHtml(markdown: string): string {
   if (!markdown) return "";
-  let html = markdown;
+  let html = markdown
+    .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "")
+    .replace(/\bDESCRIPTION\s*:\s*/gi, "");
   // Convert bullet points
   html = html.replace(/^[•\-]\s*(.*)$/gm, "<li>$1</li>");
   html = html.replace(/(<li>.*<\/li>)/s, "<ul>$1</ul>");
@@ -391,7 +393,7 @@ async function runPrerender() {
         </div>
         <div style="max-width: 800px; margin: 0 auto; z-index: 10; position: relative;">
           <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED ${BUSINESS_INFO.established}</span>
-          <h2 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">${BUSINESS_INFO.name}</h2>
+          <h1 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">${BUSINESS_INFO.name}</h1>
           <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop ${BUSINESS_INFO.address.city}'s premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, and bridal lehengas. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹499.</p>
           <div style="display: flex; gap: 16px; justify-content: center;">
             <a href="/shop" style="background: #faf6f0; color: #1a0a00; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Explore Collection</a>
@@ -493,14 +495,22 @@ async function runPrerender() {
     </div>
   `;
 
-  const homeCanonicalTag = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/">`;
+  const homeTitle = "Mukesh Saree Centre | Wholesale & Retail Sarees Since 1978";
+  const homeDesc = "🏬 Wholesale & Retail Sarees Since 1978 | 📦 Bulk Orders & Single Pieces | 💵 COD Available | 🚚 Free Shipping | Nagpur";
+  const homeOgTags = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="${homeTitle}">
+    <meta property="og:description" content="${homeDesc}">
+    <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg">
+    <meta property="og:url" content="https://mukeshsarees.com/">
+    <meta name="twitter:card" content="summary_large_image">`;
 
   const updatedHomeHtml = createStaticPage({
     htmlTemplate: baseHtml,
     bodyHtml: homepageBody,
-    title: "Mukesh Saree Centre | Wholesale & Retail Sarees Since 1978",
-    description: "🏬 Wholesale & Retail Sarees Since 1978 | 📦 Bulk Orders & Single Pieces | 💵 COD Available | 🚚 Free Shipping | Nagpur",
-    customOgTags: homeCanonicalTag
+    title: homeTitle,
+    description: homeDesc,
+    customOgTags: homeOgTags
   });
 
   fs.writeFileSync(baseHtmlPath, replaceEnvPlaceholders(updatedHomeHtml));
@@ -518,7 +528,7 @@ async function runPrerender() {
       route: "shop",
       title: "Shop Premium Indian Ethnic Ensembles",
       description: "Browse our complete collection of 100+ premium sarees, linen sarees, and handloom silks at Mukesh Saree Centre. Cash on Delivery available.",
-      h1: "Complete Collection",
+      h1: "Shop Sarees & Women's Ethnic Wear",
       introTitle: "Premium Luxury Catalogue",
       introBody: "Find your perfect match from our extensive collection of traditional and modern ethnic wear. We offer the finest silks, breathable cottons, and heavy bridal lehengas, meticulously woven to celebrate Indian heritage.",
       filterFn: () => true
@@ -640,7 +650,7 @@ async function runPrerender() {
           </nav>
 
           <div style="text-align: center; margin-bottom: 48px; font-family: 'Playfair Display', serif;">
-            <h2 style="font-size: 36px; margin-bottom: 12px; color: #1a0a00; font-weight: 500;">${collection.h1}</h2>
+            <h1 style="font-size: 36px; margin-bottom: 12px; color: #1a0a00; font-weight: 500;">${collection.h1}</h1>
             <p style="font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.8; font-weight: 600; color: #8c7355; text-transform: uppercase; letter-spacing: 1px;">${collection.introTitle}</p>
             <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.7; max-width: 800px; margin: 16px auto 0 auto; line-height: 1.6;">${collection.introBody}</p>
           </div>
@@ -668,14 +678,20 @@ async function runPrerender() {
       </div>
     `;
 
-    const shopCanonicalTag = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}/" />`;
+    const shopOgTags = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}/" />
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="${sanitize(collection.title)} | ${BUSINESS_INFO.name}">
+    <meta property="og:description" content="${sanitize(collection.description)}">
+    <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg">
+    <meta property="og:url" content="https://mukeshsarees.com/${collection.route}/">
+    <meta name="twitter:card" content="summary_large_image">`;
 
     const shopHtml = createStaticPage({
       htmlTemplate: baseHtml,
       bodyHtml: shopBody,
       title: `${collection.title} | ${BUSINESS_INFO.name}`,
       description: collection.description,
-      customOgTags: shopCanonicalTag,
+      customOgTags: shopOgTags,
       schemaJson: shopSchema
     });
 
@@ -724,13 +740,25 @@ async function runPrerender() {
       ]
     };
 
+    const absoluteProductImage = p.image
+      ? (p.image.startsWith("http") ? p.image : `https://mukeshsarees.com${p.image.startsWith("/") ? "" : "/"}${p.image}`)
+      : "https://mukeshsarees.com/og-image.jpg";
+
+    const cleanedDescRaw = (p.description || "")
+      .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "")
+      .replace(/\bDESCRIPTION\s*:\s*/gi, "")
+      .replace(/\*\*/g, "")
+      .replace(/<[^>]*>?/gm, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
     // Google Product SEO JSON-LD schema
     const prodSchema: any = {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": p.name,
-      "image": p.image,
-      "description": p.description ? p.description.replace(/\*\*/g, "").replace(/<[^>]*>?/gm, "").substring(0, 300) : p.name,
+      "image": absoluteProductImage,
+      "description": cleanedDescRaw ? cleanedDescRaw.substring(0, 300) : p.name,
       "sku": p.sku || `MSC-${p.id}`,
       "mpn": p.sku || `MSC-${p.id}`,
       "brand": {
@@ -886,13 +914,25 @@ async function runPrerender() {
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}/`;
     const cleanProductDesc = (p.description || "")
+      .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "")
+      .replace(/\bDESCRIPTION\s*:\s*/gi, "")
       .replace(/\*\*/g, "")
       .replace(/<[^>]*>?/gm, "")
       .replace(/\s+/g, " ")
       .substring(0, 155)
       .trim() + "...";
 
-    const dynamicTags = `<link data-rh="true" rel="canonical" href="${originalUrl}" />`;
+    let dynamicTags = `<link data-rh="true" rel="canonical" href="${originalUrl}" />
+    <meta property="og:type" content="product">
+    <meta property="og:title" content="${sanitize(p.name)}">
+    <meta property="og:description" content="${sanitize(cleanProductDesc)}">
+    <meta property="og:image" content="${absoluteProductImage}">
+    <meta property="og:url" content="${originalUrl}">
+    <meta name="twitter:card" content="summary_large_image">`;
+
+    if (p.slug === "payment-test-product") {
+      dynamicTags += `\n    <meta name="robots" content="noindex, nofollow">`;
+    }
 
     const pageTitle = p.metaTitle || p.seoTitle || `${p.name} | ${BUSINESS_INFO.name}`;
     const prodDesc = p.metaDescription || p.seoDescription || cleanProductDesc;
@@ -1005,7 +1045,7 @@ async function runPrerender() {
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
-            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shipping & Delivery Policy</h2>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shipping Policy</h1>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
               <p style="margin-top: 0;">Experience premium delivery services across India. We ensure your ethnic wear reaches you safely, promptly, and in pristine condition.</p>
               
@@ -1041,7 +1081,7 @@ async function runPrerender() {
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
-            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Returns & Refund Policy</h2>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Return & Refund Policy</h1>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
               <p style="margin-top: 0;">We hold our boutique collections to strict quality criteria. In the rare event you need a return, please review our process below:</p>
 
@@ -1067,7 +1107,7 @@ async function runPrerender() {
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
-            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Terms & Conditions</h2>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Terms & Conditions</h1>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
               <p style="margin-top: 0; font-style: italic; border-left: 4px solid #F1E5C1; padding-left: 12px;">"Welcome to ${BUSINESS_INFO.name}. By accessing our website, placing an order, or using our services, you agree to comply with and be bound by the following legally protected terms and conditions."</p>
               
@@ -1093,7 +1133,7 @@ async function runPrerender() {
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
-            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shopping Cart</h2>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Your Shopping Cart</h1>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a; text-align: center;">
               <p>Review and manage selected ethnic wear before proceeding to secure checkout.</p>
               <a href="/shop" style="display: inline-block; background: #1a0a00; color: white; padding: 12px 24px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; margin-top: 16px;">Continue Shopping</a>
@@ -1111,7 +1151,7 @@ async function runPrerender() {
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
-            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Checkout</h2>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Secure Checkout</h1>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a; text-align: center;">
               <p>Secure ordering with Cash on Delivery and encrypted online payment gateway.</p>
               <a href="/cart" style="display: inline-block; background: #1a0a00; color: white; padding: 12px 24px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; margin-top: 16px;">Review Cart</a>
@@ -1285,14 +1325,20 @@ async function runPrerender() {
 
   console.log("[PRERENDER] Compiling static policies...");
   for (const page of staticPages) {
-    const pageCanonicalTag = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}/" />`;
+    const pageOgTags = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}/" />
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="${sanitize(page.title)}">
+    <meta property="og:description" content="${sanitize(page.desc)}">
+    <meta property="og:image" content="${page.ogImage || 'https://mukeshsarees.com/og-image.jpg'}">
+    <meta property="og:url" content="https://mukeshsarees.com/${page.dir}/">
+    <meta name="twitter:card" content="summary_large_image">`;
 
     const phtml = createStaticPage({
       htmlTemplate: baseHtml,
       bodyHtml: page.body,
       title: page.title,
       description: page.desc,
-      customOgTags: pageCanonicalTag,
+      customOgTags: pageOgTags,
       schemaJson: (page as any).schemaJson
     });
 

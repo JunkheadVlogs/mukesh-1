@@ -7,8 +7,10 @@ try {
   
   const preParsedProducts = (products || []).map(p => {
     let cleanDesc = p.description || "";
-    // Strips markdown, HTML elements, and extra whitespace for social tags
+    // Strips markdown, labels like DESCRIPTION:, HTML elements, and extra whitespace for social tags
     cleanDesc = cleanDesc
+      .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "")
+      .replace(/\bDESCRIPTION\s*:\s*/gi, "")
       .replace(/\*\*/g, "")
       .replace(/<[^>]*>?/gm, "")
       .replace(/•/g, "-")

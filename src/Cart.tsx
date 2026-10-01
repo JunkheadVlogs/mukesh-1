@@ -39,7 +39,7 @@ export default function Cart() {
             <ShoppingBag size={48} className="text-gold-500/60" strokeWidth={1} />
           </div>
           <div className="space-y-4">
-            <h2 className="text-3xl md:text-5xl font-serif text-primary-950 font-normal">Your Cart is Empty</h2>
+            <h1 className="text-3xl md:text-5xl font-serif text-primary-950 font-normal">Your Shopping Cart</h1>
             <p className="text-primary-950/60 font-medium text-sm md:text-base max-w-md mx-auto leading-relaxed">
               Looks like you haven't added anything to your cart yet. Discover our latest collection.
             </p>
@@ -133,7 +133,7 @@ export default function Cart() {
         />
         
         <header className="mb-3.5 sm:mb-6 md:mb-12 border-b border-black/5 pb-2.5 sm:pb-4 md:pb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif text-primary-950 font-normal">Shopping Cart</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif text-primary-950 font-normal">Your Shopping Cart</h1>
           <p className="text-primary-950/50 text-[12px] sm:text-sm mt-1 sm:mt-2">{cart.length} item{cart.length !== 1 ? 's' : ''} in your cart</p>
         </header>
 

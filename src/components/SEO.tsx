@@ -31,7 +31,10 @@ export function getWhatsAppSafeDescription(text: string, productContext?: any): 
   // Clean HTML, Markdown, and other clutter
   let clean = text
     .replace(/<[^>]*>?/gm, " ")
-    .replace(/\*\*(DESCRIPTION|HIGHLIGHTS|FABRIC DETAILS|SIZE & FIT|STYLING|CARE INSTRUCTIONS|WASH CARE|FABRIC):\*\*/gi, "")
+    .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "")
+    .replace(/(\*\*)?DESCRIPTION\s*:\s*(\*\*)?/gi, "")
+    .replace(/\bDESCRIPTION\s*:\s*/gi, "")
+    .replace(/\*\*(HIGHLIGHTS|FABRIC DETAILS|SIZE & FIT|STYLING|CARE INSTRUCTIONS|WASH CARE|FABRIC):\*\*/gi, "")
     .replace(/\*\*[A-Z\s&_:\-]+\:\*\*/gi, " ")
     .replace(/\*\*[A-Z\s&_:\-]+\*\*/gi, " ")
     .replace(/^[•\-\*\s]+/gm, " ")
@@ -78,8 +81,11 @@ export function cleanDescriptionForOG(rawDesc: string): string {
   if (!rawDesc) return "";
   
   let text = rawDesc;
-  // Remove markdown headers/labels first so they don't clutter the SEO sentence
-  text = text.replace(/\*\*(DESCRIPTION|HIGHLIGHTS|FABRIC DETAILS|SIZE & FIT|STYLING|CARE INSTRUCTIONS|WASH CARE|FABRIC):\*\*/gi, "");
+  // Remove description prefix and markdown headers/labels first
+  text = text.replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "");
+  text = text.replace(/(\*\*)?DESCRIPTION\s*:\s*(\*\*)?/gi, "");
+  text = text.replace(/\bDESCRIPTION\s*:\s*/gi, "");
+  text = text.replace(/\*\*(HIGHLIGHTS|FABRIC DETAILS|SIZE & FIT|STYLING|CARE INSTRUCTIONS|WASH CARE|FABRIC):\*\*/gi, "");
   text = text.replace(/\*\*[A-Z\s&_:\-]+\:\*\*/gi, "");
   text = text.replace(/\*\*[A-Z\s&_:\-]+\*\*/gi, "");
 
@@ -106,6 +112,11 @@ export function cleanSEOText(text: string): string {
 
   // Replace HTML tags
   clean = clean.replace(/<[^>]*>?/gm, " ");
+
+  // Remove markdown bold/label variants like **DESCRIPTION:** or DESCRIPTION:
+  clean = clean.replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, " ");
+  clean = clean.replace(/(\*\*)?DESCRIPTION\s*:\s*(\*\*)?/gi, " ");
+  clean = clean.replace(/\bDESCRIPTION\s*:\s*/gi, " ");
 
   // Remove bullets and dashes at the beginning of lines
   clean = clean.replace(/^[•\-\*\s]+/gm, " ");
@@ -266,9 +277,9 @@ export function SEO({
       {/* Open Graph / Facebook / WhatsApp */}
       <meta property="og:type" content={finalType} />
       <meta property="og:url" content={absoluteUrl} />
-      <meta property="og:title" content={displayTitle} />
-      <meta property="og:description" content={finalDescriptionText} />
-      <meta property="og:image" content={displayImage} />
+      <meta property="og:title" content={isProductType && product ? product.name : displayTitle} />
+      <meta property="og:description" content={isProductType && product ? cleanSEOText(product.description || description) : finalDescriptionText} />
+      <meta property="og:image" content={isProductType && product ? absoluteImage : displayImage} />
       <meta property="og:image:width" content={finalImageWidth} />
       <meta property="og:image:height" content={finalImageHeight} />
       <meta property="og:image:type" content={imageType} />
@@ -277,9 +288,9 @@ export function SEO({
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={absoluteUrl} />
-      <meta name="twitter:title" content={displayTitle} />
-      <meta name="twitter:description" content={finalDescriptionText} />
-      <meta name="twitter:image" content={displayImage} />
+      <meta name="twitter:title" content={isProductType && product ? product.name : displayTitle} />
+      <meta name="twitter:description" content={isProductType && product ? cleanSEOText(product.description || description) : finalDescriptionText} />
+      <meta name="twitter:image" content={isProductType && product ? absoluteImage : displayImage} />
 
       {/* Product Specific */}
       {isProductType && product && (

@@ -14,7 +14,7 @@ export default function ShippingPolicy() {
         />
 
         <div className="text-center mb-8 md:mb-10">
-          <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-3">Shipping & Delivery Policy</h1>
+          <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-3">Shipping Policy</h1>
           <div className="w-16 h-[2px] bg-gold-200 mx-auto"></div>
           <p className="mt-4 text-primary-950/70 text-sm max-w-2xl mx-auto">
             Experience premium delivery services across India. We ensure your ethnic wear reaches you safely, promptly, and in pristine condition.

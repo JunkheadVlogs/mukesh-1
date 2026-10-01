@@ -60,6 +60,8 @@ function runGenerator() {
     const targetFile = path.join(targetFolder, 'index.html');
 
     const sanitizedDesc = (product.description || '')
+      .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, '')
+      .replace(/\bDESCRIPTION\s*:\s*/gi, '')
       .replace(/<[^>]*>?/gm, ' ')
       .replace(/\s+/g, ' ')
       .replace(/"/g, '&quot;')
@@ -67,52 +69,39 @@ function runGenerator() {
     const shortDesc = sanitizedDesc.substring(0, 155).trim() + (sanitizedDesc.length > 155 ? '...' : '');
 
     const imageInput = product.image || '';
-    let ogImageUrl = '';
-
-    if (imageInput) {
-      if (imageInput.includes('ik.imagekit.io')) {
-        const baseImgUrl = imageInput.split('?')[0];
-        ogImageUrl = `${baseImgUrl}?tr=w-1200,h-630,c-maintain_ratio,bg-F0F0F0`;
-      } else {
-        if (imageInput.startsWith('http')) {
-          ogImageUrl = imageInput;
-        } else {
-          ogImageUrl = `https://mukeshsarees.com/${imageInput.replace(/^\/+/, '')}`;
-        }
-      }
-    } else {
-      ogImageUrl = 'https://mukeshsarees.com/images/og-home.jpg';
-    }
+    const absoluteProductImage = imageInput
+      ? (imageInput.startsWith('http') ? imageInput : `https://mukeshsarees.com/${imageInput.replace(/^\/+/, '')}`)
+      : 'https://mukeshsarees.com/og-image.jpg';
 
     const docTitle = `${product.name} ${product.price ? `– ₹${product.price}` : ''} | Mukesh Saree Centre`;
     const docCanonicalUrl = `https://mukeshsarees.com/product/${slug}`;
 
-    const productOgImage = `https://mukeshsarees.com/og-images/${slug}.jpg`;
-
-    const customOgTags = `<!-- Dynamic OG Tags -->
-  <meta property="og:title" content="${docTitle}" />
+    let customOgTags = `<!-- Dynamic OG Tags -->
+  <meta property="og:title" content="${product.name}" />
   <meta property="og:description" content="${shortDesc}" />
-  <meta property="og:image" content="${productOgImage}" />
-  <meta property="og:image:secure_url" content="${productOgImage}" />
-  <meta property="og:url" content="${docCanonicalUrl}" />
+  <meta property="og:image" content="${absoluteProductImage}" />
+  <meta property="og:image:secure_url" content="${absoluteProductImage}" />
+  <meta property="og:url" content="${docCanonicalUrl}/" />
   <meta property="og:type" content="product" />
   <meta property="og:site_name" content="Mukesh Saree Centre" />
-  <meta property="og:image:width" content="800" />
-  <meta property="og:image:height" content="1200" />
-  <meta property="og:image:type" content="image/jpeg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${docTitle}" />
+  <meta name="twitter:title" content="${product.name}" />
   <meta name="twitter:description" content="${shortDesc}" />
-  <meta name="twitter:image" content="${productOgImage}" />
-  <link rel="canonical" href="${docCanonicalUrl}" />
-  <!-- End Dynamic OG Tags -->`;
+  <meta name="twitter:image" content="${absoluteProductImage}" />
+  <link rel="canonical" href="${docCanonicalUrl}/" />`;
+
+    if (slug === 'payment-test-product') {
+      customOgTags += `\n  <meta name="robots" content="noindex, nofollow" />`;
+    }
+
+    customOgTags += `\n  <!-- End Dynamic OG Tags -->`;
 
     // Google Product SEO JSON-LD schema
     const prodSchema = {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": product.name,
-      "image": product.image,
+      "image": absoluteProductImage,
       "description": shortDesc,
       "sku": product.sku || `MSC-${product.id}`,
       "mpn": product.sku || `MSC-${product.id}`,

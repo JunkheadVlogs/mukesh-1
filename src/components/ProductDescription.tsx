@@ -10,10 +10,15 @@ export function ProductDescription({
   product?: Product;
   className?: string;
 }) {
-  const isWhatsAppStyle = description?.includes("*Fabric:*") || (description?.trim().startsWith("✨") && !description?.includes("**DESCRIPTION:**"));
+  // Centrally remove leftover DESCRIPTION: / DESCRIPTION : label while preserving actual description text
+  const cleanDesc = (description || "")
+    .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "")
+    .replace(/\bDESCRIPTION\s*:\s*/gi, "");
+
+  const isWhatsAppStyle = cleanDesc.includes("*Fabric:*") || (cleanDesc.trim().startsWith("✨") && !cleanDesc.includes("**DESCRIPTION:**"));
 
   if (isWhatsAppStyle) {
-    const lines = (description || "").split("\n");
+    const lines = cleanDesc.split("\n");
     return (
       <div className={`pt-2 pb-1 font-sans text-[#2C241B] flex flex-col gap-1 ${className}`}>
         {lines.map((line, idx) => {
@@ -38,7 +43,9 @@ export function ProductDescription({
 
   // Parsing the raw description using a robust block-splitter
   const parseRawSections = (desc: string) => {
-    let text = desc || "";
+    let text = (desc || "")
+      .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "")
+      .replace(/\bDESCRIPTION\s*:\s*/gi, "");
     // Clean up empty lines and common unwanted formatting
     text = text.replace(/\*\*\s*\d+\.\s*Product Title\s*\*\*\n[^\n]+\n+/gi, "");
     text = text.replace(/✨.*$/gm, ""); // Remove emoji highlight rows
@@ -69,7 +76,7 @@ export function ProductDescription({
     return { parsed, fallbackText };
   };
 
-  const { parsed: parsedRaw, fallbackText } = parseRawSections(description);
+  const { parsed: parsedRaw, fallbackText } = parseRawSections(cleanDesc);
 
   // 1. DESCRIPTION SECTION (Trimmed paragraph)
   const getProductDescriptionRaw = () => {
@@ -82,10 +89,17 @@ export function ProductDescription({
         }
       }
     }
+    if (raw) {
+      raw = raw
+        .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "")
+        .replace(/\bDESCRIPTION\s*:\s*/gi, "");
+    }
     return raw.replace(/^[•\s\-\*]+/gm, "").trim();
   };
 
   const sectionDesc = getProductDescriptionRaw()
+    .replace(/^(\*\*)?DESCRIPTION\s*:\s*(\*\*)?\s*/i, "")
+    .replace(/\bDESCRIPTION\s*:\s*/gi, "")
     .replace(/\*\*.*?\*\*/g, "")
     .replace(/^[•\s\-\*]+/gm, "")
     .trim();

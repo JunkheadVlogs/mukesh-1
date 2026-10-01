@@ -804,11 +804,15 @@ export default function ProductPage() {
   const isOutOfStock = effectiveStock === 0;
   const maxStock = effectiveStock !== undefined ? effectiveStock : Infinity;
 
+  const absoluteProductImages = productImages.map((img: string) =>
+    img.startsWith("http") ? img : `https://mukeshsarees.com${img.startsWith("/") ? "" : "/"}${img}`
+  );
+
   const detailedProductSchema = {
     "@context": "https://schema.org/",
     "@type": "Product",
     name: product.name,
-    image: productImages,
+    image: absoluteProductImages,
     description: cleanSEOText(product.description).substring(0, 300),
     ...(product.keywords ? { keywords: product.keywords } : {}),
     sku: product.sku || product.id,
@@ -877,7 +881,7 @@ export default function ProductPage() {
     "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.name,
-    "image": productImages,
+    "image": absoluteProductImages,
     "description": cleanSEOText(product.description).substring(0, 300),
     "sku": product.sku || product.id,
     "brand": { "@type": "Brand", "name": "Mukesh Saree Centre" },
@@ -1051,6 +1055,12 @@ export default function ProductPage() {
         preloadImage={productImages[0] ? optimizeImage(productImages[0], 800, 'webp') : undefined}
         schema={[productSchema, breadcrumbSchema, faqSchema] as any}
       />
+
+      {product.slug === "payment-test-product" && (
+        <Helmet>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+      )}
 
       <div className="max-w-[1400px] mx-auto px-2.5 sm:px-4 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
         <div className="flex flex-col lg:flex-row gap-0 md:gap-12 xl:gap-16">

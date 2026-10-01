@@ -173,7 +173,7 @@ export default function Shop() {
         : "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop online or visit us in Gandhibagh.",
       heading: searchQuery
         ? `Results for "${searchQuery}"`
-        : categoryFilter || "Shop All",
+        : categoryFilter || "Shop Sarees & Women's Ethnic Wear",
       paragraph: null
     };
   }, [activeSEOKey, categoryFilter, searchQuery]);

@@ -393,7 +393,7 @@ export default function Home() {
           className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col justify-center items-start h-full pt-[100px] md:pt-[110px] pb-12"
         >
           <div className="max-w-[280px] xs:max-w-[320px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[640px] text-left mb-4 md:mb-8">
-            <div
+            <h1
               className="text-[10px] xs:text-[11px] sm:text-[12px] md:text-[13px] font-sans font-semibold tracking-[0.22em] sm:tracking-[0.25em] uppercase mb-2 md:mb-3 text-[var(--color-gold-light)]"
               style={{
                 textShadow: "0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)",
@@ -401,9 +401,9 @@ export default function Home() {
               }}
             >
               MUKESH SAREE CENTRE · EST. 1978
-            </div>
+            </h1>
 
-            <h1
+            <h2
               className="text-[24px] xs:text-[28px] sm:text-[38px] md:text-[48px] lg:text-[56px] font-serif mb-2.5 md:mb-4 leading-[1.25] sm:leading-[1.15] font-normal tracking-[0.06em] sm:tracking-[0.08em]"
               style={{
                 textShadow: "0 2px 10px rgba(0,0,0,0.45), 0 4px 24px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.2)",
@@ -411,7 +411,7 @@ export default function Home() {
               }}
             >
               The Art of the Drape
-            </h1>
+            </h2>
 
             <p
               className="text-[11px] xs:text-[12px] sm:text-[14px] md:text-[16px] leading-[1.7] mb-8 md:mb-10 max-w-[220px] xs:max-w-[260px] sm:max-w-[380px] md:max-w-[440px] lg:max-w-[500px] font-sans font-light tracking-[0.04em] opacity-95"
