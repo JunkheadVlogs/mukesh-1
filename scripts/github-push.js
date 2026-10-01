@@ -509,14 +509,36 @@ export async function executeGitHubPush(options = {}) {
       });
     }
 
-    // 5. Build single unified Git Tree
-    onProgress({ phase: "creating_tree", message: `Building unified Git tree with ${treeUpdates.length} updates...` });
-    const treePayload = {
-      base_tree: parentTreeSha,
-      tree: treeUpdates,
-    };
-    const newTreeRes = await requestWithRetry(`/repos/${repo}/git/trees`, "POST", treePayload, token);
-    const newTreeSha = newTreeRes.data.sha;
+    // 5. Build unified Git Tree in safe incremental batches
+    const TREE_CHUNK_SIZE = 200;
+    let currentTreeSha = parentTreeSha;
+    const totalTreeChunks = Math.ceil(treeUpdates.length / TREE_CHUNK_SIZE);
+
+    onProgress({
+      phase: "creating_tree",
+      message: `Building Git tree with ${treeUpdates.length} updates across ${totalTreeChunks} safe batches...`
+    });
+
+    for (let i = 0; i < treeUpdates.length; i += TREE_CHUNK_SIZE) {
+      const chunkNum = Math.floor(i / TREE_CHUNK_SIZE) + 1;
+      const treeChunk = treeUpdates.slice(i, i + TREE_CHUNK_SIZE);
+      const treePayload = {
+        base_tree: currentTreeSha,
+        tree: treeChunk,
+      };
+
+      onProgress({
+        phase: "creating_tree",
+        message: `Building Git tree batch [${chunkNum}/${totalTreeChunks}] (${treeChunk.length} entries)...`
+      });
+
+      const chunkTreeRes = await requestWithRetry(`/repos/${repo}/git/trees`, "POST", treePayload, token);
+      currentTreeSha = chunkTreeRes.data.sha;
+      // Brief pause between tree creations
+      await new Promise((r) => setTimeout(r, 100));
+    }
+
+    const newTreeSha = currentTreeSha;
 
     // 6. CONFLICT DETECTION: Re-verify that remote branch hasn't moved before creating commit
     onProgress({ phase: "conflict_check", message: `Checking for remote branch concurrency conflicts on '${branch}'...` });
