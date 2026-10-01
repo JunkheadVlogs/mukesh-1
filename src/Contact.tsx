@@ -104,6 +104,7 @@ export default function Contact() {
           title="Contact Us | Mukesh Saree Centre Nagpur — WhatsApp, Phone & Store Address" 
           description="Contact Mukesh Saree Centre in Nagpur. Call or WhatsApp +91 70206 64641. Visit our store on Jagnath Road, Gandhibagh, Nagpur 440002. Open Mon–Sat, 10AM–8PM." 
           url="/contact"
+          image="https://mukeshsarees.com/og-image.jpg"
           schema={customSchema}
         />
         

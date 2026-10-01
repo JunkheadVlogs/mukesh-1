@@ -15,6 +15,8 @@ const GOOGLE_PRODUCT_CATEGORY_PATH = "Apparel & Accessories > Clothing > Traditi
 function cleanDescription(desc: string): string {
   if (!desc) return "Authentic handcrafted Indian saree from Mukesh Saree Centre.";
   return desc
+    .replace(/^(?:\*\*)?DESCRIPTION:(?:\*\*)?\s*/i, "")
+    .replace(/^DESCRIPTION:\s*/i, "")
     .replace(/\*\*(.*?)\*\*/g, "$1")
     .replace(/\*(.*?)\*/g, "$1")
     .replace(/^#+\s+/gm, "")

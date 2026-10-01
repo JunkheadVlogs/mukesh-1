@@ -88,8 +88,6 @@ export function cleanDescriptionForOG(rawDesc: string): string {
     .replace(/\*\*(.*?)\*\*/g, '$1')
     // Remove markdown italic *text*
     .replace(/\*(.*?)\*/g, '$1')
-    // Remove DESCRIPTION: label if present
-    .replace(/^DESCRIPTION:\s*/i, '')
     // Remove markdown headers ## 
     .replace(/#{1,6}\s/g, '')
     // Remove bullet points
@@ -108,10 +106,6 @@ export function cleanSEOText(text: string): string {
 
   // Replace HTML tags
   clean = clean.replace(/<[^>]*>?/gm, " ");
-
-  // Replace markdown header-like patterns e.g. **DESCRIPTION:** or **SIZE & FIT:** or **CARE INSTRUCTIONS:**
-  clean = clean.replace(/\*\*[A-Z\s&_:\-]+\*\*/gi, " ");
-  clean = clean.replace(/\*\*[A-Z\s&_:\-]+\:\*\*/gi, " ");
 
   // Remove bullets and dashes at the beginning of lines
   clean = clean.replace(/^[•\-\*\s]+/gm, " ");

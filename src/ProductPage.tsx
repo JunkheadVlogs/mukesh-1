@@ -86,6 +86,16 @@ export default function ProductPage() {
   const navigate = useNavigate();
   const product = products.find((p) => p.slug === slug || (p as any).oldSlug === slug || p.id === slug);
   
+  useEffect(() => {
+    if (slug === "chiku-linen-saree-with-bird-digital-print-and-foil-border") {
+      navigate("/product/pure-linen-saree-natural-bird-print-woven-design/", { replace: true });
+    } else if (slug === "elegant-white-pink-embroidered-pure-cotton-kurta-pant-set") {
+      navigate("/shop/", { replace: true });
+    } else if (product && product.slug !== slug && (product as any).oldSlug === slug) {
+      navigate(`/product/${product.slug}/`, { replace: true });
+    }
+  }, [slug, product, navigate]);
+
   // Dynamic breadcrumb generation matching exactly the requested collection hierarchy
   const breadcrumbItems = useMemo(() => {
     if (!product) return [];
@@ -794,15 +804,11 @@ export default function ProductPage() {
   const isOutOfStock = effectiveStock === 0;
   const maxStock = effectiveStock !== undefined ? effectiveStock : Infinity;
 
-  const absoluteProductImages = productImages.map((img) =>
-    img.startsWith("http") ? img : `https://mukeshsarees.com${img.startsWith("/") ? "" : "/"}${img}`
-  );
-
   const detailedProductSchema = {
     "@context": "https://schema.org/",
     "@type": "Product",
     name: product.name,
-    image: absoluteProductImages,
+    image: productImages,
     description: cleanSEOText(product.description).substring(0, 300),
     ...(product.keywords ? { keywords: product.keywords } : {}),
     sku: product.sku || product.id,
@@ -871,7 +877,7 @@ export default function ProductPage() {
     "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.name,
-    "image": absoluteProductImages,
+    "image": productImages,
     "description": cleanSEOText(product.description).substring(0, 300),
     "sku": product.sku || product.id,
     "brand": { "@type": "Brand", "name": "Mukesh Saree Centre" },

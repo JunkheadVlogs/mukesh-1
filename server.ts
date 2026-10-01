@@ -1408,6 +1408,14 @@ async function setupServer() {
     next();
   });
 
+  // 301 Redirects for renamed & discontinued products
+  app.get(['/product/chiku-linen-saree-with-bird-digital-print-and-foil-border', '/product/chiku-linen-saree-with-bird-digital-print-and-foil-border/'], (req, res) => {
+    return res.redirect(301, 'https://mukeshsarees.com/product/pure-linen-saree-natural-bird-print-woven-design/');
+  });
+  app.get(['/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set', '/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set/'], (req, res) => {
+    return res.redirect(301, 'https://mukeshsarees.com/shop/');
+  });
+
   if (!isProduction && !process.env.VERCEL) {
     const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({

@@ -38,7 +38,7 @@ if (fs.existsSync(distDir)) {
       let missingShopContent = false;
       if (isShopOrCollection) {
         const hasContainer = content.includes('grid-template-columns');
-        const hasHeading = content.includes('<h1');
+        const hasHeading = content.includes('<h1') || content.includes('<h2');
         if (!hasContainer || !hasHeading) {
           missingShopContent = true;
         }

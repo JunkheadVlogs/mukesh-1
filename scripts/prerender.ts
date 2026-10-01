@@ -194,7 +194,6 @@ function sanitize(text: string): string {
 
 function mdToHtml(markdown: string): string {
   if (!markdown) return "";
-  // Simple markdown bullet points and headings
   let html = markdown;
   // Convert bullet points
   html = html.replace(/^[•\-]\s*(.*)$/gm, "<li>$1</li>");
@@ -316,15 +315,18 @@ async function runPrerender() {
   }
 
   const rawBaseHtml = fs.readFileSync(baseHtmlPath, "utf-8");
+  const publicHtmlPath = path.resolve(process.cwd(), "public_html");
   const cleanHtmlPath = path.join(distPath, "index-clean.html");
   fs.writeFileSync(cleanHtmlPath, rawBaseHtml);
+  if (fs.existsSync(publicHtmlPath)) {
+    fs.writeFileSync(path.join(publicHtmlPath, "index-clean.html"), rawBaseHtml);
+  }
   console.log(`[PRERENDER] Saved original clean index.html to ${cleanHtmlPath}`);
   
   const baseHtml = replaceEnvPlaceholders(rawBaseHtml);
   console.log(`[PRERENDER] Loaded raw base HTML and replaced placeholders.`);
 
   // Setup dynamic routing directory write-helper
-  const publicHtmlPath = path.resolve(process.cwd(), "public_html");
   const writePage = (dirName: string, htmlContent: string) => {
     const fullDir = path.join(distPath, dirName);
     if (!fs.existsSync(fullDir)) {
@@ -389,7 +391,7 @@ async function runPrerender() {
         </div>
         <div style="max-width: 800px; margin: 0 auto; z-index: 10; position: relative;">
           <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED ${BUSINESS_INFO.established}</span>
-          <h1 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">${BUSINESS_INFO.name}</h1>
+          <h2 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">${BUSINESS_INFO.name}</h2>
           <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop ${BUSINESS_INFO.address.city}'s premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, and bridal lehengas. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹499.</p>
           <div style="display: flex; gap: 16px; justify-content: center;">
             <a href="/shop" style="background: #faf6f0; color: #1a0a00; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Explore Collection</a>
@@ -491,29 +493,14 @@ async function runPrerender() {
     </div>
   `;
 
-  const homeOgTags = `<!-- Dynamic OG Tags -->
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Mukesh Saree Centre">
-  <meta property="og:title" content="Mukesh Saree Centre | Wholesale & Retail Sarees in Nagpur">
-  <meta property="og:description" content="Wholesale & Retail Sarees. Cash on Delivery Available Across India.">
-  <meta property="og:url" content="https://mukeshsarees.com">
-  <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="en_IN">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Mukesh Saree Centre | Wholesale & Retail Sarees">
-  <meta name="twitter:description" content="Wholesale & Retail Sarees in Nagpur. Cash on Delivery Available Across India.">
-  <meta name="twitter:image" content="https://mukeshsarees.com/og-image.jpg">
-  <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/">
-  <!-- End Dynamic OG Tags -->`;
+  const homeCanonicalTag = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/">`;
 
   const updatedHomeHtml = createStaticPage({
     htmlTemplate: baseHtml,
     bodyHtml: homepageBody,
-    title: "Mukesh Saree Centre | Wholesale & Retail Sarees in Nagpur",
-    description: "Buy premium sarees online from Mukesh Saree Centre. Wholesale & retail sarees, designer sarees, cotton, linen, silk, party wear and more. Cash on Delivery available across India.",
-    customOgTags: homeOgTags
+    title: "Mukesh Saree Centre | Wholesale & Retail Sarees Since 1978",
+    description: "🏬 Wholesale & Retail Sarees Since 1978 | 📦 Bulk Orders & Single Pieces | 💵 COD Available | 🚚 Free Shipping | Nagpur",
+    customOgTags: homeCanonicalTag
   });
 
   fs.writeFileSync(baseHtmlPath, replaceEnvPlaceholders(updatedHomeHtml));
@@ -653,7 +640,7 @@ async function runPrerender() {
           </nav>
 
           <div style="text-align: center; margin-bottom: 48px; font-family: 'Playfair Display', serif;">
-            <h1 style="font-size: 36px; margin-bottom: 12px; color: #1a0a00; font-weight: 500;">${collection.h1}</h1>
+            <h2 style="font-size: 36px; margin-bottom: 12px; color: #1a0a00; font-weight: 500;">${collection.h1}</h2>
             <p style="font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.8; font-weight: 600; color: #8c7355; text-transform: uppercase; letter-spacing: 1px;">${collection.introTitle}</p>
             <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.7; max-width: 800px; margin: 16px auto 0 auto; line-height: 1.6;">${collection.introBody}</p>
           </div>
@@ -681,29 +668,14 @@ async function runPrerender() {
       </div>
     `;
 
-    const shopOgTags = `<!-- Dynamic OG Tags -->
-      <meta data-rh="true" property="og:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
-      <meta data-rh="true" property="og:description" content="${collection.description}" />
-      <meta data-rh="true" property="og:image" content="https://mukeshsarees.com/og-image.jpg" />
-      <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${collection.route}/" />
-      <meta data-rh="true" property="og:type" content="website" />
-      <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
-      <meta data-rh="true" property="og:image:width" content="1200" />
-      <meta data-rh="true" property="og:image:height" content="630" />
-      <meta data-rh="true" property="og:image:type" content="image/jpeg" />
-      <meta data-rh="true" name="twitter:card" content="summary_large_image" />
-      <meta data-rh="true" name="twitter:title" content="${collection.title} — ${BUSINESS_INFO.name}" />
-      <meta data-rh="true" name="twitter:description" content="${collection.description}" />
-      <meta data-rh="true" name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
-      <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}/" />
-      <!-- End Dynamic OG Tags -->`;
+    const shopCanonicalTag = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}/" />`;
 
     const shopHtml = createStaticPage({
       htmlTemplate: baseHtml,
       bodyHtml: shopBody,
       title: `${collection.title} | ${BUSINESS_INFO.name}`,
       description: collection.description,
-      customOgTags: shopOgTags,
+      customOgTags: shopCanonicalTag,
       schemaJson: shopSchema
     });
 
@@ -715,7 +687,7 @@ async function runPrerender() {
   // 3. GENERATE PRODUCT PAGES (dist/product/[slug]/index.html)
   console.log("[PRERENDER] Processing product pages...");
   for (const p of products) {
-    if (p.isHidden) continue;
+    if (p.isHidden && p.slug !== "payment-test-product") continue;
     if (!p.slug) continue;
 
     console.log(`[PRERENDER] Generating product: ${p.name} (/product/${p.slug})`);
@@ -752,20 +724,12 @@ async function runPrerender() {
       ]
     };
 
-    const absoluteProductImage = p.image
-      ? (p.image.startsWith("http") ? p.image : `https://mukeshsarees.com${p.image.startsWith("/") ? "" : "/"}${p.image}`)
-      : "https://mukeshsarees.com/og-image.jpg";
-
-    const absoluteProductImages = (p.images && p.images.length > 0)
-      ? p.images.map((img: string) => img.startsWith("http") ? img : `https://mukeshsarees.com${img.startsWith("/") ? "" : "/"}${img}`)
-      : [absoluteProductImage];
-
     // Google Product SEO JSON-LD schema
     const prodSchema: any = {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": p.name,
-      "image": absoluteProductImages.length === 1 ? absoluteProductImages[0] : absoluteProductImages,
+      "image": p.image,
       "description": p.description ? p.description.replace(/\*\*/g, "").replace(/<[^>]*>?/gm, "").substring(0, 300) : p.name,
       "sku": p.sku || `MSC-${p.id}`,
       "mpn": p.sku || `MSC-${p.id}`,
@@ -921,35 +885,17 @@ async function runPrerender() {
     `;
 
     const originalUrl = `https://mukeshsarees.com/product/${p.slug}/`;
-    const productOgImage = `https://mukeshsarees.com/og-images/${p.slug}.jpg`;
-    const fabricItem = p.fabric ? `✨ ${p.fabric}` : "✨ Premium Fabric";
-    const discountPercent = (p.originalPrice && p.price && p.originalPrice > p.price)
-      ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
-      : null;
-    const priceText = discountPercent 
-      ? `💰 ₹${p.price} (${discountPercent}% OFF)` 
-      : `💰 ₹${p.price}`;
+    const cleanProductDesc = (p.description || "")
+      .replace(/\*\*/g, "")
+      .replace(/<[^>]*>?/gm, "")
+      .replace(/\s+/g, " ")
+      .substring(0, 155)
+      .trim() + "...";
+
+    const dynamicTags = `<link data-rh="true" rel="canonical" href="${originalUrl}" />`;
 
     const pageTitle = p.metaTitle || p.seoTitle || `${p.name} | ${BUSINESS_INFO.name}`;
-    const prodDesc = p.metaDescription || p.seoDescription || `${fabricItem} | 🚚 Free Shipping | ${priceText} | 🏬 Trusted Since ${BUSINESS_INFO.established}`;
-    
-    const dynamicTags = `<!-- Dynamic OG Tags -->
-    <meta data-rh="true" property="og:title" content="${sanitize(pageTitle)}" />
-    <meta data-rh="true" property="og:description" content="${sanitize(prodDesc)}" />
-    <meta data-rh="true" property="og:image" content="${productOgImage}" />
-    <meta data-rh="true" property="og:image:secure_url" content="${productOgImage}" />
-    <meta data-rh="true" property="og:url" content="${originalUrl}" />
-    <meta data-rh="true" property="og:type" content="product" />
-    <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
-    <meta data-rh="true" property="og:image:width" content="800" />
-    <meta data-rh="true" property="og:image:height" content="1200" />
-    <meta data-rh="true" property="og:image:type" content="image/jpeg" />
-    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
-    <meta data-rh="true" name="twitter:title" content="${sanitize(pageTitle)}" />
-    <meta data-rh="true" name="twitter:description" content="${sanitize(prodDesc)}" />
-    <meta data-rh="true" name="twitter:image" content="${productOgImage}" />
-    <link data-rh="true" rel="canonical" href="${originalUrl}" />
-    <!-- End Dynamic OG Tags -->`;
+    const prodDesc = p.metaDescription || p.seoDescription || cleanProductDesc;
 
     const prodHtml = createStaticPage({
       htmlTemplate: baseHtml,
@@ -1059,7 +1005,7 @@ async function runPrerender() {
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
-            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shipping & Delivery Policy</h1>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shipping & Delivery Policy</h2>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
               <p style="margin-top: 0;">Experience premium delivery services across India. We ensure your ethnic wear reaches you safely, promptly, and in pristine condition.</p>
               
@@ -1095,7 +1041,7 @@ async function runPrerender() {
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
-            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Returns & Refund Policy</h1>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Returns & Refund Policy</h2>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
               <p style="margin-top: 0;">We hold our boutique collections to strict quality criteria. In the rare event you need a return, please review our process below:</p>
 
@@ -1121,7 +1067,7 @@ async function runPrerender() {
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
-            <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Terms & Conditions</h1>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Terms & Conditions</h2>
             <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a;">
               <p style="margin-top: 0; font-style: italic; border-left: 4px solid #F1E5C1; padding-left: 12px;">"Welcome to ${BUSINESS_INFO.name}. By accessing our website, placing an order, or using our services, you agree to comply with and be bound by the following legally protected terms and conditions."</p>
               
@@ -1133,6 +1079,42 @@ async function runPrerender() {
 
               <h3 style="margin-top: 24px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;">3. Intellectual Property Rights</h3>
               <p>Content including images, text, user interfaces, branding, and graphics remain the exclusive, licensed property of ${BUSINESS_INFO.name} under Indian copyright laws. Unlawful extraction or usage of this material without written consent is strictly prohibited.</p>
+            </div>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `
+    },
+    {
+      dir: "cart",
+      title: `Shopping Cart | ${BUSINESS_INFO.name}`,
+      desc: `Review items in your shopping cart at ${BUSINESS_INFO.name}. Cash on delivery and free shipping across India.`,
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Shopping Cart</h2>
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a; text-align: center;">
+              <p>Review and manage selected ethnic wear before proceeding to secure checkout.</p>
+              <a href="/shop" style="display: inline-block; background: #1a0a00; color: white; padding: 12px 24px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; margin-top: 16px;">Continue Shopping</a>
+            </div>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `
+    },
+    {
+      dir: "checkout",
+      title: `Checkout | ${BUSINESS_INFO.name}`,
+      desc: `Secure checkout for your order at ${BUSINESS_INFO.name}. Cash on Delivery and online payment available across India.`,
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Checkout</h2>
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; line-height: 1.8; font-size: 14px; color: #4a4a4a; text-align: center;">
+              <p>Secure ordering with Cash on Delivery and encrypted online payment gateway.</p>
+              <a href="/cart" style="display: inline-block; background: #1a0a00; color: white; padding: 12px 24px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; margin-top: 16px;">Review Cart</a>
             </div>
           </main>
           ${getFooterHtml()}
@@ -1303,31 +1285,14 @@ async function runPrerender() {
 
   console.log("[PRERENDER] Compiling static policies...");
   for (const page of staticPages) {
-    const pageImage = (page as any).ogImage || "https://mukeshsarees.com/og-image.jpg";
-    const pageOgTags = `<!-- Dynamic OG Tags -->
-    <meta data-rh="true" property="og:title" content="${page.title}" />
-    <meta data-rh="true" property="og:description" content="${page.desc}" />
-    <meta data-rh="true" property="og:image" content="${pageImage}" />
-    <meta data-rh="true" property="og:image:secure_url" content="${pageImage}" />
-    <meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${page.dir}/" />
-    <meta data-rh="true" property="og:type" content="website" />
-    <meta data-rh="true" property="og:site_name" content="${BUSINESS_INFO.name}" />
-    <meta data-rh="true" property="og:image:width" content="1200" />
-    <meta data-rh="true" property="og:image:height" content="630" />
-    <meta data-rh="true" property="og:image:type" content="image/jpeg" />
-    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
-    <meta data-rh="true" name="twitter:title" content="${page.title}" />
-    <meta data-rh="true" name="twitter:description" content="${page.desc}" />
-    <meta data-rh="true" name="twitter:image" content="${pageImage}" />
-    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}/" />
-    <!-- End Dynamic OG Tags -->`;
+    const pageCanonicalTag = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}/" />`;
 
     const phtml = createStaticPage({
       htmlTemplate: baseHtml,
       bodyHtml: page.body,
       title: page.title,
       description: page.desc,
-      customOgTags: pageOgTags,
+      customOgTags: pageCanonicalTag,
       schemaJson: (page as any).schemaJson
     });
 
@@ -1360,7 +1325,6 @@ Sitemap: https://mukeshsarees.com/sitemap.xml`;
     { path: "/shop/?category=Linen Sarees", changefreq: "weekly", priority: "0.8" },
     { path: "/shop/?category=Lehengas", changefreq: "weekly", priority: "0.8" },
     { path: "/shop/?category=Kurtas", changefreq: "weekly", priority: "0.8" },
-    { path: "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set/", changefreq: "monthly", priority: "0.7" },
     { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral/", changefreq: "monthly", priority: "0.7" },
     { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu/", changefreq: "monthly", priority: "0.7" },
     { path: "/contact/", changefreq: "monthly", priority: "0.5" },

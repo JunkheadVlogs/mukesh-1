@@ -85,36 +85,24 @@ import_dotenv.default.config();
 process.env.VITE_FB_DOMAIN_VERIFY = "kjvbvikfmctlsdfygll3tadkpzty8a";
 var app = (0, import_express.default)();
 function startListening() {
-  const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : NaN;
-  const portsToListen = [];
-  if (!isNaN(envPort) && envPort > 0) {
-    portsToListen.push(envPort);
-  }
-  if (!portsToListen.includes(3e3)) {
-    portsToListen.push(3e3);
-  }
-  if (!portsToListen.includes(8080)) {
-    portsToListen.push(8080);
-  }
+  const targetPort = isProduction ? process.env.PORT ? parseInt(process.env.PORT, 10) : 3e3 : 3e3;
   const servers = [];
-  for (const port of portsToListen) {
-    try {
-      const server = app.listen(port, "0.0.0.0", () => {
-        console.log(`[SERVER] Active and listening on http://0.0.0.0:${port} (${isProduction ? "production" : "development"})`);
-      });
-      server.keepAliveTimeout = 65e3;
-      server.headersTimeout = 66e3;
-      server.on("error", (err) => {
-        if (err.code === "EADDRINUSE") {
-          console.log(`[SERVER] Port ${port} is occupied (expected if reverse proxy is running on this port).`);
-        } else {
-          console.error(`[SERVER] Error on port ${port}:`, err);
-        }
-      });
-      servers.push(server);
-    } catch (e) {
-      console.warn(`[SERVER] Could not bind to port ${port}:`, e.message);
-    }
+  try {
+    const server = app.listen(targetPort, "0.0.0.0", () => {
+      console.log(`[SERVER] Active and listening on http://0.0.0.0:${targetPort} (${isProduction ? "production" : "development"})`);
+    });
+    server.keepAliveTimeout = 65e3;
+    server.headersTimeout = 66e3;
+    server.on("error", (err) => {
+      if (err.code === "EADDRINUSE") {
+        console.log(`[SERVER] Port ${targetPort} is already in use.`);
+      } else {
+        console.error(`[SERVER] Error on port ${targetPort}:`, err);
+      }
+    });
+    servers.push(server);
+  } catch (e) {
+    console.warn(`[SERVER] Could not bind to port ${targetPort}:`, e.message);
   }
   return servers;
 }
@@ -852,11 +840,11 @@ var injectOGTags = (html, reqPath, originalUrl) => {
     const slug = productMatch[1].trim().toLowerCase();
     const prod = preParsedProducts.find((p) => p.slug && p.slug.trim().toLowerCase() === slug);
     if (prod) {
-      ogTitle = `${prod.name} | Mukesh Saree Centre`;
+      ogTitle = prod.metaTitle || `${prod.name} | Mukesh Saree Centre`;
       const fabricItem = prod.fabric ? `\u2728 ${prod.fabric}` : "\u2728 Premium Fabric";
       const discountPercent = prod.originalPrice && prod.price && prod.originalPrice > prod.price ? Math.round((prod.originalPrice - prod.price) / prod.originalPrice * 100) : null;
       const priceText = discountPercent ? `\u{1F4B0} \u20B9${prod.price} (${discountPercent}% OFF)` : `\u{1F4B0} \u20B9${prod.price}`;
-      ogDesc = `${fabricItem} | \u{1F69A} Free Shipping | \u{1F4B5} COD Available | ${priceText} | \u{1F3EC} Trusted Since 1978`;
+      ogDesc = prod.metaDescription || `${fabricItem} | \u{1F69A} Free Shipping | \u{1F4B5} COD Available | ${priceText} | \u{1F3EC} Trusted Since 1978`;
       ogImg = `https://mukeshsarees.com/og-images/${prod.slug}.jpg`;
       ogWidth = "800";
       ogHeight = "1200";
@@ -864,8 +852,8 @@ var injectOGTags = (html, reqPath, originalUrl) => {
       isProduct = true;
     }
   } else if (reqPath.startsWith("/shop")) {
-    ogTitle = "Shop Sarees, Co-Ord Sets & Ethnic Wear \u2014 Mukesh Saree Centre";
-    ogDesc = "Browse 50+ premium sarees, linen sarees, co-ord sets and lehengas. Cash on Delivery available. Free shipping above \u20B9499. Trusted since 1978.";
+    ogTitle = "Shop Sarees, Linen Sarees & Ethnic Wear \u2014 Mukesh Saree Centre";
+    ogDesc = "Browse 50+ premium sarees, linen sarees, silks and lehengas. Cash on Delivery available. Free shipping above \u20B9499. Trusted since 1978.";
     ogImg = defaultBannerUrl;
   } else if (reqPath.startsWith("/wholesalesarees") || reqPath.startsWith("/wholesale-sarees") || reqPath.startsWith("/wholesale")) {
     ogTitle = "Wholesale Sarees VIP Club \u2014 Mukesh Saree Centre Nagpur";
@@ -884,6 +872,18 @@ var injectOGTags = (html, reqPath, originalUrl) => {
   } else if (reqPath.startsWith("/return-policy")) {
     ogTitle = "Returns & Exchanges";
     ogDesc = "Mukesh Saree Centre return policy \u2014 7-day returns on all products. Refund via UPI/Bank Transfer within 3-5 business days. Easy hassle-free process.";
+  } else if (reqPath.startsWith("/pure-linen-sarees")) {
+    ogTitle = "Pure Linen Sarees Online | Breathable Handcrafted Drapes | Mukesh Saree Centre";
+    ogDesc = "Shop pure linen sarees online at Mukesh Saree Centre. Sourced from fine flax fibers, breathable organic weaves, digital prints & zari borders. Free shipping across India.";
+  } else if (reqPath.startsWith("/soft-cotton-sarees")) {
+    ogTitle = "Soft Cotton Sarees Online | Daily Wear & Handloom | Mukesh Saree Centre";
+    ogDesc = "Discover soft cotton sarees at Mukesh Saree Centre. Premium khadi cotton, Jamdani weaves, tissue cotton & breathable blends with COD and free shipping across India.";
+  } else if (reqPath.startsWith("/banarasi-silk-sarees")) {
+    ogTitle = "Banarasi Silk Sarees | Bridal & Festive Silks | Mukesh Saree Centre Nagpur";
+    ogDesc = "Explore luxury Banarasi and festive silk sarees at Mukesh Saree Centre. Handpicked zari weaves, tissue silks & bridal collections. Visit Gandhibagh showroom or order online.";
+  } else if (reqPath.startsWith("/designer-party-wear-sarees")) {
+    ogTitle = "Designer Party Wear Sarees Online | Cocktail & Festive Drapes | Mukesh Saree Centre";
+    ogDesc = "Shop designer party wear sarees online at Mukesh Saree Centre. Flowy georgettes, embroidered drapes, shimmer tissue & cocktail sarees with COD across India.";
   }
   const defaultOgBlockRegex = /<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/;
   let dynamicTags = `<!-- Dynamic OG Tags -->
@@ -905,7 +905,7 @@ var injectOGTags = (html, reqPath, originalUrl) => {
      <!-- End Dynamic OG Tags -->`;
   let injectedHtml = html.replace(defaultOgBlockRegex, dynamicTags);
   injectedHtml = injectedHtml.replace(
-    /<title>.*?<\/title>/,
+    /<title.*?>.*?<\/title>/,
     `<title>${ogTitle}</title>`
   );
   injectedHtml = injectedHtml.replace(
@@ -1059,6 +1059,17 @@ app.get("/sitemap.xml", (req, res) => {
   </url>
 </urlset>`);
 });
+app.get(["/product-feed.xml", "/product-feed", "/google-feed.xml"], (req, res) => {
+  res.type("application/xml");
+  const feedPath = import_path.default.join(process.cwd(), "dist", "product-feed.xml");
+  const publicFeedPath = import_path.default.join(process.cwd(), "public", "product-feed.xml");
+  if (import_fs.default.existsSync(feedPath)) {
+    return res.sendFile(feedPath);
+  } else if (import_fs.default.existsSync(publicFeedPath)) {
+    return res.sendFile(publicFeedPath);
+  }
+  return res.status(404).send('<?xml version="1.0" encoding="UTF-8"?><error>Product feed not found</error>');
+});
 async function setupServer() {
   app.use((req, res, next) => {
     const userAgent = (req.headers["user-agent"] || "").toLowerCase();
@@ -1102,6 +1113,12 @@ async function setupServer() {
       req.isBot = true;
     }
     next();
+  });
+  app.get(["/product/chiku-linen-saree-with-bird-digital-print-and-foil-border", "/product/chiku-linen-saree-with-bird-digital-print-and-foil-border/"], (req, res) => {
+    return res.redirect(301, "https://mukeshsarees.com/product/pure-linen-saree-natural-bird-print-woven-design/");
+  });
+  app.get(["/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set", "/product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set/"], (req, res) => {
+    return res.redirect(301, "https://mukeshsarees.com/shop/");
   });
   if (!isProduction && !process.env.VERCEL) {
     const { createServer: createViteServer } = await import("vite");
@@ -1189,8 +1206,8 @@ async function setupServer() {
         const fallbacks = {
           VITE_META_PIXEL_ID: "1458541922085984",
           VITE_FB_DOMAIN_VERIFY: "kjvbvikfmctlsdfygll3tadkpzty8a",
-          VITE_GTM_ID: "",
-          VITE_GA4_ID: "",
+          VITE_GTM_ID: "GTM-WMG3G6SM",
+          VITE_GA4_ID: "G-1LMBHFFF1F",
           VITE_PINTEREST_TAG: "",
           VITE_PINTEREST_DOMAIN: "",
           VITE_RAZORPAY_KEY_ID: "rzp_live_Sw0OjZoidQe04p",

@@ -30,7 +30,23 @@ import { execSync } from "child_process";
 export const OWNER_REPO = process.env.GITHUB_REPO || "JunkheadVlogs/mukesh-1";
 export const TARGET_BRANCH = process.env.GITHUB_BRANCH || "main";
 export const LOCK_FILE = path.join(process.cwd(), ".github-push.lock");
-export const CONCURRENCY_LIMIT = 10; // Controlled parallel blob uploads
+export const CACHE_FILE = path.join(process.cwd(), ".github-blob-cache.json");
+export const CONCURRENCY_LIMIT = 3; // Controlled parallel blob uploads to avoid secondary rate limits
+
+export function loadBlobCache() {
+  if (fs.existsSync(CACHE_FILE)) {
+    try {
+      return JSON.parse(fs.readFileSync(CACHE_FILE, "utf8"));
+    } catch {}
+  }
+  return {};
+}
+
+export function saveBlobCache(cache) {
+  try {
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(cache));
+  } catch {}
+}
 
 // Ignore directories and temporary files
 export const IGNORED_DIRS = new Set([
@@ -44,6 +60,7 @@ export const IGNORED_DIRS = new Set([
 export const IGNORED_FILES = new Set([
   ".github-push.lock",
   ".github-token",
+  ".github-blob-cache.json",
   "requests.log",
   ".env",
   ".env.local",
@@ -191,14 +208,25 @@ export function githubRequest(apiPath, method = "GET", data = null, token = null
 }
 
 // Retry wrapper with exponential backoff for rate limits or transient errors
-export async function requestWithRetry(apiPath, method = "GET", data = null, token = null, retries = 3, delayMs = 2000) {
+export async function requestWithRetry(apiPath, method = "GET", data = null, token = null, retries = 5, delayMs = 2000) {
   for (let i = 0; i <= retries; i++) {
     try {
       return await githubRequest(apiPath, method, data, token);
     } catch (err) {
-      if ((err.statusCode === 429 || err.statusCode === 403 || err.statusCode >= 500) && i < retries) {
-        console.warn(`[RETRY] Hit ${err.statusCode} (${err.apiMessage}). Pausing ${delayMs}ms before retry ${i + 1}/${retries}...`);
-        await new Promise((r) => setTimeout(r, delayMs));
+      const isRateLimit = (err.statusCode === 429 || err.statusCode === 403) &&
+        ((err.apiMessage && err.apiMessage.toLowerCase().includes("secondary rate limit")) ||
+         (err.apiMessage && err.apiMessage.toLowerCase().includes("rate limit")));
+
+      if ((isRateLimit || err.statusCode === 429 || err.statusCode === 403 || err.statusCode >= 500) && i < retries) {
+        let waitTime = delayMs;
+        if (isRateLimit) {
+          const retryAfter = err.headers && err.headers["retry-after"] ? parseInt(err.headers["retry-after"], 10) * 1000 : null;
+          waitTime = retryAfter || Math.max(35000, delayMs * 2);
+          console.warn(`[RATE-LIMIT] Hit GitHub secondary rate limit. Waiting ${(waitTime / 1000).toFixed(0)}s before retry ${i + 1}/${retries}...`);
+        } else {
+          console.warn(`[RETRY] Hit ${err.statusCode} (${err.apiMessage}). Pausing ${delayMs}ms before retry ${i + 1}/${retries}...`);
+        }
+        await new Promise((r) => setTimeout(r, waitTime));
         delayMs *= 2;
         continue;
       }
@@ -417,10 +445,11 @@ export async function executeGitHubPush(options = {}) {
       throw probeErr;
     }
 
-    // 4. Upload Blobs in controlled batches with progress reporting
+    // 4. Upload Blobs in controlled batches with progress reporting and cache
     const filesToUpload = [...diff.added, ...diff.modified];
     const treeUpdates = [];
     let uploadedCount = 0;
+    const blobCache = loadBlobCache();
 
     onProgress({
       phase: "uploading_blobs",
@@ -433,18 +462,24 @@ export async function executeGitHubPush(options = {}) {
       const chunk = filesToUpload.slice(i, i + CONCURRENCY_LIMIT);
       await Promise.all(
         chunk.map(async (file) => {
-          const binary = isBinaryFile(file.path);
-          const payload = {
-            content: binary ? file.buffer.toString("base64") : file.buffer.toString("utf8"),
-            encoding: binary ? "base64" : "utf-8",
-          };
+          let blobSha = blobCache[file.sha];
+          if (!blobSha) {
+            const binary = isBinaryFile(file.path);
+            const payload = {
+              content: binary ? file.buffer.toString("base64") : file.buffer.toString("utf8"),
+              encoding: binary ? "base64" : "utf-8",
+            };
 
-          const blobRes = await requestWithRetry(`/repos/${repo}/git/blobs`, "POST", payload, token);
+            const blobRes = await requestWithRetry(`/repos/${repo}/git/blobs`, "POST", payload, token);
+            blobSha = blobRes.data.sha;
+            blobCache[file.sha] = blobSha;
+          }
+
           treeUpdates.push({
             path: file.path,
             mode: "100644",
             type: "blob",
-            sha: blobRes.data.sha,
+            sha: blobSha,
           });
 
           uploadedCount++;
@@ -459,6 +494,9 @@ export async function executeGitHubPush(options = {}) {
           });
         })
       );
+      saveBlobCache(blobCache);
+      // Pacing pause between batches to respect GitHub's secondary rate limit
+      await new Promise((r) => setTimeout(r, 60));
     }
 
     // 4. Handle deleted files in tree via GitHub Git Trees API deletion syntax { sha: null }
@@ -550,6 +588,10 @@ export async function executeGitHubPush(options = {}) {
       ...result,
       message: `Successfully pushed ${diff.totalChanged} changes to ${repo} (${branch})! Commit: ${verifiedSha.slice(0, 7)}`
     });
+
+    try {
+      if (fs.existsSync(CACHE_FILE)) fs.unlinkSync(CACHE_FILE);
+    } catch {}
 
     return result;
   } finally {

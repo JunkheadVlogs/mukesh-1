@@ -45,7 +45,7 @@ const shellSrc = path.join(distDir, "shell.html");
 const shopSrc = path.join(distDir, "shop", "index.html"); // If we want to use the rich shop render
 
 // 1. Dynamic Search & Wishlist get the basic shell
-const shellAliases = ["search", "wishlist", "cart", "checkout", "thank-you"];
+const shellAliases = ["search", "wishlist", "thank-you"];
 for (const a of shellAliases) {
   copyIfExists(shellSrc, path.join(distDir, a), a);
 }

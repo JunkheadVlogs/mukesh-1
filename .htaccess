@@ -90,6 +90,10 @@ RewriteRule ^scripts/ - [F,L]
 RewriteRule \.(tsx|ts|json|config|env|rules|gs|example)$ - [F,L]
 RewriteRule ^(package\.json|package-lock\.json|tsconfig\.json|vite\.config\.ts|server\.ts|AGENTS\.md|DEPLOYMENT\.md|nginx\.conf)$ - [F,L]
 
+# 301 Redirects for renamed & discontinued products
+RewriteRule ^product/chiku-linen-saree-with-bird-digital-print-and-foil-border/?$ /product/pure-linen-saree-natural-bird-print-woven-design/ [R=301,L]
+RewriteRule ^product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set/?$ /shop/ [R=301,L]
+
 # Redirect root domain to dist/index.html
 RewriteCond %{REQUEST_URI} ^/$ [NC]
 RewriteRule ^$ dist/index.html [L]

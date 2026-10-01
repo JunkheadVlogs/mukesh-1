@@ -27,4 +27,5 @@ findRepeatedImages.ts
 public_html/.builds/
 .github-push.lock
 .github-token
+.github-blob-cache.json
 

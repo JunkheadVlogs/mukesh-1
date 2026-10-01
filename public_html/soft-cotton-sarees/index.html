@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <script>
+      if (typeof Node !== 'undefined' && Node.prototype && !Node.prototype._safeRemoveChildPatched) {
+        Node.prototype._safeRemoveChildPatched = true;
+        var originalRemoveChild = Node.prototype.removeChild;
+        Node.prototype.removeChild = function(child) {
+          if (!child) return child;
+          if (child.parentNode !== this) {
+            if (child.parentNode) {
+              try { return child.parentNode.removeChild(child); } catch (e) { return child; }
+            }
+            return child;
+          }
+          try {
+            return originalRemoveChild.call(this, child);
+          } catch (e) {
+            return child;
+          }
+        };
+      }
+    </script>
+    <!-- Analytics & Tracking Stubs (Zero main-thread blocking, non-interfering) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      // Meta Pixel Stub
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];}(window, document);
+
+      // Pinterest Tag Stub
+      !function(e){if(!window.pintrk){window.pintrk = function () {
+        window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+        n=window.pintrk;n.queue=[],n.version="3.0";}}(window);
+
+      // Deferred non-blocking loader for GTM, GA4, Clarity, Meta Pixel, and Pinterest
+      (function() {
+        var initialized = false;
+        function loadTrackingServices() {
+          if (initialized) return;
+          initialized = true;
+
+          // 1. Google Tag Manager
+          var gtmId = "GTM-TLQJCB2N";
+          if (!gtmId || gtmId.startsWith('%VITE_') || gtmId.includes('your_gtm_id') || gtmId.includes('GTM-') === false) {
+            gtmId = "GTM-WMG3G6SM";
+          }
+          if (gtmId && !window._gtm_loaded) {
+            window._gtm_loaded = true;
+            window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+            var gtmScript = document.createElement('script');
+            gtmScript.defer = true;
+            gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + gtmId;
+            document.head.appendChild(gtmScript);
+          }
+
+          // 2. Google Analytics 4
+          if (!window._ga4_loaded) {
+            var gaId = "G-NHLKCDQCM0";
+            if (!gaId || gaId.startsWith('%VITE_') || gaId.includes('your_ga4_measurement_id') || gaId.includes('G_GA4_MEASUREMENT_ID') || !gaId.startsWith('G-')) {
+              gaId = "G-1LMBHFFF1F";
+            }
+            window._ga4_loaded = true;
+            var gaScript = document.createElement('script');
+            gaScript.async = true;
+            gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
+            document.head.appendChild(gaScript);
+            gtag('config', gaId);
+          }
+
+          // 3. Microsoft Clarity
+          if (!window._clarity_initialized) {
+            window._clarity_initialized = true;
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.defer=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "x1spvs9vsv");
+          }
+
+          // 4. Meta Pixel
+          if (!window._fbq_script_loaded) {
+            window._fbq_script_loaded = true;
+            var fbScript = document.createElement('script');
+            fbScript.async = true;
+            fbScript.src = "https://connect.facebook.net/en_US/fbevents.js";
+            document.head.appendChild(fbScript);
+            var pixelId = "1458541922085984";
+            if (!pixelId || pixelId.startsWith('%VITE_') || pixelId.includes('your_meta_pixel')) {
+              pixelId = "1458541922085984";
+            }
+            if (window.fbq) {
+              window.fbq('init', pixelId);
+            }
+          }
+
+          // 5. Pinterest Tag
+          if (!window._pinterest_loaded) {
+            window._pinterest_loaded = true;
+            var pinScript = document.createElement('script');
+            pinScript.async = true;
+            pinScript.src = "https://s.pinimg.com/ct/core.js";
+            document.head.appendChild(pinScript);
+            var pinTag = "2612622217509";
+            if (pinTag && !pinTag.startsWith('%VITE_') && !pinTag.includes('your_pinterest_tag')) {
+              window.pintrk('load', pinTag);
+            }
+          }
+        }
+
+        // Trigger on user interaction
+        var interactionEvents = ["mousedown", "keypress", "touchstart", "scroll"];
+        function onUserInteraction() {
+          loadTrackingServices();
+          interactionEvents.forEach(function(evt) {
+            window.removeEventListener(evt, onUserInteraction, { passive: true });
+          });
+        }
+        interactionEvents.forEach(function(evt) {
+          window.addEventListener(evt, onUserInteraction, { passive: true });
+        });
+
+        // Trigger only AFTER page load event completes
+        window.addEventListener('load', function() {
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(function() {
+              setTimeout(loadTrackingServices, 3500);
+            });
+          } else {
+            setTimeout(loadTrackingServices, 4000);
+          }
+        });
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title data-rh="true">Soft Cotton Sarees Online | Daily Wear & Handloom | Mukesh Saree Centre</title>
+    <meta data-rh="true" name="description" content="Discover soft cotton sarees at Mukesh Saree Centre. Premium khadi cotton, Jamdani weaves, tissue cotton & breathable blends with COD and free shipping across India.">
+    <meta data-rh="true" name="keywords" content="wholesale sarees nagpur, wholesale saree shop, bulk sarees online, saree shop in nagpur, saree shop near me, nagpur saree shop, saree online, buy sarees nagpur, lehenga online india, banarasi silk saree, ethnic wear online">
+    <meta data-rh="true" name="theme-color" content="#1A0A00">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="google-site-verification" content="_cmX1w_7uSkI1QRn8kV1lKIulXQ3Z5qGiyDtDIMEkME" />
+    <meta name="facebook-domain-verification" content="kjvbvikfmctlsdfygll3tadkpzty8a">
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="preload" href="/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="/fonts/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="/fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/fonts/fonts.css"></noscript>
+    <link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
+    <link rel="dns-prefetch" href="https://ik.imagekit.io" />
+    <link rel="preconnect" href="https://wsrv.nl" crossorigin />
+    <link rel="dns-prefetch" href="https://wsrv.nl" />
+    <!-- Preload exact above-the-fold mobile & desktop hero images -->
+    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" imagesizes="(max-width: 768px) 100vw, 768px" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" imagesizes="(min-width: 768px) 100vw, 1200px" media="(min-width: 768px)" fetchpriority="high" />
+    <!-- Critical Above-the-Fold Inline CSS (Eliminates FOUC during async CSS preload) -->
+    <style>
+      :root {
+        --color-bg: #faf8f4;
+        --color-surface: #f5efe6;
+        --color-dark: #2b2b2b;
+        --color-charcoal: #2b2b2b;
+        --color-gold: #c8a96b;
+      }
+      html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; box-sizing: border-box; }
+      *, *::before, *::after { box-sizing: inherit; }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #2b2b2b;
+        background-color: #faf8f4;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        width: 100%;
+      }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["Organization", "ClothingStore"],
+      "name": "Mukesh Saree Centre",
+      "foundingDate": "1978",
+      "url": "https://mukeshsarees.com",
+      "logo": "https://mukeshsarees.com/images/logo.webp",
+      "image": "https://mukeshsarees.com/og-image.jpg",
+      "telephone": "+91-7020664641",
+      "email": "info@mukeshsarees.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jagnath Road, Gandhibagh",
+        "addressLocality": "Nagpur",
+        "addressRegion": "Maharashtra",
+        "postalCode": "440002",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://www.facebook.com/Mukeshsareesindia/",
+        "https://www.instagram.com/mukeshsarees_nagpur"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://mukeshsarees.com/#website",
+      "name": "Mukesh Saree Centre",
+      "url": "https://mukeshsarees.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://mukeshsarees.com/shop?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <!-- Synchronous Pinterest Visitor Detection & Static Resilience Banner Styles -->
+    <script>
+      (function() {
+        try {
+          var ua = navigator.userAgent || '';
+          var ref = document.referrer || '';
+          var search = window.location.search || '';
+          if (/Pinterest/i.test(ua) || /pinterest\.com|pin\.it/i.test(ref) || /[?&]utm_source=pinterest/i.test(search)) {
+            document.documentElement.className += ' is-pinterest-visitor';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      .pinterest-static-banner {
+        display: none;
+        background: #1a0a00;
+        background: linear-gradient(90deg, #1a0a00 0%, #3a1a08 50%, #1a0a00 100%);
+        color: #ffffff;
+        padding: 9px 16px;
+        text-align: center;
+        font-size: 13px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        border-bottom: 2px solid #b5894a;
+        position: relative;
+        z-index: 100000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+      html.is-pinterest-visitor .pinterest-static-banner {
+        display: block !important;
+      }
+    </style>
+    <noscript>
+      <style>
+        .pinterest-static-banner { display: block !important; }
+      </style>
+    </noscript>
+    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.BwjMBtev.min.js"></script>
+    <link rel="preload" href="/assets/index.CdXI64vX.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.CdXI64vX.min.css" crossorigin></noscript>
+  
+<!-- Dynamic OG Tags -->
+    <meta property="og:title" content="Soft Cotton Sarees Online | Daily Wear & Handloom | Mukesh Saree Centre" />
+    <meta property="og:description" content="Discover soft cotton sarees at Mukesh Saree Centre. Premium khadi cotton, Jamdani weaves, tissue cotton & breathable blends with COD and free shipping across India." />
+    <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg" />
+    <meta property="og:url" content="https://mukeshsarees.com/soft-cotton-sarees/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mukesh Saree Centre" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Soft Cotton Sarees Online | Daily Wear & Handloom | Mukesh Saree Centre" />
+    <meta name="twitter:description" content="Discover soft cotton sarees at Mukesh Saree Centre. Premium khadi cotton, Jamdani weaves, tissue cotton & breathable blends with COD and free shipping across India." />
+    <meta name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
+    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/soft-cotton-sarees/" />
+    <!-- End Dynamic OG Tags -->
+
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","@id":"https://mukeshsarees.com/soft-cotton-sarees/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mukeshsarees.com/"},{"@type":"ListItem","position":2,"name":"Soft Cotton Sarees","item":"https://mukeshsarees.com/soft-cotton-sarees/"}]},{"@type":"FAQPage","@id":"https://mukeshsarees.com/soft-cotton-sarees/#faq","mainEntity":[{"@type":"Question","name":"Do soft cotton sarees require starching?","acceptedAnswer":{"@type":"Answer","text":"Unlike stiff formal starch cottons, our soft cotton sarees are specially spun and finished for a soft, fluid drape right out of the box. You do not need to starch them unless you specifically prefer a razor-sharp, crisp finish."}},{"@type":"Question","name":"Will the colors bleed upon washing?","acceptedAnswer":{"@type":"Answer","text":"Our sarees use high-grade colorfast dyes. To ensure longevity, we advise soaking separately in cold salt water for the very first wash, followed by mild hand washing and shaded line drying."}}]},{"@type":"Organization","@id":"https://mukeshsarees.com/#organization","name":"Mukesh Saree Centre","url":"https://mukeshsarees.com/","logo":{"@type":"ImageObject","url":"https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png"},"contactPoint":{"@type":"ContactPoint","telephone":"+91-9325034636","contactType":"sales","areaServed":"IN","availableLanguage":["en","hi","mr"]},"sameAs":["https://www.facebook.com/mukeshsareecentre","https://www.instagram.com/mukeshsareecentre"]},{"@type":"ClothingStore","@id":"https://mukeshsarees.com/#localbusiness","name":"Mukesh Saree Centre","image":"https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png","telephone":"+919325034636","url":"https://mukeshsarees.com/","address":{"@type":"PostalAddress","streetAddress":"Jagnath Road, Itwari","addressLocality":"Nagpur","addressRegion":"Maharashtra","postalCode":"440002","addressCountry":"IN"},"geo":{"@type":"GeoCoordinates","latitude":"21.1528","longitude":"79.1121"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"11:00","closes":"21:00"},"priceRange":"₹₹"},{"@type":"Article","@id":"https://mukeshsarees.com/soft-cotton-sarees/#article","isPartOf":{"@id":"https://mukeshsarees.com/soft-cotton-sarees/"},"headline":"Soft Cotton Sarees Online | Daily Wear & Handloom | Mukesh Saree Centre","description":"Discover soft cotton sarees at Mukesh Saree Centre. Premium khadi cotton, Jamdani weaves, tissue cotton & breathable blends with COD and free shipping across India.","image":"https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png","datePublished":"2026-05-30T08:00:00+05:30","dateModified":"2026-07-15T10:00:00+05:30","mainEntityOfPage":"https://mukeshsarees.com/soft-cotton-sarees/","author":{"@id":"https://mukeshsarees.com/#organization"},"publisher":{"@id":"https://mukeshsarees.com/#organization"}}]}</script>
+</head>
+  <body>
+    <!-- Static Non-JS-Dependent Pinterest Resilience Banner (Safety Net for In-App WebViews) -->
+    <div id="pinterest-static-banner" class="pinterest-static-banner">
+      <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px; text-align: left;">
+          <span style="font-size: 15px;">📌</span>
+          <span><strong>Pinterest Welcome Special:</strong> Get <strong style="color: #f3d399;">60% OFF</strong> your order! Use code <strong style="color: #f3d399; letter-spacing: 1px; background: rgba(255,255,255,0.12); padding: 2px 6px; border-radius: 4px;">VIPCLUB60</strong> at checkout</span>
+        </div>
+        <a href="/shop" style="background: #b5894a; color: #ffffff; text-decoration: none; padding: 5px 14px; border-radius: 4px; font-size: 12px; font-weight: 700; white-space: nowrap; display: inline-block;">Shop & Claim 60% OFF →</a>
+      </div>
+    </div>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLQJCB2N"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- Premium Boutique Loading Skeleton (Outside #root to prevent React DOM reconciliation conflicts) -->
+    
+
+    <div id="root">
+
+      <div style="background-color: #faf6f0; min-height: 100vh;">
+        
+    <header style="background: rgba(250, 246, 240, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); font-family: 'Playfair Display', serif; position: sticky; top: 0; z-index: 100;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+          <img src="/images/logo.webp" alt="Mukesh Saree Centre Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
+        </a>
+      </div>
+      <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
+        <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
+        <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
+        <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
+      </nav>
+    </header>
+  
+        <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+          <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Soft Cotton Sarees</h1>
+          <p style="font-size: 16px; line-height: 1.8; color: #4a4a4a; margin-bottom: 40px; font-weight: 500;">Soft cotton sarees represent the cornerstone of authentic Indian comfort and graceful everyday dressing. Spun from long-staple natural cotton yarns, our collection offers unparalleled softness against the skin, effortless pleating, and enduring elegance for every season.</p>
+          <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; margin-bottom: 48px; line-height: 1.8; color: #4a4a4a;">
+             <div class="prose max-w-none text-[var(--color-dark)]/80 mb-12"><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Natural Fibers &amp; Gentle Comfort</h2><p>Nothing rivals the pure comfort of a soft cotton saree for daily life. At <strong>Mukesh Saree Centre</strong>, our soft cotton drapes are spun from combed, long-staple cotton threads that eliminate scratchiness and stiffness. The collection features hand-spun Khadi cottons, fine Jamdani weaves like our Lal Pari artisan drape, delicate tissue-cotton blends with festive floral printing, and airy cotton-linen fusions. Each saree is pre-washed and treated for natural suppleness, allowing the fabric to drape gracefully without puffing or resisting pleat formation.</p><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Styling for Daily Wear &amp; Warm Climates</h2><p>Soft cotton sarees seamlessly transition from morning pujas and school lectures to corporate offices and casual weekend brunches. For a poised academic or office look, style a monochrome or striped Khadi cotton saree with a collared elbow-sleeve blouse and leather kolhapuris. For weekend outings or temple visits, choose a vibrant floral tissue-cotton or Jamdani drape with subtle zari selvage, complemented by terracotta earrings and a classic bindi.</p><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Effortless Pleats &amp; Zero-Stiff Maintenance</h2><p>Because our soft cottons are specially finished to eliminate rigidity, they do not require heavy starching to maintain a neat appearance. The fabric hugs the body naturally, making pleating quick and comfortable for daily morning routines. Simply hand-wash separately in cold salt water for the first cycle, dry in shaded breeze, and steam iron for a fresh, fluid finish.</p><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Authentic Handloom Heritage in Nagpur</h2><p>Since 1978, <!-- -->Mukesh Saree Centre<!-- --> in Gandhibagh, Nagpur has championed traditional weavers and ethical cotton textile production. Every cotton saree is tested for colorfastness, breathable weave openness, and structural durability so you can enjoy easy maintenance and lasting beauty wash after wash. Shop our ready inventory with Cash on Delivery and express nationwide shipping.</p></div>
+          </div>
+          <div>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; color: #1a0a00;">Frequently Asked Questions</h2>
+            
+              <div style="margin-bottom: 16px;">
+                <h3 style="font-size: 15px; font-weight: bold; color: #1a0a00; margin-bottom: 8px;">Do soft cotton sarees require starching?</h3>
+                <p style="font-size: 14px; color: #4a4a4a;">Unlike stiff formal starch cottons, our soft cotton sarees are specially spun and finished for a soft, fluid drape right out of the box. You do not need to starch them unless you specifically prefer a razor-sharp, crisp finish.</p>
+              </div>
+            
+              <div style="margin-bottom: 16px;">
+                <h3 style="font-size: 15px; font-weight: bold; color: #1a0a00; margin-bottom: 8px;">Will the colors bleed upon washing?</h3>
+                <p style="font-size: 14px; color: #4a4a4a;">Our sarees use high-grade colorfast dyes. To ensure longevity, we advise soaking separately in cold salt water for the very first wash, followed by mild hand washing and shaded line drying.</p>
+              </div>
+            
+          </div>
+        </main>
+        
+    <footer style="background-color: #1A0A00; color: #faf6f0; padding: 80px 32px; font-family: 'Inter', sans-serif; border-top: 1px solid rgba(255,255,255,0.05);">
+      <div style="text-align: center; border-top: 1px solid rgba(250,246,240,0.08); padding-top: 24px; margin-top: 64px; font-size: 12px; opacity: 0.55; color: #faf6f0;">
+        &copy; 1978 - 2026 Mukesh Saree Centre Nagpur. All Rights Reserved. Specializing in luxury silk drapes and designer ethnic ensembles.
+      </div>
+    </footer>
+  
+      </div>
+    
+</div>
+    
+    <script>
+    // Safe auto-dismiss timeout fallback for the premium boutique loading screen
+    (function() {
+      setTimeout(function() {
+        var loader = document.getElementById('initial-page-loader');
+        if (loader && loader.parentNode) {
+          loader.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+          loader.style.opacity = '0';
+          setTimeout(function() {
+            try {
+              if (loader && loader.parentNode) {
+                (loader.parentNode && loader.parentNode.removeChild(loader));
+              }
+            } catch (e) {}
+          }, 600);
+        }
+      }, 3200);
+    })();
+    </script>
+  </body>
+</html>
+
