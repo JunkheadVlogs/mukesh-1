@@ -41,6 +41,11 @@ export function createStaticPage({
     );
   }
 
+  // 1b. Canonical Preparation: If custom OG tags provide a canonical tag, strip any existing canonical tag from the base template
+  if (customOgTags && /<link\s+[^>]*rel=['"]canonical['"]/i.test(customOgTags)) {
+    baseHtml = baseHtml.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
+  }
+
   // 2. Inject OG Tags
   if (customOgTags) {
     if (baseHtml.includes('<!-- Default OG Tags -->')) {
@@ -59,6 +64,16 @@ export function createStaticPage({
       .map(s => `<script type="application/ld+json">${JSON.stringify(s)}</script>`)
       .join("\n");
     baseHtml = baseHtml.replace("</head>", `\n${schemaScriptTags}\n</head>`);
+  }
+
+  // 2b. Canonical Deduplication Guarantee: Strictly ensure exactly ONE canonical tag exists in <head>
+  const canonicalMatches = baseHtml.match(/<link\s+[^>]*rel=['"]canonical['"][^>]*>/gi);
+  if (canonicalMatches && canonicalMatches.length > 1) {
+    const preferredCanonical = canonicalMatches.find(tag => tag.includes('data-rh="true"') && !tag.includes('href="https://mukeshsarees.com/"'))
+      || canonicalMatches.find(tag => tag.includes('data-rh="true"'))
+      || canonicalMatches[canonicalMatches.length - 1];
+    baseHtml = baseHtml.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
+    baseHtml = baseHtml.replace("</head>", `    ${preferredCanonical}\n</head>`);
   }
 
   // 3. Strip initial page loader for statically pre-rendered pages

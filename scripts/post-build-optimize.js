@@ -58,9 +58,27 @@ if (fs.existsSync(distDir)) {
 
       console.log(`[VALIDATION REPORT] ${filePath} -> ${validationStatus}`);
 
+      // CANONICAL TAG INTEGRITY & DEDUPLICATION CHECK
+      let workingContent = content;
+      if (!filePath.endsWith('index-clean.html')) {
+        const canonicalRegex = /<link\s+[^>]*rel=['"]canonical['"][^>]*>/gi;
+        const canonicalMatches = workingContent.match(canonicalRegex);
+        if (canonicalMatches && canonicalMatches.length > 1) {
+          console.warn(`[CANONICAL WARNING] Found ${canonicalMatches.length} canonical tags in ${filePath}. Enforcing single canonical tag...`);
+          const preferred = canonicalMatches.find(c => c.includes('data-rh="true"') && !c.includes('href="https://mukeshsarees.com/"')) 
+            || canonicalMatches.find(c => c.includes('data-rh="true"'))
+            || canonicalMatches[canonicalMatches.length - 1];
+          
+          workingContent = workingContent.replace(canonicalRegex, '');
+          workingContent = workingContent.replace('</head>', `    ${preferred}\n</head>`);
+          fs.writeFileSync(filePath, workingContent, "utf-8");
+          console.log(`[CANONICAL DEDUPLICATED] Preserved single canonical tag in ${filePath} -> ${preferred.trim()}`);
+        }
+      }
+
       let hasChange = false;
       // Convert render-blocking stylesheets to high performance async loading preloads
-      const optimized = content.replace(/<link rel="stylesheet"([^>]*)href="([^"]+)"([^>]*)>/gi, (match, p1, href, p2) => {
+      const optimized = workingContent.replace(/<link rel="stylesheet"([^>]*)href="([^"]+)"([^>]*)>/gi, (match, p1, href, p2) => {
         // Skip tags already optimized to prevent double transformation
         if (match.includes('rel="preload"') || match.includes('as="style"')) {
           return match;

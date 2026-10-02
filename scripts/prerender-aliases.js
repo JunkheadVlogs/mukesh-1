@@ -15,8 +15,9 @@ function copyIfExists(src, destPath, aliasName) {
     if (aliasName) {
       // Create a titlecased version for the title
       const titleName = aliasName.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-      // Replace canonical link
-      content = content.replace(/<link[^>]*rel="canonical"[^>]*>/i, `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${aliasName}/" />`);
+      // Replace canonical link with exactly one canonical tag
+      content = content.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
+      content = content.replace('</head>', `    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${aliasName}/" />\n</head>`);
       // Update og:url
       content = content.replace(/<meta[^>]*property="og:url"[^>]*>/i, `<meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${aliasName}/" />`);
       // Update titles for category aliases to be more relevant
@@ -59,7 +60,8 @@ for (const a of shellAliases) {
     }
     let content = fs.readFileSync(shellSrc, 'utf8');
     content = content.replace(/<title>.*?<\/title>/is, `<title>${a.title} | Mukesh Saree Centre</title>`);
-    content = content.replace(/<link[^>]*rel="canonical"[^>]*>/i, `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${a.name}/" />`);
+    content = content.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
+    content = content.replace('</head>', `    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${a.name}/" />\n</head>`);
     // Inject H1 into root so crawlers find it immediately before JS hydration
     const h1Injection = `<div style="text-align:center;padding:40px 20px;"><h1 style="font-family:'Playfair Display',serif;font-size:32px;color:#1a0a00;">${a.h1}</h1></div>`;
     content = content.replace(/<div id="root">.*?<\/div>/is, `<div id="root">${h1Injection}</div>`);
@@ -91,8 +93,9 @@ if (fs.existsSync(wholesaleSrc)) {
       fs.mkdirSync(destPath, { recursive: true });
     }
     let content = fs.readFileSync(wholesaleSrc, 'utf8');
-    // Ensure canonical points to primary /wholesale-sarees-nagpur/
-    content = content.replace(/<link[^>]*rel="canonical"[^>]*>/gi, wholesaleCanonicalTag);
+    // Ensure canonical points strictly and uniquely to primary /wholesale-sarees-nagpur/
+    content = content.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
+    content = content.replace('</head>', `    ${wholesaleCanonicalTag}\n</head>`);
     fs.writeFileSync(path.join(destPath, "index.html"), content);
 
     if (fs.existsSync(publicHtmlDir)) {
