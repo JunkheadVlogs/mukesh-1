@@ -1757,6 +1757,21 @@ export default function SeoLandingPage() {
     };
     graph.push(articleSchema);
 
+    if (pageData.faqs && pageData.faqs.length > 0) {
+      graph.push({
+        "@type": "FAQPage",
+        "@id": `https://mukeshsarees.com/${slug}/#faq`,
+        "mainEntity": pageData.faqs.map((faq) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
+          }
+        }))
+      });
+    }
+
     // Return combined graph schema
     return {
       "@context": "https://schema.org",

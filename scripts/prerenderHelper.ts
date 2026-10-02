@@ -32,12 +32,12 @@ export function createStaticPage({
 
   // 1. Inject Metadata
   if (title) {
-    baseHtml = baseHtml.replace(/<title(.*?)>.*?<\/title>/, `<title$1>${title}</title>`);
+    baseHtml = baseHtml.replace(/<title(.*?)>.*?<\/title>/is, `<title$1>${title}</title>`);
   }
   if (description) {
     baseHtml = baseHtml.replace(
-      /<meta(.*?)name="description" content=".*?"\s*\/?>/,
-      `<meta$1name="description" content="${description}">`
+      /<meta[^>]*name=["']description["'][^>]*>/is,
+      `<meta name="description" content="${description}">`
     );
   }
 

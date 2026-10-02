@@ -150,13 +150,15 @@ function runGenerator() {
     let outHtml = baseTemplateHtml;
 
     outHtml = outHtml.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
-    outHtml = outHtml.replace(/<title>.*?<\/title>/is, `<title>${docTitle}</title>`);
-    outHtml = outHtml.replace(/<meta name="description" content=".*?".*?>/is, `<meta name="description" content="${shortDesc}" />`);
+    outHtml = outHtml.replace(/<title(.*?)>.*?<\/title>/is, `<title>${docTitle}</title>`);
+    outHtml = outHtml.replace(/<meta[^>]*name=["']description["'][^>]*>/is, `<meta name="description" content="${shortDesc}" />`);
 
-    if (outHtml.includes('<!-- Dynamic OG Tags -->') && outHtml.includes('<!-- End Dynamic OG Tags -->')) {
+    if (outHtml.includes('<!-- Default OG Tags -->') && outHtml.includes('<!-- End Default OG Tags -->')) {
+      outHtml = outHtml.replace(/<!-- Default OG Tags -->[\s\S]*?<!-- End Default OG Tags -->/is, customOgTags);
+    } else if (outHtml.includes('<!-- Dynamic OG Tags -->') && outHtml.includes('<!-- End Dynamic OG Tags -->')) {
       outHtml = outHtml.replace(/<!-- Dynamic OG Tags -->[\s\S]*?<!-- End Dynamic OG Tags -->/is, customOgTags);
     } else {
-      outHtml = outHtml.replace('<head>', `<head>\n  ${customOgTags}`);
+      outHtml = outHtml.replace('</head>', `${customOgTags}\n</head>`);
     }
 
     outHtml = outHtml.replace('</head>', `${schemaTags}</head>`);

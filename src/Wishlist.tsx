@@ -179,7 +179,7 @@ export default function Wishlist() {
         {displayProducts.length === 0 ? (
           <div className="py-48 text-center border border-dashed border-onyx/10 rounded-sm">
              <Heart className="text-onyx/5 mx-auto mb-10" size={64} strokeWidth={0.5} />
-             <h2 className="mb-6 font-serif opacity-60 italic text-onyx">Your vault stands empty, awaiting beauty.</h2>
+             <h1 className="mb-6 font-serif opacity-60 italic text-onyx text-xl sm:text-2xl font-normal">Your vault stands empty, awaiting beauty.</h1>
              <Link to="/shop/" className="text-[11px] uppercase tracking-[3px] font-bold text-gold-500 underline underline-offset-8">Discover our masterpieces</Link>
           </div>
         ) : (

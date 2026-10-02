@@ -1631,6 +1631,21 @@ async function run() {
       }
     });
 
+    if (pData.faqs && pData.faqs.length > 0) {
+      graph.push({
+        "@type": "FAQPage",
+        "@id": `https://mukeshsarees.com/${slug}/#faq`,
+        "mainEntity": pData.faqs.map((faq: any) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
+          }
+        }))
+      });
+    }
+
     const combinedSchema = {
       "@context": "https://schema.org",
       "@graph": graph

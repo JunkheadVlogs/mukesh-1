@@ -219,9 +219,9 @@ export default function App() {
             {/* AI-Friendly SEO Landing Pages */}
             <Route path=":slug" element={<SeoLandingPage />} />
           </Route>
-          <Route path="wholesalesarees" element={<WholesaleSarees />} />
-          <Route path="wholesale-sarees" element={<WholesaleSarees />} />
-          <Route path="wholesale" element={<WholesaleSarees />} />
+          <Route path="wholesalesarees" element={<Navigate to="/wholesale-sarees-nagpur/" replace />} />
+          <Route path="wholesale-sarees" element={<Navigate to="/wholesale-sarees-nagpur/" replace />} />
+          <Route path="wholesale" element={<Navigate to="/wholesale-sarees-nagpur/" replace />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

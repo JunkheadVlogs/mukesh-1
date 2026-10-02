@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 import { useState, useMemo, useEffect, useRef } from "react";
-import { useSearchParams, Link } from "react-router";
+import { useSearchParams, useLocation, Link } from "react-router";
 import { Filter, ChevronDown, Eye, X } from "lucide-react";
 import { products } from "./mockData";
 import { formatPrice, optimizeImage } from "./utils";
@@ -48,9 +48,9 @@ const categoryDescriptions = {
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const path = location.pathname.toLowerCase();
   const rawCategoryFilter = searchParams.get("category");
-  
-  const path = window.location.pathname.toLowerCase();
   
   const { categoryFilter, fabricFilter } = useMemo(() => {
     let cat = rawCategoryFilter === "Linen-Sarees" ? "Linen Sarees" : rawCategoryFilter;
@@ -73,7 +73,7 @@ export default function Shop() {
       } else if (path.includes("/lehengas")) {
         cat = "Lehengas";
       } else if (path.includes("/suits")) {
-        cat = "Kurtas";
+        cat = "Suits";
       }
     }
 
@@ -146,6 +146,33 @@ export default function Shop() {
     }
 
     const cat = categoryFilter || "";
+    if (path.includes("/suits") || cat === "Suits" || cat === "Kurtas") {
+      return {
+        title: "Designer Suits & Kurta Sets | Mukesh Saree Centre",
+        description: "Shop elegant salwar suits, anarkalis, and designer kurta sets at Mukesh Saree Centre. Premium fabrics, tailored silhouettes, and free delivery across India.",
+        heading: "Designer Suits & Kurta Ensembles",
+        paragraph: "Experience everyday luxury with our hand-tailored suit sets and kurta ensembles. Featuring breathable cottons, fluid georgettes, and rich chanderi blends designed for effortless grace from morning meetings to evening celebrations."
+      };
+    }
+
+    if (path.includes("/lehengas") || cat === "Lehengas") {
+      return {
+        title: "Lehengas Online | Designer Bridal & Festive Wear — Mukesh Saree Centre",
+        description: "Browse bridal and designer lehengas at Mukesh Saree Centre, Nagpur's premium saree and ethnic store. Beautiful embroidered and printed lehengas with COD.",
+        heading: "Designer Bridal & Festive Lehengas",
+        paragraph: "Step into any celebration with unmatched confidence and luxury in a premium lehenga from Mukesh Saree Centre. Our lehenga collection spans a rich variety of designs, from opulent, heavy-crafted bridal lehengas adorned with intricate zari work, hand embroidery, and premium sequins, to modern, breathable printed and georgette designer lehengas perfect for sangeet, receptions, and bridesmaid attire."
+      };
+    }
+
+    if (path.includes("/sarees") && !activeSEOKey) {
+      return {
+        title: "Buy Sarees Online | Handpicked Silk & Linen Drapes — Mukesh Saree Centre",
+        description: "Looking for the best saree shop in Nagpur? Shop 100+ premium sarees online at Mukesh Saree Centre. Paithani, Banarasi, Kanjivaram, linen, silk & cotton. COD available.",
+        heading: "Premium Saree Collection",
+        paragraph: "Sarees are the soul of Indian ethnic fashion, embodying timeless grace and cultural pride. At Mukesh Saree Centre, our curated collection brings you authentic weaves and designs ranging from lightweight cotton and modern printed linens to royal silk katan Banarasis and intricate handloom Paithanis. Sourced directly from premier weaving centers, each saree in our collection showcases unparalleled craftsmanship, soft premium fabrics, and rich colors."
+      };
+    }
+
     if (cat === "Sarees" || cat === "Linen Sarees") {
       return {
         title: "Buy Sarees Online | Best Saree Shop in Nagpur",
@@ -155,28 +182,28 @@ export default function Shop() {
       };
     }
 
-    if (cat === "Lehengas") {
+    if (path.includes("/search")) {
       return {
-        title: "Buy Lehengas Online | Saree Shop in Nagpur — Mukesh Saree Centre",
-        description: "Browse bridal and designer lehengas at Mukesh Saree Centre, Nagpur's premium saree and ethnic store. Beautiful embroidered and printed lehengas with COD.",
-        heading: "Bridal & Designer Lehengas — Grace, Contrast & Opulence",
-        paragraph: "Step into any celebration with unmatched confidence and luxury in a premium lehenga from Mukesh Saree Centre. Our lehenga collection spans a rich variety of designs, from opulent, heavy-crafted bridal lehengas adorned with intricate zari work, hand embroidery, and premium sequins, to modern, breathable printed and georgette designer lehengas perfect for sangeet, receptions, and bridesmaid attire. Expertly selected and sized for absolute comfort and styling versatility, our lehengas deliver flawless fits and eye-catching drapes. Buy online with authentic quality guarantees, free nationwide shipping above ₹499, and easy Cash on Delivery options."
+        title: searchQuery ? `Search: "${searchQuery}" | Mukesh Saree Centre` : "Search Collection | Mukesh Saree Centre",
+        description: "Search our curated collection of sarees, linens, and festive ethnic wear at Mukesh Saree Centre.",
+        heading: searchQuery ? `Results for "${searchQuery}"` : "Search Collection",
+        paragraph: searchQuery ? `Showing available ethnic wear matching "${searchQuery}".` : "Search through our complete catalogue of premium Indian sarees and ethnic wear."
       };
     }
     
     return {
       title: categoryFilter 
         ? `Shop ${categoryFilter} Online | Best Saree Shop in Nagpur` 
-        : "Mukesh Saree Centre – Best Saree Shop in Nagpur | Est. 1978",
+        : "Shop Sarees & Women's Ethnic Wear | Mukesh Saree Centre",
       description: categoryFilter
         ? `Explore our beautiful collection of ${categoryFilter} at Nagpur's trusted saree shop. Cash on Delivery and free shipping available.`
-        : "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop online or visit us in Gandhibagh.",
+        : "Explore the complete ethnic wear collection at Mukesh Saree Centre. Shop authentic handloom sarees, designer silks, and festive drapes with COD & free delivery across India.",
       heading: searchQuery
         ? `Results for "${searchQuery}"`
         : categoryFilter || "Shop Sarees & Women's Ethnic Wear",
-      paragraph: null
+      paragraph: "Find your perfect match from our extensive collection of traditional and modern ethnic wear. Sourced directly from master weaving centers since 1978, each drape showcases unmatched craftsmanship, soft premium fabrics, and rich festive colors."
     };
-  }, [activeSEOKey, categoryFilter, searchQuery]);
+  }, [activeSEOKey, categoryFilter, searchQuery, path]);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
@@ -437,9 +464,6 @@ export default function Shop() {
         className="shop-container max-w-[1600px] mx-auto pt-0 pb-8 mt-0 w-full"
         style={{ minHeight: "auto" }}
       >
-        {/* SEO Header (visually hidden to avoid empty gap) */}
-        <h1 className="sr-only">{seoData.heading}</h1>
-
         {/* ROW 1: Category Filter Pills Row (Category Navigation - Attached directly to Header with ZERO gap) */}
         <div className="filter-pills-container category-filters flex gap-2 overflow-x-auto select-none scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full sticky top-[76px] md:top-[101px] z-40 bg-[#FAF7F2] border-b border-gray-100/80 py-1" style={{ marginBottom: "6px", marginTop: "0px", paddingTop: "0px" }}>
           {[
@@ -649,13 +673,17 @@ export default function Shop() {
 
           {/* Product Grid */}
           <main className="flex-1">
-            {seoData.paragraph && (
-              <div className="category-seo-description sr-only">
-                <p>
+            <div className="category-header-intro mb-4 px-1">
+              <h1 className="font-serif text-xl sm:text-2xl text-[#1A0A00] font-normal tracking-wide mb-1.5">
+                {seoData.heading}
+              </h1>
+              {seoData.paragraph && (
+                <p className="text-xs sm:text-[13px] text-[#2C241B]/75 leading-relaxed font-sans max-w-3xl">
                   {seoData.paragraph}
                 </p>
-              </div>
-            )}
+              )}
+            </div>
+
             {isLoading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full">
                 {[...Array(8)].map((_, i) => (
@@ -698,21 +726,36 @@ export default function Shop() {
               </div>
             ) : (
               <div className="space-y-12">
-                <div className="flex flex-col items-center justify-center py-16 text-center bg-white border border-black/5 rounded-sm shadow-sm w-full">
+                <div className="flex flex-col items-center justify-center py-16 text-center bg-white border border-black/5 rounded-sm shadow-sm w-full px-6">
                   <h3 className="text-xl font-serif text-primary-950 mb-3">
-                    No items matched your style criteria
+                    {categoryFilter === "Lehengas" || categoryFilter === "Suits"
+                      ? "Boutique Showroom Collection"
+                      : "No items matched your style criteria"}
                   </h3>
-                  <p className="text-primary-950/50 mb-6 max-w-md px-6 text-sm">
-                    {searchQuery 
-                      ? `We couldn't find any direct matches for "${searchQuery}". Please check the spelling or explore our popular items below.`
-                      : "We couldn't find any matches with current filters. Clear filters or explore our collection below."}
+                  <p className="text-primary-950/60 mb-6 max-w-md text-sm leading-relaxed">
+                    {categoryFilter === "Lehengas" || categoryFilter === "Suits"
+                      ? "Our bridal lehengas, suits, and handwoven heirloom drapes are custom-curated in our Nagpur showroom. Connect directly with our personal styling consultants for live video walkthroughs, customization, and orders."
+                      : searchQuery 
+                        ? `We couldn't find any direct matches for "${searchQuery}". Please check the spelling or explore our popular items below.`
+                        : "We couldn't find any matches with current filters. Clear filters or explore our collection below."}
                   </p>
-                  <button
-                    onClick={clearAllFilters}
-                    className="bg-gold-500 text-white rounded-sm px-8 py-2.5 text-[10px] uppercase tracking-[2px] font-bold hover:bg-gold-600 transition-colors shadow-sm"
-                  >
-                    Reset & Browse All
-                  </button>
+                  {categoryFilter === "Lehengas" || categoryFilter === "Suits" ? (
+                    <a
+                      href={`https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20your%20${encodeURIComponent(seoData.heading)}%20collection.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-primary-950 text-white rounded-sm px-8 py-3 text-[11px] uppercase tracking-[2px] font-bold hover:bg-primary-900 transition-colors shadow-sm"
+                    >
+                      Enquire on WhatsApp
+                    </a>
+                  ) : (
+                    <button
+                      onClick={clearAllFilters}
+                      className="bg-gold-500 text-white rounded-sm px-8 py-2.5 text-[10px] uppercase tracking-[2px] font-bold hover:bg-gold-600 transition-colors shadow-sm"
+                    >
+                      Reset & Browse All
+                    </button>
+                  )}
                 </div>
 
                 <div>

@@ -87,6 +87,11 @@
   RewriteEngine On
   RewriteBase /
 
+  # 301 Redirect duplicate wholesale URLs to primary canonical URL
+  RewriteRule ^wholesale/?$ /wholesale-sarees-nagpur/ [R=301,L]
+  RewriteRule ^wholesale-sarees/?$ /wholesale-sarees-nagpur/ [R=301,L]
+  RewriteRule ^wholesalesarees/?$ /wholesale-sarees-nagpur/ [R=301,L]
+
   # Serve pre-rendered product pages without trailing slash redirect
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{DOCUMENT_ROOT}/product/$1/index.html -f

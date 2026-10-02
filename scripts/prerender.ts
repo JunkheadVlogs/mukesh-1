@@ -526,83 +526,83 @@ async function runPrerender() {
   const collections = [
     {
       route: "shop",
-      title: "Shop Premium Indian Ethnic Ensembles",
-      description: "Browse our complete collection of 100+ premium sarees, linen sarees, and handloom silks at Mukesh Saree Centre. Cash on Delivery available.",
+      title: "Shop Sarees & Women's Ethnic Wear | Mukesh Saree Centre",
+      description: "Explore the complete ethnic wear collection at Mukesh Saree Centre. Shop authentic handloom sarees, designer silks, and festive drapes with COD & free delivery across India.",
       h1: "Shop Sarees & Women's Ethnic Wear",
       introTitle: "Premium Luxury Catalogue",
-      introBody: "Find your perfect match from our extensive collection of traditional and modern ethnic wear. We offer the finest silks, breathable cottons, and heavy bridal lehengas, meticulously woven to celebrate Indian heritage.",
+      introBody: "Find your perfect match from our extensive collection of traditional and modern ethnic wear. Sourced directly from master weaving centers since 1978, each drape showcases unmatched craftsmanship, soft premium fabrics, and rich festive colors.",
       filterFn: () => true
     },
     {
       route: "sarees",
-      title: "Buy Premium Sarees Online",
-      description: "Discover our premium collection of sarees including pure silk, soft cotton, and banarasi drapes. Authentic weavers and cash on delivery available.",
+      title: "Buy Sarees Online | Handpicked Silk & Linen Drapes — Mukesh Saree Centre",
+      description: "Discover our premium collection of sarees including pure silk, soft cotton, linen, and artisanal drapes. Trusted weavers since 1978 with Cash on Delivery available.",
       h1: "Premium Saree Collection",
       introTitle: "Timeless Drapes for Every Occasion",
-      introBody: "Sarees are the epitome of Indian elegance. Whether you need a lightweight drape for daily wear, a soft cotton saree for the office, or a heavy silk saree for a wedding, our selection has been hand-picked to deliver unmatched quality.",
-      filterFn: (p: any) => p.category === "Sarees" || p.category === "Saree"
+      introBody: "Sarees are the epitome of Indian elegance and grace. Whether you desire a breezy drape for daily wear, an artisanal linen saree for the workplace, or a lustrous silk weave for weddings, our handpicked saree catalogue delivers unmatched heritage quality.",
+      filterFn: (p: any) => p.category === "Sarees" || p.category === "Linen Sarees" || p.category === "Saree"
     },
     {
       route: "sarees/banarasi-sarees",
-      title: "Banarasi Silk Sarees Online",
-      description: "Shop authentic Banarasi silk sarees. Perfect for weddings, festivities, and grand occasions. Pure silk and Zari weaves.",
+      title: "Banarasi Silk Sarees Online | Mukesh Saree Centre",
+      description: "Shop opulent Banarasi silk sarees with rich zari brocade and heritage motifs. Perfect for weddings and grand celebrations. Free shipping and COD available.",
       h1: "Banarasi Silk Sarees",
       introTitle: "The Gold Standard of Indian Bridal Wear",
-      introBody: "Banarasi sarees are known for their opulent zari work, intricate brocade patterns, and lustrous silk. Handwoven by skilled artisans, these sarees are heirloom pieces perfect for weddings and heritage styling.",
+      introBody: "Banarasi sarees are revered worldwide for their opulent zari brocades, intricate floral jaals, and lustrous pure silk bases. Handcrafted by master artisans, these royal drapes serve as treasured heirlooms for brides and festive celebrations.",
       filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree") && (p.name.toLowerCase().includes("banarasi") || (p.description || "").toLowerCase().includes("banarasi"))
     },
     {
       route: "sarees/linen-sarees",
-      title: "Buy Linen Sarees Online",
-      description: "Shop premium linen sarees online. Lightweight, breathable, and perfect for everyday wear. Sourced from top weavers.",
-      h1: "Linen Sarees",
-      introTitle: "Light, Elegant & Perfect for Daily Wear",
-      introBody: "Experience the breathable comfort of pure linen. Our linen sarees feature beautiful prints and solid colors perfect for office wear, casual outings, and summer festivities. Easy to drape and incredibly soft.",
-      filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree") && (p.name.toLowerCase().includes("linen") || (p.description || "").toLowerCase().includes("linen"))
+      title: "Buy Linen Sarees Online | Mukesh Saree Centre",
+      description: "Shop breathable, lightweight pure linen sarees. Featuring artistic botanical prints, pastel shades, and effortless drapes for work and casual elegance.",
+      h1: "Pure Linen Sarees",
+      introTitle: "Light, Breathable & Modern Elegance",
+      introBody: "Experience the effortless, airy comfort of pure hand-spun linen. Featuring delicate floral prints, artistic motifs, and natural organic textures, our linen sarees transition seamlessly from corporate boardrooms to relaxed weekend gatherings.",
+      filterFn: (p: any) => p.category === "Linen Sarees" || (p.fabric && p.fabric.toLowerCase().includes("linen"))
     },
     {
       route: "sarees/cotton-sarees",
-      title: "Cotton Sarees Online",
-      description: "Shop handloom and printed cotton sarees. Comfortable, everyday sarees in beautiful designs. COD available.",
-      h1: "Cotton Sarees",
-      introTitle: "Comfortable, Stylish & Made for Every Day",
-      introBody: "Cotton sarees are the most comfortable and versatile drapes. Discover mulmul cotton, handloom cotton, and block prints tailored for hot Indian summers, office environments, and casual occasions.",
-      filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree") && (p.name.toLowerCase().includes("cotton") || (p.description || "").toLowerCase().includes("cotton") || p.name.toLowerCase().includes("mulmul") || (p.description || "").toLowerCase().includes("mulmul"))
+      title: "Cotton Sarees Online | Mukesh Saree Centre",
+      description: "Browse comfortable handloom and mulmul cotton sarees. Breathable weaves, vibrant colors, and classic prints made for all-day comfort.",
+      h1: "Handloom Cotton Sarees",
+      introTitle: "Comfortable, Breathable & Everyday Grace",
+      introBody: "Cotton sarees represent the height of tropical comfort and enduring Indian style. Explore our curated range of soft mulmul, handloom khadi, and traditional block prints designed for long workdays and comfortable daily draping.",
+      filterFn: (p: any) => (p.fabric && p.fabric.toLowerCase().includes("cotton")) || (p.name && p.name.toLowerCase().includes("cotton"))
     },
     {
       route: "sarees/paithani-sarees",
       title: "Paithani Sarees Online | Mukesh Saree Centre Nagpur",
-      description: "Buy authentic Paithani sarees from Mukesh Saree Centre, Nagpur. Maharashtra's heritage weave with zari work and peacock motifs. COD available.",
-      h1: "Paithani Sarees",
+      description: "Buy authentic Paithani sarees featuring traditional zari borders, rich silk pallus, and peacock motifs from Nagpur's heritage store since 1978.",
+      h1: "Paithani Silk Sarees",
       introTitle: "Maharashtra's Royal Heritage Weave",
-      introBody: "Paithani sarees are the pride of Maharashtra, known for their rich zari borders, vibrant silk body, and iconic peacock and lotus motifs. At Mukesh Saree Centre, we carry authentic Paithani sarees sourced from skilled weavers, perfect for weddings, festivals, and cultural occasions.",
+      introBody: "Paithani sarees are the crown jewel of Maharashtrian cultural heritage, celebrated for their kaleidoscopic silk bodies and signature oblique square borders. Sourced from master artisan looms, our authentic Paithanis bring regal grandeur to every bride.",
       filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree") && (p.name.toLowerCase().includes("paithani") || (p.description || "").toLowerCase().includes("paithani"))
     },
     {
       route: "sarees/silk-sarees",
       title: "Silk Sarees Online | Mukesh Saree Centre Nagpur",
-      description: "Buy pure silk sarees online — Kanjivaram, soft silk, art silk and more at Mukesh Saree Centre Nagpur. COD. Free shipping above ₹499.",
-      h1: "Silk Sarees",
-      introTitle: "Timeless Elegance for Every Occasion",
-      introBody: "Silk sarees are a wardrobe essential for every Indian woman. Our silk collection includes Kanjivaram, pure silk, soft silk, art silk, and Upada silk — each handpicked from the finest weaving centres in India.",
-      filterFn: (p: any) => (p.category === "Sarees" || p.category === "Saree" || p.category === "Silk Sarees") && (p.name.toLowerCase().includes("silk") || (p.description || "").toLowerCase().includes("silk") || p.name.toLowerCase().includes("kanjivaram") || p.name.toLowerCase().includes("organza"))
+      description: "Explore luxurious pure silk and tissue silk sarees. Handpicked designs with lustrous sheen, elegant borders, and festive grandeur with COD.",
+      h1: "Pure Silk Sarees",
+      introTitle: "Lustrous Luxury for Sacred Celebrations",
+      introBody: "Silk sarees are a timeless celebration of luxury and cultural pride. From lightweight tissue silks to opulent festive drapes, each piece in our silk collection is curated for brilliant sheen, graceful pleating, and lasting beauty.",
+      filterFn: (p: any) => (p.fabric && p.fabric.toLowerCase().includes("silk")) || (p.name && p.name.toLowerCase().includes("silk"))
     },
     {
       route: "lehengas",
-      title: "Designer Bridal Lehengas Online",
-      description: "Shop grand wedding lehengas and bridal wear. Intricate embroidery, rich fabrics, and stunning designs for your special day.",
-      h1: "Designer Lehengas",
-      introTitle: "Grandeur for Weddings & Celebrations",
-      introBody: "Make a statement with our designer lehengas. Featuring heavy zari work, intricate gota patti, and rich silk bases, our lehenga collection is tailored for brides, bridesmaids, and festive gatherings.",
+      title: "Lehengas Online | Designer Bridal & Festive Wear — Mukesh Saree Centre",
+      description: "Shop exquisite bridal, wedding, and festive designer lehengas at Mukesh Saree Centre. Intricate embroidery, rich zari craftsmanship, and custom sizing support.",
+      h1: "Designer Bridal & Festive Lehengas",
+      introTitle: "Royal Grandeur for Weddings & Celebrations",
+      introBody: "Step into unforgettable celebrations with our curated designer lehengas. Each piece features rich artisanal zari work, intricate embroidery, and luxurious flare tailored for brides, bridesmaids, and sangeet evenings. Contact our showroom for custom styling and size assistance.",
       filterFn: (p: any) => p.category === "Lehengas" || p.category === "Lehenga"
     },
     {
       route: "suits",
-      title: "Buy Kurtas & Suits Online",
-      description: "Shop elegant kurtas and salwar suits. Comfortable everyday elegance for work and casual wear.",
-      h1: "Kurtas & Suits",
-      introTitle: "Comfortable Everyday Elegance",
-      introBody: "Our beautifully tailored kurtas and suit sets blend traditional prints with modern silhouettes. Available in breathable cottons, rich muslins, and soft silks for perfect all-day comfort.",
+      title: "Designer Suits & Kurta Sets Online | Mukesh Saree Centre",
+      description: "Discover designer salwar suits, anarkalis, and elegant kurta sets at Mukesh Saree Centre. Premium fabrics, tailored silhouettes, and timeless Indian craftsmanship.",
+      h1: "Designer Suits & Kurta Ensembles",
+      introTitle: "Contemporary Elegance & Timeless Comfort",
+      introBody: "Experience everyday luxury with our hand-tailored suit sets and kurta ensembles. Featuring breathable cottons, fluid georgettes, and rich chanderi blends designed for effortless grace from morning meetings to evening celebrations.",
       filterFn: (p: any) => p.category === "Kurtas" || p.category === "Suits"
     }
   ];
@@ -656,7 +656,14 @@ async function runPrerender() {
           </div>
 
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px; margin-bottom: 60px;">
-            ${colProducts.map(getProductCardHtml).join("")}
+            ${colProducts.length > 0 
+              ? colProducts.map(getProductCardHtml).join("") 
+              : `<div style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif;">
+                   <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; color: #1a0a00; margin-bottom: 8px; font-weight: 500;">Boutique Showroom Collection</h2>
+                   <p style="color: #666; font-size: 14px; max-width: 540px; margin: 0 auto 20px auto; line-height: 1.6;">Our bridal lehengas, suits, and handwoven heirloom drapes are custom-curated in our Nagpur showroom. Connect directly with our personal styling consultants for live video walkthroughs, customization, and orders.</p>
+                   <a href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20your%20${encodeURIComponent(collection.h1)}%20collection." target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #1a0a00; color: #ffffff; padding: 12px 28px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; border-radius: 2px;">Enquire on WhatsApp</a>
+                 </div>`
+            }
           </div>
 
           <!-- Internal Nav & SEO Silo -->
@@ -678,9 +685,13 @@ async function runPrerender() {
       </div>
     `;
 
+    const colFullTitle = collection.title.includes(BUSINESS_INFO.name) 
+      ? collection.title 
+      : `${collection.title} | ${BUSINESS_INFO.name}`;
+
     const shopOgTags = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${collection.route}/" />
     <meta property="og:type" content="website">
-    <meta property="og:title" content="${sanitize(collection.title)} | ${BUSINESS_INFO.name}">
+    <meta property="og:title" content="${sanitize(colFullTitle)}">
     <meta property="og:description" content="${sanitize(collection.description)}">
     <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg">
     <meta property="og:url" content="https://mukeshsarees.com/${collection.route}/">
@@ -689,7 +700,7 @@ async function runPrerender() {
     const shopHtml = createStaticPage({
       htmlTemplate: baseHtml,
       bodyHtml: shopBody,
-      title: `${collection.title} | ${BUSINESS_INFO.name}`,
+      title: colFullTitle,
       description: collection.description,
       customOgTags: shopOgTags,
       schemaJson: shopSchema
@@ -1166,6 +1177,7 @@ async function runPrerender() {
       title: "Wholesale Sarees VIP Club — Mukesh Saree Centre Nagpur",
       desc: "Exclusive saree dealer community in Nagpur since 1978. Get daily new arrivals, manufacturer-direct wholesale rates & bulk catalog updates on WhatsApp.",
       ogImage: "https://mukeshsarees.com/og-images/wholesale-vip-club.jpg",
+      canonical: "https://mukeshsarees.com/wholesale-sarees-nagpur/",
       body: `
         <div style="background-color: #FAF6F0; min-height: 100vh; font-family: 'Playfair Display', serif; text-align: center; padding: 80px 24px; color: #1A0A00;">
           <span style="display: inline-block; padding: 6px 16px; background-color: rgba(92, 6, 18, 0.05); color: #5C0612; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; border-radius: 99px; border: 1px solid rgba(92, 6, 18, 0.1); margin-bottom: 24px;">Wholesale Dealer Portal</span>
@@ -1325,12 +1337,13 @@ async function runPrerender() {
 
   console.log("[PRERENDER] Compiling static policies...");
   for (const page of staticPages) {
-    const pageOgTags = `<link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${page.dir}/" />
+    const pageCanonicalUrl = (page as any).canonical || `https://mukeshsarees.com/${page.dir}/`;
+    const pageOgTags = `<link data-rh="true" rel="canonical" href="${pageCanonicalUrl}" />
     <meta property="og:type" content="website">
     <meta property="og:title" content="${sanitize(page.title)}">
     <meta property="og:description" content="${sanitize(page.desc)}">
     <meta property="og:image" content="${page.ogImage || 'https://mukeshsarees.com/og-image.jpg'}">
-    <meta property="og:url" content="https://mukeshsarees.com/${page.dir}/">
+    <meta property="og:url" content="${pageCanonicalUrl}">
     <meta name="twitter:card" content="summary_large_image">`;
 
     const phtml = createStaticPage({
