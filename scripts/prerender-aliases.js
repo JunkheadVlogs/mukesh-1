@@ -6,44 +6,8 @@ console.log("[PRERENDER ALIASES] Replicating prerendered base files for category
 const distDir = path.resolve(process.cwd(), "dist");
 const publicHtmlDir = path.resolve(process.cwd(), "public_html");
 
-function copyIfExists(src, destPath, aliasName) {
-  if (fs.existsSync(src)) {
-    if (!fs.existsSync(destPath)) {
-      fs.mkdirSync(destPath, { recursive: true });
-    }
-    let content = fs.readFileSync(src, 'utf8');
-    if (aliasName) {
-      // Create a titlecased version for the title
-      const titleName = aliasName.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-      // Replace canonical link with exactly one canonical tag
-      content = content.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
-      content = content.replace('</head>', `    <link data-rh="true" rel="canonical" href="https://mukeshsarees.com/${aliasName}/" />\n</head>`);
-      // Update og:url
-      content = content.replace(/<meta[^>]*property="og:url"[^>]*>/i, `<meta data-rh="true" property="og:url" content="https://mukeshsarees.com/${aliasName}/" />`);
-      // Update titles for category aliases to be more relevant
-      if (['sarees', 'lehengas', 'suits'].includes(aliasName)) {
-        content = content.replace(/<title>.*?<\/title>/is, `<title>${titleName} | Mukesh Saree Centre</title>`);
-        content = content.replace(/<meta[^>]*property="og:title"[^>]*>/i, `<meta data-rh="true" property="og:title" content="${titleName} | Mukesh Saree Centre" />`);
-        content = content.replace(/<meta[^>]*name="twitter:title"[^>]*>/i, `<meta data-rh="true" name="twitter:title" content="${titleName} | Mukesh Saree Centre" />`);
-      }
-    }
-    fs.writeFileSync(path.join(destPath, "index.html"), content);
-
-    if (fs.existsSync(publicHtmlDir)) {
-      const pubDest = path.join(publicHtmlDir, path.basename(destPath));
-      if (!fs.existsSync(pubDest)) {
-        fs.mkdirSync(pubDest, { recursive: true });
-      }
-      fs.writeFileSync(path.join(pubDest, "index.html"), content);
-    }
-
-    console.log(`[ALIAS OK] Created alias at /${path.basename(destPath)}`);
-  }
-}
-
 // Ensure the aliases have the same index-clean shell fallback if we don't have unique SEO for them
 const shellSrc = path.join(distDir, "shell.html");
-const shopSrc = path.join(distDir, "shop", "index.html"); // If we want to use the rich shop render
 
 // 1. Dynamic Search, Wishlist & Thank You get the basic shell with semantic H1 injected
 const shellAliases = [

@@ -535,7 +535,7 @@ async function runPrerender() {
     },
     {
       route: "sarees",
-      title: "Buy Sarees Online | Handpicked Silk & Linen Drapes — Mukesh Saree Centre",
+      title: "Buy Sarees Online | Mukesh Saree Centre",
       description: "Discover our premium collection of sarees including pure silk, soft cotton, linen, and artisanal drapes. Trusted weavers since 1978 with Cash on Delivery available.",
       h1: "Premium Saree Collection",
       introTitle: "Timeless Drapes for Every Occasion",
@@ -589,21 +589,21 @@ async function runPrerender() {
     },
     {
       route: "lehengas",
-      title: "Lehengas Online | Designer Bridal & Festive Wear — Mukesh Saree Centre",
+      title: "Lehengas Online | Mukesh Saree Centre",
       description: "Shop exquisite bridal, wedding, and festive designer lehengas at Mukesh Saree Centre. Intricate embroidery, rich zari craftsmanship, and custom sizing support.",
       h1: "Designer Bridal & Festive Lehengas",
       introTitle: "Royal Grandeur for Weddings & Celebrations",
-      introBody: "Step into unforgettable celebrations with our curated designer lehengas. Each piece features rich artisanal zari work, intricate embroidery, and luxurious flare tailored for brides, bridesmaids, and sangeet evenings. Contact our showroom for custom styling and size assistance.",
+      introBody: "Step into unforgettable celebrations with our curated designer lehengas. Each piece features rich artisanal zari work, intricate embroidery, and luxurious flare tailored for brides, bridesmaids, and sangeet evenings. Explore custom sizing and showroom consultations directly through our boutique.",
       filterFn: (p: any) => p.category === "Lehengas" || p.category === "Lehenga"
     },
     {
       route: "suits",
-      title: "Designer Suits & Kurta Sets Online | Mukesh Saree Centre",
+      title: "Designer Suits & Kurta Sets | Mukesh Saree Centre",
       description: "Discover designer salwar suits, anarkalis, and elegant kurta sets at Mukesh Saree Centre. Premium fabrics, tailored silhouettes, and timeless Indian craftsmanship.",
       h1: "Designer Suits & Kurta Ensembles",
       introTitle: "Contemporary Elegance & Timeless Comfort",
       introBody: "Experience everyday luxury with our hand-tailored suit sets and kurta ensembles. Featuring breathable cottons, fluid georgettes, and rich chanderi blends designed for effortless grace from morning meetings to evening celebrations.",
-      filterFn: (p: any) => p.category === "Kurtas" || p.category === "Suits"
+      filterFn: (p: any) => p.category === "Suits" || p.category === "Kurtas"
     }
   ];
 

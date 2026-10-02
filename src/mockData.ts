@@ -2861,6 +2861,262 @@ Drape yourself in royal elegance this festive season! 🪔`,
     ]
   },
   {
+    id: "lh1",
+    sku: "LHG-VEL-RED-001",
+    name: "Royal Crimson Velvet Bridal Lehenga Choli with Zari Embroidery",
+    tagline: "Exquisite Handcrafted Bridal Ensemble with Dual Dupatta",
+    slug: "royal-crimson-velvet-bridal-lehenga",
+    metaTitle: "Royal Crimson Velvet Bridal Lehenga | Mukesh Saree Centre",
+    metaDescription: "Shop royal crimson velvet bridal lehenga with intricate zari and sequin embroidery at Mukesh Saree Centre. Handcrafted luxury bridal wear with COD.",
+    price: 6999,
+    originalPrice: 14999,
+    stock: 5,
+    image: "/images/lehenga_section.webp",
+    images: ["/images/lehenga_section.webp"],
+    category: "Lehengas",
+    fabric: "Micro Velvet",
+    color: "Crimson Red",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Make your wedding vows truly memorable in this majestic Royal Crimson Velvet Bridal Lehenga Choli from Mukesh Saree Centre. Crafted from ultra-rich micro velvet, this ensemble features hand-rendered gold zari embroidery, fine dori handiwork, and sparkling light-catching sequins along the expansive 4-meter flare. Comes with an intricately tailored blouse piece and dual soft net dupattas for timeless royal elegance.
+
+**HIGHLIGHTS:**
+• Luxurious Micro Velvet Fabric with Rich Luster
+• Intricate Traditional Gold Zari & Sequin Handwork
+• Expansive 4-Meter Bridal Flare with Can-Can Underlayer
+• Semi-Stitched Lehenga with Unstitched Designer Blouse
+• Includes Dual Soft Tulle Dupattas with Embroidered Borders
+• Ideal for Weddings, Receptions & Grand Festive Galas
+
+**STYLING TIP:**
+Complement this regal velvet lehenga with antique gold kundan jewelry, a classic maang tikka, and velvet bridal juttis.`,
+    rating: 4.9,
+  },
+  {
+    id: "lh2",
+    sku: "LHG-GEO-PNK-002",
+    name: "Blush Pink Embroidered Georgette Designer Lehenga Set",
+    tagline: "Airy Pastel Elegance with Gota Patti & Resham Work",
+    slug: "blush-pink-embroidered-georgette-designer-lehenga",
+    metaTitle: "Blush Pink Georgette Designer Lehenga | Mukesh Saree Centre",
+    metaDescription: "Buy elegant blush pink georgette designer lehenga at Mukesh Saree Centre. Delicate gota patti and thread embroidery perfect for sangeet and bridesmaids.",
+    price: 4999,
+    originalPrice: 9999,
+    stock: 6,
+    image: "/images/lehenga_section.webp",
+    images: ["/images/lehenga_section.webp"],
+    category: "Lehengas",
+    fabric: "Pure Georgette",
+    color: "Blush Pink",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Exuding breezy romantic charm, this Blush Pink Embroidered Georgette Designer Lehenga is tailored for contemporary bridesmaids, engagement ceremonies, and lively sangeet evenings. Made from flowy pure georgette, the skirt is ornamented with delicate pastel resham floral embroidery, shimmering mirrors, and hand-stitched gota patti borders that twirl effortlessly.
+
+**HIGHLIGHTS:**
+• Pure Flowing Georgette Fabric with Feather-Light Weight
+• Intricate Pastel Resham Threadwork & Mirror Accentuation
+• Full Flared Skirt with Satin Inner Lining for Fluid Drape
+• Coordinated Designer Blouse Fabric with Embellished Sleeves
+• Lightweight Georgette Dupatta with Scalloped Embroidered Borders
+• Perfect for Sangeet, Mehendi, Engagement & Bridesmaid Occasions
+
+**STYLING TIP:**
+Style with delicate rose-gold or pearl choker sets and soft wavy curls for a fresh, ethereal celebration look.`,
+    rating: 4.8,
+  },
+  {
+    id: "lh3",
+    sku: "LHG-SLK-BLU-003",
+    name: "Peacock Blue Raw Silk Handcrafted Sangeet Lehenga",
+    tagline: "Lustrous Raw Silk Flare with Metallic Foil & Kardana Work",
+    slug: "peacock-blue-raw-silk-handcrafted-sangeet-lehenga",
+    metaTitle: "Peacock Blue Raw Silk Sangeet Lehenga | Mukesh Saree Centre",
+    metaDescription: "Shop peacock blue raw silk handcrafted lehenga at Mukesh Saree Centre. Rich jewel tones, kardana work, and regal flare for sangeet and receptions.",
+    price: 5499,
+    originalPrice: 11999,
+    stock: 4,
+    image: "/images/lehenga_section.webp",
+    images: ["/images/lehenga_section.webp"],
+    category: "Lehengas",
+    fabric: "Raw Silk",
+    color: "Peacock Blue",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Step into the spotlight with this striking Peacock Blue Raw Silk Handcrafted Lehenga from Mukesh Saree Centre. Defined by its deep jewel tone and structured raw silk texture, this silhouette features architectural Mughal arch borders rendered in antique kardana beads, badla wire, and fine metallic foil embroidery.
+
+**HIGHLIGHTS:**
+• Premium Raw Silk Fabric with Structured Dramatic Flare
+• Rich Peacock Blue Jewel Hue with High-Contrast Antique Gold Accents
+• Hand-Embroidered Kardana, Dabka, and Badla Work
+• Includes Coordinated Blouse Piece and Contrasting Mustard Silk Dupatta
+• Double Inner Lining with Stiff Can-Can Mesh
+• Designed for Sangeet Nights, Cocktails, and Reception Galas
+
+**STYLING TIP:**
+Pair with polki emerald earrings and an antique gold clutch to emphasize the depth of the peacock blue jewel tone.`,
+    rating: 4.9,
+  },
+  {
+    id: "lh4",
+    sku: "LHG-GLD-YEL-004",
+    name: "Mustard Gold Mirror Work Haldi Festive Lehenga Set",
+    tagline: "Vibrant Sunny Elegance with Real Mirror Weave",
+    slug: "mustard-gold-mirror-work-haldi-festive-lehenga",
+    metaTitle: "Mustard Gold Mirror Work Haldi Lehenga | Mukesh Saree Centre",
+    metaDescription: "Bright mustard gold mirror work festive lehenga at Mukesh Saree Centre. Lightweight comfort silhouette ideal for Haldi, Mehendi, and day weddings.",
+    price: 3999,
+    originalPrice: 7999,
+    stock: 8,
+    image: "/images/lehenga_section.webp",
+    images: ["/images/lehenga_section.webp"],
+    category: "Lehengas",
+    fabric: "Silk Blend",
+    color: "Mustard Gold",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Radiate joy during pre-wedding celebrations in our Mustard Gold Mirror Work Haldi Festive Lehenga Set. Crafted from a supple silk-cotton blend, the skirt showcases sunburst mirror motifs and festive yellow-and-gold borders that gleam in daylight photography.
+
+**HIGHLIGHTS:**
+• Comfortable Silk-Cotton Blend Fabric for Easy Day Draping
+• Genuine Shimmering Mirror & Thread Embroidery
+• Vibrant Mustard Gold Palette Tailored for Haldi Celebrations
+• Unstitched Mirror-Work Choli Blouse Fabric Included
+• Lightweight Crinkled Chiffon Dupatta with Tassel Details
+• Breathable & Easy to Twirl in for Festive Outdoor Ceremonies
+
+**STYLING TIP:**
+Accessorize with fresh floral jewelry or yellow marigold ear adornments for a picturesque Haldi ceremony look.`,
+    rating: 4.8,
+  },
+  {
+    id: "st1",
+    sku: "SUT-CHN-TEA-001",
+    name: "Chanderi Silk Handblock Print Kurta Set with Zari Dupatta",
+    tagline: "Artisanal Grace with Pure Chanderi Weave and Organza Accents",
+    slug: "chanderi-silk-handblock-print-kurta-set",
+    metaTitle: "Chanderi Silk Handblock Kurta Set | Mukesh Saree Centre",
+    metaDescription: "Buy elegant Chanderi silk handblock print kurta set with zari dupatta at Mukesh Saree Centre. Handcrafted luxury suit sets with free delivery across India.",
+    price: 2499,
+    originalPrice: 4999,
+    stock: 12,
+    image: "/images/category_coord_sets.webp",
+    images: ["/images/category_coord_sets.webp"],
+    category: "Suits",
+    fabric: "Chanderi Silk",
+    color: "Teal Green",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Embrace effortless sophistication with this Chanderi Silk Handblock Print Kurta Set from Mukesh Saree Centre. Handcrafted in lightweight Chanderi silk with subtle metallic sheen, the calf-length straight kurta features authentic botanical handblock prints and delicate zari neck embroidery. Paired with tailored cigarette trousers and a rich woven zari border dupatta.
+
+**HIGHLIGHTS:**
+• Premium Chanderi Silk Blend with Natural Soft Lustre
+• Traditional Handblock Floral Prints with Subtle Metallic Gold Detailing
+• Straight Cut Silhouette with Side Slits & Comfortable Cotton Voile Lining
+• Includes Coordinated Trousers and Woven Zari Pallu Dupatta
+• Breathable, Lightweight & Suitable for All-Day Comfort
+• Ideal for Festivals, Puja Gatherings, and Refined Office Wear
+
+**STYLING TIP:**
+Style with oxidised silver earrings and mojari flats for understated elegance.`,
+    rating: 4.8,
+  },
+  {
+    id: "st2",
+    sku: "SUT-MUL-IND-002",
+    name: "Pure Mulmul Cotton Anarkali Suit Set with Kota Doria Dupatta",
+    tagline: "Feather-Light Anarkali with Hand-Draping Kota Dupatta",
+    slug: "pure-mulmul-cotton-anarkali-suit-set",
+    metaTitle: "Pure Mulmul Cotton Anarkali Suit Set | Mukesh Saree Centre",
+    metaDescription: "Shop pure mulmul cotton Anarkali suit set with Kota Doria dupatta at Mukesh Saree Centre. Breathable ethnic wear with COD & free shipping.",
+    price: 1999,
+    originalPrice: 3999,
+    stock: 15,
+    image: "/images/category_coord_sets.webp",
+    images: ["/images/category_coord_sets.webp"],
+    category: "Suits",
+    fabric: "Mulmul Cotton",
+    color: "Ivory & Indigo",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Stay serene and chic all day long in this Pure Mulmul Cotton Anarkali Suit Set. Made from 100% fine-spun mulmul cotton, the flared kurta is adorned with classic indigo dabu block printing and delicate potli button closures. Paired with comfortable cotton churidar bottoms and a gossamer Kota Doria printed dupatta.
+
+**HIGHLIGHTS:**
+• 100% Pure Fine-Spun Mulmul Cotton for Supreme Breathability
+• Traditional Bagru & Dabu Indigo Handblock Patterns
+• Graceful Kalidar Flared Anarkali Silhouette
+• Includes Matching Cotton Pajami & Handwoven Kota Doria Dupatta
+• Hypoallergenic Natural Dyes Gentle on Sensitive Skin
+• Perfect for Daily Elegance, Work, and Casual Festive Gatherings
+
+**STYLING TIP:**
+Pair with silver jhumkas and block-heel sandals for an effortless daytime look.`,
+    rating: 4.7,
+  },
+  {
+    id: "st3",
+    sku: "SUT-GEO-ROS-003",
+    name: "Dusty Rose Embroidered Georgette Straight Salwar Suit",
+    tagline: "Pastel Luxury with Fine Threadwork & Scalloped Dupatta",
+    slug: "dusty-rose-embroidered-georgette-salwar-suit",
+    metaTitle: "Dusty Rose Georgette Salwar Suit | Mukesh Saree Centre",
+    metaDescription: "Buy dusty rose embroidered georgette salwar suit at Mukesh Saree Centre. Intricate Kashmiri resham embroidery and scalloped organza dupatta with COD.",
+    price: 2999,
+    originalPrice: 5999,
+    stock: 8,
+    image: "/images/category_coord_sets.webp",
+    images: ["/images/category_coord_sets.webp"],
+    category: "Suits",
+    fabric: "Georgette",
+    color: "Dusty Rose",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Bring understated glam to your festive calendar with this Dusty Rose Embroidered Georgette Straight Salwar Suit. Featuring intricate Kashmiri resham embroidery on the neckline and daman, the tunic is tailored with soft santoon lining. The ensemble is completed with palazzo trousers and an embroidered scalloped organza dupatta.
+
+**HIGHLIGHTS:**
+• Premium Crêpe Georgette with Elegant Liquid Fall
+• Delicate Tonal Threadwork with Subtle Sequin Highlights
+• Straight Fit Kurta Paired with Wide-Leg Palazzo Pants
+• Statement Organza Dupatta with Cutwork Scalloped Borders
+• Complete 3-Piece Stitched Ensemble
+• Ideal for Engagements, Family Gatherings, and Evening Celebrations
+
+**STYLING TIP:**
+Style with champagne heels and diamond studs for a poised, refined evening silhouette.`,
+    rating: 4.9,
+  },
+  {
+    id: "st4",
+    sku: "SUT-SLK-BLU-004",
+    name: "Royal Navy Blue Silk Blend Festive Kurta Pant Set",
+    tagline: "Regal Jewel Tone with Zari Weave & Jacquard Dupatta",
+    slug: "royal-navy-blue-silk-blend-festive-kurta-set",
+    metaTitle: "Royal Navy Blue Silk Blend Kurta Set | Mukesh Saree Centre",
+    metaDescription: "Shop royal navy blue silk blend festive kurta set with jacquard dupatta at Mukesh Saree Centre. Premium tailoring and rich jewel tones with COD across India.",
+    price: 3299,
+    originalPrice: 6499,
+    stock: 10,
+    image: "/images/category_coord_sets.webp",
+    images: ["/images/category_coord_sets.webp"],
+    category: "Suits",
+    fabric: "Silk Blend",
+    color: "Navy Blue",
+    isNew: true,
+    description: `**DESCRIPTION:**
+Indulge in royal grandeur with this Navy Blue Silk Blend Festive Kurta Pant Set. Crafted from a rich art silk blend with a subtle sheen, the A-line tunic is enhanced with gold zari bootis and a sweetheart neckline. Accompanied by straight cigarette pants and a stunning banarasi-weave jacquard dupatta that commands admiration.
+
+**HIGHLIGHTS:**
+• Luxurious Silk Blend Fabric with Rich Luster & Structure
+• Intricate Zari Weaving on Neckline and Sleeves
+• Comfortable Straight-Fit Trousers with Elasticated Waistband
+• Banarasi-Weave Gold Jacquard Dupatta with Regal Borders
+• Fully Lined with Cotton for All-Day Wearability
+• Perfect for Diwali, Eid, Wedding Receptions & Festive Dinner Parties
+
+**STYLING TIP:**
+Wear with gold chandbalis and a neat high bun to accentuate the embellished neckline.`,
+    rating: 4.9,
+  },
+  {
     id: "p-test-payment",
     sku: "TST-PAY-001",
     name: "Payment Test Product",

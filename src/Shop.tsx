@@ -149,7 +149,7 @@ export default function Shop() {
     if (path.includes("/suits") || cat === "Suits" || cat === "Kurtas") {
       return {
         title: "Designer Suits & Kurta Sets | Mukesh Saree Centre",
-        description: "Shop elegant salwar suits, anarkalis, and designer kurta sets at Mukesh Saree Centre. Premium fabrics, tailored silhouettes, and free delivery across India.",
+        description: "Discover designer salwar suits, anarkalis, and elegant kurta sets at Mukesh Saree Centre. Premium fabrics, tailored silhouettes, and timeless Indian craftsmanship.",
         heading: "Designer Suits & Kurta Ensembles",
         paragraph: "Experience everyday luxury with our hand-tailored suit sets and kurta ensembles. Featuring breathable cottons, fluid georgettes, and rich chanderi blends designed for effortless grace from morning meetings to evening celebrations."
       };
@@ -157,28 +157,28 @@ export default function Shop() {
 
     if (path.includes("/lehengas") || cat === "Lehengas") {
       return {
-        title: "Lehengas Online | Designer Bridal & Festive Wear — Mukesh Saree Centre",
-        description: "Browse bridal and designer lehengas at Mukesh Saree Centre, Nagpur's premium saree and ethnic store. Beautiful embroidered and printed lehengas with COD.",
+        title: "Lehengas Online | Mukesh Saree Centre",
+        description: "Shop exquisite bridal, wedding, and festive designer lehengas at Mukesh Saree Centre. Intricate embroidery, rich zari craftsmanship, and custom sizing support.",
         heading: "Designer Bridal & Festive Lehengas",
-        paragraph: "Step into any celebration with unmatched confidence and luxury in a premium lehenga from Mukesh Saree Centre. Our lehenga collection spans a rich variety of designs, from opulent, heavy-crafted bridal lehengas adorned with intricate zari work, hand embroidery, and premium sequins, to modern, breathable printed and georgette designer lehengas perfect for sangeet, receptions, and bridesmaid attire."
+        paragraph: "Step into unforgettable celebrations with our curated designer lehengas. Each piece features rich artisanal zari work, intricate embroidery, and luxurious flare tailored for brides, bridesmaids, and sangeet evenings. Explore custom sizing and showroom consultations directly through our boutique."
       };
     }
 
     if (path.includes("/sarees") && !activeSEOKey) {
       return {
-        title: "Buy Sarees Online | Handpicked Silk & Linen Drapes — Mukesh Saree Centre",
-        description: "Looking for the best saree shop in Nagpur? Shop 100+ premium sarees online at Mukesh Saree Centre. Paithani, Banarasi, Kanjivaram, linen, silk & cotton. COD available.",
+        title: "Buy Sarees Online | Mukesh Saree Centre",
+        description: "Discover our premium collection of sarees including pure silk, soft cotton, linen, and artisanal drapes. Trusted weavers since 1978 with Cash on Delivery available.",
         heading: "Premium Saree Collection",
-        paragraph: "Sarees are the soul of Indian ethnic fashion, embodying timeless grace and cultural pride. At Mukesh Saree Centre, our curated collection brings you authentic weaves and designs ranging from lightweight cotton and modern printed linens to royal silk katan Banarasis and intricate handloom Paithanis. Sourced directly from premier weaving centers, each saree in our collection showcases unparalleled craftsmanship, soft premium fabrics, and rich colors."
+        paragraph: "Sarees are the epitome of Indian elegance and grace. Whether you desire a breezy drape for daily wear, an artisanal linen saree for the workplace, or a lustrous silk weave for weddings, our handpicked saree catalogue delivers unmatched heritage quality."
       };
     }
 
     if (cat === "Sarees" || cat === "Linen Sarees") {
       return {
-        title: "Buy Sarees Online | Best Saree Shop in Nagpur",
-        description: "Looking for the best saree shop in Nagpur? Shop 100+ premium sarees online at Mukesh Saree Centre. Paithani, Banarasi, Kanjivaram, linen, silk & cotton. COD available.",
-        heading: "Saree Collection — Elegant & Exquisite Weaves",
-        paragraph: "Sarees are the soul of Indian ethnic fashion, embodying timeless grace and cultural pride. At Mukesh Saree Centre, our curated collection brings you authentic weaves and designs ranging from lightweight cotton and modern printed linens to royal silk katan Banarasis and intricate handloom Paithanis. Sourced directly from premier weaving centers, each saree in our collection showcases unparalleled craftsmanship, soft premium fabrics, and rich colors. Enjoy a seamless online shopping experience with free shipping above ₹499 and reliable Cash on Delivery service anywhere in India."
+        title: "Buy Sarees Online | Mukesh Saree Centre",
+        description: "Discover our premium collection of sarees including pure silk, soft cotton, linen, and artisanal drapes. Trusted weavers since 1978 with Cash on Delivery available.",
+        heading: "Premium Saree Collection",
+        paragraph: "Sarees are the epitome of Indian elegance and grace. Whether you desire a breezy drape for daily wear, an artisanal linen saree for the workplace, or a lustrous silk weave for weddings, our handpicked saree catalogue delivers unmatched heritage quality."
       };
     }
 
@@ -470,7 +470,8 @@ export default function Shop() {
             { label: "All", value: null },
             { label: "Sarees", value: "Sarees" },
             { label: "Linen Sarees", value: "Linen Sarees" },
-            { label: "Lehengas", value: "Lehengas" }
+            { label: "Lehengas", value: "Lehengas" },
+            { label: "Suits", value: "Suits" }
           ].map((pill) => {
             const isActive = (!pill.value && !categoryFilter) || (categoryFilter === pill.value);
             return (
