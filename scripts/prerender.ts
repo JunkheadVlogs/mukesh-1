@@ -93,7 +93,7 @@ function cleanDescriptionForPrerender(rawDesc: string): string {
 }
 
 function getWhatsAppSafePrerenderDescription(text: string, productContext?: any): string {
-  if (!text) return "Shop premium Indian ethnic wear, sarees, and linen collections at ${BUSINESS_INFO.name}.";
+  if (!text) return `Shop premium Indian ethnic wear, sarees, and linen collections at ${BUSINESS_INFO.name}.`;
   
   // Clean HTML, Markdown, and other clutter
   let clean = text
@@ -1049,7 +1049,7 @@ async function runPrerender() {
     },
     {
       dir: "shipping-policy",
-      title: "Shipping & Delivery Policy | ${BUSINESS_INFO.name}",
+      title: `Shipping & Delivery Policy | ${BUSINESS_INFO.name}`,
       desc: "Learn about our free shipping across India, delivery timelines, trusted courier partners, COD availability, and order tracking.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
@@ -1085,8 +1085,8 @@ async function runPrerender() {
     },
     {
       dir: "return-policy",
-      title: "Returns & Refund Policy — ${BUSINESS_INFO.name}",
-      desc: "${BUSINESS_INFO.name} return policy — 7-day returns on all products. Refund via UPI/Bank Transfer within 3-5 business days. Easy hassle-free process.",
+      title: `Returns & Refund Policy — ${BUSINESS_INFO.name}`,
+      desc: `${BUSINESS_INFO.name} return policy — 7-day returns on all products. Refund via UPI/Bank Transfer within 3-5 business days. Easy hassle-free process.`,
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
@@ -1111,8 +1111,8 @@ async function runPrerender() {
     },
     {
       dir: "terms",
-      title: "Terms & Conditions | ${BUSINESS_INFO.name}",
-      desc: "Review the terms and conditions for ${BUSINESS_INFO.name}. Understanding our guidelines, policies, and terms ensures a transparent and smooth shopping experience.",
+      title: `Terms & Conditions | ${BUSINESS_INFO.name}`,
+      desc: `Review the terms and conditions for ${BUSINESS_INFO.name}. Understanding our guidelines, policies, and terms ensures a transparent and smooth shopping experience.`,
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
           ${getHeaderHtml()}
@@ -1173,7 +1173,7 @@ async function runPrerender() {
     },
     {
       dir: "about",
-      title: "About Our Saree Shop in Nagpur | Mukesh Saree Centre Est. 1978",
+      title: "About Mukesh Saree Centre | Saree Shop in Nagpur Since 1978",
       desc: "Discover the 46-year legacy of Mukesh Saree Centre in Gandhibagh, Nagpur. Founded in 1978 by Shri Nanakram Khemchandani, offering sarees, lehengas, & wholesale bulk orders.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">
@@ -1298,7 +1298,7 @@ async function runPrerender() {
     },
     {
       dir: "categories",
-      title: "All Collections & Categories | ${BUSINESS_INFO.name}",
+      title: `All Collections & Categories | ${BUSINESS_INFO.name}`,
       desc: "Browse our entire catalog of premium ethnic clothing, from Malvika sarees and uniform sarees to bridal lehengas and festive co-ords.",
       body: `
         <div style="background-color: #faf6f0; min-height: 100vh;">

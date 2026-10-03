@@ -9,7 +9,7 @@ export const products: Product[] = [
     sku: "SAR-CHI-YEL-001",
     name: "Sunshine Yellow Chiffon Saree",
     slug: "sunshine-yellow-chiffon-saree-hand-brush-floral",
-    metaTitle: "Sunshine Yellow Chiffon Saree | Mukesh Saree Centre",
+    metaTitle: "Sunshine Yellow Chiffon Saree | Premium Chiffon Saree for Women",
     metaDescription: "Shop Sunshine Yellow Chiffon Saree online at Mukesh Saree Centre. Features gossamer sheer drape, gold lace border & tassels. Free shipping & COD across India.",
     price: 2099,
     originalPrice: 4199,

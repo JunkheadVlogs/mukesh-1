@@ -664,25 +664,25 @@ const seoPagesData: Record<
   },
   "bridal-sarees-nagpur": {
     title:
-      "Bridal Sarees in ${BUSINESS_INFO.address.city} | Wedding Lehengas | ${BUSINESS_INFO.name}",
+      `Bridal Sarees in ${BUSINESS_INFO.address.city} | Wedding Lehengas | ${BUSINESS_INFO.name}`,
     description:
-      "Find exquisite bridal sarees in ${BUSINESS_INFO.address.city} at ${BUSINESS_INFO.name}. Shop designer wedding sarees, lehengas, and rich silks for your special day.",
-    h1: "Exquisite Bridal Sarees in ${BUSINESS_INFO.address.city}",
+      `Find exquisite bridal sarees in ${BUSINESS_INFO.address.city} at ${BUSINESS_INFO.name}. Shop designer wedding sarees, lehengas, and rich silks for your special day.`,
+    h1: `Exquisite Bridal Sarees in ${BUSINESS_INFO.address.city}`,
     intro:
-      "Your wedding day deserves the finest attire. ${BUSINESS_INFO.name} offers an exclusive collection of bridal sarees and lehengas to make your special moments unforgettable.",
+      `Your wedding day deserves the finest attire. ${BUSINESS_INFO.name} offers an exclusive collection of bridal sarees and lehengas to make your special moments unforgettable.`,
     filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
           Searching for the perfect{" "}
-          <strong>bridal sarees in ${BUSINESS_INFO.address.city}</strong>? Look
-          no further. At ${BUSINESS_INFO.name}, we curate luxurious bridal
+          <strong>bridal sarees in {BUSINESS_INFO.address.city}</strong>? Look
+          no further. At {BUSINESS_INFO.name}, we curate luxurious bridal
           collections featuring heavy embroidery, zardosi work, and imported
           fabrics.
         </p>
         <p>
           From vibrant red and gold Banarasi silks to contemporary designer{" "}
-          <em>wedding sarees in ${BUSINESS_INFO.address.city}</em>, our bridal
+          <em>wedding sarees in {BUSINESS_INFO.address.city}</em>, our bridal
           wear ensures you look breathtaking on your big day. We also offer
           elegant lehengas for sangeet and reception ceremonies.
         </p>
@@ -690,7 +690,7 @@ const seoPagesData: Record<
     ),
     faqs: [
       {
-        question: "Does ${BUSINESS_INFO.name} sell bridal sarees?",
+        question: `Does ${BUSINESS_INFO.name} sell bridal sarees?`,
         answer:
           "Yes, we have an extensive and exclusive collection of premium bridal sarees and designer lehengas perfect for weddings.",
       },
@@ -701,15 +701,15 @@ const seoPagesData: Record<
       },
     ],
     relatedKeywords: [
-      "wedding sarees in ${BUSINESS_INFO.address.city}",
-      "lehengas in ${BUSINESS_INFO.address.city}",
+      `wedding sarees in ${BUSINESS_INFO.address.city}`,
+      `lehengas in ${BUSINESS_INFO.address.city}`,
       "bridal lehengas",
     ],
   },
   "wedding-sarees": {
     title: "Wedding Sarees Collection | Buy Authentic Bridal Wear Online",
     description:
-      "Shop stunning wedding sarees at ${BUSINESS_INFO.name}. Explore rich silks, heavy embroidery, and authentic Indian traditional bridal wear.",
+      `Shop stunning wedding sarees at ${BUSINESS_INFO.name}. Explore rich silks, heavy embroidery, and authentic Indian traditional bridal wear.`,
     h1: "Premium Wedding Sarees",
     intro:
       "Celebrate life's biggest milestones with our exquisite collection of wedding sarees. Rich textures, vibrant hues, and masterful craftsmanship.",
@@ -719,7 +719,7 @@ const seoPagesData: Record<
         <p>
           A wedding signifies a new beginning, and{" "}
           <strong>wedding sarees</strong> are an integral part of this beautiful
-          journey. At ${BUSINESS_INFO.name}, our hand-picked wedding collection
+          journey. At {BUSINESS_INFO.name}, our hand-picked wedding collection
           celebrates pure Indian tradition.
         </p>
         <p>
@@ -745,14 +745,14 @@ const seoPagesData: Record<
     relatedKeywords: [
       "traditional Indian sarees",
       "festive sarees",
-      "${BUSINESS_INFO.name}",
+      BUSINESS_INFO.name,
     ],
   },
   "paithani-sarees": {
     title:
-      "Authentic Paithani Sarees in ${BUSINESS_INFO.address.city} | ${BUSINESS_INFO.name}",
+      `Authentic Paithani Sarees in ${BUSINESS_INFO.address.city} | ${BUSINESS_INFO.name}`,
     description:
-      "Shop genuine, hand-woven Paithani sarees at ${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city}. The pride of Maharashtra, available in rich colors and pure silk.",
+      `Shop genuine, hand-woven Paithani sarees at ${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city}. The pride of Maharashtra, available in rich colors and pure silk.`,
     h1: "Authentic Paithani Sarees",
     intro:
       'The Paithani saree is a legacy of royalty. Known as the "Queen of Silks", these sarees are an essential part of Maharashtrian culture and heritage.',
@@ -761,7 +761,7 @@ const seoPagesData: Record<
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
           If you are looking for pure, authentic{" "}
-          <strong>Paithani sarees ${BUSINESS_INFO.address.city}</strong>, $
+          <strong>Paithani sarees in {BUSINESS_INFO.address.city}</strong>,{" "}
           {BUSINESS_INFO.name} is your ultimate destination. We stock an
           impressive range of Yeola Paithani and traditional motifs like
           peacocks (morpankh) and lotuses.
@@ -781,23 +781,23 @@ const seoPagesData: Record<
       },
       {
         question:
-          "Where can I find real Paithani sarees in ${BUSINESS_INFO.address.city}?",
+          `Where can I find real Paithani sarees in ${BUSINESS_INFO.address.city}?`,
         answer:
-          "${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city} houses a verified, authentic collection of premium Paithani sarees.",
+          `${BUSINESS_INFO.name} in ${BUSINESS_INFO.address.city} houses a verified, authentic collection of premium Paithani sarees.`,
       },
     ],
     relatedKeywords: [
-      "silk sarees ${BUSINESS_INFO.address.city}",
+      `silk sarees ${BUSINESS_INFO.address.city}`,
       "traditional Indian sarees",
-      "wedding sarees in ${BUSINESS_INFO.address.city}",
+      `wedding sarees in ${BUSINESS_INFO.address.city}`,
     ],
   },
   "ethnic-wear-nagpur": {
     title:
-      "Premium Ethnic Wear in ${BUSINESS_INFO.address.city} | Sarees, Suits & Lehengas",
+      `Premium Ethnic Wear in ${BUSINESS_INFO.address.city} | Sarees, Suits & Lehengas`,
     description:
-      "Explore the finest ethnic wear in ${BUSINESS_INFO.address.city} at ${BUSINESS_INFO.name}. From daily wear kurtis and suits to heavy designer lehengas and sarees.",
-    h1: "The Finest Ethnic Wear in ${BUSINESS_INFO.address.city}",
+      `Explore the finest ethnic wear in ${BUSINESS_INFO.address.city} at ${BUSINESS_INFO.name}. From daily wear kurtis and suits to heavy designer lehengas and sarees.`,
+    h1: `The Finest Ethnic Wear in ${BUSINESS_INFO.address.city}`,
     intro:
       "From subtle daily wear to spectacular festive ensembles, our ethnic wear collection covers every aspect of traditional Indian clothing.",
     filterCategory: "sarees",
@@ -805,7 +805,7 @@ const seoPagesData: Record<
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
         <p>
           As a comprehensive hub for{" "}
-          <strong>ethnic wear ${BUSINESS_INFO.address.city}</strong>, $
+          <strong>ethnic wear in {BUSINESS_INFO.address.city}</strong>,{" "}
           {BUSINESS_INFO.name} offers far more than just sarees. We house an
           extensive range of dress materials, salwar suits, kurtis, and designer
           lehengas.
@@ -814,37 +814,37 @@ const seoPagesData: Record<
           Our mission is to provide <em>traditional Indian wear</em> that merges
           perfectly with contemporary tastes. Whether you need an elegant suit
           for an office party or a grand lehenga for a reception, our collection
-          delivers unmatched quality since ${BUSINESS_INFO.established}.
+          delivers unmatched quality since {BUSINESS_INFO.established}.
         </p>
       </div>
     ),
     faqs: [
       {
         question:
-          "Apart from sarees, what ethnic wear does ${BUSINESS_INFO.name} sell?",
+          `Apart from sarees, what ethnic wear does ${BUSINESS_INFO.name} sell?`,
         answer:
           "We sell a wide variety of ethnic wear including semi-stitched salwar suits, dress materials, kurtis, crop tops, and bridal lehengas.",
       },
       {
-        question: "Can I buy lehengas in ${BUSINESS_INFO.address.city} here?",
+        question: `Can I buy lehengas in ${BUSINESS_INFO.address.city} here?`,
         answer:
-          "Yes, we have a vast array of lehengas in ${BUSINESS_INFO.address.city} suitable for weddings, sangeets, and festivals.",
+          `Yes, we have a vast array of lehengas in ${BUSINESS_INFO.address.city} suitable for weddings, sangeets, and festivals.`,
       },
     ],
     relatedKeywords: [
-      "lehengas in ${BUSINESS_INFO.address.city}",
+      `lehengas in ${BUSINESS_INFO.address.city}`,
       "Mukesh Saree",
       "designer sarees",
     ],
   },
   "saree-buying-guide": {
     title:
-      "Ultimate Saree Buying Guide | Tips & Advice | ${BUSINESS_INFO.name}",
+      `Ultimate Saree Buying Guide | Tips & Advice | ${BUSINESS_INFO.name}`,
     description:
-      "Expert tips on how to buy the right saree for body type, occasion, and budget. Comprehensive saree buying guide by ${BUSINESS_INFO.name}.",
+      `Expert tips on how to buy the right saree for body type, occasion, and budget. Comprehensive saree buying guide by ${BUSINESS_INFO.name}.`,
     h1: "The Ultimate Saree Buying Guide",
     intro:
-      "Choosing the right saree can be overwhelming. As experts since ${BUSINESS_INFO.established}, we have created this guide to help you find the perfect drape for your lifestyle and body type.",
+      `Choosing the right saree can be overwhelming. As experts since ${BUSINESS_INFO.established}, we have created this guide to help you find the perfect drape for your lifestyle and body type.`,
     filterCategory: "sarees",
     body: (
       <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
@@ -889,9 +889,9 @@ const seoPagesData: Record<
     ],
   },
   "saree-care-guide": {
-    title: "Saree Care & Maintenance Guide | ${BUSINESS_INFO.name}",
+    title: `Saree Care & Maintenance Guide | ${BUSINESS_INFO.name}`,
     description:
-      "Learn how to wash, store, and maintain your precious silk and cotton sarees. Expert saree care tips from ${BUSINESS_INFO.name}.",
+      `Learn how to wash, store, and maintain your precious silk and cotton sarees. Expert saree care tips from ${BUSINESS_INFO.name}.`,
     h1: "Saree Care & Maintenance Guide",
     intro:
       "A premium saree is an investment that can be passed down through generations. Learn the best practices for washing, folding, and storing your sarees to preserve their beauty.",
@@ -933,9 +933,9 @@ const seoPagesData: Record<
       },
     ],
     relatedKeywords: [
-      "${BUSINESS_INFO.name}",
+      BUSINESS_INFO.name,
       "Saree buying guide",
-      "silk sarees ${BUSINESS_INFO.address.city}",
+      `silk sarees ${BUSINESS_INFO.address.city}`,
     ],
   },
   "corporate-uniform-sarees": {

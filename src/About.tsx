@@ -90,7 +90,7 @@ export default function About() {
     <div className="bg-primary-50 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <SEO 
-          title={`About Our Saree Shop in Nagpur | ${BUSINESS_INFO.name} Est. 1978`} 
+          title="About Mukesh Saree Centre | Saree Shop in Nagpur Since 1978" 
           description={`Discover the 46-year legacy of ${BUSINESS_INFO.name} in Gandhibagh, Nagpur. Founded in 1978 by Shri Nanakram Khemchandani, offering sarees, lehengas, & wholesale bulk orders.`} 
           url="/about"
           schema={customSchema}

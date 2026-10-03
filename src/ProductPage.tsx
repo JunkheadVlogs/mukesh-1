@@ -1226,7 +1226,12 @@ export default function ProductPage() {
                   title={product.name}
                 >
                   {product.name}
-                  <span className="sr-only"> - Premium {product.fabric} {product.category} for Women</span>
+                  <span className="sr-only">
+                    {" - "}
+                    {product.fabric.toLowerCase().startsWith("premium")
+                      ? `${product.fabric} ${product.category} for Women`
+                      : `Premium ${product.fabric} ${product.category} for Women`}
+                  </span>
                 </h1>
 
               </header>

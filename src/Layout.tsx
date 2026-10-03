@@ -1667,7 +1667,7 @@ export default function Layout() {
           {/* Copyright Section */}
           <div className="mt-1.5 md:mt-4 pt-1.5 md:pt-4 border-t border-white/5 flex flex-col items-center">
             <p className="text-[9.5px] md:text-[10px] text-white/45 tracking-[0.15em] font-medium uppercase text-center leading-normal">
-              © 2025 Mukesh Saree Centre. All Rights Reserved. | Nagpur, Maharashtra, India
+              © 2026 Mukesh Saree Centre. All Rights Reserved. | Nagpur, Maharashtra, India
             </p>
           </div>
 
