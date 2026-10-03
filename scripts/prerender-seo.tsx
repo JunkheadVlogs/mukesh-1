@@ -1535,22 +1535,6 @@ async function run() {
       ]
     });
 
-    // FAQ Schema
-    if (pData.faqs && pData.faqs.length > 0) {
-      graph.push({
-        "@type": "FAQPage",
-        "@id": `https://mukeshsarees.com/${slug}/#faq`,
-        "mainEntity": pData.faqs.map((faq: any) => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer,
-          },
-        })),
-      });
-    }
-
     // Organization & Local Business & Article Schema
     graph.push({
       "@type": "Organization",
@@ -1651,13 +1635,31 @@ async function run() {
       "@graph": graph
     };
 
+    const schemaList: any[] = [combinedSchema];
+
+    // Standalone FAQPage Schema (matching /guides/ and /faqs/)
+    if (pData.faqs && pData.faqs.length > 0) {
+      schemaList.push({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": pData.faqs.map((faq: any) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
+          }
+        }))
+      });
+    }
+
     const phtml = createStaticPage({
       htmlTemplate: baseHtml,
       bodyHtml: fullBody,
       title: pData.title,
       description: pData.description,
       customOgTags: pageOgTags,
-      schemaJson: combinedSchema
+      schemaJson: schemaList
     });
 
     let finalHtml = phtml;

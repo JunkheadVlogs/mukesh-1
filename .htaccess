@@ -1,3 +1,6 @@
+# Mukesh Saree Centre - Hostinger / Apache .htaccess
+# Optimised for Vite React SPA + PageSpeed Performance & Caching
+
 # ----------------------------------------------------------------------
 # 1. GZIP & Brotli Compression
 # ----------------------------------------------------------------------
@@ -75,46 +78,34 @@
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
-  Header set X-Robots-Tag "index, follow"
 </IfModule>
 
-RewriteEngine On
+# ----------------------------------------------------------------------
+# 4. Hostinger SPA Rewrite Rules
+# ----------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
 
-# Redirect HTTP to HTTPS
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # 301 Redirect duplicate wholesale URLs to primary canonical URL
+  RewriteRule ^wholesale/?$ /wholesale-sarees-nagpur/ [R=301,L]
+  RewriteRule ^wholesale-sarees/?$ /wholesale-sarees-nagpur/ [R=301,L]
+  RewriteRule ^wholesalesarees/?$ /wholesale-sarees-nagpur/ [R=301,L]
 
-# Prevent direct access to raw development files / source code
-RewriteRule ^src/ - [F,L]
-RewriteRule ^scripts/ - [F,L]
-RewriteRule \.(tsx|ts|json|config|env|rules|gs|example)$ - [F,L]
-RewriteRule ^(package\.json|package-lock\.json|tsconfig\.json|vite\.config\.ts|server\.ts|AGENTS\.md|DEPLOYMENT\.md|nginx\.conf)$ - [F,L]
+  # Serve pre-rendered product pages without trailing slash redirect
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}/product/$1/index.html -f
+  RewriteRule ^product/([^/]+)$ product/$1/index.html [L]
 
-# 301 Redirects for renamed & discontinued products
-RewriteRule ^product/chiku-linen-saree-with-bird-digital-print-and-foil-border/?$ /product/pure-linen-saree-natural-bird-print-woven-design/ [R=301,L]
-RewriteRule ^product/elegant-white-pink-embroidered-pure-cotton-kurta-pant-set/?$ /shop/ [R=301,L]
+  # Skip rewriting index.html directly
+  RewriteRule ^index\.html$ - [L]
 
-# Redirect root domain to dist/index.html
-RewriteCond %{REQUEST_URI} ^/$ [NC]
-RewriteRule ^$ dist/index.html [L]
+  # Never rewrite API endpoints to the SPA shell HTML
+  RewriteCond %{REQUEST_URI} !^/api/
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /shell.html [L]
+</IfModule>
 
-# Serve pre-rendered folders if they exist
-RewriteCond %{DOCUMENT_ROOT}/dist/$1/index.html -f
-RewriteRule ^([^/]+)/?$ dist/$1/index.html [L]
-
-# Serve pre-rendered product pages without trailing slash redirect
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}/dist/product/$1/index.html -f
-RewriteRule ^product/([^/]+)$ dist/product/$1/index.html [L]
-
-# Serve pre-rendered product pages with trailing slash
-RewriteCond %{DOCUMENT_ROOT}/dist/product/$1/index.html -f
-RewriteRule ^product/([^/]+)/?$ dist/product/$1/index.html [L]
-
-# General file rewrite map to dist
-RewriteCond %{DOCUMENT_ROOT}/dist/$1 -f
-RewriteRule ^(.*)$ dist/$1 [L]
-
-# SPA Rewrite: Default all other routes to dist/index.html
-RewriteCond %{REQUEST_URI} !^/dist/
-RewriteRule ^(.*)$ dist/index.html [L]
+# Restrict sensitive files
+RewriteRule ^\.builds - [F,L]

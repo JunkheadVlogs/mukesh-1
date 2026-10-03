@@ -45,32 +45,37 @@ for (const a of shellAliases) {
 
 // 2. Note: 'sarees', 'lehengas', and 'suits' are generated natively with unique content, titles, H1s, and filters in prerender.ts — do NOT overwrite them!
 
-// 3. Wholesale route aliases — Point canonical strictly to /wholesale-sarees-nagpur/
+// 3. Wholesale route aliases — 301 redirect to primary /wholesale-sarees-nagpur/
 const primaryWholesaleUrl = "https://mukeshsarees.com/wholesale-sarees-nagpur/";
-const wholesaleCanonicalTag = `<link data-rh="true" rel="canonical" href="${primaryWholesaleUrl}" />`;
-const wholesaleSrc = path.join(distDir, "wholesale-sarees-nagpur", "index.html");
+const wholesaleRedirectHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=${primaryWholesaleUrl}">
+  <link rel="canonical" href="${primaryWholesaleUrl}">
+  <title>Redirecting to Wholesale Sarees Nagpur | Mukesh Saree Centre</title>
+  <script>window.location.replace("${primaryWholesaleUrl}");</script>
+</head>
+<body>
+  <p>Redirecting to <a href="${primaryWholesaleUrl}">Wholesale Sarees Nagpur</a>...</p>
+</body>
+</html>`;
 
-if (fs.existsSync(wholesaleSrc)) {
-  for (const alias of ["wholesale-sarees", "wholesale", "wholesalesarees"]) {
-    const destPath = path.join(distDir, alias);
-    if (!fs.existsSync(destPath)) {
-      fs.mkdirSync(destPath, { recursive: true });
-    }
-    let content = fs.readFileSync(wholesaleSrc, 'utf8');
-    // Ensure canonical points strictly and uniquely to primary /wholesale-sarees-nagpur/
-    content = content.replace(/<link\s+[^>]*rel=['"]canonical['"][^>]*>\s*/gi, '');
-    content = content.replace('</head>', `    ${wholesaleCanonicalTag}\n</head>`);
-    fs.writeFileSync(path.join(destPath, "index.html"), content);
-
-    if (fs.existsSync(publicHtmlDir)) {
-      const pubDest = path.join(publicHtmlDir, alias);
-      if (!fs.existsSync(pubDest)) {
-        fs.mkdirSync(pubDest, { recursive: true });
-      }
-      fs.writeFileSync(path.join(pubDest, "index.html"), content);
-    }
-    console.log(`[ALIAS OK] Created wholesale alias at /${alias} with canonical -> ${primaryWholesaleUrl}`);
+for (const alias of ["wholesale-sarees", "wholesale", "wholesalesarees"]) {
+  const destPath = path.join(distDir, alias);
+  if (!fs.existsSync(destPath)) {
+    fs.mkdirSync(destPath, { recursive: true });
   }
+  fs.writeFileSync(path.join(destPath, "index.html"), wholesaleRedirectHtml);
+
+  if (fs.existsSync(publicHtmlDir)) {
+    const pubDest = path.join(publicHtmlDir, alias);
+    if (!fs.existsSync(pubDest)) {
+      fs.mkdirSync(pubDest, { recursive: true });
+    }
+    fs.writeFileSync(path.join(pubDest, "index.html"), wholesaleRedirectHtml);
+  }
+  console.log(`[ALIAS REDIRECT OK] Created 301 redirect alias at /${alias} -> ${primaryWholesaleUrl}`);
 }
 
 console.log("[PRERENDER ALIASES] Finished creating route aliases.");

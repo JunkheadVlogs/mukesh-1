@@ -1409,6 +1409,13 @@ async function setupServer() {
   });
 
   // 301 Redirects for renamed & discontinued products
+  app.get([
+    '/wholesale', '/wholesale/',
+    '/wholesale-sarees', '/wholesale-sarees/',
+    '/wholesalesarees', '/wholesalesarees/'
+  ], (req, res) => {
+    return res.redirect(301, 'https://mukeshsarees.com/wholesale-sarees-nagpur/');
+  });
   app.get(['/product/chiku-linen-saree-with-bird-digital-print-and-foil-border', '/product/chiku-linen-saree-with-bird-digital-print-and-foil-border/'], (req, res) => {
     return res.redirect(301, 'https://mukeshsarees.com/product/pure-linen-saree-natural-bird-print-woven-design/');
   });

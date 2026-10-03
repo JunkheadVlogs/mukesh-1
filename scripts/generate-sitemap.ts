@@ -41,7 +41,6 @@ async function generateSitemap() {
   addRoute("/sarees/silk-sarees", "weekly", "0.8");
   addRoute("/lehengas", "weekly", "0.8");
   addRoute("/suits", "weekly", "0.8");
-  addRoute("/wholesalesarees", "monthly", "0.9");
   addRoute("/categories", "weekly", "0.8");
   addRoute("/about", "yearly", "0.7");
   addRoute("/contact", "monthly", "0.7");
@@ -69,7 +68,8 @@ async function generateSitemap() {
     "pure-linen-sarees",
     "soft-cotton-sarees",
     "banarasi-silk-sarees",
-    "designer-party-wear-sarees"
+    "designer-party-wear-sarees",
+    "wholesale-sarees-nagpur"
   ];
 
   for (const page of aiPages) {

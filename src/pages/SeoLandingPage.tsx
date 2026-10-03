@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { useParams, Navigate, Link } from "react-router";
+import { Helmet } from "react-helmet-async";
 import { SEO } from "../components/SEO";
 import { ProductCard } from "../components/ProductCard";
 import { SareeShopInNagpurArticle } from "../components/SareeShopInNagpurArticle";
@@ -1656,25 +1657,7 @@ export default function SeoLandingPage() {
     };
     graph.push(breadcrumbSchema);
 
-    // 2. FAQ Schema (ONLY if FAQs exist on the page)
-    if (pageData.faqs && pageData.faqs.length > 0) {
-      const faqSchemaObj = {
-        "@type": "FAQPage",
-        "@id": `https://mukeshsarees.com/${slug}/#faq`,
-        "mainEntity": pageData.faqs.map((faq) => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer,
-          },
-        })),
-      };
-      graph.push(faqSchemaObj);
-    }
-
-    // 3. Organization, LocalBusiness, Article (For Nagpur specific / all landing pages)
-    // The instructions say "Keep Organization, LocalBusiness, WebSite schema."
+    // 2. Organization, LocalBusiness, Article (For Nagpur specific / all landing pages)
     const organizationSchema = {
       "@type": "Organization",
       "@id": "https://mukeshsarees.com/#organization",
@@ -1779,6 +1762,23 @@ export default function SeoLandingPage() {
     };
   }, [pageData, slug]);
 
+  // Standalone FAQPage Schema (matching /guides/ and /faqs/)
+  const faqSchema = useMemo(() => {
+    if (!pageData?.faqs || pageData.faqs.length === 0) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": pageData.faqs.map((faq) => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+  }, [pageData]);
+
   return (
     <div className="bg-[#FAF9F8]">
       <SEO
@@ -1787,6 +1787,12 @@ export default function SeoLandingPage() {
         url={`/${slug}/`}
         schema={combinedSchema}
       />
+
+      {faqSchema && (
+        <Helmet>
+          <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        </Helmet>
+      )}
 
       {/* Header Section */}
       <div className="bg-[#2C241B] text-white py-8 md:py-24">

@@ -461,7 +461,6 @@ async function runPrerender() {
             <div>
               <h3 style="font-weight: 600; color: #1a0a00; margin-bottom: 16px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">B2B & Wholesale</h3>
               <ul style="list-style: none; padding: 0; margin: 0;">
-                <li style="margin-bottom: 8px;"><a href="/wholesalesarees" style="color: inherit; text-decoration: none;">Wholesale Sarees Direct</a></li>
                 <li style="margin-bottom: 8px;"><a href="/wholesale-sarees-nagpur" style="color: inherit; text-decoration: none;">Wholesale Sarees Nagpur</a></li>
                 <li style="margin-bottom: 8px;"><a href="/school-uniform-sarees" style="color: inherit; text-decoration: none;">School Uniform Sarees</a></li>
                 <li style="margin-bottom: 8px;"><a href="/teacher-uniform-sarees" style="color: inherit; text-decoration: none;">Teacher Uniform Sarees</a></li>
@@ -675,7 +674,7 @@ async function runPrerender() {
               <a href="/sarees/linen-sarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Linen Sarees</a>
               <a href="/sarees/cotton-sarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Cotton Sarees</a>
               <a href="/lehengas" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Lehengas</a>
-              <a href="/wholesalesarees" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Wholesale Enquiries</a>
+              <a href="/wholesale-sarees-nagpur" style="color: #4a4a4a; text-decoration: none; padding: 8px 16px; background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px;">Wholesale Enquiries</a>
             </div>
           </section>
 
@@ -1173,21 +1172,6 @@ async function runPrerender() {
       `
     },
     {
-      dir: "wholesalesarees",
-      title: "Wholesale Sarees VIP Club — Mukesh Saree Centre Nagpur",
-      desc: "Exclusive saree dealer community in Nagpur since 1978. Get daily new arrivals, manufacturer-direct wholesale rates & bulk catalog updates on WhatsApp.",
-      ogImage: "https://mukeshsarees.com/og-images/wholesale-vip-club.jpg",
-      canonical: "https://mukeshsarees.com/wholesale-sarees-nagpur/",
-      body: `
-        <div style="background-color: #FAF6F0; min-height: 100vh; font-family: 'Playfair Display', serif; text-align: center; padding: 80px 24px; color: #1A0A00;">
-          <span style="display: inline-block; padding: 6px 16px; background-color: rgba(92, 6, 18, 0.05); color: #5C0612; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; border-radius: 99px; border: 1px solid rgba(92, 6, 18, 0.1); margin-bottom: 24px;">Wholesale Dealer Portal</span>
-          <h1 style="font-size: 36px; color: #1A0A00; font-weight: 300; margin-bottom: 12px; letter-spacing: 0.02em;">${BUSINESS_INFO.name} <span style="display: block; font-style: italic; color: #5C0612; font-weight: 600; margin-top: 4px;">Wholesale VIP Club</span></h1>
-          <p style="font-size: 12px; text-transform: uppercase; tracking: 3px; font-weight: bold; color: #C5A059; margin-bottom: 24px;">Exclusive Community For Saree Shop Owners</p>
-          <p style="font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.8; color: rgba(26,10,0,0.7); max-width: 600px; margin: 0 auto 32px auto; font-weight: 300;">Get Daily New Arrivals, Wholesale Prices, Fast-Selling Collections and Special Dealer Offers Directly On WhatsApp. Keep your store ahead with daily fresh stocks and unmatched margins from ${BUSINESS_INFO.address.city}'s premium saree pioneer since ${BUSINESS_INFO.established}.</p>
-        </div>
-      `
-    },
-    {
       dir: "about",
       title: "About Our Saree Shop in Nagpur | Mukesh Saree Centre Est. 1978",
       desc: "Discover the 46-year legacy of Mukesh Saree Centre in Gandhibagh, Nagpur. Founded in 1978 by Shri Nanakram Khemchandani, offering sarees, lehengas, & wholesale bulk orders.",
@@ -1387,7 +1371,7 @@ Sitemap: https://mukeshsarees.com/sitemap.xml`;
     { path: "/product/sunshine-yellow-chiffon-saree-hand-brush-floral/", changefreq: "monthly", priority: "0.7" },
     { path: "/product/black-khadi-cotton-saree-multicolor-striped-pallu/", changefreq: "monthly", priority: "0.7" },
     { path: "/contact/", changefreq: "monthly", priority: "0.5" },
-    { path: "/wholesalesarees/", changefreq: "daily", priority: "0.8" },
+    { path: "/wholesale-sarees-nagpur/", changefreq: "daily", priority: "0.8" },
     { path: "/shipping-policy/", changefreq: "yearly", priority: "0.4" },
     { path: "/return-policy/", changefreq: "yearly", priority: "0.4" },
     { path: "/terms/", changefreq: "yearly", priority: "0.3" }
