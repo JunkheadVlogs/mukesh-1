@@ -216,6 +216,14 @@ export default function App() {
             <Route path="guides" element={<GuideIndex />} />
             <Route path="guides/:slug" element={<GuideDetail />} />
             
+            {/* SEO-focused collection landing pages */}
+            <Route path="linen-sarees-for-office-wear" element={<SeoLandingPage />} />
+            <Route path="chiffon-sarees-for-wedding-functions" element={<SeoLandingPage />} />
+            <Route path="yellow-sarees-for-haldi" element={<SeoLandingPage />} />
+            <Route path="saree-shop-in-nagpur" element={<SeoLandingPage />} />
+            <Route path="wholesale-sarees-for-boutiques" element={<SeoLandingPage />} />
+            <Route path="school-uniform-sarees" element={<SeoLandingPage />} />
+
             {/* AI-Friendly SEO Landing Pages */}
             <Route path=":slug" element={<SeoLandingPage />} />
           </Route>

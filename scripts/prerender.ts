@@ -353,10 +353,12 @@ async function runPrerender() {
 
   const homeSchema = {
     "@context": "https://schema.org",
-    "@type": "ClothingStore",
+    "@id": "https://mukeshsarees.com/#organization",
+    "@type": ["Organization", "ClothingStore"],
     "name": BUSINESS_INFO.name,
     "url": BUSINESS_INFO.website,
     "logo": `${BUSINESS_INFO.website}/images/logo.webp`,
+    "image": `${BUSINESS_INFO.website}/og-image.jpg`,
     "description": "Looking for a saree shop in Nagpur? Mukesh Saree Centre has been Nagpur's trusted saree destination since 1978. Shop premium sarees online or visit us.",
     "foundingDate": BUSINESS_INFO.established,
     "address": {
@@ -368,7 +370,8 @@ async function runPrerender() {
       "postalCode": BUSINESS_INFO.address.postalCode
     },
     "telephone": BUSINESS_INFO.phone,
-    "priceRange": "$$",
+    "email": BUSINESS_INFO.email,
+    "priceRange": "₹₹",
     "sameAs": BUSINESS_INFO.social
   };
 
@@ -614,6 +617,7 @@ async function runPrerender() {
       "name": `${collection.h1} — ${BUSINESS_INFO.name}`,
       "url": `https://mukeshsarees.com/${collection.route}/`,
       "description": collection.description,
+      "publisher": { "@id": "https://mukeshsarees.com/#organization" },
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -785,6 +789,7 @@ async function runPrerender() {
         "availability": p.stock === 0 ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
         "seller": {
           "@type": "Organization",
+          "@id": "https://mukeshsarees.com/#organization",
           "name": BUSINESS_INFO.name
         },
         "shippingDetails": {

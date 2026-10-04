@@ -597,6 +597,89 @@ const seoPagesData: Record<
           </p>
         </div>
 
+        {/* Showroom Visit & Local Proof Information Card */}
+        <div className="my-8 p-6 md:p-8 bg-[#FAF6F0] border border-[#B5894A]/40 rounded-sm shadow-sm text-[#2C241B]">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#B5894A]/20 pb-4 mb-6">
+            <div>
+              <span className="text-[11px] font-mono uppercase tracking-widest text-[#B5894A] font-bold block mb-1">
+                Gandhibagh Showroom Information • Estd. 1978
+              </span>
+              <h3 className="text-2xl font-serif text-[#2C241B] m-0 font-bold">
+                Visit Mukesh Saree Centre, Nagpur
+              </h3>
+            </div>
+            <div className="flex items-center gap-2 bg-[#B5894A]/10 text-[#2C241B] px-3.5 py-1.5 rounded-full text-xs font-semibold">
+              <span className="text-[#B5894A]">★★★★★</span>
+              <span>4.9 / 5.0 Local Trust Rating (50,000+ Families Served)</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div>
+              <h4 className="text-xs uppercase tracking-wider font-semibold text-[#2C241B]/70 mb-1">
+                📍 Showroom Address
+              </h4>
+              <p className="text-sm font-medium text-[#2C241B] m-0 leading-snug">
+                Jagnath Road, Gandhibagh, Itwari, Nagpur, Maharashtra 440002
+              </p>
+              <p className="text-xs text-[#2C241B]/60 mt-1 m-0">
+                In the heart of Nagpur's historic textile market
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-xs uppercase tracking-wider font-semibold text-[#2C241B]/70 mb-1">
+                ⏰ Store Opening Hours
+              </h4>
+              <p className="text-sm font-medium text-[#2C241B] m-0">
+                10:30 AM — 9:00 PM IST
+              </p>
+              <p className="text-xs text-green-700 font-semibold mt-1 m-0">
+                Open All 7 Days (Mon – Sun)
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-xs uppercase tracking-wider font-semibold text-[#2C241B]/70 mb-1">
+                📞 Direct Showroom Contact
+              </h4>
+              <p className="text-sm font-medium text-[#2C241B] m-0">
+                <a href="tel:+917020664641" className="text-[#B5894A] font-bold">
+                  +91 7020664641
+                </a>
+              </p>
+              <p className="text-xs text-[#2C241B]/70 mt-1 m-0">
+                WhatsApp: <a href="https://wa.me/919325034636" target="_blank" rel="noopener noreferrer" className="text-[#25D366] font-semibold">+91 9325034636</a>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-3 pt-2">
+            <a
+              href="https://maps.google.com/?q=Mukesh+Saree+Centre+Gandhibagh+Nagpur"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-wider rounded-sm hover:bg-[#a0763d] transition-all no-underline shadow-sm"
+            >
+              Get Google Maps Directions
+            </a>
+            <a
+              href="tel:+917020664641"
+              className="inline-flex items-center justify-center px-6 py-3 bg-[#2C241B] text-white font-semibold text-xs uppercase tracking-wider rounded-sm hover:bg-[#3D2C23] transition-all no-underline"
+            >
+              Call Showroom (+91 7020664641)
+            </a>
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20plan%20a%20visit%20to%20your%20Gandhibagh%20showroom."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3 border border-[#25D366] text-[#1e7e34] bg-white font-semibold text-xs uppercase tracking-wider rounded-sm no-underline"
+            >
+              Book WhatsApp Video Tour
+            </a>
+          </div>
+        </div>
+
         <p>
           When you search for a <strong>saree shop in {BUSINESS_INFO.address.city}</strong> with a legacy of trust and quality, <em>{BUSINESS_INFO.name}</em> stands out. Since {BUSINESS_INFO.established}, we have been serving the community with authentic Indian traditional sarees directly from master handloom weavers.
         </p>
@@ -1006,6 +1089,56 @@ const seoPagesData: Record<
           <li><strong>Sample Approval Parcels:</strong> Physical swatch books and sample drape pieces couriered to school management prior to bulk production.</li>
           <li><strong>Direct Gandhibagh Wholesale Rates:</strong> Sourced directly from master looms in Surat and Varanasi, eliminating retail middleman surcharges.</li>
         </ul>
+
+        {/* WhatsApp & Institutional Lead CTA (No fake online checkout) */}
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30 not-prose">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#B5894A] font-bold block mb-1">
+            Institutional Saree Desk • Estd. 1978
+          </span>
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Order School Uniform Sarees in Bulk or Request Free Swatch Kit
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Planning faculty uniforms for your school or college? Connect directly with our institutional uniform specialists in Gandhibagh, Nagpur. We provide dye-lot consistency, sample swatches couriered to your campus, and customized crest border options.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20inquiring%20about%20School%20Uniform%20Sarees%20for%20our%20faculty."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#20b858] transition-all no-underline shadow-sm"
+            >
+              Chat on WhatsApp (+91 9325034636)
+            </a>
+            <a
+              href="tel:+917020664641"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline"
+            >
+              Call Uniform Desk (+91 7020664641)
+            </a>
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all no-underline"
+            >
+              Request Campus Swatch Parcel
+            </a>
+          </div>
+          <p className="text-[11px] text-white/50 font-mono mt-4 mb-0 uppercase tracking-wider">
+            Minimum Order: 15–20 Sarees • Pan-India Courier • GST Invoicing
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Useful Guides
+        </h2>
+        <p className="space-x-2">
+          <a href="/wholesale-sarees-for-boutiques" className="text-[#B5894A] underline font-medium">Wholesale Sarees for Boutiques</a> •{" "}
+          <a href="/linen-sarees-for-office-wear" className="text-[#B5894A] underline font-medium">Linen Sarees for Office Wear</a> •{" "}
+          <a href="/saree-shop-in-nagpur" className="text-[#B5894A] underline font-medium">Best Saree Shop in Nagpur</a> •{" "}
+          <a href="/about" className="text-[#B5894A] underline font-medium">About Mukesh Saree Centre</a> •{" "}
+          <a href="/reviews" className="text-[#B5894A] underline font-medium">Customer Reviews</a> •{" "}
+          <a href="/contact" className="text-[#B5894A] underline font-medium">Contact & Showroom Visit</a>
+        </p>
       </div>
     ),
     faqs: [
@@ -1463,6 +1596,276 @@ const seoPagesData: Record<
       }
     ],
   },
+  "linen-sarees-for-office-wear": {
+    title: "Linen Sarees for Office Wear | Elegant Formal Drapes – Mukesh Saree Centre",
+    description: "Discover breathable, lightweight linen sarees for office wear and long working hours. Shop pure linen and linen-cotton blends online from Mukesh Saree Centre, Nagpur.",
+    h1: "Linen Sarees for Office Wear",
+    intro: "Experience the ideal union of professional authority, natural breathability, and understated elegance. Our curated collection of pure linen and linen-cotton sarees is handcrafted for all-day comfort during corporate meetings, boardroom presentations, and daily workplace hours.",
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: Why Are Linen Sarees the Best Choice for Office Wear?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            <strong>Linen sarees</strong> are considered the gold standard for Indian office wear because pure flax fibers naturally absorb moisture, regulate body temperature in both air-conditioned offices and tropical heat, and maintain a crisp, structured drape without clinging. Their subtle organic texture projects understated sophistication and executive authority without excessive gloss or heavy embroidery.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          The 8-Hour Workday Test: All-Day Comfort & Crease Resilience
+        </h2>
+        <p>
+          Corporate working hours demand attire that retains neat, intentional pleats from the first morning team standup to late evening executive debriefs. Unlike stiff synthetic polyesters that trap sweat or heavy silks that feel suffocating during desk commutes, <strong>pure linen sarees</strong> allow continuous air circulation across the weave.
+        </p>
+        <p>
+          At <strong>{BUSINESS_INFO.name}</strong> (Estd. 1978 in Gandhibagh, Nagpur), we curate high-density 80s to 100s yarn-count linens and pre-washed linen-cotton blends. These fabrics soften with every wash while retaining their architectural shoulder fall. The natural micro-slubs of linen disguise minor sitting creases as organic character rather than messy wrinkles, making them effortlessly workplace-ready.
+        </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Corporate Saree Styling: Blouse Pairings, Necklines & Etiquette
+        </h2>
+        <p>
+          Achieving a polished corporate aesthetic with a linen saree requires intentional styling balance:
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li><strong>Blouse Cuts:</strong> Pair your linen drape with structured elbow-length sleeves, high jewel necks, boat necks, or formal shirt-collared blouses in solid cotton, raw silk, or handloom cotton.</li>
+          <li><strong>Color Schemes:</strong> Soothing earth tones, muted pastels, slate grey, sage green, indigo blue, and subtle mustard tones maintain dignified workplace composure.</li>
+          <li><strong>Jewelry & Accessories:</strong> Keep ornamentation minimal. Matte terracotta earrings, sterling silver studs, a leather-strap watch, and comfortable low-block footwear complete an empowered executive presence.</li>
+          <li><strong>Pleating Technique:</strong> Pin 4 to 5 crisp, equal pleats at the shoulder with a concealed safety pin beneath the blouse shoulder seam to ensure hands-free comfort during presentations and laptop work.</li>
+        </ul>
+
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30">
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Shop Authentic Linen Office Wear Sarees Online
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Choose from our real in-stock linen collection or connect with our Gandhibagh showroom team on WhatsApp for personalized video draping and fast Pan-India dispatch with Cash on Delivery options.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a href="/shop?category=Sarees" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline">Browse All Office Sarees</a>
+            <a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20linen%20sarees%20for%20office%20wear." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Styling Help (+91 9325034636)</a>
+            <a href="/contact" className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Visit Nagpur Showroom</a>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Pages
+        </h2>
+        <p className="space-x-2">
+          <a href="/sarees/linen-sarees" className="text-[#B5894A] underline font-medium">Pure Linen Sarees</a> •{" "}
+          <a href="/sarees/cotton-sarees" className="text-[#B5894A] underline font-medium">Soft Cotton Sarees</a> •{" "}
+          <a href="/saree-care-guide" className="text-[#B5894A] underline font-medium">Saree Care & Washing Guide</a> •{" "}
+          <a href="/saree-shop-in-nagpur" className="text-[#B5894A] underline font-medium">Best Saree Shop in Nagpur</a> •{" "}
+          <a href="/about" className="text-[#B5894A] underline font-medium">Our 45-Year Legacy</a> •{" "}
+          <a href="/reviews" className="text-[#B5894A] underline font-medium">Customer Reviews</a> •{" "}
+          <a href="/contact" className="text-[#B5894A] underline font-medium">Contact Us</a>
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Are linen sarees suitable for daily 9-to-5 office wear?",
+        answer: "Yes, linen sarees are widely considered the most breathable, sweat-wicking ethnic fabric for professional environments. Their structured drape projects executive presence while keeping you cool through long work shifts."
+      },
+      {
+        question: "How do I prevent a linen saree from crushing during office hours?",
+        answer: "Opt for higher yarn-count linens (80s or 100s) or pre-washed linen-cotton blends. Iron the saree while slightly damp using steam heat. When seated, smooth the back pleats flat against the chair to avoid sharp horizontal creases."
+      },
+      {
+        question: "What blouse styles look best with linen sarees for office settings?",
+        answer: "Fitted elbow-length blouses, closed high necks, boat necks, and mandarin collared cotton blouses pair exceptionally well with linen. Sticking to solid contrasting tones maintains an elegant corporate look."
+      }
+    ],
+  },
+  "chiffon-sarees-for-wedding-functions": {
+    title: "Chiffon Sarees for Wedding Functions | Evening Drapes – Mukesh Saree Centre",
+    description: "Shop weightless, glamorous chiffon sarees for wedding functions, sangeet nights, and cocktail receptions. Premium fall and delicate borders at Mukesh Saree Centre, Nagpur.",
+    h1: "Chiffon Sarees for Wedding Functions",
+    intro: "Float through wedding festivities with ethereal grace. Our collection of premium chiffon sarees brings feather-light fluidity, flattering body contours, and delicate zari lace borders—crafted for joyful sangeet dances, mehendi ceremonies, and cocktail celebrations.",
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: Why Wear a Chiffon Saree to Wedding Functions?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            <strong>Chiffon sarees</strong> are the preferred choice for pre-wedding functions and evening wedding celebrations because their weightless, gossamer weave provides an effortlessly fluid drape that flatters all body types. Unlike heavy brocades or stiff silks, chiffon allows unrestricted movement for dancing at Sangeet nights, stays comfortable through long receptions, and catches banquet lighting with subtle elegance.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Event-by-Event Wedding Styling Guide
+        </h2>
+        <p>
+          Chiffon’s low yarn density means you can perform choreographed dance routines without fabric resistance. Pair a jewel-toned chiffon saree with an embroidered sequin or mirror-work bustier blouse and statement chandeliers for modern Bollywood glamour. For daytime garden mehendi rituals, floral printed chiffons in blush pink, mint green, or sunshine yellow provide breezy sun protection while remaining weightless.
+        </p>
+
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30">
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Explore Wedding Chiffon Sarees with Live Video Assistance
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Shopping for an upcoming family wedding? Browse our curated real chiffon collection online or connect with our Gandhibagh showroom for live WhatsApp video selection and express Pan-India shipping.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a href="/shop?category=Sarees" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Shop Wedding Sarees</a>
+            <a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20chiffon%20sarees%20for%20a%20wedding%20function." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Video Tour (+91 9325034636)</a>
+            <a href="/contact" className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Visit Showroom</a>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Useful Guides
+        </h2>
+        <p className="space-x-2">
+          <a href="/yellow-sarees-for-haldi" className="text-[#B5894A] underline font-medium">Yellow Sarees for Haldi</a> •{" "}
+          <a href="/wedding-sarees" className="text-[#B5894A] underline font-medium">Wedding Sarees Nagpur</a> •{" "}
+          <a href="/bridal-sarees-nagpur" className="text-[#B5894A] underline font-medium">Bridal Sarees Nagpur</a> •{" "}
+          <a href="/saree-shop-in-nagpur" className="text-[#B5894A] underline font-medium">Best Saree Shop in Nagpur</a> •{" "}
+          <a href="/about" className="text-[#B5894A] underline font-medium">About Us</a> •{" "}
+          <a href="/reviews" className="text-[#B5894A] underline font-medium">Customer Reviews</a> •{" "}
+          <a href="/contact" className="text-[#B5894A] underline font-medium">Contact Showroom</a>
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Why is chiffon considered the best fabric for sangeet and cocktail dances?",
+        answer: "Chiffon's featherlight weight (under 400g) and natural fluid bounce allow unrestricted movement for choreographed dances and energetic walking, keeping you fresh and unencumbered throughout the celebration."
+      },
+      {
+        question: "How do I drape a chiffon saree so it stays in place without slipping?",
+        answer: "Pair your chiffon with a well-fitted satin or knit lycra petticoat. Pin the pleats securely at the waist and use safety pin guards at the shoulder so the sheer fabric does not tear or slide down."
+      }
+    ],
+  },
+  "yellow-sarees-for-haldi": {
+    title: "Yellow Sarees for Haldi Ceremony | Bright Haldi Drapes – Mukesh Saree Centre",
+    description: "Discover radiant yellow sarees for Haldi ceremonies, mangalsnanam, and pre-wedding festivities. Lightweight chiffon, georgette, and linen sarees from Mukesh Saree Centre, Nagpur.",
+    h1: "Yellow Sarees for Haldi Ceremony",
+    intro: "Celebrate sacred pre-wedding moments in radiant shades of turmeric, marigold, and sunshine. Discover breathable, comfortable, and photo-ready yellow sarees designed for the bride, bridesmaids, and family during joyful Haldi and Ubtan rituals.",
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: What Makes the Perfect Saree for a Haldi Ceremony?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            The ideal <strong>Haldi saree</strong> combines a vibrant, photogenic yellow hue (from joyful sunshine to traditional mustard) with lightweight, breathable fabrics like soft cotton, linen, georgette, or chiffon. Because Haldi involves wet ubtan pastes, holy water, and joyful outdoor celebrations, the fabric must dry easily, feel gentle on sensitive skin, and allow comfortable movement without weighing the wearer down.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          The Haldi Shade Spectrum: Sunshine, Mustard & Marigold
+        </h2>
+        <p>
+          Haldi photography is defined by rich golden contrasts. Sunshine yellow is exceptional for daytime garden rituals and open-air poolside ceremonies. Deep mustard is a time-honored traditional favorite that echoes pure ground turmeric, flattering on all complexions. For bridesmaids and sisters, marigold and gold tissue drapes add festive shimmer without heavy bridal embroidery.
+        </p>
+
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30">
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Find Your Radiant Haldi Saree Today
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Browse our handpicked real yellow sarees online or connect with our Gandhibagh showroom stylists on WhatsApp. We provide live video tours, bridesmaid coordination, and fast express dispatch across India.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a href="/shop?category=Sarees" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Shop All Yellow Sarees</a>
+            <a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20a%20yellow%20saree%20for%20a%20Haldi%20function." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Haldi Styling (+91 9325034636)</a>
+            <a href="/contact" className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Visit Showroom</a>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Guides
+        </h2>
+        <p className="space-x-2">
+          <a href="/chiffon-sarees-for-wedding-functions" className="text-[#B5894A] underline font-medium">Chiffon Sarees for Wedding Functions</a> •{" "}
+          <a href="/wedding-sarees" className="text-[#B5894A] underline font-medium">Wedding Sarees</a> •{" "}
+          <a href="/sarees/linen-sarees" className="text-[#B5894A] underline font-medium">Linen Sarees</a> •{" "}
+          <a href="/saree-shop-in-nagpur" className="text-[#B5894A] underline font-medium">Best Saree Shop in Nagpur</a> •{" "}
+          <a href="/about" className="text-[#B5894A] underline font-medium">About Mukesh Saree Centre</a> •{" "}
+          <a href="/reviews" className="text-[#B5894A] underline font-medium">Customer Reviews</a> •{" "}
+          <a href="/contact" className="text-[#B5894A] underline font-medium">Contact Us</a>
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Which shade of yellow looks most photogenic for Haldi ceremonies?",
+        answer: "Warm mustard and sunshine yellow are widely celebrated by wedding photographers because they provide a rich natural contrast against floral backdrops without washing out under strong daylight or studio flash."
+      },
+      {
+        question: "What saree fabric is best when wet ubtan or turmeric paste is applied?",
+        answer: "Breathable natural fibers like soft linen and cotton are ideal for sensitive skin. If you expect water splashes or flower petal showers, lightweight georgette or chiffon is excellent because it dries rapidly."
+      }
+    ],
+  },
+  "wholesale-sarees-for-boutiques": {
+    title: "Wholesale Sarees for Boutiques & Resellers | Direct Weaver Bulk Rates – Mukesh Saree Centre",
+    description: "Source wholesale sarees for boutiques, home resellers, and retail stores directly from Mukesh Saree Centre, Nagpur. Low MOQs, weaver-direct pricing & fast dispatch.",
+    h1: "Wholesale Sarees for Boutiques & Resellers",
+    intro: "Empower your boutique or online reselling venture with direct-from-weaver wholesale saree collections. Mukesh Saree Centre in Gandhibagh, Nagpur has supplied over 1,200+ boutique partners across India since 1978 with low MOQs, transparent pricing, and zero middleman markups.",
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: How Boutiques Can Source Directly from Mukesh Saree Centre
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            Boutique owners, retail store buyers, and home-based fashion resellers can purchase high-margin sarees at <strong>direct weaver-matched wholesale rates</strong> directly from <strong>{BUSINESS_INFO.name}</strong> in Gandhibagh, Nagpur. With an accessible Minimum Order Quantity (MOQ) of just 10 to 15 sarees across mixed designs, high-definition unbranded catalog photography, and pan-India insured cargo delivery, we help boutiques maximize margins without heavy capital commitment.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          The Boutique Owner's Sourcing Advantage
+        </h2>
+        <p>
+          At <strong>{BUSINESS_INFO.name}</strong>, we consolidate prime master looms from Surat, Varanasi, Chanderi, and Bangalore into our Gandhibagh showroom and wholesale fulfillment hub. By eliminating multi-layer distributor markups, our boutique partners routinely achieve <strong>40% to 80% retail profit margins</strong> while offering their customers exceptional fabric authenticity.
+        </p>
+
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30">
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Request B2B Wholesale Catalog & Live Price Sheet
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Are you a boutique owner, showroom buyer, or online reseller? Chat directly with our wholesale team on WhatsApp to receive our live B2B catalog, wholesale tier pricing, and sample parcel details.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20a%20boutique%20owner%20interested%20in%20your%20wholesale%20saree%20catalog%20and%20price%20sheet." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Chat on WhatsApp (+91 9325034636)</a>
+            <a href="tel:+917020664641" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Call Wholesale Desk (+91 7020664641)</a>
+            <a href="/contact" className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Submit Wholesale Inquiry</a>
+          </div>
+          <p className="text-[11px] text-white/50 font-mono mt-4 mb-0 uppercase tracking-wider">
+            Low MOQ (10–15 Pcs) • GST Invoicing • Surface & Air Cargo
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Pages
+        </h2>
+        <p className="space-x-2">
+          <a href="/school-uniform-sarees" className="text-[#B5894A] underline font-medium">School Uniform Sarees</a> •{" "}
+          <a href="/linen-sarees-for-office-wear" className="text-[#B5894A] underline font-medium">Linen Sarees for Office Wear</a> •{" "}
+          <a href="/saree-shop-in-nagpur" className="text-[#B5894A] underline font-medium">Best Saree Shop in Nagpur</a> •{" "}
+          <a href="/about" className="text-[#B5894A] underline font-medium">About Mukesh Saree Centre</a> •{" "}
+          <a href="/reviews" className="text-[#B5894A] underline font-medium">Customer Reviews</a> •{" "}
+          <a href="/contact" className="text-[#B5894A] underline font-medium">Contact & Showroom Visit</a>
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "What is the Minimum Order Quantity (MOQ) for boutique owners and resellers?",
+        answer: "Our wholesale MOQ is designed for growing businesses, starting at just 10 to 15 sarees per order. You can mix and match different fabrics, colors, and styles in a single order."
+      },
+      {
+        question: "Do you provide unbranded product photos and videos for boutique marketing?",
+        answer: "Yes, all verified boutique buyers receive access to our high-resolution, unwatermarked digital media library for easy sharing across WhatsApp catalogs, Instagram, and boutique websites."
+      }
+    ],
+  },
 };
 
 async function run() {
@@ -1535,66 +1938,7 @@ async function run() {
       ]
     });
 
-    // Organization & Local Business & Article Schema
-    graph.push({
-      "@type": "Organization",
-      "@id": "https://mukeshsarees.com/#organization",
-      "name": "Mukesh Saree Centre",
-      "url": "https://mukeshsarees.com/",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+91-9325034636",
-        "contactType": "sales",
-        "areaServed": "IN",
-        "availableLanguage": ["en", "hi", "mr"]
-      },
-      "sameAs": [
-        "https://www.facebook.com/mukeshsareecentre",
-        "https://www.instagram.com/mukeshsareecentre"
-      ]
-    });
-
-    graph.push({
-      "@type": "ClothingStore",
-      "@id": "https://mukeshsarees.com/#localbusiness",
-      "name": "Mukesh Saree Centre",
-      "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
-      "telephone": "+919325034636",
-      "url": "https://mukeshsarees.com/",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Jagnath Road, Itwari",
-        "addressLocality": "Nagpur",
-        "addressRegion": "Maharashtra",
-        "postalCode": "440002",
-        "addressCountry": "IN"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "21.1528",
-        "longitude": "79.1121"
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday"
-        ],
-        "opens": "11:00",
-        "closes": "21:00"
-      },
-      "priceRange": "₹₹"
-    });
-
+    // Article Schema referencing shared organization #organization
     graph.push({
       "@type": "Article",
       "@id": `https://mukeshsarees.com/${slug}/#article`,

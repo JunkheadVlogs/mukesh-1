@@ -51,11 +51,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mukeshsarees.com/wholesalesarees/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://mukeshsarees.com/categories/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -177,6 +172,31 @@
   </url>
   <url>
     <loc>https://mukeshsarees.com/designer-party-wear-sarees/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/wholesale-sarees-nagpur/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/linen-sarees-for-office-wear/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/chiffon-sarees-for-wedding-functions/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/yellow-sarees-for-haldi/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/wholesale-sarees-for-boutiques/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -607,6 +627,46 @@
   </url>
   <url>
     <loc>https://mukeshsarees.com/product/wine-maroon-dola-silk-foil-print-saree/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/product/royal-crimson-velvet-bridal-lehenga/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/product/blush-pink-embroidered-georgette-designer-lehenga/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/product/peacock-blue-raw-silk-handcrafted-sangeet-lehenga/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/product/mustard-gold-mirror-work-haldi-festive-lehenga/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/product/chanderi-silk-handblock-print-kurta-set/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/product/pure-mulmul-cotton-anarkali-suit-set/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/product/dusty-rose-embroidered-georgette-salwar-suit/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mukeshsarees.com/product/royal-navy-blue-silk-blend-festive-kurta-set/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

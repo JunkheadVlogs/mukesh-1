@@ -21,3 +21,32 @@ export const BUSINESS_INFO = {
     "https://www.pinterest.com/MukeshSareesdotcom"
   ]
 };
+
+export const SHARED_ORGANIZATION_SCHEMA = {
+  "@context": "https://schema.org",
+  "@id": "https://mukeshsarees.com/#organization",
+  "@type": ["Organization", "ClothingStore"],
+  "name": "Mukesh Saree Centre",
+  "url": "https://mukeshsarees.com",
+  "logo": "https://mukeshsarees.com/images/logo.webp",
+  "image": "https://mukeshsarees.com/og-image.jpg",
+  "foundingDate": "1978",
+  "telephone": "+91 7020664641",
+  "email": "info@mukeshsarees.com",
+  "priceRange": "₹₹",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Jagnath Road, Gandhibagh",
+    "addressLocality": "Nagpur",
+    "addressRegion": "Maharashtra",
+    "postalCode": "440002",
+    "addressCountry": "IN"
+  },
+  "sameAs": [
+    "https://www.facebook.com/Mukeshsareesindia/",
+    "https://www.instagram.com/mukeshsarees_nagpur",
+    "https://www.youtube.com/@mukeshsarees",
+    "https://www.pinterest.com/MukeshSareesdotcom"
+  ]
+};
+

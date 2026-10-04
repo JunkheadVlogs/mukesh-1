@@ -1,85 +1,78 @@
-import React from "react";
 import { Link } from "react-router";
+import { Sparkles, CheckCircle2, MapPin, Phone, Mail, MessageCircle } from "lucide-react";
 import { SEO } from "../components/SEO";
 import { BUSINESS_INFO } from "../config/business";
-import { Sparkles, Heart, CheckCircle2, ShieldCheck, MapPin, Phone, Mail, MessageCircle, HelpCircle, Layers, Award } from "lucide-react";
 
 export default function MalvikaSareeBuyingGuide() {
-  const customSchema = [
+  const schema = [
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": `Malvika Saree Buying Guide | Authentic Selection, Styling & Care | ${BUSINESS_INFO.name}`,
-      "description": `Comprehensive Malvika Saree buying guide from ${BUSINESS_INFO.name}, Gandhibagh, Nagpur. Discover tissue-touch comfort, office & teacher styling, fabric care, and wholesale options.`,
-      "url": `${BUSINESS_INFO.website}/malvika-saree-buying-guide`,
-      "publisher": { "@id": `${BUSINESS_INFO.website}/#organization` }
+      name: `Malvika Saree Buying Guide | Authentic Selection, Styling & Care | ${BUSINESS_INFO.name}`,
+      description: `Comprehensive Malvika Saree buying guide from ${BUSINESS_INFO.name}, Gandhibagh, Nagpur. Discover tissue-touch comfort, office & teacher styling, fabric care, and wholesale options.`,
+      url: `${BUSINESS_INFO.website}/malvika-saree-buying-guide`,
+      publisher: { "@id": `${BUSINESS_INFO.website}/#organization` },
     },
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
-      "itemListElement": [
+      itemListElement: [
         {
           "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": BUSINESS_INFO.website
+          position: 1,
+          name: "Home",
+          item: BUSINESS_INFO.website,
         },
         {
           "@type": "ListItem",
-          "position": 2,
-          "name": "Malvika Saree Buying Guide",
-          "item": `${BUSINESS_INFO.website}/malvika-saree-buying-guide`
-        }
-      ]
+          position: 2,
+          name: "Malvika Saree Buying Guide",
+          item: `${BUSINESS_INFO.website}/malvika-saree-buying-guide`,
+        },
+      ],
     },
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": [
+      mainEntity: [
         {
           "@type": "Question",
-          "name": "What makes a Malvika saree different from standard poly-cottons?",
-          "acceptedAnswer": {
+          name: "What makes a Malvika saree different from standard poly-cottons?",
+          acceptedAnswer: {
             "@type": "Answer",
-            "text": "A Malvika saree features a specialized micro-blend weave with a subtle tissue finish. It combines the cool breathability of cotton with the wrinkle-resistant, fluid drape of silk blends, creating a lightweight drape that holds its pleats for 12+ hours."
-          }
+            text: "A Malvika saree features a specialized micro-blend weave with a subtle tissue finish. It combines the cool breathability of cotton with the wrinkle-resistant, fluid drape of silk blends, creating a lightweight drape that holds its pleats for 12+ hours.",
+          },
         },
         {
           "@type": "Question",
-          "name": "Why are Malvika sarees popular for teachers and office professionals?",
-          "acceptedAnswer": {
+          name: "Why are Malvika sarees popular for teachers and office professionals?",
+          acceptedAnswer: {
             "@type": "Answer",
-            "text": "Teachers and working professionals love Malvika sarees because they pleat in under 2 minutes, do not crease during long desk shifts, and feel feather-light in warm climates like Nagpur and across India."
-          }
+            text: "Teachers and working professionals love Malvika sarees because they pleat in under 2 minutes, do not crease during long desk shifts, and feel feather-light in warm climates like Nagpur and across India.",
+          },
         },
         {
           "@type": "Question",
-          "name": "Can Malvika sarees be washed at home?",
-          "acceptedAnswer": {
+          name: "Can Malvika sarees be washed at home?",
+          acceptedAnswer: {
             "@type": "Answer",
-            "text": "Yes. Malvika sarees are extremely low-maintenance. They can be hand-washed or gentle machine-washed at home using mild liquid detergent, requiring minimal ironing."
-          }
-        }
-      ]
-    }
+            text: "Yes. Malvika sarees are extremely low-maintenance. They can be hand-washed or gentle machine-washed at home using mild liquid detergent, requiring minimal ironing.",
+          },
+        },
+      ],
+    },
   ];
-
-  const handleWhatsAppContact = () => {
-    const text = encodeURIComponent("Hi Mukesh Saree Centre! I read your Malvika Saree Buying Guide and would like to buy a Malvika saree.");
-    window.open(`https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, '')}?text=${text}`, '_blank');
-  };
 
   return (
     <div className="bg-primary-50 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-        <SEO 
+        <SEO
           title={`Malvika Saree Buying Guide | Authentic Selection & Care | ${BUSINESS_INFO.name}`}
           description={`Ultimate Malvika Saree buying guide by ${BUSINESS_INFO.name} in Gandhibagh, Nagpur. Learn about tissue micro-blend softness, daily wear, teacher uniforms & care.`}
           url="/malvika-saree-buying-guide"
-          schema={customSchema}
+          schema={schema}
         />
 
-        {/* Header */}
         <div className="text-center mb-8 md:mb-10">
           <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-gold-600">
             Expert Buying & Fabric Advice
@@ -93,10 +86,7 @@ export default function MalvikaSareeBuyingGuide() {
           </p>
         </div>
 
-        {/* Content Box */}
         <div className="bg-white rounded-sm border border-black/5 p-6 md:p-8 shadow-sm space-y-8 text-[14px] sm:text-[15px] leading-relaxed text-primary-950/80">
-          
-          {/* Direct Answer Box */}
           <div className="p-5 bg-primary-50/80 border-l-4 border-gold-500 rounded-r-sm space-y-2 text-primary-950">
             <h2 className="text-base font-serif font-bold text-primary-950 flex items-center gap-2">
               <Sparkles size={18} className="text-gold-600 shrink-0" />
@@ -107,7 +97,6 @@ export default function MalvikaSareeBuyingGuide() {
             </p>
           </div>
 
-          {/* Who is Mukesh Saree Centre */}
           <div className="space-y-3">
             <h2 className="text-xl md:text-2xl font-serif text-primary-950 border-b border-black/5 pb-2">
               Who is {BUSINESS_INFO.name}?
@@ -117,22 +106,39 @@ export default function MalvikaSareeBuyingGuide() {
             </p>
           </div>
 
-          {/* What We Sell */}
           <div className="p-5 bg-primary-50/40 rounded-sm border border-black/5 space-y-3">
             <h3 className="text-lg font-serif text-primary-950 font-semibold">
               What We Sell
             </h3>
             <p className="text-[13.5px] font-light text-primary-950/80 text-justify leading-relaxed">
-              In addition to our renowned <Link to="/malvika-saree/" className="text-gold-600 hover:underline">Malvika Saree collection</Link>, we curate and supply over 30 categories of ethnic wear including <Link to="/sarees/linen-sarees/" className="text-gold-600 hover:underline">Linen sarees</Link>, <Link to="/sarees/cotton-sarees/" className="text-gold-600 hover:underline">Cotton sarees</Link>, <Link to="/sarees/silk-sarees/" className="text-gold-600 hover:underline">Pure Silk sarees</Link>, Paithani, Banarasi, Kanjivaram, Georgette, Organza, custom lehengas, suits, and <Link to="/uniform-saree-bulk-orders/" className="text-gold-600 hover:underline">uniform sarees in bulk</Link>.
+              In addition to our renowned{" "}
+              <Link to="/malvika-saree" className="text-gold-600 hover:underline">
+                Malvika Saree collection
+              </Link>
+              , we curate and supply over 30 categories of ethnic wear including{" "}
+              <Link to="/sarees/linen-sarees" className="text-gold-600 hover:underline">
+                Linen sarees
+              </Link>
+              ,{" "}
+              <Link to="/sarees/cotton-sarees" className="text-gold-600 hover:underline">
+                Cotton sarees
+              </Link>
+              ,{" "}
+              <Link to="/sarees/silk-sarees" className="text-gold-600 hover:underline">
+                Pure Silk sarees
+              </Link>
+              , Paithani, Banarasi, Kanjivaram, Georgette, Organza, custom lehengas, suits, and{" "}
+              <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline">
+                uniform sarees in bulk
+              </Link>
+              .
             </p>
           </div>
 
-          {/* Key Features & Why Buy Malvika */}
           <div className="space-y-4 pt-2">
             <h3 className="text-xl font-serif text-primary-950 border-b border-black/5 pb-2">
               Key Benefits & Features of Malvika Sarees
             </h3>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-4 bg-primary-50/30 rounded-sm border border-black/5 space-y-1">
                 <h4 className="font-semibold text-[14px] text-primary-950 flex items-center gap-1.5">
@@ -176,7 +182,6 @@ export default function MalvikaSareeBuyingGuide() {
             </div>
           </div>
 
-          {/* Styling & Blouse Advice */}
           <div className="space-y-3 pt-2">
             <h3 className="text-lg font-serif text-primary-950 border-b border-black/5 pb-2">
               Blouse Pairing & Styling Recommendations
@@ -191,57 +196,81 @@ export default function MalvikaSareeBuyingGuide() {
             </ul>
           </div>
 
-          {/* Location & Trust */}
           <div className="pt-4 border-t border-black/5 space-y-3">
             <h3 className="text-lg font-serif text-primary-950">
               Visit Our Store in Nagpur
             </h3>
             <div className="p-4 bg-primary-50/60 rounded-sm border border-black/5 font-light text-[13px] text-primary-950/90 space-y-1">
               <p className="font-semibold text-primary-950">{BUSINESS_INFO.name}</p>
-              <p>{BUSINESS_INFO.address.street}, {BUSINESS_INFO.address.area}, {BUSINESS_INFO.address.city}, {BUSINESS_INFO.address.region} - 440002, India</p>
-              <p className="text-[12px] text-primary-950/70 pt-1">Phone: {BUSINESS_INFO.phone} | Email: {BUSINESS_INFO.email}</p>
+              <p>
+                {BUSINESS_INFO.address.street}, {BUSINESS_INFO.address.area}, {BUSINESS_INFO.address.city}, {BUSINESS_INFO.address.region} - 440002, India
+              </p>
+              <p className="text-[12px] text-primary-950/70 pt-1">
+                Phone: {BUSINESS_INFO.phone} | Email: {BUSINESS_INFO.email}
+              </p>
             </div>
           </div>
 
-          {/* Internal Keyword Links */}
           <div className="pt-4 border-t border-black/5 space-y-3">
             <h3 className="text-base font-serif text-primary-950 font-semibold">
               Explore Related Pages & Collections
             </h3>
             <div className="flex flex-wrap gap-2 text-[12px]">
-              <Link to="/malvika-saree/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link
+                to="/malvika-saree"
+                className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm"
+              >
                 Shop Malvika Sarees
               </Link>
-              <Link to="/sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link
+                to="/sarees"
+                className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm"
+              >
                 All Sarees
               </Link>
-              <Link to="/sarees/linen-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link
+                to="/sarees/linen-sarees"
+                className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm"
+              >
                 Linen Sarees
               </Link>
-              <Link to="/sarees/cotton-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link
+                to="/sarees/cotton-sarees"
+                className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm"
+              >
                 Cotton Sarees
               </Link>
-              <Link to="/uniform-saree-bulk-orders/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link
+                to="/uniform-saree-bulk-orders"
+                className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm"
+              >
                 Uniform Sarees Bulk
               </Link>
-              <Link to="/wholesalesarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link
+                to="/wholesalesarees"
+                className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm"
+              >
                 Wholesale Portal
               </Link>
-              <Link to="/why-mukesh-saree-centre/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link
+                to="/why-mukesh-saree-centre"
+                className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm"
+              >
                 Why Choose Us
               </Link>
-              <Link to="/reviews/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+              <Link
+                to="/reviews"
+                className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm"
+              >
                 Customer Reviews
               </Link>
             </div>
           </div>
 
-          {/* FAQs */}
           <div className="pt-4 border-t border-black/5 space-y-4">
             <h3 className="text-lg font-serif text-primary-950">
               Frequently Asked Questions
             </h3>
-
             <div className="space-y-3">
               <div className="p-4 bg-primary-50/40 rounded-sm border border-black/5">
                 <h4 className="font-semibold text-[13.5px] text-primary-950 mb-1">
@@ -257,28 +286,39 @@ export default function MalvikaSareeBuyingGuide() {
                   How can I order Malvika sarees in bulk for school teachers or staff?
                 </h4>
                 <p className="text-[12.5px] text-primary-950/70 font-light leading-relaxed">
-                  Visit our <Link to="/uniform-saree-bulk-orders/" className="text-gold-600 hover:underline">Uniform Sarees page</Link> or connect with Mohit Khemchandani on WhatsApp (+91 7020664641) for institutional discounts.
+                  Visit our{" "}
+                  <Link to="/uniform-saree-bulk-orders" className="text-gold-600 hover:underline">
+                    Uniform Sarees page
+                  </Link>{" "}
+                  or connect with Mohit Khemchandani on WhatsApp (+91 7020664641) for institutional discounts.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Contact & CTA */}
           <div className="pt-6 border-t border-black/5 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <h3 className="text-lg font-serif text-primary-950">Store & Assistance Desk</h3>
+              <h3 className="text-lg font-serif text-primary-950">
+                Store & Assistance Desk
+              </h3>
               <div className="space-y-2 font-light text-[13px] text-primary-950/85">
                 <p className="flex items-start gap-2">
                   <MapPin size={16} className="text-gold-500 shrink-0 mt-0.5" />
-                  <span><strong>Address:</strong> {BUSINESS_INFO.address.fullAddress}</span>
+                  <span>
+                    <strong>Address:</strong> {BUSINESS_INFO.address.fullAddress}
+                  </span>
                 </p>
                 <p className="flex items-center gap-2">
                   <Phone size={16} className="text-gold-500 shrink-0" />
-                  <span><strong>Phone:</strong> {BUSINESS_INFO.phone}</span>
+                  <span>
+                    <strong>Phone:</strong> {BUSINESS_INFO.phone}
+                  </span>
                 </p>
                 <p className="flex items-center gap-2">
                   <Mail size={16} className="text-gold-500 shrink-0" />
-                  <span><strong>Email:</strong> {BUSINESS_INFO.email}</span>
+                  <span>
+                    <strong>Email:</strong> {BUSINESS_INFO.email}
+                  </span>
                 </p>
               </div>
             </div>
@@ -292,7 +332,15 @@ export default function MalvikaSareeBuyingGuide() {
                 Message Mohit Khemchandani for instant color options, live photos, and Cash on Delivery ordering.
               </p>
               <button
-                onClick={handleWhatsAppContact}
+                onClick={() => {
+                  const msg = encodeURIComponent(
+                    "Hi Mukesh Saree Centre! I read your Malvika Saree Buying Guide and would like to buy a Malvika saree."
+                  );
+                  window.open(
+                    `https://wa.me/${BUSINESS_INFO.phone.replace(/[^0-9]/g, "")}?text=${msg}`,
+                    "_blank"
+                  );
+                }}
                 className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-5 py-2 text-[12px] uppercase tracking-wide font-medium rounded-sm transition-transform hover:scale-[1.02] cursor-pointer"
               >
                 <MessageCircle size={15} />
@@ -300,7 +348,6 @@ export default function MalvikaSareeBuyingGuide() {
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>

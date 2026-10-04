@@ -1403,7 +1403,7 @@ export default function Layout() {
             </div>
 
             {/* 3. CONTACT Accordion (Elegant NAP with Schema.org Microdata) */}
-            <div className="border-b border-white/10 md:border-b-0 py-0" itemScope itemType="https://schema.org/ClothingStore">
+            <div className="border-b border-white/10 md:border-b-0 py-0" itemScope itemType="https://schema.org/ClothingStore" itemID="https://mukeshsarees.com/#organization">
               <button
                 onClick={() => toggleFooterAccordion("contact")}
                 className="w-full flex items-center justify-between pt-1 pb-1 md:py-0 md:mb-4 md:pointer-events-none text-left"

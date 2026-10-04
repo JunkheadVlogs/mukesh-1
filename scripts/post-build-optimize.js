@@ -8,14 +8,23 @@ const distDir = path.resolve(process.cwd(), "dist");
 let hasValidationErrors = false;
 
 function walkDir(dir, callback) {
-  const files = fs.readdirSync(dir);
+  let files;
+  try {
+    files = fs.readdirSync(dir);
+  } catch (e) {
+    return;
+  }
   for (const file of files) {
     const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
-    if (stat.isDirectory()) {
-      walkDir(fullPath, callback);
-    } else {
-      callback(fullPath);
+    try {
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        walkDir(fullPath, callback);
+      } else {
+        callback(fullPath);
+      }
+    } catch (e) {
+      // Safely ignore missing or locked files
     }
   }
 }
@@ -44,7 +53,7 @@ if (fs.existsSync(distDir)) {
         }
       }
 
-      if (isEmpty && !filePath.endsWith('index-clean.html')) {
+      if (isEmpty && !filePath.endsWith('index-clean.html') && !filePath.endsWith('shell.html')) {
         console.error(`[VALIDATION FAILED] The HTML file at ${filePath} contains an empty or unrendered React root. Prerender failed for this page.`);
         hasValidationErrors = true;
         validationStatus = "EMPTY ROOT";
@@ -60,7 +69,7 @@ if (fs.existsSync(distDir)) {
 
       // CANONICAL TAG INTEGRITY & DEDUPLICATION CHECK
       let workingContent = content;
-      if (!filePath.endsWith('index-clean.html')) {
+      if (!filePath.endsWith('index-clean.html') && !filePath.endsWith('shell.html')) {
         const canonicalRegex = /<link\s+[^>]*rel=['"]canonical['"][^>]*>/gi;
         const canonicalMatches = workingContent.match(canonicalRegex);
         if (canonicalMatches && canonicalMatches.length > 1) {

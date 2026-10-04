@@ -179,7 +179,8 @@ export default function WholesaleSarees() {
             "name": "Wholesale Sarees VIP Club",
             "description": "Join Mukesh Saree Centre Wholesale VIP Club for daily new arrivals, wholesale saree prices, stock updates and exclusive dealer offers.",
             "url": "https://mukeshsarees.com/wholesalesarees",
-            "image": "https://mukeshsarees.com/og-images/wholesale-vip-club.jpg"
+            "image": "https://mukeshsarees.com/og-images/wholesale-vip-club.jpg",
+            "publisher": { "@id": "https://mukeshsarees.com/#organization" }
           },
           {
             "@context": "https://schema.org",

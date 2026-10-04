@@ -14,6 +14,97 @@ export function SareeShopInNagpurArticle() {
         </p>
       </div>
 
+      {/* Showroom Visit & Local Proof Information Card */}
+      <div className="my-8 p-6 md:p-8 bg-[#FAF6F0] border border-[#B5894A]/40 rounded-sm shadow-sm text-[#2C241B] not-prose">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#B5894A]/20 pb-4 mb-6">
+          <div>
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#B5894A] font-bold block mb-1">
+              Gandhibagh Showroom Information • Estd. 1978
+            </span>
+            <h3 className="text-2xl font-serif text-[#2C241B] m-0 font-bold">
+              Visit Mukesh Saree Centre, Nagpur
+            </h3>
+          </div>
+          <div className="flex items-center gap-2 bg-[#B5894A]/10 text-[#2C241B] px-3.5 py-1.5 rounded-full text-xs font-semibold self-start md:self-auto">
+            <span className="text-[#B5894A]">★★★★★</span>
+            <span>4.9 / 5.0 Local Trust Rating (50,000+ Families Served)</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div>
+            <h4 className="text-xs uppercase tracking-wider font-semibold text-[#2C241B]/70 mb-1">
+              📍 Showroom Address
+            </h4>
+            <p className="text-sm font-medium text-[#2C241B] m-0 leading-snug">
+              Jagnath Road, Gandhibagh, Itwari, Nagpur, Maharashtra 440002
+            </p>
+            <p className="text-xs text-[#2C241B]/60 mt-1 m-0">
+              In the heart of Nagpur's historic textile market
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-xs uppercase tracking-wider font-semibold text-[#2C241B]/70 mb-1">
+              ⏰ Store Opening Hours
+            </h4>
+            <p className="text-sm font-medium text-[#2C241B] m-0">
+              10:30 AM — 9:00 PM IST
+            </p>
+            <p className="text-xs text-green-700 font-semibold mt-1 m-0">
+              Open All 7 Days (Mon – Sun)
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-xs uppercase tracking-wider font-semibold text-[#2C241B]/70 mb-1">
+              📞 Direct Showroom Contact
+            </h4>
+            <p className="text-sm font-medium text-[#2C241B] m-0">
+              <a href="tel:+917020664641" className="text-[#B5894A] hover:underline font-bold">
+                +91 7020664641
+              </a>
+            </p>
+            <p className="text-xs text-[#2C241B]/70 mt-1 m-0">
+              WhatsApp:{" "}
+              <a
+                href="https://wa.me/919325034636"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#25D366] font-semibold hover:underline"
+              >
+                +91 9325034636
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-3 pt-2">
+          <a
+            href="https://maps.google.com/?q=Mukesh+Saree+Centre+Gandhibagh+Nagpur"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-wider rounded-sm hover:bg-[#a0763d] transition-all no-underline shadow-sm"
+          >
+            Get Google Maps Directions
+          </a>
+          <a
+            href="tel:+917020664641"
+            className="inline-flex items-center justify-center px-6 py-3 bg-[#2C241B] text-white font-semibold text-xs uppercase tracking-wider rounded-sm hover:bg-[#3D2C23] transition-all no-underline"
+          >
+            Call Showroom (+91 7020664641)
+          </a>
+          <a
+            href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20plan%20a%20visit%20to%20your%20Gandhibagh%20showroom."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-6 py-3 border border-[#25D366] text-[#1e7e34] bg-white font-semibold text-xs uppercase tracking-wider rounded-sm hover:bg-[#25D366]/10 transition-all no-underline"
+          >
+            Book WhatsApp Video Tour
+          </a>
+        </div>
+      </div>
+
       {/* Article Navigation / Table of Contents */}
       <div className="my-8 p-6 bg-[#FAF6F0] rounded-sm border border-[#E8DCC4]/40" id="toc-container">
         <h2 className="text-xl font-serif text-[#3D2C23] mb-4 mt-0 font-medium tracking-tight">

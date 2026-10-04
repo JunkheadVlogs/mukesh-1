@@ -199,15 +199,17 @@ export default function GuideDetail() {
     "image": guide.image,
     "author": {
       "@type": "Organization",
+      "@id": "https://mukeshsarees.com/#organization",
       "name": "Mukesh Saree Centre",
       "url": "https://mukeshsarees.com"
     },
     "publisher": {
       "@type": "Organization",
+      "@id": "https://mukeshsarees.com/#organization",
       "name": "Mukesh Saree Centre",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://mukeshsarees.com/logo.png"
+        "url": "https://mukeshsarees.com/images/logo.webp"
       }
     },
     "datePublished": guide.date,

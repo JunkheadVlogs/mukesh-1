@@ -38,9 +38,12 @@ try {
   console.log("\n--- [BUILD] Step 6: Running CSS performance optimization ---");
   execSync("node scripts/post-build-optimize.js", { stdio: "inherit" });
 
-  // Step 7: Run SEO deep pre-rendering
-  console.log("\n--- [BUILD] Step 7: Running SEO deep pre-rendering ---");
-  execSync(`${findBin("tsx")} scripts/prerender-seo.tsx`, { stdio: "inherit" });
+  // Step 7: Run SEO deep pre-rendering (if present)
+  const seoScript = path.join(process.cwd(), "scripts", "prerender-seo.tsx");
+  if (fs.existsSync(seoScript)) {
+    console.log("\n--- [BUILD] Step 7: Running SEO deep pre-rendering ---");
+    execSync(`${findBin("tsx")} scripts/prerender-seo.tsx`, { stdio: "inherit" });
+  }
 
   // Step 8: Run guide pre-rendering
   console.log("\n--- [BUILD] Step 8: Running guide pre-rendering ---");

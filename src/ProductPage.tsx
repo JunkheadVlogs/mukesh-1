@@ -836,6 +836,7 @@ export default function ProductPage() {
       itemCondition: "https://schema.org/NewCondition",
       seller: {
         "@type": "Organization",
+        "@id": "https://mukeshsarees.com/#organization",
         name: "Mukesh Saree Centre",
       },
       shippingDetails: {

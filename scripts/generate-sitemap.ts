@@ -69,7 +69,11 @@ async function generateSitemap() {
     "soft-cotton-sarees",
     "banarasi-silk-sarees",
     "designer-party-wear-sarees",
-    "wholesale-sarees-nagpur"
+    "wholesale-sarees-nagpur",
+    "linen-sarees-for-office-wear",
+    "chiffon-sarees-for-wedding-functions",
+    "yellow-sarees-for-haldi",
+    "wholesale-sarees-for-boutiques"
   ];
 
   for (const page of aiPages) {

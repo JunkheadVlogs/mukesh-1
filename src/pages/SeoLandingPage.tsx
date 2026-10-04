@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useParams, Navigate, Link } from "react-router";
+import { useParams, useLocation, Navigate, Link } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { SEO } from "../components/SEO";
 import { ProductCard } from "../components/ProductCard";
@@ -1072,6 +1072,56 @@ const seoPagesData: Record<
           <li><strong>Sample Approval Parcels:</strong> Physical swatch books and sample drape pieces couriered to school management prior to bulk production.</li>
           <li><strong>Direct Gandhibagh Wholesale Rates:</strong> Sourced directly from master looms in Surat and Varanasi, eliminating retail middleman surcharges.</li>
         </ul>
+
+        {/* WhatsApp & Institutional Lead CTA (No fake online checkout) */}
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30 not-prose">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#B5894A] font-bold block mb-1">
+            Institutional Saree Desk • Estd. 1978
+          </span>
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Order School Uniform Sarees in Bulk or Request Free Swatch Kit
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Planning faculty uniforms for your school or college? Connect directly with our institutional uniform specialists in Gandhibagh, Nagpur. We provide dye-lot consistency, sample swatches couriered to your campus, and customized crest border options.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20inquiring%20about%20School%20Uniform%20Sarees%20for%20our%20faculty."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#20b858] transition-all no-underline shadow-sm"
+            >
+              Chat on WhatsApp (+91 9325034636)
+            </a>
+            <a
+              href="tel:+917020664641"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline"
+            >
+              Call Uniform Desk (+91 7020664641)
+            </a>
+            <Link
+              to="/contact/"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all no-underline"
+            >
+              Request Campus Swatch Parcel
+            </Link>
+          </div>
+          <p className="text-[11px] text-white/50 font-mono mt-4 mb-0 uppercase tracking-wider">
+            Minimum Order: 15–20 Sarees • Pan-India Courier • GST Invoicing
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Useful Guides
+        </h2>
+        <p className="space-x-2">
+          <Link to="/wholesale-sarees-for-boutiques/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Wholesale Sarees for Boutiques</Link> •{" "}
+          <Link to="/linen-sarees-for-office-wear/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Linen Sarees for Office Wear</Link> •{" "}
+          <Link to="/saree-shop-in-nagpur/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Best Saree Shop in Nagpur</Link> •{" "}
+          <Link to="/about/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">About Mukesh Saree Centre</Link> •{" "}
+          <Link to="/reviews/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Customer Reviews</Link> •{" "}
+          <Link to="/contact/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Contact & Showroom Visit</Link>
+        </p>
       </div>
     ),
     faqs: [
@@ -1610,17 +1660,759 @@ const seoPagesData: Record<
       "festive wear saree"
     ]
   },
+  "linen-sarees-for-office-wear": {
+    title: "Linen Sarees for Office Wear | Elegant Formal Drapes – Mukesh Saree Centre",
+    description: "Discover breathable, lightweight linen sarees for office wear and long working hours. Shop pure linen and linen-cotton blends online from Mukesh Saree Centre, Nagpur.",
+    h1: "Linen Sarees for Office Wear",
+    intro: "Experience the ideal union of professional authority, natural breathability, and understated elegance. Our curated collection of pure linen and linen-cotton sarees is handcrafted for all-day comfort during corporate meetings, boardroom presentations, and daily workplace hours.",
+    filterCategory: "sarees",
+    customFilter: (p) => {
+      const f = ((p.fabric || "") + " " + p.name + " " + (p.description || "")).toLowerCase();
+      return f.includes("linen");
+    },
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        {/* Direct Answer Box */}
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: Why Are Linen Sarees the Best Choice for Office Wear?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            <strong>Linen sarees</strong> are considered the gold standard for Indian office wear because pure flax fibers naturally absorb moisture, regulate body temperature in both air-conditioned offices and tropical heat, and maintain a crisp, structured drape without clinging. Their subtle organic texture projects understated sophistication and executive authority without excessive gloss or heavy embroidery.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          The 8-Hour Workday Test: All-Day Comfort & Crease Resilience
+        </h2>
+        <p>
+          Corporate working hours demand attire that retains neat, intentional pleats from the first morning team standup to late evening executive debriefs. Unlike stiff synthetic polyesters that trap sweat or heavy silks that feel suffocating during desk commutes, <strong>pure linen sarees</strong> allow continuous air circulation across the weave.
+        </p>
+        <p>
+          At <strong>Mukesh Saree Centre</strong> (Estd. 1978 in Gandhibagh, Nagpur), we curate high-density 80s to 100s yarn-count linens and pre-washed linen-cotton blends. These fabrics soften with every wash while retaining their architectural shoulder fall. The natural micro-slubs of linen disguise minor sitting creases as organic character rather than messy wrinkles, making them effortlessly workplace-ready.
+        </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Corporate Saree Styling: Blouse Pairings, Necklines & Etiquette
+        </h2>
+        <p>
+          Achieving a polished corporate aesthetic with a linen saree requires intentional styling balance:
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Blouse Cuts:</strong> Pair your linen drape with structured elbow-length sleeves, high jewel necks, boat necks, or formal shirt-collared blouses in solid cotton, raw silk, or handloom cotton.
+          </li>
+          <li>
+            <strong>Color Schemes:</strong> Soothing earth tones, muted pastels, slate grey, sage green, indigo blue, and subtle mustard tones maintain dignified workplace composure.
+          </li>
+          <li>
+            <strong>Jewelry & Accessories:</strong> Keep ornamentation minimal. Matte terracotta earrings, sterling silver studs, a leather-strap watch, and comfortable low-block footwear complete an empowered executive presence.
+          </li>
+          <li>
+            <strong>Pleating Technique:</strong> Pin 4 to 5 crisp, equal pleats at the shoulder with a concealed safety pin beneath the blouse shoulder seam to ensure hands-free comfort during presentations and laptop work.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Fabric Guide: Pure Organic Linen vs Linen-Cotton Blends
+        </h2>
+        <div className="overflow-x-auto my-6">
+          <table className="min-w-full divide-y divide-black/10 text-sm border border-black/10 rounded-sm">
+            <thead className="bg-[#FAF6F0] text-[#2C241B] font-serif text-left">
+              <tr>
+                <th className="px-4 py-3 border-b">Fabric Type</th>
+                <th className="px-4 py-3 border-b">Yarn Count</th>
+                <th className="px-4 py-3 border-b">Drape & Texture</th>
+                <th className="px-4 py-3 border-b">Ideal Work Environment</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-black/5 text-[#2C241B]/80">
+              <tr>
+                <td className="px-4 py-3 font-semibold">100% Pure Linen</td>
+                <td className="px-4 py-3">80s – 100s Flax</td>
+                <td className="px-4 py-3">Crisp, breathable, gets softer with each wash</td>
+                <td className="px-4 py-3">Senior leadership, board meetings, formal seminars</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-semibold">Linen Cotton Blend</td>
+                <td className="px-4 py-3">60s Linen + 40s Cotton</td>
+                <td className="px-4 py-3">Ultra-soft, easy to iron, high drape fluidity</td>
+                <td className="px-4 py-3">Daily office commuting, academic lecturing, desk shifts</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-semibold">Zari Border Linen</td>
+                <td className="px-4 py-3">Fine Linen + Antique Zari</td>
+                <td className="px-4 py-3">Structured drape with thin matte gold/silver border</td>
+                <td className="px-4 py-3">Office festivals, corporate dinners, farewell lunches</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Care & Maintenance Guide for Working Women
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Washing:</strong> Cold gentle hand wash or delicate machine cycle with mild organic liquid detergent. Never use harsh optical brighteners.
+          </li>
+          <li>
+            <strong>Drying:</strong> Dry flat on a hanger in shaded, breezy areas. Avoid direct mid-day sunlight to preserve natural dye luster.
+          </li>
+          <li>
+            <strong>Quick Steam Ironing:</strong> Iron while the saree is slightly damp on medium-high steam heat, or spritz lightly with pure water before pressing.
+          </li>
+        </ul>
+
+        {/* WhatsApp & Purchase CTA */}
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30 not-prose">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#B5894A] font-bold block mb-1">
+            Mukesh Saree Centre • Gandhibagh, Nagpur
+          </span>
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Shop Authentic Linen Office Wear Sarees Online
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Choose from our real in-stock linen collection below, or connect with our Gandhibagh showroom team on WhatsApp for personalized video draping and fast Pan-India dispatch with Cash on Delivery options.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              to="/shop/?category=Sarees"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline shadow-sm"
+            >
+              Browse All Office Sarees
+            </Link>
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20linen%20sarees%20for%20office%20wear."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#20b858] transition-all no-underline"
+            >
+              WhatsApp Styling Help (+91 9325034636)
+            </a>
+            <Link
+              to="/contact/"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all no-underline"
+            >
+              Visit Nagpur Showroom
+            </Link>
+          </div>
+          <p className="text-[11px] text-white/50 font-mono mt-4 mb-0 uppercase tracking-wider">
+            100% Real Products • Free Shipping Across India • 7-Day Exchange
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Pages
+        </h2>
+        <p className="space-x-2">
+          <Link to="/sarees/linen-sarees/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Pure Linen Sarees</Link> •{" "}
+          <Link to="/sarees/cotton-sarees/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Soft Cotton Sarees</Link> •{" "}
+          <Link to="/saree-care-guide/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Saree Care & Washing Guide</Link> •{" "}
+          <Link to="/saree-shop-in-nagpur/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Best Saree Shop in Nagpur</Link> •{" "}
+          <Link to="/about/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Our 45-Year Legacy</Link> •{" "}
+          <Link to="/reviews/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Customer Reviews</Link> •{" "}
+          <Link to="/contact/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Contact Us</Link>
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Are linen sarees suitable for daily 9-to-5 office wear?",
+        answer: "Yes, linen sarees are widely considered the most breathable, sweat-wicking ethnic fabric for professional environments. Their structured drape projects executive presence while keeping you cool through long work shifts."
+      },
+      {
+        question: "How do I prevent a linen saree from crushing during office hours?",
+        answer: "Opt for higher yarn-count linens (80s or 100s) or pre-washed linen-cotton blends. Iron the saree while slightly damp using steam heat. When seated, smooth the back pleats flat against the chair to avoid sharp horizontal creases."
+      },
+      {
+        question: "What blouse styles look best with linen sarees for office settings?",
+        answer: "Fitted elbow-length blouses, closed high necks, boat necks, and mandarin collared cotton blouses pair exceptionally well with linen. Sticking to solid contrasting tones maintains an elegant corporate look."
+      },
+      {
+        question: "What is the difference between pure linen and linen-cotton blend sarees?",
+        answer: "Pure linen is woven entirely from flax yarn, offering an organic texture, maximum breathability, and a structured fall. Linen-cotton blends incorporate combed cotton threads, providing a softer hand-feel with slightly less creasing and effortless daily maintenance."
+      },
+      {
+        question: "Can I order linen office wear sarees online with Cash on Delivery?",
+        answer: "Yes! Mukesh Saree Centre offers fast pan-India delivery with Cash on Delivery (COD) options and free shipping across India directly from our Gandhibagh showroom in Nagpur."
+      }
+    ],
+    relatedKeywords: [
+      "linen sarees for office wear",
+      "pure linen office saree",
+      "formal linen sarees for work",
+      "breathable workwear sarees",
+      "cotton linen sarees for teachers",
+      "corporate linen saree nagpur"
+    ]
+  },
+  "chiffon-sarees-for-wedding-functions": {
+    title: "Chiffon Sarees for Wedding Functions | Evening Drapes – Mukesh Saree Centre",
+    description: "Shop weightless, glamorous chiffon sarees for wedding functions, sangeet nights, and cocktail receptions. Premium fall and delicate borders at Mukesh Saree Centre, Nagpur.",
+    h1: "Chiffon Sarees for Wedding Functions",
+    intro: "Float through wedding festivities with ethereal grace. Our collection of premium chiffon sarees brings feather-light fluidity, flattering body contours, and delicate zari lace borders—crafted for joyful sangeet dances, mehendi ceremonies, and cocktail celebrations.",
+    filterCategory: "sarees",
+    customFilter: (p) => {
+      const text = ((p.fabric || "") + " " + p.name + " " + (p.description || "")).toLowerCase();
+      return (text.includes("chiffon") || text.includes("georgette")) && !p.name.toLowerCase().includes("lehenga");
+    },
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        {/* Direct Answer Box */}
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: Why Wear a Chiffon Saree to Wedding Functions?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            <strong>Chiffon sarees</strong> are the preferred choice for pre-wedding functions and evening wedding celebrations because their weightless, gossamer weave provides an effortlessly fluid drape that flatters all body types. Unlike heavy brocades or stiff silks, chiffon allows unrestricted movement for dancing at Sangeet nights, stays comfortable through long receptions, and catches banquet lighting with subtle elegance.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Event-by-Event Wedding Styling Guide
+        </h2>
+        <div className="space-y-4">
+          <div className="p-4 bg-white rounded border border-black/5 shadow-2xs">
+            <h3 className="text-lg font-serif font-semibold text-[#2C241B] m-0 mb-1">
+              1. Sangeet & Cocktail Nights: High-Energy Movement
+            </h3>
+            <p className="text-sm text-[#2C241B]/80 m-0">
+              Chiffon’s low yarn density means you can perform choreographed dance routines without fabric resistance. Pair a jewel-toned chiffon saree with an embroidered sequin or mirror-work bustier blouse and statement chandeliers for modern Bollywood glamour.
+            </p>
+          </div>
+          <div className="p-4 bg-white rounded border border-black/5 shadow-2xs">
+            <h3 className="text-lg font-serif font-semibold text-[#2C241B] m-0 mb-1">
+              2. Mehendi & Daylight Celebrations: Fresh Pastels
+            </h3>
+            <p className="text-sm text-[#2C241B]/80 m-0">
+              For open-air lawn ceremonies, floral printed chiffons in blush pink, mint green, or sunshine yellow provide breezy sun protection while remaining weightless. Match with delicate pearl gota jewelry for a chic daytime festive look.
+            </p>
+          </div>
+          <div className="p-4 bg-white rounded border border-black/5 shadow-2xs">
+            <h3 className="text-lg font-serif font-semibold text-[#2C241B] m-0 mb-1">
+              3. Evening Receptions: Regal Zari Borders
+            </h3>
+            <p className="text-sm text-[#2C241B]/80 m-0">
+              Solid black, ruby red, or royal sapphire chiffons accented with hand-tied pallu tassels and scalloped antique gold lace borders project effortless luxury. Add a contrasting velvet or raw silk blouse for rich winter wedding depth.
+            </p>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Chiffon vs Georgette: Texture, Sheerness & Weight Comparison
+        </h2>
+        <p>
+          While both fabrics are celebrated for fluidity, understanding their textile characteristics helps you choose the perfect drape for your function:
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Pure Chiffon:</strong> Created with alternating S- and Z-twist crepe yarns, chiffon is lighter, more translucent, and possesses a gossamer sheer finish that floats around the silhouette.
+          </li>
+          <li>
+            <strong>Georgette:</strong> Features tighter yarn twists, giving it a slightly heavier pebble-grain texture with higher opacity. Georgette handles heavier zari and resham thread embroidery more easily.
+          </li>
+          <li>
+            <strong>Weight Comparison:</strong> A pure chiffon saree typically weighs under 400 grams, eliminating shoulder and waist strain during multi-hour wedding galas.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Safety Pinning & Draping Protocol for Delicate Fabrics
+        </h2>
+        <p>
+          Because fine chiffon is crafted from micro-denier yarns, improper pinning can pull threads or leave visible puncture holes. Follow these master styling tips:
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Use Safety Pin Guards:</strong> Slip a small plastic pearl or folded cardstock paper over the pin before piercing the fabric so threads never catch in the pin coil.
+          </li>
+          <li>
+            <strong>Floating Single Pallu vs Pleats:</strong> Chiffon looks most breathtaking when draped with a single open floating pallu pinned lightly at the shoulder. If pleating, pin 3 broad, loose folds rather than tight accordion pleats.
+          </li>
+          <li>
+            <strong>Petticoat Selection:</strong> Wear a seamless satin or lycra mermaid-fit underskirt in an exact matching shade to let the sheer drape fall smoothly without bunching.
+          </li>
+        </ul>
+
+        {/* WhatsApp & Purchase CTA */}
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30 not-prose">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#B5894A] font-bold block mb-1">
+            Mukesh Saree Centre • Wedding Collection
+          </span>
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Explore Wedding Chiffon Sarees with Live Video Assistance
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Shopping for an upcoming family wedding? Browse our curated real chiffon collection below or connect with our Gandhibagh showroom for live WhatsApp video selection and express Pan-India shipping.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              to="/shop/?category=Sarees"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline shadow-sm"
+            >
+              Shop Wedding Sarees
+            </Link>
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20chiffon%20sarees%20for%20a%20wedding%20function."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#20b858] transition-all no-underline"
+            >
+              WhatsApp Video Tour (+91 9325034636)
+            </a>
+            <Link
+              to="/contact/"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all no-underline"
+            >
+              Visit Showroom
+            </Link>
+          </div>
+          <p className="text-[11px] text-white/50 font-mono mt-4 mb-0 uppercase tracking-wider">
+            Curated Designer Stock • Fast Dispatch • Cash on Delivery
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Useful Guides
+        </h2>
+        <p className="space-x-2">
+          <Link to="/yellow-sarees-for-haldi/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Yellow Sarees for Haldi</Link> •{" "}
+          <Link to="/wedding-sarees/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Wedding Sarees Nagpur</Link> •{" "}
+          <Link to="/bridal-sarees-nagpur/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Bridal Sarees Nagpur</Link> •{" "}
+          <Link to="/saree-shop-in-nagpur/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Best Saree Shop in Nagpur</Link> •{" "}
+          <Link to="/about/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">About Us</Link> •{" "}
+          <Link to="/reviews/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Customer Reviews</Link> •{" "}
+          <Link to="/contact/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Contact Showroom</Link>
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Why is chiffon considered the best fabric for sangeet and cocktail dances?",
+        answer: "Chiffon's featherlight weight (under 400g) and natural fluid bounce allow unrestricted movement for choreographed dances and energetic walking, keeping you fresh and unencumbered throughout the celebration."
+      },
+      {
+        question: "How do I drape a chiffon saree so it stays in place without slipping?",
+        answer: "Pair your chiffon with a well-fitted satin or knit lycra petticoat. Pin the pleats securely at the waist and use safety pin guards at the shoulder so the sheer fabric does not tear or slide down."
+      },
+      {
+        question: "Can chiffon sarees be worn for winter wedding receptions?",
+        answer: "Absolutely. Chiffon pairs exquisitely with structured winter blouses crafted from raw silk, velvet, or brocade, along with an elegant pashmina or tailored ethnic jacket draped over the opposite shoulder."
+      },
+      {
+        question: "What accessories complement wedding chiffon sarees?",
+        answer: "Minimalist fine jewelry works wonders with chiffon. Consider diamond or polki drop earrings, delicate layered tennis necklaces, and sleek metallic clutches that do not snag on the sheer weave."
+      },
+      {
+        question: "How should I care for and store delicate wedding chiffon sarees?",
+        answer: "Professional dry cleaning is recommended. Store your chiffon rolled gently inside a breathable muslin bag rather than sharply creased on wire hangers to preserve weave elasticity and border zari."
+      }
+    ],
+    relatedKeywords: [
+      "chiffon sarees for wedding functions",
+      "wedding chiffon saree",
+      "chiffon sangeet saree",
+      "cocktail party chiffon sarees",
+      "designer chiffon sarees nagpur",
+      "lightweight wedding saree"
+    ]
+  },
+  "yellow-sarees-for-haldi": {
+    title: "Yellow Sarees for Haldi Ceremony | Bright Haldi Drapes – Mukesh Saree Centre",
+    description: "Discover radiant yellow sarees for Haldi ceremonies, mangalsnanam, and pre-wedding festivities. Lightweight chiffon, georgette, and linen sarees from Mukesh Saree Centre, Nagpur.",
+    h1: "Yellow Sarees for Haldi Ceremony",
+    intro: "Celebrate sacred pre-wedding moments in radiant shades of turmeric, marigold, and sunshine. Discover breathable, comfortable, and photo-ready yellow sarees designed for the bride, bridesmaids, and family during joyful Haldi and Ubtan rituals.",
+    filterCategory: "sarees",
+    customFilter: (p) => {
+      const color = (p.color || "").toLowerCase();
+      const name = p.name.toLowerCase();
+      const desc = (p.description || "").toLowerCase();
+      const isYellowOrGold =
+        color.includes("yellow") ||
+        color.includes("mustard") ||
+        color.includes("gold") ||
+        name.includes("yellow") ||
+        name.includes("mustard") ||
+        name.includes("haldi") ||
+        desc.includes("haldi");
+      return isYellowOrGold && p.category.toLowerCase().includes("saree");
+    },
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        {/* Direct Answer Box */}
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: What Makes the Perfect Saree for a Haldi Ceremony?
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            The ideal <strong>Haldi saree</strong> combines a vibrant, photogenic yellow hue (from joyful sunshine to traditional mustard) with lightweight, breathable fabrics like soft cotton, linen, georgette, or chiffon. Because Haldi involves wet ubtan pastes, holy water, and joyful outdoor celebrations, the fabric must dry easily, feel gentle on sensitive skin, and allow comfortable movement without weighing the wearer down.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          The Haldi Shade Spectrum: Choosing the Right Tone for Your Event
+        </h2>
+        <p>
+          Haldi photography is defined by rich golden contrasts. Selecting the right tone depends on your ceremonial setting:
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Sunshine & Lemon Yellow:</strong> Exceptional for daytime garden rituals and open-air poolside ceremonies. The bright luminance pops against lush green floral decor.
+          </li>
+          <li>
+            <strong>Deep Mustard & Ochre:</strong> A time-honored traditional favorite that echoes pure ground turmeric. Flattering on all Indian complexions and majestic in heritage courtyards.
+          </li>
+          <li>
+            <strong>Marigold & Mango Yellow:</strong> Warm, energetic tones with subtle orange undertones that harmonize seamlessly with fresh floral gajras and marigold garlands.
+          </li>
+          <li>
+            <strong>Bronze Gold & Tissue Accents:</strong> Favored by the bride's sisters and bridesmaids who desire festive shimmer without heavy bridal embroidery.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Fabric Recommendations: Practicality Meets Festive Radiance
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+          <div className="p-4 bg-white border border-black/5 rounded shadow-2xs">
+            <h4 className="font-serif font-bold text-base text-[#2C241B] m-0 mb-1">
+              Chiffon & Georgette
+            </h4>
+            <p className="text-xs text-[#2C241B]/80 m-0 leading-relaxed">
+              Fast-drying and feather-light. Ideal if the ritual includes water splashes or flower petal showers. Drapes softly and photographs with cinematic movement.
+            </p>
+          </div>
+          <div className="p-4 bg-white border border-black/5 rounded shadow-2xs">
+            <h4 className="font-serif font-bold text-base text-[#2C241B] m-0 mb-1">
+              Pure Linen & Soft Cotton
+            </h4>
+            <p className="text-xs text-[#2C241B]/80 m-0 leading-relaxed">
+              100% natural and skin-friendly. Highly recommended for brides with sensitive skin who will have turmeric paste sitting on arms and neck for hours.
+            </p>
+          </div>
+          <div className="p-4 bg-white border border-black/5 rounded shadow-2xs">
+            <h4 className="font-serif font-bold text-base text-[#2C241B] m-0 mb-1">
+              Tissue Silk with Gold Lace
+            </h4>
+            <p className="text-xs text-[#2C241B]/80 m-0 leading-relaxed">
+              Provides opulent metallic luster for bridesmaids, mothers, and guests who want regal celebration photos without heavy zari weight.
+            </p>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Floral Jewelry & Styling Harmony
+        </h2>
+        <p>
+          Haldi aesthetics are rooted in organic beauty. Complement your yellow saree with fresh or hand-crafted floral accessories:
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Floral Ornaments:</strong> White jasmine (mogra) chokers and bracelets create a crisp, refreshing contrast against bright sunny yellows.
+          </li>
+          <li>
+            <strong>Gota Patti Accents:</strong> Yellow gota patti bangles and maang tikas add traditional festive sparkle without the weight of heavy gold.
+          </li>
+          <li>
+            <strong>Contrast Blouse Ideas:</strong> While monochrome yellow looks modern and cohesive, contrasting bottle green, fuchsia pink, or mirror-work ivory blouses add vibrant visual depth.
+          </li>
+        </ul>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Post-Ceremony Turmeric Stain Removal Tips
+        </h2>
+        <p>
+          Turmeric is a natural dye that binds quickly to organic fibers. Treat splashes promptly:
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Immediate Cold Water Rinse:</strong> Never use hot water, which sets the turmeric dye. Flush the affected area with cold running water as soon as the ceremony concludes.
+          </li>
+          <li>
+            <strong>Mild Liquid Detergent:</strong> Apply gentle liquid soap directly to the spot and gently massage with your fingertips.
+          </li>
+          <li>
+            <strong>Natural Sunlight Bleaching:</strong> After washing, dry the saree in gentle morning sunlight. Sun rays naturally break down curcumin compounds and fade yellow stains without damaging delicate fabric threads.
+          </li>
+        </ul>
+
+        {/* WhatsApp & Purchase CTA */}
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30 not-prose">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#B5894A] font-bold block mb-1">
+            Mukesh Saree Centre • Haldi & Festive Collection
+          </span>
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Find Your Radiant Haldi Saree Today
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Browse our handpicked real yellow sarees below or connect with our Gandhibagh showroom stylists on WhatsApp. We provide live video tours, bridesmaid coordination, and fast express dispatch across India.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              to="/shop/?category=Sarees"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline shadow-sm"
+            >
+              Shop All Yellow Sarees
+            </Link>
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20a%20yellow%20saree%20for%20a%20Haldi%20function."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#20b858] transition-all no-underline"
+            >
+              WhatsApp Haldi Styling (+91 9325034636)
+            </a>
+            <Link
+              to="/contact/"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all no-underline"
+            >
+              Visit Showroom
+            </Link>
+          </div>
+          <p className="text-[11px] text-white/50 font-mono mt-4 mb-0 uppercase tracking-wider">
+            Ready Stock • Express Delivery Across India • Cash on Delivery
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Guides
+        </h2>
+        <p className="space-x-2">
+          <Link to="/chiffon-sarees-for-wedding-functions/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Chiffon Sarees for Wedding Functions</Link> •{" "}
+          <Link to="/wedding-sarees/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Wedding Sarees</Link> •{" "}
+          <Link to="/sarees/linen-sarees/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Linen Sarees</Link> •{" "}
+          <Link to="/saree-shop-in-nagpur/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Best Saree Shop in Nagpur</Link> •{" "}
+          <Link to="/about/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">About Mukesh Saree Centre</Link> •{" "}
+          <Link to="/reviews/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Customer Reviews</Link> •{" "}
+          <Link to="/contact/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Contact Us</Link>
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "Which shade of yellow looks most photogenic for Haldi ceremonies?",
+        answer: "Warm mustard and sunshine yellow are widely celebrated by wedding photographers because they provide a rich natural contrast against floral backdrops without washing out under strong daylight or studio flash."
+      },
+      {
+        question: "What saree fabric is best when wet ubtan or turmeric paste is applied?",
+        answer: "Breathable natural fibers like soft linen and cotton are ideal for sensitive skin. If you expect water splashes or flower petal showers, lightweight georgette or chiffon is excellent because it dries rapidly."
+      },
+      {
+        question: "Can bridesmaids coordinate matching yellow sarees for the Haldi ritual?",
+        answer: "Yes! Mukesh Saree Centre provides coordinated sets in chiffon, georgette, and linen so bridesmaids and close family members can achieve a cohesive, festive aesthetic."
+      },
+      {
+        question: "How do I remove turmeric stains from my saree after the Haldi ritual?",
+        answer: "Immediately rinse the stain in cold water (never hot). Rub gently with mild liquid detergent and dry in morning sunlight, which naturally fades curcumin stains without harsh chemicals."
+      },
+      {
+        question: "How quickly can Mukesh Saree Centre deliver a Haldi saree across India?",
+        answer: "All items listed on our website are in stock in our Gandhibagh showroom. Orders are dispatched within 24 to 48 hours with express door delivery across all major Indian cities."
+      }
+    ],
+    relatedKeywords: [
+      "yellow sarees for haldi",
+      "haldi ceremony saree",
+      "mustard yellow saree for haldi",
+      "yellow chiffon saree haldi",
+      "bridal haldi saree nagpur",
+      "haldi function sarees"
+    ]
+  },
+  "wholesale-sarees-for-boutiques": {
+    title: "Wholesale Sarees for Boutiques & Resellers | Direct Weaver Bulk Rates – Mukesh Saree Centre",
+    description: "Source wholesale sarees for boutiques, home resellers, and retail stores directly from Mukesh Saree Centre, Nagpur. Low MOQs, weaver-direct pricing & fast dispatch.",
+    h1: "Wholesale Sarees for Boutiques & Resellers",
+    intro: "Empower your boutique or online reselling venture with direct-from-weaver wholesale saree collections. Mukesh Saree Centre in Gandhibagh, Nagpur has supplied over 1,200+ boutique partners across India since 1978 with low MOQs, transparent pricing, and zero middleman markups.",
+    filterCategory: "sarees",
+    customFilter: (p) => {
+      const text = ((p.fabric || "") + " " + p.name + " " + (p.category || "")).toLowerCase();
+      return text.includes("linen") || text.includes("silk") || text.includes("chiffon") || text.includes("cotton");
+    },
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        {/* Direct Answer Box */}
+        <div className="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]">
+          <h2 className="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">
+            Direct Answer: How Boutiques Can Source Directly from Mukesh Saree Centre
+          </h2>
+          <p className="text-sm leading-relaxed mb-0">
+            Boutique owners, retail store buyers, and home-based fashion resellers can purchase high-margin sarees at <strong>direct weaver-matched wholesale rates</strong> directly from <strong>Mukesh Saree Centre</strong> in Gandhibagh, Nagpur. With an accessible Minimum Order Quantity (MOQ) of just 10 to 15 sarees across mixed designs, high-definition unbranded catalog photography, and pan-India insured cargo delivery, we help boutiques maximize margins without heavy capital commitment.
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          The Boutique Owner's Sourcing Advantage
+        </h2>
+        <p>
+          Running a successful fashion boutique requires fresh weekly collections, fast inventory turns, and consistent product quality that keeps clients returning. Sourcing through mid-tier brokers or traveling to multiple distant textile markets erodes profit margins and drains valuable business hours.
+        </p>
+        <p>
+          At <strong>Mukesh Saree Centre</strong>, we consolidate prime master looms from Surat, Varanasi, Chanderi, and Bangalore into our Gandhibagh showroom and wholesale fulfillment hub. By eliminating multi-layer distributor markups, our boutique partners routinely achieve <strong>40% to 80% retail profit margins</strong> while offering their customers exceptional fabric authenticity.
+        </p>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Why Over 1,200+ Boutiques Source from Mukesh Saree Centre
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+          <div className="p-5 bg-white border border-black/5 rounded shadow-2xs">
+            <h3 className="font-serif font-bold text-base text-[#2C241B] m-0 mb-2">
+              1. Accessible Low MOQs (10–15 Pieces)
+            </h3>
+            <p className="text-sm text-[#2C241B]/80 m-0 leading-relaxed">
+              Test new fabrics and color palettes with minimal capital outlay. Mix different fabrics—such as linen, chiffon, cotton, and party wear—in a single wholesale parcel.
+            </p>
+          </div>
+          <div className="p-5 bg-white border border-black/5 rounded shadow-2xs">
+            <h3 className="font-serif font-bold text-base text-[#2C241B] m-0 mb-2">
+              2. 100% Manual Quality Inspection
+            </h3>
+            <p className="text-sm text-[#2C241B]/80 m-0 leading-relaxed">
+              Every saree is individually examined for weaving consistency, thread pulls, and uniform dye finish before dispatch, eliminating customer returns for your boutique.
+            </p>
+          </div>
+          <div className="p-5 bg-white border border-black/5 rounded shadow-2xs">
+            <h3 className="font-serif font-bold text-base text-[#2C241B] m-0 mb-2">
+              3. Unbranded High-Resolution Media
+            </h3>
+            <p className="text-sm text-[#2C241B]/80 m-0 leading-relaxed">
+              We provide professional, unwatermarked photographs and video clips that you can immediately publish on your boutique’s Instagram page and WhatsApp customer groups.
+            </p>
+          </div>
+          <div className="p-5 bg-white border border-black/5 rounded shadow-2xs">
+            <h3 className="font-serif font-bold text-base text-[#2C241B] m-0 mb-2">
+              4. Insured Pan-India Express Logistics
+            </h3>
+            <p className="text-sm text-[#2C241B]/80 m-0 leading-relaxed">
+              Fast parcel transport via BlueDart, DTDC, and trusted national transport cargo with GST invoicing and end-to-end tracking to every state and union territory.
+            </p>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          High-Velocity Saree Categories for Boutiques
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Daily & Workwear Linens:</strong> High-density pure linen and linen-cotton blends priced attractively for working professionals and teachers.
+          </li>
+          <li>
+            <strong>Event Chiffons & Georgettes:</strong> Featherlight flowy drapes with lace and tassel accents for cocktail celebrations and sangeet parties.
+          </li>
+          <li>
+            <strong>Festive Tissue & Paithani Silks:</strong> Regal heritage weaves for festive trousseau seekers and wedding guests.
+          </li>
+          <li>
+            <strong>Malvika & Soft Crepe Drapes:</strong> Best-selling wrinkle-resistant daily wear sarees with consistent customer repeat orders.
+          </li>
+        </ul>
+
+        {/* WhatsApp & B2B Lead CTA (No fake online checkout flow) */}
+        <div className="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30 not-prose">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#B5894A] font-bold block mb-1">
+            B2B Wholesale Division • Estd. 1978
+          </span>
+          <h3 className="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">
+            Request B2B Wholesale Catalog & Live Price Sheet
+          </h3>
+          <p className="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">
+            Are you a boutique owner, showroom buyer, or online reseller? Chat directly with our wholesale team on WhatsApp to receive our live B2B catalog, wholesale tier pricing, and sample parcel details.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20a%20boutique%20owner%20interested%20in%20your%20wholesale%20saree%20catalog%20and%20price%20sheet."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#20b858] transition-all no-underline shadow-sm"
+            >
+              Chat on WhatsApp (+91 9325034636)
+            </a>
+            <a
+              href="tel:+917020664641"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline"
+            >
+              Call Wholesale Desk (+91 7020664641)
+            </a>
+            <Link
+              to="/contact/"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all no-underline"
+            >
+              Submit Wholesale Inquiry
+            </Link>
+          </div>
+          <p className="text-[11px] text-white/50 font-mono mt-4 mb-0 uppercase tracking-wider">
+            Low MOQ (10–15 Pcs) • GST Invoicing • Surface & Air Cargo
+          </p>
+        </div>
+
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Explore Related Collections & Pages
+        </h2>
+        <p className="space-x-2">
+          <Link to="/school-uniform-sarees/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">School Uniform Sarees</Link> •{" "}
+          <Link to="/linen-sarees-for-office-wear/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Linen Sarees for Office Wear</Link> •{" "}
+          <Link to="/saree-shop-in-nagpur/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Best Saree Shop in Nagpur</Link> •{" "}
+          <Link to="/about/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">About Mukesh Saree Centre</Link> •{" "}
+          <Link to="/reviews/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Customer Reviews</Link> •{" "}
+          <Link to="/contact/" className="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Contact & Showroom Visit</Link>
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "What is the Minimum Order Quantity (MOQ) for boutique owners and resellers?",
+        answer: "Our wholesale MOQ is designed for growing businesses, starting at just 10 to 15 sarees per order. You can mix and match different fabrics, colors, and styles in a single order."
+      },
+      {
+        question: "Do you provide unbranded product photos and videos for boutique marketing?",
+        answer: "Yes, all verified boutique buyers receive access to our high-resolution, unwatermarked digital media library for easy sharing across WhatsApp catalogs, Instagram, and boutique websites."
+      },
+      {
+        question: "Can I mix different saree fabrics and styles within one wholesale order?",
+        answer: "Absolutely. We encourage boutique buyers to curate balanced parcels containing linen office wear, party chiffons, and soft cottons to test client demand across multiple price points."
+      },
+      {
+        question: "How are wholesale sarees packaged and shipped across India?",
+        answer: "Wholesale consignments are packed in tamper-proof, moisture-resistant industrial packaging. We dispatch via premium air express or insured surface cargo depending on volume, with tracking provided immediately."
+      },
+      {
+        question: "Do you issue official GST invoices for B2B accounting and tax credit?",
+        answer: "Yes, every wholesale transaction is accompanied by a compliant GST tax invoice, enabling your business to claim full input tax credit (ITC)."
+      }
+    ],
+    relatedKeywords: [
+      "wholesale sarees for boutiques",
+      "saree wholesale suppliers for resellers",
+      "boutique saree wholesale nagpur",
+      "direct weaver sarees wholesale",
+      "low moq wholesale sarees",
+      "surat wholesale sarees nagpur"
+    ]
+  },
 };
 
 export default function SeoLandingPage() {
   const { slug } = useParams<{ slug: string }>();
-  const pageData = slug ? seoPagesData[slug] : null;
+  const location = useLocation();
+
+  // Support both dynamic route param and explicit route paths cleanly
+  const effectiveSlug = (
+    slug ||
+    location.pathname.split("/").filter(Boolean)[0] ||
+    ""
+  ).replace(/^\/+|\/+$/g, "");
+
+  const pageData = effectiveSlug ? seoPagesData[effectiveSlug] : null;
 
   if (!pageData) {
     return <Navigate to="/shop/" replace />;
   }
 
-  // Filter some relevant products
+  const isWholesaleOrUniform =
+    effectiveSlug.includes("wholesale") || effectiveSlug.includes("uniform");
+
+  // Filter some relevant products from real inventory
   const displayProducts = products
     .filter((p) => {
       if (p.isVariant || p.isHidden) return false;
@@ -1634,12 +2426,12 @@ export default function SeoLandingPage() {
 
   // Generate Combined Advanced Schemas dynamically
   const combinedSchema = useMemo(() => {
-    const graph = [];
+    const graph: any[] = [];
 
     // 1. Breadcrumb Schema (For ALL SEO Landing Pages)
     const breadcrumbSchema = {
       "@type": "BreadcrumbList",
-      "@id": `https://mukeshsarees.com/${slug}/#breadcrumb`,
+      "@id": `https://mukeshsarees.com/${effectiveSlug}/#breadcrumb`,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -1651,86 +2443,95 @@ export default function SeoLandingPage() {
           "@type": "ListItem",
           "position": 2,
           "name": pageData.h1,
-          "item": `https://mukeshsarees.com/${slug}/`
+          "item": `https://mukeshsarees.com/${effectiveSlug}/`
         }
       ]
     };
     graph.push(breadcrumbSchema);
 
-    // 2. Organization, LocalBusiness, Article (For Nagpur specific / all landing pages)
-    const organizationSchema = {
-      "@type": "Organization",
-      "@id": "https://mukeshsarees.com/#organization",
-      "name": "Mukesh Saree Centre",
-      "url": "https://mukeshsarees.com",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+91-9325034636",
-        "contactType": "sales",
-        "areaServed": "IN",
-        "availableLanguage": ["en", "hi", "mr"]
-      },
-      "sameAs": [
-        "https://www.facebook.com/mukeshsareecentre",
-        "https://www.instagram.com/mukeshsareecentre"
-      ]
-    };
-    graph.push(organizationSchema);
+    // 2. CollectionPage Schema (Where appropriate - collection landing pages)
+    if (displayProducts.length > 0) {
+      const collectionSchema = {
+        "@type": "CollectionPage",
+        "@id": `https://mukeshsarees.com/${effectiveSlug}/#collection`,
+        "url": `https://mukeshsarees.com/${effectiveSlug}/`,
+        "name": pageData.title,
+        "description": pageData.description,
+        "isPartOf": {
+          "@id": "https://mukeshsarees.com/#website"
+        },
+        "breadcrumb": {
+          "@id": `https://mukeshsarees.com/${effectiveSlug}/#breadcrumb`
+        },
+        "mainEntity": {
+          "@type": "ItemList",
+          "numberOfItems": displayProducts.length,
+          "itemListElement": displayProducts.map((p, idx) => ({
+            "@type": "ListItem",
+            "position": idx + 1,
+            "url": `https://mukeshsarees.com/product/${p.slug}/`,
+            "name": p.name,
+            "image": p.image
+              ? p.image.startsWith("http")
+                ? p.image
+                : `https://mukeshsarees.com${p.image}`
+              : undefined
+          }))
+        }
+      };
+      graph.push(collectionSchema);
+    }
 
-    const localBusinessSchema = {
-      "@type": "ClothingStore",
-      "@id": "https://mukeshsarees.com/#localbusiness",
-      "name": "Mukesh Saree Centre",
-      "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
-      "telephone": "+919325034636",
-      "url": "https://mukeshsarees.com",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Jagnath Road, Itwari",
-        "addressLocality": "Nagpur",
-        "addressRegion": "Maharashtra",
-        "postalCode": "440002",
-        "addressCountry": "IN"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "21.1528",
-        "longitude": "79.1121"
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday"
+    // 3. Local Store / ClothingStore Schema for Nagpur showroom
+    if (effectiveSlug === "saree-shop-in-nagpur" || effectiveSlug.includes("nagpur")) {
+      const localStoreSchema = {
+        "@type": "ClothingStore",
+        "@id": "https://mukeshsarees.com/#organization",
+        "name": BUSINESS_INFO.name,
+        "image": "https://mukeshsarees.com/images/logo.webp",
+        "telephone": BUSINESS_INFO.phone,
+        "email": BUSINESS_INFO.email,
+        "priceRange": "₹₹",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": `${BUSINESS_INFO.address.street}, ${BUSINESS_INFO.address.area}`,
+          "addressLocality": BUSINESS_INFO.address.city,
+          "addressRegion": BUSINESS_INFO.address.region,
+          "postalCode": BUSINESS_INFO.address.postalCode,
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "21.1504",
+          "longitude": "79.1066"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens": "10:30",
+            "closes": "21:00"
+          }
         ],
-        "opens": "11:00",
-        "closes": "21:00"
-      },
-      "priceRange": "₹₹"
-    };
-    graph.push(localBusinessSchema);
+        "hasMap": "https://maps.google.com/?q=Mukesh+Saree+Centre+Gandhibagh+Nagpur",
+        "url": "https://mukeshsarees.com/saree-shop-in-nagpur/"
+      };
+      graph.push(localStoreSchema);
+    }
 
+    // 4. Article Schema referencing shared organization #organization
     const articleSchema = {
       "@type": "Article",
-      "@id": `https://mukeshsarees.com/${slug}/#article`,
+      "@id": `https://mukeshsarees.com/${effectiveSlug}/#article`,
       "isPartOf": {
-        "@id": `https://mukeshsarees.com/${slug}/`
+        "@id": `https://mukeshsarees.com/${effectiveSlug}/`
       },
       "headline": pageData.title,
       "description": pageData.description,
-      "image": "https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png",
+      "image": "https://mukeshsarees.com/og-image.jpg",
       "datePublished": "2026-05-30T08:00:00+05:30",
       "dateModified": "2026-07-15T10:00:00+05:30",
-      "mainEntityOfPage": `https://mukeshsarees.com/${slug}/`,
+      "mainEntityOfPage": `https://mukeshsarees.com/${effectiveSlug}/`,
       "author": {
         "@id": "https://mukeshsarees.com/#organization"
       },
@@ -1743,7 +2544,7 @@ export default function SeoLandingPage() {
     if (pageData.faqs && pageData.faqs.length > 0) {
       graph.push({
         "@type": "FAQPage",
-        "@id": `https://mukeshsarees.com/${slug}/#faq`,
+        "@id": `https://mukeshsarees.com/${effectiveSlug}/#faq`,
         "mainEntity": pageData.faqs.map((faq) => ({
           "@type": "Question",
           "name": faq.question,
@@ -1760,7 +2561,7 @@ export default function SeoLandingPage() {
       "@context": "https://schema.org",
       "@graph": graph
     };
-  }, [pageData, slug]);
+  }, [pageData, effectiveSlug, displayProducts]);
 
   // Standalone FAQPage Schema (matching /guides/ and /faqs/)
   const faqSchema = useMemo(() => {
@@ -1784,7 +2585,7 @@ export default function SeoLandingPage() {
       <SEO
         title={pageData.title}
         description={pageData.description}
-        url={`/${slug}/`}
+        url={`/${effectiveSlug}/`}
         schema={combinedSchema}
       />
 
@@ -1851,24 +2652,77 @@ export default function SeoLandingPage() {
             </div>
           </div>
 
-          {/* Sidebar / Products */}
+          {/* Sidebar / Products & B2B Lead Card */}
           <div className="lg:col-span-4">
-            <div className="sticky top-24">
-              <h3 className="text-xl font-serif text-[var(--color-dark)] mb-6">
-                Explore Collection
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                {displayProducts.slice(0, 4).map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-              <div className="mt-6 text-center">
-                <Link
-                  to="/shop/"
-                  className="inline-block bg-[var(--color-dark)] text-white px-6 py-3 rounded-sm text-sm uppercase tracking-widest font-medium hover:bg-[var(--color-dark)]/90 transition-colors"
-                >
-                  View All Products
-                </Link>
+            <div className="sticky top-24 space-y-6">
+              {isWholesaleOrUniform && (
+                <div className="bg-[#FAF6F0] p-6 rounded-sm border border-[#B5894A]/30 shadow-sm not-prose">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#B5894A] font-bold block mb-1">
+                    B2B & Institutional Desk
+                  </span>
+                  <h3 className="text-xl font-serif text-[#2C241B] mb-2 font-semibold">
+                    {effectiveSlug.includes("school")
+                      ? "School Uniform Quotation"
+                      : "Wholesale Boutique Catalog"}
+                  </h3>
+                  <p className="text-xs text-[#2C241B]/75 leading-relaxed mb-4">
+                    {effectiveSlug.includes("school")
+                      ? "Request institutional dye-lot swatches, custom crest border samples, and school faculty bulk pricing."
+                      : "Access weaver-direct wholesale prices, low MOQs (10-15 pcs), and unwatermarked catalog imagery for boutiques."}
+                  </p>
+                  <div className="space-y-2.5">
+                    <a
+                      href={`https://wa.me/919325034636?text=${encodeURIComponent(
+                        effectiveSlug.includes("school")
+                          ? "Hi Mukesh Saree Centre, I need a bulk quote and fabric swatches for school uniform sarees."
+                          : "Hi Mukesh Saree Centre, I am a boutique owner interested in your wholesale saree catalog and price sheet."
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#25D366] text-white font-bold text-xs uppercase tracking-wider rounded-sm hover:bg-[#20b858] transition-all shadow-sm no-underline"
+                    >
+                      Chat on WhatsApp (+91 9325034636)
+                    </a>
+                    <a
+                      href="tel:+917020664641"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-[#2C241B]/20 text-[#2C241B] font-semibold text-xs uppercase tracking-wider rounded-sm hover:bg-[#FAF9F8] transition-all no-underline"
+                    >
+                      Call Showroom (+91 7020664641)
+                    </a>
+                    <Link
+                      to="/contact/"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#2C241B] text-white font-semibold text-xs uppercase tracking-wider rounded-sm hover:bg-[#3D2C23] transition-all no-underline"
+                    >
+                      Submit In-Depth Inquiry
+                    </Link>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-black/5 text-[11px] text-[#2C241B]/60 space-y-1">
+                    <p>✓ Minimum Order Quantity from 10-15 sarees</p>
+                    <p>✓ Physical sample swatch courier available</p>
+                    <p>✓ Pan-India insured cargo & GST invoice</p>
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <h3 className="text-xl font-serif text-[var(--color-dark)] mb-6">
+                  {isWholesaleOrUniform
+                    ? "Sample Saree Swatches"
+                    : "Explore Collection"}
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {displayProducts.slice(0, 4).map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+                <div className="mt-6 text-center">
+                  <Link
+                    to="/shop/"
+                    className="inline-block bg-[var(--color-dark)] text-white px-6 py-3 rounded-sm text-sm uppercase tracking-widest font-medium hover:bg-[var(--color-dark)]/90 transition-colors"
+                  >
+                    View All Products
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

@@ -82,8 +82,8 @@ for (const guide of guidesMeta) {
     "headline": guide.title,
     "description": guide.description,
     "image": guide.image,
-    "author": { "@type": "Organization", "name": BUSINESS_INFO.name },
-    "publisher": { "@type": "Organization", "name": BUSINESS_INFO.name, "logo": { "@type": "ImageObject", "url": "https://mukeshsarees.com/images/logo.webp" } },
+    "author": { "@type": "Organization", "@id": "https://mukeshsarees.com/#organization", "name": BUSINESS_INFO.name },
+    "publisher": { "@type": "Organization", "@id": "https://mukeshsarees.com/#organization", "name": BUSINESS_INFO.name, "logo": { "@type": "ImageObject", "url": "https://mukeshsarees.com/images/logo.webp" } },
     "datePublished": guide.date,
     "dateModified": guide.lastUpdated
   };

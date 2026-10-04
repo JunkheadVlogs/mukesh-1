@@ -35,7 +35,8 @@ const traverse = (dir) => {
           hasError = true;
       }
       
-      if (!isPureClientRoute && content.match(/<div class="loading-spinner">/)) {
+      const rootMatch = content.match(/<div id="root">([\s\S]*?)<\/div>/);
+      if (!isPureClientRoute && rootMatch && rootMatch[1].includes('loading-spinner')) {
           console.error(`Validation Error: Loading placeholder still present in root container of ${fullPath}`);
           hasError = true;
       }
