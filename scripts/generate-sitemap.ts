@@ -45,6 +45,10 @@ async function generateSitemap() {
   addRoute("/about", "yearly", "0.7");
   addRoute("/contact", "monthly", "0.7");
   addRoute("/faqs", "monthly", "0.7");
+  addRoute("/reviews", "weekly", "0.8");
+  addRoute("/why-mukesh-saree-centre", "monthly", "0.8");
+  addRoute("/fabric-authenticity-and-care", "monthly", "0.8");
+  addRoute("/media", "monthly", "0.7");
   addRoute("/shipping-policy", "yearly", "0.4");
   addRoute("/return-policy", "yearly", "0.4");
   addRoute("/terms", "yearly", "0.3");

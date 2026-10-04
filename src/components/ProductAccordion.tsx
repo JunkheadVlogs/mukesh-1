@@ -1,6 +1,7 @@
 import { BUSINESS_INFO } from "../config/business";
-import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import React, { useState } from "react";
+import { Link } from "react-router";
+import { Plus, Minus, ExternalLink } from "lucide-react";
 import { Product } from "../store";
 
 export function ProductAccordion({ category, product }: { category?: string; product?: Product }) {
@@ -25,18 +26,49 @@ export function ProductAccordion({ category, product }: { category?: string; pro
     ? "Ideal for women who appreciate rich Indian textiles, brides-to-be building their trousseau, or anyone attending a festive or traditional gathering seeking a regal, put-together appearance."
     : "Perfect for the modern woman who values comfort without compromising on style. Great for office professionals, travelers, and women looking for chic, ready-to-wear everyday fashion.";
 
-  const panels = [
+  const panels: { title: string; content: React.ReactNode }[] = [
     {
       title: "Fabric Overview & Features",
-      content: `Fabric: ${fabricRaw}\n\nFeatures:\n${featuresList}`
+      content: (
+        <div>
+          <div className="whitespace-pre-wrap">{`Fabric: ${fabricRaw}\n\nFeatures:\n${featuresList}`}</div>
+          <div className="mt-2 pt-2 border-t border-black/5 flex items-center gap-1.5 text-[12px]">
+            <span className="text-black/60">Want detailed fabric & weave information?</span>
+            <Link to="/fabric-authenticity-and-care/" className="text-[#C8A96B] hover:text-[#9A7B3E] underline font-medium">
+              Read our Fabric Authenticity Guide →
+            </Link>
+          </div>
+        </div>
+      )
     },
     {
       title: "Why You'll Love It",
-      content: `${benefitsText}\n\nWho should buy: ${whoShouldBuy}`
+      content: (
+        <div>
+          <div className="whitespace-pre-wrap">{`${benefitsText}\n\nWho should buy: ${whoShouldBuy}`}</div>
+          <div className="mt-2 pt-2 border-t border-black/5 flex flex-wrap items-center gap-3 text-[12px]">
+            <Link to="/why-mukesh-saree-centre/" className="text-[#C8A96B] hover:text-[#9A7B3E] underline font-medium">
+              Why Mukesh Saree Centre Since 1978 →
+            </Link>
+            <Link to="/reviews/" className="text-[#C8A96B] hover:text-[#9A7B3E] underline font-medium">
+              Read Customer Reviews →
+            </Link>
+          </div>
+        </div>
+      )
     },
     {
       title: "Wash & Care Instructions",
-      content: "First wash strictly dry clean to lock in colors and preserve the fabric sheen. Subsequent washes can be gentle hand washes in cold water using a mild baby shampoo or specialized silk/cotton detergent. Do not wring or twist. Dry strictly in the shade to prevent sun bleaching."
+      content: (
+        <div>
+          <p className="m-0">First wash strictly dry clean to lock in colors and preserve the fabric sheen. Subsequent washes can be gentle hand washes in cold water using a mild baby shampoo or specialized silk/cotton detergent. Do not wring or twist. Dry strictly in the shade to prevent sun bleaching.</p>
+          <div className="mt-2 pt-2 border-t border-black/5 flex items-center gap-1.5 text-[12px]">
+            <Link to="/guides/saree-care-guide/" className="text-[#C8A96B] hover:text-[#9A7B3E] underline font-medium">
+              View Detailed Saree Care Guide →
+            </Link>
+          </div>
+        </div>
+      )
     },
   ];
 
@@ -65,17 +97,35 @@ export function ProductAccordion({ category, product }: { category?: string; pro
   panels.push(
     {
       title: "Shipping & Delivery",
-      content:
-        "Free shipping on orders. Standard delivery in 3–7 business days across India. Cash on Delivery available pan-India. Express delivery available for select pincodes — contact us on WhatsApp.",
+      content: (
+        <div>
+          <p className="m-0">Free shipping on orders over ₹499. Standard delivery in 3–7 business days across India. Cash on Delivery available pan-India. Express delivery available for select pincodes — contact us on WhatsApp.</p>
+          <div className="mt-2 pt-2 border-t border-black/5 text-[12px]">
+            <Link to="/shipping-policy/" className="text-[#C8A96B] hover:text-[#9A7B3E] underline font-medium">
+              View Shipping Policy →
+            </Link>
+          </div>
+        </div>
+      )
     },
     {
       title: "Returns & Exchange",
-      content:
-        `Easy 7-day returns on all unworn, unwashed items with original tags intact. Customised or stitched blouses are non-returnable. To initiate a return, WhatsApp us at ${BUSINESS_INFO.phone} with your order ID and photos. Refunds securely processed to the original payment method.`,
+      content: (
+        <div>
+          <p className="m-0">{`Easy 7-day returns on all unworn, unwashed items with original tags intact. Customised or stitched blouses are non-returnable. To initiate a return, WhatsApp us at ${BUSINESS_INFO.phone} with your order ID and photos. Refunds securely processed to the original payment method.`}</p>
+          <div className="mt-2 pt-2 border-t border-black/5 text-[12px]">
+            <Link to="/return-policy/" className="text-[#C8A96B] hover:text-[#9A7B3E] underline font-medium">
+              View Complete Return & Refund Policy →
+            </Link>
+          </div>
+        </div>
+      )
     },
     {
       title: "Frequently Asked Questions (FAQs)",
-      content: faqContent
+      content: (
+        <div className="whitespace-pre-wrap">{faqContent}</div>
+      )
     }
   );
 
@@ -108,7 +158,7 @@ export function ProductAccordion({ category, product }: { category?: string; pro
               <div
                 className="overflow-hidden transition-all duration-200"
               >
-                <div className="px-[12px] pb-[8px] pt-[2px] text-[#2C241B]/70 leading-relaxed text-[13px] whitespace-pre-wrap">
+                <div className="px-[12px] pb-[8px] pt-[2px] text-[#2C241B]/70 leading-relaxed text-[13px]">
                   {panel.content}
                 </div>
               </div>

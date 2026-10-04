@@ -22,6 +22,7 @@ import {
 import { useEffect, useRef, useState, useMemo, Fragment } from "react";
 import { Helmet } from "react-helmet-async";
 import { ProductDescription } from "./components/ProductDescription";
+import { ProductDetailsSection } from "./components/ProductDetailsSection";
 import { ProductSeoContent } from "./components/ProductSeoContent";
 import { ProductAccordion } from "./components/ProductAccordion";
 import { Link, useNavigate, useParams } from "react-router";
@@ -1522,6 +1523,11 @@ export default function ProductPage() {
               {/* Description */}
               <section className="product-info product-description-section pt-1 border-t border-[var(--color-border)] mt-1 mb-0 pb-0">
                 <ProductDescription description={product.description} product={product} />
+              </section>
+
+              {/* Factual Product Details & What You Receive */}
+              <section className="product-info mt-1 mb-1">
+                <ProductDetailsSection product={product} />
               </section>
 
               {/* Collapsible Accordion */}

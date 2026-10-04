@@ -30,6 +30,7 @@ const GuideIndex = lazy(() => import('./pages/GuideIndex'));
 const GuideDetail = lazy(() => import('./pages/GuideDetail'));
 const CustomerReviews = lazy(() => import('./pages/CustomerReviews'));
 const WhyMukeshSareeCentre = lazy(() => import('./pages/WhyMukeshSareeCentre'));
+const FabricAuthenticityAndCare = lazy(() => import('./pages/FabricAuthenticityAndCare'));
 const MediaCoverage = lazy(() => import('./pages/MediaCoverage'));
 const UniformSareeBulkOrders = lazy(() => import('./pages/UniformSareeBulkOrders'));
 const MalvikaSareeBuyingGuide = lazy(() => import('./pages/MalvikaSareeBuyingGuide'));
@@ -205,6 +206,7 @@ export default function App() {
             <Route path="reviews" element={<CustomerReviews />} />
             <Route path="customer-reviews" element={<CustomerReviews />} />
             <Route path="why-mukesh-saree-centre" element={<WhyMukeshSareeCentre />} />
+            <Route path="fabric-authenticity-and-care" element={<FabricAuthenticityAndCare />} />
             <Route path="media" element={<MediaCoverage />} />
             <Route path="uniform-saree-bulk-orders" element={<UniformSareeBulkOrders />} />
             <Route path="malvika-saree-buying-guide" element={<MalvikaSareeBuyingGuide />} />

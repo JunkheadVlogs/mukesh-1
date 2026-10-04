@@ -314,6 +314,48 @@ export default function CustomerReviews() {
             </div>
           </div>
 
+          {/* Helpful Navigation & Internal Trust Links */}
+          <div className="pt-4 border-t border-black/5 space-y-3">
+            <h3 className="text-base font-serif text-primary-950 font-semibold">
+              Explore Our Authentic Collections & Trust Guides
+            </h3>
+            <div className="flex flex-wrap gap-2 text-[12px]">
+              <Link to="/why-mukesh-saree-centre/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Why Mukesh Saree Centre
+              </Link>
+              <Link to="/fabric-authenticity-and-care/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Fabric Authenticity Guide
+              </Link>
+              <Link to="/media/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Media & Press Coverage
+              </Link>
+              <Link to="/linen-sarees-for-office-wear/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Office Linen Sarees
+              </Link>
+              <Link to="/chiffon-sarees-for-wedding-functions/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Wedding Chiffon Sarees
+              </Link>
+              <Link to="/yellow-sarees-for-haldi/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Yellow Sarees for Haldi
+              </Link>
+              <Link to="/saree-shop-in-nagpur/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Nagpur Showroom
+              </Link>
+              <Link to="/wholesale-sarees-for-boutiques/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Wholesale for Boutiques
+              </Link>
+              <Link to="/school-uniform-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                School Uniform Sarees
+              </Link>
+              <Link to="/return-policy/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Return Policy
+              </Link>
+              <Link to="/about/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                About Mukesh Saree Centre
+              </Link>
+            </div>
+          </div>
+
           {/* Official Contact & CTA */}
           <div className="pt-6 border-t border-black/5 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">

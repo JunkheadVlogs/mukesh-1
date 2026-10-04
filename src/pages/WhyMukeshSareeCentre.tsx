@@ -200,29 +200,35 @@ export default function WhyMukeshSareeCentre() {
               Discover Our Range & Helpful Guides
             </h3>
             <div className="flex flex-wrap gap-2 text-[12px]">
-              <Link to="/sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
-                Sarees Collection
+              <Link to="/fabric-authenticity-and-care/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Fabric Authenticity & Care Guide
               </Link>
-              <Link to="/sarees/linen-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
-                Linen Sarees
+              <Link to="/linen-sarees-for-office-wear/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Office Linen Sarees
               </Link>
-              <Link to="/sarees/cotton-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
-                Cotton Sarees
+              <Link to="/chiffon-sarees-for-wedding-functions/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Wedding Chiffon Sarees
               </Link>
-              <Link to="/sarees/silk-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
-                Silk Sarees
+              <Link to="/yellow-sarees-for-haldi/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Yellow Sarees for Haldi
               </Link>
-              <Link to="/malvika-saree-buying-guide/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
-                Malvika Saree Guide
+              <Link to="/saree-shop-in-nagpur/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Nagpur Showroom
               </Link>
-              <Link to="/uniform-saree-bulk-orders/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
-                Uniform Sarees Bulk
+              <Link to="/wholesale-sarees-for-boutiques/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Wholesale for Boutiques
               </Link>
-              <Link to="/wholesalesarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
-                Wholesale Saree Portal
+              <Link to="/school-uniform-sarees/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                School Uniform Sarees
               </Link>
               <Link to="/reviews/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Customer Reviews
+              </Link>
+              <Link to="/media/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Media & Press
+              </Link>
+              <Link to="/return-policy/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
+                Return Policy
               </Link>
               <Link to="/about/" className="px-3 py-1.5 bg-primary-50 text-primary-950 hover:bg-gold-500 hover:text-white transition-colors border border-black/5 rounded-sm">
                 Our About Us Story
