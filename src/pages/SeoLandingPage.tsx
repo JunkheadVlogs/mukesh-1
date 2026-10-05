@@ -2405,27 +2405,26 @@ export default function SeoLandingPage() {
 
   const pageData = effectiveSlug ? seoPagesData[effectiveSlug] : null;
 
-  if (!pageData) {
-    return <Navigate to="/shop/" replace />;
-  }
-
   const isWholesaleOrUniform =
     effectiveSlug.includes("wholesale") || effectiveSlug.includes("uniform");
 
   // Filter some relevant products from real inventory
-  const displayProducts = products
-    .filter((p) => {
-      if (p.isVariant || p.isHidden) return false;
-      if (pageData.customFilter) return pageData.customFilter(p);
-      if (pageData.filterCategory) {
-        return p.category.toLowerCase() === pageData.filterCategory.toLowerCase();
-      }
-      return true;
-    })
-    .slice(0, 12);
+  const displayProducts = pageData
+    ? products
+        .filter((p) => {
+          if (p.isVariant || p.isHidden) return false;
+          if (pageData.customFilter) return pageData.customFilter(p);
+          if (pageData.filterCategory) {
+            return p.category.toLowerCase() === pageData.filterCategory.toLowerCase();
+          }
+          return true;
+        })
+        .slice(0, 12)
+    : [];
 
   // Generate Combined Advanced Schemas dynamically
   const combinedSchema = useMemo(() => {
+    if (!pageData) return null;
     const graph: any[] = [];
 
     // 1. Breadcrumb Schema (For ALL SEO Landing Pages)
@@ -2579,6 +2578,10 @@ export default function SeoLandingPage() {
       }))
     };
   }, [pageData]);
+
+  if (!pageData) {
+    return <Navigate to="/shop/" replace />;
+  }
 
   return (
     <div className="bg-[#FAF9F8]">

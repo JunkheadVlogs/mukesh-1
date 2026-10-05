@@ -165,6 +165,40 @@ export default function GuideDetail() {
     };
   }, [headings, content]);
 
+  // Shop the Story dynamic curation based on guide categories
+  const relatedProducts = useMemo(() => {
+    if (!guide || !guide.productCategories || guide.productCategories.length === 0) {
+      return products.slice(0, 3);
+    }
+    const matched = products.filter(p => 
+      guide.productCategories.some(cat => 
+        p.category.toLowerCase().includes(cat.toLowerCase()) || 
+        cat.toLowerCase().includes(p.category.toLowerCase())
+      )
+    );
+    return matched.length > 0 ? matched.slice(0, 3) : products.slice(0, 3);
+  }, [guide?.productCategories]);
+
+  // Calculate reading time
+  const readingTime = useMemo(() => {
+    if (!content) return null;
+    const wordsPerMinute = 225;
+    const noOfWords = content.split(/\s+/).length;
+    const minutes = Math.ceil(noOfWords / wordsPerMinute);
+    return `${minutes} min read`;
+  }, [content]);
+
+  // Breadcrumbs element
+  const memoizedBreadcrumbs = useMemo(() => {
+    if (!guide) return null;
+    const items = [
+      { label: 'Home', path: '/' },
+      { label: 'Knowledge Hub', path: '/guides/' },
+      { label: guide.title }
+    ];
+    return <Breadcrumb items={items} />;
+  }, [guide?.title]);
+
   if (!guide) {
     return <Navigate to="/guides/" replace />;
   }
@@ -175,20 +209,6 @@ export default function GuideDetail() {
   const nextGuide = currentIndex < guidesMeta.length - 1 ? guidesMeta[currentIndex + 1] : null;
 
   const relatedGuides = guidesMeta.filter(g => guide.relatedSlugs.includes(g.slug));
-
-  // Shop the Story dynamic curation based on guide categories
-  const relatedProducts = useMemo(() => {
-    if (!guide.productCategories || guide.productCategories.length === 0) {
-      return products.slice(0, 3);
-    }
-    const matched = products.filter(p => 
-      guide.productCategories.some(cat => 
-        p.category.toLowerCase().includes(cat.toLowerCase()) || 
-        cat.toLowerCase().includes(p.category.toLowerCase())
-      )
-    );
-    return matched.length > 0 ? matched.slice(0, 3) : products.slice(0, 3);
-  }, [guide.productCategories]);
 
   // Generate Schema.org JSON-LD
   const schemaMarkup = {
@@ -271,15 +291,6 @@ export default function GuideDetail() {
     return cleaned;
   };
 
-  // Calculate reading time
-  const readingTime = useMemo(() => {
-    if (!content) return null;
-    const wordsPerMinute = 225;
-    const noOfWords = content.split(/\s+/).length;
-    const minutes = Math.ceil(noOfWords / wordsPerMinute);
-    return `${minutes} min read`;
-  }, [content]);
-
   // Social Sharing Logic
   const handleCopyLink = () => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -289,16 +300,6 @@ export default function GuideDetail() {
       });
     }
   };
-
-  // Breadcrumbs element
-  const memoizedBreadcrumbs = useMemo(() => {
-    const items = [
-      { label: 'Home', path: '/' },
-      { label: 'Knowledge Hub', path: '/guides/' },
-      { label: guide.title }
-    ];
-    return <Breadcrumb items={items} />;
-  }, [guide.title]);
 
   return (
     <>

@@ -218,6 +218,38 @@ app.get('/api/sys-metric.php', (_req: Request, res: Response) => {
   res.json({ status: 'healthy', uptime: process.uptime() });
 });
 
+// 7. Google Merchant Center Product Feed Endpoints
+const serveProductFeedXml = (_req: Request, res: Response) => {
+  res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+  res.setHeader('X-Robots-Tag', 'noindex');
+  const feedFile = path.resolve(process.cwd(), 'public', 'product-feed.xml');
+  const distFeedFile = path.resolve(process.cwd(), 'dist', 'product-feed.xml');
+  if (fs.existsSync(feedFile)) {
+    res.sendFile(feedFile);
+  } else if (fs.existsSync(distFeedFile)) {
+    res.sendFile(distFeedFile);
+  } else {
+    res.status(404).send('<!-- product-feed.xml not found -->');
+  }
+};
+
+const serveProductFeedCsv = (_req: Request, res: Response) => {
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('X-Robots-Tag', 'noindex');
+  const csvFile = path.resolve(process.cwd(), 'public', 'product-feed.csv');
+  const distCsvFile = path.resolve(process.cwd(), 'dist', 'product-feed.csv');
+  if (fs.existsSync(csvFile)) {
+    res.sendFile(csvFile);
+  } else if (fs.existsSync(distCsvFile)) {
+    res.sendFile(distCsvFile);
+  } else {
+    res.status(404).send('product-feed.csv not found');
+  }
+};
+
+app.get(['/product-feed.xml', '/api/product-feed.xml'], serveProductFeedXml);
+app.get(['/product-feed.csv', '/api/product-feed.csv'], serveProductFeedCsv);
+
 // ----------------------------------------------------
 // FRONTEND SERVING (DEV & PROD)
 // ----------------------------------------------------

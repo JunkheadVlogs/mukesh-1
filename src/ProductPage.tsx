@@ -145,6 +145,8 @@ export default function ProductPage() {
       : (product.stock ?? (product.sku === 'SAR-LIN-BRD-062' ? 9 : 9))
   ) : 9;
 
+  const isVipclub60Disallowed = product ? Boolean(product.disallowVIP60 || product.sku === 'SAR-CHN-RED-001' || product.id === 'p-sindoor-red-ajrakh-chanderi') : false;
+
   const storeCoupon = useStore((state) => state.appliedCoupon);
   const [couponInput, setCouponInput] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(storeCoupon);
@@ -155,23 +157,34 @@ export default function ProductPage() {
     const mappedCoupon = storeCoupon ? storeCoupon.trim().toUpperCase() : '';
     if (mappedCoupon && (mappedCoupon === 'VIP50' || mappedCoupon === 'VIPCLUB60' || mappedCoupon === 'VIP60' || mappedCoupon === 'VIBCLUB60')) {
       const normalized = (mappedCoupon === 'VIP60' || mappedCoupon === 'VIBCLUB60') ? 'VIPCLUB60' : mappedCoupon;
-      setAppliedCoupon(normalized);
-      setCouponMsg(normalized === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
-      setCouponInput(normalized);
+      if (normalized === 'VIPCLUB60' && isVipclub60Disallowed) {
+        setAppliedCoupon('VIP50');
+        setCouponMsg('VIP50 Applied Successfully');
+        setCouponInput('VIP50');
+      } else {
+        setAppliedCoupon(normalized);
+        setCouponMsg(normalized === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
+        setCouponInput(normalized);
+      }
     } else if (!storeCoupon) {
       setAppliedCoupon(null);
       setCouponMsg('');
       setCouponInput('');
     }
-  }, [storeCoupon]);
+  }, [storeCoupon, isVipclub60Disallowed]);
 
   const applyCoupon = () => {
     const code = couponInput.trim().toUpperCase();
     if (code === 'VIP50' || code === 'VIPCLUB60' || code === 'VIP60' || code === 'VIBCLUB60') {
+      const normalized = (code === 'VIP60' || code === 'VIBCLUB60') ? 'VIPCLUB60' : code;
+      if (normalized === 'VIPCLUB60' && isVipclub60Disallowed) {
+        setCouponError(true);
+        setCouponMsg('VIPCLUB60 coupon is not applicable to this product');
+        return;
+      }
       try {
         sessionStorage.removeItem('coupon_removed');
       } catch (e) {}
-      const normalized = (code === 'VIP60' || code === 'VIBCLUB60') ? 'VIPCLUB60' : code;
       setAppliedCoupon(normalized);
       setCouponError(false);
       setCouponMsg(normalized === 'VIP50' ? 'VIP50 Applied Successfully' : 'VIPCLUB60 Applied Successfully');
@@ -187,7 +200,10 @@ export default function ProductPage() {
   const mrpPrice = product ? (product.originalPrice || product.price * 2) : 0;
   const isCodAvailable = product ? (product.codAvailable !== false && product.sku !== 'SAR-LIN-BRD-062') : true;
   const currentCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
-  const discountRate = currentCoupon === 'VIP50' ? 0.50 : (currentCoupon === 'VIPCLUB60' || currentCoupon === 'VIP60' || currentCoupon === 'VIBCLUB60') ? 0.60 : 0.0;
+  const effectiveCoupon = (isVipclub60Disallowed && (currentCoupon === 'VIPCLUB60' || currentCoupon === 'VIP60' || currentCoupon === 'VIBCLUB60'))
+    ? 'VIP50'
+    : currentCoupon;
+  const discountRate = effectiveCoupon === 'VIP50' ? 0.50 : (effectiveCoupon === 'VIPCLUB60' || effectiveCoupon === 'VIP60' || effectiveCoupon === 'VIBCLUB60') ? 0.60 : 0.0;
   const standardDiscountedPrice = mrpPrice - Math.round(mrpPrice * discountRate);
   // For special promotional SKU SAR-LIN-BRD-062, price is fixed at promotional sale price (₹599)
   const finalPrice = product && !isCodAvailable ? product.price : standardDiscountedPrice;
@@ -516,7 +532,7 @@ export default function ProductPage() {
         size: selectedSize || "Standard",
         sku: product.sku || "N/A",
         color: product.color || "N/A",
-        couponUsed: appliedCoupon || 'None',
+        couponUsed: effectiveCoupon || 'None',
         source: 'Direct Order',
         paymentMethod: method === 'cod' ? 'COD' : 'Razorpay Online',
         status: method === 'cod' ? 'Pending COD' : 'Paid ✅',
@@ -541,7 +557,7 @@ export default function ProductPage() {
         state: { 
           orderId: newOrderId, 
           total: totalAmount, 
-          couponUsed: appliedCoupon || "VIP50",
+          couponUsed: effectiveCoupon || "VIP50",
           cart: [{
             ...product,
             quantity: quantity,
@@ -694,6 +710,24 @@ export default function ProductPage() {
     }
   };
 
+  const productImages =
+    product && product.images && product.images.length > 0
+      ? [...product.images]
+      : (product?.image ? [product.image] : []);
+  const totalMediaLength = productImages.length;
+
+  // Intelligent preloading of remaining gallery images to ensure instantaneous transition of main gallery on clicks or swipes
+  useEffect(() => {
+    if (productImages && productImages.length > 1) {
+      productImages.forEach((url, idx) => {
+        if (idx !== activeImageIndex && !isVideoUrl(url)) {
+          const img = new Image();
+          img.src = getImageSrc(url);
+        }
+      });
+    }
+  }, [productImages, activeImageIndex]);
+
   if (!product) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center bg-primary-50">
@@ -710,24 +744,6 @@ export default function ProductPage() {
 
   const isCoOrd = false;
   const sizes = product.availableSizes || ["M", "L", "XL", "XXL", "XXXL"];
-
-  const productImages =
-    product.images && product.images.length > 0
-      ? [...product.images]
-      : [product.image];
-  const totalMediaLength = productImages.length;
-
-  // Intelligent preloading of remaining gallery images to ensure instantaneous transition of main gallery on clicks or swipes
-  useEffect(() => {
-    if (productImages && productImages.length > 1) {
-      productImages.forEach((url, idx) => {
-        if (idx !== activeImageIndex && !isVideoUrl(url)) {
-          const img = new Image();
-          img.src = getImageSrc(url);
-        }
-      });
-    }
-  }, [productImages, activeImageIndex]);
 
   const handleShare = async () => {
     // Determine the share URL. If we are in the development environment,
@@ -817,14 +833,13 @@ export default function ProductPage() {
     description: cleanSEOText(product.description).substring(0, 300),
     ...(product.keywords ? { keywords: product.keywords } : {}),
     sku: product.sku || product.id,
-    mpn: product.sku || product.id,
     brand: {
       "@type": "Brand",
       name: "Mukesh Saree Centre",
     },
     category: product.category,
-    color: product.color,
-    material: product.fabric,
+    ...(product.color ? { color: product.color } : {}),
+    ...(product.fabric ? { material: product.fabric } : {}),
     offers: {
       "@type": "Offer",
       url: `https://mukeshsarees.com/product/${product.slug}/`,
@@ -850,21 +865,6 @@ export default function ProductPage() {
         shippingDestination: {
           "@type": "DefinedRegion",
           addressCountry: "IN"
-        },
-        deliveryTime: {
-          "@type": "ShippingDeliveryTime",
-          handlingTime: {
-            "@type": "QuantitativeValue",
-            minValue: 1,
-            maxValue: 2,
-            unitCode: "DAY"
-          },
-          transitTime: {
-            "@type": "QuantitativeValue",
-            minValue: 2,
-            maxValue: 5,
-            unitCode: "DAY"
-          }
         }
       },
       hasMerchantReturnPolicy: {
@@ -1988,7 +1988,7 @@ export default function ProductPage() {
                     <div className="flex justify-between items-center text-emerald-600 font-medium">
                       <span>Discount:</span>
                       <span>
-                        {!isCodAvailable ? "70% OFF" : ((currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") ? "60% OFF" : "50% OFF")}
+                        {!isCodAvailable ? "70% OFF" : ((effectiveCoupon === "VIPCLUB60" || effectiveCoupon === "VIBCLUB60") ? "60% OFF" : "50% OFF")}
                       </span>
                     </div>
                     <div className="flex justify-between items-center text-[#2C241B] font-bold mt-0.5 text-xs sm:text-sm">
@@ -2174,7 +2174,7 @@ export default function ProductPage() {
                             ✓ Applied: {appliedCoupon}
                           </span>
                           <span className="text-[8px] text-[#1E7E34] font-medium uppercase tracking-wide text-left">
-                            {(currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") ? "60% OFF ON MRP SUCCESSFULLY APPLIED" : "50% OFF ON MRP SUCCESSFULLY APPLIED"}
+                            {(effectiveCoupon === "VIPCLUB60" || effectiveCoupon === "VIBCLUB60") ? "60% OFF ON MRP SUCCESSFULLY APPLIED" : "50% OFF ON MRP SUCCESSFULLY APPLIED"}
                           </span>
                         </div>
                         <button
@@ -2196,7 +2196,7 @@ export default function ProductPage() {
                       </div>
                     )}
                     {couponError && (
-                      <p className="text-red-600 text-[10px] mt-1 text-left font-medium">✗ Invalid Coupon Code</p>
+                      <p className="text-red-600 text-[10px] mt-1 text-left font-medium">{couponMsg || "✗ Invalid Coupon Code"}</p>
                     )}
                   </div>
                 )}
@@ -2215,14 +2215,14 @@ export default function ProductPage() {
                     </div>
                   ) : (
                     <>
-                      {currentCoupon === "VIP50" && (
+                      {effectiveCoupon === "VIP50" && (
                         <div className="flex justify-between text-[#1E7E34]">
                           <span>VIP50 Applied</span>
                           <span className="font-bold">-{formatPrice(Math.round(mrpPrice * 0.50) * quantity)}</span>
                         </div>
                       )}
 
-                      {(currentCoupon === "VIPCLUB60" || currentCoupon === "VIBCLUB60") && (
+                      {(effectiveCoupon === "VIPCLUB60" || effectiveCoupon === "VIBCLUB60") && (
                         <div className="flex justify-between text-[#1E7E34]">
                           <span>VIPCLUB60 Applied</span>
                           <span className="font-bold">-{formatPrice(Math.round(mrpPrice * 0.60) * quantity)}</span>

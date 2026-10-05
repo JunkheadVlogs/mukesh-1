@@ -1,15 +1,15 @@
-import { useState, FormEvent } from "react";
-import { MapPin, Phone, Mail, MessageSquare } from "lucide-react";
+import React, { useState } from "react";
 import { SEO } from "./components/SEO";
 import { CONFIG } from "./config";
 import { BUSINESS_INFO } from "./config/business";
-import { trackLead } from "./tracking";
-import { sendLeadToSheets } from "./utils/googleSheets";
+import { trackContact } from "./tracking";
+import { submitGoogleSheet } from "./utils/googleSheets";
 import {
   formatMobileInput,
   normalizeMobileNumber,
   isValidIndianMobileNumber,
 } from "./utils/phoneValidation";
+import { MapPin, Phone, Mail, MessageSquare } from "lucide-react";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -17,14 +17,14 @@ export default function Contact() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [topic, setTopic] = useState("Saree Customization Inquiry");
-  const [submitting, setSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [requestId] = useState(
-    () => "REQ-" + Math.floor(100000 + Math.random() * 900000)
+    () => "REQ-" + Math.floor(1e5 + 9e5 * Math.random())
   );
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (submitting) return;
+    if (isSubmitting) return;
     setError("");
 
     const trimmedName = name.trim();
@@ -41,26 +41,22 @@ export default function Contact() {
       return;
     }
 
-    setSubmitting(true);
+    setIsSubmitting(true);
     try {
-      trackLead({ name: trimmedName, phone: normalizedPhone });
-    } catch {
-      // ignore
-    }
+      trackContact({ name: trimmedName, phone: normalizedPhone });
+    } catch {}
 
     try {
-      await sendLeadToSheets({
+      await submitGoogleSheet({
         name: trimmedName,
         phone: normalizedPhone,
         request: `[${topic}] ${trimmedMessage}`,
-        requestId: requestId,
+        requestId,
         source: "Contact Page",
       });
-    } catch {
-      // ignore
-    }
+    } catch {}
 
-    setSubmitting(false);
+    setIsSubmitting(false);
 
     const waText = encodeURIComponent(
       `Hi Mukesh Saree Centre!\n\n*Support Request ID:* ${requestId}\n*Name:* ${trimmedName}\n*Category:* ${topic}\n*Message:* ${trimmedMessage}`
@@ -111,7 +107,7 @@ export default function Contact() {
           <h1 className="text-3xl md:text-4xl font-serif text-primary-950 mb-2 tracking-wide uppercase">
             Mukesh Saree Centre
           </h1>
-          <div className="w-16 h-[1px] bg-gold-200 mx-auto mb-3"></div>
+          <div className="w-16 h-[1px] bg-gold-200 mx-auto mb-3" />
           <p className="max-w-md mx-auto text-primary-950/60 text-[14px] font-light leading-relaxed">
             Since 1978. Providing beautiful sarees, party-wear lehengas, and designer outfits.
           </p>
@@ -119,6 +115,7 @@ export default function Contact() {
 
         <div className="bg-white rounded-sm border border-black/5 p-6 md:p-8 shadow-sm space-y-6">
           <div className="flex flex-col md:flex-row gap-6 md:gap-10">
+            {/* Store Information */}
             <div className="flex-1 space-y-5 border-b md:border-b-0 md:border-r border-black/5 pb-6 md:pb-0 md:pr-10">
               <div className="flex items-start gap-4">
                 <MapPin className="text-gold-500 mt-1 flex-shrink-0" size={18} />
@@ -174,6 +171,7 @@ export default function Contact() {
               </div>
             </div>
 
+            {/* Contact Form */}
             <div className="flex-1 flex flex-col justify-center pt-2 md:pt-0">
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-gold-600">
@@ -223,7 +221,7 @@ export default function Contact() {
                     <select
                       value={topic}
                       onChange={(e) => setTopic(e.target.value)}
-                      className="w-full px-3 px-2 py-2 bg-neutral-50/50 border border-neutral-200 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all rounded-sm font-sans text-xs sm:text-sm text-neutral-900 shadow-sm cursor-pointer"
+                      className="w-full px-3 py-2 bg-neutral-50/50 border border-neutral-200 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all rounded-sm font-sans text-xs sm:text-sm text-neutral-900 shadow-sm cursor-pointer"
                     >
                       <option value="Saree Customization Inquiry">Saree Customization Inquiry</option>
                       <option value="Order Status & Tracking">Order Status & Tracking</option>
@@ -256,28 +254,13 @@ export default function Contact() {
 
                   <button
                     type="submit"
-                    disabled={submitting}
+                    disabled={isSubmitting}
                     className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-medium text-[13px] tracking-wide uppercase rounded-sm py-3 transition-transform hover:scale-[1.01] active:scale-[0.99] shadow-sm font-sans cursor-pointer mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    {submitting ? (
-                      <svg
-                        className="animate-spin h-4 w-4 text-white"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                        />
+                    {isSubmitting ? (
+                      <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                       </svg>
                     ) : (
                       <svg viewBox="0 0 24 24" fill="currentColor" className="w-4.5 h-4.5">
@@ -288,7 +271,7 @@ export default function Contact() {
                         />
                       </svg>
                     )}
-                    {submitting ? "Submitting query..." : "Send Message on WhatsApp"}
+                    {isSubmitting ? "Submitting query..." : "Send Message on WhatsApp"}
                   </button>
                 </form>
               </div>

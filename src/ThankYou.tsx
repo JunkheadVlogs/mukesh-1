@@ -106,13 +106,16 @@ export default function ThankYou() {
 
   const calculatedTotal = cart.reduce((acc: number, item: any) => {
     const mrp = item.originalPrice || item.price * 2;
+    const isVIP60Disallowed = item.disallowVIP60 || item.sku === 'SAR-CHN-RED-001' || item.id === 'p-sindoor-red-ajrakh-chanderi';
     let discountRate = 0.0;
-    if (activeCouponOnPage === "VIP50") {
+    if (activeCouponOnPage === "VIP50" || (isVIP60Disallowed && (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60"))) {
       discountRate = 0.50;
     } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60") {
       discountRate = 0.60;
     }
-    const calculatedPrice = mrp - Math.round(mrp * discountRate);
+    const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+      ? item.price
+      : mrp - Math.round(mrp * discountRate);
     return acc + calculatedPrice * (item.quantity || 1);
   }, 0);
 
@@ -259,13 +262,16 @@ export default function ThankYou() {
     // Build cart items rows
     const itemsHtml = printableCart.map((item: any) => {
       const mrp = item.originalPrice || item.price * 2;
+      const isVIP60Disallowed = item.disallowVIP60 || item.sku === 'SAR-CHN-RED-001' || item.id === 'p-sindoor-red-ajrakh-chanderi';
       let discountRate = 0.0;
-      if (activeCouponOnPage === "VIP50") {
+      if (activeCouponOnPage === "VIP50" || (isVIP60Disallowed && (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60"))) {
         discountRate = 0.50;
       } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60") {
         discountRate = 0.60;
       }
-      const calculatedPrice = mrp - Math.round(mrp * discountRate);
+      const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+        ? item.price
+        : mrp - Math.round(mrp * discountRate);
       const priceVal = calculatedPrice;
       const qtyVal = item.quantity || 1;
       const totalVal = priceVal * qtyVal;
@@ -900,13 +906,16 @@ export default function ThankYou() {
               <tbody className="divide-y divide-[#1A0A00]/5">
                 {printableCart.map((item: any, idx: number) => {
                   const mrp = item.originalPrice || item.price * 2;
+                  const isVIP60Disallowed = item.disallowVIP60 || item.sku === 'SAR-CHN-RED-001' || item.id === 'p-sindoor-red-ajrakh-chanderi';
                   let discountRate = 0.0;
-                  if (activeCouponOnPage === "VIP50") {
+                  if (activeCouponOnPage === "VIP50" || (isVIP60Disallowed && (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60"))) {
                     discountRate = 0.50;
-                  } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIBCLUB60") {
+                  } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60") {
                     discountRate = 0.60;
                   }
-                  const calculatedPrice = mrp - Math.round(mrp * discountRate);
+                  const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+                    ? item.price
+                    : mrp - Math.round(mrp * discountRate);
                   return (
                     <tr key={idx} className="print-avoid-break">
                       <td className="py-2.5 px-2 flex items-center gap-3">

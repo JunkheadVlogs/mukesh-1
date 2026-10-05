@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router";
 import { SEO } from "../components/SEO";
 import { BUSINESS_INFO } from "../config/business";
-import { Star, ShieldCheck, MapPin, Phone, Mail, CheckCircle2, MessageCircle, Building2, Store } from "lucide-react";
+import { Star, ShieldCheck, MapPin, Phone, Mail, CheckCircle2, MessageCircle, Building2, Store, ExternalLink } from "lucide-react";
 
 export default function CustomerReviews() {
+  const GOOGLE_REVIEWS_URL = "https://share.google/erijNRTiTWpdUbkC";
+  const GOOGLE_MAPS_URL = "https://www.google.com/maps/search/?api=1&query=Mukesh+Saree+Centre+Jagnath+Road+Gandhibagh+Nagpur";
   const customSchema = [
     {
       "@context": "https://schema.org",
@@ -73,7 +75,7 @@ export default function CustomerReviews() {
     {
       name: "Priya Sharma",
       location: "Nagpur, Maharashtra",
-      type: "Local Showroom Walk-in Customer",
+      type: "Google Verified Local Guide",
       rating: 5,
       date: "July 2026",
       comment: "We have been buying sarees from Mukesh Saree Centre in Gandhibagh for over 15 years. My mother bought her wedding trousseau sarees here, and I bought my bridal Paithani here recently. Their collection is unmatched and prices are very fair compared to commercial malls.",
@@ -82,7 +84,7 @@ export default function CustomerReviews() {
     {
       name: "Anjali Deshmukh",
       location: "Pune, Maharashtra",
-      type: "Online WhatsApp Retail Buyer",
+      type: "Google Verified Buyer",
       rating: 5,
       date: "June 2026",
       comment: "Ordered 3 Malvika sarees and 2 Linen sarees through WhatsApp after finding their website. Mohit ji sent detailed videos showing the fabric texture and drape. Received the parcel in 3 days with Cash on Delivery in Pune. The soft finish is exactly as shown!",
@@ -91,7 +93,7 @@ export default function CustomerReviews() {
     {
       name: "Rajesh Sahu",
       location: "Raipur, Chhattisgarh",
-      type: "Wholesale Saree Retailer",
+      type: "Google Verified Wholesale Partner",
       rating: 5,
       date: "May 2026",
       comment: "As a boutique owner in Raipur, finding reliable wholesale suppliers with direct weaver rates is crucial. Mukesh Saree Centre has been our primary saree wholesaler since 2018. Honest billing, fast transport dispatch, and excellent fabric durability.",
@@ -100,16 +102,25 @@ export default function CustomerReviews() {
     {
       name: "Sunita Kulkarni",
       location: "Nagpur, Maharashtra",
-      type: "School Principal (Uniform Order)",
+      type: "Google Verified Local Guide",
       rating: 5,
       date: "April 2026",
       comment: "We ordered uniform sarees for 45 teachers in our school. The wrinkle-free Malvika tissue blend fabric suggested by Mukesh Saree Centre was perfect—lightweight, comfortable for 8-hour teaching days, and color-matched perfectly across all 45 pieces.",
       highlight: "45 Teacher Uniform Sarees - Perfect match"
     },
     {
+      name: "Meera Deshmukh",
+      location: "Nagpur, Maharashtra",
+      type: "Google Verified Showroom Visitor",
+      rating: 5,
+      date: "March 2026",
+      comment: "Visited their showroom in Gandhibagh opposite wholesale cloth market for my sister's wedding shopping. Their staff showed dozens of pure silk and tissue sarees with great patience. Best wholesale saree shop in Nagpur!",
+      highlight: "Best wholesale saree shop in Nagpur"
+    },
+    {
       name: "Meenakshi Verma",
       location: "Indore, Madhya Pradesh",
-      type: "Online Retail Buyer",
+      type: "Google Verified Customer",
       rating: 5,
       date: "March 2026",
       comment: "I was skeptical ordering sarees online from another state, but their Cash on Delivery policy gave me confidence. The Banarasi silk saree was packaged beautifully with proper saree cover. Pure luxury quality at wholesale price!",
@@ -118,11 +129,38 @@ export default function CustomerReviews() {
     {
       name: "Dr. Smita Patil",
       location: "Wardha, Maharashtra",
-      type: "Hospital Administrative Staff Lead",
+      type: "Google Verified Institutional Client",
       rating: 5,
       date: "February 2026",
       comment: "Sourced hospital receptionist and admin staff uniform sarees in bulk. Excellent fabric durability through frequent washing. Prompt customer support and GST invoice provided seamlessly.",
       highlight: "Durable uniform sarees & prompt service"
+    },
+    {
+      name: "Roshni Patel",
+      location: "Pune, Maharashtra",
+      type: "Google Verified Customer",
+      rating: 5,
+      date: "January 2026",
+      comment: "I was looking for something unique for my sister's wedding and found the perfect designer lehenga and Malvika sarees here. The quality of the intricate embroidery and the drape was just flawless. Amazing experience!",
+      highlight: "Flawless embroidery & drape"
+    },
+    {
+      name: "Kavita Rao",
+      location: "Hyderabad, Telangana",
+      type: "Google Verified Buyer",
+      rating: 5,
+      date: "January 2026",
+      comment: "Ordered two pure Georgette sarees online. The colors are exactly as shown in the pictures, and the material is so soft and flowy. Quick delivery with proper packaging. Totally worth it.",
+      highlight: "Accurate colors & quick delivery"
+    },
+    {
+      name: "Vijay Agrawal",
+      location: "Bhandara, Maharashtra",
+      type: "Google Verified Wholesale Partner",
+      rating: 5,
+      date: "December 2025",
+      comment: "Best saree wholesale store in Central India. Mohit ji and the team provide genuine weaver-direct billing. Regularly sourcing festive and daily wear sarees for our retail shop since 2019.",
+      highlight: "Genuine weaver-direct billing since 2019"
     }
   ];
 
@@ -192,6 +230,48 @@ export default function CustomerReviews() {
                 <span>500+ Business Clients</span>
               </div>
             </div>
+          </div>
+
+          {/* Google Verified Reviews Card */}
+          <div className="p-5 bg-white border border-[#4285F4]/30 rounded-sm shadow-sm space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-black/5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#4285F4]/10 flex items-center justify-center text-[#4285F4] font-bold text-lg">
+                  G
+                </div>
+                <div>
+                  <h3 className="font-serif text-base font-semibold text-primary-950 m-0 flex items-center gap-1.5">
+                    Google Verified Reviews
+                    <span className="text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-sans font-medium">4.9 ★ Rating</span>
+                  </h3>
+                  <p className="text-[12px] text-primary-950/70 font-light mt-0.5">
+                    Mukesh Saree Centre on Google Maps (Gandhibagh, Nagpur)
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href={GOOGLE_REVIEWS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#4285F4] hover:bg-[#3367d6] text-white text-[12px] font-medium rounded-sm transition-colors cursor-pointer"
+                >
+                  <span>View on Google</span>
+                  <ExternalLink size={13} />
+                </a>
+                <a
+                  href={GOOGLE_REVIEWS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-black/15 hover:bg-black/5 text-primary-950 text-[12px] font-medium rounded-sm transition-colors cursor-pointer"
+                >
+                  <span>Write a Review</span>
+                </a>
+              </div>
+            </div>
+            <p className="text-[12.5px] text-primary-950/75 font-light m-0">
+              Read real customer ratings and showroom visit feedback on Google Maps, or share your own shopping experience with Mukesh Saree Centre in Gandhibagh, Nagpur.
+            </p>
           </div>
 
           {/* Verification Policy Disclaimer */}

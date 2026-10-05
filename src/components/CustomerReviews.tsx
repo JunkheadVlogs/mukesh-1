@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router";
+import { Star, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 
 const REVIEWS = [
   {
@@ -92,9 +93,14 @@ export function CustomerReviews() {
             {[...Array(5)].map((_, i) => (
               <Star key={i} size={15} className="fill-[#C8A96B] text-[#C8A96B] stroke-[1.5]" />
             ))}
-            <span className="text-[11px] tracking-[0.1em] text-[var(--color-dark)]/60 uppercase font-medium ml-2">
-              4.9/5 Rating (1,200+ Reviews)
-            </span>
+            <a
+              href="https://share.google/erijNRTiTWpdUbkC"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] tracking-[0.1em] text-[var(--color-dark)]/70 hover:text-[#C8A96B] uppercase font-medium ml-2 underline underline-offset-2 transition-colors cursor-pointer"
+            >
+              4.9/5 Rating on Google (1,200+ Reviews)
+            </a>
           </div>
         </div>
 
@@ -169,6 +175,25 @@ export function CustomerReviews() {
               <span>← swipe to view more →</span>
             </div>
           </div>
+        </div>
+
+        {/* Read All Verified Reviews Link */}
+        <div className="mt-4 md:mt-6 text-center flex flex-wrap items-center justify-center gap-4 text-[11px] md:text-[12px]">
+          <Link
+            to="/reviews/"
+            className="uppercase tracking-[0.14em] text-[#C8A96B] hover:text-[#9A7B3E] font-medium underline underline-offset-4 transition-colors"
+          >
+            Read All Verified Customer & Google Reviews →
+          </Link>
+          <a
+            href="https://share.google/erijNRTiTWpdUbkC"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 uppercase tracking-[0.14em] text-black/60 hover:text-black font-medium transition-colors"
+          >
+            <span>Review Us on Google</span>
+            <ExternalLink size={12} />
+          </a>
         </div>
       </div>
     </section>

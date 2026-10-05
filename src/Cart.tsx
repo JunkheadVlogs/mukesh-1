@@ -11,6 +11,8 @@ export default function Cart() {
   const { cart, removeFromCart, updateQuantity, cartTotal, appliedCoupon } =
     useStore();
   const navigate = useNavigate();
+  const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
 
   useEffect(() => {
     // Preload Razorpay script on Cart page for faster checkout
@@ -80,16 +82,15 @@ export default function Cart() {
     );
   }
 
-  const [couponCode, setCouponCode] = useState("");
-  const [couponError, setCouponError] = useState("");
-
   const subtotalMRP = cart.reduce((total, item) => total + (item.originalPrice || item.price * 2) * item.quantity, 0);
   const activeCoupon = appliedCoupon ? appliedCoupon.trim().toUpperCase() : null;
 
-  const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
-  const hasPromotionalItem = cart.some(item => item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062');
+  const hasPromotionalItem = cart.some(item => item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062' || item.disallowVIP60 || item.sku === 'SAR-CHN-RED-001' || item.id === 'p-sindoor-red-ajrakh-chanderi');
   const total = cart.reduce((sum, item) => {
     const mrp = item.originalPrice || item.price * 2;
+    const isVIP60Disallowed = item.disallowVIP60 || item.sku === 'SAR-CHN-RED-001' || item.id === 'p-sindoor-red-ajrakh-chanderi';
+    const itemCoupon = (isVIP60Disallowed && (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60")) ? "VIP50" : activeCoupon;
+    const discountRate = (itemCoupon === "VIPCLUB60" || itemCoupon === "VIP60" || itemCoupon === "VIBCLUB60") ? 0.60 : 0.50;
     const standardPrice = mrp - Math.round(mrp * discountRate);
     const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
       ? item.price
@@ -104,10 +105,15 @@ export default function Cart() {
     if (!code) return;
 
     if (code === "VIP50" || code === "VIPCLUB65" || code === "VIPCLUB60" || code === "VIP60" || code === "VIBCLUB60") {
+      const normalizedCode = (code === "VIP60" || code === "VIBCLUB60") ? "VIPCLUB60" : code;
+      const allItemsDisallowVIP60 = cart.length > 0 && cart.every(item => item.disallowVIP60 || item.sku === 'SAR-CHN-RED-001' || item.id === 'p-sindoor-red-ajrakh-chanderi');
+      if (normalizedCode === "VIPCLUB60" && allItemsDisallowVIP60) {
+        setCouponError("VIPCLUB60 coupon is not applicable to items in your cart");
+        return;
+      }
       try {
         sessionStorage.removeItem('coupon_removed');
       } catch (e) {}
-      const normalizedCode = (code === "VIP60" || code === "VIBCLUB60") ? "VIPCLUB60" : code;
       useStore.getState().applyCoupon(normalizedCode);
       setCouponCode("");
       setCouponError("");
@@ -141,7 +147,9 @@ export default function Cart() {
           <div className="lg:col-span-8 space-y-3.5 sm:space-y-6 md:space-y-8">
             {cart.map((item) => {
               const mrp = item.originalPrice || item.price * 2;
-              const discountRate = (activeCoupon === "VIPCLUB60" || activeCoupon === "VIBCLUB60") ? 0.60 : 0.50;
+              const isVIP60Disallowed = item.disallowVIP60 || item.sku === 'SAR-CHN-RED-001' || item.id === 'p-sindoor-red-ajrakh-chanderi';
+              const itemCoupon = (isVIP60Disallowed && (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60")) ? "VIP50" : activeCoupon;
+              const discountRate = (itemCoupon === "VIPCLUB60" || itemCoupon === "VIBCLUB60") ? 0.60 : 0.50;
               const standardPrice = mrp - Math.round(mrp * discountRate);
               const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
                 ? item.price

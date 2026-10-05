@@ -195,6 +195,34 @@ app.get("/api/health", (_req, res) => {
 app.get("/api/sys-metric.php", (_req, res) => {
   res.json({ status: "healthy", uptime: process.uptime() });
 });
+var serveProductFeedXml = (_req, res) => {
+  res.setHeader("Content-Type", "application/xml; charset=utf-8");
+  res.setHeader("X-Robots-Tag", "noindex");
+  const feedFile = import_path.default.resolve(process.cwd(), "public", "product-feed.xml");
+  const distFeedFile = import_path.default.resolve(process.cwd(), "dist", "product-feed.xml");
+  if (import_fs.default.existsSync(feedFile)) {
+    res.sendFile(feedFile);
+  } else if (import_fs.default.existsSync(distFeedFile)) {
+    res.sendFile(distFeedFile);
+  } else {
+    res.status(404).send("<!-- product-feed.xml not found -->");
+  }
+};
+var serveProductFeedCsv = (_req, res) => {
+  res.setHeader("Content-Type", "text/csv; charset=utf-8");
+  res.setHeader("X-Robots-Tag", "noindex");
+  const csvFile = import_path.default.resolve(process.cwd(), "public", "product-feed.csv");
+  const distCsvFile = import_path.default.resolve(process.cwd(), "dist", "product-feed.csv");
+  if (import_fs.default.existsSync(csvFile)) {
+    res.sendFile(csvFile);
+  } else if (import_fs.default.existsSync(distCsvFile)) {
+    res.sendFile(distCsvFile);
+  } else {
+    res.status(404).send("product-feed.csv not found");
+  }
+};
+app.get(["/product-feed.xml", "/api/product-feed.xml"], serveProductFeedXml);
+app.get(["/product-feed.csv", "/api/product-feed.csv"], serveProductFeedCsv);
 async function startServer() {
   if (!isProduction) {
     const { createServer } = await import("vite");

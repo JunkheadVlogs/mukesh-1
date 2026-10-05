@@ -3117,6 +3117,60 @@ Wear with gold chandbalis and a neat high bun to accentuate the embellished neck
     rating: 4.9,
   },
   {
+    id: "p-sindoor-red-ajrakh-chanderi",
+    sku: "SAR-CHN-RED-001",
+    name: "Sindoor Red Ajrakh Print Chanderi Saree with Hand Kaatha Work",
+    tagline: "Festive Pure Chanderi Cotton with Hand Kaatha Embroidery",
+    slug: "sindoor-red-ajrakh-print-chanderi-saree-hand-kaatha-work",
+    metaTitle: "Sindoor Red Ajrakh Chanderi Saree | Mukesh Saree Centre",
+    metaDescription: "Shop Sindoor Red Ajrakh print Chanderi cotton saree with hand Kaatha embroidery at ₹2,999. Perfect for Karva Chauth & Diwali. Free shipping & COD.",
+    price: 2999,
+    originalPrice: 5999,
+    disallowVIP60: true,
+    availableSizes: ["Free Size"],
+    image: "https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296",
+    images: [
+      "https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296",
+      "https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-2_2100x.webp?updatedAt=1791135900570"
+    ],
+    stock: 15,
+    category: "Sarees",
+    fabric: "Pure Chanderi Cotton",
+    color: "Sindoor Red",
+    blouseDetails: "Running Pure Chanderi Blouse with Matching Kaatha Work (1 Meter)",
+    isNew: true,
+    isTrending: true,
+    keywords: "sindoor red saree, ajrakh saree, chanderi saree, ajrakh print chanderi saree, hand kaatha work saree, karwa chauth saree, diwali saree, wedding saree, festive saree, chanderi cotton saree, pure chanderi saree",
+    description: `A festive-ready saree blending traditional Ajrakh hand block printing with intricate hand Kaatha embroidery on pure Chanderi cotton, finished with elegant sequin detailing and cotton tassels on the pallu. Comes with a running Chanderi blouse featuring matching Kaatha work — ideal for Karva Chauth, Diwali, weddings, and festive family occasions.
+
+**HIGHLIGHTS:**
+• Pure Chanderi Cotton Fabric
+• Authentic Ajrakh Hand Block Print
+• Intricate Hand Kaatha Embroidery
+• Elegant Sequin Detailing
+• Beautiful Cotton Tassels on Pallu
+• Running Chanderi Blouse with Kaatha Work
+
+**SPECIFICATIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Length: 1 Meter
+• Fabric: Pure Chanderi Cotton
+• Work: Hand Block Ajrakh Print, Hand Kaatha Embroidery, Sequin Detailing
+
+**OCCASIONS:**
+• Karva Chauth
+• Diwali
+• Weddings
+• Family Functions
+• Festive Wear
+
+**CARE INSTRUCTIONS:**
+Dry clean recommended to preserve the hand block Ajrakh print and delicate Kaatha embroidery work.`,
+    rating: 4.9,
+    reviewsCount: 0,
+    reviews: []
+  },
+  {
     id: "p-test-payment",
     sku: "TST-PAY-001",
     name: "Payment Test Product",
