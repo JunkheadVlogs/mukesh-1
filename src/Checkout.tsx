@@ -20,17 +20,7 @@ import {
 import { CONFIG, submitToGoogleSheets, getWhatsAppNumber, getApiUrl } from "./config";
 import { sendOrderToSheets } from "./utils/googleSheets";
 import { trackInitiateCheckout, updateTrackerUserData } from "./tracking";
-
-const loadRazorpay = () => {
-  return new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.defer = true;
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-};
+import { loadRazorpay } from "./utils/razorpay";
 
 export default function Checkout() {
   const { cart, cartTotal, clearCart, appliedCoupon, applyCoupon, reduceStock } = useStore();
@@ -361,7 +351,7 @@ export default function Checkout() {
           // Ensure Razorpay script is loaded dynamically
           const sdkLoaded = await loadRazorpay();
           if (!sdkLoaded || !(window as any).Razorpay) {
-            throw new Error("Razorpay SDK failed to load. Please check your internet connection and try again.");
+            throw new Error("Unable to load secure payment gateway. Please check your internet connection or choose Cash on Delivery.");
           }
 
           // Create the order on the server
@@ -796,7 +786,10 @@ export default function Checkout() {
 
                   {/* Razorpay Online Payment */}
                   <div
-                    onClick={() => setPaymentMethod("online")}
+                    onClick={() => {
+                      setPaymentMethod("online");
+                      loadRazorpay().catch(() => {});
+                    }}
                     className="payment-option transition-all p-2.5 sm:p-4 rounded-sm cursor-pointer hover:border-gold-500/40"
                     style={{
                       border: paymentMethod === "online" ? "2px solid #C9A84C" : "1px solid rgba(0, 0, 0, 0.1)",
@@ -809,7 +802,10 @@ export default function Checkout() {
                         name="payment_method"
                         value="online"
                         checked={paymentMethod === "online"}
-                        onChange={() => setPaymentMethod("online")}
+                        onChange={() => {
+                          setPaymentMethod("online");
+                          loadRazorpay().catch(() => {});
+                        }}
                         style={{
                           width: "16px",
                           height: "16px",

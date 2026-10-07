@@ -1,7 +1,7 @@
 import { BUSINESS_INFO } from "../config/business";
 import React, { useState } from "react";
 import { Link } from "react-router";
-import { Plus, Minus, ExternalLink } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import { Product } from "../store";
 
 export function ProductAccordion({ category, product }: { category?: string; product?: Product }) {
@@ -12,13 +12,6 @@ export function ProductAccordion({ category, product }: { category?: string; pro
   };
 
   const isSaree = category?.toLowerCase().includes("saree") || product?.name?.toLowerCase().includes("saree") || true;
-  
-  const fabricRaw = product?.fabric || "Premium Blended Fabric";
-  const cat = category || "Sarees";
-  
-  const featuresList = isSaree
-    ? "• 5.5 Meter premium unstitched drape\n• 1 Meter matching unstitched blouse piece\n• Authentic weaving and rich border design\n• Lightweight and breathable for all-day comfort"
-    : "• Highly breathable and skin-friendly natural fabrics\n• Flattering contemporary cuts and fits\n• Durable stitching for everyday elegance\n• Easy to maintain and wrinkle-resistant blends";
 
   const benefitsText = "Experience the perfect balance of heritage and comfort. Our meticulously crafted designs ensure you look effortlessly stylish while enjoying all-day breathability. This garment is an investment in timeless fashion that won't fade with changing seasons.";
   
@@ -27,20 +20,6 @@ export function ProductAccordion({ category, product }: { category?: string; pro
     : "Perfect for the modern woman who values comfort without compromising on style. Great for office professionals, travelers, and women looking for chic, ready-to-wear everyday fashion.";
 
   const panels: { title: string; content: React.ReactNode }[] = [
-    {
-      title: "Fabric Overview & Features",
-      content: (
-        <div>
-          <div className="whitespace-pre-wrap">{`Fabric: ${fabricRaw}\n\nFeatures:\n${featuresList}`}</div>
-          <div className="mt-2 pt-2 border-t border-black/5 flex items-center gap-1.5 text-[12px]">
-            <span className="text-black/60">Want detailed fabric & weave information?</span>
-            <Link to="/fabric-authenticity-and-care/" className="text-[#C8A96B] hover:text-[#9A7B3E] underline font-medium">
-              Read our Fabric Authenticity Guide →
-            </Link>
-          </div>
-        </div>
-      )
-    },
     {
       title: "Why You'll Love It",
       content: (
@@ -74,24 +53,28 @@ export function ProductAccordion({ category, product }: { category?: string; pro
 
   if (isSaree) {
     panels.push({
-      title: "Size, Fit & Blouse Details",
+      title: "Draping & Styling Advice",
       content:
-        "All our sarees are standard 5.5 meters with an additional 1 meter unstitched blouse piece unless stated otherwise. Suitable for all draping styles — Nivi, Gujarati, Nauvari, Bengali. Need help draping or blouse stitching? WhatsApp us or visit our Nagpur store."
+        "Universally flattering drape suitable for all traditional and contemporary styles — Nivi, Gujarati, Nauvari, Bengali, and Seedha Pallu. Pairs effortlessly with classic contrast blouses, designer cuts, or statement jewelry. Need personal styling guidance or draping tips? Reach out to our Nagpur boutique team on WhatsApp."
+    });
+  } else {
+    panels.push({
+      title: "Fit & Styling Advice",
+      content:
+        "Designed for all-day comfort with a contemporary tailored fit. Perfectly complemented by statement jewelry and festive footwear. Reach out to our team on WhatsApp if you need sizing or styling guidance."
     });
   }
 
   const productName = product?.name || "saree";
-  const productFabric = product?.fabric || "pure fabric";
-  const isCod = product?.codAvailable !== false;
 
   const faqContent = product?.faqs && product.faqs.length > 0
     ? product.faqs.map((f) => `Q: ${f.question}\nA: ${f.answer}`).join("\n\n")
     : [
-    `Q: Is the color of the ${productName} exactly as pictured?\nA: We ensure 95%+ color fidelity under balanced studio lighting. Very slight variations might occur across mobile screens, but the true elegance, weave, and depth of the ${productFabric} remain true to the visuals.`,
-    `Q: Is Cash on Delivery (COD) available for this item?\nA: ${isCod ? "Yes, Cash on Delivery is supported across 25,000+ postal pincodes in India. You can inspect the parcel and pay upon doorstep arrival." : "This promotional direct-from-weaver piece is offered at a special discount for prepaid orders only."}`,
-    `Q: Does this include a matching blouse piece?\nA: ${isSaree ? "Yes, each saree comes with a matching unstitched blouse piece (approx. 0.8 to 1.0 meter). It can be tailored in your preferred neck, sleeve, and back design." : "Please refer to the detailed size and fit specifications above."}`,
-    `Q: What are the wash and care guidelines for this ${productFabric}?\nA: Professional dry cleaning is strongly recommended for the first wash to set the weave and color brilliance. Subsequent washes should be gentle cold hand washes with mild liquid detergent. Never bleach, wring, or dry in direct harsh sunlight.`,
-    `Q: How authentic is the fabric quality from ${BUSINESS_INFO.name}?\nA: Founded in 1978 in Gandhibagh, Nagpur, ${BUSINESS_INFO.name} upholds a 46-year heritage of weaver-direct trust. Every single garment undergoes hand inspection for weave density, finish, and durability before dispatch.`
+    `Q: Is the color of the ${productName} exactly as pictured?\nA: We ensure 95%+ color fidelity under balanced studio lighting. Very slight variations might occur across mobile screens, but the true elegance, weave, and depth remain true to the visuals.`,
+    `Q: How fast will my order be dispatched?\nA: Orders are typically processed and dispatched within 24 to 48 hours from our Nagpur facility with real-time tracking updates sent via SMS and WhatsApp.`,
+    `Q: Do you offer wholesale or bulk discounts for this product?\nA: Yes, we cater to boutique owners and bulk buyers. Please reach out to our wholesale department via our Contact Us page or WhatsApp for specialized pricing.`,
+    `Q: What do I do if I need transit assistance or receive a damaged item?\nA: While rare, every parcel is sealed with a tamper-evident dispatch seal. If you notice any damage, share an unboxing video via WhatsApp within 24 hours of delivery, and we will promptly arrange a swift replacement or refund.`,
+    `Q: How authentic is the fabric quality from ${BUSINESS_INFO.name}?\nA: Founded in 1978 in Gandhibagh, Nagpur, ${BUSINESS_INFO.name} upholds a 46-year heritage of weaver-direct trust. Every single garment undergoes individual hand inspection for weave density, finish, and durability before dispatch.`
   ].join("\n\n");
 
   panels.push(
@@ -99,7 +82,7 @@ export function ProductAccordion({ category, product }: { category?: string; pro
       title: "Shipping & Delivery",
       content: (
         <div>
-          <p className="m-0">Free shipping on orders over ₹499. Standard delivery in 3–7 business days across India. Cash on Delivery available pan-India. Express delivery available for select pincodes — contact us on WhatsApp.</p>
+          <p className="m-0">Dispatched within 24–48 hours from our Nagpur facility with real-time tracking. Standard delivery typically takes 3–7 business days across India. Express courier options available on request via WhatsApp.</p>
           <div className="mt-2 pt-2 border-t border-black/5 text-[12px]">
             <Link to="/shipping-policy/" className="text-[#C8A96B] hover:text-[#9A7B3E] underline font-medium">
               View Shipping Policy →
@@ -112,7 +95,7 @@ export function ProductAccordion({ category, product }: { category?: string; pro
       title: "Returns & Exchange",
       content: (
         <div>
-          <p className="m-0">{`Easy 7-day returns on all unworn, unwashed items with original tags intact. Customised or stitched blouses are non-returnable. To initiate a return, WhatsApp us at ${BUSINESS_INFO.phone} with your order ID and photos. Refunds securely processed to the original payment method.`}</p>
+          <p className="m-0">{`Eligible for return or exchange within 7 days of delivery, provided the item is unworn, unwashed, and in its original fold with tags intact. Stitched blouses or custom alterations are non-returnable. To begin a request, message our support team on WhatsApp at ${BUSINESS_INFO.phone}.`}</p>
           <div className="mt-2 pt-2 border-t border-black/5 text-[12px]">
             <Link to="/return-policy/" className="text-[#C8A96B] hover:text-[#9A7B3E] underline font-medium">
               View Complete Return & Refund Policy →

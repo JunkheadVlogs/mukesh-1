@@ -3,6 +3,73 @@
   <head>
     <meta charset="UTF-8">
     <script>
+      // Early cross-origin and third-party script error shield
+      window.onerror = function(message, source, lineno, colno, error) {
+        var msg = (message || '').toString().toLowerCase();
+        var src = (source || '').toString().toLowerCase();
+        if (
+          msg.includes('script error') ||
+          !source ||
+          src === '' ||
+          src === ':0' ||
+          (lineno === 0 && colno === 0) ||
+          src.includes('facebook') ||
+          src.includes('fbevents') ||
+          src.includes('clarity') ||
+          src.includes('pinterest') ||
+          src.includes('googletagmanager') ||
+          src.includes('google-analytics') ||
+          src.includes('razorpay') ||
+          src.includes('extension')
+        ) {
+          return true; // Prevents browser error reporting and iframe bubbling
+        }
+        return false;
+      };
+
+      window.addEventListener('error', function(event) {
+        var msg = (event.message || '').toString().toLowerCase();
+        var filename = (event.filename || '').toString().toLowerCase();
+        if (
+          msg.includes('script error') ||
+          !event.filename ||
+          filename === '' ||
+          filename === ':0' ||
+          (event.lineno === 0 && event.colno === 0) ||
+          filename.includes('facebook') ||
+          filename.includes('fbevents') ||
+          filename.includes('clarity') ||
+          filename.includes('pinterest') ||
+          filename.includes('googletagmanager') ||
+          filename.includes('google-analytics') ||
+          filename.includes('razorpay') ||
+          filename.includes('extension')
+        ) {
+          event.preventDefault();
+          if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+          }
+        }
+      }, true);
+
+      window.addEventListener('unhandledrejection', function(event) {
+        var reason = event.reason ? (event.reason.message || String(event.reason)).toLowerCase() : '';
+        if (
+          reason.includes('script error') ||
+          reason.includes('facebook') ||
+          reason.includes('fbevents') ||
+          reason.includes('clarity') ||
+          reason.includes('pinterest') ||
+          reason.includes('googletagmanager') ||
+          reason.includes('razorpay')
+        ) {
+          event.preventDefault();
+          if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+          }
+        }
+      }, true);
+
       if (typeof Node !== 'undefined' && Node.prototype && !Node.prototype._safeRemoveChildPatched) {
         Node.prototype._safeRemoveChildPatched = true;
         var originalRemoveChild = Node.prototype.removeChild;
@@ -37,105 +104,6 @@
       !function(e){if(!window.pintrk){window.pintrk = function () {
         window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
         n=window.pintrk;n.queue=[],n.version="3.0";}}(window);
-
-      // Deferred non-blocking loader for GTM, GA4, Clarity, Meta Pixel, and Pinterest
-      (function() {
-        var initialized = false;
-        function loadTrackingServices() {
-          if (initialized) return;
-          initialized = true;
-
-          // 1. Google Tag Manager
-          var gtmId = "GTM-TLQJCB2N";
-          if (!gtmId || gtmId.startsWith('%VITE_') || gtmId.includes('your_gtm_id') || gtmId.includes('GTM-') === false) {
-            gtmId = "GTM-WMG3G6SM";
-          }
-          if (gtmId && !window._gtm_loaded) {
-            window._gtm_loaded = true;
-            window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-            var gtmScript = document.createElement('script');
-            gtmScript.defer = true;
-            gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + gtmId;
-            document.head.appendChild(gtmScript);
-          }
-
-          // 2. Google Analytics 4
-          if (!window._ga4_loaded) {
-            var gaId = "G-NHLKCDQCM0";
-            if (!gaId || gaId.startsWith('%VITE_') || gaId.includes('your_ga4_measurement_id') || gaId.includes('G_GA4_MEASUREMENT_ID') || !gaId.startsWith('G-')) {
-              gaId = "G-1LMBHFFF1F";
-            }
-            window._ga4_loaded = true;
-            var gaScript = document.createElement('script');
-            gaScript.async = true;
-            gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
-            document.head.appendChild(gaScript);
-            gtag('config', gaId);
-          }
-
-          // 3. Microsoft Clarity
-          if (!window._clarity_initialized) {
-            window._clarity_initialized = true;
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.defer=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "x1spvs9vsv");
-          }
-
-          // 4. Meta Pixel
-          if (!window._fbq_script_loaded) {
-            window._fbq_script_loaded = true;
-            var fbScript = document.createElement('script');
-            fbScript.async = true;
-            fbScript.src = "https://connect.facebook.net/en_US/fbevents.js";
-            document.head.appendChild(fbScript);
-            var pixelId = "1458541922085984";
-            if (!pixelId || pixelId.startsWith('%VITE_') || pixelId.includes('your_meta_pixel')) {
-              pixelId = "1458541922085984";
-            }
-            if (window.fbq) {
-              window.fbq('init', pixelId);
-            }
-          }
-
-          // 5. Pinterest Tag
-          if (!window._pinterest_loaded) {
-            window._pinterest_loaded = true;
-            var pinScript = document.createElement('script');
-            pinScript.async = true;
-            pinScript.src = "https://s.pinimg.com/ct/core.js";
-            document.head.appendChild(pinScript);
-            var pinTag = "2612622217509";
-            if (pinTag && !pinTag.startsWith('%VITE_') && !pinTag.includes('your_pinterest_tag')) {
-              window.pintrk('load', pinTag);
-            }
-          }
-        }
-
-        // Trigger on user interaction
-        var interactionEvents = ["mousedown", "keypress", "touchstart", "scroll"];
-        function onUserInteraction() {
-          loadTrackingServices();
-          interactionEvents.forEach(function(evt) {
-            window.removeEventListener(evt, onUserInteraction, { passive: true });
-          });
-        }
-        interactionEvents.forEach(function(evt) {
-          window.addEventListener(evt, onUserInteraction, { passive: true });
-        });
-
-        // Trigger only AFTER page load event completes
-        window.addEventListener('load', function() {
-          if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(function() {
-              setTimeout(loadTrackingServices, 3500);
-            });
-          } else {
-            setTimeout(loadTrackingServices, 4000);
-          }
-        });
-      })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title data-rh="true">Teacher Uniform Saree Guide — Mukesh Saree Centre</title>
@@ -170,6 +138,22 @@
     <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" imagesizes="(min-width: 768px) 100vw, 1200px" media="(min-width: 768px)" fetchpriority="high" />
     <!-- Critical Above-the-Fold Inline CSS (Eliminates FOUC during async CSS preload) -->
     <style>
+      @font-face {
+        font-family: 'Playfair Display Fallback';
+        src: local('Georgia'), local('Times New Roman'), local('serif');
+        size-adjust: 104%;
+        ascent-override: 96%;
+        descent-override: 26%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('Arial'), local('-apple-system'), local('BlinkMacSystemFont'), local('sans-serif');
+        size-adjust: 100%;
+        ascent-override: 95%;
+        descent-override: 25%;
+        line-gap-override: 0%;
+      }
       :root {
         --color-bg: #faf8f4;
         --color-surface: #f5efe6;
@@ -182,7 +166,7 @@
       body {
         margin: 0;
         padding: 0;
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: "Inter", "Inter Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-size: 14px;
         line-height: 1.6;
         color: #2b2b2b;
@@ -277,8 +261,8 @@
         .pinterest-static-banner { display: block !important; }
       </style>
     </noscript>
-    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.B9_pngWK.min.js"></script>
-    <link rel="preload" href="/assets/index.DxbLvK-t.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.DxbLvK-t.min.css" crossorigin></noscript>
+    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.-kAiDoY_.min.js"></script>
+    <link rel="preload" href="/assets/index.Cl1QXMmg.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.Cl1QXMmg.min.css" crossorigin></noscript>
   
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Teacher Uniform Saree Guide","description":"A focus on elegant, professional, and comfortable saree designs specifically for educators.","image":"https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp","author":{"@type":"Organization","@id":"https://mukeshsarees.com/#organization","name":"Mukesh Saree Centre"},"publisher":{"@type":"Organization","@id":"https://mukeshsarees.com/#organization","name":"Mukesh Saree Centre","logo":{"@type":"ImageObject","url":"https://mukeshsarees.com/images/logo.webp"}},"datePublished":"2024-05-20","dateModified":"2024-05-21"}</script>
 </head>

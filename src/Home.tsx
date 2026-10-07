@@ -1,7 +1,7 @@
 import { BUSINESS_INFO } from "./config/business";
 import { Link } from "react-router";
 import { useState, useRef, useEffect, lazy, Suspense } from "react";
-const ProductCard = lazy(() => import("./components/ProductCard").then(m => ({ default: m.ProductCard })));
+import { ProductCard } from "./components/ProductCard";
 const LookReelCard = lazy(() => import("./components/LookReelCard").then(m => ({ default: m.LookReelCard })));
 import { ProductCardSkeleton } from "./components/ProductCardSkeleton";
 import { SEO } from "./components/SEO";
@@ -588,13 +588,11 @@ export default function Home() {
               View Collection
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full mx-auto min-h-[580px] sm:min-h-[640px] md:min-h-[360px]">
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : trendingProducts.map((product, index) => (
-                  <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
-                    <ProductCard product={product} idx={index} priority={index < 4} />
-                  </Suspense>
+                  <ProductCard product={product} idx={index} priority={index < 4} key={product.id} />
                 ))}
           </div>
           <div className="text-center mt-3 md:mt-4">
@@ -637,7 +635,7 @@ export default function Home() {
               >
                 {LOOK_REELS.map((reel, index) => {
                   return (
-                    <Suspense fallback={<div className="min-w-[70vw] md:min-w-0 snap-center snap-always bg-gray-100 animate-pulse aspect-[9/16] rounded-md shrink-0 lg:w-full h-[65vh] max-h-[460px] md:h-[480px] lg:h-[320px] 2xl:h-[400px]" />} key={reel.id}>
+                    <Suspense fallback={<div className="w-[80%] sm:w-[260px] lg:w-full h-auto sm:h-[58vh] md:h-[62vh] max-h-[460px] min-h-[300px] aspect-[9/16] flex-none snap-center snap-always rounded-[16px] bg-black/10 animate-pulse" />} key={reel.id}>
                       <LookReelCard
                         reel={reel}
                         onVisibilityChange={handleReelVisibilityChange}
@@ -697,13 +695,11 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[6px] md:gap-3 lg:gap-4 w-full mx-auto min-h-[580px] sm:min-h-[640px] md:min-h-[360px]">
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : newArrivals.map((product, index) => (
-                  <Suspense fallback={<ProductCardSkeleton />} key={product.id}>
-                    <ProductCard product={product} idx={index} priority={index < 4} />
-                  </Suspense>
+                  <ProductCard product={product} idx={index} priority={index < 4} key={product.id} />
                 ))}
           </div>
           <div className="text-center mt-4 md:mt-6">

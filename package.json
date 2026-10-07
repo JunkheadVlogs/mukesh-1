@@ -18,6 +18,7 @@
     "lint": "tsc --noEmit",
     "sync": "node scripts/sync.js",
     "push:github": "node scripts/github-push.js",
+    "check:github": "node scripts/github-push.js --deep-check",
     "set:token": "node scripts/set-token.js",
     "diagnose:github": "node scripts/diagnose-github.js",
     "postinstall": "node scripts/patch-react-dom.cjs && node scripts/patch-react-helmet.cjs"

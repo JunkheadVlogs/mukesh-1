@@ -27,8 +27,8 @@ import { ProductSeoContent } from "./components/ProductSeoContent";
 import { ProductAccordion } from "./components/ProductAccordion";
 import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
-import { useStore } from "./store";
-import { trackViewContent, trackAddToCart } from "./tracking";
+import { useStore, Product } from "./store";
+import { trackViewContent, trackAddToCart, trackWhatsAppClick } from "./tracking";
 import {
   formatPrice,
   optimizeImage,
@@ -38,6 +38,8 @@ import {
 import { CONFIG, submitToGoogleSheets, getApiUrl, getWhatsAppNumber } from "./config";
 import { formatMobileInput, normalizeMobileNumber, isValidIndianMobileNumber } from "./utils/phoneValidation";
 import { sendOrderToSheets } from "./utils/googleSheets";
+import { safeLocalStorage } from "./utils/safeStorage";
+import { loadRazorpay } from "./utils/razorpay";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { ProductCard } from "./components/ProductCard";
 import { SEO, cleanSEOText, cleanDescriptionForOG } from "./components/SEO";
@@ -217,6 +219,100 @@ export default function ProductPage() {
     [product?.id],
   );
 
+  // Recommendations: Similar Products (Main Carousel)
+  const similarProducts = useMemo(() => {
+    if (!product) return [];
+    const isSareeFamily = (cat: string) => cat === "Sarees" || cat === "Linen Sarees";
+    const isCurrentSaree = isSareeFamily(product.category);
+
+    return products
+      .filter((p) => {
+        if (p.isVariant || p.id === product.id) return false;
+        const isSameCategory = p.category === product.category;
+        const isSameFabric = p.fabric === product.fabric;
+
+        if (isCurrentSaree && isSareeFamily(p.category)) return true;
+        return isSameCategory || isSameFabric;
+      })
+      .sort((a, b) => {
+        const aCategory = a.category === product.category;
+        const bCategory = b.category === product.category;
+        const aFabric = a.fabric === product.fabric;
+        const bFabric = b.fabric === product.fabric;
+
+        const scoreA = (aCategory ? 2 : 0) + (aFabric ? 1 : 0);
+        const scoreB = (bCategory ? 2 : 0) + (bFabric ? 1 : 0);
+
+        return scoreB - scoreA;
+      })
+      .slice(0, 8);
+  }, [product?.id, product?.category, product?.fabric]);
+
+  const similarProductIds = useMemo(
+    () => new Set(similarProducts.map((p) => p.id)),
+    [similarProducts]
+  );
+
+  // Recommendations: Recently Viewed (Only genuine stored items, deduplicated against current & similar)
+  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>(() => {
+    if (typeof window === "undefined" || !product?.id) return [];
+    try {
+      const raw = safeLocalStorage.getItem('msc_recently_viewed_products');
+      const storedIds: string[] = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(storedIds)) {
+        return storedIds
+          .filter((id) => id !== product.id)
+          .map((id) => products.find((p) => p.id === id && !p.isVariant))
+          .filter((p): p is Product => Boolean(p))
+          .slice(0, 6);
+      }
+    } catch {
+      return [];
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    if (!product?.id) return;
+    try {
+      const raw = safeLocalStorage.getItem('msc_recently_viewed_products');
+      const storedIds: string[] = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(storedIds)) {
+        const validRecent = storedIds
+          .filter((id) => id !== product.id && !similarProductIds.has(id))
+          .map((id) => products.find((p) => p.id === id && !p.isVariant))
+          .filter((p): p is Product => Boolean(p))
+          .slice(0, 6);
+
+        setRecentlyViewed(validRecent);
+
+        // Prepend current product to history without duplicates
+        const updated = [product.id, ...storedIds.filter((id) => id !== product.id)].slice(0, 16);
+        safeLocalStorage.setItem('msc_recently_viewed_products', JSON.stringify(updated));
+      }
+    } catch (e) {
+      // Storage fallback
+    }
+  }, [product?.id, similarProductIds]);
+
+  // Recommendations: Customers Also Bought (Shown ONLY if genuine order/recommendation data exists)
+  const customersAlsoBought = useMemo(() => {
+    if (!product) return [];
+    const genuineRecs = (product as any)?.customersAlsoBought || (product as any)?.frequentlyBoughtTogether;
+    if (Array.isArray(genuineRecs) && genuineRecs.length > 0) {
+      const existingIds = new Set([
+        product.id,
+        ...similarProducts.map((p) => p.id),
+        ...recentlyViewed.map((p) => p.id),
+      ]);
+      return genuineRecs
+        .map((recId: string) => products.find((p) => p.id === recId && !p.isVariant))
+        .filter((p): p is Product => Boolean(p) && !existingIds.has(p.id))
+        .slice(0, 6);
+    }
+    return [];
+  }, [product, similarProducts, recentlyViewed]);
+
   const isSaree = product ? product.category.toLowerCase().includes("saree") : true;
   const isCoOrdSet = false;
   const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Free Size'].filter(s => !(isCoOrdSet && s === 'Free Size'));
@@ -379,16 +475,6 @@ export default function ProductPage() {
     };
   }, []);
 
-  // Dynamic Razorpay SDK dynamic loading
-  useEffect(() => {
-    if (!document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  }, []);
-
   // Quick Checkout States
   const [showQuickCheckout, setShowQuickCheckout] = useState(false);
 
@@ -447,6 +533,8 @@ export default function ProductPage() {
 
     setSizeError(false);
     setShowQuickCheckout(true);
+    // On-demand: Preload Razorpay only when user clicks Buy Now
+    loadRazorpay().catch(() => {});
   };
 
   const handleBuyNowPayment = async (method: "online" | "cod") => {
@@ -584,18 +672,9 @@ export default function ProductPage() {
       try {
         setIsSubmittingOrder(true);
 
-        if (!(window as any).Razorpay) {
-          const loaded = await new Promise((resolve) => {
-            const script = document.createElement("script");
-            script.src = "https://checkout.razorpay.com/v1/checkout.js";
-            script.async = true;
-            script.onload = () => resolve(true);
-            script.onerror = () => resolve(false);
-            document.body.appendChild(script);
-          });
-          if (!loaded) {
-            throw new Error("Razorpay SDK failed to load. Please check your internet connection.");
-          }
+        const loaded = await loadRazorpay();
+        if (!loaded || !(window as any).Razorpay) {
+          throw new Error("Unable to load secure payment gateway. Please check your internet connection or choose Cash on Delivery.");
         }
 
         // Create the order on the backend to get a valid order_id + correct live key
@@ -1064,15 +1143,16 @@ export default function ProductPage() {
         </Helmet>
       )}
 
-      <div className="max-w-[1400px] mx-auto px-2.5 sm:px-4 md:px-8 lg:px-12 pb-0 md:pb-12 pt-0">
+      <div className="max-w-[1400px] mx-auto px-2.5 sm:px-4 md:px-8 lg:px-12 pb-16 md:pb-12 pt-0">
         <div className="flex flex-col lg:flex-row gap-0 md:gap-12 xl:gap-16">
           {/* Gallery Section */}
           <div className="w-full lg:w-[54%] xl:w-[52%] lg:sticky lg:top-28 lg:self-start space-y-0 md:space-y-4 mb-0">
             <div
-              className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y p-2 sm:p-3 md:p-4"
+              className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y p-2 sm:p-3 md:p-4 aspect-[3/4] w-full flex items-center justify-center"
               style={{
                 touchAction: 'pan-y pinch-zoom',
                 width: '100%',
+                aspectRatio: '3/4',
                 backgroundColor: '#f5f0e8',
                 borderRadius: '12px',
                 overflow: 'hidden'
@@ -1092,15 +1172,18 @@ export default function ProductPage() {
                   playsInline
                   controls
                   preload="none"
-                  className="product-image-main product-main-img w-full h-full object-contain mx-auto rounded-[6px] sm:rounded-[8px]"
+                  className="product-image-main product-main-img w-full h-full object-contain mx-auto rounded-[6px] sm:rounded-[8px] aspect-[3/4]"
+                  style={{ aspectRatio: '3/4' }}
                   onClick={(e) => e.stopPropagation()}
                 />
               ) : (
                 <OptimizedImage
                   src={productImages[activeImageIndex]}
                   width={800}
+                  height={1067}
                   alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
-                  className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02] rounded-[6px] sm:rounded-[8px]"
+                  className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02] rounded-[6px] sm:rounded-[8px] w-full h-full object-contain"
+                  style={{ aspectRatio: '3/4' }}
                   priority={true}
                 />
               )}
@@ -1147,7 +1230,7 @@ export default function ProductPage() {
 
             {productImages.length > 1 && (
               <div 
-                className="product-thumbnails-container flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 pt-1 pb-0 md:py-2 touch-pan-x touch-pan-y"
+                className="product-thumbnails-container flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 pt-1 pb-0 md:py-2 touch-pan-x touch-pan-y min-h-[80px] md:min-h-[96px]"
                 style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
               >
                 {productImages.map((img, idx) => (
@@ -1499,6 +1582,7 @@ export default function ProductPage() {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackWhatsAppClick({ productName: product.name, source: "product_cta" })}
                     className="w-full h-[44px] md:h-[52px] border border-[#2D452F]/20 bg-[#f4f7f4] text-[#2D452F] text-[11px] md:text-[12px] uppercase tracking-[0.18em] font-medium hover:bg-[#e8ede8] transition-all rounded-sm flex items-center justify-center gap-2 group style-none no-underline"
                     style={{ textDecoration: 'none' }}
                   >
@@ -1525,7 +1609,7 @@ export default function ProductPage() {
                 <ProductDescription description={product.description} product={product} />
               </section>
 
-              {/* Factual Product Details & What You Receive */}
+              {/* What You Receive */}
               <section className="product-info mt-1 mb-1">
                 <ProductDetailsSection product={product} />
               </section>
@@ -1547,87 +1631,74 @@ export default function ProductPage() {
           <ProductReviews product={product} />
         </div>
 
-        {/* Related Section */}
-        <section className="mt-2 md:mt-12 px-0 pb-4 md:pb-12">
-          <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
-            <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide leading-tight md:leading-normal">
-              Similar & Related Products
-            </h2>
-            <Link
-              to="/shop/"
-              className="text-[10px] md:text-[11px] uppercase font-medium text-[var(--color-dark)] underline decoration-[var(--color-border)] underline-offset-4 hover:decoration-[var(--color-dark)] tracking-[0.1em] transition-colors"
-            >
-              View Collection
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-5 sm:gap-6 md:gap-8 w-full">
-            {products
-              .filter((p) => {
-                if (p.isVariant || p.id === product.id) return false;
-                const isSameCategory = p.category === product.category;
-                const isSameFabric = p.fabric === product.fabric;
-                const isSareeFamily = (cat: string) =>
-                  cat === "Sarees" || cat === "Linen Sarees";
-
-                if (
-                  isSareeFamily(product.category) &&
-                  isSareeFamily(p.category)
-                )
-                  return true;
-                return isSameCategory || isSameFabric;
-              })
-              .sort((a, b) => {
-                const aCategory = a.category === product.category;
-                const bCategory = b.category === product.category;
-                const aFabric = a.fabric === product.fabric;
-                const bFabric = b.fabric === product.fabric;
-
-                const scoreA = (aCategory ? 2 : 0) + (aFabric ? 1 : 0);
-                const scoreB = (bCategory ? 2 : 0) + (bFabric ? 1 : 0);
-
-                return scoreB - scoreA;
-              })
-              .slice(0, 8)
-              .map((p, index) => (
+        {/* Similar Products Carousel */}
+        {similarProducts.length > 0 && (
+          <section className="mt-4 md:mt-12 px-0 pb-4 md:pb-6">
+            <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
+              <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide leading-tight md:leading-normal">
+                Similar Products
+              </h2>
+              <Link
+                to={`/shop/?category=${encodeURIComponent(product.category)}`}
+                className="text-[10px] md:text-[11px] uppercase font-medium text-[var(--color-dark)] underline decoration-[var(--color-border)] underline-offset-4 hover:decoration-[var(--color-dark)] tracking-[0.1em] transition-colors"
+              >
+                View Collection
+              </Link>
+            </div>
+            <div className="flex md:grid overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory gap-3 sm:gap-6 md:gap-8 w-full -mx-4 px-4 sm:mx-0 sm:px-0 pb-3 md:pb-0 md:grid-cols-3 lg:grid-cols-4 touch-pan-x touch-pan-y min-h-[290px] md:min-h-[350px]">
+              {similarProducts.map((p, index) => (
                 <div
                   key={p.id}
-                  className="w-full"
+                  className="shrink-0 w-[44vw] min-w-[145px] max-w-[210px] md:w-full md:max-w-none snap-start"
                 >
                   <ProductCard product={p} idx={index} priority={false} />
                 </div>
               ))}
-          </div>
+            </div>
+          </section>
+        )}
 
-          {/* Additional AI SEO Component Grids */}
-          {[
-            { title: "Customers Also Bought", offset: 2 },
-            { title: "Recently Viewed", offset: 4 },
-            { title: "Related Products", offset: 6 },
-          ].map((gridSet, setIdx) => {
-            const gridProducts = products
-              .filter((p) => p.id !== product.id && !p.isVariant)
-              .sort((a, b) => b.price - a.price)
-              .slice(gridSet.offset, gridSet.offset + 4);
-              
-            if(gridProducts.length === 0) return null;
+        {/* Recently Viewed Carousel (Shown ONLY when genuinely viewed items exist) */}
+        {recentlyViewed.length > 0 && (
+          <section className="mt-4 md:mt-8 pt-6 md:pt-8 border-t border-[var(--color-border)] px-0 pb-4 md:pb-6">
+            <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
+              <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide leading-tight md:leading-normal">
+                Recently Viewed
+              </h2>
+            </div>
+            <div className="flex md:grid overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory gap-3 sm:gap-6 md:gap-8 w-full -mx-4 px-4 sm:mx-0 sm:px-0 pb-3 md:pb-0 md:grid-cols-3 lg:grid-cols-4 touch-pan-x touch-pan-y min-h-[290px] md:min-h-[350px]">
+              {recentlyViewed.map((p, index) => (
+                <div
+                  key={p.id}
+                  className="shrink-0 w-[44vw] min-w-[145px] max-w-[210px] md:w-full md:max-w-none snap-start"
+                >
+                  <ProductCard product={p} idx={index} priority={false} />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
-            return (
-              <div key={setIdx} className="mt-6 md:mt-10 pt-6 border-t border-[var(--color-border)]">
-                <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
-                  <h2 className="text-xl md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide">
-                    {gridSet.title}
-                  </h2>
+        {/* Customers Also Bought Carousel (Shown ONLY if genuine order/recommendation data exists) */}
+        {customersAlsoBought.length > 0 && (
+          <section className="mt-4 md:mt-8 pt-6 md:pt-8 border-t border-[var(--color-border)] px-0 pb-4 md:pb-6">
+            <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
+              <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide leading-tight md:leading-normal">
+                Customers Also Bought
+              </h2>
+            </div>
+            <div className="flex md:grid overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory gap-3 sm:gap-6 md:gap-8 w-full -mx-4 px-4 sm:mx-0 sm:px-0 pb-3 md:pb-0 md:grid-cols-3 lg:grid-cols-4 touch-pan-x touch-pan-y min-h-[290px] md:min-h-[350px]">
+              {customersAlsoBought.map((p, index) => (
+                <div
+                  key={p.id}
+                  className="shrink-0 w-[44vw] min-w-[145px] max-w-[210px] md:w-full md:max-w-none snap-start"
+                >
+                  <ProductCard product={p} idx={index} priority={false} />
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2.5 gap-y-5 sm:gap-6 md:gap-8 w-full">
-                  {gridProducts.map((p, index) => (
-                    <div key={p.id} className="w-full">
-                      <ProductCard product={p} idx={index} priority={false} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+              ))}
+            </div>
+          </section>
+        )}
 
           {/* Internal Links / Popular Searches - AI SEO Optimized */}
           <div className="mt-4 pt-4 md:mt-12 md:pt-6 border-t border-[var(--color-border)] mb-[16px]">
@@ -1641,7 +1712,6 @@ export default function ProductPage() {
               <Link to="/about/" className="flex items-center justify-center text-center h-[48px] px-3 text-[11px] md:text-xs text-[#2C241B]/70 hover:text-[#C8A96B] transition-colors rounded-full border border-gray-200 bg-white leading-tight">About Mukesh Saree Centre</Link>
             </div>
           </div>
-        </section>
       </div>
 
       {/* Lightbox Component Here... (I will keep it simple relying on motion) */}

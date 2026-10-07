@@ -10,7 +10,7 @@ import { ProductCardSkeleton } from "./components/ProductCardSkeleton";
 import { Product, useStore } from "./store";
 import QuickViewModal from "./QuickViewModal";
 import { SEO } from "./components/SEO";
-import { trackViewItemList } from "./tracking";
+import { trackViewItemList, trackSearch } from "./tracking";
 import { LinenStylingGuide } from "./components/LinenStylingGuide";
 
 const categoryDescriptions = {
@@ -334,6 +334,13 @@ export default function Shop() {
       trackViewItemList(filteredAndSortedProducts, categoryFilter || "All Collections");
     }
   }, [filteredAndSortedProducts, categoryFilter]);
+
+  // Trigger deduplicated search event when searching
+  useEffect(() => {
+    if (searchQuery && searchQuery.trim()) {
+      trackSearch(searchQuery.trim(), filteredAndSortedProducts.length);
+    }
+  }, [searchQuery, filteredAndSortedProducts.length]);
 
   const visible = useMemo(() => {
     return filteredAndSortedProducts.slice(0, page * PER_PAGE);

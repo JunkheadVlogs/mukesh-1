@@ -28,7 +28,7 @@ import { formatPrice, getImageAlt } from "./utils";
 import { searchProducts } from "./services/search";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { LiveTimestamp } from "./components/LiveTimestamp";
-import { trackPageView } from "./tracking";
+import { trackPageView, trackWhatsAppClick, trackSearch } from "./tracking";
 
 export default function Layout() {
   const { cart, isCheckoutActive } = useStore();
@@ -484,6 +484,7 @@ export default function Layout() {
     e.preventDefault();
     const query = searchQuery.trim();
     if (query) {
+      trackSearch(query);
       addRecentSearch(query);
       navigate(`/search?q=${encodeURIComponent(query)}`);
       setIsSearchOpen(false);
@@ -797,8 +798,8 @@ export default function Layout() {
         }`}
       >
         {/* Dynamic Announcement Bar */}
-        <div className="announcement-bar bg-[#2B2B2B] text-[#C8A96B] w-full flex items-center justify-center z-50">
-          <div key={announcements[announcementIndex]}>
+        <div className="announcement-bar bg-[#2B2B2B] text-[#C8A96B] w-full flex items-center justify-center z-50 h-[28px] sm:h-[30px] min-h-[28px] sm:min-h-[30px] overflow-hidden whitespace-nowrap text-[10px] sm:text-[11px] font-medium tracking-[1.5px] leading-[28px] sm:leading-[30px]">
+          <div key={announcements[announcementIndex]} className="h-full flex items-center justify-center">
             <span>{announcements[announcementIndex]}</span>
           </div>
         </div>
@@ -807,7 +808,7 @@ export default function Layout() {
         <header
           className={`site-header w-full relative transition-all duration-300 ${
             !isTransparent && isScrolled ? "border-b border-[#2B2B2B]/5" : "border-b-0"
-          } flex items-center justify-between`}
+          } flex items-center justify-between h-[48px] md:h-[71px] min-h-[48px] md:min-h-[71px]`}
           style={headerStyle}
         >
 
@@ -1695,6 +1696,7 @@ export default function Layout() {
             href={`https://wa.me/${getWhatsAppNumber()}?text=Hi%2C%20I%20am%20interested%20in%20your%20product.%20Can%20you%20help%20me%3F`}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackWhatsAppClick({ source: "floating_button" })}
             className="w-[56px] h-[56px] rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_4px_14px_rgba(37,211,102,0.4)] hover:bg-[#20bd5a] hover:scale-110 active:scale-95 transition-all duration-300 pointer-events-auto"
             aria-label="Contact on WhatsApp"
           >

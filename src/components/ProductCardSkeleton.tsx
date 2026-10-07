@@ -1,25 +1,31 @@
 export function ProductCardSkeleton() {
   return (
-    <div className="group relative flex flex-col pointer-events-none">
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-gray-100 rounded-sm">
-        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
-        
-        {/* Placeholder for Wishlist Button */}
-        <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/50 animate-pulse backdrop-blur-sm z-10" />
-      </div>
+    <article className="h-full">
+      <div className="product-card group flex flex-col h-full bg-white rounded-[18px] md:rounded-[24px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] overflow-hidden pointer-events-none select-none">
+        {/* Image Aspect Ratio Placeholder (3/4) */}
+        <div
+          className="relative aspect-[3/4] w-full overflow-hidden flex items-center justify-center p-0 flex-shrink-0"
+          style={{ backgroundColor: '#FAF8F5' }}
+        >
+          <div className="absolute inset-0 bg-gray-200/70 animate-pulse" />
+        </div>
 
-      <div className="pt-3 pb-2 flex flex-col flex-1">
-        <div className="flex justify-between items-start gap-4 mb-1">
-          <div className="flex-1 w-full space-y-2">
-            {/* Title Placeholder */}
-            <div className="h-4 bg-gray-200 animate-pulse rounded max-w-[80%]" />
-            {/* Subtitle/Category Placeholder */}
-            <div className="h-3 bg-gray-200 animate-pulse rounded max-w-[60%]" />
+        {/* Card Body matching exact padding and layout */}
+        <div className="product-card-body flex flex-col flex-grow bg-white items-start text-left justify-between px-3 md:px-4 pb-3.5 md:pb-4 pt-3.5 md:pt-4 rounded-b-[18px] md:rounded-b-[24px]">
+          {/* Title Area with reserved 2-line height */}
+          <div className="flex flex-col items-start w-full mb-1.5 md:mb-2 min-h-[36px] h-[36px] justify-start gap-1">
+            <div className="h-3.5 bg-gray-200 animate-pulse rounded w-[85%]" />
+            <div className="h-3.5 bg-gray-200 animate-pulse rounded w-[60%]" />
           </div>
-          {/* Price Placeholder */}
-          <div className="h-4 bg-gray-200 animate-pulse rounded w-12" />
+
+          {/* Price Row Placeholder */}
+          <div className="mt-auto flex items-center justify-center gap-1.5 md:gap-2 w-full pt-1">
+            <div className="h-4 sm:h-5 w-16 bg-gray-200 animate-pulse rounded shrink-0" />
+            <div className="h-3.5 w-12 bg-gray-200/80 animate-pulse rounded shrink-0" />
+            <div className="h-3 w-14 bg-gray-200/60 animate-pulse rounded-[4px] shrink-0" />
+          </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

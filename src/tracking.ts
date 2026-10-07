@@ -1,5 +1,6 @@
 import { BUSINESS_INFO } from "./config/business";
 import { CONFIG, getApiUrl } from "./config";
+import { ensureConversionScriptsLoaded, loadMetaPixel } from "./utils/scriptLoader";
 
 // Detect and ignore default placeholders or corporate business contact profiles in general metric tracking
 export const isPlaceholderOrBusinessEmail = (email?: string): boolean => {
@@ -99,39 +100,15 @@ export const getExternalId = (): string => {
 // Map of tracked ViewContent events with their timestamps to prevent reactive duplicate fires
 const trackedViewContentTimes = new Map<string, number>();
 
-// Safe helper to bootstrap Meta Pixel dynamically if not already initialized
+// Safe helper to bootstrap Meta Pixel dynamically via safe scriptLoader
 export const initMetaPixel = () => {
   if (typeof window === "undefined") return;
-  if ((window as any)._fbq_initialized && (window as any).fbq) return;
-  (window as any)._fbq_initialized = true;
-
-  (function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
-    if (f.fbq) return;
-    n = f.fbq = function () {
-      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-    };
-    if (!f._fbq) f._fbq = n;
-    n.push = n;
-    n.loaded = !0;
-    n.version = "2.0";
-    n.queue = [];
-    t = b.createElement(e);
-    t.async = !0;
-    t.src = v;
-    s = b.getElementsByTagName(e)[0];
-    if (s && s.parentNode) {
-      s.parentNode.insertBefore(t, s);
-    } else if (document.head) {
-      document.head.appendChild(t);
-    }
-  })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
-
-  const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984"; // Fallback to provided defaults if none configured
-  if (pixelId) {
+  loadMetaPixel().then((loaded) => {
+    if (!loaded) return;
+    const pixelId = import.meta.env.VITE_META_PIXEL_ID || "1458541922085984";
     const extId = getExternalId();
     const initUserData: any = { external_id: extId };
 
-    // Enrich initial loading parameters with stored validated user details if present
     try {
       const info = localStorage.getItem('customer_checkout_info');
       if (info) {
@@ -151,36 +128,11 @@ export const initMetaPixel = () => {
       }
     } catch (e) {}
 
-    (window as any).fbq("init", pixelId, initUserData);
-    console.log(`[Pixel Tracker] Initialized on client with ID: ${pixelId} and matched user data`);
-  }
+    if ((window as any).fbq) {
+      (window as any).fbq("init", pixelId, initUserData);
+    }
+  }).catch(() => {});
 };
-
-if (typeof window !== "undefined") {
-  const schedulePixelInit = () => {
-    let initialized = false;
-    const triggerInit = () => {
-      if (initialized) return;
-      initialized = true;
-      initMetaPixel();
-      events.forEach((evt) => window.removeEventListener(evt, triggerInit));
-    };
-
-    const events = ["mousedown", "keypress", "touchstart", "scroll", "mousemove"];
-    events.forEach((evt) => window.addEventListener(evt, triggerInit, { passive: true }));
-
-    // Fallback timer: load after 4.5s delay to keep initial PageSpeed audit clean
-    setTimeout(() => {
-      triggerInit();
-    }, 4500);
-  };
-
-  if (document.readyState === 'complete') {
-    schedulePixelInit();
-  } else {
-    window.addEventListener('load', schedulePixelInit, { once: true });
-  }
-}
  
 // Dynamically updates Meta Pixel user properties matching the active session
 export const updateTrackerUserData = (userData: { email?: string; phone?: string; name?: string; city?: string; zip?: string }) => {
@@ -208,9 +160,20 @@ export const updateTrackerUserData = (userData: { email?: string; phone?: string
   }
 };
  
+let lastTrackedPageViewPath = "";
+let lastTrackedPageViewTime = 0;
+
 // Dynamic deduplicated PageView tracking on SPA transitions
 export const trackPageView = (path: string) => {
   if (typeof window !== "undefined") {
+    const now = Date.now();
+    // Guard against identical route firing multiple times in rapid succession (e.g. re-renders or hash changes)
+    if (path === lastTrackedPageViewPath && now - lastTrackedPageViewTime < 1000) {
+      return;
+    }
+    lastTrackedPageViewPath = path;
+    lastTrackedPageViewTime = now;
+
     const eventId = `pv_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
@@ -227,12 +190,19 @@ export const trackPageView = (path: string) => {
     const validEmail = storedUserData.email && !isPlaceholderOrBusinessEmail(storedUserData.email) ? storedUserData.email : undefined;
     const validPhone = storedUserData.phone && !isPlaceholderOrBusinessPhone(storedUserData.phone) ? storedUserData.phone : undefined;
  
-    // Server-Side Conversions API PageView Trigger (Removed pending backend implementation)
- 
     // Browser Multi-Channel Meta Pixel trigger
     if ((window as any).fbq) {
       (window as any).fbq('track', 'PageView', {}, { eventID: eventId });
     }
+
+    // Google Tag Manager SPA virtual page_view event (Single GA4 deployment via GTM)
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({
+      event: 'page_view',
+      page_path: path,
+      page_title: typeof document !== 'undefined' ? document.title : '',
+      page_location: typeof window !== 'undefined' ? window.location.href : ''
+    });
   }
 };
  
@@ -298,11 +268,61 @@ export const getAdvancedMatchingData = (): AdvancedMatchingData => {
   return data;
 };
 
-export const trackWhatsAppClick = () => {
+let lastWhatsAppClickTime = 0;
+
+export const trackWhatsAppClick = (context?: { productName?: string; source?: string }) => {
   if (typeof window !== "undefined") {
-    if ((window as any).fbq) {
-      (window as any).fbq('trackCustom', 'WhatsAppOrderClick', { currency: 'INR' });
+    const now = Date.now();
+    if (now - lastWhatsAppClickTime < 1500) {
+      return; // Skip duplicate rapid click
     }
+    lastWhatsAppClickTime = now;
+
+    if ((window as any).fbq) {
+      (window as any).fbq('trackCustom', 'WhatsAppOrderClick', {
+        currency: 'INR',
+        product_name: context?.productName || '',
+        source: context?.source || 'direct'
+      });
+    }
+
+    // Google Tag Manager / GA4 DataLayer
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({
+      event: 'whatsapp_order_click',
+      currency: 'INR',
+      product_name: context?.productName || '',
+      source: context?.source || 'direct'
+    });
+  }
+};
+
+let lastSearchTime = 0;
+let lastSearchTerm = "";
+
+export const trackSearch = (query: string, resultsCount?: number) => {
+  if (typeof window !== "undefined") {
+    const clean = (query || "").trim().toLowerCase();
+    if (!clean) return;
+
+    const now = Date.now();
+    if (clean === lastSearchTerm && now - lastSearchTime < 3000) {
+      return; // Skip duplicate search event for same query within 3s
+    }
+    lastSearchTerm = clean;
+    lastSearchTime = now;
+
+    if ((window as any).fbq) {
+      (window as any).fbq('track', 'Search', { search_string: clean });
+    }
+
+    // Google Tag Manager / GA4 DataLayer
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({
+      event: 'search',
+      search_term: clean,
+      ...(typeof resultsCount === 'number' ? { results_count: resultsCount } : {})
+    });
   }
 };
 
@@ -387,11 +407,23 @@ export const trackViewContent = (product: any) => {
   }
 };
 
+const trackedAddToCartTimes = new Map<string, number>();
+
 export const trackAddToCart = (product: any, quantity: number = 1) => {
   if (typeof window !== "undefined") {
+    const pId = product.sku || product.id;
+    const now = Date.now();
+    const lastTime = trackedAddToCartTimes.get(pId) || 0;
+    if (now - lastTime < 750) {
+      return; // Skip duplicate rapid click
+    }
+    trackedAddToCartTimes.set(pId, now);
+
+    // Critical conversion guarantee: Ensure conversion tracking libraries are loaded
+    ensureConversionScriptsLoaded().catch(() => {});
+
     const productPrice = parseFloat(product.price) || 0;
     const valueNum = productPrice * quantity;
-    const pId = product.sku || product.id;
     
     // Identical event_id for browser and server (Task #3 & #4)
     const eventId = `atc_${pId}_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
@@ -452,10 +484,24 @@ export const trackAddToCart = (product: any, quantity: number = 1) => {
   }
 };
 
+let lastInitiateCheckoutTime = 0;
+let lastInitiateCheckoutSig = "";
+
 export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
   if (typeof window !== "undefined") {
     const itemIds = items.map(item => item.sku || item.id);
     const numericTotal = parseFloat(totalValue.toString()) || 0;
+    const signature = `${itemIds.slice().sort().join(',')}_${numericTotal}`;
+    const now = Date.now();
+
+    if (signature === lastInitiateCheckoutSig && now - lastInitiateCheckoutTime < 3000) {
+      return; // Deduplicate re-renders or rapid transitions
+    }
+    lastInitiateCheckoutSig = signature;
+    lastInitiateCheckoutTime = now;
+
+    // Critical conversion guarantee: Ensure conversion tracking libraries are loaded
+    ensureConversionScriptsLoaded().catch(() => {});
 
     // Identical event_id for browser and server (Task #3 & #4)
     const eventId = `ic_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
@@ -517,16 +563,28 @@ export const trackInitiateCheckout = (totalValue: number, items: any[]) => {
   }
 };
 
+const inMemoryPurchases = new Set<string>();
+
 export const trackPurchase = (totalValue: number, items: any[], transactionId: string) => {
   if (typeof window !== "undefined") {
+    if (!transactionId) return;
+
+    if (inMemoryPurchases.has(transactionId)) {
+      return; // Skip duplicate in-memory trigger
+    }
+
     // Prevent duplicate tracking for the same order (Task #10)
     const trackedKey = `tracked_order_${transactionId}`;
     if (localStorage.getItem(trackedKey)) {
-      console.log(`[Pixel] Purchase event ${transactionId} already tracked, skipping duplicate.`);
+      console.log("[Tracking] Purchase event already tracked, skipping duplicate.");
       return;
     }
+    inMemoryPurchases.add(transactionId);
     localStorage.setItem(trackedKey, 'true');
     localStorage.setItem('hasPurchased', 'true');
+
+    // Critical conversion guarantee: Ensure all conversion libraries are loaded immediately
+    ensureConversionScriptsLoaded().catch(() => {});
     
     const itemIds = items.map(item => item.sku || item.id);
     const numericTotal = parseFloat(totalValue.toString()) || 0;

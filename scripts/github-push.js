@@ -632,27 +632,53 @@ async function runCli() {
 
   const token = resolveGitHubToken();
   const isDryRun = process.argv.includes("--dry-run");
+  const isDeepCheck = process.argv.includes("--deep-check") || process.argv.includes("--check");
 
-  // 1. Check if dry-run requested or token is not available
-  if (isDryRun || !token) {
-    if (isDryRun) {
+  // Validate token with GitHub API if token exists
+  let validToken = null;
+  let tokenUser = null;
+  if (token) {
+    try {
+      const authRes = await githubRequest("/user", "GET", null, token);
+      if (authRes.statusCode === 200) {
+        validToken = token;
+        tokenUser = authRes.data.login;
+        console.log(`- GitHub Authentication: ✔ Valid (Logged in as: ${tokenUser})`);
+      }
+    } catch (authErr) {
+      if (authErr.statusCode === 401) {
+        console.warn(`- GitHub Authentication: ✖ Invalid (HTTP 401: Bad credentials / expired token)`);
+      } else {
+        console.warn(`- GitHub Authentication check: ${authErr.message}`);
+      }
+    }
+  } else {
+    console.log("- GitHub Authentication: No token configured");
+  }
+
+  // Handle deep-check, dry-run, or invalid/missing token
+  if (isDeepCheck || isDryRun || !validToken) {
+    if (isDeepCheck) {
+      console.log("\n[DEEP CHECK] Running comprehensive pre-push diagnostic and diff analysis...");
+    } else if (isDryRun) {
       console.log("\n[INFO] --dry-run flag specified. Performing read-only change detection...");
     } else {
-      console.log("\n[INFO] No GitHub Token provided in CLI or environment.");
-      console.log("Performing unauthenticated change detection against GitHub public repository...");
+      console.log("\n[WARN] Valid GitHub Token not found. Performing read-only inspection against public repository...");
     }
+
     try {
-      const branchRes = await requestWithRetry(`/repos/${OWNER_REPO}/branches/${TARGET_BRANCH}`, "GET", null, token || null);
+      // Use validToken if available, otherwise null for public access
+      const branchRes = await requestWithRetry(`/repos/${OWNER_REPO}/branches/${TARGET_BRANCH}`, "GET", null, validToken || null);
       const parentCommitSha = branchRes.data.commit.sha;
       const parentTreeSha = branchRes.data.commit.commit.tree.sha;
       console.log(`- Remote Parent Commit: ${parentCommitSha}`);
       console.log(`- Remote Base Tree:     ${parentTreeSha}`);
 
-      const diff = await detectChanges(parentTreeSha, token || null);
+      const diff = await detectChanges(parentTreeSha, validToken || null);
       const mbTotal = (diff.totalBytesToUpload / (1024 * 1024)).toFixed(2);
 
       console.log("\n---------------------------------------------------------------");
-      console.log("  PRE-PUSH VALIDATION SUMMARY (READ-ONLY)");
+      console.log("  PRE-PUSH VALIDATION SUMMARY");
       console.log("---------------------------------------------------------------");
       console.log(`Target Repository:         ${OWNER_REPO}`);
       console.log(`Target Branch:             ${TARGET_BRANCH}`);
@@ -666,13 +692,47 @@ async function runCli() {
       console.log(`Total Upload Size:         ${mbTotal} MB`);
       console.log("---------------------------------------------------------------");
 
-      console.log("\nTo execute this push with your GitHub Personal Access Token, run:");
-      console.log(`   GITHUB_TOKEN=ghp_xxx npm run push:github`);
-      console.log("or via command line flag:");
-      console.log(`   node scripts/github-push.js --token=ghp_xxx`);
+      // Check repository write permissions if token is valid
+      if (validToken) {
+        try {
+          const repoRes = await githubRequest(`/repos/${OWNER_REPO}`, "GET", null, validToken);
+          const perms = repoRes.data.permissions || {};
+          console.log(`Repository Permissions:    push=${Boolean(perms.push)}, admin=${Boolean(perms.admin)}`);
+          if (perms.push) {
+            console.log("✔ Token has full write/push access to this repository.");
+          } else {
+            console.warn("✖ Token lacks push permission to this repository.");
+          }
+        } catch {}
+      }
+
+      if (!validToken) {
+        console.error("\n===============================================================");
+        console.error("  ❌ GITHUB PUSH REQUIRES A VALID PERSONAL ACCESS TOKEN");
+        console.error("===============================================================");
+        console.error("The current GitHub token in your environment is expired or invalid (HTTP 401).");
+        console.error("\nHOW TO FIX & PUSH:");
+        console.error("1. Generate a new Personal Access Token on GitHub:");
+        console.error("   https://github.com/settings/tokens");
+        console.error("   - Classic Token: Select 'repo' scope (full control of private repositories).");
+        console.error("   - Fine-Grained Token: Select 'JunkheadVlogs/mukesh-1' and grant 'Contents: Read and write'.");
+        console.error("\n2. Save the new token in your project:");
+        console.error("   npm run set:token YOUR_NEW_TOKEN");
+        console.error("\n3. Run push:");
+        console.error("   npm run push:github");
+        console.error("   or");
+        console.error("   npm run push:github -- --token=YOUR_NEW_TOKEN\n");
+      } else if (isDeepCheck) {
+        console.log("\n✔ Deep check passed! Repository is reachable, token is valid, and diff is ready to push.");
+        console.log("Run 'npm run push:github' to execute the push.\n");
+      }
+
+      if (!validToken && !isDryRun && !isDeepCheck) {
+        process.exit(1);
+      }
       return;
     } catch (err) {
-      console.error(`- Error querying public repository: ${err.message}`);
+      console.error(`- Error querying repository: ${err.message}`);
       return;
     }
   }

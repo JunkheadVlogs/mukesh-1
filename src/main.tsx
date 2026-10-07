@@ -4,6 +4,10 @@ import { HelmetProvider } from 'react-helmet-async';
 import App from './App.tsx';
 import './index.css';
 import { onCLS, onINP, onLCP, onFCP, onTTFB } from 'web-vitals';
+import { scheduleScriptLoading } from './utils/scriptLoader';
+
+// Orchestrate deferred non-essential scripts and essential GTM measurement
+scheduleScriptLoading();
 
 // Startup Diagnostic Hooks
 console.log("[DIAGNOSTIC] Initializing main.tsx...");
@@ -95,22 +99,37 @@ const showErrorOnScreen = (message: string, error?: any) => {
   }
 };
 
+window.onerror = (message, source, lineno, colno, error) => {
+  if (isBenignError(String(message || ""), error, source)) {
+    return true; // Prevents default browser error dispatching and iframe bubbling
+  }
+  return false;
+};
+
 window.addEventListener('error', (event) => {
   if (isBenignError(event.message || "", event.error, event.filename)) {
     console.warn("[DIAGNOSTIC SILENT] Ignored benign/HMR or cross-origin script error:", event.message);
+    event.preventDefault();
+    if (typeof event.stopImmediatePropagation === 'function') {
+      event.stopImmediatePropagation();
+    }
     return;
   }
   showErrorOnScreen(`Global Error: ${event.message} in ${event.filename}:${event.lineno}`, event.error);
-});
+}, true);
 
 window.addEventListener('unhandledrejection', (event) => {
   const reasonMsg = event.reason?.message || String(event.reason);
   if (isBenignError(reasonMsg, event.reason)) {
     console.warn("[DIAGNOSTIC SILENT] Ignored benign/HMR unhandled promise rejection:", reasonMsg);
+    event.preventDefault();
+    if (typeof event.stopImmediatePropagation === 'function') {
+      event.stopImmediatePropagation();
+    }
     return;
   }
   showErrorOnScreen(`Unhandled Promise Rejection: ${event.reason}`, event.reason);
-});
+}, true);
 
 function sendToAnalytics({ name, delta, id }: any) {
   // Send metrics to your analytics service

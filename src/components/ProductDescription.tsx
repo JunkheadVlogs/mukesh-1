@@ -25,6 +25,22 @@ export function ProductDescription({
           const trimmed = line.trim();
           if (!trimmed) return <div key={idx} className="h-1.5" />;
           
+          // Omit lines that repeat specifications already in top spec grid
+          const lower = trimmed.toLowerCase().replace(/^[•\-\*\s🎨🧵💫💖🌿👗✂️📦✨🪔]+/, "");
+          if (
+            lower.startsWith("fabric:*") ||
+            lower.startsWith("saree length:*") ||
+            lower.startsWith("length:*") ||
+            lower.startsWith("blouse:*") ||
+            lower.startsWith("blouse piece:*") ||
+            lower.startsWith("wash:*") ||
+            lower.startsWith("care:*") ||
+            lower.startsWith("cod:*") ||
+            lower.startsWith("shipping:*")
+          ) {
+            return null;
+          }
+
           const parts = line.split(/(\*[^*]+\*)/g);
           return (
             <p key={idx} className="text-[13.5px] sm:text-[14px] leading-relaxed text-[#2C241B]/90 m-0">
@@ -108,13 +124,45 @@ export function ProductDescription({
   const highlightsRaw = parsedRaw["HIGHLIGHTS"] || parsedRaw["PRODUCT HIGHLIGHTS"] || "";
   const fabricFeaturesRaw = parsedRaw["FABRIC FEATURES"] || parsedRaw["FABRIC & CRAFT FEATURES"] || parsedRaw["FABRIC DETAILS"] || "";
 
+  const isRepetitiveBullet = (bullet: string) => {
+    const clean = bullet
+      .toLowerCase()
+      .replace(/^[•\-\*\s🎨🧵💫💖🌿👗✂️📦✨🪔]+/, "")
+      .trim();
+    return (
+      clean.startsWith("saree length") ||
+      clean.startsWith("saree dimension") ||
+      clean.startsWith("blouse piece length") ||
+      clean.startsWith("blouse length") ||
+      clean.startsWith("blouse piece:") ||
+      clean.startsWith("blouse details:") ||
+      clean.startsWith("blouse:") ||
+      clean.startsWith("fabric:") ||
+      clean.startsWith("fabric type:") ||
+      clean.startsWith("color:") ||
+      clean.startsWith("colour:") ||
+      clean.startsWith("primary color") ||
+      clean.startsWith("wash care") ||
+      clean.startsWith("care instructions") ||
+      clean.startsWith("care:") ||
+      clean.startsWith("wash:") ||
+      clean.startsWith("shipping:") ||
+      clean.startsWith("free shipping") ||
+      clean.startsWith("cod available") ||
+      clean.startsWith("cash on delivery") ||
+      clean.startsWith("returns:") ||
+      clean.startsWith("7-day return")
+    );
+  };
+
   const extractBullets = (text: string) => {
     if (!text) return [];
     return text
       .split("\n")
       .map((line) => line.trim())
-      .filter((line) => line.length > 0 && (line.startsWith("•") || line.startsWith("-") || line.startsWith("*") || line.startsWith("🎨") || line.startsWith("🧵") || line.startsWith("💫") || line.startsWith("💖") || line.startsWith("🌿")))
-      .map((line) => line.replace(/^[•\-\*]\s*/, "• "));
+      .filter((line) => line.length > 0 && (line.startsWith("•") || line.startsWith("-") || line.startsWith("*") || line.startsWith("🎨") || line.startsWith("🧵") || line.startsWith("💫") || line.startsWith("💖") || line.startsWith("🌿") || line.startsWith("👗") || line.startsWith("✂️")))
+      .map((line) => line.replace(/^[•\-\*]\s*/, "• "))
+      .filter((bullet) => !isRepetitiveBullet(bullet));
   };
 
   const highlightBullets = extractBullets(highlightsRaw);

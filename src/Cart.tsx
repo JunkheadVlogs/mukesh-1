@@ -14,16 +14,6 @@ export default function Cart() {
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
 
-  useEffect(() => {
-    // Preload Razorpay script on Cart page for faster checkout
-    if (!document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) {
-      const script = document.createElement('script');
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.defer = true;
-      document.body.appendChild(script);
-    }
-  }, []);
-
   const handleQuantityChange = (
     id: string,
     size: string | undefined,

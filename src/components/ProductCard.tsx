@@ -110,14 +110,15 @@ export const ProductCard = memo(function ProductCard({
       </div>
 
       <div className="product-card-body flex flex-col flex-grow bg-white items-start text-left justify-between px-3 md:px-4 pb-3.5 md:pb-4 pt-3.5 md:pt-4 rounded-b-[18px] md:rounded-b-[24px]">
-        <div className="flex flex-col items-start w-full">
-          <h3 className="product-card-title line-clamp-2 leading-snug mb-1.5 md:mb-2 w-full text-left px-1 text-inherit"
+        <div className="flex flex-col items-start w-full min-h-[36px] h-[36px] mb-1.5 md:mb-2">
+          <h3 className="product-card-title line-clamp-2 leading-snug w-full text-left px-1 text-inherit"
             style={{
               fontSize: '13px',
               fontWeight: '600',
               color: '#1a1a1a',
               lineHeight: '1.35',
-              minHeight: 'auto',
+              height: '36px',
+              minHeight: '36px',
               whiteSpace: 'normal',
               overflow: 'hidden',
               display: '-webkit-box',
