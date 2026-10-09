@@ -6,6 +6,7 @@ import { ChevronRight, User, ArrowLeft, Tag, Share2, Link2 } from 'lucide-react'
 import { guidesMeta } from '../data/guidesMeta';
 import { products } from '../mockData';
 import Breadcrumb from '../components/Breadcrumb';
+import { optimizeImage, getResponsiveSrcSet } from '../utils';
 
 // Dynamically import all markdown files from the content directory
 const markdownModules = import.meta.glob('../content/guides/*.md', { query: '?raw', import: 'default' });
@@ -644,7 +645,9 @@ export default function GuideDetail() {
                       >
                         <div className="aspect-[3/4] overflow-hidden bg-[#FAF8F5] mb-4 relative border border-[#EAE6E1]">
                           <img 
-                            src={product.image} 
+                            src={optimizeImage(product.image, 400, "webp")} 
+                            srcSet={getResponsiveSrcSet(product.image, [300, 450, 600])}
+                            sizes="(max-width: 640px) 50vw, 300px"
                             alt={product.name}
                             width={400}
                             height={533}
@@ -782,7 +785,7 @@ export default function GuideDetail() {
                       >
                         <div className="w-16 h-16 flex-shrink-0 rounded-none overflow-hidden border border-[#EAE6E1]">
                           <img 
-                            src={related.image} 
+                            src={optimizeImage(related.image, 160, "webp")} 
                             alt={related.title} width="64" height="64"
                             loading="lazy"
                             decoding="async"

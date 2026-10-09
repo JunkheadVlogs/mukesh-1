@@ -111,7 +111,7 @@ export function getProductReviewStats(product: { id: string, name?: string, fabr
   };
 }
 
-export function optimizeImage(url: string, width: number = 800, format: 'webp' | 'jpg' | 'png' | 'auto' = 'webp') {
+export function optimizeImage(url: string, width: number = 800, format: 'webp' | 'jpg' | 'png' | 'auto' | 'avif' = 'webp') {
   if (!url) return url;
   
   if (url.includes('wsrv.nl') && !url.includes('imagekit.io')) {
@@ -157,6 +157,16 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
 
   // 2. Local relative paths (/images/products/*.webp, /images/logo.webp, etc.)
   // Served directly from local/public directory with high performance and zero CDN overhead
+  if (url.startsWith('/images/products/')) {
+    const match = url.match(/^(\/images\/products\/[a-zA-Z0-9_\-]+?)(?:-\d+)?(\.webp)$/);
+    if (match) {
+      const base = match[1];
+      const targetWidth = width <= 360 ? 320 : width <= 520 ? 480 : width <= 720 ? 640 : 800;
+      return `${base}-${targetWidth}.webp`;
+    }
+    return url;
+  }
+
   if (url.startsWith('/')) {
     return url;
   }
@@ -165,8 +175,8 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
     const urlObj = new URL(url);
     urlObj.searchParams.set('w', width.toString());
     urlObj.searchParams.set('q', '75');
-    if (format === 'webp') {
-      urlObj.searchParams.set('fm', 'webp');
+    if (format === 'webp' || format === 'avif') {
+      urlObj.searchParams.set('fm', format);
     } else {
       urlObj.searchParams.set('fm', format);
     }
@@ -199,4 +209,33 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
   }
   
   return url;
+}
+
+/**
+ * Generates an accurate responsive srcSet string for both local product webp assets
+ * and remote ImageKit CDN images.
+ */
+export function getResponsiveSrcSet(url: string, widths: number[] = [300, 450, 600, 800], format: 'webp' | 'avif' | 'auto' = 'webp'): string | undefined {
+  if (!url) return undefined;
+
+  // 1. Local product image variants: p10-320.webp, p10-480.webp, p10-640.webp, p10-800.webp
+  if (url.startsWith('/images/products/')) {
+    const match = url.match(/^(\/images\/products\/[a-zA-Z0-9_\-]+?)(?:-\d+)?(\.webp)$/);
+    if (match) {
+      const base = match[1];
+      return `${base}-320.webp 320w, ${base}-480.webp 480w, ${base}-640.webp 640w, ${base}-800.webp 800w`;
+    }
+  }
+
+  // 2. ImageKit URLs
+  if (url.includes('ik.imagekit.io') || url.includes('imagekit.io')) {
+    return widths.map((w) => `${optimizeImage(url, w, format)} ${w}w`).join(', ');
+  }
+
+  // 3. Unsplash URLs
+  if (url.includes('images.unsplash.com')) {
+    return widths.map((w) => `${optimizeImage(url, w, format === 'avif' ? 'avif' : 'webp')} ${w}w`).join(', ');
+  }
+
+  return undefined;
 }

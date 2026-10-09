@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { optimizeImage } from '../utils';
+import { optimizeImage, getResponsiveSrcSet } from '../utils';
 
 const PLACEHOLDER_1X1 = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
@@ -317,12 +317,15 @@ export function OptimizedImage({
 
   // Local relative references (/images/products/*.webp, /images/logo.webp, etc.)
   if (isRelative) {
+    const responsiveSrcSet = srcSet || getResponsiveSrcSet(currentSrc);
+    const finalLocalSrc = optimizeImage(currentSrc, width, 'webp');
+
     return (
       <img
         ref={imageRef}
         key={currentSrc}
-        src={currentSrc}
-        srcSet={srcSet}
+        src={finalLocalSrc}
+        srcSet={responsiveSrcSet}
         sizes={sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"}
         alt={finalAlt}
         width={width}
@@ -349,11 +352,7 @@ export function OptimizedImage({
 
   const webpUrl = isDirectBypass ? currentSrc : optimizeImage(currentSrc, width, 'webp');
 
-  let generatedSrcSetWebp = srcSet;
-  
-  if (!srcSet && !isDirectBypass) {
-    generatedSrcSetWebp = `${optimizeImage(currentSrc, 300, 'webp')} 300w, ${optimizeImage(currentSrc, 450, 'webp')} 450w, ${optimizeImage(currentSrc, 600, 'webp')} 600w, ${optimizeImage(currentSrc, 800, 'webp')} 800w`;
-  }
+  const generatedSrcSetWebp = srcSet || (!isDirectBypass ? getResponsiveSrcSet(currentSrc, [300, 450, 600, 800]) : undefined);
 
   const defaultSizes = sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw";
 

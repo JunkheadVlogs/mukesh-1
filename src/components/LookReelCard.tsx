@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router";
 import { OptimizedImage } from "./OptimizedImage";
+import { optimizeImage } from "../utils";
 
 interface LookReel {
   id: string;
@@ -362,6 +363,8 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
           alt={reel.title}
           width={400}
           height={711}
+          srcSet={`${optimizeImage(reel.poster, 240, "webp")} 240w, ${optimizeImage(reel.poster, 360, "webp")} 360w, ${optimizeImage(reel.poster, 480, "webp")} 480w`}
+          sizes="(max-width: 640px) 240px, 300px"
           loading="lazy"
           fetchPriority="low"
           decoding="async"

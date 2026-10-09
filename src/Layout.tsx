@@ -52,13 +52,13 @@ export default function Layout() {
 
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
-  const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
+  const [logoSrc, setLogoSrc] = useState("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png?tr=w-400,f-webp,q-80");
   const [logoRetryStep, setLogoRetryStep] = useState(0);
   const [logoError, setLogoError] = useState(false);
 
   const handleLogoError = () => {
     if (logoRetryStep === 0) {
-      setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
+      setLogoSrc("/images/logo.webp");
       setLogoRetryStep(1);
     } else if (logoRetryStep === 1) {
       setLogoSrc("https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png");
@@ -633,6 +633,9 @@ export default function Layout() {
                                   src={product.image}
                                   width={180}
                                   alt={getImageAlt(product)}
+                                  loading="lazy"
+                                  fetchPriority="low"
+                                  decoding="async"
                                   className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                                 />
                               </div>
@@ -865,8 +868,10 @@ export default function Layout() {
               className="z-50 cursor-pointer flex items-center justify-center flex-col group transition-all duration-500 transform m-0 p-0"
             >
               <img
-                src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png"
+                src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png?tr=w-400,f-webp,q-80"
                 alt="Mukesh Saree Centre Logo" width="200" height="40"
+                decoding="async"
+                fetchPriority="low"
                 style={{ filter: isTransparent ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }}
                 className="transition-all duration-500 group-hover:opacity-80 m-0 p-0 h-[48px] md:h-[52px] w-auto object-contain"
               />
@@ -940,6 +945,9 @@ export default function Layout() {
                   <img 
                     src={logoSrc} 
                     alt="Mukesh Saree Centre Logo" width="200" height="40"
+                    loading="lazy"
+                    decoding="async"
+                    fetchPriority="low"
                     style={{ height: "40px", width: "auto", objectFit: "contain" }}
                   />
                   <button 

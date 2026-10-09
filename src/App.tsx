@@ -61,7 +61,7 @@ function LoadingScreen() {
     <div className="w-full h-screen flex flex-col items-center justify-center bg-ivory space-y-12">
       <div className="flex flex-col items-center space-y-4">
          <img 
-           src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png" 
+           src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png?tr=w-400,f-webp,q-80" 
            alt="Mukesh Saree Centre Logo" width="350" height="350" 
            className="w-auto h-[260px] md:h-[350px] object-contain animate-pulse drop-shadow-sm m-0 p-0 block" 
          />

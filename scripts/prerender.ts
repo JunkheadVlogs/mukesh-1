@@ -391,8 +391,13 @@ async function runPrerender() {
           }
         </style>
         <div style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden;">
-          <img src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" sizes="(max-width: 768px) 100vw, 768px" width="768" height="1000" fetchpriority="high" loading="eager" decoding="async" alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978" class="mobile-hero" />
-          <img src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" sizes="(min-width: 768px) 100vw, 1200px" width="1200" height="1000" loading="lazy" decoding="async" alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978" class="desktop-hero" />
+          <picture style="display: block; width: 100%; height: 100%;">
+            <source media="(max-width: 767px)" type="image/avif" srcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-avif,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-avif,q-75 768w" sizes="(max-width: 768px) 100vw, 768px" />
+            <source media="(max-width: 767px)" type="image/webp" srcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" sizes="(max-width: 768px) 100vw, 768px" />
+            <source media="(min-width: 768px)" type="image/avif" srcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-avif,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-avif,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-avif,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-avif,q-75 2000w" sizes="(min-width: 768px) 100vw, 1200px" />
+            <source media="(min-width: 768px)" type="image/webp" srcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" sizes="(min-width: 768px) 100vw, 1200px" />
+            <img src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75" width="768" height="1000" fetchpriority="high" loading="eager" decoding="async" alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978" class="mobile-hero" />
+          </picture>
         </div>
         <div style="max-width: 800px; margin: 0 auto; z-index: 10; position: relative;">
           <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED ${BUSINESS_INFO.established}</span>
@@ -886,7 +891,7 @@ async function runPrerender() {
             <!-- Gallery placeholder -->
             <div>
               <div style="aspect-ratio: 3/4; border-radius: 4px; overflow: hidden; background: white; border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center;">
-                <img src="${wsrvImgMain}" alt="${sanitize(p.name)}" style="width: 100%; height: 100%; object-fit: contain; object-position: center;" />
+                <img src="${wsrvImgMain}" alt="${sanitize(p.name)}" width="800" height="1067" loading="eager" fetchpriority="high" decoding="async" style="width: 100%; height: 100%; object-fit: contain; object-position: center; aspect-ratio: 3/4;" />
               </div>
             </div>
 

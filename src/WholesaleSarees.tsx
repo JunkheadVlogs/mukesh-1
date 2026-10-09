@@ -215,10 +215,11 @@ export default function WholesaleSarees() {
       <header className="py-4 px-4 flex flex-col items-center bg-[#FAF6F0] border-b border-[#5C0612]/5">
         <div className="flex flex-col items-center">
           <img 
-            src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png" 
+            src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png?tr=w-400,f-webp,q-80" 
             alt="Mukesh Saree Centre Premium Logo" width="200" height="64" 
             loading="lazy"
             decoding="async"
+            fetchPriority="low"
             className="h-14 sm:h-16 w-auto max-w-full object-contain drop-shadow-sm select-none" 
           />
           <div className="w-16 h-[1px] bg-[#D4AF37] mt-2.5 opacity-80"></div>

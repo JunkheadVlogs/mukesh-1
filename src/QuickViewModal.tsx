@@ -11,7 +11,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { Product, useStore } from "./store";
-import { formatPrice, optimizeImage, getImageAlt } from "./utils";
+import { formatPrice, optimizeImage, getImageAlt, getResponsiveSrcSet } from "./utils";
 import { ProductDescription } from "./components/ProductDescription";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { trackAddToCart } from "./tracking";
@@ -85,7 +85,12 @@ export default function QuickViewModal({
                <OptimizedImage
                   src={productImages[activeImageIndex]}
                   width={800}
+                  srcSet={getResponsiveSrcSet(productImages[activeImageIndex], [400, 600, 800])}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   alt={getImageAlt(product)}
+                  loading="lazy"
+                  fetchPriority="low"
+                  decoding="async"
                   className="w-full h-full object-contain object-center"
                 />
                 

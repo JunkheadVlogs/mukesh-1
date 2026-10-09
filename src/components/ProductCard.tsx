@@ -6,6 +6,7 @@ import {
   formatPrice,
   optimizeImage,
   getImageAlt,
+  getResponsiveSrcSet,
 } from "../utils";
 import { OptimizedImage } from "./OptimizedImage";
 
@@ -26,7 +27,7 @@ export const ProductCard = memo(function ProductCard({
   hideCategory = false,
   hideRating = false,
 }: ProductCardProps) {
-  const isPriority = priority || idx < 2;
+  const isPriority = Boolean(priority);
 
   const displayName = useMemo(() => {
     let name = product.name || "";
@@ -72,11 +73,7 @@ export const ProductCard = memo(function ProductCard({
           src={product.image}
           width={400}
           height={533}
-          srcSet={
-            product.image.startsWith('/')
-              ? undefined
-              : `${optimizeImage(product.image, 300, 'webp')} 300w, ${optimizeImage(product.image, 450, 'webp')} 450w, ${optimizeImage(product.image, 600, 'webp')} 600w`
-          }
+          srcSet={getResponsiveSrcSet(product.image, [300, 450, 600])}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt={getImageAlt(product)}
           priority={isPriority}

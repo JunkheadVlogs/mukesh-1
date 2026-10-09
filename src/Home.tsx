@@ -352,32 +352,48 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative w-full h-[85vh] md:h-[90vh] bg-[#1A0A00] flex items-center overflow-hidden">
         <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
-          {/* Mobile Hero Image (hidden on desktop) - Static, instant paint, zero motion/transition delay */}
-          <img
-            src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75"
-            srcSet="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w"
-            sizes="(max-width: 768px) 100vw, 768px"
-            width={768}
-            height={1000}
-            alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            className="block md:hidden w-full h-full object-cover object-[72%_bottom]"
-          />
-          {/* Desktop Hero Image (hidden on mobile) */}
-          <img
-            src="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75"
-            srcSet="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w"
-            sizes="(min-width: 768px) 100vw, 1200px"
-            width={1200}
-            height={1000}
-            alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            className="hidden md:block w-full h-full object-cover object-bottom"
-          />
+          {/* Homepage LCP Element: Semantic responsive picture serving high-efficiency AVIF with WebP fallback */}
+          <picture className="w-full h-full block">
+            {/* Mobile Hero (max-width: 767px) in AVIF */}
+            <source
+              media="(max-width: 767px)"
+              type="image/avif"
+              srcSet="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-avif,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-avif,q-75 768w"
+              sizes="(max-width: 768px) 100vw, 768px"
+            />
+            {/* Mobile Hero (max-width: 767px) in WebP */}
+            <source
+              media="(max-width: 767px)"
+              type="image/webp"
+              srcSet="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w"
+              sizes="(max-width: 768px) 100vw, 768px"
+            />
+            {/* Desktop Hero (min-width: 768px) in AVIF */}
+            <source
+              media="(min-width: 768px)"
+              type="image/avif"
+              srcSet="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-avif,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-avif,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-avif,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-avif,q-75 2000w"
+              sizes="(min-width: 768px) 100vw, 1200px"
+            />
+            {/* Desktop Hero (min-width: 768px) in WebP */}
+            <source
+              media="(min-width: 768px)"
+              type="image/webp"
+              srcSet="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w"
+              sizes="(min-width: 768px) 100vw, 1200px"
+            />
+            {/* Sole Eager LCP Image Element */}
+            <img
+              src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75"
+              width={768}
+              height={1000}
+              alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              className="w-full h-full object-cover object-[72%_bottom] md:object-bottom"
+            />
+          </picture>
         </div>
 
         {/* Cinematic gradient overlay */}
@@ -492,7 +508,12 @@ export default function Home() {
                   src="https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/Black_with_rainbow_colour_in_the_mul_cotton_handloom_sarees_right.jpg"
                   width={800}
                   height={600}
+                  srcSet={`${optimizeImage("https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/Black_with_rainbow_colour_in_the_mul_cotton_handloom_sarees_right.jpg", 400, "webp")} 400w, ${optimizeImage("https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/Black_with_rainbow_colour_in_the_mul_cotton_handloom_sarees_right.jpg", 600, "webp")} 600w, ${optimizeImage("https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/Black_with_rainbow_colour_in_the_mul_cotton_handloom_sarees_right.jpg", 800, "webp")} 800w, ${optimizeImage("https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/Black_with_rainbow_colour_in_the_mul_cotton_handloom_sarees_right.jpg", 1200, "webp")} 1200w`}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 750px"
                   alt="Women wearing premium Linen Sarees from Mukesh Saree Centre"
+                  loading="lazy"
+                  fetchPriority="low"
+                  decoding="async"
                   className="w-full h-full object-cover object-center lg:object-[center_20%] group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -536,7 +557,12 @@ export default function Home() {
                   src="https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790"
                   width={800}
                   height={550}
+                  srcSet={`${optimizeImage("https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790", 400, "webp")} 400w, ${optimizeImage("https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790", 600, "webp")} 600w, ${optimizeImage("https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790", 800, "webp")} 800w`}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 40vw, 500px"
                   alt="Beautiful traditional Saree from Mukesh Saree Centre collection"
+                  loading="lazy"
+                  fetchPriority="low"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -592,7 +618,7 @@ export default function Home() {
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : trendingProducts.map((product, index) => (
-                  <ProductCard product={product} idx={index} priority={index < 4} key={product.id} />
+                  <ProductCard product={product} idx={index} priority={false} key={product.id} />
                 ))}
           </div>
           <div className="text-center mt-3 md:mt-4">
@@ -699,7 +725,7 @@ export default function Home() {
             {isLoading
               ? [...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)
               : newArrivals.map((product, index) => (
-                  <ProductCard product={product} idx={index} priority={index < 4} key={product.id} />
+                  <ProductCard product={product} idx={index} priority={false} key={product.id} />
                 ))}
           </div>
           <div className="text-center mt-4 md:mt-6">
@@ -779,7 +805,13 @@ export default function Home() {
                     <OptimizedImage
                       src={image.url}
                       width={800}
+                      height={480}
+                      srcSet={`${optimizeImage(image.url, 400, "webp")} 400w, ${optimizeImage(image.url, 600, "webp")} 600w, ${optimizeImage(image.url, 800, "webp")} 800w`}
+                      sizes="(max-width: 640px) 85vw, (max-width: 1024px) 500px, 600px"
                       alt={image.alt}
+                      loading="lazy"
+                      fetchPriority="low"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-1000 ease-out"
                     />
                   </div>
@@ -914,8 +946,10 @@ export default function Home() {
               alt="Store View"
               width={1200}
               height={900}
+              loading="lazy"
+              fetchPriority="low"
+              decoding="async"
               className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-white/10"
-              priority
             />
           </div>
         </div>

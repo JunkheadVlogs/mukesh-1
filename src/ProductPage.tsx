@@ -34,6 +34,7 @@ import {
   optimizeImage,
   getProductReviewStats,
   getImageAlt,
+  getResponsiveSrcSet,
 } from "./utils";
 import { CONFIG, submitToGoogleSheets, getApiUrl, getWhatsAppNumber } from "./config";
 import { formatMobileInput, normalizeMobileNumber, isValidIndianMobileNumber } from "./utils/phoneValidation";
@@ -1181,10 +1182,15 @@ export default function ProductPage() {
                   src={productImages[activeImageIndex]}
                   width={800}
                   height={1067}
+                  srcSet={getResponsiveSrcSet(productImages[activeImageIndex], [400, 600, 800, 1200])}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                   alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
                   className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02] rounded-[6px] sm:rounded-[8px] w-full h-full object-contain"
                   style={{ aspectRatio: '3/4' }}
                   priority={true}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                 />
               )}
               <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-[var(--color-bg)]/90 backdrop-blur-md p-3 shadow-sm text-[var(--color-dark)]/70 opacity-0 group-hover:opacity-100 transition-all z-10 hidden md:block rounded-full hover:text-[var(--color-dark)]">
@@ -1253,7 +1259,11 @@ export default function ProductPage() {
                       <OptimizedImage
                         src={img}
                         width={150}
+                        height={200}
                         alt={`${getImageAlt(product)} - Thumbnail ${idx + 1}`}
+                        loading="lazy"
+                        fetchPriority="low"
+                        decoding="async"
                         className="w-full h-full object-contain object-center"
                       />
                     )}
@@ -1483,6 +1493,10 @@ export default function ProductPage() {
                           src={v.image}
                           alt={`${product.name} in ${v.color} Color option - Mukesh Saree Centre Nagpur`}
                           width={150}
+                          height={207}
+                          loading="lazy"
+                          fetchPriority="low"
+                          decoding="async"
                           className={`w-full h-full object-contain object-center transition-all duration-500 ${v.slug === slug ? "" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"}`}
                         />
                       </Link>
@@ -1813,6 +1827,9 @@ export default function ProductPage() {
                 src={showAddedToast.customImg || product.image}
                 width={100}
                 alt={`${getImageAlt(product)} - Added to Bag Successfully`}
+                loading="lazy"
+                fetchPriority="low"
+                decoding="async"
                 className="w-full h-full object-contain object-center will-change-transform transform-gpu"
               />
             </div>
@@ -2035,6 +2052,9 @@ export default function ProductPage() {
                     src={product.image}
                     width={200}
                     alt={`${getImageAlt(product)} - Order Summary`}
+                    loading="lazy"
+                    fetchPriority="low"
+                    decoding="async"
                     className="w-full h-full object-cover object-top animate-fade-in"
                   />
                 </div>

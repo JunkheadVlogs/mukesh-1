@@ -154,8 +154,12 @@ export default function Cart() {
                   <div className="w-20 sm:w-32 aspect-[3/4] flex-shrink-0 rounded-sm overflow-hidden border border-black/5 shadow-sm flex items-center justify-center p-0" style={{ backgroundColor: '#FAF8F5' }}>
                     <OptimizedImage
                       src={item.image}
-                      width={400}
+                      width={200}
+                      height={267}
                       alt={getImageAlt(item)}
+                      loading="lazy"
+                      fetchPriority="low"
+                      decoding="async"
                       className="w-full h-full object-contain object-center will-change-transform transform-gpu"
                     />
                   </div>

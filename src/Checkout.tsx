@@ -930,6 +930,10 @@ export default function Checkout() {
                           src={item.image}
                           alt={getImageAlt(item)}
                           width={200}
+                          height={267}
+                          loading="lazy"
+                          fetchPriority="low"
+                          decoding="async"
                           className="w-full h-full object-contain object-center will-change-transform transform-gpu"
                         />
                         <div className="absolute top-1 right-1 bg-gold-500 text-white text-[9px] w-4.5 h-4.5 sm:w-5 sm:h-5 flex items-center justify-center rounded-full font-bold shadow-sm">
