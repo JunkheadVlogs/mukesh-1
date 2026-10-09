@@ -68,12 +68,12 @@ export function SareeShopInNagpurArticle() {
             <p className="text-xs text-[#2C241B]/70 mt-1 m-0">
               WhatsApp:{" "}
               <a
-                href="https://wa.me/919325034636"
+                href="https://wa.me/917020664641"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#25D366] font-semibold hover:underline"
               >
-                +91 9325034636
+                +91 7020664641
               </a>
             </p>
           </div>
@@ -95,7 +95,7 @@ export function SareeShopInNagpurArticle() {
             Call Showroom (+91 7020664641)
           </a>
           <a
-            href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20plan%20a%20visit%20to%20your%20Gandhibagh%20showroom."
+            href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20plan%20a%20visit%20to%20your%20Gandhibagh%20showroom."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-6 py-3 border border-[#25D366] text-[#1e7e34] bg-white font-semibold text-xs uppercase tracking-wider rounded-sm hover:bg-[#25D366]/10 transition-all no-underline"
@@ -735,7 +735,7 @@ export function SareeShopInNagpurArticle() {
             Visit Our Store
           </Link>
           <a
-            href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20viewing%20your%20latest%20saree%20catalogue."
+            href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20viewing%20your%20latest%20saree%20catalogue."
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto px-8 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all"

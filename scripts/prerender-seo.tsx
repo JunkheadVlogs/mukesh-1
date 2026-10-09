@@ -170,12 +170,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20Malvika%20sarees."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20Malvika%20sarees."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              Chat on WhatsApp (+91 9325034636)
+              Chat on WhatsApp (+91 7020664641)
             </a>
             <a
               href="/contact"
@@ -337,12 +337,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20see%20your%20saree%20collection."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20see%20your%20saree%20collection."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              WhatsApp Us (+91 9325034636)
+              WhatsApp Us (+91 7020664641)
             </a>
             <a
               href="/contact"
@@ -385,7 +385,7 @@ const seoPagesData: Record<
       {
         question: "Do you offer video shopping for customers outside Nagpur?",
         answer:
-          "Yes! We offer live video call shopping via WhatsApp (+91 9325034636). Our team shows fabrics, colors, and drapes in real-time with full home delivery.",
+          "Yes! We offer live video call shopping via WhatsApp (+91 7020664641). Our team shows fabrics, colors, and drapes in real-time with full home delivery.",
       },
       {
         question: "Are all silk sarees at Mukesh Saree Centre authentic?",
@@ -395,7 +395,7 @@ const seoPagesData: Record<
       {
         question: "How can I place a bulk or wholesale order?",
         answer:
-          "You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 9325034636).",
+          "You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 7020664641).",
       },
     ],
   },
@@ -515,12 +515,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20need%20a%20quote%20for%20bulk%20uniform%20sarees."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20need%20a%20quote%20for%20bulk%20uniform%20sarees."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              Get Wholesale Quote (+91 9325034636)
+              Get Wholesale Quote (+91 7020664641)
             </a>
             <a
               href="/contact"
@@ -649,7 +649,7 @@ const seoPagesData: Record<
                 </a>
               </p>
               <p className="text-xs text-[#2C241B]/70 mt-1 m-0">
-                WhatsApp: <a href="https://wa.me/919325034636" target="_blank" rel="noopener noreferrer" className="text-[#25D366] font-semibold">+91 9325034636</a>
+                WhatsApp: <a href="https://wa.me/917020664641" target="_blank" rel="noopener noreferrer" className="text-[#25D366] font-semibold">+91 7020664641</a>
               </p>
             </div>
           </div>
@@ -670,7 +670,7 @@ const seoPagesData: Record<
               Call Showroom (+91 7020664641)
             </a>
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20plan%20a%20visit%20to%20your%20Gandhibagh%20showroom."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20plan%20a%20visit%20to%20your%20Gandhibagh%20showroom."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 border border-[#25D366] text-[#1e7e34] bg-white font-semibold text-xs uppercase tracking-wider rounded-sm no-underline"
@@ -697,12 +697,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20want%20to%20view%20your%20latest%20saree%20collection."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20want%20to%20view%20your%20latest%20saree%20collection."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all"
             >
-              Chat on WhatsApp (+91 9325034636)
+              Chat on WhatsApp (+91 7020664641)
             </a>
             <a
               href="/contact"
@@ -729,7 +729,7 @@ const seoPagesData: Record<
       },
       {
         question: "Can I order online or schedule a video shopping call?",
-        answer: "Yes! We offer live WhatsApp video shopping (+91 9325034636) and ship tracked orders across India.",
+        answer: "Yes! We offer live WhatsApp video shopping (+91 7020664641) and ship tracked orders across India.",
       },
     ],
   },
@@ -1103,12 +1103,12 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20inquiring%20about%20School%20Uniform%20Sarees%20for%20our%20faculty."
+              href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20inquiring%20about%20School%20Uniform%20Sarees%20for%20our%20faculty."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#20b858] transition-all no-underline shadow-sm"
             >
-              Chat on WhatsApp (+91 9325034636)
+              Chat on WhatsApp (+91 7020664641)
             </a>
             <a
               href="tel:+917020664641"
@@ -1644,7 +1644,7 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href="/shop?category=Sarees" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline">Browse All Office Sarees</a>
-            <a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20linen%20sarees%20for%20office%20wear." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Styling Help (+91 9325034636)</a>
+            <a href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20linen%20sarees%20for%20office%20wear." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Styling Help (+91 7020664641)</a>
             <a href="/contact" className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Visit Nagpur Showroom</a>
           </div>
         </div>
@@ -1710,7 +1710,7 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href="/shop?category=Sarees" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Shop Wedding Sarees</a>
-            <a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20chiffon%20sarees%20for%20a%20wedding%20function." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Video Tour (+91 9325034636)</a>
+            <a href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20interested%20in%20chiffon%20sarees%20for%20a%20wedding%20function." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Video Tour (+91 7020664641)</a>
             <a href="/contact" className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Visit Showroom</a>
           </div>
         </div>
@@ -1772,7 +1772,7 @@ const seoPagesData: Record<
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href="/shop?category=Sarees" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Shop All Yellow Sarees</a>
-            <a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20a%20yellow%20saree%20for%20a%20Haldi%20function." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Haldi Styling (+91 9325034636)</a>
+            <a href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20a%20yellow%20saree%20for%20a%20Haldi%20function." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Haldi Styling (+91 7020664641)</a>
             <a href="/contact" className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Visit Showroom</a>
           </div>
         </div>
@@ -1833,7 +1833,7 @@ const seoPagesData: Record<
             Are you a boutique owner, showroom buyer, or online reseller? Chat directly with our wholesale team on WhatsApp to receive our live B2B catalog, wholesale tier pricing, and sample parcel details.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20a%20boutique%20owner%20interested%20in%20your%20wholesale%20saree%20catalog%20and%20price%20sheet." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Chat on WhatsApp (+91 9325034636)</a>
+            <a href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20a%20boutique%20owner%20interested%20in%20your%20wholesale%20saree%20catalog%20and%20price%20sheet." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Chat on WhatsApp (+91 7020664641)</a>
             <a href="tel:+917020664641" className="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Call Wholesale Desk (+91 7020664641)</a>
             <a href="/contact" className="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Submit Wholesale Inquiry</a>
           </div>
