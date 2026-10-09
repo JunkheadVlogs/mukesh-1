@@ -12,7 +12,7 @@ declare const IS_COMPILED_BUNDLE: boolean | undefined;
 const isProduction = typeof IS_COMPILED_BUNDLE !== 'undefined' || process.env.NODE_ENV === 'production';
 
 const app = express();
-const PORT = parseInt(process.env.PORT || '3000', 10);
+const PORT = parseInt(process.env.APP_PORT || process.env.DEFAULT_APP_PORT || '3000', 10);
 
 app.use(cors());
 app.use(express.json());

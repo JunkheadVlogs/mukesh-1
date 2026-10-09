@@ -31,7 +31,6 @@
     "clsx": "^2.1.1",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
-    "esbuild": "^0.28.1",
     "express": "^4.21.2",
     "firebase-admin": "^13.10.0",
     "google-auth-library": "^10.6.2",
@@ -59,9 +58,20 @@
   "overrides": {
     "websocket-driver": "^0.7.5",
     "proxy-addr": "^2.0.8",
-    "protobufjs": "^7.4.0",
+    "axios": "^1.20.0",
+    "@fastify/busboy": "^3.2.1",
+    "@types/request": {
+      "form-data": "^2.5.6"
+    },
+    "form-data": "^4.0.6",
+    "ws": "^8.21.0",
+    "browserslist": "^4.28.7",
+    "protobufjs": "^7.6.1",
+    "@grpc/grpc-js": "^1.14.5",
+    "postcss": "^8.5.18",
+    "source-map-js": "^1.2.2",
+    "nanoid": "^3.3.12",
     "qs": "^6.14.0",
-    "ws": "^8.18.0",
     "uuid": "^11.0.0",
     "@protobufjs/utf8": "^1.1.0"
   }
