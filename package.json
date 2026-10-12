@@ -59,20 +59,23 @@
     "websocket-driver": "^0.7.5",
     "proxy-addr": "^2.0.8",
     "axios": "^1.20.0",
-    "@fastify/busboy": "^3.2.1",
+    "@fastify/busboy": "^3.2.2",
     "@types/request": {
       "form-data": "^2.5.6"
     },
     "form-data": "^4.0.6",
-    "ws": "^8.21.0",
-    "browserslist": "^4.28.7",
-    "protobufjs": "^7.6.1",
-    "@grpc/grpc-js": "^1.14.5",
-    "postcss": "^8.5.18",
+    "ws": "^8.22.0",
+    "browserslist": "^4.29.3",
+    "protobufjs": "^7.6.6",
+    "@grpc/grpc-js": "^1.14.6",
+    "postcss": "^8.5.29",
     "source-map-js": "^1.2.2",
-    "nanoid": "^3.3.12",
-    "qs": "^6.14.0",
+    "nanoid": "^3.3.20",
+    "qs": "^6.16.0",
+    "body-parser": "^1.20.8",
+    "braces": "^3.0.3",
     "uuid": "^11.0.0",
-    "@protobufjs/utf8": "^1.1.0"
+    "@protobufjs/utf8": "^1.1.2",
+    "@babel/core": "^7.29.7"
   }
 }

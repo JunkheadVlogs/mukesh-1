@@ -8,6 +8,18 @@ import Razorpay from 'razorpay';
 
 dotenv.config();
 
+// Defensive check against Prototype Pollution (CVE-2026-101905 / confused deputy mitigation)
+const checkPrototypeSanity = () => {
+  const dangerousProps = ['createConnection', '__proto__', 'polluted'];
+  for (const prop of dangerousProps) {
+    if ((Object.prototype as any)[prop] !== undefined) {
+      console.error(`[SECURITY ALERT] Prototype pollution detected on Object.prototype.${prop}! Removing polluted property.`);
+      delete (Object.prototype as any)[prop];
+    }
+  }
+};
+checkPrototypeSanity();
+
 declare const IS_COMPILED_BUNDLE: boolean | undefined;
 const isProduction = typeof IS_COMPILED_BUNDLE !== 'undefined' || process.env.NODE_ENV === 'production';
 

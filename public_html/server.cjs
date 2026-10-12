@@ -30,6 +30,16 @@ var import_crypto = __toESM(require("crypto"), 1);
 var import_dotenv = __toESM(require("dotenv"), 1);
 var import_razorpay = __toESM(require("razorpay"), 1);
 import_dotenv.default.config();
+var checkPrototypeSanity = () => {
+  const dangerousProps = ["createConnection", "__proto__", "polluted"];
+  for (const prop of dangerousProps) {
+    if (Object.prototype[prop] !== void 0) {
+      console.error(`[SECURITY ALERT] Prototype pollution detected on Object.prototype.${prop}! Removing polluted property.`);
+      delete Object.prototype[prop];
+    }
+  }
+};
+checkPrototypeSanity();
 var isProduction = true;
 var app = (0, import_express.default)();
 var PORT = parseInt(process.env.APP_PORT || process.env.DEFAULT_APP_PORT || "3000", 10);
