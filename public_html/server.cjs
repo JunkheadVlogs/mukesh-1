@@ -32,7 +32,7 @@ var import_razorpay = __toESM(require("razorpay"), 1);
 import_dotenv.default.config();
 var isProduction = true;
 var app = (0, import_express.default)();
-var PORT = parseInt(process.env.PORT || "3000", 10);
+var PORT = parseInt(process.env.APP_PORT || process.env.DEFAULT_APP_PORT || "3000", 10);
 app.use((0, import_cors.default)());
 app.use(import_express.default.json());
 app.use(import_express.default.urlencoded({ extended: true }));

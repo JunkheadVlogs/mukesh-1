@@ -4,6 +4,7 @@ Allow: /shop/
 Allow: /product/*
 Allow: /sarees/*
 Allow: /malvika-saree/
+Allow: /malvika-saree-buying-guide/
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /cart/

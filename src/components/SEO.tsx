@@ -2,9 +2,12 @@ import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
 import { getCanonicalUrl } from "../utils/url";
 
+import { getRouteSeo } from "../config/routesSeo";
+import { BUSINESS_INFO } from "../config/business";
+
 interface SEOProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   keywords?: string;
   image?: string;
   url?: string;
@@ -135,7 +138,7 @@ export function SEO({
   description,
   keywords,
   image = "https://mukeshsarees.com/og-image.jpg",
-  url = "https://mukeshsarees.com",
+  url,
   type = "website",
   product,
   schema,
@@ -144,7 +147,19 @@ export function SEO({
   preloadImage,
 }: SEOProps) {
   const siteUrl = "https://mukeshsarees.com";
-  const absoluteUrl = getCanonicalUrl(url, siteUrl);
+  
+  // Resolve current pathname in browser context if url was not explicitly provided or defaulted to root
+  let targetPath = url;
+  if (!targetPath && typeof window !== "undefined") {
+    targetPath = window.location.pathname;
+  }
+  
+  const currentRegistry = targetPath ? getRouteSeo(targetPath) : null;
+
+  const resolvedTitle = title || currentRegistry?.title || `${BUSINESS_INFO.name} | Wholesale & Retail Sarees Since ${BUSINESS_INFO.established}`;
+  const resolvedDescription = description || currentRegistry?.description || `🏬 Wholesale & Retail Sarees Since ${BUSINESS_INFO.established} | 📦 Bulk Orders & Single Pieces | 💵 COD Available | 🚚 Free Shipping | Nagpur`;
+  const resolvedUrl = url || currentRegistry?.canonical || (typeof window !== "undefined" ? window.location.pathname : "/");
+  const absoluteUrl = getCanonicalUrl(resolvedUrl, siteUrl);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -179,14 +194,14 @@ export function SEO({
   // Clean the description to prevent markdown/asterisks or tags appearing in SEO/og:description tags
   // For products, leverage the getWhatsAppSafeDescription to make sure it is exactly ONE clean sentence (max 60 words, no truncation)
   const cleanDescriptionText = isProductType 
-    ? getWhatsAppSafeDescription(description, product) 
-    : cleanSEOText(description);
+    ? getWhatsAppSafeDescription(resolvedDescription, product) 
+    : cleanSEOText(resolvedDescription);
 
   // Default to 1200x630 for landscape social card presentation (ideal for WhatsApp/Instagram/Facebook crop alignment without letterbox bars)
   const defaultWidth = "1200";
   const defaultHeight = "630";
 
-  let displayTitle = title;
+  let displayTitle = resolvedTitle;
   let finalDescriptionText = cleanDescriptionText;
   let displayImage = absoluteImage;
   let finalImageWidth = imageWidth || defaultWidth;

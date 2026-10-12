@@ -9,8 +9,20 @@ export default function GuideIndex() {
     <>
       <Helmet>
         <title>Saree Buying Guides & Knowledge Hub - Mukesh Saree Centre</title>
+        <meta name="title" content="Saree Buying Guides & Knowledge Hub - Mukesh Saree Centre" />
         <meta name="description" content="Explore our comprehensive collection of saree buying guides, fabric care tutorials, and draping instructions. Master the art of choosing the perfect saree." />
         <link rel="canonical" href="https://mukeshsarees.com/guides/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://mukeshsarees.com/guides/" />
+        <meta property="og:title" content="Saree Buying Guides & Knowledge Hub - Mukesh Saree Centre" />
+        <meta property="og:description" content="Explore our comprehensive collection of saree buying guides, fabric care tutorials, and draping instructions. Master the art of choosing the perfect saree." />
+        <meta property="og:image" content="https://mukeshsarees.com/og-image.jpg" />
+        <meta property="og:site_name" content="Mukesh Saree Centre" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://mukeshsarees.com/guides/" />
+        <meta name="twitter:title" content="Saree Buying Guides & Knowledge Hub - Mukesh Saree Centre" />
+        <meta name="twitter:description" content="Explore our comprehensive collection of saree buying guides, fabric care tutorials, and draping instructions. Master the art of choosing the perfect saree." />
+        <meta name="twitter:image" content="https://mukeshsarees.com/og-image.jpg" />
       </Helmet>
 
       {/* Header */}

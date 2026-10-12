@@ -3,6 +3,73 @@
   <head>
     <meta charset="UTF-8">
     <script>
+      // Early cross-origin and third-party script error shield
+      window.onerror = function(message, source, lineno, colno, error) {
+        var msg = (message || '').toString().toLowerCase();
+        var src = (source || '').toString().toLowerCase();
+        if (
+          msg.includes('script error') ||
+          !source ||
+          src === '' ||
+          src === ':0' ||
+          (lineno === 0 && colno === 0) ||
+          src.includes('facebook') ||
+          src.includes('fbevents') ||
+          src.includes('clarity') ||
+          src.includes('pinterest') ||
+          src.includes('googletagmanager') ||
+          src.includes('google-analytics') ||
+          src.includes('razorpay') ||
+          src.includes('extension')
+        ) {
+          return true; // Prevents browser error reporting and iframe bubbling
+        }
+        return false;
+      };
+
+      window.addEventListener('error', function(event) {
+        var msg = (event.message || '').toString().toLowerCase();
+        var filename = (event.filename || '').toString().toLowerCase();
+        if (
+          msg.includes('script error') ||
+          !event.filename ||
+          filename === '' ||
+          filename === ':0' ||
+          (event.lineno === 0 && event.colno === 0) ||
+          filename.includes('facebook') ||
+          filename.includes('fbevents') ||
+          filename.includes('clarity') ||
+          filename.includes('pinterest') ||
+          filename.includes('googletagmanager') ||
+          filename.includes('google-analytics') ||
+          filename.includes('razorpay') ||
+          filename.includes('extension')
+        ) {
+          event.preventDefault();
+          if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+          }
+        }
+      }, true);
+
+      window.addEventListener('unhandledrejection', function(event) {
+        var reason = event.reason ? (event.reason.message || String(event.reason)).toLowerCase() : '';
+        if (
+          reason.includes('script error') ||
+          reason.includes('facebook') ||
+          reason.includes('fbevents') ||
+          reason.includes('clarity') ||
+          reason.includes('pinterest') ||
+          reason.includes('googletagmanager') ||
+          reason.includes('razorpay')
+        ) {
+          event.preventDefault();
+          if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+          }
+        }
+      }, true);
+
       if (typeof Node !== 'undefined' && Node.prototype && !Node.prototype._safeRemoveChildPatched) {
         Node.prototype._safeRemoveChildPatched = true;
         var originalRemoveChild = Node.prototype.removeChild;
@@ -37,105 +104,6 @@
       !function(e){if(!window.pintrk){window.pintrk = function () {
         window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
         n=window.pintrk;n.queue=[],n.version="3.0";}}(window);
-
-      // Deferred non-blocking loader for GTM, GA4, Clarity, Meta Pixel, and Pinterest
-      (function() {
-        var initialized = false;
-        function loadTrackingServices() {
-          if (initialized) return;
-          initialized = true;
-
-          // 1. Google Tag Manager
-          var gtmId = "GTM-TLQJCB2N";
-          if (!gtmId || gtmId.startsWith('%VITE_') || gtmId.includes('your_gtm_id') || gtmId.includes('GTM-') === false) {
-            gtmId = "GTM-WMG3G6SM";
-          }
-          if (gtmId && !window._gtm_loaded) {
-            window._gtm_loaded = true;
-            window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-            var gtmScript = document.createElement('script');
-            gtmScript.defer = true;
-            gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + gtmId;
-            document.head.appendChild(gtmScript);
-          }
-
-          // 2. Google Analytics 4
-          if (!window._ga4_loaded) {
-            var gaId = "G-NHLKCDQCM0";
-            if (!gaId || gaId.startsWith('%VITE_') || gaId.includes('your_ga4_measurement_id') || gaId.includes('G_GA4_MEASUREMENT_ID') || !gaId.startsWith('G-')) {
-              gaId = "G-1LMBHFFF1F";
-            }
-            window._ga4_loaded = true;
-            var gaScript = document.createElement('script');
-            gaScript.async = true;
-            gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
-            document.head.appendChild(gaScript);
-            gtag('config', gaId);
-          }
-
-          // 3. Microsoft Clarity
-          if (!window._clarity_initialized) {
-            window._clarity_initialized = true;
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.defer=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "x1spvs9vsv");
-          }
-
-          // 4. Meta Pixel
-          if (!window._fbq_script_loaded) {
-            window._fbq_script_loaded = true;
-            var fbScript = document.createElement('script');
-            fbScript.async = true;
-            fbScript.src = "https://connect.facebook.net/en_US/fbevents.js";
-            document.head.appendChild(fbScript);
-            var pixelId = "1458541922085984";
-            if (!pixelId || pixelId.startsWith('%VITE_') || pixelId.includes('your_meta_pixel')) {
-              pixelId = "1458541922085984";
-            }
-            if (window.fbq) {
-              window.fbq('init', pixelId);
-            }
-          }
-
-          // 5. Pinterest Tag
-          if (!window._pinterest_loaded) {
-            window._pinterest_loaded = true;
-            var pinScript = document.createElement('script');
-            pinScript.async = true;
-            pinScript.src = "https://s.pinimg.com/ct/core.js";
-            document.head.appendChild(pinScript);
-            var pinTag = "2612622217509";
-            if (pinTag && !pinTag.startsWith('%VITE_') && !pinTag.includes('your_pinterest_tag')) {
-              window.pintrk('load', pinTag);
-            }
-          }
-        }
-
-        // Trigger on user interaction
-        var interactionEvents = ["mousedown", "keypress", "touchstart", "scroll"];
-        function onUserInteraction() {
-          loadTrackingServices();
-          interactionEvents.forEach(function(evt) {
-            window.removeEventListener(evt, onUserInteraction, { passive: true });
-          });
-        }
-        interactionEvents.forEach(function(evt) {
-          window.addEventListener(evt, onUserInteraction, { passive: true });
-        });
-
-        // Trigger only AFTER page load event completes
-        window.addEventListener('load', function() {
-          if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(function() {
-              setTimeout(loadTrackingServices, 3500);
-            });
-          } else {
-            setTimeout(loadTrackingServices, 4000);
-          }
-        });
-      })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title data-rh="true">Mukesh Saree - Premium Indian Ethnic Wear Since 1978 | Nagpur</title>
@@ -170,10 +138,26 @@
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
     <link rel="dns-prefetch" href="https://wsrv.nl" />
     <!-- Preload exact above-the-fold mobile & desktop hero images -->
-    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" imagesizes="(max-width: 768px) 100vw, 768px" media="(max-width: 767px)" fetchpriority="high" />
-    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" imagesizes="(min-width: 768px) 100vw, 1200px" media="(min-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-avif,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-avif,q-75 768w" imagesizes="(max-width: 768px) 100vw, 768px" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-avif,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-avif,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-avif,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-avif,q-75 2000w" imagesizes="(min-width: 768px) 100vw, 1200px" media="(min-width: 768px)" fetchpriority="high" />
     <!-- Critical Above-the-Fold Inline CSS (Eliminates FOUC during async CSS preload) -->
     <style>
+      @font-face {
+        font-family: 'Playfair Display Fallback';
+        src: local('Georgia'), local('Times New Roman'), local('serif');
+        size-adjust: 104%;
+        ascent-override: 96%;
+        descent-override: 26%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('Arial'), local('-apple-system'), local('BlinkMacSystemFont'), local('sans-serif');
+        size-adjust: 100%;
+        ascent-override: 95%;
+        descent-override: 25%;
+        line-gap-override: 0%;
+      }
       :root {
         --color-bg: #faf8f4;
         --color-surface: #f5efe6;
@@ -186,7 +170,7 @@
       body {
         margin: 0;
         padding: 0;
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: "Inter", "Inter Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-size: 14px;
         line-height: 1.6;
         color: #2b2b2b;
@@ -281,11 +265,11 @@
         .pinterest-static-banner { display: block !important; }
       </style>
     </noscript>
-    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.B3qelSVY.min.js"></script>
-    <link rel="preload" href="/assets/index.DxbLvK-t.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.DxbLvK-t.min.css" crossorigin></noscript>
+    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.BB4RM97w.min.js"></script>
+    <link rel="preload" href="/assets/index.PDQIKUTL.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.PDQIKUTL.min.css" crossorigin></noscript>
   
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","@id":"https://mukeshsarees.com/mukesh-saree/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mukeshsarees.com/"},{"@type":"ListItem","position":2,"name":"Mukesh Saree - A Legacy of Elegance Since 1978","item":"https://mukeshsarees.com/mukesh-saree/"}]},{"@type":"Article","@id":"https://mukeshsarees.com/mukesh-saree/#article","isPartOf":{"@id":"https://mukeshsarees.com/mukesh-saree/"},"headline":"Mukesh Saree - Premium Indian Ethnic Wear Since 1978 | Nagpur","description":"Discover the legacy of Mukesh Saree Centre in Gandhibagh, Nagpur. Offering authentic Paithani, Banarasi silk, cotton, linen, Malvika, and uniform sarees since 1978.","image":"https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png","datePublished":"2026-05-30T08:00:00+05:30","dateModified":"2026-07-15T10:00:00+05:30","mainEntityOfPage":"https://mukeshsarees.com/mukesh-saree/","author":{"@id":"https://mukeshsarees.com/#organization"},"publisher":{"@id":"https://mukeshsarees.com/#organization"}},{"@type":"FAQPage","@id":"https://mukeshsarees.com/mukesh-saree/#faq","mainEntity":[{"@type":"Question","name":"Where is Mukesh Saree Centre located in Nagpur?","acceptedAnswer":{"@type":"Answer","text":"Mukesh Saree Centre is located at Jagnath Road, Gandhibagh, Itwari, Nagpur, Maharashtra, 440002. We are situated in Nagpur's main wholesale and retail textile market."}},{"@type":"Question","name":"Is Mukesh Saree Centre a retail or wholesale saree shop?","acceptedAnswer":{"@type":"Answer","text":"We function as both a leading saree wholesaler for boutique owners and resellers, and a retail store offering wholesale-matched prices to individual buyers and families."}},{"@type":"Question","name":"What types of sarees does Mukesh Saree Centre sell?","acceptedAnswer":{"@type":"Answer","text":"We offer pure silk Paithani, Banarasi zari, Kanjivaram, pure cotton, linen, Kota Doria, Malvika daily-wear sarees, institutional uniform sarees, and bridal lehengas."}},{"@type":"Question","name":"Do you offer video shopping for customers outside Nagpur?","acceptedAnswer":{"@type":"Answer","text":"Yes! We offer live video call shopping via WhatsApp (+91 9325034636). Our team shows fabrics, colors, and drapes in real-time with full home delivery."}},{"@type":"Question","name":"Are all silk sarees at Mukesh Saree Centre authentic?","acceptedAnswer":{"@type":"Answer","text":"Yes, all our silk sarees are sourced directly from handloom weaving centers with genuine fabric authenticity guarantees."}},{"@type":"Question","name":"How can I place a bulk or wholesale order?","acceptedAnswer":{"@type":"Answer","text":"You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 9325034636)."}}]}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where is Mukesh Saree Centre located in Nagpur?","acceptedAnswer":{"@type":"Answer","text":"Mukesh Saree Centre is located at Jagnath Road, Gandhibagh, Itwari, Nagpur, Maharashtra, 440002. We are situated in Nagpur's main wholesale and retail textile market."}},{"@type":"Question","name":"Is Mukesh Saree Centre a retail or wholesale saree shop?","acceptedAnswer":{"@type":"Answer","text":"We function as both a leading saree wholesaler for boutique owners and resellers, and a retail store offering wholesale-matched prices to individual buyers and families."}},{"@type":"Question","name":"What types of sarees does Mukesh Saree Centre sell?","acceptedAnswer":{"@type":"Answer","text":"We offer pure silk Paithani, Banarasi zari, Kanjivaram, pure cotton, linen, Kota Doria, Malvika daily-wear sarees, institutional uniform sarees, and bridal lehengas."}},{"@type":"Question","name":"Do you offer video shopping for customers outside Nagpur?","acceptedAnswer":{"@type":"Answer","text":"Yes! We offer live video call shopping via WhatsApp (+91 9325034636). Our team shows fabrics, colors, and drapes in real-time with full home delivery."}},{"@type":"Question","name":"Are all silk sarees at Mukesh Saree Centre authentic?","acceptedAnswer":{"@type":"Answer","text":"Yes, all our silk sarees are sourced directly from handloom weaving centers with genuine fabric authenticity guarantees."}},{"@type":"Question","name":"How can I place a bulk or wholesale order?","acceptedAnswer":{"@type":"Answer","text":"You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 9325034636)."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","@id":"https://mukeshsarees.com/mukesh-saree/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mukeshsarees.com/"},{"@type":"ListItem","position":2,"name":"Mukesh Saree - A Legacy of Elegance Since 1978","item":"https://mukeshsarees.com/mukesh-saree/"}]},{"@type":"Article","@id":"https://mukeshsarees.com/mukesh-saree/#article","isPartOf":{"@id":"https://mukeshsarees.com/mukesh-saree/"},"headline":"Mukesh Saree - Premium Indian Ethnic Wear Since 1978 | Nagpur","description":"Discover the legacy of Mukesh Saree Centre in Gandhibagh, Nagpur. Offering authentic Paithani, Banarasi silk, cotton, linen, Malvika, and uniform sarees since 1978.","image":"https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png","datePublished":"2026-05-30T08:00:00+05:30","dateModified":"2026-07-15T10:00:00+05:30","mainEntityOfPage":"https://mukeshsarees.com/mukesh-saree/","author":{"@id":"https://mukeshsarees.com/#organization"},"publisher":{"@id":"https://mukeshsarees.com/#organization"}},{"@type":"FAQPage","@id":"https://mukeshsarees.com/mukesh-saree/#faq","mainEntity":[{"@type":"Question","name":"Where is Mukesh Saree Centre located in Nagpur?","acceptedAnswer":{"@type":"Answer","text":"Mukesh Saree Centre is located at Jagnath Road, Gandhibagh, Itwari, Nagpur, Maharashtra, 440002. We are situated in Nagpur's main wholesale and retail textile market."}},{"@type":"Question","name":"Is Mukesh Saree Centre a retail or wholesale saree shop?","acceptedAnswer":{"@type":"Answer","text":"We function as both a leading saree wholesaler for boutique owners and resellers, and a retail store offering wholesale-matched prices to individual buyers and families."}},{"@type":"Question","name":"What types of sarees does Mukesh Saree Centre sell?","acceptedAnswer":{"@type":"Answer","text":"We offer pure silk Paithani, Banarasi zari, Kanjivaram, pure cotton, linen, Kota Doria, Malvika daily-wear sarees, institutional uniform sarees, and bridal lehengas."}},{"@type":"Question","name":"Do you offer video shopping for customers outside Nagpur?","acceptedAnswer":{"@type":"Answer","text":"Yes! We offer live video call shopping via WhatsApp (+91 7020664641). Our team shows fabrics, colors, and drapes in real-time with full home delivery."}},{"@type":"Question","name":"Are all silk sarees at Mukesh Saree Centre authentic?","acceptedAnswer":{"@type":"Answer","text":"Yes, all our silk sarees are sourced directly from handloom weaving centers with genuine fabric authenticity guarantees."}},{"@type":"Question","name":"How can I place a bulk or wholesale order?","acceptedAnswer":{"@type":"Answer","text":"You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 7020664641)."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where is Mukesh Saree Centre located in Nagpur?","acceptedAnswer":{"@type":"Answer","text":"Mukesh Saree Centre is located at Jagnath Road, Gandhibagh, Itwari, Nagpur, Maharashtra, 440002. We are situated in Nagpur's main wholesale and retail textile market."}},{"@type":"Question","name":"Is Mukesh Saree Centre a retail or wholesale saree shop?","acceptedAnswer":{"@type":"Answer","text":"We function as both a leading saree wholesaler for boutique owners and resellers, and a retail store offering wholesale-matched prices to individual buyers and families."}},{"@type":"Question","name":"What types of sarees does Mukesh Saree Centre sell?","acceptedAnswer":{"@type":"Answer","text":"We offer pure silk Paithani, Banarasi zari, Kanjivaram, pure cotton, linen, Kota Doria, Malvika daily-wear sarees, institutional uniform sarees, and bridal lehengas."}},{"@type":"Question","name":"Do you offer video shopping for customers outside Nagpur?","acceptedAnswer":{"@type":"Answer","text":"Yes! We offer live video call shopping via WhatsApp (+91 7020664641). Our team shows fabrics, colors, and drapes in real-time with full home delivery."}},{"@type":"Question","name":"Are all silk sarees at Mukesh Saree Centre authentic?","acceptedAnswer":{"@type":"Answer","text":"Yes, all our silk sarees are sourced directly from handloom weaving centers with genuine fabric authenticity guarantees."}},{"@type":"Question","name":"How can I place a bulk or wholesale order?","acceptedAnswer":{"@type":"Answer","text":"You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 7020664641)."}}]}</script>
 </head>
   <body>
     <!-- Static Non-JS-Dependent Pinterest Resilience Banner (Safety Net for In-App WebViews) -->
@@ -326,7 +310,7 @@
           <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Mukesh Saree - A Legacy of Elegance Since 1978</h1>
           <p style="font-size: 16px; line-height: 1.8; color: #4a4a4a; margin-bottom: 40px; font-weight: 500;">Mukesh Saree Centre is a landmark saree and ethnic wear store established in 1978 in Gandhibagh, Nagpur, Maharashtra. Renowned for authentic silk, Paithani, Banarasi, linen, cotton, uniform sarees, and bridal lehengas at direct wholesale-matched rates.</p>
           <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; margin-bottom: 48px; line-height: 1.8; color: #4a4a4a;">
-             <div class="prose max-w-none text-[var(--color-dark)]/80 mb-12"><div class="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]"><h2 class="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">Direct Answer: Who is Mukesh Saree Centre?</h2><p class="text-sm leading-relaxed mb-0"><strong>Mukesh Saree Centre</strong> is a premier saree store and wholesale destination located at Jagnath Road, Gandhibagh, Nagpur (Estd. 1978). For over 45 years, we have brought authentic handloom weaves—from pure Yeola Paithani and Banarasi silk to everyday cotton, Malvika sarees, and institutional uniform sarees—directly from weaver clusters to families and retailers across Central India.</p></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Our Heritage &amp; Direct Weaver Relationships</h2><p>Founded in 1978 in the historic textile quarter of Gandhibagh, Nagpur, <strong>Mukesh Saree Centre</strong> was built on a simple promise: delivering authentic Indian textiles with uncompromised quality and fair pricing. Over four decades, we have established direct partnerships with master handloom weavers in Yeola, Varanasi, Kanchipuram, Surat, and Chanderi.</p><p>By removing intermediaries, we ensure that every customer—whether shopping for a once-in-a-lifetime bridal Paithani or ordering 200 uniform sarees for a hospital—receives verified craftsmanship at direct wholesale rates.</p><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Who Should Shop at Mukesh Saree Centre?</h2><ul class="list-disc pl-5 space-y-2"><li><strong>Brides &amp; Wedding Families:</strong> Seeking certified pure silk Paithani sarees, Banarasi brocades, and heavy bridal lehengas for wedding pheras and receptions.</li><li><strong>Working Women &amp; Everyday Shoppers:</strong> Looking for breathable cottons, linen sarees, Kota Doria, and soft Malvika sarees for comfortable daily elegance.</li><li><strong>Boutique Owners &amp; Resellers:</strong> Sourcing high-margin wholesale catalogs with bulk pricing, low minimum order quantities, and tracked delivery.</li><li><strong>Schools, Hospitals &amp; Corporate Procurement:</strong> Sourcing high-durability, color-matched institutional uniform sarees in bulk.</li></ul><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Our Signature Product Categories</h2><ul class="list-disc pl-5 space-y-2"><li><strong>Pure Silk &amp; Paithani:</strong> Hand-woven Maharashtrian Paithani sarees featuring pure silk body, gold zari borders, and peacock/muniya motifs.</li><li><strong>Banarasi &amp; Kanjivaram:</strong> Rich wedding silks with intricate zari brocade, kadwa weaving, and timeless regal allure.</li><li><strong>Malvika &amp; Daily Wear:</strong> Micro-blend soft sarees engineered for non-crease daily office and home wear.</li><li><strong>Uniform Sarees:</strong> High-durability crepe and poly-cotton sarees for corporate staff, schools, and healthcare institutions.</li></ul><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Buying Guidance &amp; In-Store Experience</h2><p>Our Gandhibagh showroom in Nagpur offers a spacious, hospitable environment where experienced saree consultants guide you through fabric feel, drape weight, and color harmonizing.</p><p>For outstation customers across India and abroad, we offer <strong>Live WhatsApp Video Shopping</strong>. You can view saree drapes, inspect zari work under natural light, and receive direct home delivery.</p><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Care &amp; Preservation Protocol for Fine Sarees</h2><ul class="list-disc pl-5 space-y-2"><li><strong>Pure Silk &amp; Paithani:</strong> Dry clean only. Store wrapped in unbleached white cotton or muslin fabric. Avoid plastic covers or cardboard boxes.</li><li><strong>Rest &amp; Rotation:</strong> Refold fine silk sarees every 3 months along different lines to avoid permanent creasing at zari edges.</li><li><strong>Cotton &amp; Linen:</strong> Gentle hand wash in cold water. Use mild liquid detergent and dry in shaded outdoor areas.</li></ul><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Local Nagpur Trust Signal</h2><p>Located in the heart of Gandhibagh, Nagpur, <strong>Mukesh Saree Centre</strong> has served three generations of families across Vidarbha and Maharashtra. We stand behind every saree with a 100% authenticity guarantee and honest pricing.</p><div class="p-6 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30"><h3 class="text-xl font-serif text-white mb-2 mt-0 font-medium">Visit Mukesh Saree Centre or Order Online</h3><p class="text-sm text-white/80 mb-4 leading-relaxed">Experience four decades of textile excellence. Visit our Gandhibagh, Nagpur store or connect on WhatsApp for live video calls and latest catalog access.</p><div class="flex flex-col sm:flex-row gap-3"><a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20see%20your%20saree%20collection." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all">WhatsApp Us (+91 9325034636)</a><a href="/contact" class="inline-flex items-center justify-center px-6 py-3 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all">Visit Showroom in Nagpur</a></div></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Explore Our Saree Collections</h2><p class="space-x-2"><a href="/saree-shop-in-nagpur" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Best Saree Shop in Nagpur Guide</a> •<!-- --> <a href="/sarees/paithani-sarees" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Pure Paithani Sarees</a> •<!-- --> <a href="/sarees/banarasi-sarees" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Banarasi Silk Sarees</a> •<!-- --> <a href="/malvika-saree" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Malvika Saree Collection</a> •<!-- --> <a href="/uniform-saree" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Institutional Uniform Sarees</a> •<!-- --> <a href="/wholesalesarees" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Wholesale Sarees Nagpur</a></p></div>
+             <div class="prose max-w-none text-[var(--color-dark)]/80 mb-12"><div class="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]"><h2 class="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">Direct Answer: Who is Mukesh Saree Centre?</h2><p class="text-sm leading-relaxed mb-0"><strong>Mukesh Saree Centre</strong> is a premier saree store and wholesale destination located at Jagnath Road, Gandhibagh, Nagpur (Estd. 1978). For over 45 years, we have brought authentic handloom weaves—from pure Yeola Paithani and Banarasi silk to everyday cotton, Malvika sarees, and institutional uniform sarees—directly from weaver clusters to families and retailers across Central India.</p></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Our Heritage &amp; Direct Weaver Relationships</h2><p>Founded in 1978 in the historic textile quarter of Gandhibagh, Nagpur, <strong>Mukesh Saree Centre</strong> was built on a simple promise: delivering authentic Indian textiles with uncompromised quality and fair pricing. Over four decades, we have established direct partnerships with master handloom weavers in Yeola, Varanasi, Kanchipuram, Surat, and Chanderi.</p><p>By removing intermediaries, we ensure that every customer—whether shopping for a once-in-a-lifetime bridal Paithani or ordering 200 uniform sarees for a hospital—receives verified craftsmanship at direct wholesale rates.</p><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Who Should Shop at Mukesh Saree Centre?</h2><ul class="list-disc pl-5 space-y-2"><li><strong>Brides &amp; Wedding Families:</strong> Seeking certified pure silk Paithani sarees, Banarasi brocades, and heavy bridal lehengas for wedding pheras and receptions.</li><li><strong>Working Women &amp; Everyday Shoppers:</strong> Looking for breathable cottons, linen sarees, Kota Doria, and soft Malvika sarees for comfortable daily elegance.</li><li><strong>Boutique Owners &amp; Resellers:</strong> Sourcing high-margin wholesale catalogs with bulk pricing, low minimum order quantities, and tracked delivery.</li><li><strong>Schools, Hospitals &amp; Corporate Procurement:</strong> Sourcing high-durability, color-matched institutional uniform sarees in bulk.</li></ul><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Our Signature Product Categories</h2><ul class="list-disc pl-5 space-y-2"><li><strong>Pure Silk &amp; Paithani:</strong> Hand-woven Maharashtrian Paithani sarees featuring pure silk body, gold zari borders, and peacock/muniya motifs.</li><li><strong>Banarasi &amp; Kanjivaram:</strong> Rich wedding silks with intricate zari brocade, kadwa weaving, and timeless regal allure.</li><li><strong>Malvika &amp; Daily Wear:</strong> Micro-blend soft sarees engineered for non-crease daily office and home wear.</li><li><strong>Uniform Sarees:</strong> High-durability crepe and poly-cotton sarees for corporate staff, schools, and healthcare institutions.</li></ul><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Buying Guidance &amp; In-Store Experience</h2><p>Our Gandhibagh showroom in Nagpur offers a spacious, hospitable environment where experienced saree consultants guide you through fabric feel, drape weight, and color harmonizing.</p><p>For outstation customers across India and abroad, we offer <strong>Live WhatsApp Video Shopping</strong>. You can view saree drapes, inspect zari work under natural light, and receive direct home delivery.</p><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Care &amp; Preservation Protocol for Fine Sarees</h2><ul class="list-disc pl-5 space-y-2"><li><strong>Pure Silk &amp; Paithani:</strong> Dry clean only. Store wrapped in unbleached white cotton or muslin fabric. Avoid plastic covers or cardboard boxes.</li><li><strong>Rest &amp; Rotation:</strong> Refold fine silk sarees every 3 months along different lines to avoid permanent creasing at zari edges.</li><li><strong>Cotton &amp; Linen:</strong> Gentle hand wash in cold water. Use mild liquid detergent and dry in shaded outdoor areas.</li></ul><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Local Nagpur Trust Signal</h2><p>Located in the heart of Gandhibagh, Nagpur, <strong>Mukesh Saree Centre</strong> has served three generations of families across Vidarbha and Maharashtra. We stand behind every saree with a 100% authenticity guarantee and honest pricing.</p><div class="p-6 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30"><h3 class="text-xl font-serif text-white mb-2 mt-0 font-medium">Visit Mukesh Saree Centre or Order Online</h3><p class="text-sm text-white/80 mb-4 leading-relaxed">Experience four decades of textile excellence. Visit our Gandhibagh, Nagpur store or connect on WhatsApp for live video calls and latest catalog access.</p><div class="flex flex-col sm:flex-row gap-3"><a href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20would%20like%20to%20see%20your%20saree%20collection." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all">WhatsApp Us (+91 7020664641)</a><a href="/contact" class="inline-flex items-center justify-center px-6 py-3 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-white/10 transition-all">Visit Showroom in Nagpur</a></div></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Explore Our Saree Collections</h2><p class="space-x-2"><a href="/saree-shop-in-nagpur" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Best Saree Shop in Nagpur Guide</a> •<!-- --> <a href="/sarees/paithani-sarees" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Pure Paithani Sarees</a> •<!-- --> <a href="/sarees/banarasi-sarees" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Banarasi Silk Sarees</a> •<!-- --> <a href="/malvika-saree" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Malvika Saree Collection</a> •<!-- --> <a href="/uniform-saree" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Institutional Uniform Sarees</a> •<!-- --> <a href="/wholesalesarees" class="text-[#B5894A] underline font-medium hover:text-[#2C241B]">Wholesale Sarees Nagpur</a></p></div>
           </div>
           <div>
             <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; color: #1a0a00;">Frequently Asked Questions</h2>
@@ -348,7 +332,7 @@
             
               <div style="margin-bottom: 16px;">
                 <h3 style="font-size: 15px; font-weight: bold; color: #1a0a00; margin-bottom: 8px;">Do you offer video shopping for customers outside Nagpur?</h3>
-                <p style="font-size: 14px; color: #4a4a4a;">Yes! We offer live video call shopping via WhatsApp (+91 9325034636). Our team shows fabrics, colors, and drapes in real-time with full home delivery.</p>
+                <p style="font-size: 14px; color: #4a4a4a;">Yes! We offer live video call shopping via WhatsApp (+91 7020664641). Our team shows fabrics, colors, and drapes in real-time with full home delivery.</p>
               </div>
             
               <div style="margin-bottom: 16px;">
@@ -358,7 +342,7 @@
             
               <div style="margin-bottom: 16px;">
                 <h3 style="font-size: 15px; font-weight: bold; color: #1a0a00; margin-bottom: 8px;">How can I place a bulk or wholesale order?</h3>
-                <p style="font-size: 14px; color: #4a4a4a;">You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 9325034636).</p>
+                <p style="font-size: 14px; color: #4a4a4a;">You can place wholesale orders directly at our Gandhibagh store or by connecting with our bulk sales desk on WhatsApp (+91 7020664641).</p>
               </div>
             
           </div>

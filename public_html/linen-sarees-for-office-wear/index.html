@@ -3,6 +3,73 @@
   <head>
     <meta charset="UTF-8">
     <script>
+      // Early cross-origin and third-party script error shield
+      window.onerror = function(message, source, lineno, colno, error) {
+        var msg = (message || '').toString().toLowerCase();
+        var src = (source || '').toString().toLowerCase();
+        if (
+          msg.includes('script error') ||
+          !source ||
+          src === '' ||
+          src === ':0' ||
+          (lineno === 0 && colno === 0) ||
+          src.includes('facebook') ||
+          src.includes('fbevents') ||
+          src.includes('clarity') ||
+          src.includes('pinterest') ||
+          src.includes('googletagmanager') ||
+          src.includes('google-analytics') ||
+          src.includes('razorpay') ||
+          src.includes('extension')
+        ) {
+          return true; // Prevents browser error reporting and iframe bubbling
+        }
+        return false;
+      };
+
+      window.addEventListener('error', function(event) {
+        var msg = (event.message || '').toString().toLowerCase();
+        var filename = (event.filename || '').toString().toLowerCase();
+        if (
+          msg.includes('script error') ||
+          !event.filename ||
+          filename === '' ||
+          filename === ':0' ||
+          (event.lineno === 0 && event.colno === 0) ||
+          filename.includes('facebook') ||
+          filename.includes('fbevents') ||
+          filename.includes('clarity') ||
+          filename.includes('pinterest') ||
+          filename.includes('googletagmanager') ||
+          filename.includes('google-analytics') ||
+          filename.includes('razorpay') ||
+          filename.includes('extension')
+        ) {
+          event.preventDefault();
+          if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+          }
+        }
+      }, true);
+
+      window.addEventListener('unhandledrejection', function(event) {
+        var reason = event.reason ? (event.reason.message || String(event.reason)).toLowerCase() : '';
+        if (
+          reason.includes('script error') ||
+          reason.includes('facebook') ||
+          reason.includes('fbevents') ||
+          reason.includes('clarity') ||
+          reason.includes('pinterest') ||
+          reason.includes('googletagmanager') ||
+          reason.includes('razorpay')
+        ) {
+          event.preventDefault();
+          if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+          }
+        }
+      }, true);
+
       if (typeof Node !== 'undefined' && Node.prototype && !Node.prototype._safeRemoveChildPatched) {
         Node.prototype._safeRemoveChildPatched = true;
         var originalRemoveChild = Node.prototype.removeChild;
@@ -37,105 +104,6 @@
       !function(e){if(!window.pintrk){window.pintrk = function () {
         window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
         n=window.pintrk;n.queue=[],n.version="3.0";}}(window);
-
-      // Deferred non-blocking loader for GTM, GA4, Clarity, Meta Pixel, and Pinterest
-      (function() {
-        var initialized = false;
-        function loadTrackingServices() {
-          if (initialized) return;
-          initialized = true;
-
-          // 1. Google Tag Manager
-          var gtmId = "GTM-TLQJCB2N";
-          if (!gtmId || gtmId.startsWith('%VITE_') || gtmId.includes('your_gtm_id') || gtmId.includes('GTM-') === false) {
-            gtmId = "GTM-WMG3G6SM";
-          }
-          if (gtmId && !window._gtm_loaded) {
-            window._gtm_loaded = true;
-            window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-            var gtmScript = document.createElement('script');
-            gtmScript.defer = true;
-            gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + gtmId;
-            document.head.appendChild(gtmScript);
-          }
-
-          // 2. Google Analytics 4
-          if (!window._ga4_loaded) {
-            var gaId = "G-NHLKCDQCM0";
-            if (!gaId || gaId.startsWith('%VITE_') || gaId.includes('your_ga4_measurement_id') || gaId.includes('G_GA4_MEASUREMENT_ID') || !gaId.startsWith('G-')) {
-              gaId = "G-1LMBHFFF1F";
-            }
-            window._ga4_loaded = true;
-            var gaScript = document.createElement('script');
-            gaScript.async = true;
-            gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
-            document.head.appendChild(gaScript);
-            gtag('config', gaId);
-          }
-
-          // 3. Microsoft Clarity
-          if (!window._clarity_initialized) {
-            window._clarity_initialized = true;
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.defer=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "x1spvs9vsv");
-          }
-
-          // 4. Meta Pixel
-          if (!window._fbq_script_loaded) {
-            window._fbq_script_loaded = true;
-            var fbScript = document.createElement('script');
-            fbScript.async = true;
-            fbScript.src = "https://connect.facebook.net/en_US/fbevents.js";
-            document.head.appendChild(fbScript);
-            var pixelId = "1458541922085984";
-            if (!pixelId || pixelId.startsWith('%VITE_') || pixelId.includes('your_meta_pixel')) {
-              pixelId = "1458541922085984";
-            }
-            if (window.fbq) {
-              window.fbq('init', pixelId);
-            }
-          }
-
-          // 5. Pinterest Tag
-          if (!window._pinterest_loaded) {
-            window._pinterest_loaded = true;
-            var pinScript = document.createElement('script');
-            pinScript.async = true;
-            pinScript.src = "https://s.pinimg.com/ct/core.js";
-            document.head.appendChild(pinScript);
-            var pinTag = "2612622217509";
-            if (pinTag && !pinTag.startsWith('%VITE_') && !pinTag.includes('your_pinterest_tag')) {
-              window.pintrk('load', pinTag);
-            }
-          }
-        }
-
-        // Trigger on user interaction
-        var interactionEvents = ["mousedown", "keypress", "touchstart", "scroll"];
-        function onUserInteraction() {
-          loadTrackingServices();
-          interactionEvents.forEach(function(evt) {
-            window.removeEventListener(evt, onUserInteraction, { passive: true });
-          });
-        }
-        interactionEvents.forEach(function(evt) {
-          window.addEventListener(evt, onUserInteraction, { passive: true });
-        });
-
-        // Trigger only AFTER page load event completes
-        window.addEventListener('load', function() {
-          if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(function() {
-              setTimeout(loadTrackingServices, 3500);
-            });
-          } else {
-            setTimeout(loadTrackingServices, 4000);
-          }
-        });
-      })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title data-rh="true">Linen Sarees for Office Wear | Elegant Formal Drapes – Mukesh Saree Centre</title>
@@ -170,10 +138,26 @@
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
     <link rel="dns-prefetch" href="https://wsrv.nl" />
     <!-- Preload exact above-the-fold mobile & desktop hero images -->
-    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" imagesizes="(max-width: 768px) 100vw, 768px" media="(max-width: 767px)" fetchpriority="high" />
-    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" imagesizes="(min-width: 768px) 100vw, 1200px" media="(min-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-avif,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-avif,q-75 768w" imagesizes="(max-width: 768px) 100vw, 768px" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-avif,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-avif,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-avif,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-avif,q-75 2000w" imagesizes="(min-width: 768px) 100vw, 1200px" media="(min-width: 768px)" fetchpriority="high" />
     <!-- Critical Above-the-Fold Inline CSS (Eliminates FOUC during async CSS preload) -->
     <style>
+      @font-face {
+        font-family: 'Playfair Display Fallback';
+        src: local('Georgia'), local('Times New Roman'), local('serif');
+        size-adjust: 104%;
+        ascent-override: 96%;
+        descent-override: 26%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('Arial'), local('-apple-system'), local('BlinkMacSystemFont'), local('sans-serif');
+        size-adjust: 100%;
+        ascent-override: 95%;
+        descent-override: 25%;
+        line-gap-override: 0%;
+      }
       :root {
         --color-bg: #faf8f4;
         --color-surface: #f5efe6;
@@ -186,7 +170,7 @@
       body {
         margin: 0;
         padding: 0;
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: "Inter", "Inter Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-size: 14px;
         line-height: 1.6;
         color: #2b2b2b;
@@ -281,8 +265,8 @@
         .pinterest-static-banner { display: block !important; }
       </style>
     </noscript>
-    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.B3qelSVY.min.js"></script>
-    <link rel="preload" href="/assets/index.DxbLvK-t.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.DxbLvK-t.min.css" crossorigin></noscript>
+    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.BB4RM97w.min.js"></script>
+    <link rel="preload" href="/assets/index.PDQIKUTL.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.PDQIKUTL.min.css" crossorigin></noscript>
   
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","@id":"https://mukeshsarees.com/linen-sarees-for-office-wear/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mukeshsarees.com/"},{"@type":"ListItem","position":2,"name":"Linen Sarees for Office Wear","item":"https://mukeshsarees.com/linen-sarees-for-office-wear/"}]},{"@type":"Article","@id":"https://mukeshsarees.com/linen-sarees-for-office-wear/#article","isPartOf":{"@id":"https://mukeshsarees.com/linen-sarees-for-office-wear/"},"headline":"Linen Sarees for Office Wear | Elegant Formal Drapes – Mukesh Saree Centre","description":"Discover breathable, lightweight linen sarees for office wear and long working hours. Shop pure linen and linen-cotton blends online from Mukesh Saree Centre, Nagpur.","image":"https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png","datePublished":"2026-05-30T08:00:00+05:30","dateModified":"2026-07-15T10:00:00+05:30","mainEntityOfPage":"https://mukeshsarees.com/linen-sarees-for-office-wear/","author":{"@id":"https://mukeshsarees.com/#organization"},"publisher":{"@id":"https://mukeshsarees.com/#organization"}},{"@type":"FAQPage","@id":"https://mukeshsarees.com/linen-sarees-for-office-wear/#faq","mainEntity":[{"@type":"Question","name":"Are linen sarees suitable for daily 9-to-5 office wear?","acceptedAnswer":{"@type":"Answer","text":"Yes, linen sarees are widely considered the most breathable, sweat-wicking ethnic fabric for professional environments. Their structured drape projects executive presence while keeping you cool through long work shifts."}},{"@type":"Question","name":"How do I prevent a linen saree from crushing during office hours?","acceptedAnswer":{"@type":"Answer","text":"Opt for higher yarn-count linens (80s or 100s) or pre-washed linen-cotton blends. Iron the saree while slightly damp using steam heat. When seated, smooth the back pleats flat against the chair to avoid sharp horizontal creases."}},{"@type":"Question","name":"What blouse styles look best with linen sarees for office settings?","acceptedAnswer":{"@type":"Answer","text":"Fitted elbow-length blouses, closed high necks, boat necks, and mandarin collared cotton blouses pair exceptionally well with linen. Sticking to solid contrasting tones maintains an elegant corporate look."}}]}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are linen sarees suitable for daily 9-to-5 office wear?","acceptedAnswer":{"@type":"Answer","text":"Yes, linen sarees are widely considered the most breathable, sweat-wicking ethnic fabric for professional environments. Their structured drape projects executive presence while keeping you cool through long work shifts."}},{"@type":"Question","name":"How do I prevent a linen saree from crushing during office hours?","acceptedAnswer":{"@type":"Answer","text":"Opt for higher yarn-count linens (80s or 100s) or pre-washed linen-cotton blends. Iron the saree while slightly damp using steam heat. When seated, smooth the back pleats flat against the chair to avoid sharp horizontal creases."}},{"@type":"Question","name":"What blouse styles look best with linen sarees for office settings?","acceptedAnswer":{"@type":"Answer","text":"Fitted elbow-length blouses, closed high necks, boat necks, and mandarin collared cotton blouses pair exceptionally well with linen. Sticking to solid contrasting tones maintains an elegant corporate look."}}]}</script>
@@ -326,7 +310,7 @@
           <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Linen Sarees for Office Wear</h1>
           <p style="font-size: 16px; line-height: 1.8; color: #4a4a4a; margin-bottom: 40px; font-weight: 500;">Experience the ideal union of professional authority, natural breathability, and understated elegance. Our curated collection of pure linen and linen-cotton sarees is handcrafted for all-day comfort during corporate meetings, boardroom presentations, and daily workplace hours.</p>
           <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; margin-bottom: 48px; line-height: 1.8; color: #4a4a4a;">
-             <div class="prose max-w-none text-[var(--color-dark)]/80 mb-12"><div class="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]"><h2 class="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">Direct Answer: Why Are Linen Sarees the Best Choice for Office Wear?</h2><p class="text-sm leading-relaxed mb-0"><strong>Linen sarees</strong> are considered the gold standard for Indian office wear because pure flax fibers naturally absorb moisture, regulate body temperature in both air-conditioned offices and tropical heat, and maintain a crisp, structured drape without clinging. Their subtle organic texture projects understated sophistication and executive authority without excessive gloss or heavy embroidery.</p></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">The 8-Hour Workday Test: All-Day Comfort &amp; Crease Resilience</h2><p>Corporate working hours demand attire that retains neat, intentional pleats from the first morning team standup to late evening executive debriefs. Unlike stiff synthetic polyesters that trap sweat or heavy silks that feel suffocating during desk commutes, <strong>pure linen sarees</strong> allow continuous air circulation across the weave.</p><p>At <strong>Mukesh Saree Centre</strong> (Estd. 1978 in Gandhibagh, Nagpur), we curate high-density 80s to 100s yarn-count linens and pre-washed linen-cotton blends. These fabrics soften with every wash while retaining their architectural shoulder fall. The natural micro-slubs of linen disguise minor sitting creases as organic character rather than messy wrinkles, making them effortlessly workplace-ready.</p><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Corporate Saree Styling: Blouse Pairings, Necklines &amp; Etiquette</h2><p>Achieving a polished corporate aesthetic with a linen saree requires intentional styling balance:</p><ul class="list-disc pl-5 space-y-2"><li><strong>Blouse Cuts:</strong> Pair your linen drape with structured elbow-length sleeves, high jewel necks, boat necks, or formal shirt-collared blouses in solid cotton, raw silk, or handloom cotton.</li><li><strong>Color Schemes:</strong> Soothing earth tones, muted pastels, slate grey, sage green, indigo blue, and subtle mustard tones maintain dignified workplace composure.</li><li><strong>Jewelry &amp; Accessories:</strong> Keep ornamentation minimal. Matte terracotta earrings, sterling silver studs, a leather-strap watch, and comfortable low-block footwear complete an empowered executive presence.</li><li><strong>Pleating Technique:</strong> Pin 4 to 5 crisp, equal pleats at the shoulder with a concealed safety pin beneath the blouse shoulder seam to ensure hands-free comfort during presentations and laptop work.</li></ul><div class="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30"><h3 class="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">Shop Authentic Linen Office Wear Sarees Online</h3><p class="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">Choose from our real in-stock linen collection or connect with our Gandhibagh showroom team on WhatsApp for personalized video draping and fast Pan-India dispatch with Cash on Delivery options.</p><div class="flex flex-col sm:flex-row gap-3"><a href="/shop?category=Sarees" class="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline">Browse All Office Sarees</a><a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20linen%20sarees%20for%20office%20wear." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Styling Help (+91 9325034636)</a><a href="/contact" class="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Visit Nagpur Showroom</a></div></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Explore Related Collections &amp; Pages</h2><p class="space-x-2"><a href="/sarees/linen-sarees" class="text-[#B5894A] underline font-medium">Pure Linen Sarees</a> •<!-- --> <a href="/sarees/cotton-sarees" class="text-[#B5894A] underline font-medium">Soft Cotton Sarees</a> •<!-- --> <a href="/saree-care-guide" class="text-[#B5894A] underline font-medium">Saree Care &amp; Washing Guide</a> •<!-- --> <a href="/saree-shop-in-nagpur" class="text-[#B5894A] underline font-medium">Best Saree Shop in Nagpur</a> •<!-- --> <a href="/about" class="text-[#B5894A] underline font-medium">Our 45-Year Legacy</a> •<!-- --> <a href="/reviews" class="text-[#B5894A] underline font-medium">Customer Reviews</a> •<!-- --> <a href="/contact" class="text-[#B5894A] underline font-medium">Contact Us</a></p></div>
+             <div class="prose max-w-none text-[var(--color-dark)]/80 mb-12"><div class="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]"><h2 class="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">Direct Answer: Why Are Linen Sarees the Best Choice for Office Wear?</h2><p class="text-sm leading-relaxed mb-0"><strong>Linen sarees</strong> are considered the gold standard for Indian office wear because pure flax fibers naturally absorb moisture, regulate body temperature in both air-conditioned offices and tropical heat, and maintain a crisp, structured drape without clinging. Their subtle organic texture projects understated sophistication and executive authority without excessive gloss or heavy embroidery.</p></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">The 8-Hour Workday Test: All-Day Comfort &amp; Crease Resilience</h2><p>Corporate working hours demand attire that retains neat, intentional pleats from the first morning team standup to late evening executive debriefs. Unlike stiff synthetic polyesters that trap sweat or heavy silks that feel suffocating during desk commutes, <strong>pure linen sarees</strong> allow continuous air circulation across the weave.</p><p>At <strong>Mukesh Saree Centre</strong> (Estd. 1978 in Gandhibagh, Nagpur), we curate high-density 80s to 100s yarn-count linens and pre-washed linen-cotton blends. These fabrics soften with every wash while retaining their architectural shoulder fall. The natural micro-slubs of linen disguise minor sitting creases as organic character rather than messy wrinkles, making them effortlessly workplace-ready.</p><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Corporate Saree Styling: Blouse Pairings, Necklines &amp; Etiquette</h2><p>Achieving a polished corporate aesthetic with a linen saree requires intentional styling balance:</p><ul class="list-disc pl-5 space-y-2"><li><strong>Blouse Cuts:</strong> Pair your linen drape with structured elbow-length sleeves, high jewel necks, boat necks, or formal shirt-collared blouses in solid cotton, raw silk, or handloom cotton.</li><li><strong>Color Schemes:</strong> Soothing earth tones, muted pastels, slate grey, sage green, indigo blue, and subtle mustard tones maintain dignified workplace composure.</li><li><strong>Jewelry &amp; Accessories:</strong> Keep ornamentation minimal. Matte terracotta earrings, sterling silver studs, a leather-strap watch, and comfortable low-block footwear complete an empowered executive presence.</li><li><strong>Pleating Technique:</strong> Pin 4 to 5 crisp, equal pleats at the shoulder with a concealed safety pin beneath the blouse shoulder seam to ensure hands-free comfort during presentations and laptop work.</li></ul><div class="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30"><h3 class="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">Shop Authentic Linen Office Wear Sarees Online</h3><p class="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">Choose from our real in-stock linen collection or connect with our Gandhibagh showroom team on WhatsApp for personalized video draping and fast Pan-India dispatch with Cash on Delivery options.</p><div class="flex flex-col sm:flex-row gap-3"><a href="/shop?category=Sarees" class="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-[#a0763d] transition-all no-underline">Browse All Office Sarees</a><a href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20looking%20for%20linen%20sarees%20for%20office%20wear." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">WhatsApp Styling Help (+91 7020664641)</a><a href="/contact" class="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Visit Nagpur Showroom</a></div></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Explore Related Collections &amp; Pages</h2><p class="space-x-2"><a href="/sarees/linen-sarees" class="text-[#B5894A] underline font-medium">Pure Linen Sarees</a> •<!-- --> <a href="/sarees/cotton-sarees" class="text-[#B5894A] underline font-medium">Soft Cotton Sarees</a> •<!-- --> <a href="/saree-care-guide" class="text-[#B5894A] underline font-medium">Saree Care &amp; Washing Guide</a> •<!-- --> <a href="/saree-shop-in-nagpur" class="text-[#B5894A] underline font-medium">Best Saree Shop in Nagpur</a> •<!-- --> <a href="/about" class="text-[#B5894A] underline font-medium">Our 45-Year Legacy</a> •<!-- --> <a href="/reviews" class="text-[#B5894A] underline font-medium">Customer Reviews</a> •<!-- --> <a href="/contact" class="text-[#B5894A] underline font-medium">Contact Us</a></p></div>
           </div>
           <div>
             <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; color: #1a0a00;">Frequently Asked Questions</h2>

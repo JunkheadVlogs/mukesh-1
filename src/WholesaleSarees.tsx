@@ -168,7 +168,7 @@ export default function WholesaleSarees() {
         title="Wholesale Sarees VIP Club — Mukesh Saree Centre Nagpur" 
         description="Exclusive saree dealer community in Nagpur since 1978. Get daily new arrivals, manufacturer-direct wholesale rates & bulk catalog updates on WhatsApp." 
         image="https://mukeshsarees.com/og-images/wholesale-vip-club.jpg"
-        url="/wholesalesarees"
+        url="/wholesale-sarees-nagpur/"
         type="website"
         imageWidth="1200"
         imageHeight="630"

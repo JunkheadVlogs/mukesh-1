@@ -113,7 +113,7 @@ export default function WhyMukeshSareeCentre() {
         <SEO 
           title={`Why Choose Mukesh Saree Centre | Saree Store Nagpur Est. 1978`}
           description={`Learn why Mukesh Saree Centre in Gandhibagh, Nagpur is Vidarbha's most trusted saree destination for 46+ years. Pure fabrics, wholesale prices, pan-India COD.`}
-          url="/why-mukesh-saree-centre"
+          url="/why-mukesh-saree-centre/"
           schema={customSchema}
         />
 

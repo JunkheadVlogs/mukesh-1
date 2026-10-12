@@ -9,7 +9,7 @@ export default function Terms() {
         <SEO 
           title="Terms & Conditions | Mukesh Saree Centre" 
           description="Review the terms and conditions for Mukesh Saree Centre. Understanding our guidelines, policies, and terms ensures a transparent and smooth shopping experience." 
-          url="/terms"
+          url="/terms/"
         />
 
         <div className="text-center mb-8 md:mb-10">

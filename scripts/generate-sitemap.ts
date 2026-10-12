@@ -49,6 +49,8 @@ async function generateSitemap() {
   addRoute("/why-mukesh-saree-centre", "monthly", "0.8");
   addRoute("/fabric-authenticity-and-care", "monthly", "0.8");
   addRoute("/media", "monthly", "0.7");
+  addRoute("/uniform-saree-bulk-orders", "weekly", "0.8");
+  addRoute("/malvika-saree-buying-guide", "weekly", "0.8");
   addRoute("/shipping-policy", "yearly", "0.4");
   addRoute("/return-policy", "yearly", "0.4");
   addRoute("/terms", "yearly", "0.3");

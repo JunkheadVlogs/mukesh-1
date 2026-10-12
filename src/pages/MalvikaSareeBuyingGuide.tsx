@@ -10,7 +10,7 @@ export default function MalvikaSareeBuyingGuide() {
       "@type": "WebPage",
       name: `Malvika Saree Buying Guide | Authentic Selection, Styling & Care | ${BUSINESS_INFO.name}`,
       description: `Comprehensive Malvika Saree buying guide from ${BUSINESS_INFO.name}, Gandhibagh, Nagpur. Discover tissue-touch comfort, office & teacher styling, fabric care, and wholesale options.`,
-      url: `${BUSINESS_INFO.website}/malvika-saree-buying-guide`,
+      url: `${BUSINESS_INFO.website}/malvika-saree-buying-guide/`,
       publisher: { "@id": `${BUSINESS_INFO.website}/#organization` },
     },
     {
@@ -21,13 +21,13 @@ export default function MalvikaSareeBuyingGuide() {
           "@type": "ListItem",
           position: 1,
           name: "Home",
-          item: BUSINESS_INFO.website,
+          item: `${BUSINESS_INFO.website}/`,
         },
         {
           "@type": "ListItem",
           position: 2,
           name: "Malvika Saree Buying Guide",
-          item: `${BUSINESS_INFO.website}/malvika-saree-buying-guide`,
+          item: `${BUSINESS_INFO.website}/malvika-saree-buying-guide/`,
         },
       ],
     },
@@ -67,9 +67,9 @@ export default function MalvikaSareeBuyingGuide() {
     <div className="bg-primary-50 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <SEO
-          title={`Malvika Saree Buying Guide | Authentic Selection & Care | ${BUSINESS_INFO.name}`}
-          description={`Ultimate Malvika Saree buying guide by ${BUSINESS_INFO.name} in Gandhibagh, Nagpur. Learn about tissue micro-blend softness, daily wear, teacher uniforms & care.`}
-          url="/malvika-saree-buying-guide"
+          title={`Malvika Saree Buying Guide | ${BUSINESS_INFO.name} Nagpur`}
+          description="Comprehensive guide to tissue micro-blend Malvika sarees by Mukesh Saree Centre, Gandhibagh, Nagpur. Lightweight 400g daily drapes, wrinkle-free pleats & home care."
+          url="/malvika-saree-buying-guide/"
           schema={schema}
         />
 

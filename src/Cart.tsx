@@ -125,7 +125,7 @@ export default function Cart() {
         <SEO
           title="Shopping Cart | Mukesh Saree Centre"
           description="Review your selection of premium ethnic wear at Mukesh Saree Centre. Securely manage your cart items and proceed to checkout for a seamless experience today."
-          url="/cart"
+          url="/cart/"
         />
         
         <header className="mb-3.5 sm:mb-6 md:mb-12 border-b border-black/5 pb-2.5 sm:pb-4 md:pb-8">

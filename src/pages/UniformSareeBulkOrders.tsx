@@ -98,7 +98,7 @@ export default function UniformSareeBulkOrders() {
         <SEO 
           title={`Uniform Sarees & Wholesale Bulk Orders | ${BUSINESS_INFO.name} Nagpur`}
           description={`Buy corporate, school, teacher, and hospital uniform sarees in bulk from ${BUSINESS_INFO.name}, Gandhibagh, Nagpur. Direct weaver prices, GST invoices, pan-India delivery.`}
-          url="/uniform-saree-bulk-orders"
+          url="/uniform-saree-bulk-orders/"
           schema={customSchema}
         />
 

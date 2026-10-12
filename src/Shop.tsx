@@ -462,7 +462,7 @@ export default function Shop() {
         title={seoData.title}
         description={seoData.description}
         image={ogImageUrl}
-        url={window.location.pathname + window.location.search}
+        url={window.location.pathname}
         type="website"
         schema={[breadcrumbSchema, collectionSchema] as any}
       />

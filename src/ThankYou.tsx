@@ -682,7 +682,7 @@ export default function ThankYou() {
       <SEO
         title="Order Confirmed | Mukesh Saree Centre"
         description="Your boutique order has been confirmed successfully."
-        url="/thank-you"
+        url="/thank-you/"
       />
 
       {/* Confetti Layer (Hidden on print) */}

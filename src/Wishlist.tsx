@@ -126,7 +126,7 @@ export default function Wishlist() {
             ? "Discover a list of favorite sarees from Mukesh Saree Centre shared with you. Shop these elegant sarees and linen collections directly from this list."
             : "View and manage your favorite picks from Mukesh Saree Centre. Create your dream wishlist of elegant sarees and designer collections."
         }
-        url="/wishlist"
+        url="/wishlist/"
       />
       
       <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 pt-32 md:pt-48 pb-32">

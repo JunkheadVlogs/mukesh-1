@@ -92,7 +92,7 @@ export default function About() {
         <SEO 
           title="About Mukesh Saree Centre | Saree Shop in Nagpur Since 1978" 
           description={`Discover the 46-year legacy of ${BUSINESS_INFO.name} in Gandhibagh, Nagpur. Founded in 1978 by Shri Nanakram Khemchandani, offering sarees, lehengas, & wholesale bulk orders.`} 
-          url="/about"
+          url="/about/"
           schema={customSchema}
         />
 

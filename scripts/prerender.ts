@@ -1326,6 +1326,174 @@ async function runPrerender() {
           ${getFooterHtml()}
         </div>
       `
+    },
+    {
+      dir: "malvika-saree-buying-guide",
+      title: `Malvika Saree Buying Guide | ${BUSINESS_INFO.name} Nagpur`,
+      desc: "Everything you need to know about tissue micro-blend Malvika sarees from Mukesh Saree Centre Nagpur. Lightweight daily drape, easy care, teacher uniforms, and styling tips.",
+      canonical: "https://mukeshsarees.com/malvika-saree-buying-guide/",
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 860px; margin: 48px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <div style="text-align: center; margin-bottom: 36px;">
+              <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; color: #8c7355;">Expert Buying & Fabric Advice</span>
+              <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin: 8px 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Malvika Saree Buying Guide</h1>
+              <p style="color: #4a4a4a; font-size: 15px; font-weight: 300; max-width: 600px; margin: 0 auto; line-height: 1.6;">Everything you need to know about tissue micro-blend Malvika sarees—the favorite effortless drape for office, teaching, daily wear, and festive gatherings.</p>
+            </div>
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 36px; line-height: 1.8; font-size: 15px; color: #3a3a3a; margin-bottom: 32px;">
+              <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; color: #1a0a00; margin-top: 0; margin-bottom: 12px;">What is a Malvika Saree?</h2>
+              <p style="margin-bottom: 20px;">A Malvika saree is an ultra-lightweight daily wear and office saree crafted from high-density micro-blend yarn with a delicate tissue finish. Engineered for effortless draping in under 2 minutes, it offers the skin-friendly breathability of fine cotton alongside the wrinkle-resistant, lustrous drape of silk.</p>
+              <h3 style="font-family: 'Playfair Display', serif; font-size: 18px; color: #8c7355; margin-bottom: 8px;">Key Features</h3>
+              <ul style="padding-left: 20px; font-size: 14px; color: #4a4a4a; margin-bottom: 24px;">
+                <li><strong>Wrinkle-Resistant Structure:</strong> Holds crisp pleats through 10-12 hour workdays without crumpling.</li>
+                <li><strong>Feather-Light Weight:</strong> Weighs under 400 grams, keeping you comfortable in warm weather.</li>
+                <li><strong>Easy Home Care:</strong> Washable at home with gentle liquid detergent; minimal ironing required.</li>
+              </ul>
+              <p><a href="/malvika-saree" style="color: #8c7355; font-weight: 600; text-decoration: underline;">Explore the Malvika Saree Collection &rarr;</a></p>
+            </div>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `,
+      schemaJson: [
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": `Malvika Saree Buying Guide | ${BUSINESS_INFO.name} Nagpur`,
+          "description": "Comprehensive guide to tissue micro-blend Malvika sarees by Mukesh Saree Centre, Gandhibagh, Nagpur. Lightweight daily drapes, wrinkle-free pleats & home care.",
+          "url": "https://mukeshsarees.com/malvika-saree-buying-guide/",
+          "author": { "@type": "Organization", "@id": "https://mukeshsarees.com/#organization", "name": BUSINESS_INFO.name },
+          "publisher": { "@type": "Organization", "@id": "https://mukeshsarees.com/#organization", "name": BUSINESS_INFO.name }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://mukeshsarees.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Malvika Saree Buying Guide", "item": "https://mukeshsarees.com/malvika-saree-buying-guide/" }
+          ]
+        }
+      ]
+    },
+    {
+      dir: "reviews",
+      title: `Verified Customer Reviews & Feedback | ${BUSINESS_INFO.name} Nagpur`,
+      desc: `Read genuine customer reviews for ${BUSINESS_INFO.name} in Gandhibagh, Nagpur. Trusted saree store & wholesale supplier since 1978.`,
+      canonical: "https://mukeshsarees.com/reviews/",
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 860px; margin: 48px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <div style="text-align: center; margin-bottom: 36px;">
+              <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; color: #8c7355;">Trust & Transparency</span>
+              <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin: 8px 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Customer Reviews & Feedback</h1>
+              <p style="color: #4a4a4a; font-size: 15px; font-weight: 300; max-width: 600px; margin: 0 auto; line-height: 1.6;">Real experiences from families, retail shoppers, boutique owners, and corporate partners who trust Mukesh Saree Centre since 1978.</p>
+            </div>
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 36px; line-height: 1.8; font-size: 15px; color: #3a3a3a; margin-bottom: 32px;">
+              <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; color: #1a0a00; margin-top: 0; margin-bottom: 12px;">What Our Customers Say</h2>
+              <p>Rated 4.9 out of 5 based on verified feedback from over 500+ wholesale boutique partners and thousands of retail customers across India.</p>
+            </div>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `
+    },
+    {
+      dir: "why-mukesh-saree-centre",
+      title: "Why Choose Mukesh Saree Centre | Saree Store Nagpur Est. 1978",
+      desc: "Learn why Mukesh Saree Centre in Gandhibagh, Nagpur is Vidarbha's most trusted saree destination for 46+ years. Pure fabrics, wholesale prices, pan-India COD.",
+      canonical: "https://mukeshsarees.com/why-mukesh-saree-centre/",
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 860px; margin: 48px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <div style="text-align: center; margin-bottom: 36px;">
+              <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; color: #8c7355;">Uncompromising Excellence</span>
+              <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin: 8px 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Why Choose Mukesh Saree Centre?</h1>
+              <p style="color: #4a4a4a; font-size: 15px; font-weight: 300; max-width: 600px; margin: 0 auto; line-height: 1.6;">46 years of family heritage, direct weaver sourcing, uncompromised fabric quality, and wholesale pricing in the heart of Nagpur.</p>
+            </div>
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 36px; line-height: 1.8; font-size: 15px; color: #3a3a3a; margin-bottom: 32px;">
+              <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; color: #1a0a00; margin-top: 0; margin-bottom: 12px;">The Mukesh Saree Centre Advantage</h2>
+              <ul style="padding-left: 20px; font-size: 14px; color: #4a4a4a; margin-bottom: 24px;">
+                <li><strong>Direct Weaver Procurement:</strong> Direct from Surat, Varanasi, Kanchipuram, and Chanderi eliminating middlemen.</li>
+                <li><strong>Transparent Textile Labeling:</strong> We clearly specify pure fabrics vs blend varieties.</li>
+                <li><strong>Cash on Delivery Nationwide:</strong> Trusted doorstep delivery with COD across India.</li>
+              </ul>
+            </div>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `
+    },
+    {
+      dir: "fabric-authenticity-and-care",
+      title: "Fabric Authenticity & Saree Care Guide | Mukesh Saree Centre Nagpur",
+      desc: "Factual fabric classifications, weave transparency, wash care recommendations, and saree dimensions from Mukesh Saree Centre, Gandhibagh, Nagpur. Established 1978.",
+      canonical: "https://mukeshsarees.com/fabric-authenticity-and-care/",
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 860px; margin: 48px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <div style="text-align: center; margin-bottom: 36px;">
+              <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; color: #8c7355;">Transparency & Craft Knowledge</span>
+              <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin: 8px 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Fabric Authenticity & Care</h1>
+              <p style="color: #4a4a4a; font-size: 15px; font-weight: 300; max-width: 600px; margin: 0 auto; line-height: 1.6;">Factual textile descriptions, wash care instructions, and authenticity standards from Nagpur's trusted saree center since 1978.</p>
+            </div>
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 36px; line-height: 1.8; font-size: 15px; color: #3a3a3a; margin-bottom: 32px;">
+              <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; color: #1a0a00; margin-top: 0; margin-bottom: 12px;">Textile Quality Commitments</h2>
+              <p>Every saree at Mukesh Saree Centre is tested for drape resilience, color-fastness, and authentic thread composition.</p>
+            </div>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `
+    },
+    {
+      dir: "media",
+      title: "Media & Press Coverage | Mukesh Saree Centre Nagpur",
+      desc: "Official media info, press resources, and verified digital presence for Mukesh Saree Centre, Gandhibagh, Nagpur. Saree landmark since 1978.",
+      canonical: "https://mukeshsarees.com/media/",
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 860px; margin: 48px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <div style="text-align: center; margin-bottom: 36px;">
+              <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; color: #8c7355;">Press & Brand Presence</span>
+              <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin: 8px 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Media Coverage & Proof</h1>
+              <p style="color: #4a4a4a; font-size: 15px; font-weight: 300; max-width: 600px; margin: 0 auto; line-height: 1.6;">Official press details, digital channels, and media resources for Mukesh Saree Centre, Nagpur's saree landmark since 1978.</p>
+            </div>
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 36px; line-height: 1.8; font-size: 15px; color: #3a3a3a; margin-bottom: 32px;">
+              <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; color: #1a0a00; margin-top: 0; margin-bottom: 12px;">Press & Media Relations</h2>
+              <p>For press inquiries, documentary features, and cultural handloom coverage, reach out to info@mukeshsarees.com.</p>
+            </div>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `
+    },
+    {
+      dir: "uniform-saree-bulk-orders",
+      title: "Uniform Sarees & Wholesale Bulk Orders | Mukesh Saree Centre Nagpur",
+      desc: "Buy corporate, school, teacher, and hospital uniform sarees in bulk from Mukesh Saree Centre, Gandhibagh, Nagpur. Direct weaver prices, GST invoices, pan-India delivery.",
+      canonical: "https://mukeshsarees.com/uniform-saree-bulk-orders/",
+      body: `
+        <div style="background-color: #faf6f0; min-height: 100vh;">
+          ${getHeaderHtml()}
+          <main style="max-width: 860px; margin: 48px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
+            <div style="text-align: center; margin-bottom: 36px;">
+              <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; color: #8c7355;">Institutional & Corporate Solutions</span>
+              <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin: 8px 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Uniform Sarees & Bulk Orders</h1>
+              <p style="color: #4a4a4a; font-size: 15px; font-weight: 300; max-width: 600px; margin: 0 auto; line-height: 1.6;">Supplying durable, elegant, and unified sarees directly from master weavers to schools, corporate offices, hospitals, and institutions across India since 1978.</p>
+            </div>
+            <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 36px; line-height: 1.8; font-size: 15px; color: #3a3a3a; margin-bottom: 32px;">
+              <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; color: #1a0a00; margin-top: 0; margin-bottom: 12px;">Institutional Bulk Supply</h2>
+              <p>We provide sample swatches, GST invoices, custom color matching, and expedited pan-India delivery for institutions ordering 20 to 1,000+ uniform sarees.</p>
+            </div>
+          </main>
+          ${getFooterHtml()}
+        </div>
+      `
     }
   ];
 
@@ -1362,6 +1530,7 @@ Allow: /shop/
 Allow: /product/*
 Allow: /sarees/*
 Allow: /malvika-saree/
+Allow: /malvika-saree-buying-guide/
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /cart/

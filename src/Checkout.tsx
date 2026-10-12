@@ -533,7 +533,7 @@ export default function Checkout() {
       <SEO
         title="Checkout | Mukesh Saree Centre"
         description="Complete your luxury ethnic wear purchase at Mukesh Saree Centre."
-        url="/checkout"
+        url="/checkout/"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-8">

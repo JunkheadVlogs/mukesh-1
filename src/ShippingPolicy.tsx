@@ -10,7 +10,7 @@ export default function ShippingPolicy() {
         <SEO 
           title="Shipping & Delivery Policy | Mukesh Saree Centre" 
           description="Learn about our free shipping across India, delivery timelines, trusted courier partners, COD availability, and order tracking." 
-          url="/shipping-policy"
+          url="/shipping-policy/"
         />
 
         <div className="text-center mb-8 md:mb-10">

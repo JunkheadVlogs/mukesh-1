@@ -3,6 +3,73 @@
   <head>
     <meta charset="UTF-8">
     <script>
+      // Early cross-origin and third-party script error shield
+      window.onerror = function(message, source, lineno, colno, error) {
+        var msg = (message || '').toString().toLowerCase();
+        var src = (source || '').toString().toLowerCase();
+        if (
+          msg.includes('script error') ||
+          !source ||
+          src === '' ||
+          src === ':0' ||
+          (lineno === 0 && colno === 0) ||
+          src.includes('facebook') ||
+          src.includes('fbevents') ||
+          src.includes('clarity') ||
+          src.includes('pinterest') ||
+          src.includes('googletagmanager') ||
+          src.includes('google-analytics') ||
+          src.includes('razorpay') ||
+          src.includes('extension')
+        ) {
+          return true; // Prevents browser error reporting and iframe bubbling
+        }
+        return false;
+      };
+
+      window.addEventListener('error', function(event) {
+        var msg = (event.message || '').toString().toLowerCase();
+        var filename = (event.filename || '').toString().toLowerCase();
+        if (
+          msg.includes('script error') ||
+          !event.filename ||
+          filename === '' ||
+          filename === ':0' ||
+          (event.lineno === 0 && event.colno === 0) ||
+          filename.includes('facebook') ||
+          filename.includes('fbevents') ||
+          filename.includes('clarity') ||
+          filename.includes('pinterest') ||
+          filename.includes('googletagmanager') ||
+          filename.includes('google-analytics') ||
+          filename.includes('razorpay') ||
+          filename.includes('extension')
+        ) {
+          event.preventDefault();
+          if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+          }
+        }
+      }, true);
+
+      window.addEventListener('unhandledrejection', function(event) {
+        var reason = event.reason ? (event.reason.message || String(event.reason)).toLowerCase() : '';
+        if (
+          reason.includes('script error') ||
+          reason.includes('facebook') ||
+          reason.includes('fbevents') ||
+          reason.includes('clarity') ||
+          reason.includes('pinterest') ||
+          reason.includes('googletagmanager') ||
+          reason.includes('razorpay')
+        ) {
+          event.preventDefault();
+          if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+          }
+        }
+      }, true);
+
       if (typeof Node !== 'undefined' && Node.prototype && !Node.prototype._safeRemoveChildPatched) {
         Node.prototype._safeRemoveChildPatched = true;
         var originalRemoveChild = Node.prototype.removeChild;
@@ -37,105 +104,6 @@
       !function(e){if(!window.pintrk){window.pintrk = function () {
         window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
         n=window.pintrk;n.queue=[],n.version="3.0";}}(window);
-
-      // Deferred non-blocking loader for GTM, GA4, Clarity, Meta Pixel, and Pinterest
-      (function() {
-        var initialized = false;
-        function loadTrackingServices() {
-          if (initialized) return;
-          initialized = true;
-
-          // 1. Google Tag Manager
-          var gtmId = "GTM-TLQJCB2N";
-          if (!gtmId || gtmId.startsWith('%VITE_') || gtmId.includes('your_gtm_id') || gtmId.includes('GTM-') === false) {
-            gtmId = "GTM-WMG3G6SM";
-          }
-          if (gtmId && !window._gtm_loaded) {
-            window._gtm_loaded = true;
-            window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-            var gtmScript = document.createElement('script');
-            gtmScript.defer = true;
-            gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + gtmId;
-            document.head.appendChild(gtmScript);
-          }
-
-          // 2. Google Analytics 4
-          if (!window._ga4_loaded) {
-            var gaId = "G-NHLKCDQCM0";
-            if (!gaId || gaId.startsWith('%VITE_') || gaId.includes('your_ga4_measurement_id') || gaId.includes('G_GA4_MEASUREMENT_ID') || !gaId.startsWith('G-')) {
-              gaId = "G-1LMBHFFF1F";
-            }
-            window._ga4_loaded = true;
-            var gaScript = document.createElement('script');
-            gaScript.async = true;
-            gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
-            document.head.appendChild(gaScript);
-            gtag('config', gaId);
-          }
-
-          // 3. Microsoft Clarity
-          if (!window._clarity_initialized) {
-            window._clarity_initialized = true;
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.defer=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "x1spvs9vsv");
-          }
-
-          // 4. Meta Pixel
-          if (!window._fbq_script_loaded) {
-            window._fbq_script_loaded = true;
-            var fbScript = document.createElement('script');
-            fbScript.async = true;
-            fbScript.src = "https://connect.facebook.net/en_US/fbevents.js";
-            document.head.appendChild(fbScript);
-            var pixelId = "1458541922085984";
-            if (!pixelId || pixelId.startsWith('%VITE_') || pixelId.includes('your_meta_pixel')) {
-              pixelId = "1458541922085984";
-            }
-            if (window.fbq) {
-              window.fbq('init', pixelId);
-            }
-          }
-
-          // 5. Pinterest Tag
-          if (!window._pinterest_loaded) {
-            window._pinterest_loaded = true;
-            var pinScript = document.createElement('script');
-            pinScript.async = true;
-            pinScript.src = "https://s.pinimg.com/ct/core.js";
-            document.head.appendChild(pinScript);
-            var pinTag = "2612622217509";
-            if (pinTag && !pinTag.startsWith('%VITE_') && !pinTag.includes('your_pinterest_tag')) {
-              window.pintrk('load', pinTag);
-            }
-          }
-        }
-
-        // Trigger on user interaction
-        var interactionEvents = ["mousedown", "keypress", "touchstart", "scroll"];
-        function onUserInteraction() {
-          loadTrackingServices();
-          interactionEvents.forEach(function(evt) {
-            window.removeEventListener(evt, onUserInteraction, { passive: true });
-          });
-        }
-        interactionEvents.forEach(function(evt) {
-          window.addEventListener(evt, onUserInteraction, { passive: true });
-        });
-
-        // Trigger only AFTER page load event completes
-        window.addEventListener('load', function() {
-          if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(function() {
-              setTimeout(loadTrackingServices, 3500);
-            });
-          } else {
-            setTimeout(loadTrackingServices, 4000);
-          }
-        });
-      })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title data-rh="true">Wholesale Sarees for Boutiques & Resellers | Direct Weaver Bulk Rates – Mukesh Saree Centre</title>
@@ -170,10 +138,26 @@
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
     <link rel="dns-prefetch" href="https://wsrv.nl" />
     <!-- Preload exact above-the-fold mobile & desktop hero images -->
-    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75 768w" imagesizes="(max-width: 768px) 100vw, 768px" media="(max-width: 767px)" fetchpriority="high" />
-    <link rel="preload" as="image" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-webp,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-webp,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-webp,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-webp,q-75 2000w" imagesizes="(min-width: 768px) 100vw, 1200px" media="(min-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-400,f-avif,q-75 400w, https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-avif,q-75 768w" imagesizes="(max-width: 768px) 100vw, 768px" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" imagesrcset="https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-800,f-avif,q-75 800w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1200,f-avif,q-75 1200w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-1600,f-avif,q-75 1600w, https://ik.imagekit.io/tus1loev9/homepage/file_0000000019b871f8bffede768176be45.webp?tr=w-2000,f-avif,q-75 2000w" imagesizes="(min-width: 768px) 100vw, 1200px" media="(min-width: 768px)" fetchpriority="high" />
     <!-- Critical Above-the-Fold Inline CSS (Eliminates FOUC during async CSS preload) -->
     <style>
+      @font-face {
+        font-family: 'Playfair Display Fallback';
+        src: local('Georgia'), local('Times New Roman'), local('serif');
+        size-adjust: 104%;
+        ascent-override: 96%;
+        descent-override: 26%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('Arial'), local('-apple-system'), local('BlinkMacSystemFont'), local('sans-serif');
+        size-adjust: 100%;
+        ascent-override: 95%;
+        descent-override: 25%;
+        line-gap-override: 0%;
+      }
       :root {
         --color-bg: #faf8f4;
         --color-surface: #f5efe6;
@@ -186,7 +170,7 @@
       body {
         margin: 0;
         padding: 0;
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: "Inter", "Inter Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-size: 14px;
         line-height: 1.6;
         color: #2b2b2b;
@@ -281,8 +265,8 @@
         .pinterest-static-banner { display: block !important; }
       </style>
     </noscript>
-    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.B3qelSVY.min.js"></script>
-    <link rel="preload" href="/assets/index.DxbLvK-t.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.DxbLvK-t.min.css" crossorigin></noscript>
+    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.BB4RM97w.min.js"></script>
+    <link rel="preload" href="/assets/index.PDQIKUTL.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.PDQIKUTL.min.css" crossorigin></noscript>
   
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","@id":"https://mukeshsarees.com/wholesale-sarees-for-boutiques/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mukeshsarees.com/"},{"@type":"ListItem","position":2,"name":"Wholesale Sarees for Boutiques & Resellers","item":"https://mukeshsarees.com/wholesale-sarees-for-boutiques/"}]},{"@type":"Article","@id":"https://mukeshsarees.com/wholesale-sarees-for-boutiques/#article","isPartOf":{"@id":"https://mukeshsarees.com/wholesale-sarees-for-boutiques/"},"headline":"Wholesale Sarees for Boutiques & Resellers | Direct Weaver Bulk Rates – Mukesh Saree Centre","description":"Source wholesale sarees for boutiques, home resellers, and retail stores directly from Mukesh Saree Centre, Nagpur. Low MOQs, weaver-direct pricing & fast dispatch.","image":"https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png","datePublished":"2026-05-30T08:00:00+05:30","dateModified":"2026-07-15T10:00:00+05:30","mainEntityOfPage":"https://mukeshsarees.com/wholesale-sarees-for-boutiques/","author":{"@id":"https://mukeshsarees.com/#organization"},"publisher":{"@id":"https://mukeshsarees.com/#organization"}},{"@type":"FAQPage","@id":"https://mukeshsarees.com/wholesale-sarees-for-boutiques/#faq","mainEntity":[{"@type":"Question","name":"What is the Minimum Order Quantity (MOQ) for boutique owners and resellers?","acceptedAnswer":{"@type":"Answer","text":"Our wholesale MOQ is designed for growing businesses, starting at just 10 to 15 sarees per order. You can mix and match different fabrics, colors, and styles in a single order."}},{"@type":"Question","name":"Do you provide unbranded product photos and videos for boutique marketing?","acceptedAnswer":{"@type":"Answer","text":"Yes, all verified boutique buyers receive access to our high-resolution, unwatermarked digital media library for easy sharing across WhatsApp catalogs, Instagram, and boutique websites."}}]}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Minimum Order Quantity (MOQ) for boutique owners and resellers?","acceptedAnswer":{"@type":"Answer","text":"Our wholesale MOQ is designed for growing businesses, starting at just 10 to 15 sarees per order. You can mix and match different fabrics, colors, and styles in a single order."}},{"@type":"Question","name":"Do you provide unbranded product photos and videos for boutique marketing?","acceptedAnswer":{"@type":"Answer","text":"Yes, all verified boutique buyers receive access to our high-resolution, unwatermarked digital media library for easy sharing across WhatsApp catalogs, Instagram, and boutique websites."}}]}</script>
@@ -326,7 +310,7 @@
           <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Wholesale Sarees for Boutiques & Resellers</h1>
           <p style="font-size: 16px; line-height: 1.8; color: #4a4a4a; margin-bottom: 40px; font-weight: 500;">Empower your boutique or online reselling venture with direct-from-weaver wholesale saree collections. Mukesh Saree Centre in Gandhibagh, Nagpur has supplied over 1,200+ boutique partners across India since 1978 with low MOQs, transparent pricing, and zero middleman markups.</p>
           <div style="background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); padding: 32px; margin-bottom: 48px; line-height: 1.8; color: #4a4a4a;">
-             <div class="prose max-w-none text-[var(--color-dark)]/80 mb-12"><div class="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]"><h2 class="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">Direct Answer: How Boutiques Can Source Directly from Mukesh Saree Centre</h2><p class="text-sm leading-relaxed mb-0">Boutique owners, retail store buyers, and home-based fashion resellers can purchase high-margin sarees at <strong>direct weaver-matched wholesale rates</strong> directly from <strong>Mukesh Saree Centre</strong> in Gandhibagh, Nagpur. With an accessible Minimum Order Quantity (MOQ) of just 10 to 15 sarees across mixed designs, high-definition unbranded catalog photography, and pan-India insured cargo delivery, we help boutiques maximize margins without heavy capital commitment.</p></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">The Boutique Owner&#x27;s Sourcing Advantage</h2><p>At <strong>Mukesh Saree Centre</strong>, we consolidate prime master looms from Surat, Varanasi, Chanderi, and Bangalore into our Gandhibagh showroom and wholesale fulfillment hub. By eliminating multi-layer distributor markups, our boutique partners routinely achieve <strong>40% to 80% retail profit margins</strong> while offering their customers exceptional fabric authenticity.</p><div class="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30"><h3 class="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">Request B2B Wholesale Catalog &amp; Live Price Sheet</h3><p class="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">Are you a boutique owner, showroom buyer, or online reseller? Chat directly with our wholesale team on WhatsApp to receive our live B2B catalog, wholesale tier pricing, and sample parcel details.</p><div class="flex flex-col sm:flex-row gap-3"><a href="https://wa.me/919325034636?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20a%20boutique%20owner%20interested%20in%20your%20wholesale%20saree%20catalog%20and%20price%20sheet." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Chat on WhatsApp (+91 9325034636)</a><a href="tel:+917020664641" class="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Call Wholesale Desk (+91 7020664641)</a><a href="/contact" class="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Submit Wholesale Inquiry</a></div><p class="text-[11px] text-white/50 font-mono mt-4 mb-0 uppercase tracking-wider">Low MOQ (10–15 Pcs) • GST Invoicing • Surface &amp; Air Cargo</p></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Explore Related Collections &amp; Pages</h2><p class="space-x-2"><a href="/school-uniform-sarees" class="text-[#B5894A] underline font-medium">School Uniform Sarees</a> •<!-- --> <a href="/linen-sarees-for-office-wear" class="text-[#B5894A] underline font-medium">Linen Sarees for Office Wear</a> •<!-- --> <a href="/saree-shop-in-nagpur" class="text-[#B5894A] underline font-medium">Best Saree Shop in Nagpur</a> •<!-- --> <a href="/about" class="text-[#B5894A] underline font-medium">About Mukesh Saree Centre</a> •<!-- --> <a href="/reviews" class="text-[#B5894A] underline font-medium">Customer Reviews</a> •<!-- --> <a href="/contact" class="text-[#B5894A] underline font-medium">Contact &amp; Showroom Visit</a></p></div>
+             <div class="prose max-w-none text-[var(--color-dark)]/80 mb-12"><div class="p-5 bg-[#FAF6F0] border-l-4 border-[#B5894A] rounded-r-sm mb-8 text-[#2C241B]"><h2 class="text-lg font-serif font-bold mb-2 mt-0 text-[#2C241B]">Direct Answer: How Boutiques Can Source Directly from Mukesh Saree Centre</h2><p class="text-sm leading-relaxed mb-0">Boutique owners, retail store buyers, and home-based fashion resellers can purchase high-margin sarees at <strong>direct weaver-matched wholesale rates</strong> directly from <strong>Mukesh Saree Centre</strong> in Gandhibagh, Nagpur. With an accessible Minimum Order Quantity (MOQ) of just 10 to 15 sarees across mixed designs, high-definition unbranded catalog photography, and pan-India insured cargo delivery, we help boutiques maximize margins without heavy capital commitment.</p></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">The Boutique Owner&#x27;s Sourcing Advantage</h2><p>At <strong>Mukesh Saree Centre</strong>, we consolidate prime master looms from Surat, Varanasi, Chanderi, and Bangalore into our Gandhibagh showroom and wholesale fulfillment hub. By eliminating multi-layer distributor markups, our boutique partners routinely achieve <strong>40% to 80% retail profit margins</strong> while offering their customers exceptional fabric authenticity.</p><div class="p-6 md:p-8 bg-[#2C241B] text-white rounded-sm my-8 border border-[#B5894A]/30"><h3 class="text-xl md:text-2xl font-serif text-white mb-2 mt-0 font-medium">Request B2B Wholesale Catalog &amp; Live Price Sheet</h3><p class="text-sm text-white/80 mb-6 leading-relaxed max-w-2xl">Are you a boutique owner, showroom buyer, or online reseller? Chat directly with our wholesale team on WhatsApp to receive our live B2B catalog, wholesale tier pricing, and sample parcel details.</p><div class="flex flex-col sm:flex-row gap-3"><a href="https://wa.me/917020664641?text=Hi%20Mukesh%20Saree%20Centre,%20I%20am%20a%20boutique%20owner%20interested%20in%20your%20wholesale%20saree%20catalog%20and%20price%20sheet." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Chat on WhatsApp (+91 7020664641)</a><a href="tel:+917020664641" class="inline-flex items-center justify-center px-6 py-3.5 bg-[#B5894A] text-[#2C241B] font-bold text-xs uppercase tracking-widest rounded-sm no-underline">Call Wholesale Desk (+91 7020664641)</a><a href="/contact" class="inline-flex items-center justify-center px-6 py-3.5 border border-white/40 text-white font-semibold text-xs uppercase tracking-widest rounded-sm no-underline">Submit Wholesale Inquiry</a></div><p class="text-[11px] text-white/50 font-mono mt-4 mb-0 uppercase tracking-wider">Low MOQ (10–15 Pcs) • GST Invoicing • Surface &amp; Air Cargo</p></div><h2 class="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">Explore Related Collections &amp; Pages</h2><p class="space-x-2"><a href="/school-uniform-sarees" class="text-[#B5894A] underline font-medium">School Uniform Sarees</a> •<!-- --> <a href="/linen-sarees-for-office-wear" class="text-[#B5894A] underline font-medium">Linen Sarees for Office Wear</a> •<!-- --> <a href="/saree-shop-in-nagpur" class="text-[#B5894A] underline font-medium">Best Saree Shop in Nagpur</a> •<!-- --> <a href="/about" class="text-[#B5894A] underline font-medium">About Mukesh Saree Centre</a> •<!-- --> <a href="/reviews" class="text-[#B5894A] underline font-medium">Customer Reviews</a> •<!-- --> <a href="/contact" class="text-[#B5894A] underline font-medium">Contact &amp; Showroom Visit</a></p></div>
           </div>
           <div>
             <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; color: #1a0a00;">Frequently Asked Questions</h2>

@@ -94,7 +94,7 @@ export default function Faq() {
       <SEO 
         title="Frequently Asked Questions (FAQ) | Mukesh Saree Centre" 
         description="Browse frequently asked questions regarding shopping, delivery, payments, pure silks, linen fabrics, customized blouses, wholesale rates, and returns at Mukesh Saree Centre, Nagpur." 
-        url="/faqs"
+        url="/faqs/"
         schema={jsonLdSchema}
       />
 

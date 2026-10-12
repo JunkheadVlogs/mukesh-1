@@ -306,8 +306,20 @@ export default function GuideDetail() {
     <>
       <Helmet>
         <title>{guide.title} - Mukesh Saree Centre</title>
+        <meta name="title" content={`${guide.title} - Mukesh Saree Centre`} />
         <meta name="description" content={guide.description} />
         <link rel="canonical" href={`https://mukeshsarees.com/guides/${guide.slug}/`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://mukeshsarees.com/guides/${guide.slug}/`} />
+        <meta property="og:title" content={`${guide.title} - Mukesh Saree Centre`} />
+        <meta property="og:description" content={guide.description} />
+        <meta property="og:image" content={guide.image} />
+        <meta property="og:site_name" content="Mukesh Saree Centre" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={`https://mukeshsarees.com/guides/${guide.slug}/`} />
+        <meta name="twitter:title" content={`${guide.title} - Mukesh Saree Centre`} />
+        <meta name="twitter:description" content={guide.description} />
+        <meta name="twitter:image" content={guide.image} />
         <script type="application/ld+json">{JSON.stringify(schemaMarkup)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
         {guide.faqs.length > 0 && (

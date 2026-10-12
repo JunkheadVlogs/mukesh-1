@@ -74,7 +74,7 @@ export default function MediaCoverage() {
         <SEO 
           title={`Media & Press Coverage | ${BUSINESS_INFO.name} Nagpur`}
           description={`Official media info, press resources, and verified digital presence for ${BUSINESS_INFO.name}, Gandhibagh, Nagpur. Saree landmark since 1978.`}
-          url="/media"
+          url="/media/"
           schema={customSchema}
         />
 

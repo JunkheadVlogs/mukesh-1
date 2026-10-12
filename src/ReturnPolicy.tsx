@@ -114,7 +114,7 @@ export default function ReturnPolicy() {
         <SEO 
           title="Returns & Refunds Policy | Mukesh Saree Centre" 
           description="Mukesh Saree Centre's Return & Refund Policy. Understand our 7-day return period, refund timelines, and process for damaged or defective items." 
-          url="/return-policy"
+          url="/return-policy/"
         />
 
         <div className="text-center mb-8 md:mb-10">
