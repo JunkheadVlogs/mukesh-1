@@ -410,17 +410,18 @@ export default function Home() {
         >
           <div className="max-w-[280px] xs:max-w-[320px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[640px] text-left mb-4 md:mb-8">
             <h1
-              className="text-[10px] xs:text-[11px] sm:text-[12px] md:text-[13px] font-sans font-semibold tracking-[0.22em] sm:tracking-[0.25em] uppercase mb-2 md:mb-3 text-[var(--color-gold-light)]"
+              className="text-[9.5px] xs:text-[10.5px] sm:text-[11.5px] md:text-[12.5px] font-sans font-semibold tracking-[0.22em] sm:tracking-[0.25em] uppercase mb-2 md:mb-3 text-[var(--color-gold-light)] whitespace-nowrap"
               style={{
-                fontSize: "clamp(10px, 2.5vw, 12.5px)",
+                fontSize: "clamp(9.5px, 2.5vw, 12.5px)",
                 fontFamily: "var(--font-body)",
                 lineHeight: "1.4",
                 letterSpacing: "0.22em",
                 textShadow: "0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)",
                 color: "var(--color-gold-light)",
+                whiteSpace: "nowrap",
               }}
             >
-              MUKESH SAREE CENTRE · EST. 1978
+              MUKESH SAREE CENTRE &nbsp;·&nbsp; EST. 1978
             </h1>
 
             <h2
