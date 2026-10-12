@@ -412,6 +412,10 @@ export default function Home() {
             <h1
               className="text-[10px] xs:text-[11px] sm:text-[12px] md:text-[13px] font-sans font-semibold tracking-[0.22em] sm:tracking-[0.25em] uppercase mb-2 md:mb-3 text-[var(--color-gold-light)]"
               style={{
+                fontSize: "clamp(10px, 2.5vw, 12.5px)",
+                fontFamily: "var(--font-body)",
+                lineHeight: "1.4",
+                letterSpacing: "0.22em",
                 textShadow: "0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)",
                 color: "var(--color-gold-light)",
               }}
