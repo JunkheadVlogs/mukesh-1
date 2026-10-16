@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import { useSearchParams, useLocation, Link } from "react-router";
 import { Filter, ChevronDown, Eye, X } from "lucide-react";
 import { products } from "./mockData";
-import { formatPrice, optimizeImage } from "./utils";
+import { formatPrice, optimizeImage, getVisibleProducts } from "./utils";
 import { searchProducts } from "./services/search";
 import { ProductCard } from "./components/ProductCard";
 import { ProductCardSkeleton } from "./components/ProductCardSkeleton";
@@ -223,11 +223,11 @@ export default function Shop() {
   }, []);
 
   const filteredAndSortedProducts = useMemo(() => {
-    let result = products.filter((p) => !p.isVariant && !p.isHidden);
+    let result = getVisibleProducts(products);
 
     // Search
     if (searchQuery) {
-      result = searchProducts(searchQuery);
+      result = getVisibleProducts(searchProducts(searchQuery));
     }
 
     // Filter
@@ -477,8 +477,8 @@ export default function Shop() {
             { label: "All", value: null },
             { label: "Sarees", value: "Sarees" },
             { label: "Linen Sarees", value: "Linen Sarees" },
-            { label: "Lehengas", value: "Lehengas" },
-            { label: "Suits", value: "Suits" }
+            ...(categoryFilter === "Lehengas" ? [{ label: "Lehengas", value: "Lehengas" }] : []),
+            ...(categoryFilter === "Suits" ? [{ label: "Suits", value: "Suits" }] : [])
           ].map((pill) => {
             const isActive = (!pill.value && !categoryFilter) || (categoryFilter === pill.value);
             return (

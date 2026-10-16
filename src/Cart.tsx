@@ -82,7 +82,7 @@ export default function Cart() {
     const itemCoupon = (isVIP60Disallowed && (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60")) ? "VIP50" : activeCoupon;
     const discountRate = (itemCoupon === "VIPCLUB60" || itemCoupon === "VIP60" || itemCoupon === "VIBCLUB60") ? 0.60 : 0.50;
     const standardPrice = mrp - Math.round(mrp * discountRate);
-    const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+    const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062' || item.sku === 'SAR-GHU-MAR-001' || item.slug === 'maroon-ghungroo-tissue-saree-zari-border-lace')
       ? item.price
       : standardPrice;
     return sum + calculatedPrice * item.quantity;
@@ -141,7 +141,7 @@ export default function Cart() {
               const itemCoupon = (isVIP60Disallowed && (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60")) ? "VIP50" : activeCoupon;
               const discountRate = (itemCoupon === "VIPCLUB60" || itemCoupon === "VIBCLUB60") ? 0.60 : 0.50;
               const standardPrice = mrp - Math.round(mrp * discountRate);
-              const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+              const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062' || item.sku === 'SAR-GHU-MAR-001' || item.slug === 'maroon-ghungroo-tissue-saree-zari-border-lace')
                 ? item.price
                 : standardPrice;
               const itemTotal = calculatedPrice * item.quantity;

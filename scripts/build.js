@@ -6,12 +6,12 @@ console.log("[BUILD] Starting unified build process...");
 
 const findBin = (name) => {
   const localBin = path.join(process.cwd(), "node_modules", ".bin", name);
-  if (fs.existsSync(localBin)) return localBin;
+  if (fs.existsSync(localBin)) return `"${localBin}"`;
   const viteBin = path.join(process.cwd(), "node_modules", "vite", "node_modules", ".bin", name);
-  if (fs.existsSync(viteBin)) return viteBin;
+  if (fs.existsSync(viteBin)) return `"${viteBin}"`;
   const tsxBin = path.join(process.cwd(), "node_modules", "tsx", "node_modules", ".bin", name);
-  if (fs.existsSync(tsxBin)) return tsxBin;
-  return name;
+  if (fs.existsSync(tsxBin)) return `"${tsxBin}"`;
+  return `npx ${name}`;
 };
 
 try {

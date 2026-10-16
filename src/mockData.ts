@@ -3171,6 +3171,67 @@ Dry clean recommended to preserve the hand block Ajrakh print and delicate Kaath
     reviews: []
   },
   {
+    id: "p-maroon-ghungroo-tissue-saree",
+    sku: "SAR-GHU-MAR-001",
+    name: "Maroon Ghungroo Tissue Saree with Zari Border & Lace",
+    slug: "maroon-ghungroo-tissue-saree-zari-border-lace",
+    metaTitle: "Maroon Ghungroo Tissue Saree with Zari Border | Mukesh Saree",
+    metaDescription: "Buy Maroon Ghungroo Tissue Saree with Zari Border & Lace at Mukesh Saree. MRP 4749, offer 1899. Free shipping & COD available in Nagpur!",
+    price: 1899,
+    originalPrice: 4749,
+    image: "https://ik.imagekit.io/tus1loev9/product/Ghungroo%20Saree/Maroon/IMG_3673_dd871ed4-8c17-4853-9747-e58d3a20a009%20(1).webp?tr=w-800,f-webp,q-75",
+    images: [
+      "https://ik.imagekit.io/tus1loev9/product/Ghungroo%20Saree/Maroon/IMG_3673_dd871ed4-8c17-4853-9747-e58d3a20a009%20(1).webp?tr=w-800,f-webp,q-75",
+      "https://ik.imagekit.io/tus1loev9/product/Ghungroo%20Saree/Maroon/IMG_3667_03200c82-88f2-42c8-bc16-51e3a1227d30.webp?tr=w-800,f-webp,q-75",
+      "https://ik.imagekit.io/tus1loev9/product/Ghungroo%20Saree/Maroon/IMG_3662_eb148c79-14ff-4d80-ac7c-273ee770b7ea.webp?tr=w-800,f-webp,q-75",
+      "https://ik.imagekit.io/tus1loev9/product/Ghungroo%20Saree/Maroon/IMG_3670_46f5340a-2bcb-477f-aabc-a27ec6ecfcb0.webp?tr=w-800,f-webp,q-75",
+      "https://ik.imagekit.io/tus1loev9/product/Ghungroo%20Saree/Maroon/IMG_3658.webp?tr=w-800,f-webp,q-75",
+      "https://ik.imagekit.io/tus1loev9/product/Ghungroo%20Saree/Maroon/IMG_3664_8872a375-8865-4878-9f10-b930903722c9.webp?tr=w-800,f-webp,q-75",
+      "https://ik.imagekit.io/tus1loev9/product/Ghungroo%20Saree/Maroon/IMG_3674_2913bcff-e57b-446f-a07a-81657080eaf4.webp?tr=w-800,f-webp,q-75"
+    ],
+    category: "Sarees",
+    fabric: "Woven Tissue",
+    color: "Maroon",
+    blouseDetails: "Comes with self blouse piece has a same matching saree border on sleeves",
+    isTrending: true,
+    isNew: true,
+    disallowVIP60: true,
+    description: `**DESCRIPTION:**
+Unveiling a captivating rich maroon shade, this woven tissue saree radiates a subtle metallic sheen paired with delicate lace work and an opulent zari border. The base fabric combines structure with fluid elegance, making it an ideal choice for grand evening celebrations and cultural festivities.
+
+Detailed with embroidered gold ghungroo embellishments and artfully placed buti motifs, the drape creates an enchanting visual and sensory appeal. Accompanied by a self blouse piece featuring the same matching saree border on sleeves, this ensemble offers timeless grace tailored for unforgettable festive moments.
+
+**HIGHLIGHTS:**
+• Embroidered ghungroo embellishments with subtle acoustic charm
+• High-density woven zari border with fine lace edging
+• Metallic-lustre tissue fabric with rich maroon depth
+• Scattered traditional buti motifs across the body
+• Comes with self blouse piece has a same matching saree border on sleeves
+
+**FABRIC DETAILS:**
+Woven Tissue base featuring high-tensile metallic yarns for long-lasting sheen. All gold ghungroo elements are securely embroidered onto the body with reinforced stitching to ensure zero snagging and maximum durability.
+
+**DIMENSIONS:**
+• Saree Length: 5.5 Meters
+• Blouse Piece: 0.8 Meters (Unstitched) — Comes with self blouse piece has a same matching saree border on sleeves
+• Weight: Approx 650 grams
+• Style: Free size natural drape
+
+**STYLING:**
+Ideal occasions:
+- Diwali celebrations
+- Wedding functions
+- Evening receptions
+- Festive wear
+
+Pair with antique temple gold jewelry or Kundan chokers, warm bronze makeup, and an embroidered high-neck or elbow-sleeve blouse to elevate the royal aesthetic.
+
+**CARE INSTRUCTIONS:**
+Dry clean only to preserve metallic yarns, lace work, and ghungroo finish.`,
+    rating: 4.95,
+    reviewsCount: 18
+  },
+  {
     id: "p-test-payment",
     sku: "TST-PAY-001",
     name: "Payment Test Product",

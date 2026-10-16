@@ -126,7 +126,7 @@
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="preload" href="/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
     <link rel="preload" href="/fonts/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-    <link rel="preload" href="/fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/fonts/fonts.css"></noscript>
+    <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
     <link rel="dns-prefetch" href="https://ik.imagekit.io" />
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
@@ -259,8 +259,8 @@
         .pinterest-static-banner { display: block !important; }
       </style>
     </noscript>
-    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.BfPXCtXg.min.js"></script>
-    <link rel="preload" href="/assets/index.zmuVBet_.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.zmuVBet_.min.css" crossorigin></noscript>
+    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.HFAVIhSf.min.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index.DLJzFa8m.min.css">
   
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Handloom Cotton Sarees — Mukesh Saree Centre","url":"https://mukeshsarees.com/sarees/cotton-sarees/","description":"Browse comfortable handloom and mulmul cotton sarees. Breathable weaves, vibrant colors, and classic prints made for all-day comfort.","publisher":{"@id":"https://mukeshsarees.com/#organization"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mukeshsarees.com/"},{"@type":"ListItem","position":2,"name":"Handloom Cotton Sarees","item":"https://mukeshsarees.com/sarees/cotton-sarees/"}]}}</script>
 </head>
@@ -286,25 +286,117 @@
 
       <div style="background-color: #faf6f0; min-height: 100vh;">
         
-    <header style="background: rgba(250, 246, 240, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); font-family: 'Playfair Display', serif; position: sticky; top: 0; z-index: 100;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-          <img src="/images/logo.webp" alt="Mukesh Saree Centre Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
-        </a>
+    <style>
+      .prerender-nav-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 50;
+      }
+      .prerender-announcement {
+        background-color: #2B2B2B;
+        color: #C8A96B;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        min-height: 28px;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-family: 'Inter', sans-serif;
+      }
+      .prerender-header {
+        background: rgba(250, 246, 240, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 0 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+        height: 48px;
+        min-height: 48px;
+        font-family: 'Playfair Display', serif;
+      }
+      .prerender-logo {
+        height: 36px;
+        width: auto;
+        object-fit: contain;
+      }
+      .prerender-main-content {
+        padding-top: 76px;
+      }
+      .prerender-grid-responsive {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+      }
+      @media (min-width: 640px) {
+        .prerender-announcement {
+          height: 30px;
+          min-height: 30px;
+          font-size: 11px;
+        }
+        .prerender-main-content {
+          padding-top: 78px;
+        }
+      }
+      @media (min-width: 768px) {
+        .prerender-header {
+          height: 71px;
+          min-height: 71px;
+          padding: 0 24px;
+        }
+        .prerender-logo {
+          height: 52px;
+          width: auto;
+        }
+        .prerender-main-content {
+          padding-top: 101px;
+        }
+        .prerender-grid-responsive {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 12px;
+        }
+      }
+      @media (min-width: 1024px) {
+        .prerender-grid-responsive {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 16px;
+        }
+      }
+    </style>
+    <div class="prerender-nav-wrapper">
+      <div class="prerender-announcement">
+        <span>✨ FREE SHIPPING ON ORDERS ABOVE ₹499</span>
       </div>
-      <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
-        <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
-        <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
-        <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
-        <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
-      </nav>
-    </header>
+      <header class="prerender-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+            <img src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png?tr=w-400,f-webp,q-80" alt="Mukesh Saree Centre Logo" width="200" height="40" class="prerender-logo" />
+          </a>
+        </div>
+        <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
+          <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
+          <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
+          <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
+          <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
+        </nav>
+      </header>
+    </div>
   
         
-        <main style="max-width: 1200px; margin: 40px auto; padding: 0 24px;">
+        <main class="prerender-main-content" style="max-width: 1600px; margin: 0 auto; padding-left: 16px; padding-right: 16px;">
           
           <!-- Breadcrumbs -->
-          <nav aria-label="breadcrumb" style="margin-bottom: 24px; font-family: 'Inter', sans-serif; font-size: 12px; color: #666;">
+          <nav aria-label="breadcrumb" style="margin-bottom: 24px; font-family: 'Inter', sans-serif; font-size: 12px; color: #666; padding-top: 12px;">
             <ol style="list-style: none; padding: 0; margin: 0; display: flex; gap: 8px;">
               <li><a href="/" style="color: #666; text-decoration: none;">Home</a></li>
               <li>/</li>
@@ -312,228 +404,216 @@
             </ol>
           </nav>
 
-          <div style="text-align: center; margin-bottom: 48px; font-family: 'Playfair Display', serif;">
-            <h1 style="font-size: 36px; margin-bottom: 12px; color: #1a0a00; font-weight: 500;">Handloom Cotton Sarees</h1>
-            <p style="font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.8; font-weight: 600; color: #8c7355; text-transform: uppercase; letter-spacing: 1px;">Comfortable, Breathable & Everyday Grace</p>
-            <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.7; max-width: 800px; margin: 16px auto 0 auto; line-height: 1.6;">Cotton sarees represent the height of tropical comfort and enduring Indian style. Explore our curated range of soft mulmul, handloom khadi, and traditional block prints designed for long workdays and comfortable daily draping.</p>
+          <div style="text-align: center; margin-bottom: 32px; font-family: 'Playfair Display', serif;">
+            <h1 style="font-size: 28px; margin-bottom: 8px; color: #1a0a00; font-weight: 500;">Handloom Cotton Sarees</h1>
+            <p style="font-family: 'Inter', sans-serif; font-size: 13px; opacity: 0.8; font-weight: 600; color: #8c7355; text-transform: uppercase; letter-spacing: 1px;">Comfortable, Breathable & Everyday Grace</p>
+            <p style="font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.7; max-width: 800px; margin: 12px auto 0 auto; line-height: 1.6;">Cotton sarees represent the height of tropical comfort and enduring Indian style. Explore our curated range of soft mulmul, handloom khadi, and traditional block prints designed for long workdays and comfortable daily draping.</p>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px; margin-bottom: 60px;">
+          <div class="prerender-grid-responsive" style="margin-bottom: 60px;">
             
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/black-khadi-cotton-saree-multicolor-striped-pallu" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/products/p11.webp" srcset="/images/products/p11.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Black Khadi Cotton Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/black-khadi-cotton-saree-multicolor-striped-pallu" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/products/p11.webp" srcset="/images/products/p11.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Black Khadi Cotton Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Black Khadi Cotton Saree</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹749</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹1499</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Black Khadi Cotton Saree</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹749</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹1499</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/black-khadi-cotton-saree-multicolor-striped-pallu" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/contemporary-tribal-art-ivory-linen-saree" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/products/p37.webp" srcset="/images/products/p37.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Contemporary Tribal Art Ivory Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/contemporary-tribal-art-ivory-linen-saree" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/products/p37.webp" srcset="/images/products/p37.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Contemporary Tribal Art Ivory Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Contemporary Tribal Art Ivory Linen Saree</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹699</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹1399</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Contemporary Tribal Art Ivory Linen Saree</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹699</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹1399</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/contemporary-tribal-art-ivory-linen-saree" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/tropical-ivory-ethnic-fusion-linen-saree" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/products/p40.webp" srcset="/images/products/p40.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Tropical Ivory Ethnic Fusion Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/tropical-ivory-ethnic-fusion-linen-saree" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/products/p40.webp" srcset="/images/products/p40.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Tropical Ivory Ethnic Fusion Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Tropical Ivory Ethnic Fusion Linen Saree</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹699</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹1399</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Tropical Ivory Ethnic Fusion Linen Saree</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹699</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹1399</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/tropical-ivory-ethnic-fusion-linen-saree" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/ivory-linen-maroon-tribal-geometric-border-saree" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/products/p42.webp" srcset="/images/products/p42.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Ivory Linen Saree with Maroon Tribal Geometric Border and Ethnic Woven Pallu" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/ivory-linen-maroon-tribal-geometric-border-saree" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/products/p42.webp" srcset="/images/products/p42.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Ivory Linen Saree with Maroon Tribal Geometric Border and Ethnic Woven Pallu" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Ivory Linen Saree with Maroon Tribal Geometric Border and Ethnic Woven Pallu</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹699</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹1399</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Ivory Linen Saree with Maroon Tribal Geometric Border and Ethnic Woven Pallu</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹699</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹1399</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/ivory-linen-maroon-tribal-geometric-border-saree" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/madhubani-art-blush-linen-saree" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/products/p45.webp" srcset="/images/products/p45.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Madhubani Art Blush Linen Saree with Folk-Art Detail" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/madhubani-art-blush-linen-saree" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/products/p45.webp" srcset="/images/products/p45.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Madhubani Art Blush Linen Saree with Folk-Art Detail" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Madhubani Art Blush Linen Saree with Folk-Art Detail</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹699</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹1399</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Madhubani Art Blush Linen Saree with Folk-Art Detail</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹699</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹1399</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/madhubani-art-blush-linen-saree" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/abstract-charcoal-artistic-linen-saree" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/products/p46.webp" srcset="/images/products/p46.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Abstract Charcoal Artistic Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/abstract-charcoal-artistic-linen-saree" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/products/p46.webp" srcset="/images/products/p46.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Abstract Charcoal Artistic Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Abstract Charcoal Artistic Linen Saree</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹699</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹1399</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Abstract Charcoal Artistic Linen Saree</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹699</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹1399</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/abstract-charcoal-artistic-linen-saree" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/elegant-floral-garden-ivory-scenic-linen-saree" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/products/p47.webp" srcset="/images/products/p47.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Elegant Floral Garden-Inspired Ivory Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/elegant-floral-garden-ivory-scenic-linen-saree" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/products/p47.webp" srcset="/images/products/p47.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Elegant Floral Garden-Inspired Ivory Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Elegant Floral Garden-Inspired Ivory Linen Saree</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹699</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹1399</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Elegant Floral Garden-Inspired Ivory Linen Saree</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹699</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹1399</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/elegant-floral-garden-ivory-scenic-linen-saree" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/ice-blue-botanical-floral-linen-saree" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/products/p49.webp" srcset="/images/products/p49.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Ice Blue Botanical Floral Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/ice-blue-botanical-floral-linen-saree" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/products/p49.webp" srcset="/images/products/p49.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Ice Blue Botanical Floral Linen Saree" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Ice Blue Botanical Floral Linen Saree</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹699</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹1399</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Ice Blue Botanical Floral Linen Saree</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹699</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹1399</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/ice-blue-botanical-floral-linen-saree" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/tissue-cotton-digital-floral-print-saree-with-blouse-piece" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/products/p60.webp" srcset="/images/products/p60.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Tissue Cotton Digital Floral Print Saree with Blouse Piece" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/tissue-cotton-digital-floral-print-saree-with-blouse-piece" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/products/p60.webp" srcset="/images/products/p60.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Tissue Cotton Digital Floral Print Saree with Blouse Piece" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Tissue Cotton Digital Floral Print Saree with Blouse Piece</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹999</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹1999</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Tissue Cotton Digital Floral Print Saree with Blouse Piece</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹999</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹1999</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/tissue-cotton-digital-floral-print-saree-with-blouse-piece" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/premium-jamdani-cotton-saree-lal-pari" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525&tr=w-400,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525&tr=w-300,f-webp,q-75 300w, https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525&tr=w-600,f-webp,q-75 600w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Premium Jamdani Cotton Saree – Lal Pari" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/premium-jamdani-cotton-saree-lal-pari" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525&tr=w-400,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525&tr=w-300,f-webp,q-75 300w, https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/product/Lal%20Pari/IMG_20260608_190623.png?updatedAt=1780926290525&tr=w-600,f-webp,q-75 600w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Premium Jamdani Cotton Saree – Lal Pari" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Premium Jamdani Cotton Saree – Lal Pari</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹1399</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹2799</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Premium Jamdani Cotton Saree – Lal Pari</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹1399</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹2799</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/premium-jamdani-cotton-saree-lal-pari" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/pure-mulmul-cotton-anarkali-suit-set" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="/images/category_coord_sets.webp" srcset="/images/category_coord_sets.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Pure Mulmul Cotton Anarkali Suit Set with Kota Doria Dupatta" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/pure-mulmul-cotton-anarkali-suit-set" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/category_coord_sets.webp" srcset="/images/category_coord_sets.webp" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Pure Mulmul Cotton Anarkali Suit Set with Kota Doria Dupatta" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Pure Mulmul Cotton Anarkali Suit Set with Kota Doria Dupatta</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹1999</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹3999</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Pure Mulmul Cotton Anarkali Suit Set with Kota Doria Dupatta</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹1999</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹3999</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/pure-mulmul-cotton-anarkali-suit-set" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/sindoor-red-ajrakh-print-chanderi-saree-hand-kaatha-work" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296&tr=w-400,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296&tr=w-300,f-webp,q-75 300w, https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296&tr=w-600,f-webp,q-75 600w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Sindoor Red Ajrakh Print Chanderi Saree with Hand Kaatha Work" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/sindoor-red-ajrakh-print-chanderi-saree-hand-kaatha-work" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296&tr=w-400,f-webp,q-75" srcset="https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296&tr=w-300,f-webp,q-75 300w, https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296&tr=w-400,f-webp,q-75 400w, https://ik.imagekit.io/tus1loev9/product/Navratri%20saree/elegant-ajrakh-chanderi-saree-hand-kaata-work-for-festive-women-view-3_2450x.webp?updatedAt=1791135900296&tr=w-600,f-webp,q-75 600w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="Sindoor Red Ajrakh Print Chanderi Saree with Hand Kaatha Work" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">Sindoor Red Ajrakh Print Chanderi Saree with Hand Kaatha Work</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹2999</span>
-            <span style="font-size: 12px; text-decoration: line-through; color: #999;">₹5999</span>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Sindoor Red Ajrakh Print Chanderi Saree with Hand Kaatha Work</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹2999</span>
+            <span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹5999</span>
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/sindoor-red-ajrakh-print-chanderi-saree-hand-kaatha-work" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   
           </div>
@@ -566,7 +646,7 @@
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2.2;">
             <li><a href="/shop?category=Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Classic Silk Sarees</a></li>
             <li><a href="/shop?category=Linen Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Premium Linen Sarees</a></li>
-            <li><a href="/shop?category=Lehengas" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Bridal & Designer Lehengas</a></li>
+            <li><a href="/shop?sort=trending" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Trending Sarees</a></li>
           </ul>
         </div>
         <div>

@@ -148,7 +148,7 @@ export default function ProductPage() {
       : (product.stock ?? (product.sku === 'SAR-LIN-BRD-062' ? 9 : 9))
   ) : 9;
 
-  const isVipclub60Disallowed = product ? Boolean(product.disallowVIP60 || product.sku === 'SAR-CHN-RED-001' || product.id === 'p-sindoor-red-ajrakh-chanderi') : false;
+  const isVipclub60Disallowed = product ? Boolean(product.disallowVIP60 || product.sku === 'SAR-CHN-RED-001' || product.id === 'p-sindoor-red-ajrakh-chanderi' || product.sku === 'SAR-GHU-MAR-001') : false;
 
   const storeCoupon = useStore((state) => state.appliedCoupon);
   const [couponInput, setCouponInput] = useState('');
@@ -208,8 +208,9 @@ export default function ProductPage() {
     : currentCoupon;
   const discountRate = effectiveCoupon === 'VIP50' ? 0.50 : (effectiveCoupon === 'VIPCLUB60' || effectiveCoupon === 'VIP60' || effectiveCoupon === 'VIBCLUB60') ? 0.60 : 0.0;
   const standardDiscountedPrice = mrpPrice - Math.round(mrpPrice * discountRate);
-  // For special promotional SKU SAR-LIN-BRD-062, price is fixed at promotional sale price (₹599)
-  const finalPrice = product && !isCodAvailable ? product.price : standardDiscountedPrice;
+  // For special promotional SKUs, price is fixed at promotional offer price
+  const isFixedPrice = product ? (product.sku === 'SAR-GHU-MAR-001' || product.slug === 'maroon-ghungroo-tissue-saree-zari-border-lace' || !isCodAvailable) : false;
+  const finalPrice = product && isFixedPrice ? product.price : standardDiscountedPrice;
   const savedAmount = mrpPrice - finalPrice;
 
   const stats = useMemo(

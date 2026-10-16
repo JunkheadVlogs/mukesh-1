@@ -86,8 +86,13 @@ if (fs.existsSync(distDir)) {
       }
 
       let hasChange = false;
-      // Convert render-blocking stylesheets to high performance async loading preloads
+      // Do NOT make core application stylesheets asynchronous as async loading of main CSS causes Flash of Unstyled Content (FOUC) and severe Cumulative Layout Shift (CLS).
+      // Only non-critical stylesheets (if any) should ever be async.
       const optimized = workingContent.replace(/<link rel="stylesheet"([^>]*)href="([^"]+)"([^>]*)>/gi, (match, p1, href, p2) => {
+        // Always preserve main application css and font css as render-blocking to guarantee zero CLS
+        if (href.includes('/assets/') || href.includes('fonts.css') || href.includes('index-')) {
+          return match;
+        }
         // Skip tags already optimized to prevent double transformation
         if (match.includes('rel="preload"') || match.includes('as="style"')) {
           return match;

@@ -2,7 +2,7 @@ import { BUSINESS_INFO } from "./config/business";
 import { Link } from "react-router";
 import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import { ProductCard } from "./components/ProductCard";
-const LookReelCard = lazy(() => import("./components/LookReelCard").then(m => ({ default: m.LookReelCard })));
+import { LookReelCard } from "./components/LookReelCard";
 import { ProductCardSkeleton } from "./components/ProductCardSkeleton";
 import { SEO } from "./components/SEO";
 import { CONFIG } from "./config";
@@ -25,10 +25,9 @@ import {
 } from "lucide-react";
 import { products } from "./mockData";
 import { type Product } from "./store";
-import { formatPrice, optimizeImage } from "./utils";
+import { formatPrice, optimizeImage, getVisibleProducts } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
-const TrustBadges = lazy(() => import("./components/TrustBadges").then(m => ({ default: m.TrustBadges })));
-const CustomerReviews = lazy(() => import("./components/CustomerReviews").then(m => ({ default: m.CustomerReviews })));
+import { CustomerReviews } from "./components/CustomerReviews";
 
 const LOOK_REELS = [
   {
@@ -198,7 +197,7 @@ const LOOK_REELS = [
 ]; */
 
 export default function Home() {
-  const mainProducts = products.filter((p) => !p.isVariant && !p.isHidden);
+  const mainProducts = getVisibleProducts(products);
   const trendingProductsList = mainProducts.filter((p) => p.isTrending);
   const trendingProducts =
     trendingProductsList.length >= 8
@@ -664,19 +663,16 @@ export default function Home() {
                 style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
                 className="flex lg:grid lg:grid-cols-3 xl:grid-cols-6 gap-3.5 md:gap-4 overflow-x-auto lg:overflow-x-visible pb-4 lg:pb-0 snap-x snap-mandatory scroll-smooth no-scrollbar scrollbar-hide w-full tracking-wide px-10 md:px-0 scroll-px-10 md:scroll-px-0 touch-pan-x touch-pan-y"
               >
-                {LOOK_REELS.map((reel, index) => {
-                  return (
-                    <Suspense fallback={<div className="w-[80%] sm:w-[260px] lg:w-full h-auto sm:h-[58vh] md:h-[62vh] max-h-[460px] min-h-[300px] aspect-[9/16] flex-none snap-center snap-always rounded-[16px] bg-black/10 animate-pulse" />} key={reel.id}>
-                      <LookReelCard
-                        reel={reel}
-                        onVisibilityChange={handleReelVisibilityChange}
-                        shouldRenderIframe={!!visibleReelIds[reel.id]}
-                        isActive={activeReelId === reel.id}
-                        onSelectReel={(id) => setActiveReelId(id)}
-                      />
-                    </Suspense>
-                  );
-                })}
+                {LOOK_REELS.map((reel) => (
+                  <LookReelCard
+                    key={reel.id}
+                    reel={reel}
+                    onVisibilityChange={handleReelVisibilityChange}
+                    shouldRenderIframe={!!visibleReelIds[reel.id]}
+                    isActive={activeReelId === reel.id}
+                    onSelectReel={(id) => setActiveReelId(id)}
+                  />
+                ))}
               </div>
 
               {/* Elegant premium swipe cue & pagination indicator underneath (mobile-only) */}
@@ -900,9 +896,7 @@ export default function Home() {
         <div className="h-[1px] bg-[#C8A96B]/20" />
       </div>
 
-      <Suspense fallback={<div className="h-40 bg-gray-50" />}>
-        <CustomerReviews />
-      </Suspense>
+      <CustomerReviews />
 
       {/* About Section (Hidden for UI, kept for Local SEO) */}
       <section className="about-section sr-only">

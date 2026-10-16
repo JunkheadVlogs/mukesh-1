@@ -113,7 +113,7 @@ export default function ThankYou() {
     } else if (activeCouponOnPage === "VIPCLUB60" || activeCouponOnPage === "VIP60" || activeCouponOnPage === "VIBCLUB60") {
       discountRate = 0.60;
     }
-    const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+    const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062' || item.sku === 'SAR-GHU-MAR-001' || item.slug === 'maroon-ghungroo-tissue-saree-zari-border-lace')
       ? item.price
       : mrp - Math.round(mrp * discountRate);
     return acc + calculatedPrice * (item.quantity || 1);

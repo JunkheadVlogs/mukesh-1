@@ -74,6 +74,7 @@ async function generateSitemap() {
     "pure-linen-sarees",
     "soft-cotton-sarees",
     "banarasi-silk-sarees",
+    "ghungroo-sarees",
     "designer-party-wear-sarees",
     "wholesale-sarees-nagpur",
     "linen-sarees-for-office-wear",

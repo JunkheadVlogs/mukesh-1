@@ -1384,11 +1384,11 @@ const seoPagesData: Record<
           We believe in nurturing growing businesses. Our wholesale catalog bundles start with <strong>minimum orders as low as 10 to 15 sarees</strong>, allowing new boutique owners to curate diverse collections without heavy capital outlay. We provide daily fresh arrivals via our WhatsApp dealer broadcast, real-time video inspections, itemized GST tax invoices, and same-day parcel dispatch via premier transport logistics (Delhivery, Blue Dart, and dedicated regional cargo lines).
         </p>
 
-        <div className="bg-[#2C241B] text-white p-6 rounded-md mt-8 mb-4">
-          <h3 className="text-lg font-serif font-semibold text-[#D4AF37] mb-2">
+        <div className="bg-[#2C241B] text-white p-6 rounded-md mt-8 mb-4 border border-[#B5894A]/30">
+          <h3 className="text-lg font-serif font-semibold text-[#D4AF37] mb-2" style={{ color: "#D4AF37" }}>
             Visit Our Gandhibagh Showroom or Order via WhatsApp
           </h3>
-          <p className="text-sm text-white/80 mb-4 leading-relaxed">
+          <p className="text-sm text-white/90 mb-4 leading-relaxed" style={{ color: "rgba(255, 255, 255, 0.9)" }}>
             Walk into our wholesale counter at Jagnath Road, Gandhibagh, Nagpur (Mon–Sat, 11 AM – 8:30 PM) for hands-on lot selection, or message our wholesale desk directly for instant catalog access.
           </p>
           <div className="flex flex-wrap gap-3">
@@ -1605,6 +1605,79 @@ const seoPagesData: Record<
       "bridal silk sarees",
       "katan silk banarasi",
       "tissue silk saree"
+    ]
+  },
+  "ghungroo-sarees": {
+    title: "Ghungroo Sarees Online | Festive & Wedding Sarees | Mukesh Saree",
+    description: "Buy authentic ghungroo sarees online at Mukesh Saree Centre. Featuring ghungroo work sarees, tissue drapes & zari lace borders for Diwali, weddings & receptions.",
+    h1: "Ghungroo Sarees Online",
+    intro: "Step into regal celebration with our exclusive ghungroo saree collection at Mukesh Saree Centre Nagpur. Featuring intricate gold bell embellishments, woven tissue fabrics, rich zari borders, and delicate lace craftsmanship, each drape brings an acoustic charm and shimmering elegance to Diwali galas, wedding rituals, and grand festive receptions.",
+    filterCategory: "Sarees",
+    customFilter: (p) =>
+      p.name.toLowerCase().includes("ghungroo") ||
+      p.description.toLowerCase().includes("ghungroo") ||
+      p.slug.includes("ghungroo"),
+    body: (
+      <div className="prose max-w-none text-[var(--color-dark)]/80 mb-12">
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          The Captivating Art of Ghungroo Work Sarees
+        </h2>
+        <p>
+          A <strong>ghungroo saree</strong> combines the visual radiance of woven metallic tissue with the subtle, melodic charm of embroidered gold ghungroo bells. Carefully handcrafted across the pallu, body, and borders, each small gold bell and buti motif is securely stitched onto high-tensile woven fabric to create a spellbinding rhythm as you walk through festive venues.
+        </p>
+        <p>
+          At <strong>Mukesh Saree Centre</strong> (established 1978 in Nagpur), our curated ghungroo work sarees pair rich jewel tones—such as deep maroon, royal crimson, and festive gold—with ornate zari borders and fine lace edging. Designed for modern women who desire distinctiveness without compromising on heritage quality, these drapes elevate every celebration.
+        </p>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Ideal Occasions for Draping a Ghungroo Saree
+        </h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            <strong>Diwali & Festive Galas:</strong> The shimmering tissue sheen and acoustic ghungroo details catch evening lighting beautifully during festive pujas and family gatherings.
+          </li>
+          <li>
+            <strong>Wedding Rituals & Sangeet Evenings:</strong> Perfect for sangeet dance performances and wedding festivities where every movement reflects festive rhythm.
+          </li>
+          <li>
+            <strong>Reception Dinners:</strong> Elegant maroon and zari drapes paired with Kundan or temple gold jewelry create a memorable, royal appearance.
+          </li>
+        </ul>
+        <h2 className="text-2xl font-serif text-[var(--color-dark)] mt-8 mb-4">
+          Heritage Craftsmanship & Care
+        </h2>
+        <p>
+          To maintain the pristine luster of woven metallic tissue yarns and secure placement of ghungroo bells, we recommend dry cleaning only. Always store your ghungroo saree wrapped in a soft, breathable cotton or muslin cloth in a dry wardrobe away from direct sunlight.
+        </p>
+      </div>
+    ),
+    faqs: [
+      {
+        question: "What is a ghungroo saree?",
+        answer: "A ghungroo saree is a festive drape embellished with small embroidered gold bells (ghungroo) along the pallu, borders, or body, combined with woven tissue fabrics and zari borders."
+      },
+      {
+        question: "Are the ghungroo bells securely attached to the fabric?",
+        answer: "Yes, all ghungroo embellishments at Mukesh Saree Centre are securely embroidered with reinforced stitching onto strong woven tissue bases to prevent snagging or loosening."
+      },
+      {
+        question: "What occasions are best for wearing a ghungroo saree?",
+        answer: "Ghungroo sarees are ideal for Diwali, sangeet functions, wedding celebrations, receptions, and major festive gatherings."
+      },
+      {
+        question: "Is Cash on Delivery (COD) available for ghungroo sarees?",
+        answer: "Yes, Mukesh Saree Centre offers Cash on Delivery (COD) and free shipping across India."
+      },
+      {
+        question: "How should I clean and maintain a ghungroo work saree?",
+        answer: "Dry clean only to protect the metallic tissue yarns, delicate lace edging, and gold ghungroo embellishments."
+      }
+    ],
+    relatedKeywords: [
+      "ghungroo saree",
+      "ghungroo wali saree",
+      "ghungroo work saree",
+      "tissue saree with ghungroo",
+      "maroon ghungroo saree"
     ]
   },
   "designer-party-wear-sarees": {
@@ -2602,24 +2675,25 @@ export default function SeoLandingPage() {
       <div className="bg-[#2C241B] text-white py-8 md:py-24">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <nav
-            className="flex text-sm text-[var(--color-light)]/60 mb-6"
+            className="flex text-sm text-white/70 mb-6"
             aria-label="Breadcrumb"
           >
             <Link
               to="/"
-              className="hover:text-[var(--color-light)] transition-colors"
+              className="text-white/70 hover:text-white transition-colors"
+              style={{ color: "rgba(255, 255, 255, 0.75)" }}
             >
               Home
             </Link>
-            <ChevronRight className="w-4 h-4 mx-2 mt-0.5" />
-            <span className="text-[var(--color-light)]" aria-current="page">
+            <ChevronRight className="w-4 h-4 mx-2 mt-0.5 text-white/50" />
+            <span className="text-white" aria-current="page" style={{ color: "#ffffff" }}>
               {pageData.h1}
             </span>
           </nav>
-          <h1 className="text-4xl md:text-5xl font-serif mb-6">
+          <h1 className="text-4xl md:text-5xl font-serif mb-6 text-white" style={{ color: "#ffffff" }}>
             {pageData.h1}
           </h1>
-          <p className="text-lg md:text-xl text-[var(--color-light)]/90 max-w-3xl leading-relaxed">
+          <p className="text-lg md:text-xl text-white/90 max-w-3xl leading-relaxed" style={{ color: "rgba(255, 255, 255, 0.9)" }}>
             {pageData.intro}
           </p>
         </div>

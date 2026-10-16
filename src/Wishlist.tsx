@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
 import { products } from "./mockData";
 import { useStore } from "./store";
-import { formatPrice, getImageAlt } from "./utils";
+import { formatPrice, getImageAlt, getVisibleProducts } from "./utils";
 import { OptimizedImage } from "./components/OptimizedImage";
 import { ProductCard } from "./components/ProductCard";
 
@@ -53,9 +53,9 @@ export default function Wishlist() {
   };
 
   const displayProducts = useMemo(() => {
-    const baseItems = isSharedView
-      ? products.filter((p) => sharedItemIds.includes(p.id))
-      : products.filter((p) => wishlist.includes(p.id));
+    const baseItems = getVisibleProducts(products).filter((p) => 
+      (isSharedView ? sharedItemIds : wishlist).includes(p.id)
+    );
 
     const sorted = [...baseItems];
 

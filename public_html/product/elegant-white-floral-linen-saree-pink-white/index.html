@@ -126,7 +126,7 @@
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="preload" href="/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
     <link rel="preload" href="/fonts/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-    <link rel="preload" href="/fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/fonts/fonts.css"></noscript>
+    <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
     <link rel="dns-prefetch" href="https://ik.imagekit.io" />
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
@@ -259,8 +259,8 @@
         .pinterest-static-banner { display: block !important; }
       </style>
     </noscript>
-    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.BfPXCtXg.min.js"></script>
-    <link rel="preload" href="/assets/index.zmuVBet_.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.zmuVBet_.min.css" crossorigin></noscript>
+    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.HFAVIhSf.min.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index.DLJzFa8m.min.css">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mukeshsarees.com/"},{"@type":"ListItem","position":2,"name":"Shop","item":"https://mukeshsarees.com/shop/"},{"@type":"ListItem","position":3,"name":"Linen Sarees","item":"https://mukeshsarees.com/shop/?category=Linen%20Sarees"},{"@type":"ListItem","position":4,"name":"Elegant White & Pink Floral Linen Saree","item":"https://mukeshsarees.com/product/elegant-white-floral-linen-saree-pink-white/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Elegant White & Pink Floral Linen Saree","image":"https://mukeshsarees.com/images/products/p36.webp","description":"Understated luxury meets tradition in this bespoke Elegant White & Pink Floral Linen Saree, woven carefully with breathable and crisp natural linen-cotton blend that softens beautifully with every wear for maximum breathability. The drape is elegantly elevated by stunning hand-screened watercolor-st","sku":"SAR-LIN-WHT-PNK-001","mpn":"SAR-LIN-WHT-PNK-001","brand":{"@type":"Brand","name":"Mukesh Saree Centre"},"offers":{"@type":"Offer","url":"https://mukeshsarees.com/product/elegant-white-floral-linen-saree-pink-white/","priceCurrency":"INR","price":"699","priceValidUntil":"2030-01-01","itemCondition":"https://schema.org/NewCondition","availability":"https://schema.org/InStock","seller":{"@type":"Organization","@id":"https://mukeshsarees.com/#organization","name":"Mukesh Saree Centre"},"shippingDetails":{"@type":"OfferShippingDetails","shippingRate":{"@type":"MonetaryAmount","value":"0.00","currency":"INR"},"shippingDestination":{"@type":"DefinedRegion","addressCountry":"IN"},"deliveryTime":{"@type":"ShippingDeliveryTime","handlingTime":{"@type":"QuantitativeValue","minValue":1,"maxValue":2,"unitCode":"DAY"},"transitTime":{"@type":"QuantitativeValue","minValue":2,"maxValue":5,"unitCode":"DAY"}}},"hasMerchantReturnPolicy":{"@type":"MerchantReturnPolicy","applicableCountry":"IN","returnPolicyCategory":"https://schema.org/MerchantReturnFiniteReturnPeriod","merchantReturnDays":7,"returnMethod":"https://schema.org/ReturnByMail","returnFees":"https://schema.org/FreeReturn","merchantReturnLink":"https://mukeshsarees.com/return-policy/"}},"color":"White with Pink Floral Print","material":"Premium Soft Linen","category":"Linen Sarees"}</script></head>
   <body>
@@ -285,40 +285,132 @@
 
       <div style="background-color: #faf6f0; min-height: 100vh;">
         
-    <header style="background: rgba(250, 246, 240, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); font-family: 'Playfair Display', serif; position: sticky; top: 0; z-index: 100;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-          <img src="/images/logo.webp" alt="Mukesh Saree Centre Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
-        </a>
+    <style>
+      .prerender-nav-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 50;
+      }
+      .prerender-announcement {
+        background-color: #2B2B2B;
+        color: #C8A96B;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        min-height: 28px;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-family: 'Inter', sans-serif;
+      }
+      .prerender-header {
+        background: rgba(250, 246, 240, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 0 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+        height: 48px;
+        min-height: 48px;
+        font-family: 'Playfair Display', serif;
+      }
+      .prerender-logo {
+        height: 36px;
+        width: auto;
+        object-fit: contain;
+      }
+      .prerender-main-content {
+        padding-top: 76px;
+      }
+      .prerender-grid-responsive {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+      }
+      @media (min-width: 640px) {
+        .prerender-announcement {
+          height: 30px;
+          min-height: 30px;
+          font-size: 11px;
+        }
+        .prerender-main-content {
+          padding-top: 78px;
+        }
+      }
+      @media (min-width: 768px) {
+        .prerender-header {
+          height: 71px;
+          min-height: 71px;
+          padding: 0 24px;
+        }
+        .prerender-logo {
+          height: 52px;
+          width: auto;
+        }
+        .prerender-main-content {
+          padding-top: 101px;
+        }
+        .prerender-grid-responsive {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 12px;
+        }
+      }
+      @media (min-width: 1024px) {
+        .prerender-grid-responsive {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 16px;
+        }
+      }
+    </style>
+    <div class="prerender-nav-wrapper">
+      <div class="prerender-announcement">
+        <span>✨ FREE SHIPPING ON ORDERS ABOVE ₹499</span>
       </div>
-      <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
-        <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
-        <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
-        <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
-        <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
-      </nav>
-    </header>
+      <header class="prerender-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+            <img src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png?tr=w-400,f-webp,q-80" alt="Mukesh Saree Centre Logo" width="200" height="40" class="prerender-logo" />
+          </a>
+        </div>
+        <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
+          <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
+          <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
+          <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
+          <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
+        </nav>
+      </header>
+    </div>
   
 
-        <main style="max-width: 1200px; margin: 32px auto; padding: 0 24px; font-family: 'Inter', sans-serif;">
+        <main class="prerender-main-content" style="max-width: 1400px; margin: 0 auto; padding-left: 16px; padding-right: 16px; font-family: 'Inter', sans-serif;">
           <!-- Breadcrumb visual -->
-          <nav style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; margin-bottom: 24px;">
+          <nav style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; margin-bottom: 16px; padding-top: 12px;">
             <a href="/" style="color: inherit; text-decoration: none;">Home</a> / 
             <a href="/shop" style="color: inherit; text-decoration: none;">Shop</a> / 
             <a href="/shop?category=Linen%20Sarees" style="color: inherit; text-decoration: none;">Linen Sarees</a> / 
             <span style="color: #1a0a00; font-weight: bold;">Elegant White &amp; Pink Floral Linen Saree</span>
           </nav>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 48px; text-align: left;">
+          <div style="display: flex; flex-wrap: wrap; gap: 32px; text-align: left; padding-bottom: 48px;">
             <!-- Gallery placeholder -->
-            <div>
-              <div style="aspect-ratio: 3/4; border-radius: 4px; overflow: hidden; background: white; border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center;">
-                <img src="/images/products/p36.webp" alt="Elegant White &amp; Pink Floral Linen Saree" width="800" height="1067" loading="eager" fetchpriority="high" decoding="async" style="width: 100%; height: 100%; object-fit: contain; object-position: center; aspect-ratio: 3/4;" />
+            <div style="flex: 1 1 340px; min-width: 280px; max-width: 600px; width: 100%;">
+              <div style="aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; background: #f5f0e8; border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; padding: 12px; box-sizing: border-box;">
+                <img src="/images/products/p36.webp" alt="Elegant White &amp; Pink Floral Linen Saree" width="800" height="1067" loading="eager" fetchpriority="high" decoding="async" style="width: 100%; height: 100%; object-fit: contain; object-position: center; aspect-ratio: 3/4; border-radius: 8px;" />
               </div>
             </div>
 
             <!-- Product details -->
-            <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+            <div style="flex: 1 1 340px; min-width: 280px; display: flex; flex-direction: column; justify-content: flex-start;">
               <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #8c7355; font-weight: 600; margin-bottom: 8px;">Linen Sarees</span>
               <h1 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1a0a00; font-weight: 500; margin: 0 0 16px 0; line-height: 1.3;">Elegant White &amp; Pink Floral Linen Saree</h1>
               
@@ -332,6 +424,7 @@
               <table style="width: 100%; font-size: 13px; margin-bottom: 32px; border-collapse: collapse;">
                 <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);"><td style="padding: 10px 0; font-weight: bold; color: #1a0a00; width: 30%;">Fabric</td><td style="padding: 10px 0; color: #4a4a4a;">Premium Soft Linen</td></tr>
                 <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);"><td style="padding: 10px 0; font-weight: bold; color: #1a0a00;">Color</td><td style="padding: 10px 0; color: #4a4a4a;">White with Pink Floral Print</td></tr>
+                
               </table>
 
               <!-- Description -->
@@ -363,7 +456,7 @@
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2.2;">
             <li><a href="/shop?category=Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Classic Silk Sarees</a></li>
             <li><a href="/shop?category=Linen Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Premium Linen Sarees</a></li>
-            <li><a href="/shop?category=Lehengas" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Bridal & Designer Lehengas</a></li>
+            <li><a href="/shop?sort=trending" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Trending Sarees</a></li>
           </ul>
         </div>
         <div>

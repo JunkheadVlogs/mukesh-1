@@ -239,3 +239,6 @@ export function getResponsiveSrcSet(url: string, widths: number[] = [300, 450, 6
 
   return undefined;
 }
+export function getVisibleProducts(products: Product[]) {
+  return products.filter((p) => !p.isVariant && !p.isHidden && p.category !== "Suits" && p.category !== "Lehengas");
+}

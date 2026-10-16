@@ -213,19 +213,111 @@ function mdToHtml(markdown: string): string {
 // Generate Header and Footer skeleton
 export function getHeaderHtml(): string {
   return `
-    <header style="background: rgba(250, 246, 240, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); font-family: 'Playfair Display', serif; position: sticky; top: 0; z-index: 100;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-          <img src="/images/logo.webp" alt="${BUSINESS_INFO.name} Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
-        </a>
+    <style>
+      .prerender-nav-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 50;
+      }
+      .prerender-announcement {
+        background-color: #2B2B2B;
+        color: #C8A96B;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        min-height: 28px;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-family: 'Inter', sans-serif;
+      }
+      .prerender-header {
+        background: rgba(250, 246, 240, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 0 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+        height: 48px;
+        min-height: 48px;
+        font-family: 'Playfair Display', serif;
+      }
+      .prerender-logo {
+        height: 36px;
+        width: auto;
+        object-fit: contain;
+      }
+      .prerender-main-content {
+        padding-top: 76px;
+      }
+      .prerender-grid-responsive {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+      }
+      @media (min-width: 640px) {
+        .prerender-announcement {
+          height: 30px;
+          min-height: 30px;
+          font-size: 11px;
+        }
+        .prerender-main-content {
+          padding-top: 78px;
+        }
+      }
+      @media (min-width: 768px) {
+        .prerender-header {
+          height: 71px;
+          min-height: 71px;
+          padding: 0 24px;
+        }
+        .prerender-logo {
+          height: 52px;
+          width: auto;
+        }
+        .prerender-main-content {
+          padding-top: 101px;
+        }
+        .prerender-grid-responsive {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 12px;
+        }
+      }
+      @media (min-width: 1024px) {
+        .prerender-grid-responsive {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 16px;
+        }
+      }
+    </style>
+    <div class="prerender-nav-wrapper">
+      <div class="prerender-announcement">
+        <span>✨ FREE SHIPPING ON ORDERS ABOVE ₹499</span>
       </div>
-      <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
-        <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
-        <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
-        <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
-        <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
-      </nav>
-    </header>
+      <header class="prerender-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+            <img src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png?tr=w-400,f-webp,q-80" alt="${BUSINESS_INFO.name} Logo" width="200" height="40" class="prerender-logo" />
+          </a>
+        </div>
+        <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
+          <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
+          <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
+          <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
+          <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
+        </nav>
+      </header>
+    </div>
   `;
 }
 
@@ -243,7 +335,7 @@ export function getFooterHtml(): string {
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2.2;">
             <li><a href="/shop?category=Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Classic Silk Sarees</a></li>
             <li><a href="/shop?category=Linen Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Premium Linen Sarees</a></li>
-            <li><a href="/shop?category=Lehengas" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Bridal & Designer Lehengas</a></li>
+            <li><a href="/shop?sort=trending" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Trending Sarees</a></li>
           </ul>
         </div>
         <div>
@@ -286,22 +378,21 @@ function getProductCardHtml(p: any): string {
   const img600 = getCardImg(600);
   const srcSet = p.image && p.image.startsWith('/') ? `${p.image}` : `${img300} 300w, ${img400} 400w, ${img600} 600w`;
   return `
-    <div class="product-card" style="background: white; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; padding-bottom: 16px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; justify-content: space-between;">
-      <a href="/product/${p.slug}" style="text-decoration: none; color: inherit; display: block;">
-         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; background: #faf6f0; display: flex; align-items: center; justify-content: center;">
-          <img src="${img400}" srcset="${srcSet}" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="${sanitize(p.name)}" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
+    <div class="product-card" style="background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100%;">
+      <a href="/product/${p.slug}" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+         <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; width: 100%; background: #FAF8F5; display: flex; align-items: center; justify-content: center;">
+          <img src="${img400}" srcset="${srcSet}" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" alt="${sanitize(p.name)}" width="400" height="533" style="width: 100%; height: 100%; object-fit: cover; object-position: top; aspect-ratio: 3/4;" loading="lazy" fetchpriority="low" decoding="async" />
         </div>
-        <div style="padding: 16px; text-align: left;">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 15px; margin: 0 0 10px 0; color: #1a0a00; line-height: 1.4; font-weight: 500;">${sanitize(p.name)}</h3>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 16px; font-weight: 600; color: #8c7355;">₹${p.price}</span>
-            ${p.originalPrice ? `<span style="font-size: 12px; text-decoration: line-through; color: #999;">₹${p.originalPrice}</span>` : ""}
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; text-align: left;">
+          <div style="min-height: 36px; height: 36px; margin-bottom: 8px;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${sanitize(p.name)}</h3>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 700; color: #2C241B;">₹${p.price}</span>
+            ${p.originalPrice ? `<span style="font-size: 11px; text-decoration: line-through; font-weight: 800; color: #59524A;">₹${p.originalPrice}</span>` : ""}
           </div>
         </div>
       </a>
-      <div style="padding: 0 16px;">
-        <a href="/product/${p.slug}" style="display: block; width: 100%; text-align: center; background: #1a0a00; color: white; padding: 10px 0; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border-radius: 2px;">View Details</a>
-      </div>
     </div>
   `;
 }
@@ -380,7 +471,7 @@ async function runPrerender() {
       ${getHeaderHtml()}
 
       <!-- Hero Section -->
-      <section style="background-color: #1A0A00; color: #faf6f0; padding: 100px 24px; text-align: center; position: relative;">
+      <section style="background-color: #1A0A00; color: #faf6f0; height: 85vh; min-height: 520px; position: relative; display: flex; align-items: center; overflow: hidden;">
         <!-- Pre-rendered hero images for LCP discovery -->
         <style>
           .mobile-hero { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 72% bottom; }
@@ -399,45 +490,53 @@ async function runPrerender() {
             <img src="https://ik.imagekit.io/tus1loev9/homepage/heroimage.webp?updatedAt=1779907895469&tr=w-768,f-webp,q-75" width="768" height="1000" fetchpriority="high" loading="eager" decoding="async" alt="Mukesh Saree Centre – premium saree shop in Nagpur, established 1978" class="mobile-hero" />
           </picture>
         </div>
-        <div style="max-width: 800px; margin: 0 auto; z-index: 10; position: relative;">
-          <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: #d4af37; font-weight: 600;">ESTABLISHED ${BUSINESS_INFO.established}</span>
-          <h1 style="font-family: 'Playfair Display', serif; font-size: 42px; margin: 16px 0 24px 0; font-weight: 500; line-height: 1.25;">${BUSINESS_INFO.name}</h1>
-          <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.85; line-height: 1.8; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; color: #f5f0e6;">Shop ${BUSINESS_INFO.address.city}'s premium ethnic fashion. Explore pure mulberry silks, authentic linens, designer banarasis, and bridal lehengas. Delivered to your doorstep with Cash on Delivery and free nationwide shipping above ₹499.</p>
-          <div style="display: flex; gap: 16px; justify-content: center;">
-            <a href="/shop" style="background: #faf6f0; color: #1a0a00; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Explore Collection</a>
-            <a href="/contact" style="border: 1px solid rgba(250, 246, 240, 0.4); color: #faf6f0; padding: 14px 28px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Contact Boutique</a>
+        <div style="max-width: 1280px; width: 100%; margin: 0 auto; padding: 100px 24px 48px 24px; z-index: 10; position: relative; text-align: left; height: 100%; display: flex; flex-direction: column; justify-content: center; box-sizing: border-box;">
+          <div style="max-width: 640px;">
+            <span style="font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: #e8d3a2; font-weight: 600; display: block; margin-bottom: 8px;">MUKESH SAREE CENTRE &nbsp;·&nbsp; EST. 1978</span>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: clamp(28px, 5vw, 56px); margin: 0 0 16px 0; font-weight: 400; line-height: 1.2; color: #FFFDF8;">The Art of the Drape</h1>
+            <p style="font-family: 'Inter', sans-serif; font-size: clamp(12px, 2vw, 16px); opacity: 0.95; line-height: 1.7; margin: 0 0 32px 0; max-width: 500px; color: #F5EFE6;">Handcrafted silks and linens, styled for the modern woman.</p>
+            <div>
+              <a href="/shop" style="background: #faf6f0; color: #1a0a00; padding: 12px 28px; text-decoration: none; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; display: inline-block;">SHOP NOW</a>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Category Links -->
-      <section style="max-width: 1200px; margin: 60px auto; padding: 0 24px;">
-        <h2 style="font-family: 'Playfair Display', serif; text-align: center; font-size: 28px; margin-bottom: 40px; color: #1a0a00;">Browse By Collection</h2>
-        <div class="collection-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;">
-          <a class="collection-card" href="/shop?category=Sarees" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
-            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Designer Sarees</h3>
-            <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Pure Silks & Linens</span>
+      <!-- Shop by Category -->
+      <section style="max-width: 1200px; margin: 40px auto; padding: 0 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
+          <h2 style="font-family: 'Playfair Display', serif; font-size: 28px; color: #1a0a00; margin: 0;">Shop by <span style="font-style: italic;">Category</span></h2>
+          <a href="/shop" style="font-family: 'Inter', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #c8a96b; text-decoration: none; font-weight: 600;">View Collection</a>
+        </div>
+        <div class="collection-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+          <a class="collection-card" href="/shop?category=Linen Sarees" style="text-decoration: none; color: inherit; display: block; background: #faf6f0; border-radius: 16px; overflow: hidden; position: relative; min-height: 380px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div style="position: absolute; inset: 0;">
+              <img src="https://ik.imagekit.io/tus1loev9/Rangoli%20Georgette%20/Black_with_rainbow_colour_in_the_mul_cotton_handloom_sarees_right.jpg?tr=w-800,f-webp,q-80" alt="Designer Linen Sarees" width="800" height="600" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
+            </div>
+            <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); padding: 32px; display: flex; flex-direction: column; justify-content: flex-end;">
+              <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 6px 0; font-size: 24px; color: #ffffff;">Linen Sarees</h3>
+              <span style="font-size: 12px; font-family: 'Inter', sans-serif; color: #e8d3a2; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Best Sellers | 50% OFF</span>
+            </div>
           </a>
-          <a class="collection-card" href="/shop?category=Linen Sarees" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
-            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Linen Sarees</h3>
-            <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Pure Breathable Flax</span>
-          </a>
-          <a class="collection-card" href="/shop?category=Lehengas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
-            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Lehengas</h3>
-            <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Grand Wedding Attire</span>
-          </a>
-          <a class="collection-card" href="/shop?category=Kurtas" style="text-decoration: none; color: inherit; display: block; background: white; border: 1px solid rgba(0,0,0,0.04); padding: 32px; text-align: center; border-radius: 4px;">
-            <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 8px 0; font-size: 18px;">Kurtas & Suits</h3>
-            <span style="font-size: 12px; font-family: 'Inter', sans-serif; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Comfortable Everyday Elegance</span>
+          <a class="collection-card" href="/shop?category=Sarees" style="text-decoration: none; color: inherit; display: block; background: #faf6f0; border-radius: 16px; overflow: hidden; position: relative; min-height: 380px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div style="position: absolute; inset: 0;">
+              <img src="https://ik.imagekit.io/tus1loev9/homepage/saree-category.webp?updatedAt=1779907894790" alt="Premium Sarees Collection" width="800" height="550" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
+            </div>
+            <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); padding: 32px; display: flex; flex-direction: column; justify-content: flex-end;">
+              <h3 class="collection-card-title" style="font-family: 'Playfair Display', serif; margin: 0 0 6px 0; font-size: 24px; color: #ffffff;">Sarees</h3>
+              <span style="font-size: 12px; font-family: 'Inter', sans-serif; color: #e8d3a2; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Premium Quality | 50% OFF</span>
+            </div>
           </a>
         </div>
       </section>
 
       <!-- Featured Grid -->
-      <section style="max-width: 1200px; margin: 80px auto; padding: 0 24px; text-align: center;">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 12px; color: #1a0a00;">Featured Arrivals</h2>
-        <p style="font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.6; margin-bottom: 48px;">Handselected masterpieces crafted with unparalleled diligence.</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px;">
+      <section style="max-width: 1200px; margin: 40px auto; padding: 0 16px; text-align: center;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
+          <h2 style="font-family: 'Playfair Display', serif; font-size: 28px; color: #1a0a00; margin: 0;">Trending <span style="font-style: italic;">Now</span></h2>
+          <a href="/shop?sort=trending" style="font-family: 'Inter', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #c8a96b; text-decoration: none; font-weight: 600;">View Collection</a>
+        </div>
+        <div class="prerender-grid-responsive">
           ${featuredProducts.map(getProductCardHtml).join("")}
         </div>
       </section>
@@ -462,6 +561,7 @@ async function runPrerender() {
                 <li style="margin-bottom: 8px;"><a href="/pure-linen-sarees" style="color: inherit; text-decoration: none;">Premium Linen Sarees</a></li>
                 <li style="margin-bottom: 8px;"><a href="/soft-cotton-sarees" style="color: inherit; text-decoration: none;">Soft Cotton Sarees</a></li>
                 <li style="margin-bottom: 8px;"><a href="/banarasi-silk-sarees" style="color: inherit; text-decoration: none;">Banarasi Silk Sarees</a></li>
+                <li style="margin-bottom: 8px;"><a href="/ghungroo-sarees" style="color: inherit; text-decoration: none;">Ghungroo Sarees</a></li>
                 <li style="margin-bottom: 8px;"><a href="/designer-party-wear-sarees" style="color: inherit; text-decoration: none;">Designer Party Wear</a></li>
               </ul>
             </div>
@@ -548,6 +648,15 @@ async function runPrerender() {
       introTitle: "Timeless Drapes for Every Occasion",
       introBody: "Sarees are the epitome of Indian elegance and grace. Whether you desire a breezy drape for daily wear, an artisanal linen saree for the workplace, or a lustrous silk weave for weddings, our handpicked saree catalogue delivers unmatched heritage quality.",
       filterFn: (p: any) => p.category === "Sarees" || p.category === "Linen Sarees" || p.category === "Saree"
+    },
+    {
+      route: "ghungroo-sarees",
+      title: "Ghungroo Sarees Online | Festive & Wedding Sarees | Mukesh Saree",
+      description: "Buy authentic ghungroo sarees online at Mukesh Saree Centre. Featuring ghungroo work sarees, tissue drapes & zari lace borders for Diwali, weddings & receptions.",
+      h1: "Ghungroo Sarees Online",
+      introTitle: "Acoustic Charm & Shimmering Festive Elegance",
+      introBody: "Step into regal celebration with our exclusive ghungroo saree collection. Featuring intricate gold bell embellishments, woven tissue fabrics, rich zari borders, and delicate lace craftsmanship, each drape brings a mesmerizing rhythm and shimmering allure to Diwali galas, wedding rituals, and grand festive receptions.",
+      filterFn: (p: any) => (p.name || "").toLowerCase().includes("ghungroo") || (p.description || "").toLowerCase().includes("ghungroo") || (p.slug || "").includes("ghungroo")
     },
     {
       route: "sarees/banarasi-sarees",
@@ -646,10 +755,10 @@ async function runPrerender() {
       <div style="background-color: #faf6f0; min-height: 100vh;">
         ${getHeaderHtml()}
         
-        <main style="max-width: 1200px; margin: 40px auto; padding: 0 24px;">
+        <main class="prerender-main-content" style="max-width: 1600px; margin: 0 auto; padding-left: 16px; padding-right: 16px;">
           
           <!-- Breadcrumbs -->
-          <nav aria-label="breadcrumb" style="margin-bottom: 24px; font-family: 'Inter', sans-serif; font-size: 12px; color: #666;">
+          <nav aria-label="breadcrumb" style="margin-bottom: 24px; font-family: 'Inter', sans-serif; font-size: 12px; color: #666; padding-top: 12px;">
             <ol style="list-style: none; padding: 0; margin: 0; display: flex; gap: 8px;">
               <li><a href="/" style="color: #666; text-decoration: none;">Home</a></li>
               <li>/</li>
@@ -657,13 +766,13 @@ async function runPrerender() {
             </ol>
           </nav>
 
-          <div style="text-align: center; margin-bottom: 48px; font-family: 'Playfair Display', serif;">
-            <h1 style="font-size: 36px; margin-bottom: 12px; color: #1a0a00; font-weight: 500;">${collection.h1}</h1>
-            <p style="font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.8; font-weight: 600; color: #8c7355; text-transform: uppercase; letter-spacing: 1px;">${collection.introTitle}</p>
-            <p style="font-family: 'Inter', sans-serif; font-size: 15px; opacity: 0.7; max-width: 800px; margin: 16px auto 0 auto; line-height: 1.6;">${collection.introBody}</p>
+          <div style="text-align: center; margin-bottom: 32px; font-family: 'Playfair Display', serif;">
+            <h1 style="font-size: 28px; margin-bottom: 8px; color: #1a0a00; font-weight: 500;">${collection.h1}</h1>
+            <p style="font-family: 'Inter', sans-serif; font-size: 13px; opacity: 0.8; font-weight: 600; color: #8c7355; text-transform: uppercase; letter-spacing: 1px;">${collection.introTitle}</p>
+            <p style="font-family: 'Inter', sans-serif; font-size: 14px; opacity: 0.7; max-width: 800px; margin: 12px auto 0 auto; line-height: 1.6;">${collection.introBody}</p>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px; margin-bottom: 60px;">
+          <div class="prerender-grid-responsive" style="margin-bottom: 60px;">
             ${colProducts.length > 0 
               ? colProducts.map(getProductCardHtml).join("") 
               : `<div style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; background: white; border-radius: 4px; border: 1px solid rgba(0,0,0,0.05); font-family: 'Inter', sans-serif;">
@@ -878,25 +987,25 @@ async function runPrerender() {
       <div style="background-color: #faf6f0; min-height: 100vh;">
         ${getHeaderHtml()}
 
-        <main style="max-width: 1200px; margin: 32px auto; padding: 0 24px; font-family: 'Inter', sans-serif;">
+        <main class="prerender-main-content" style="max-width: 1400px; margin: 0 auto; padding-left: 16px; padding-right: 16px; font-family: 'Inter', sans-serif;">
           <!-- Breadcrumb visual -->
-          <nav style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; margin-bottom: 24px;">
+          <nav style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; margin-bottom: 16px; padding-top: 12px;">
             <a href="/" style="color: inherit; text-decoration: none;">Home</a> / 
             <a href="/shop" style="color: inherit; text-decoration: none;">Shop</a> / 
             <a href="/shop?category=${encodeURIComponent(p.category)}" style="color: inherit; text-decoration: none;">${sanitize(p.category)}</a> / 
             <span style="color: #1a0a00; font-weight: bold;">${sanitize(p.name)}</span>
           </nav>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 48px; text-align: left;">
+          <div style="display: flex; flex-wrap: wrap; gap: 32px; text-align: left; padding-bottom: 48px;">
             <!-- Gallery placeholder -->
-            <div>
-              <div style="aspect-ratio: 3/4; border-radius: 4px; overflow: hidden; background: white; border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center;">
-                <img src="${wsrvImgMain}" alt="${sanitize(p.name)}" width="800" height="1067" loading="eager" fetchpriority="high" decoding="async" style="width: 100%; height: 100%; object-fit: contain; object-position: center; aspect-ratio: 3/4;" />
+            <div style="flex: 1 1 340px; min-width: 280px; max-width: 600px; width: 100%;">
+              <div style="aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; background: #f5f0e8; border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; padding: 12px; box-sizing: border-box;">
+                <img src="${wsrvImgMain}" alt="${sanitize(p.name)}" width="800" height="1067" loading="eager" fetchpriority="high" decoding="async" style="width: 100%; height: 100%; object-fit: contain; object-position: center; aspect-ratio: 3/4; border-radius: 8px;" />
               </div>
             </div>
 
             <!-- Product details -->
-            <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+            <div style="flex: 1 1 340px; min-width: 280px; display: flex; flex-direction: column; justify-content: flex-start;">
               <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #8c7355; font-weight: 600; margin-bottom: 8px;">${sanitize(p.category)}</span>
               <h1 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1a0a00; font-weight: 500; margin: 0 0 16px 0; line-height: 1.3;">${sanitize(p.name)}</h1>
               
@@ -910,6 +1019,7 @@ async function runPrerender() {
               <table style="width: 100%; font-size: 13px; margin-bottom: 32px; border-collapse: collapse;">
                 ${p.fabric ? `<tr style="border-bottom: 1px solid rgba(0,0,0,0.04);"><td style="padding: 10px 0; font-weight: bold; color: #1a0a00; width: 30%;">Fabric</td><td style="padding: 10px 0; color: #4a4a4a;">${sanitize(p.fabric)}</td></tr>` : ""}
                 ${p.color ? `<tr style="border-bottom: 1px solid rgba(0,0,0,0.04);"><td style="padding: 10px 0; font-weight: bold; color: #1a0a00;">Color</td><td style="padding: 10px 0; color: #4a4a4a;">${sanitize(p.color)}</td></tr>` : ""}
+                ${p.blouseDetails ? `<tr style="border-bottom: 1px solid rgba(0,0,0,0.04);"><td style="padding: 10px 0; font-weight: bold; color: #1a0a00;">Blouse Details</td><td style="padding: 10px 0; color: #4a4a4a;">${sanitize(p.blouseDetails)}</td></tr>` : ""}
               </table>
 
               <!-- Description -->

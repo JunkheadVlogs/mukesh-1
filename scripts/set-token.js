@@ -11,6 +11,7 @@ if (!token) {
   process.exit(1);
 }
 
+
 const tokenPath = path.join(process.cwd(), '.github-token');
 fs.writeFileSync(tokenPath, token + '\n', 'utf8');
 

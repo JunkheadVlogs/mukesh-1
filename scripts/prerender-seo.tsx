@@ -27,18 +27,95 @@ let baseHtml = fs.readFileSync(cleanHtmlPath, "utf-8");
 // Generate Header and Footer skeleton (copied from prerender.ts)
 function getHeaderHtml(): string {
   return `
-    <header style="background: rgba(250, 246, 240, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); font-family: 'Playfair Display', serif; position: sticky; top: 0; z-index: 100;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-          <img src="/images/logo.webp" alt="${BUSINESS_INFO.name} Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
-        </a>
+    <style>
+      .prerender-nav-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 50;
+      }
+      .prerender-announcement {
+        background-color: #2B2B2B;
+        color: #C8A96B;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        min-height: 28px;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-family: 'Inter', sans-serif;
+      }
+      .prerender-header {
+        background: rgba(250, 246, 240, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 0 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+        height: 48px;
+        min-height: 48px;
+        font-family: 'Playfair Display', serif;
+      }
+      .prerender-logo {
+        height: 36px;
+        width: auto;
+        object-fit: contain;
+      }
+      .prerender-main-content {
+        padding-top: 76px;
+      }
+      @media (min-width: 640px) {
+        .prerender-announcement {
+          height: 30px;
+          min-height: 30px;
+          font-size: 11px;
+        }
+        .prerender-main-content {
+          padding-top: 78px;
+        }
+      }
+      @media (min-width: 768px) {
+        .prerender-header {
+          height: 71px;
+          min-height: 71px;
+          padding: 0 24px;
+        }
+        .prerender-logo {
+          height: 52px;
+          width: auto;
+        }
+        .prerender-main-content {
+          padding-top: 101px;
+        }
+      }
+    </style>
+    <div class="prerender-nav-wrapper">
+      <div class="prerender-announcement">
+        <span>✨ FREE SHIPPING ON ORDERS ABOVE ₹499</span>
       </div>
-      <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
-        <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
-        <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
-        <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
-      </nav>
-    </header>
+      <header class="prerender-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+            <img src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png?tr=w-400,f-webp,q-80" alt="${BUSINESS_INFO.name} Logo" width="200" height="40" class="prerender-logo" />
+          </a>
+        </div>
+        <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
+          <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
+          <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
+          <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
+          <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
+        </nav>
+      </header>
+    </div>
   `;
 }
 
@@ -1366,11 +1443,11 @@ const seoPagesData: Record<
           We believe in nurturing growing businesses. Our wholesale catalog bundles start with <strong>minimum orders as low as 10 to 15 sarees</strong>, allowing new boutique owners to curate diverse collections without heavy capital outlay. We provide daily fresh arrivals via our WhatsApp dealer broadcast, real-time video inspections, itemized GST tax invoices, and same-day parcel dispatch via premier transport logistics (Delhivery, Blue Dart, and dedicated regional cargo lines).
         </p>
 
-        <div className="bg-[#2C241B] text-white p-6 rounded-md mt-8 mb-4">
-          <h3 className="text-lg font-serif font-semibold text-[#D4AF37] mb-2">
+        <div className="bg-[#2C241B] text-white p-6 rounded-md mt-8 mb-4 border border-[#B5894A]/30">
+          <h3 className="text-lg font-serif font-semibold text-[#D4AF37] mb-2" style={{ color: "#D4AF37" }}>
             Visit Our Gandhibagh Showroom or Order via WhatsApp
           </h3>
-          <p className="text-sm text-white/80 mb-4 leading-relaxed">
+          <p className="text-sm text-white/90 mb-4 leading-relaxed" style={{ color: "rgba(255, 255, 255, 0.9)" }}>
             Walk into our wholesale counter at Jagnath Road, Gandhibagh, Nagpur (Mon–Sat, 11 AM – 8:30 PM) for hands-on lot selection, or message our wholesale desk directly for instant catalog access.
           </p>
           <div className="flex flex-wrap gap-3">

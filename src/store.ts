@@ -141,14 +141,14 @@ export const useStore = create<AppState>()(
         
         return state.cart.reduce((total, item) => {
           const mrp = item.originalPrice || item.price * 2;
-          const isVIP60Disallowed = item.disallowVIP60 || item.sku === 'SAR-CHN-RED-001' || item.id === 'p-sindoor-red-ajrakh-chanderi';
+          const isVIP60Disallowed = item.disallowVIP60 || item.sku === 'SAR-CHN-RED-001' || item.id === 'p-sindoor-red-ajrakh-chanderi' || item.sku === 'SAR-GHU-MAR-001';
           const effectiveCoupon = (isVIP60Disallowed && (activeCoupon === 'VIPCLUB60' || activeCoupon === 'VIP60' || activeCoupon === 'VIBCLUB60'))
             ? 'VIP50'
             : activeCoupon;
           const discountRate = (effectiveCoupon === 'VIPCLUB60' || effectiveCoupon === 'VIP60' || effectiveCoupon === 'VIBCLUB60') ? 0.60 : 0.50;
           const standardCalculatedPrice = mrp - Math.round(mrp * discountRate);
-          // For items with a custom promotional price like SAR-LIN-BRD-062, respect item.price if lower
-          const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+          // For items with a custom fixed promotional price, respect item.price
+          const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062' || item.sku === 'SAR-GHU-MAR-001' || item.slug === 'maroon-ghungroo-tissue-saree-zari-border-lace')
             ? item.price
             : standardCalculatedPrice;
           return total + calculatedPrice * item.quantity;

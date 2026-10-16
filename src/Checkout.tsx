@@ -81,7 +81,7 @@ export default function Checkout() {
     const itemCoupon = (isVIP60Disallowed && (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60")) ? "VIP50" : activeCoupon;
     const itemDiscountRate = (itemCoupon === "VIPCLUB60" || itemCoupon === "VIP60" || itemCoupon === "VIBCLUB60") ? 0.60 : 0.50;
     const standardPrice = mrp - Math.round(mrp * itemDiscountRate);
-    const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+    const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062' || item.sku === 'SAR-GHU-MAR-001' || item.slug === 'maroon-ghungroo-tissue-saree-zari-border-lace')
       ? item.price
       : standardPrice;
     return sum + calculatedPrice * item.quantity;
@@ -508,6 +508,55 @@ export default function Checkout() {
           setIsSubmitting(false);
           setSubmitError(err?.message || "Failed to initiate online payment. Please try again or choose Cash on Delivery.");
         }
+      } else if (paymentMethod === "cod") {
+        try {
+          setIsSubmitting(true);
+          setSubmitError("");
+
+          const sdkLoaded = await loadRazorpay();
+          if (!sdkLoaded || !(window as any).Razorpay) {
+            throw new Error("Unable to load secure payment gateway. Please check your internet connection.");
+          }
+
+          // Create the order on the server for ₹100 advance
+          const res = await fetch(getApiUrl("api/create-order"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount: 100,
+              notes: { order_id: newOrderId, customer_name: fullName, customer_phone: mobileNumber }
+            })
+          });
+          const orderData = await res.json();
+          
+          if (!orderData || !orderData.id) throw new Error("Could not initialize payment.");
+
+          const options = {
+            key: orderData.key,
+            amount: 10000, // 100 INR in paise
+            currency: "INR",
+            name: "Mukesh Saree Centre",
+            description: "COD Advance Payment",
+            order_id: orderData.id,
+            handler: async (response: any) => {
+              await finalizeOrder(true, "COD Advance Paid ✅", response.razorpay_payment_id);
+            },
+            modal: {
+              ondismiss: () => {
+                setIsSubmitting(false);
+                setSubmitError("COD Advance payment cancelled. Please try again.");
+              }
+            },
+            theme: { color: "#C8A96B" }
+          };
+
+          const rzp = new (window as any).Razorpay(options);
+          rzp.open();
+        } catch (err: any) {
+          console.error("COD advance payment failed:", err);
+          setIsSubmitting(false);
+          setSubmitError(err?.message || "Failed to initiate COD advance payment.");
+        }
       } else {
         await finalizeOrder();
       }
@@ -775,6 +824,12 @@ export default function Checkout() {
                           <div className="text-[11px] sm:text-[13px] text-[#6B5F4A] mt-0.5 leading-tight">
                             Pay when your order arrives. 100% safe.
                           </div>
+                          <p className="text-[10px] sm:text-[11px] text-neutral-600 mt-3 p-3 bg-neutral-50 rounded border border-neutral-100 italic">
+                            To confirm this Cash on Delivery order, a refundable ₹100 advance is required. This amount will be deducted from your total — you'll pay only the remaining balance in cash at delivery. 
+                            We request this because COD orders that are refused at the doorstep cause real shipping, packaging, and return costs on our side; a small advance helps us confirm genuine orders and keep prices low for everyone.
+                            <br /><br />
+                            <strong>Cancellation Policy:</strong> The ₹100 advance is non-refundable if the order is cancelled by the customer or refused at delivery, but fully refunded if the order is cancelled by Mukesh Saree Centre (e.g., out of stock).
+                          </p>
                         </div>
                       </label>
                     </div>
@@ -917,7 +972,7 @@ export default function Checkout() {
                   const itemCoupon = (isVIP60Disallowed && (activeCoupon === "VIPCLUB60" || activeCoupon === "VIP60" || activeCoupon === "VIBCLUB60")) ? "VIP50" : activeCoupon;
                   const itemDiscountRate = (itemCoupon === "VIPCLUB60" || itemCoupon === "VIBCLUB60") ? 0.60 : 0.50;
                   const standardPrice = mrp - Math.round(mrp * itemDiscountRate);
-                  const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062')
+                  const calculatedPrice = (item.codAvailable === false || item.sku === 'SAR-LIN-BRD-062' || item.sku === 'SAR-GHU-MAR-001' || item.slug === 'maroon-ghungroo-tissue-saree-zari-border-lace')
                     ? item.price
                     : standardPrice;
                   return (

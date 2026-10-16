@@ -137,7 +137,7 @@ export function CustomerReviews() {
             {REVIEWS.map((review) => (
               <article
                 key={review.id}
-                className="flex-none w-[78vw] sm:w-[350px] md:w-[400px] snap-center bg-white p-4 sm:p-5 md:p-6 border border-[#C8A96B]/10 shadow-[0_2px_12px_rgba(200,169,107,0.03)] rounded-xl relative flex flex-col justify-between"
+                className="flex-none w-[78vw] sm:w-[350px] md:w-[400px] min-h-[175px] md:min-h-[190px] snap-center bg-white p-4 sm:p-5 md:p-6 border border-[#C8A96B]/10 shadow-[0_2px_12px_rgba(200,169,107,0.03)] rounded-xl relative flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center gap-0.5 mb-4">

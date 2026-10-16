@@ -76,9 +76,12 @@ export default function Layout() {
   const isCheckoutPage = location.pathname === "/checkout" || location.pathname.startsWith("/checkout") || Boolean(isCheckoutActive);
 
   const headerRef = useRef<HTMLDivElement>(null);
-  const [headerHeight, setHeaderHeight] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < 768 ? 76 : 101
-  );
+  const [headerHeight, setHeaderHeight] = useState(() => {
+    if (typeof window === "undefined") return 76;
+    if (window.innerWidth < 640) return 76;
+    if (window.innerWidth < 768) return 78;
+    return 101;
+  });
 
   useEffect(() => {
     const measureHeader = () => {
@@ -1298,6 +1301,11 @@ export default function Layout() {
                   <li>
                     <Link to="/shop/?category=Lehengas" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
                       Lehengas
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/ghungroo-sarees/" className="hover:text-[#C8A96B] hover:underline decoration-[#C8A96B]/30 underline-offset-4 transition-colors block py-0.5 md:py-0.5">
+                      Ghungroo Sarees
                     </Link>
                   </li>
                   <li>

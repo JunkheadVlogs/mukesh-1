@@ -126,7 +126,7 @@
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="preload" href="/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
     <link rel="preload" href="/fonts/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-    <link rel="preload" href="/fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/fonts/fonts.css"></noscript>
+    <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
     <link rel="dns-prefetch" href="https://ik.imagekit.io" />
     <link rel="preconnect" href="https://wsrv.nl" crossorigin />
@@ -259,8 +259,8 @@
         .pinterest-static-banner { display: block !important; }
       </style>
     </noscript>
-    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.BfPXCtXg.min.js"></script>
-    <link rel="preload" href="/assets/index.zmuVBet_.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index.zmuVBet_.min.css" crossorigin></noscript>
+    <script type="module" defer fetchpriority="low" crossorigin src="/assets/index.HFAVIhSf.min.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index.DLJzFa8m.min.css">
   
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ContactPage","mainEntity":{"@id":"https://mukeshsarees.com/#organization"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mukeshsarees.com"},{"@type":"ListItem","position":2,"name":"Contact Us","item":"https://mukeshsarees.com/contact"}]}</script>
@@ -287,19 +287,111 @@
 
         <div style="background-color: #faf6f0; min-height: 100vh;">
           
-    <header style="background: rgba(250, 246, 240, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); font-family: 'Playfair Display', serif; position: sticky; top: 0; z-index: 100;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-          <img src="/images/logo.webp" alt="Mukesh Saree Centre Logo" style="width: auto; height: auto; min-width: 160px; max-width: 180px; object-fit: contain;" />
-        </a>
+    <style>
+      .prerender-nav-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 50;
+      }
+      .prerender-announcement {
+        background-color: #2B2B2B;
+        color: #C8A96B;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        min-height: 28px;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-family: 'Inter', sans-serif;
+      }
+      .prerender-header {
+        background: rgba(250, 246, 240, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 0 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+        height: 48px;
+        min-height: 48px;
+        font-family: 'Playfair Display', serif;
+      }
+      .prerender-logo {
+        height: 36px;
+        width: auto;
+        object-fit: contain;
+      }
+      .prerender-main-content {
+        padding-top: 76px;
+      }
+      .prerender-grid-responsive {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+      }
+      @media (min-width: 640px) {
+        .prerender-announcement {
+          height: 30px;
+          min-height: 30px;
+          font-size: 11px;
+        }
+        .prerender-main-content {
+          padding-top: 78px;
+        }
+      }
+      @media (min-width: 768px) {
+        .prerender-header {
+          height: 71px;
+          min-height: 71px;
+          padding: 0 24px;
+        }
+        .prerender-logo {
+          height: 52px;
+          width: auto;
+        }
+        .prerender-main-content {
+          padding-top: 101px;
+        }
+        .prerender-grid-responsive {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 12px;
+        }
+      }
+      @media (min-width: 1024px) {
+        .prerender-grid-responsive {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 16px;
+        }
+      }
+    </style>
+    <div class="prerender-nav-wrapper">
+      <div class="prerender-announcement">
+        <span>✨ FREE SHIPPING ON ORDERS ABOVE ₹499</span>
       </div>
-      <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
-        <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
-        <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
-        <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
-        <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
-      </nav>
-    </header>
+      <header class="prerender-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="/" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+            <img src="https://ik.imagekit.io/tus1loev9/homepage/IMG_20260530_201904.png?tr=w-400,f-webp,q-80" alt="Mukesh Saree Centre Logo" width="200" height="40" class="prerender-logo" />
+          </a>
+        </div>
+        <nav style="display: flex; gap: 24px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px;">
+          <a href="/shop" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Shop</a>
+          <a href="/shop?category=Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Sarees</a>
+          <a href="/shop?category=Linen Sarees" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Linen Sarees</a>
+          <a href="/contact" style="text-decoration: none; color: #1a0a00; padding: 4px 0;">Contact</a>
+        </nav>
+      </header>
+    </div>
   
           <main style="max-width: 800px; margin: 60px auto; padding: 0 24px; font-family: 'Inter', sans-serif; text-align: left;">
             <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; color: #1a0a00; margin-bottom: 24px; font-weight: 500;">Contact Us</h1>
@@ -326,7 +418,7 @@
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2.2;">
             <li><a href="/shop?category=Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Classic Silk Sarees</a></li>
             <li><a href="/shop?category=Linen Sarees" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Premium Linen Sarees</a></li>
-            <li><a href="/shop?category=Lehengas" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Bridal & Designer Lehengas</a></li>
+            <li><a href="/shop?sort=trending" style="color: #e5dfd5; text-decoration: none; opacity: 0.82;">Trending Sarees</a></li>
           </ul>
         </div>
         <div>
