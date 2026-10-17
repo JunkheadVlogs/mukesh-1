@@ -27,6 +27,17 @@
   --radius-pill: 50px;
   --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.05);
   --shadow-gold: 0 8px 30px rgba(200, 169, 107, 0.15);
+
+  /* Modern Indian Fashion Ecommerce PDP Foundation Tokens */
+  --pdp-text: #1f1b1b;
+  --pdp-muted: #6b6461;
+  --pdp-surface: #ffffff;
+  --pdp-soft-surface: #faf8f6;
+  --pdp-border: #dfd9d5;
+  --pdp-accent: #8a2633;
+  --pdp-accent-dark: #6f1d29;
+  --pdp-font-body: "Inter", "Inter Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --pdp-font-heading: "Inter", "Inter Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Product Detail Rows */
@@ -1275,4 +1286,191 @@ body.has-sticky-atc #whatsapp-float-container {
     margin-bottom: 5px !important;
   }
 }
+
+/* ==========================================================================
+   PDP (Product Detail Page) Foundation & Reusable Component Tokens
+   Inspired by modern Indian luxury ethnic & fashion ecommerce
+   ========================================================================== */
+
+/* Typography Tokens & Utilities */
+.pdp-body {
+  font-family: var(--pdp-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--pdp-text);
+  letter-spacing: 0;
+}
+
+.pdp-metadata {
+  font-family: var(--pdp-font-body);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--pdp-muted);
+  letter-spacing: 0;
+}
+
+.pdp-title {
+  font-family: var(--pdp-font-heading);
+  font-size: 19px;
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--pdp-text);
+  letter-spacing: 0;
+}
+
+@media (min-width: 768px) {
+  .pdp-title {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+}
+
+.pdp-price {
+  font-family: var(--pdp-font-body);
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--pdp-text);
+  letter-spacing: 0;
+}
+
+@media (min-width: 768px) {
+  .pdp-price {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+}
+
+.pdp-price-original {
+  font-family: var(--pdp-font-body);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--pdp-muted);
+  text-decoration: line-through;
+  letter-spacing: 0;
+}
+
+.pdp-price-discount {
+  font-family: var(--pdp-font-body);
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--pdp-accent);
+  letter-spacing: 0.02em;
+}
+
+/* Button Foundation Tokens */
+.pdp-btn {
+  font-family: var(--pdp-font-body);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pdp-btn-uppercase {
+  text-transform: uppercase;
+}
+
+.pdp-btn-primary {
+  background-color: var(--pdp-accent);
+  color: #ffffff;
+  border: 1px solid var(--pdp-accent);
+}
+
+.pdp-btn-primary:hover {
+  background-color: var(--pdp-accent-dark);
+  border-color: var(--pdp-accent-dark);
+}
+
+.pdp-btn-secondary {
+  background-color: transparent;
+  color: var(--pdp-text);
+  border: 1px solid var(--pdp-border);
+}
+
+.pdp-btn-secondary:hover {
+  border-color: var(--pdp-text);
+  background-color: var(--pdp-soft-surface);
+}
+
+.pdp-btn-outline-accent {
+  background-color: transparent;
+  color: var(--pdp-accent);
+  border: 1px solid var(--pdp-accent);
+}
+
+.pdp-btn-outline-accent:hover {
+  background-color: var(--pdp-accent);
+  color: #ffffff;
+}
+
+/* Surface & Card Foundation Tokens */
+.pdp-surface {
+  background-color: var(--pdp-surface);
+  border: 1px solid var(--pdp-border);
+}
+
+.pdp-surface-soft {
+  background-color: var(--pdp-soft-surface);
+  border: 1px solid var(--pdp-border);
+}
+
+.pdp-divider {
+  border-bottom: 1px solid var(--pdp-border);
+}
+
+.pdp-badge {
+  font-family: var(--pdp-font-body);
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--pdp-accent);
+  background-color: rgba(138, 38, 51, 0.07);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.pdp-chip {
+  font-family: var(--pdp-font-body);
+  font-size: 12px;
+  color: var(--pdp-text);
+  background-color: var(--pdp-soft-surface);
+  border: 1px solid var(--pdp-border);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0;
+}
+
+.pdp-spec-row {
+  display: flex;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--pdp-border);
+  letter-spacing: 0;
+}
+
+.pdp-spec-label {
+  width: 140px;
+  color: var(--pdp-muted);
+  font-size: 13px;
+  flex-shrink: 0;
+  letter-spacing: 0;
+}
+
+.pdp-spec-value {
+  flex: 1;
+  color: var(--pdp-text);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
 

@@ -886,17 +886,51 @@ export default function ProductPage() {
   };
 
 
-  const nextImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const nextImage = (e?: React.MouseEvent | React.KeyboardEvent) => {
+    if (e && e.stopPropagation) e.stopPropagation();
     setActiveImageIndex((prev) => (prev + 1) % productImages.length);
   };
 
-  const prevImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const prevImage = (e?: React.MouseEvent | React.KeyboardEvent) => {
+    if (e && e.stopPropagation) e.stopPropagation();
     setActiveImageIndex(
       (prev) => (prev - 1 + productImages.length) % productImages.length,
     );
   };
+
+  const handleGalleryKeyDown = (e: React.KeyboardEvent) => {
+    if (productImages.length <= 1) return;
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      prevImage();
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      nextImage();
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setActiveImageIndex(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setActiveImageIndex(productImages.length - 1);
+    }
+  };
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsLightboxOpen(false);
+      } else if (e.key === "ArrowLeft") {
+        prevImage();
+      } else if (e.key === "ArrowRight") {
+        nextImage();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isLightboxOpen, productImages.length]);
 
   const isWishlisted = wishlist.includes(product.id);
   const isOutOfStock = effectiveStock === 0;
@@ -1145,127 +1179,186 @@ export default function ProductPage() {
         </Helmet>
       )}
 
-      <div className="max-w-[1400px] mx-auto px-2.5 sm:px-4 md:px-8 lg:px-12 pb-16 md:pb-12 pt-0">
-        <div className="flex flex-col lg:flex-row gap-0 md:gap-12 xl:gap-16">
-          {/* Gallery Section */}
-          <div className="w-full lg:w-[54%] xl:w-[52%] lg:sticky lg:top-28 lg:self-start space-y-0 md:space-y-4 mb-0">
-            <div
-              className="gallery-main product-image-container relative cursor-zoom-in group mx-auto touch-pan-y p-2 sm:p-3 md:p-4 aspect-[3/4] w-full flex items-center justify-center"
-              style={{
-                touchAction: 'pan-y pinch-zoom',
-                width: '100%',
-                aspectRatio: '3/4',
-                backgroundColor: '#f5f0e8',
-                borderRadius: '12px',
-                overflow: 'hidden'
-              }}
-              onClick={() => setIsLightboxOpen(true)}
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-            >
-              {isVideoUrl(productImages[activeImageIndex]) ? (
-                <video
-                  key={productImages[activeImageIndex]}
-                  src={productImages[activeImageIndex]}
-                  autoPlay
-                  loop
-                  muted={true}
-                  playsInline
-                  controls
-                  preload="none"
-                  className="product-image-main product-main-img w-full h-full object-contain mx-auto rounded-[6px] sm:rounded-[8px] aspect-[3/4]"
-                  style={{ aspectRatio: '3/4' }}
-                  onClick={(e) => e.stopPropagation()}
-                />
-              ) : (
-                <OptimizedImage
-                  src={productImages[activeImageIndex]}
-                  width={800}
-                  height={1067}
-                  srcSet={getResponsiveSrcSet(productImages[activeImageIndex], [400, 600, 800, 1200])}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                  alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
-                  className="product-image-main product-main-img transition-transform duration-700 transform-gpu group-hover:scale-[1.02] rounded-[6px] sm:rounded-[8px] w-full h-full object-contain"
-                  style={{ aspectRatio: '3/4' }}
-                  priority={true}
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
-                />
-              )}
-              <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-[var(--color-bg)]/90 backdrop-blur-md p-3 shadow-sm text-[var(--color-dark)]/70 opacity-0 group-hover:opacity-100 transition-all z-10 hidden md:block rounded-full hover:text-[var(--color-dark)]">
-                <Maximize2 size={20} strokeWidth={1.5} />
-              </div>
-
-              {/* Slider Arrows */}
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 pb-16 md:pb-12 pt-0">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-10">
+          {/* Gallery Section (~58% of product area on desktop) */}
+          <div className="w-full lg:col-span-7 lg:sticky lg:top-28 lg:self-start space-y-0 mb-0">
+            <div className="flex flex-col lg:flex-row lg:items-start lg:gap-4 w-full">
+              {/* Desktop Left Vertical Thumbnail Rail (72px wide, 5:7 ratio, 10px gaps, subtle #dfd9d5 border) */}
               {productImages.length > 1 && (
-                <>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      prevImage(e);
-                    }}
-                    className="absolute left-2.5 md:left-4 top-1/2 -translate-y-1/2 w-5.5 h-5.5 md:w-6.5 md:h-6.5 flex items-center justify-center bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white hover:text-[#C8A96B] transition-all duration-300 z-10 border border-white/5 rounded-full shadow-none"
-                    aria-label="Previous Image"
-                  >
-                    <ChevronLeft
-                      size={14}
-                      className="transition-colors"
-                      strokeWidth={2.5}
-                    />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      nextImage(e);
-                    }}
-                    className="absolute right-2.5 md:right-4 top-1/2 -translate-y-1/2 w-5.5 h-5.5 md:w-6.5 md:h-6.5 flex items-center justify-center bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white hover:text-[#C8A96B] transition-all duration-300 z-10 border border-white/5 rounded-full shadow-none"
-                    aria-label="Next Image"
-                  >
-                    <ChevronRight
-                      size={14}
-                      className="transition-colors"
-                      strokeWidth={2.5}
-                    />
-                  </button>
-                </>
+                <div 
+                  className="hidden lg:flex flex-col gap-[10px] w-[72px] shrink-0 max-h-[820px] overflow-y-auto scrollbar-hide py-0.5 select-none"
+                  role="tablist"
+                  aria-label="Product image thumbnails"
+                >
+                  {productImages.map((img, idx) => (
+                    <button
+                      key={`thumb-desk-${idx}`}
+                      type="button"
+                      role="tab"
+                      aria-selected={activeImageIndex === idx}
+                      aria-label={`View image ${idx + 1} of ${productImages.length}`}
+                      tabIndex={0}
+                      onClick={() => setActiveImageIndex(idx)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setActiveImageIndex(idx);
+                        }
+                      }}
+                      className={`relative w-[72px] aspect-[5/7] rounded-[2px] overflow-hidden bg-[#faf8f6] transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] focus-visible:ring-offset-1 ${
+                        activeImageIndex === idx
+                          ? "border border-[#dfd9d5] shadow-xs opacity-100"
+                          : "border border-transparent opacity-70 hover:opacity-100 hover:border-[#dfd9d5]/60"
+                      }`}
+                    >
+                      {isVideoUrl(img) ? (
+                        <div className="w-full h-full relative flex items-center justify-center bg-black/5">
+                          <div className="w-6 h-6 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center shadow-xs">
+                            <span className="text-[10px] font-bold text-[#1f1b1b] pl-[1px]">▶</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <OptimizedImage
+                          src={img}
+                          width={72}
+                          height={100}
+                          alt={`${getImageAlt(product)} - Thumbnail ${idx + 1}`}
+                          loading="lazy"
+                          fetchPriority="low"
+                          decoding="async"
+                          className="w-full h-full object-cover object-center"
+                        />
+                      )}
+                    </button>
+                  ))}
+                </div>
               )}
 
+              {/* Primary Image Stage (2:3 aspect ratio, object-fit: cover, background #faf8f6, no distortion) */}
+              <div
+                className="gallery-main product-image-container flex-1 relative aspect-[2/3] w-full bg-[#faf8f6] rounded-[2px] overflow-hidden group select-none flex items-center justify-center cursor-zoom-in"
+                style={{
+                  touchAction: 'pan-y pinch-zoom',
+                  width: '100%',
+                  aspectRatio: '2/3',
+                  backgroundColor: '#faf8f6',
+                }}
+                tabIndex={0}
+                role="region"
+                aria-label="Product main image stage"
+                onKeyDown={handleGalleryKeyDown}
+                onClick={() => setIsLightboxOpen(true)}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
+                {isVideoUrl(productImages[activeImageIndex]) ? (
+                  <video
+                    key={productImages[activeImageIndex]}
+                    src={productImages[activeImageIndex]}
+                    autoPlay
+                    loop
+                    muted={true}
+                    playsInline
+                    controls
+                    preload="none"
+                    className="product-image-main product-main-img w-full h-full object-cover rounded-[2px] aspect-[2/3]"
+                    style={{ aspectRatio: '2/3' }}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                ) : (
+                  <OptimizedImage
+                    src={productImages[activeImageIndex]}
+                    width={900}
+                    height={1350}
+                    srcSet={getResponsiveSrcSet(productImages[activeImageIndex], [400, 600, 800, 1200])}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 58vw, 850px"
+                    alt={productImages.length > 1 ? `${getImageAlt(product)} - View ${activeImageIndex + 1} of ${productImages.length}` : getImageAlt(product)}
+                    className="product-image-main product-main-img transition-transform duration-500 ease-out group-hover:scale-[1.02] rounded-[2px] w-full h-full object-cover object-center"
+                    style={{ aspectRatio: '2/3' }}
+                    priority={activeImageIndex === 0}
+                    loading={activeImageIndex === 0 ? "eager" : "lazy"}
+                    fetchPriority={activeImageIndex === 0 ? "high" : "auto"}
+                    decoding="async"
+                  />
+                )}
 
+                {/* Accessible Zoom Indicator */}
+                <div 
+                  className="absolute bottom-3 right-3 md:bottom-4 md:right-4 bg-white/90 hover:bg-white text-[#1f1b1b] p-2.5 rounded-full shadow-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden md:flex items-center justify-center pointer-events-none"
+                  aria-hidden="true"
+                >
+                  <Maximize2 size={16} strokeWidth={1.75} />
+                </div>
+
+                {/* Previous / Next Controls only if multiple images */}
+                {productImages.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        prevImage(e);
+                      }}
+                      className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 w-8 h-8 md:w-9 md:h-9 flex items-center justify-center bg-white/85 hover:bg-white text-[#1f1b1b] hover:text-[#8a2633] transition-all duration-200 z-10 border border-[#dfd9d5] rounded-full shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633]"
+                      aria-label="Previous Image"
+                    >
+                      <ChevronLeft size={16} strokeWidth={2} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nextImage(e);
+                      }}
+                      className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-8 h-8 md:w-9 md:h-9 flex items-center justify-center bg-white/85 hover:bg-white text-[#1f1b1b] hover:text-[#8a2633] transition-all duration-200 z-10 border border-[#dfd9d5] rounded-full shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633]"
+                      aria-label="Next Image"
+                    >
+                      <ChevronRight size={16} strokeWidth={2} />
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
+            {/* Mobile Horizontal Swipeable Thumbnail Strip (below main image) */}
             {productImages.length > 1 && (
               <div 
-                className="product-thumbnails-container flex gap-2.5 overflow-x-auto scrollbar-hide snap-x px-4 md:px-0 pt-1 pb-0 md:py-2 touch-pan-x touch-pan-y min-h-[80px] md:min-h-[96px]"
-                style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
+                className="flex lg:hidden flex-row gap-[10px] overflow-x-auto scrollbar-hide snap-x pt-2.5 pb-1 px-0 touch-pan-x select-none w-full"
+                role="tablist"
+                aria-label="Product thumbnails mobile"
               >
                 {productImages.map((img, idx) => (
                   <button
-                    key={idx}
+                    key={`thumb-mob-${idx}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeImageIndex === idx}
+                    aria-label={`View image ${idx + 1} of ${productImages.length}`}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`shrink-0 w-16 md:w-20 lg:w-24 aspect-[2/3] md:aspect-[3/4] relative overflow-hidden rounded-[4px] transition-all duration-300 flex items-center justify-center p-0 
-                      ${activeImageIndex === idx ? "opacity-100 ring-1 ring-[var(--color-dark)] ring-offset-2" : "opacity-60 hover:opacity-100"}`}
+                    className={`shrink-0 w-14 sm:w-16 aspect-[5/7] rounded-[2px] overflow-hidden bg-[#faf8f6] transition-all duration-200 snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer ${
+                      activeImageIndex === idx
+                        ? "border border-[#dfd9d5] opacity-100 shadow-xs"
+                        : "border border-transparent opacity-70 hover:opacity-100"
+                    }`}
                   >
-                    <div className="absolute inset-0 bg-[#FAF8F5] -z-10" />
                     {isVideoUrl(img) ? (
                       <div className="w-full h-full relative flex items-center justify-center bg-black/5">
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-                          <div className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md">
-                            <span className="text-[11px] font-bold text-primary-950 pl-[1.5px]">▶</span>
-                          </div>
+                        <div className="w-5 h-5 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center shadow-xs">
+                          <span className="text-[9px] font-bold text-[#1f1b1b] pl-[1px]">▶</span>
                         </div>
                       </div>
                     ) : (
                       <OptimizedImage
                         src={img}
-                        width={150}
-                        height={200}
+                        width={64}
+                        height={90}
                         alt={`${getImageAlt(product)} - Thumbnail ${idx + 1}`}
                         loading="lazy"
                         fetchPriority="low"
                         decoding="async"
-                        className="w-full h-full object-contain object-center"
+                        className="w-full h-full object-cover object-center"
                       />
                     )}
                   </button>
@@ -1274,8 +1367,8 @@ export default function ProductPage() {
             )}
           </div>
 
-          {/* Details Section */}
-          <div className="w-full lg:w-[46%] xl:w-[48%] px-0">
+          {/* Details Section (~42% of product area on desktop) */}
+          <div className="w-full lg:col-span-5 px-0">
             <div className="pb-4 lg:pb-12">
               <header className="product-info-section flex flex-col items-start text-left mt-0 mb-0">
                 {/* SKU + Category row - Centered, small font, breathable spacing */}
