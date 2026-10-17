@@ -53,8 +53,12 @@ export const IGNORED_DIRS = new Set([
   ".git",
   "node_modules",
   "dist",
+  "build",
   ".vite",
-  "public_html/.builds"
+  ".aistudio",
+  "public_html",
+  "public/videos",
+  "public_html/videos"
 ]);
 
 export const IGNORED_FILES = new Set([
@@ -242,12 +246,13 @@ export function scanLocalFiles(dir = ".", baseDir = "") {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
 
   for (const entry of entries) {
-    if (IGNORED_DIRS.has(entry.name) || IGNORED_FILES.has(entry.name)) continue;
+    if (IGNORED_DIRS.has(entry.name) || IGNORED_FILES.has(entry.name) || entry.name.endsWith(".mp4") || entry.name.endsWith(".webm") || entry.name === "videos") continue;
     // Exclude test / scraper temporary scripts
     if (/^(test-.*|update.*\.js|update.*\.cjs|update.*\.ts|fix.*\.js|get-body\.ts|hostinger-response\.html)/.test(entry.name)) continue;
 
     const fullPath = path.join(dir, entry.name);
     const relPath = baseDir ? `${baseDir}/${entry.name}` : entry.name;
+    if (IGNORED_DIRS.has(relPath) || relPath.startsWith("public/videos") || relPath.startsWith("public_html/videos")) continue;
 
     if (entry.isDirectory()) {
       results = results.concat(scanLocalFiles(fullPath, relPath));

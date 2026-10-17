@@ -1545,30 +1545,6 @@ export default function ProductPage() {
               {/* Actions */}
               <section className="product-info w-full mt-1 relative">
                 <div className="flex flex-col gap-2 w-full">
-                  {/* Quantity selector */}
-                  <div className="qty-selector-row flex items-center gap-3 mb-1">
-                    <span className="text-[10px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-medium">Quantity:</span>
-                    <div className="flex items-center justify-between px-1.5 border border-[var(--color-border)] bg-transparent w-24 h-[40px] rounded-sm">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="text-[var(--color-muted)] hover:text-[var(--color-dark)] transition-colors w-8 h-full flex items-center justify-center pt-0.5"
-                        aria-label="Decrease quantity"
-                      >
-                        <span className="text-xl leading-none select-none">&minus;</span>
-                      </button>
-                      <span className="text-[13px] font-medium text-[var(--color-dark)] w-4 text-center">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() => setQuantity(Math.min(maxStock, quantity + 1))}
-                        className="text-[var(--color-muted)] hover:text-[var(--color-dark)] transition-colors w-8 h-full flex items-center justify-center pt-0.5"
-                        aria-label="Increase quantity"
-                      >
-                        <span className="text-xl leading-none select-none">+</span>
-                      </button>
-                    </div>
-                  </div>
-
                   <div className="product-actions">
                     <button
                       ref={mainAtcRef}

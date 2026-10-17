@@ -64,6 +64,7 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
   const [isMuted, setIsMuted] = useState(true);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [videoReadyToFade, setVideoReadyToFade] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const isIframeMounted = shouldRenderIframe || hasBeenVisible;
 
   const [currentTime, setCurrentTime] = useState(0);
@@ -315,21 +316,28 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
             className="video-wrapper absolute inset-0 w-full h-full bg-black z-0 overflow-hidden pointer-events-none rounded-[16px] border-0 m-0 p-0"
             style={{ pointerEvents: 'none' }}
           >
-            <video
-              ref={videoRef}
-              src={reel.youtubeId}
-              loop
-              muted={isMuted}
-              playsInline
-              autoPlay
-              preload="auto"
-              onPlay={() => setVideoReadyToFade(true)}
-              onPlaying={() => setVideoReadyToFade(true)}
-              onTimeUpdate={handleTimeUpdate}
-              onLoadedMetadata={handleLoadedMetadata}
-              className="absolute w-full h-full object-cover pointer-events-none select-none rounded-[16px]"
-              style={{ pointerEvents: 'none', userSelect: 'none' }}
-            />
+            {!videoError && (
+              <video
+                ref={videoRef}
+                src={reel.youtubeId}
+                loop
+                muted={isMuted}
+                playsInline
+                autoPlay
+                preload="auto"
+                onPlay={() => setVideoReadyToFade(true)}
+                onPlaying={() => setVideoReadyToFade(true)}
+                onTimeUpdate={handleTimeUpdate}
+                onLoadedMetadata={handleLoadedMetadata}
+                onError={(e) => {
+                  e.preventDefault();
+                  setVideoError(true);
+                  setVideoReadyToFade(false);
+                }}
+                className="absolute w-full h-full object-cover pointer-events-none select-none rounded-[16px]"
+                style={{ pointerEvents: 'none', userSelect: 'none' }}
+              />
+            )}
           </div>
         ) : (
           <div 
@@ -355,7 +363,7 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
       {/* 2. Premium Image Poster Fallbacks (Guards against black flashing before buffer) */}
       <div
         className={`absolute inset-0 w-full h-full z-5 pointer-events-none transition-opacity duration-500 ease-in-out ${
-          videoReadyToFade ? "opacity-0 scale-105 pointer-events-none" : "opacity-100"
+          videoReadyToFade && !videoError ? "opacity-0 scale-105 pointer-events-none" : "opacity-100"
         }`}
       >
         <OptimizedImage

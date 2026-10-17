@@ -1,6 +1,12 @@
 node_modules/
 dist/
+build/
 .vite/
+.aistudio/
+public/videos/
+public_html/videos/
+*.mp4
+*.webm
 .env
 .env.local
 .env.production

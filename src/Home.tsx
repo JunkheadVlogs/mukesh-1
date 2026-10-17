@@ -32,12 +32,13 @@ import { CustomerReviews } from "./components/CustomerReviews";
 const LOOK_REELS = [
   {
     id: "look-1",
-    youtubeId: "https://ik.imagekit.io/tus1loev9/VID-20260601-WA0034.mp4",
-    title: "ABP News Feature",
-    category: "MEDIA COVERAGE",
-    subtitle: "Exquisite Saree Exhibition",
-    badge: "📺 TV News",
-    poster: "https://ik.imagekit.io/tus1loev9/VID-20260601-WA0034.mp4/ik-thumbnail.jpg"
+    youtubeId: "/videos/sar-ghu-mar-001.mp4",
+    title: "Maroon Ghungroo Saree",
+    category: "FEATURED VIDEO",
+    subtitle: "Tissue Saree with Zari & Lace",
+    badge: "🔥 New Arrival",
+    poster: "https://ik.imagekit.io/tus1loev9/product/Ghungroo%20Saree/Maroon/IMG_3673_dd871ed4-8c17-4853-9747-e58d3a20a009%20(1).webp?tr=w-800,f-webp,q-75",
+    productSlug: "maroon-ghungroo-tissue-saree-zari-border-lace"
   },
   {
     id: "look-2",
