@@ -36,7 +36,8 @@ const isBenignError = (msgStr: string, err?: any, filename?: string): boolean =>
     "websocket", "web socket", "failed to connect to websocket", "hmr", "hot module", "hot-reload", 
     "socket closed", "ws://", "wss://", "fbq", "fbevents", "facebook", "connect.facebook.net",
     "google-analytics", "pinterest", "gtag", "gtm", "clarity", "razorpay", "extensions", "chrome-extension",
-    "moz-extension", "removechild", "not a child of this node", "resizeobserver", "cross-origin", "blocked a frame"
+    "moz-extension", "removechild", "not a child of this node", "resizeobserver", "cross-origin", "blocked a frame",
+    "failed to fetch dynamically imported module", "dynamically imported module"
   ];
 
   return benignPhrases.some(phrase => text.includes(phrase));

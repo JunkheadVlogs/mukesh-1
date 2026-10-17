@@ -6,35 +6,50 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { Suspense, useEffect, useState, lazy } from 'react';
 import Layout from './Layout';
-const Home = lazy(() => import('./Home'));
-const ExitIntentPopup = lazy(() => import('./components/ExitIntentPopup').then(m => ({ default: m.ExitIntentPopup })));
+import Home from './Home';
+
+// Resilient dynamic import wrapper to automatically retry on transient network or dev server hiccups
+const lazyWithRetry = <T extends { default: React.ComponentType<any> }>(
+  componentImport: () => Promise<T>
+) =>
+  lazy(async () => {
+    try {
+      return await componentImport();
+    } catch (error) {
+      console.warn('[RETRY] Dynamic route chunk import failed, retrying once...', error);
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      return await componentImport();
+    }
+  });
+
+const ExitIntentPopup = lazyWithRetry(() => import('./components/ExitIntentPopup').then(m => ({ default: m.ExitIntentPopup })));
 import { useExitIntent, isPinterestBrowser } from './hooks/useExitIntent';
 import { trackWhatsAppClick, trackLead } from './tracking';
 import { useStore } from './store';
 import { safeSessionStorage } from './utils/safeStorage';
 
-const Shop = lazy(() => import('./Shop'));
-const Wishlist = lazy(() => import('./Wishlist'));
-const ProductPage = lazy(() => import('./ProductPage'));
-const Cart = lazy(() => import('./Cart'));
-const Checkout = lazy(() => import('./Checkout'));
-const ThankYou = lazy(() => import('./ThankYou'));
-const Contact = lazy(() => import('./Contact'));
-const Terms = lazy(() => import('./Terms'));
-const ShippingPolicy = lazy(() => import('./ShippingPolicy'));
-const ReturnPolicy = lazy(() => import('./ReturnPolicy'));
-const WholesaleSarees = lazy(() => import('./WholesaleSarees'));
-const About = lazy(() => import('./About'));
-const Faq = lazy(() => import('./Faq'));
-const GuideIndex = lazy(() => import('./pages/GuideIndex'));
-const GuideDetail = lazy(() => import('./pages/GuideDetail'));
-const CustomerReviews = lazy(() => import('./pages/CustomerReviews'));
-const WhyMukeshSareeCentre = lazy(() => import('./pages/WhyMukeshSareeCentre'));
-const FabricAuthenticityAndCare = lazy(() => import('./pages/FabricAuthenticityAndCare'));
-const MediaCoverage = lazy(() => import('./pages/MediaCoverage'));
-const UniformSareeBulkOrders = lazy(() => import('./pages/UniformSareeBulkOrders'));
-const MalvikaSareeBuyingGuide = lazy(() => import('./pages/MalvikaSareeBuyingGuide'));
-const SeoLandingPage = lazy(() => import('./pages/SeoLandingPage'));
+const Shop = lazyWithRetry(() => import('./Shop'));
+const Wishlist = lazyWithRetry(() => import('./Wishlist'));
+const ProductPage = lazyWithRetry(() => import('./ProductPage'));
+const Cart = lazyWithRetry(() => import('./Cart'));
+const Checkout = lazyWithRetry(() => import('./Checkout'));
+const ThankYou = lazyWithRetry(() => import('./ThankYou'));
+const Contact = lazyWithRetry(() => import('./Contact'));
+const Terms = lazyWithRetry(() => import('./Terms'));
+const ShippingPolicy = lazyWithRetry(() => import('./ShippingPolicy'));
+const ReturnPolicy = lazyWithRetry(() => import('./ReturnPolicy'));
+const WholesaleSarees = lazyWithRetry(() => import('./WholesaleSarees'));
+const About = lazyWithRetry(() => import('./About'));
+const Faq = lazyWithRetry(() => import('./Faq'));
+const GuideIndex = lazyWithRetry(() => import('./pages/GuideIndex'));
+const GuideDetail = lazyWithRetry(() => import('./pages/GuideDetail'));
+const CustomerReviews = lazyWithRetry(() => import('./pages/CustomerReviews'));
+const WhyMukeshSareeCentre = lazyWithRetry(() => import('./pages/WhyMukeshSareeCentre'));
+const FabricAuthenticityAndCare = lazyWithRetry(() => import('./pages/FabricAuthenticityAndCare'));
+const MediaCoverage = lazyWithRetry(() => import('./pages/MediaCoverage'));
+const UniformSareeBulkOrders = lazyWithRetry(() => import('./pages/UniformSareeBulkOrders'));
+const MalvikaSareeBuyingGuide = lazyWithRetry(() => import('./pages/MalvikaSareeBuyingGuide'));
+const SeoLandingPage = lazyWithRetry(() => import('./pages/SeoLandingPage'));
 
 import { GlobalSchema } from './components/GlobalSchema';
 
