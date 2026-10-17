@@ -1,14 +1,15 @@
-import { useMemo, memo } from "react";
+import React, { useState, useMemo, memo } from "react";
 import { Link } from "react-router";
-import { Product } from "../store";
+import { Heart, Eye, Sparkles } from "lucide-react";
+import { Product, useStore } from "../store";
 import { trackSelectItem } from "../tracking";
 import {
   formatPrice,
-  optimizeImage,
   getImageAlt,
   getResponsiveSrcSet,
 } from "../utils";
 import { OptimizedImage } from "./OptimizedImage";
+import QuickViewModal from "../QuickViewModal";
 
 interface ProductCardProps {
   product: Product;
@@ -28,6 +29,16 @@ export const ProductCard = memo(function ProductCard({
   hideRating = false,
 }: ProductCardProps) {
   const isPriority = Boolean(priority);
+  const { wishlist, toggleWishlist } = useStore();
+  const storeInventory = useStore((state) => state.inventory);
+  const [internalQuickViewOpen, setInternalQuickViewOpen] = useState(false);
+
+  const isWishlisted = wishlist.includes(product.id);
+
+  const effectiveStock =
+    storeInventory && typeof storeInventory[product.sku || product.id] === "number"
+      ? storeInventory[product.sku || product.id]
+      : (product.stock ?? 9);
 
   const displayName = useMemo(() => {
     let name = product.name || "";
@@ -57,98 +68,183 @@ export const ProductCard = memo(function ProductCard({
     return null;
   }, [product.price, product.originalPrice]);
 
+  const hasGenuineSimilar = Boolean(
+    (product as any).similarProducts ||
+    (product as any).relatedProducts ||
+    (product as any).frequentlyBoughtTogether
+  );
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product.id);
+  };
+
+  const handleQuickViewClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onQuickView) {
+      onQuickView(product);
+    } else {
+      setInternalQuickViewOpen(true);
+    }
+  };
+
+  const handleSimilarClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onQuickView) {
+      onQuickView(product);
+    } else {
+      setInternalQuickViewOpen(true);
+    }
+  };
+
   return (
-    <article className="h-full">
-      <Link
-        to={`/product/${product.slug}/`}
-        onClick={() => trackSelectItem(product)}
-        aria-label={`View ${product.name} - ${formatPrice(product.price)}`}
-        className="product-card group flex flex-col h-full bg-white rounded-[18px] md:rounded-[24px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden hover:-translate-y-1 transform-gpu"
-      >
-      <div
-        className="relative aspect-[3/4] w-full overflow-hidden flex items-center justify-center p-0 flex-shrink-0"
-        style={{ backgroundColor: '#FAF8F5' }}
-      >
-        <OptimizedImage
-          src={product.image}
-          width={400}
-          height={533}
-          srcSet={getResponsiveSrcSet(product.image, [300, 450, 600])}
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          alt={getImageAlt(product)}
-          priority={isPriority}
-          loading={isPriority ? "eager" : "lazy"}
-          fetchPriority={isPriority ? "high" : "low"}
-          decoding="async"
-          className="w-full h-full object-cover object-top transform-gpu transition-all duration-700 ease-out group-hover:scale-105"
-          style={{ aspectRatio: '3/4' }}
-        />
+    <>
+      <article className="h-full">
+        <div className="product-card group flex flex-col h-full bg-white rounded-[2px] border border-[#dfd9d5] transition-all duration-300 overflow-hidden hover:shadow-md hover:-translate-y-0.5">
+          {/* Product Image Area */}
+          <div className="relative aspect-[2/3] w-full overflow-hidden bg-[#faf8f6] flex items-center justify-center shrink-0">
+            {/* Clickable Image Link to Product Page */}
+            <Link
+              to={`/product/${product.slug}/`}
+              onClick={() => trackSelectItem(product)}
+              aria-label={`View ${product.name} - ${formatPrice(product.price)}`}
+              className="w-full h-full block relative"
+            >
+              <OptimizedImage
+                src={product.image}
+                width={400}
+                height={600}
+                srcSet={getResponsiveSrcSet(product.image, [300, 450, 600])}
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                alt={getImageAlt(product)}
+                priority={isPriority}
+                loading={isPriority ? "eager" : "lazy"}
+                fetchPriority={isPriority ? "high" : "low"}
+                decoding="async"
+                className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              />
 
-        {/* Floating Badges — bottom-left */}
-        {((product as any).badge || product.isTrending || product.isNew || product.isBestSelling) && (
-          <span style={{
-            position: 'absolute',
-            bottom: '12px',
-            left: '12px',
-            backgroundColor: 'rgba(26,10,0,0.75)',
-            color: '#f0b429',
-            fontSize: '9px',
-            fontWeight: '700',
-            letterSpacing: '1.5px',
-            padding: '4px 10px',
-            borderRadius: '4px',
-            textTransform: 'uppercase',
-            backdropFilter: 'blur(4px)',
-            zIndex: 10
-          }}>
-            {(product as any).badge || (product.isTrending ? "TRENDING" : product.isNew ? "NEW" : "BEST SELLER")}
-          </span>
-        )}
-      </div>
+              {/* Subtle Dark Hover Overlay on Desktop */}
+              <div
+                className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-[1]"
+                aria-hidden="true"
+              />
+            </Link>
 
-      <div className="product-card-body flex flex-col flex-grow bg-white items-start text-left justify-between px-3 md:px-4 pb-3.5 md:pb-4 pt-3.5 md:pt-4 rounded-b-[18px] md:rounded-b-[24px]">
-        <div className="flex flex-col items-start w-full min-h-[36px] h-[36px] mb-1.5 md:mb-2">
-          <h3 className="product-card-title line-clamp-2 leading-snug w-full text-left px-1 text-inherit"
-            style={{
-              fontSize: '13px',
-              fontWeight: '600',
-              color: '#1a1a1a',
-              lineHeight: '1.35',
-              height: '36px',
-              minHeight: '36px',
-              whiteSpace: 'normal',
-              overflow: 'hidden',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              textOverflow: 'ellipsis',
-              textAlign: 'left'
-            }}
-            title={product.name}
+            {/* Top-Left Rust/Berry Badge (Only when supported by real data) */}
+            {(product.isNew || discountPercentage || (effectiveStock > 0 && effectiveStock <= 5) || product.isBestSelling || product.isTrending) && (
+              <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 pointer-events-none">
+                {product.isNew && (
+                  <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em] shadow-xs">
+                    NEW ARRIVAL
+                  </span>
+                )}
+                {discountPercentage && !product.isNew && (
+                  <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em] shadow-xs">
+                    {discountPercentage}% OFF
+                  </span>
+                )}
+                {effectiveStock > 0 && effectiveStock <= 5 && !product.isNew && !discountPercentage && (
+                  <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em] shadow-xs">
+                    ONLY {effectiveStock} LEFT
+                  </span>
+                )}
+                {(product.isBestSelling || product.isTrending) && !product.isNew && !discountPercentage && effectiveStock > 5 && (
+                  <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em] shadow-xs">
+                    BESTSELLER
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Top-Right Wishlist Icon Button */}
+            <button
+              type="button"
+              onClick={handleWishlistClick}
+              aria-label={isWishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+              title={isWishlisted ? "Wishlisted" : "Add to Wishlist"}
+              className={`absolute top-2.5 right-2.5 z-20 w-11 h-11 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-white/90 hover:bg-white text-[#1f1b1b] border shadow-md transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] ${
+                isWishlisted
+                  ? "border-[#8a2633] text-[#8a2633]"
+                  : "border-[#dfd9d5] hover:border-[#8a2633] hover:text-[#8a2633]"
+              }`}
+            >
+              <Heart
+                size={18}
+                className={`transition-colors ${
+                  isWishlisted ? "fill-[#8a2633] text-[#8a2633]" : "text-[#1f1b1b]"
+                }`}
+              />
+            </button>
+
+            {/* Optional Similar Product Button (Rendered ONLY if genuine related data exists) */}
+            {hasGenuineSimilar && (
+              <button
+                type="button"
+                onClick={handleSimilarClick}
+                aria-label={`View products similar to ${product.name}`}
+                title="View Similar Products"
+                className="absolute top-14 right-2.5 z-20 w-10 h-10 rounded-full flex items-center justify-center bg-white/90 hover:bg-white text-[#1f1b1b] hover:text-[#8a2633] border border-[#dfd9d5] shadow-md transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633]"
+              >
+                <Sparkles size={16} />
+              </button>
+            )}
+
+            {/* Quick View Button Overlay */}
+            <button
+              type="button"
+              onClick={handleQuickViewClick}
+              className="absolute bottom-2.5 left-2.5 right-2.5 z-20 w-[calc(100%-20px)] mx-auto h-[44px] rounded-[2px] bg-white/95 hover:bg-white text-[#1f1b1b] hover:text-[#8a2633] border border-[#dfd9d5] shadow-md flex items-center justify-center gap-2 text-[13px] font-medium tracking-[0.08em] uppercase transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] block opacity-100 translate-y-0 md:opacity-0 md:translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 focus-within:opacity-100 focus-within:translate-y-0"
+            >
+              <Eye size={16} />
+              <span>Quick View</span>
+            </button>
+          </div>
+
+          {/* Product Card Details Body */}
+          <Link
+            to={`/product/${product.slug}/`}
+            onClick={() => trackSelectItem(product)}
+            className="product-card-body flex flex-col flex-grow bg-white items-start text-left justify-between p-3.5 no-underline text-inherit"
           >
-            {product.name}
-          </h3>
-        </div>
-
-        <div className="mt-auto flex items-center justify-center gap-1.5 md:gap-2 w-full whitespace-nowrap overflow-hidden">
-          <span className="product-card-price text-[14px] sm:text-[15px] md:text-[16px] font-bold text-[#2C241B] shrink-0">
-            {formatPrice(product.price)}
-          </span>
-          {product.originalPrice && product.originalPrice > product.price && (
-            <>
-              <span className="text-[10px] sm:text-[11px] md:text-[12px] text-[#59524A] line-through font-extrabold shrink-0">
-                {formatPrice(product.originalPrice)}
-              </span>
-              {discountPercentage !== null && (
-                <span className="text-[9px] sm:text-[10px] font-extrabold text-[#8C1D18] bg-[#FFF1F2] border border-[#FECDD3] rounded-[4px] px-1.5 py-0.5 tracking-[0.05em] uppercase shrink-0">
-                  {discountPercentage}% OFF
+            <div className="w-full mb-2">
+              {!hideCategory && product.category && (
+                <span className="text-[11px] uppercase tracking-[0.08em] text-[#6b6461] block mb-0.5">
+                  {product.category}
                 </span>
               )}
-            </>
-          )}
+              <h3
+                className="text-[13px] sm:text-[14px] font-medium text-[#1f1b1b] leading-[1.35] line-clamp-2 m-0"
+                title={product.name}
+              >
+                {displayName}
+              </h3>
+            </div>
+
+            <div className="mt-auto flex items-baseline gap-2 w-full flex-wrap pt-1 border-t border-[#dfd9d5]/40">
+              <span className="text-[15px] sm:text-[16px] font-medium text-[#1f1b1b]">
+                {formatPrice(product.price)}
+              </span>
+              {product.originalPrice && product.originalPrice > product.price && (
+                <span className="text-[12px] text-[#6b6461] line-through font-normal">
+                  {formatPrice(product.originalPrice)}
+                </span>
+              )}
+            </div>
+          </Link>
         </div>
-      </div>
-    </Link>
-  </article>
+      </article>
+
+      {/* Internal Quick View Modal fallback when no onQuickView prop is supplied by parent */}
+      {internalQuickViewOpen && (
+        <QuickViewModal
+          product={product}
+          onClose={() => setInternalQuickViewOpen(false)}
+        />
+      )}
+    </>
   );
 });

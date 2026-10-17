@@ -154,10 +154,8 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
       if (previouslyUnmuted) {
         setIsMuted(false);
         window.dispatchEvent(new CustomEvent("unmute-reel", { detail: { id: reel.id } }));
-      } else if (isActive) {
-        setIsMuted(false);
       } else {
-        setIsMuted(true);
+        setIsMuted(true); // Always start muted so browser autoplay succeeds without user gesture requirement
       }
 
       const timer = setTimeout(() => {
@@ -175,24 +173,29 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
   // Sync HTML5 video play/pause & audio handling
   useEffect(() => {
     if (isMp4 && videoRef.current) {
+      videoRef.current.muted = isMuted;
       if (isPlaying) {
-        videoRef.current.muted = isMuted;
         const playPromise = videoRef.current.play();
         if (playPromise !== undefined) {
-          playPromise.catch((err) => {
-            console.log("HTML5 Video play failed, retrying muted:", err);
-            if (videoRef.current) {
-              videoRef.current.muted = true;
-              setIsMuted(true);
-              videoRef.current.play().catch((e) => console.log("Muted fallback play error:", e));
-            }
-          });
+          playPromise
+            .then(() => setVideoReadyToFade(true))
+            .catch((err) => {
+              console.log("HTML5 Video play failed, retrying muted:", err);
+              if (videoRef.current) {
+                videoRef.current.muted = true;
+                setIsMuted(true);
+                videoRef.current
+                  .play()
+                  .then(() => setVideoReadyToFade(true))
+                  .catch((e) => console.log("Muted fallback play error:", e));
+              }
+            });
         }
       } else {
         videoRef.current.pause();
       }
     }
-  }, [isPlaying, isMp4, isMuted]);
+  }, [isPlaying, isMp4, isMuted, isIframeMounted]);
 
   // Sync HTML5 video audio/sound
   useEffect(() => {
@@ -318,7 +321,21 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
           >
             {!videoError && (
               <video
-                ref={videoRef}
+                ref={(el) => {
+                  videoRef.current = el;
+                  if (el) {
+                    el.muted = isMuted;
+                    if (isPlaying) {
+                      const p = el.play();
+                      if (p !== undefined) {
+                        p.then(() => setVideoReadyToFade(true)).catch(() => {
+                          el.muted = true;
+                          el.play().then(() => setVideoReadyToFade(true)).catch(() => {});
+                        });
+                      }
+                    }
+                  }
+                }}
                 src={reel.youtubeId}
                 loop
                 muted={isMuted}
@@ -327,6 +344,12 @@ export function LookReelCard({ reel, onVisibilityChange, shouldRenderIframe, isA
                 preload="auto"
                 onPlay={() => setVideoReadyToFade(true)}
                 onPlaying={() => setVideoReadyToFade(true)}
+                onCanPlay={() => {
+                  setVideoReadyToFade(true);
+                  if (videoRef.current && isPlaying) {
+                    videoRef.current.play().then(() => setVideoReadyToFade(true)).catch(() => {});
+                  }
+                }}
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={handleLoadedMetadata}
                 onError={(e) => {

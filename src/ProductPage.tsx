@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   X,
   Maximize2,
+  ZoomIn,
   MessageCircle,
   Phone,
   CheckCircle,
@@ -367,7 +368,18 @@ export default function ProductPage() {
     gestureLock: null,
   });
   const mainAtcRef = useRef<HTMLButtonElement>(null);
+  const mobileThumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [showStickyAtc, setShowStickyAtc] = useState(false);
+
+  useEffect(() => {
+    if (mobileThumbRefs.current[activeImageIndex]) {
+      mobileThumbRefs.current[activeImageIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [activeImageIndex]);
 
   const onTouchStart = (e: React.TouchEvent) => {
     const touch = e.targetTouches[0];
@@ -1194,7 +1206,7 @@ export default function ProductPage() {
                   role="tablist"
                   aria-label="Product image thumbnails"
                 >
-                  {productImages.slice(0, 7).map((img, idx) => (
+                  {productImages.map((img, idx) => (
                     <button
                       key={`thumb-desk-${idx}`}
                       type="button"
@@ -1256,6 +1268,35 @@ export default function ProductPage() {
                 onTouchMove={onTouchMove}
                 onTouchEnd={onTouchEnd}
               >
+                {/* Top-Left Rust/Berry Badge overlay (only when backed by live product data) */}
+                {(product.isNew || (product.originalPrice && product.originalPrice > product.price) || (effectiveStock > 0 && effectiveStock <= 5)) && (
+                  <div className="absolute top-3 left-3 z-10 flex flex-col gap-1 pointer-events-none">
+                    {product.isNew && (
+                      <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em] shadow-xs w-fit">
+                        NEW ARRIVAL
+                      </span>
+                    )}
+                    {product.originalPrice && product.originalPrice > product.price && (
+                      <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em] shadow-xs w-fit">
+                        {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                      </span>
+                    )}
+                    {effectiveStock > 0 && effectiveStock <= 5 && (
+                      <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em] shadow-xs w-fit">
+                        ONLY {effectiveStock} LEFT
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* Top-Right Mobile Image Counter Badge (1 / N) */}
+                {productImages.length > 1 && (
+                  <div className="absolute top-3 right-3 z-10 bg-black/60 backdrop-blur-xs text-white text-[11px] font-mono font-medium px-2.5 py-0.5 rounded-full pointer-events-none lg:hidden shadow-xs">
+                    {activeImageIndex + 1} / {productImages.length}
+                  </div>
+                )}
+
+                {/* Main Media Render (Video or Image) */}
                 {isVideoUrl(productImages[activeImageIndex]) ? (
                   <video
                     key={productImages[activeImageIndex]}
@@ -1265,7 +1306,12 @@ export default function ProductPage() {
                     muted={true}
                     playsInline
                     controls
-                    preload="none"
+                    preload="auto"
+                    ref={(el) => {
+                      if (el) {
+                        el.muted = true;
+                      }
+                    }}
                     className="product-image-main product-main-img w-full h-full object-cover rounded-[2px] aspect-[2/3]"
                     style={{ aspectRatio: '2/3' }}
                     onClick={(e) => e.stopPropagation()}
@@ -1287,15 +1333,34 @@ export default function ProductPage() {
                   />
                 )}
 
-                {/* Accessible Zoom Indicator */}
-                <div 
-                  className="absolute bottom-3 right-3 md:bottom-4 md:right-4 bg-white/90 hover:bg-white text-[#1f1b1b] p-2.5 rounded-full shadow-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden md:flex items-center justify-center pointer-events-none"
-                  aria-hidden="true"
-                >
-                  <Maximize2 size={16} strokeWidth={1.75} />
-                </div>
+                {/* Bottom-Left Real Review Summary Overlay (only when genuine reviews exist) */}
+                {(stats.reviewCount > 0 || (product.reviewsCount && product.reviewsCount > 0)) && (
+                  <a
+                    href="#reviews"
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute bottom-3 left-3 z-10 bg-white/90 hover:bg-white backdrop-blur-xs border border-[#dfd9d5] text-[11px] px-2.5 py-1 rounded-full text-[#1f1b1b] flex items-center gap-1.5 shadow-xs transition-opacity no-underline"
+                  >
+                    <Star className="w-3 h-3 fill-[#F4B63D] text-[#F4B63D]" />
+                    <span className="font-medium">{stats.rating.toFixed(1)}</span>
+                    <span className="text-[#6b6461]">({product.reviewsCount || stats.reviewCount})</span>
+                  </a>
+                )}
 
-                {/* Previous / Next Controls only if multiple images */}
+                {/* Bottom-Right Accessible Zoom Button Control */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsLightboxOpen(true);
+                  }}
+                  className="absolute bottom-3 right-3 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-[#1f1b1b] hover:text-[#8a2633] border border-[#dfd9d5] shadow-md flex items-center justify-center transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633]"
+                  aria-label="Zoom Product Image"
+                  title="Zoom Product Image"
+                >
+                  <ZoomIn size={18} strokeWidth={2} />
+                </button>
+
+                {/* Previous / Next Circular Arrow Controls (40px x 40px, white bg, subtle shadow, dark icon) */}
                 {productImages.length > 1 && (
                   <>
                     <button
@@ -1304,10 +1369,10 @@ export default function ProductPage() {
                         e.stopPropagation();
                         prevImage(e);
                       }}
-                      className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 w-8 h-8 md:w-9 md:h-9 flex items-center justify-center bg-white/85 hover:bg-white text-[#1f1b1b] hover:text-[#8a2633] transition-all duration-200 z-10 border border-[#dfd9d5] rounded-full shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633]"
+                      className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white hover:bg-[#faf8f6] text-[#1f1b1b] hover:text-[#8a2633] transition-all duration-200 z-10 border border-[#dfd9d5] rounded-full shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633]"
                       aria-label="Previous Image"
                     >
-                      <ChevronLeft size={16} strokeWidth={2} />
+                      <ChevronLeft size={18} strokeWidth={2} />
                     </button>
                     <button
                       type="button"
@@ -1315,32 +1380,35 @@ export default function ProductPage() {
                         e.stopPropagation();
                         nextImage(e);
                       }}
-                      className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-8 h-8 md:w-9 md:h-9 flex items-center justify-center bg-white/85 hover:bg-white text-[#1f1b1b] hover:text-[#8a2633] transition-all duration-200 z-10 border border-[#dfd9d5] rounded-full shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633]"
+                      className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white hover:bg-[#faf8f6] text-[#1f1b1b] hover:text-[#8a2633] transition-all duration-200 z-10 border border-[#dfd9d5] rounded-full shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633]"
                       aria-label="Next Image"
                     >
-                      <ChevronRight size={16} strokeWidth={2} />
+                      <ChevronRight size={18} strokeWidth={2} />
                     </button>
                   </>
                 )}
               </div>
             </div>
 
-            {/* Mobile Horizontal Swipeable Thumbnail Strip (below main image) */}
+            {/* Mobile Horizontal Swipeable Thumbnail Strip (52px wide by 78px high, 8px gap) */}
             {productImages.length > 1 && (
               <div 
-                className="flex lg:hidden flex-row gap-[10px] overflow-x-auto scrollbar-hide snap-x pt-2.5 pb-1 px-0 touch-pan-x select-none w-full"
+                className="flex lg:hidden flex-row gap-2 overflow-x-auto scrollbar-hide snap-x pt-2.5 pb-1 px-0 touch-pan-x select-none w-full"
                 role="tablist"
                 aria-label="Product thumbnails mobile"
               >
                 {productImages.map((img, idx) => (
                   <button
                     key={`thumb-mob-${idx}`}
+                    ref={(el) => {
+                      mobileThumbRefs.current[idx] = el;
+                    }}
                     type="button"
                     role="tab"
                     aria-selected={activeImageIndex === idx}
                     aria-label={`View image ${idx + 1} of ${productImages.length}`}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`shrink-0 w-[60px] h-[90px] aspect-[2/3] rounded-[2px] overflow-hidden bg-[#faf8f6] transition-all duration-200 snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer ${
+                    className={`shrink-0 w-[52px] h-[78px] aspect-[2/3] rounded-[2px] overflow-hidden bg-[#faf8f6] transition-all duration-200 snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer ${
                       activeImageIndex === idx
                         ? "border-2 border-[#8a2633] opacity-100 shadow-xs"
                         : "border border-[#dfd9d5] opacity-80 hover:opacity-100"
@@ -1355,8 +1423,8 @@ export default function ProductPage() {
                     ) : (
                       <OptimizedImage
                         src={img}
-                        width={60}
-                        height={90}
+                        width={52}
+                        height={78}
                         alt={`${getImageAlt(product)} - Thumbnail ${idx + 1}`}
                         loading="lazy"
                         fetchPriority="low"
@@ -1463,16 +1531,6 @@ export default function ProductPage() {
                       <span className="text-[#dfd9d5]">•</span>
                       <span className="font-mono">SKU: {product.sku}</span>
                     </>
-                  )}
-                  {product.isNew && (
-                    <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em]">
-                      NEW ARRIVAL
-                    </span>
-                  )}
-                  {effectiveStock > 0 && effectiveStock <= 5 && (
-                    <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em]">
-                      ONLY {effectiveStock} LEFT
-                    </span>
                   )}
                 </div>
               </div>
@@ -1656,26 +1714,46 @@ export default function ProductPage() {
               ) : null}
 
               {/* 8. Wishlist, Add to Cart, and Buy Now controls */}
-              <div className="space-y-2.5 pt-1">
-                {/* Add to Cart: full width, 48px height, background #8a2633, white text */}
-                <button
-                  ref={mainAtcRef}
-                  type="button"
-                  onClick={handleAddToCart}
-                  disabled={isOutOfStock}
-                  className="w-full h-[48px] bg-[#8a2633] hover:bg-[#6f1d29] disabled:bg-[#dfd9d5] disabled:text-[#6b6461] disabled:cursor-not-allowed text-white text-[13px] tracking-[0.08em] uppercase font-medium rounded-[2px] flex items-center justify-center transition-colors shadow-xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] focus-visible:ring-offset-1"
-                  data-action="add-to-cart"
-                  id="add-to-cart"
-                >
-                  {isOutOfStock ? "Sold Out" : isAdded ? "✓ Added to Bag" : "Add to Cart"}
-                </button>
+              <div className="space-y-3 mt-5 pt-1">
+                {/* Primary Action Row: 48px Wishlist Icon Button + 48px Add to Cart Button */}
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => toggleWishlist(product.id)}
+                    className="relative w-[48px] h-[48px] shrink-0 bg-white hover:bg-[#faf8f6] text-[#1f1b1b] border border-[#dfd9d5] hover:border-[#8a2633] rounded-[2px] flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] group"
+                    aria-label={isWishlisted ? `Remove ${product.name} from Wishlist` : `Add ${product.name} to Wishlist`}
+                  >
+                    <Heart
+                      size={20}
+                      className={`transition-colors ${isWishlisted ? "fill-[#8a2633] text-[#8a2633]" : "text-[#1f1b1b]"}`}
+                    />
+                    <span 
+                      role="tooltip" 
+                      className="absolute -top-9 left-1/2 -translate-x-1/2 bg-[#1f1b1b] text-white text-[11px] px-2 py-0.5 rounded shadow-sm opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap z-20"
+                    >
+                      {isWishlisted ? "Wishlisted" : "Add to Wishlist"}
+                    </span>
+                  </button>
 
-                {/* Buy Now: full width, 48px height, white background, 1px solid #8a2633, #8a2633 text */}
+                  <button
+                    ref={mainAtcRef}
+                    type="button"
+                    onClick={handleAddToCart}
+                    disabled={isOutOfStock}
+                    className="flex-1 h-[48px] bg-[#8a2633] hover:bg-[#6f1d29] disabled:bg-[#dfd9d5] disabled:text-[#6b6461] disabled:cursor-not-allowed text-white text-[13px] tracking-[0.08em] uppercase font-medium border border-[#8a2633] rounded-[2px] flex items-center justify-center transition-colors shadow-xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] focus-visible:ring-offset-1"
+                    data-action="add-to-cart"
+                    id="add-to-cart"
+                  >
+                    {isOutOfStock ? "Sold Out" : isAdded ? "✓ Added to Bag" : "Add to Cart"}
+                  </button>
+                </div>
+
+                {/* Secondary Action: Full-width Buy Now button */}
                 <button
                   type="button"
                   onClick={handleBuyNow}
                   disabled={isOutOfStock}
-                  className="w-full h-[48px] bg-white hover:bg-[#faf8f6] disabled:border-[#dfd9d5] disabled:text-[#6b6461] disabled:cursor-not-allowed text-[#8a2633] border border-[#8a2633] text-[13px] tracking-[0.08em] uppercase font-medium rounded-[2px] flex items-center justify-center transition-colors shadow-xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] focus-visible:ring-offset-1"
+                  className="w-full h-[48px] bg-white hover:bg-[#fbf3f4] disabled:border-[#dfd9d5] disabled:text-[#6b6461] disabled:cursor-not-allowed text-[#8a2633] border border-[#8a2633] text-[13px] tracking-[0.08em] uppercase font-medium rounded-[2px] flex items-center justify-center transition-colors shadow-xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] focus-visible:ring-offset-1"
                   data-action="buy-now"
                   id="buy-now"
                 >
@@ -1709,53 +1787,56 @@ export default function ProductPage() {
               {/* 9. Pincode delivery checker */}
               <PincodeChecker isCodAvailable={isCodAvailable} />
 
-              {/* 10. Existing delivery/return/payment information */}
-              <div className="pt-3 border-t border-[#dfd9d5] space-y-3">
-                <div className="grid grid-cols-2 gap-3 text-[12px] text-[#1f1b1b]">
-                  <div className="flex items-start gap-2">
-                    <Truck size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-medium block leading-snug">Free Express Shipping</span>
-                      <span className="text-[#6b6461] text-[11px]">All orders across India</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <RotateCcw size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-medium block leading-snug">7-Day Easy Returns</span>
-                      <span className="text-[#6b6461] text-[11px]">Hassle-free exchange policy</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <ShieldCheck size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-medium block leading-snug">Weaver-Direct Authentic</span>
-                      <span className="text-[#6b6461] text-[11px]">Nagpur boutique since 1978</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CreditCard size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-medium block leading-snug">{isCodAvailable ? "COD & Prepaid Available" : "Secure Prepaid Orders"}</span>
-                      <span className="text-[#6b6461] text-[11px]">UPI, Cards, NetBanking, COD</span>
-                    </div>
+              {/* 10. Delivery, Return, and Payment Information */}
+              <div className="mt-5 border-t border-b border-[#dfd9d5] divide-y divide-[#dfd9d5]">
+                {/* Delivery Row: 18px Truck icon, 14px factual message, 12px supporting text */}
+                <div className="py-4 flex items-start gap-3 text-[14px] text-[#1f1b1b]">
+                  <Truck size={18} className="text-[#8a2633] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-medium block leading-snug">Free Express Delivery Across India</span>
+                    <span className="text-[#6b6461] text-[12px] block mt-0.5">Dispatched within 24–48 hours via BlueDart, Delhivery or DTDC</span>
                   </div>
                 </div>
 
-                {/* Compact payment modes row */}
-                <div className="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-[#dfd9d5]/60 text-[11px] text-[#6b6461]">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="font-medium text-[#1f1b1b]">Payment Modes:</span>
-                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">UPI</span>
-                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">Google Pay</span>
-                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">PhonePe</span>
-                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">Cards</span>
-                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">NetBanking</span>
-                    {isCodAvailable && <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">Cash on Delivery</span>}
+                {/* Return Row: 18px RotateCcw icon, 14px factual message, 12px supporting text */}
+                <div className="py-4 flex items-start gap-3 text-[14px] text-[#1f1b1b]">
+                  <RotateCcw size={18} className="text-[#8a2633] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-medium block leading-snug">7-Day Easy Return & Exchange</span>
+                    <span className="text-[#6b6461] text-[12px] block mt-0.5">Hassle-free exchange policy for unworn items in original fold</span>
                   </div>
-                  <div className="flex items-center gap-1 text-[10px] text-emerald-800">
-                    <Shield size={12} className="text-emerald-700" />
-                    <span>Razorpay 256-Bit SSL</span>
+                </div>
+
+                {/* Payment Row */}
+                <div className="py-4 space-y-2.5">
+                  <span className="text-[12px] font-medium text-[#1f1b1b] block">Secure payment options</span>
+                  <div className="flex items-center justify-between flex-wrap gap-2.5 text-[11px] text-[#6b6461]">
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <span className="inline-flex items-center justify-center px-2 py-1 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[11px] text-[#1f1b1b] font-medium max-h-[26px]">
+                        UPI
+                      </span>
+                      <span className="inline-flex items-center justify-center px-2 py-1 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[11px] text-[#1f1b1b] font-medium max-h-[26px]">
+                        GPay
+                      </span>
+                      <span className="inline-flex items-center justify-center px-2 py-1 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[11px] text-[#1f1b1b] font-medium max-h-[26px]">
+                        PhonePe
+                      </span>
+                      <span className="inline-flex items-center justify-center px-2 py-1 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[11px] text-[#1f1b1b] font-medium max-h-[26px]">
+                        Cards
+                      </span>
+                      <span className="inline-flex items-center justify-center px-2 py-1 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[11px] text-[#1f1b1b] font-medium max-h-[26px]">
+                        NetBanking
+                      </span>
+                      {isCodAvailable && (
+                        <span className="inline-flex items-center justify-center px-2 py-1 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[11px] text-[#1f1b1b] font-medium max-h-[26px]">
+                          COD
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1 text-[11px] text-emerald-800 font-medium">
+                      <ShieldCheck size={14} className="text-emerald-700" />
+                      <span>Razorpay 256-Bit SSL</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1879,7 +1960,12 @@ export default function ProductPage() {
                 muted={true}
                 playsInline
                 controls
-                preload="none"
+                preload="auto"
+                ref={(el) => {
+                  if (el) {
+                    el.muted = true;
+                  }
+                }}
                 className="w-full h-full max-h-[95vh] md:w-auto md:h-auto md:max-h-[90vh] object-contain object-center md:rounded-sm md:shadow-2xl pointer-events-auto"
                 onClick={(e) => e.stopPropagation()}
               />

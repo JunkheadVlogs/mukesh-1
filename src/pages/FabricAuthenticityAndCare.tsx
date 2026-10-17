@@ -216,7 +216,7 @@ export default function FabricAuthenticityAndCare() {
 
               <div className="p-4 bg-primary-50/60 rounded-sm border border-black/5 text-center">
                 <span className="text-[11px] uppercase tracking-wider text-black/60 font-semibold block">Blouse Piece</span>
-                <span className="text-xl font-serif font-semibold text-primary-950 mt-1 block">0.80 – 1.00 Metre</span>
+                <span className="text-xl font-serif font-semibold text-primary-950 mt-1 block">1.00 Metre</span>
                 <span className="text-[11.5px] text-primary-950/70 font-light mt-1 block">Matching unstitched fabric piece included</span>
               </div>
 

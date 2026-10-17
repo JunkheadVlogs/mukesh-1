@@ -218,11 +218,10 @@ export function optimizeImage(url: string, width: number = 800, format: 'webp' |
 export function getResponsiveSrcSet(url: string, widths: number[] = [300, 450, 600, 800], format: 'webp' | 'avif' | 'auto' = 'webp'): string | undefined {
   if (!url) return undefined;
 
-  // 1. Local product image variants: p10-320.webp, p10-480.webp, p10-640.webp, p10-800.webp
+  // 1. Local product image variants: p10-320.webp, p10-480.webp, p10-gallery-1-320.webp, etc.
   if (url.startsWith('/images/products/')) {
-    const match = url.match(/^(\/images\/products\/[a-zA-Z0-9_\-]+?)(?:-\d+)?(\.webp)$/);
-    if (match) {
-      const base = match[1];
+    const base = url.replace(/-(320|480|640|800)\.webp$/i, "").replace(/\.(webp|jpg|png|jpeg)$/i, "");
+    if (base) {
       return `${base}-320.webp 320w, ${base}-480.webp 480w, ${base}-640.webp 640w, ${base}-800.webp 800w`;
     }
   }

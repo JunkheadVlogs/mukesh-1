@@ -2731,7 +2731,7 @@ Make a graceful statement with this stunning Red Jamdani Cotton Saree. Crafted f
 **FABRIC DETAILS:**
 - Fabric: Soft Spun Cotton Fabric
 - Saree Length: 5.50 Meters
-- Blouse Piece: 0.80 Meter Included
+- Blouse Piece: 1.00 Meter Included
 - Feel: Soft, Breathable, Lightweight, Easy to Drape, Timeless Jamdani Craftsmanship
 
 **STYLING TIP:**

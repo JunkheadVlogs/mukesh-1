@@ -32,7 +32,7 @@ import { CustomerReviews } from "./components/CustomerReviews";
 const LOOK_REELS = [
   {
     id: "look-1",
-    youtubeId: "/videos/sar-ghu-mar-001.mp4",
+    youtubeId: "https://ik.imagekit.io/tus1loev9/VID-20260601-WA0034.mp4",
     title: "Maroon Ghungroo Saree",
     category: "FEATURED VIDEO",
     subtitle: "Tissue Saree with Zari & Lace",

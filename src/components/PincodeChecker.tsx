@@ -71,8 +71,8 @@ export function PincodeChecker({ isCodAvailable = true, className = "" }: Pincod
   };
 
   return (
-    <div className={`pt-3 border-t border-[#dfd9d5] ${className}`}>
-      <div className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-[#1f1b1b] mb-2 select-none">
+    <div className={`mt-5 pt-4 border-t border-[#dfd9d5] ${className}`}>
+      <div className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-[#1f1b1b] mb-2.5 select-none">
         <MapPin size={14} className="text-[#8a2633]" />
         <span>Check Delivery & Cash on Delivery Availability</span>
       </div>
@@ -118,7 +118,7 @@ export function PincodeChecker({ isCodAvailable = true, className = "" }: Pincod
                   if (status !== "idle" && status !== "loading") setStatus("idle");
                 }}
                 placeholder="Enter 6-digit Pincode"
-                className={`w-full h-[40px] px-3 bg-white border rounded-[2px] text-[13px] text-[#1f1b1b] placeholder:text-[#6b6461]/60 focus:outline-none focus:ring-1 transition-colors ${
+                className={`w-full h-[46px] px-3 bg-white border rounded-[2px] text-[14px] text-[#1f1b1b] placeholder:text-[#6b6461]/60 focus:outline-none focus:ring-1 transition-colors ${
                   status === "invalid" || status === "unavailable"
                     ? "border-[#8a2633] focus:ring-[#8a2633]"
                     : "border-[#dfd9d5] focus:border-[#8a2633] focus:ring-[#8a2633]"
@@ -129,7 +129,7 @@ export function PincodeChecker({ isCodAvailable = true, className = "" }: Pincod
             <button
               type="submit"
               disabled={status === "loading" || !pincode}
-              className="h-[40px] px-5 bg-white hover:bg-[#faf8f6] disabled:bg-[#faf8f6] disabled:text-[#6b6461]/50 text-[#8a2633] border border-[#dfd9d5] hover:border-[#8a2633] font-medium text-[12px] uppercase tracking-[0.08em] rounded-[2px] transition-colors flex items-center justify-center shrink-0 cursor-pointer disabled:cursor-not-allowed"
+              className="h-[46px] px-5 bg-white hover:bg-[#faf8f6] disabled:bg-[#faf8f6] disabled:text-[#6b6461]/50 text-[#1f1b1b] hover:text-[#8a2633] border border-[#dfd9d5] hover:border-[#8a2633] font-medium text-[13px] uppercase tracking-[0.08em] rounded-[2px] transition-colors flex items-center justify-center shrink-0 cursor-pointer disabled:cursor-not-allowed"
             >
               {status === "loading" ? (
                 <Loader2 size={16} className="animate-spin text-[#8a2633]" />

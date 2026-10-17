@@ -43,11 +43,11 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
             aria-controls="accordion-panel-details"
             id="accordion-header-details"
             onClick={() => toggleSection("details")}
-            className="w-full flex items-center justify-between py-4 text-left font-sans text-[14px] font-medium text-[#1f1b1b] hover:text-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer"
+            className="w-full min-h-[52px] px-4 flex items-center justify-between text-left font-sans text-[14px] font-medium text-[#1f1b1b] hover:text-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer"
           >
             <span>Product Details</span>
             <ChevronDown 
-              size={16} 
+              size={18} 
               className={`text-[#6b6461] transition-transform duration-200 shrink-0 ${
                 openSections.details ? "rotate-180" : ""
               }`} 
@@ -59,7 +59,7 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
             id="accordion-panel-details"
             role="region"
             aria-labelledby="accordion-header-details"
-            className="pb-4 pt-0 text-[13px] sm:text-[14px] leading-relaxed text-[#1f1b1b] space-y-4"
+            className="px-4 pb-4 pt-0 text-[14px] leading-[1.6] text-[#6b6461] space-y-4"
           >
             {/* Authentic description without repeating specs */}
             <ProductDescription description={product.description} product={product} />
@@ -70,7 +70,7 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
                 <Package size={14} className="text-[#8a2633]" />
                 <span>Package Inclusions</span>
               </div>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-0 m-0 list-none text-[12px] sm:text-[13px] text-[#1f1b1b]">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-0 m-0 list-none text-[13px] text-[#1f1b1b]">
                 <li className="flex items-start gap-2">
                   <Check size={14} className="text-emerald-700 stroke-[2.5] shrink-0 mt-0.5" />
                   <span>1x Saree drape piece ({isSaree ? "5.50 Meters" : "Standard"})</span>
@@ -78,7 +78,7 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
                 {isSaree && (
                   <li className="flex items-start gap-2">
                     <Check size={14} className="text-emerald-700 stroke-[2.5] shrink-0 mt-0.5" />
-                    <span>1x Matching unstitched blouse piece (0.80 M)</span>
+                    <span>1x Matching unstitched blouse piece (1.00 Meter)</span>
                   </li>
                 )}
                 <li className="flex items-start gap-2">
@@ -104,11 +104,11 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
             aria-controls="accordion-panel-fabric"
             id="accordion-header-fabric"
             onClick={() => toggleSection("fabric")}
-            className="w-full flex items-center justify-between py-4 text-left font-sans text-[14px] font-medium text-[#1f1b1b] hover:text-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer"
+            className="w-full min-h-[52px] px-4 flex items-center justify-between text-left font-sans text-[14px] font-medium text-[#1f1b1b] hover:text-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer"
           >
             <span>Fabric and Care</span>
             <ChevronDown 
-              size={16} 
+              size={18} 
               className={`text-[#6b6461] transition-transform duration-200 shrink-0 ${
                 openSections.fabric ? "rotate-180" : ""
               }`} 
@@ -120,9 +120,9 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
             id="accordion-panel-fabric"
             role="region"
             aria-labelledby="accordion-header-fabric"
-            className="pb-4 pt-0 text-[13px] sm:text-[14px] leading-relaxed text-[#1f1b1b] space-y-3"
+            className="px-4 pb-4 pt-0 text-[14px] leading-[1.6] text-[#6b6461] space-y-3"
           >
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 text-[#1f1b1b]">
               <div className="flex items-baseline text-[13px]">
                 <span className="text-[#6b6461] w-28 shrink-0">Fabric:</span>
                 <span className="font-medium">{product.fabric || "Pure Handloom"}</span>
@@ -173,11 +173,11 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
             aria-controls="accordion-panel-delivery"
             id="accordion-header-delivery"
             onClick={() => toggleSection("delivery")}
-            className="w-full flex items-center justify-between py-4 text-left font-sans text-[14px] font-medium text-[#1f1b1b] hover:text-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer"
+            className="w-full min-h-[52px] px-4 flex items-center justify-between text-left font-sans text-[14px] font-medium text-[#1f1b1b] hover:text-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer"
           >
             <span>Delivery and Returns</span>
             <ChevronDown 
-              size={16} 
+              size={18} 
               className={`text-[#6b6461] transition-transform duration-200 shrink-0 ${
                 openSections.delivery ? "rotate-180" : ""
               }`} 
@@ -189,14 +189,14 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
             id="accordion-panel-delivery"
             role="region"
             aria-labelledby="accordion-header-delivery"
-            className="pb-4 pt-0 text-[13px] sm:text-[14px] leading-relaxed text-[#1f1b1b] space-y-3"
+            className="px-4 pb-4 pt-0 text-[14px] leading-[1.6] text-[#6b6461] space-y-3"
           >
             <div className="space-y-2">
               <div className="flex items-start gap-2">
                 <Truck size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="block text-[13px]">Dispatch & Shipping Timeline</strong>
-                  <p className="text-[12px] sm:text-[13px] text-[#6b6461] m-0">
+                  <strong className="block text-[13px] text-[#1f1b1b]">Dispatch & Shipping Timeline</strong>
+                  <p className="text-[13px] text-[#6b6461] m-0">
                     Dispatched within 24 to 48 hours from our Nagpur facility. 100% Free Shipping on all orders across India. Typical delivery time is 3 to 7 business days (2 to 4 days for metro cities) via Delhivery, BlueDart, or DTDC.
                   </p>
                 </div>
@@ -205,8 +205,8 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
               <div className="flex items-start gap-2 pt-2 border-t border-[#dfd9d5]/60">
                 <RotateCcw size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="block text-[13px]">7-Day Return & Exchange Policy</strong>
-                  <p className="text-[12px] sm:text-[13px] text-[#6b6461] m-0">
+                  <strong className="block text-[13px] text-[#1f1b1b]">7-Day Return & Exchange Policy</strong>
+                  <p className="text-[13px] text-[#6b6461] m-0">
                     Eligible for return or exchange within 7 days of delivery, provided the item is in unworn, unwashed condition with original fold and tags intact. Custom-stitched blouses or altered items are non-returnable.
                   </p>
                 </div>
@@ -225,7 +225,7 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
         )}
       </div>
 
-      {/* 4. Contact / Help */}
+      {/* 4. Contact and Help */}
       <div className="py-0">
         <h3>
           <button
@@ -234,11 +234,11 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
             aria-controls="accordion-panel-contact"
             id="accordion-header-contact"
             onClick={() => toggleSection("contact")}
-            className="w-full flex items-center justify-between py-4 text-left font-sans text-[14px] font-medium text-[#1f1b1b] hover:text-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer"
+            className="w-full min-h-[52px] px-4 flex items-center justify-between text-left font-sans text-[14px] font-medium text-[#1f1b1b] hover:text-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer"
           >
-            <span>Contact / Help</span>
+            <span>Contact and Help</span>
             <ChevronDown 
-              size={16} 
+              size={18} 
               className={`text-[#6b6461] transition-transform duration-200 shrink-0 ${
                 openSections.contact ? "rotate-180" : ""
               }`} 
@@ -250,13 +250,13 @@ export function ProductAccordion({ product, category }: ProductAccordionProps) {
             id="accordion-panel-contact"
             role="region"
             aria-labelledby="accordion-header-contact"
-            className="pb-4 pt-0 text-[13px] sm:text-[14px] leading-relaxed text-[#1f1b1b] space-y-3"
+            className="px-4 pb-4 pt-0 text-[14px] leading-[1.6] text-[#6b6461] space-y-3"
           >
             <p className="text-[13px] text-[#6b6461] m-0">
               Need assistance with saree draping tips, fabric authentication, blouse customization, or order queries? Our Nagpur boutique team is available to help.
             </p>
 
-            <div className="space-y-1.5 text-[12px] sm:text-[13px]">
+            <div className="space-y-1.5 text-[13px] text-[#1f1b1b]">
               <div className="flex items-center gap-2">
                 <Phone size={14} className="text-[#8a2633] shrink-0" />
                 <span>Call: <strong>{BUSINESS_INFO.phone}</strong> (Mon–Sat, 10:30 AM – 8:30 PM IST)</span>
