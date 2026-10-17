@@ -33,6 +33,7 @@ export interface Product {
   originalPrice?: number;
   image: string;
   images?: string[];
+  video?: string;
   videoUrl?: string;
   category: 'Sarees' | string;
   fabric: string;

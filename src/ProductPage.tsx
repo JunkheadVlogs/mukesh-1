@@ -18,6 +18,8 @@ import {
   Phone,
   CheckCircle,
   Share2,
+  CreditCard,
+  MapPin,
 } from "lucide-react";
 import { useEffect, useRef, useState, useMemo, Fragment } from "react";
 import { Helmet } from "react-helmet-async";
@@ -25,6 +27,7 @@ import { ProductDescription } from "./components/ProductDescription";
 import { ProductDetailsSection } from "./components/ProductDetailsSection";
 import { ProductSeoContent } from "./components/ProductSeoContent";
 import { ProductAccordion } from "./components/ProductAccordion";
+import { PincodeChecker } from "./components/PincodeChecker";
 import { Link, useNavigate, useParams } from "react-router";
 import { products } from "./mockData";
 import { useStore, Product } from "./store";
@@ -1181,17 +1184,17 @@ export default function ProductPage() {
 
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 pb-16 md:pb-12 pt-0">
         <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-10">
-          {/* Gallery Section (~58% of product area on desktop) */}
-          <div className="w-full lg:col-span-7 lg:sticky lg:top-28 lg:self-start space-y-0 mb-0">
+          {/* Gallery Section (~58% of product area on desktop, naturally scrolling) */}
+          <div className="w-full lg:col-span-7 space-y-0 mb-0">
             <div className="flex flex-col lg:flex-row lg:items-start lg:gap-4 w-full">
-              {/* Desktop Left Vertical Thumbnail Rail (72px wide, 5:7 ratio, 10px gaps, subtle #dfd9d5 border) */}
+              {/* Desktop Left Vertical Thumbnail Rail (approx 60px wide by 90px high, 2:3 ratio, 10px gaps) */}
               {productImages.length > 1 && (
                 <div 
-                  className="hidden lg:flex flex-col gap-[10px] w-[72px] shrink-0 max-h-[820px] overflow-y-auto scrollbar-hide py-0.5 select-none"
+                  className="hidden lg:flex flex-col gap-[10px] w-[60px] shrink-0 max-h-[820px] overflow-y-auto scrollbar-hide py-0.5 select-none"
                   role="tablist"
                   aria-label="Product image thumbnails"
                 >
-                  {productImages.map((img, idx) => (
+                  {productImages.slice(0, 7).map((img, idx) => (
                     <button
                       key={`thumb-desk-${idx}`}
                       type="button"
@@ -1206,10 +1209,10 @@ export default function ProductPage() {
                           setActiveImageIndex(idx);
                         }
                       }}
-                      className={`relative w-[72px] aspect-[5/7] rounded-[2px] overflow-hidden bg-[#faf8f6] transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] focus-visible:ring-offset-1 ${
+                      className={`relative w-[60px] h-[90px] aspect-[2/3] rounded-[2px] overflow-hidden bg-[#faf8f6] transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] focus-visible:ring-offset-1 ${
                         activeImageIndex === idx
-                          ? "border border-[#dfd9d5] shadow-xs opacity-100"
-                          : "border border-transparent opacity-70 hover:opacity-100 hover:border-[#dfd9d5]/60"
+                          ? "border-2 border-[#8a2633] shadow-xs opacity-100"
+                          : "border border-[#dfd9d5] opacity-80 hover:opacity-100 hover:border-[#1f1b1b]"
                       }`}
                     >
                       {isVideoUrl(img) ? (
@@ -1221,8 +1224,8 @@ export default function ProductPage() {
                       ) : (
                         <OptimizedImage
                           src={img}
-                          width={72}
-                          height={100}
+                          width={60}
+                          height={90}
                           alt={`${getImageAlt(product)} - Thumbnail ${idx + 1}`}
                           loading="lazy"
                           fetchPriority="low"
@@ -1337,10 +1340,10 @@ export default function ProductPage() {
                     aria-selected={activeImageIndex === idx}
                     aria-label={`View image ${idx + 1} of ${productImages.length}`}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`shrink-0 w-14 sm:w-16 aspect-[5/7] rounded-[2px] overflow-hidden bg-[#faf8f6] transition-all duration-200 snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer ${
+                    className={`shrink-0 w-[60px] h-[90px] aspect-[2/3] rounded-[2px] overflow-hidden bg-[#faf8f6] transition-all duration-200 snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer ${
                       activeImageIndex === idx
-                        ? "border border-[#dfd9d5] opacity-100 shadow-xs"
-                        : "border border-transparent opacity-70 hover:opacity-100"
+                        ? "border-2 border-[#8a2633] opacity-100 shadow-xs"
+                        : "border border-[#dfd9d5] opacity-80 hover:opacity-100"
                     }`}
                   >
                     {isVideoUrl(img) ? (
@@ -1352,7 +1355,7 @@ export default function ProductPage() {
                     ) : (
                       <OptimizedImage
                         src={img}
-                        width={64}
+                        width={60}
                         height={90}
                         alt={`${getImageAlt(product)} - Thumbnail ${idx + 1}`}
                         loading="lazy"
@@ -1367,341 +1370,403 @@ export default function ProductPage() {
             )}
           </div>
 
-          {/* Details Section (~42% of product area on desktop) */}
-          <div className="w-full lg:col-span-5 px-0">
-            <div className="pb-4 lg:pb-12">
-              <header className="product-info-section flex flex-col items-start text-left mt-0 mb-0">
-                {/* SKU + Category row - Centered, small font, breathable spacing */}
-                <div className="product-meta-row w-full flex flex-wrap items-center justify-center text-center gap-2 sm:gap-2.5 mt-0.5 sm:mt-1 mb-1 sm:mb-1.5 py-0 select-none text-[10px] sm:text-[11px] text-neutral-500 font-medium tracking-wider uppercase">
-                  <span className="category">
-                    {product.category}
-                  </span>
+          {/* Purchase & Product Information Panel (~42% of product area on desktop) */}
+          <div className="w-full lg:col-span-5 px-0 lg:sticky lg:top-28 lg:self-start">
+            <div className="pb-4 lg:pb-12 space-y-4 md:space-y-5">
+              {/* 1. Existing Breadcrumbs */}
+              <nav aria-label="Breadcrumb" className="pb-0 select-none">
+                <ol className="flex items-center flex-wrap gap-1 text-[12px] leading-normal text-[#6b6461]">
+                  {breadcrumbItems.map((item, idx) => (
+                    <Fragment key={idx}>
+                      <li>
+                        <Link 
+                          to={item.to} 
+                          className="hover:text-[#1f1b1b] transition-colors hover:underline underline-offset-2"
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                      <li aria-hidden="true" className="text-[#dfd9d5] px-0.5">/</li>
+                    </Fragment>
+                  ))}
+                  <li aria-current="page" className="text-[#1f1b1b] font-medium truncate max-w-[200px] sm:max-w-[280px]">
+                    {product.name}
+                  </li>
+                </ol>
+              </nav>
+
+              {/* 2. Existing Product Title H1 + Accessible Wishlist Button with Tooltip */}
+              <div>
+                <div className="flex items-start justify-between gap-3">
+                  <h1
+                    className="product-title font-sans text-[#1f1b1b] font-medium text-[19px] md:text-[22px] leading-[1.3] m-0"
+                    title={product.name}
+                  >
+                    {product.name}
+                    <span className="sr-only">
+                      {" - "}
+                      {product.fabric.toLowerCase().startsWith("premium")
+                        ? `${product.fabric} ${product.category} for Women`
+                        : `Premium ${product.fabric} ${product.category} for Women`}
+                    </span>
+                  </h1>
+
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    {/* Accessible Wishlist Button */}
+                    <button
+                      type="button"
+                      onClick={() => toggleWishlist(product.id)}
+                      className="relative p-2 rounded-full border border-[#dfd9d5] text-[#1f1b1b] hover:text-[#8a2633] hover:border-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer group"
+                      aria-label={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+                    >
+                      <Heart
+                        size={18}
+                        className={`transition-colors ${isWishlisted ? "fill-[#8a2633] text-[#8a2633]" : "text-[#1f1b1b]"}`}
+                      />
+                      <span className="sr-only">{isWishlisted ? "In Wishlist" : "Add to Wishlist"}</span>
+                      <span 
+                        role="tooltip" 
+                        className="absolute -bottom-8 right-0 bg-[#1f1b1b] text-white text-[11px] px-2 py-0.5 rounded shadow-sm opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap z-20"
+                      >
+                        {isWishlisted ? "Wishlisted" : "Add to Wishlist"}
+                      </span>
+                    </button>
+
+                    {/* Share Button */}
+                    <button
+                      type="button"
+                      onClick={handleShare}
+                      className="relative p-2 rounded-full border border-[#dfd9d5] text-[#1f1b1b] hover:text-[#8a2633] hover:border-[#8a2633] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] cursor-pointer group"
+                      aria-label="Share Product"
+                      title={copied ? "Link Copied!" : "Share Product"}
+                    >
+                      {copied ? (
+                        <CheckCircle size={18} className="text-emerald-600" />
+                      ) : (
+                        <Share2 size={18} />
+                      )}
+                      <span 
+                        role="tooltip" 
+                        className="absolute -bottom-8 right-0 bg-[#1f1b1b] text-white text-[11px] px-2 py-0.5 rounded shadow-sm opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap z-20"
+                      >
+                        {copied ? "Link Copied!" : "Share"}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* SKU & Category badge metadata line */}
+                <div className="flex items-center gap-2 text-[11px] text-[#6b6461] mt-1 select-none">
+                  <span>{product.category}</span>
                   {product.sku && (
                     <>
-                      <span className="text-neutral-300 font-normal">•</span>
-                      <span className="sku font-mono tracking-wider">
-                        SKU: {product.sku}
-                      </span>
+                      <span className="text-[#dfd9d5]">•</span>
+                      <span className="font-mono">SKU: {product.sku}</span>
                     </>
                   )}
                   {product.isNew && (
-                    <>
-                      <span className="text-neutral-300 font-normal">•</span>
-                      <span className="trending-tag text-[9px] font-bold text-[#C8A96B] bg-[#C8A96B]/10 px-2 py-0.5 rounded-full tracking-widest">
-                        NEW
-                      </span>
-                    </>
+                    <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em]">
+                      NEW ARRIVAL
+                    </span>
                   )}
-                  {product.isTrending && (
-                    <>
-                      <span className="text-neutral-300 font-normal">•</span>
-                      <span className="trending-tag text-[9px] font-bold text-[#C8A96B] bg-[#C8A96B]/10 px-2 py-0.5 rounded-full tracking-widest">
-                        TRENDING
-                      </span>
-                    </>
-                  )}
-                  {product.isBestSelling && (
-                    <>
-                      <span className="text-neutral-300 font-normal">•</span>
-                      <span className="trending-tag text-[9px] font-bold text-[#C8A96B] bg-[#C8A96B]/10 px-2 py-0.5 rounded-full tracking-widest">
-                        BEST SELLER
-                      </span>
-                    </>
+                  {effectiveStock > 0 && effectiveStock <= 5 && (
+                    <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em]">
+                      ONLY {effectiveStock} LEFT
+                    </span>
                   )}
                 </div>
+              </div>
 
-                <h1
-                  className="product-title font-serif text-[var(--color-dark)] font-normal text-[18px] sm:text-[22px] lg:text-[28px] leading-[1.25] lg:leading-[1.2] mb-0"
-                  title={product.name}
-                >
-                  {product.name}
-                  <span className="sr-only">
-                    {" - "}
-                    {product.fabric.toLowerCase().startsWith("premium")
-                      ? `${product.fabric} ${product.category} for Women`
-                      : `Premium ${product.fabric} ${product.category} for Women`}
-                  </span>
-                </h1>
-
-              </header>
-
-              {/* Product Info Section wrapping clean, non-overlapping rows */}
-              <div className="product-info-section px-0 pt-1 sm:pt-1.5 pb-1 border-b border-[var(--color-border)] mb-1.5 sm:mb-2 space-y-1 sm:space-y-1.5">
-                {/* ROW 1 — Star rating + Prepaid Savings Badge + Share Button (Product Information / Rating) */}
-                <div className="flex items-center justify-between gap-1.5 sm:gap-3 w-full">
-                  {/* a) Star rating + review count */}
+              {/* 3. Existing real rating/review count only when available */}
+              {(stats.reviewCount > 0 || (product.reviewsCount && product.reviewsCount > 0) || (product.reviews && product.reviews.length > 0)) && (
+                <div className="flex items-center gap-2 pt-0.5">
                   <a
                     href="#reviews"
-                    className="flex items-center gap-1 hover:opacity-80 transition-opacity flex-shrink-0"
+                    className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+                    aria-label={`${stats.rating} out of 5 stars based on ${product.reviewsCount || stats.reviewCount} customer reviews`}
                   >
-                    <div className="flex items-center gap-[1px]">
+                    <div className="flex items-center gap-[2px]">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-[10px] h-[10px] sm:w-[11px] sm:h-[11px] ${
+                          className={`w-3.5 h-3.5 ${
                             stats.rating >= i + 1
                               ? "fill-[#F4B63D] text-[#F4B63D]"
                               : stats.rating >= i + 0.5
                                 ? "fill-[#F4B63D] text-[#F4B63D] opacity-50"
-                                : "fill-[#E6DEC8] text-[#E6DEC8]"
+                                : "fill-[#dfd9d5] text-[#dfd9d5]"
                           }`}
                         />
                       ))}
                     </div>
-                    <span className="text-[10px] sm:text-[11px] text-[#9CA3AF] font-medium leading-none whitespace-nowrap">
-                      ({product.reviewsCount || stats.reviewCount})
+                    <span className="text-[12px] font-medium text-[#1f1b1b] leading-none">
+                      {stats.rating.toFixed(1)}
+                    </span>
+                    <span className="text-[12px] text-[#6b6461] leading-none">
+                      ({product.reviewsCount || stats.reviewCount} reviews)
                     </span>
                   </a>
-
-                  {/* b) "⚡ Save ₹50 Extra on Prepaid Online Orders" badge */}
-                  {isCodAvailable && (
-                    <div className="flex items-center gap-1 bg-emerald-50 text-emerald-800 px-1.5 py-0.5 rounded-sm border border-emerald-200/60 flex-shrink min-w-0">
-                      <svg className="w-2.5 h-2.5 flex-shrink-0 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                      <span className="text-[9px] sm:text-[10px] font-medium tracking-wide leading-none whitespace-nowrap truncate">
-                        Save <strong className="font-bold">₹50 EXTRA</strong> on Prepaid
-                      </span>
-                    </div>
-                  )}
-
-                  {/* c) Share button — compact icon-only button */}
-                  <button
-                    onClick={handleShare}
-                    className="flex items-center justify-center p-1 sm:p-1.5 text-gray-500 hover:text-[var(--color-gold-dark)] hover:bg-black/5 rounded-full transition-colors flex-shrink-0"
-                    aria-label="Share Product"
-                    title={copied ? "Link Copied!" : "Share Product"}
-                  >
-                    {copied ? (
-                      <CheckCircle className="w-4 h-4 text-emerald-600" />
-                    ) : (
-                      <Share2 className="w-4 h-4" />
-                    )}
-                  </button>
                 </div>
+              )}
 
-                {/* SKU-Specific Festive Offer Countdown (ONLY for SAR-LIN-BRD-062) */}
-                {product.sku === "SAR-LIN-BRD-062" && (
-                  <div className="!mb-1 sm:!mb-1.5">
-                    <FestiveOfferCountdown initialMinutes={120} />
-                  </div>
-                )}
-
-                {/* ROW 2 — Price Row with % OFF + Urgency Pop on the SAME line */}
-                <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap sm:flex-nowrap leading-none pt-0">
-                  <span className="text-[20px] sm:text-[22px] font-serif font-medium text-[var(--color-dark)] leading-none tracking-wide">
+              {/* 4. Price, MRP, actual discount, and tax wording from current data */}
+              <div className="space-y-1">
+                <div className="flex items-baseline gap-2.5 flex-wrap">
+                  <span className="text-[18px] md:text-[20px] font-medium text-[#1f1b1b] leading-none">
                     {formatPrice(product.price)}
                   </span>
-                  {product.originalPrice && (
-                    <span className="text-[12px] sm:text-[13px] text-[#59524A] line-through font-extrabold leading-none whitespace-nowrap">
-                      MRP {formatPrice(product.originalPrice)}
-                    </span>
+                  {product.originalPrice && product.originalPrice > product.price && (
+                    <>
+                      <span className="text-[13px] md:text-[14px] text-[#6b6461] line-through font-normal leading-none">
+                        MRP {formatPrice(product.originalPrice)}
+                      </span>
+                      <span className="bg-[#8a2633] text-white text-[11px] font-medium rounded-[4px] px-[6px] py-[3px] leading-none tracking-[0.04em]">
+                        {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                      </span>
+                    </>
                   )}
-                  {product.originalPrice &&
-                  product.originalPrice > product.price && (
-                    <span className="text-[10px] font-medium text-[var(--color-terracotta)] bg-[#F8F0E5] px-1.5 py-0.5 rounded-sm tracking-wider uppercase leading-none whitespace-nowrap flex-shrink-0">
-                      {Math.round(
-                        ((product.originalPrice - product.price) /
-                          product.originalPrice) *
-                          100,
-                      )}
-                      % OFF
-                    </span>
-                  )}
-
-                  {/* Urgency Pop on the SAME line after % OFF */}
-                  <div className="flex-shrink-0">
-                    <LiveViewerCounter productId={product.id} category={product.category} />
-                  </div>
                 </div>
+                <p className="text-[12px] text-[#6b6461] m-0 leading-normal">
+                  Inclusive of all taxes. Free shipping across India.
+                </p>
+                {isCodAvailable && (
+                  <div className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-800 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-[2px] mt-1">
+                    <span>⚡ Save extra ₹50 on prepaid orders</span>
+                  </div>
+                )}
               </div>
 
-              {/* Product Specifications - Clean Minimal List */}
-              <div className="product-info product-specs-container">
-                <table className="product-details-table w-full mb-1 sm:mb-1.5 border-collapse">
-                  <tbody>
-                    <tr className="border-none">
-                      <td className="product-details-label font-light uppercase">
-                        Fabric
-                      </td>
-                      <td className="text-[var(--color-dark)] align-middle font-medium">
-                        {product.fabric}
-                      </td>
-                    </tr>
+              {/* SKU-Specific Festive Offer Countdown (ONLY for SAR-LIN-BRD-062) */}
+              {product.sku === "SAR-LIN-BRD-062" && (
+                <div className="!my-2">
+                  <FestiveOfferCountdown initialMinutes={120} />
+                </div>
+              )}
 
-                    {product.category.toLowerCase().includes("saree") && (
-                      <>
-                        <tr className="border-none">
-                          <td className="product-details-label font-light uppercase">
-                            Saree Length
-                          </td>
-                          <td className="text-[var(--color-dark)] align-middle">
-                            5.50 Meters
-                          </td>
-                        </tr>
-                        <tr className="border-none">
-                          <td className="product-details-label font-light uppercase">
-                            Blouse Piece Length
-                          </td>
-                          <td className="text-[var(--color-dark)] align-middle">
-                            1.00 Meter (Unstitched)
-                          </td>
-                        </tr>
-                        <tr className="border-none">
-                          <td className="product-details-label font-light uppercase">
-                            Blouse Details
-                          </td>
-                          <td className="text-[var(--color-dark)] align-middle">
-                            {product.blouseDetails || "Comes with Contrast Blouse Piece"}
-                          </td>
-                        </tr>
-                      </>
-                    )}
-
-                    <tr className="border-none">
-                      <td className="product-details-label font-light uppercase">
-                        Color
-                      </td>
-                      <td className="text-[var(--color-dark)] align-middle">
-                        {product.color}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              {/* 5. Existing product facts in one compact line or grid: fabric, craft, colour, blouse piece, and any actual available attributes */}
+              <div className="border-t border-b border-[#dfd9d5] py-3.5 space-y-2 text-[14px] leading-[1.5]">
+                {product.fabric && (
+                  <div className="flex items-baseline text-[14px]">
+                    <span className="text-[13px] text-[#6b6461] w-32 shrink-0">Fabric</span>
+                    <span className="text-[#1f1b1b] font-medium flex-1">{product.fabric}</span>
+                  </div>
+                )}
+                {product.color && (
+                  <div className="flex items-baseline text-[14px]">
+                    <span className="text-[13px] text-[#6b6461] w-32 shrink-0">Color</span>
+                    <span className="text-[#1f1b1b] font-medium flex-1">{product.color}</span>
+                  </div>
+                )}
+                {(product as any).craft && (
+                  <div className="flex items-baseline text-[14px]">
+                    <span className="text-[13px] text-[#6b6461] w-32 shrink-0">Craft / Weave</span>
+                    <span className="text-[#1f1b1b] font-medium flex-1">{(product as any).craft}</span>
+                  </div>
+                )}
+                {product.blouseDetails && (
+                  <div className="flex items-baseline text-[14px]">
+                    <span className="text-[13px] text-[#6b6461] w-32 shrink-0">Blouse Piece</span>
+                    <span className="text-[#1f1b1b] font-medium flex-1">{product.blouseDetails}</span>
+                  </div>
+                )}
+                {product.category && product.category.toLowerCase().includes("saree") && (
+                  <div className="flex items-baseline text-[14px]">
+                    <span className="text-[13px] text-[#6b6461] w-32 shrink-0">Saree Length</span>
+                    <span className="text-[#1f1b1b] font-medium flex-1">5.50 Meters (with unstitched blouse)</span>
+                  </div>
+                )}
               </div>
 
-              {/* Color Variants */}
+              {/* 6. Existing variant selectors, if present */}
               {product.colorVariants && product.colorVariants.length > 0 && (
-                <section className="product-info mb-2.5">
-                  <h2 className="text-[11px] uppercase tracking-[0.15em] text-[var(--color-muted)] font-medium mb-2">
-                    Color Options
-                  </h2>
-                  <div className="flex flex-wrap gap-3">
+                <div className="space-y-2">
+                  <div className="text-[12px] font-medium text-[#1f1b1b] uppercase tracking-[0.08em]">
+                    Color Options ({product.colorVariants.length})
+                  </div>
+                  <div className="flex flex-wrap gap-2.5">
                     {product.colorVariants.map((v) => (
                       <Link
                         key={v.slug}
                         to={`/product/${v.slug}/`}
-                        className={`group relative w-[52px] h-[72px] transition-all overflow-hidden bg-[var(--color-surface)] border ${v.slug === slug ? "border-[var(--color-gold)]" : "border-transparent hover:border-[var(--color-border)]"}`}
+                        className={`group relative w-[54px] aspect-[5/7] rounded-[2px] overflow-hidden bg-[#faf8f6] transition-all duration-200 border ${
+                          v.slug === slug
+                            ? "border-[#8a2633] ring-1 ring-[#8a2633]"
+                            : "border-[#dfd9d5] hover:border-[#1f1b1b] opacity-80 hover:opacity-100"
+                        }`}
+                        title={v.color}
                       >
                         <OptimizedImage
                           src={v.image}
-                          alt={`${product.name} in ${v.color} Color option - Mukesh Saree Centre Nagpur`}
-                          width={150}
-                          height={207}
+                          alt={`${product.name} in ${v.color} Color option - Mukesh Saree Centre`}
+                          width={54}
+                          height={75}
                           loading="lazy"
                           fetchPriority="low"
                           decoding="async"
-                          className={`w-full h-full object-contain object-center transition-all duration-500 ${v.slug === slug ? "" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"}`}
+                          className="w-full h-full object-cover object-center"
                         />
                       </Link>
                     ))}
                   </div>
-                </section>
+                </div>
               )}
 
-              {/* Size Selection */}
               {!isSaree && (
-                <section ref={sizeSectionRef} className="product-info mb-4">
-                  <div className="size-selector">
-                    <div className="flex justify-between items-center mb-1">
-                      <p className="text-[10.5px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-medium">
-                        Select Size: {sizeError && <span style={{color:'red'}} className="font-semibold ml-1">Please select a size</span>}
-                      </p>
-                      <button
-                        onClick={() => setIsSizeGuideOpen(true)}
-                        className="text-[9.5px] sm:text-[10px] uppercase font-medium text-[var(--color-dark)]/80 hover:text-[var(--color-dark)] underline decoration-[var(--color-border)] underline-offset-4 hover:decoration-[var(--color-dark)] transition-colors tracking-[0.08em]"
-                      >
-                        Size Guide
-                      </button>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {SIZES.map(s => (
-                        <button key={s}
-                          className={`h-[32px] sm:h-[34px] min-w-[34px] sm:min-w-[36px] px-2.5 border text-[11px] sm:text-[11px] tracking-wider transition-all rounded-sm font-medium ${selectedSize === s ? 'size-btn active border-[var(--color-dark)] bg-[var(--color-dark)] text-white' : 'size-btn border-[var(--color-border)] text-[var(--color-dark)] hover:border-[var(--color-dark)] bg-transparent hover:border-[var(--color-dark)]'}`}
-                          onClick={() => { setSelectedSize(s); setSizeError(false); }}>
-                          {s}
-                        </button>
-                      ))}
-                    </div>
+                <div ref={sizeSectionRef} className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[12px] font-medium text-[#1f1b1b] uppercase tracking-[0.08em]">
+                      Select Size {sizeError && <span className="text-[#8a2633] ml-1 lowercase font-normal">(please select a size)</span>}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setIsSizeGuideOpen(true)}
+                      className="text-[12px] text-[#6b6461] hover:text-[#1f1b1b] underline underline-offset-2 transition-colors cursor-pointer"
+                    >
+                      Size Guide
+                    </button>
                   </div>
-                </section>
+                  <div className="flex flex-wrap gap-2">
+                    {SIZES.map(s => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => { setSelectedSize(s); setSizeError(false); }}
+                        className={`h-9 min-w-9 px-3 text-[12px] font-medium rounded-[2px] transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] ${
+                          selectedSize === s
+                            ? "bg-[#1f1b1b] text-white border border-[#1f1b1b]"
+                            : "bg-white text-[#1f1b1b] border border-[#dfd9d5] hover:border-[#1f1b1b]"
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               )}
 
-              <div className="product-info">
-                {product.sku === "SAR-LIN-BRD-062" ? (
-                  <SkuUrgencyStock stockCount={effectiveStock} />
-                ) : (
-                  <LowStockMessage productId={product.id} />
-                )}
+              {/* 7. Real inventory status, only when true */}
+              {isOutOfStock ? (
+                <div className="text-[13px] font-medium text-[#8a2633] bg-[#8a2633]/8 border border-[#8a2633]/20 px-3.5 py-2.5 rounded-[2px]">
+                  Sold Out — Please check back soon or inquire on WhatsApp.
+                </div>
+              ) : product.sku === "SAR-LIN-BRD-062" ? (
+                <SkuUrgencyStock stockCount={effectiveStock} />
+              ) : effectiveStock > 0 && effectiveStock <= 5 ? (
+                <LowStockMessage productId={product.id} />
+              ) : null}
+
+              {/* 8. Wishlist, Add to Cart, and Buy Now controls */}
+              <div className="space-y-2.5 pt-1">
+                {/* Add to Cart: full width, 48px height, background #8a2633, white text */}
+                <button
+                  ref={mainAtcRef}
+                  type="button"
+                  onClick={handleAddToCart}
+                  disabled={isOutOfStock}
+                  className="w-full h-[48px] bg-[#8a2633] hover:bg-[#6f1d29] disabled:bg-[#dfd9d5] disabled:text-[#6b6461] disabled:cursor-not-allowed text-white text-[13px] tracking-[0.08em] uppercase font-medium rounded-[2px] flex items-center justify-center transition-colors shadow-xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] focus-visible:ring-offset-1"
+                  data-action="add-to-cart"
+                  id="add-to-cart"
+                >
+                  {isOutOfStock ? "Sold Out" : isAdded ? "✓ Added to Bag" : "Add to Cart"}
+                </button>
+
+                {/* Buy Now: full width, 48px height, white background, 1px solid #8a2633, #8a2633 text */}
+                <button
+                  type="button"
+                  onClick={handleBuyNow}
+                  disabled={isOutOfStock}
+                  className="w-full h-[48px] bg-white hover:bg-[#faf8f6] disabled:border-[#dfd9d5] disabled:text-[#6b6461] disabled:cursor-not-allowed text-[#8a2633] border border-[#8a2633] text-[13px] tracking-[0.08em] uppercase font-medium rounded-[2px] flex items-center justify-center transition-colors shadow-xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a2633] focus-visible:ring-offset-1"
+                  data-action="buy-now"
+                  id="buy-now"
+                >
+                  {isOutOfStock
+                    ? "Sold Out"
+                    : isCodAvailable
+                      ? "Buy Now — Cash on Delivery Available"
+                      : "Buy Now — Prepaid Only"}
+                </button>
+
+                {/* Direct WhatsApp Action */}
+                <a
+                  href={`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(
+                    `Hi Mukesh Saree Centre, I want to order:\n\n*Product:* ${product.name}\n${selectedSize ? `*Size:* ${selectedSize}\n` : ""}*Link:* ${window.location.href}`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackWhatsAppClick({ productName: product.name, source: "product_cta" })}
+                  className="w-full h-[44px] bg-transparent hover:bg-emerald-50/60 text-emerald-800 border border-emerald-300 text-[12px] uppercase tracking-[0.08em] font-medium rounded-[2px] flex items-center justify-center gap-2 transition-colors no-underline cursor-pointer"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current opacity-80" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                  </svg>
+                  <span>Order on WhatsApp</span>
+                </a>
+
+                <CartActivityMessage productId={product.id} />
               </div>
 
-              {/* Actions */}
-              <section className="product-info w-full mt-1 relative">
-                <div className="flex flex-col gap-2 w-full">
-                  <div className="product-actions">
-                    <button
-                      ref={mainAtcRef}
-                      onClick={handleAddToCart}
-                      disabled={isOutOfStock}
-                      className="add-to-cart-btn"
-                      data-action="add-to-cart"
-                      id="add-to-cart"
-                    >
-                      {isOutOfStock ? "Sold Out" : isAdded ? "✓ Added" : "Add To Cart"}
-                    </button>
-                    <button
-                      onClick={handleBuyNow}
-                      disabled={isOutOfStock}
-                      className="buy-now-btn"
-                      data-action="buy-now"
-                      id="buy-now"
-                    >
-                      {product.sku === 'SAR-LIN-BRD-062' ? "BUY NOW" : (isCodAvailable ? "Buy Now — COD Available 🛍️" : "Buy Now — Prepaid Only 🛍️")}
-                    </button>
+              {/* 9. Pincode delivery checker */}
+              <PincodeChecker isCodAvailable={isCodAvailable} />
+
+              {/* 10. Existing delivery/return/payment information */}
+              <div className="pt-3 border-t border-[#dfd9d5] space-y-3">
+                <div className="grid grid-cols-2 gap-3 text-[12px] text-[#1f1b1b]">
+                  <div className="flex items-start gap-2">
+                    <Truck size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-medium block leading-snug">Free Express Shipping</span>
+                      <span className="text-[#6b6461] text-[11px]">All orders across India</span>
+                    </div>
                   </div>
-
-                  <a
-                    href={`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(
-                      `Hi Mukesh Saree Centre, I want to order:\n\n*Product:* ${product.name}\n${selectedSize ? `*Size:* ${selectedSize}\n` : ""}*Link:* ${window.location.href}`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => trackWhatsAppClick({ productName: product.name, source: "product_cta" })}
-                    className="w-full h-[44px] md:h-[52px] border border-[#2D452F]/20 bg-[#f4f7f4] text-[#2D452F] text-[11px] md:text-[12px] uppercase tracking-[0.18em] font-medium hover:bg-[#e8ede8] transition-all rounded-sm flex items-center justify-center gap-2 group style-none no-underline"
-                    style={{ textDecoration: 'none' }}
-                  >
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current opacity-80 group-hover:opacity-100 transition-opacity" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                    </svg>
-                    Order on WhatsApp
-                  </a>
-
-                  <CartActivityMessage productId={product.id} />
+                  <div className="flex items-start gap-2">
+                    <RotateCcw size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-medium block leading-snug">7-Day Easy Returns</span>
+                      <span className="text-[#6b6461] text-[11px]">Hassle-free exchange policy</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <ShieldCheck size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-medium block leading-snug">Weaver-Direct Authentic</span>
+                      <span className="text-[#6b6461] text-[11px]">Nagpur boutique since 1978</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CreditCard size={16} className="text-[#8a2633] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-medium block leading-snug">{isCodAvailable ? "COD & Prepaid Available" : "Secure Prepaid Orders"}</span>
+                      <span className="text-[#6b6461] text-[11px]">UPI, Cards, NetBanking, COD</span>
+                    </div>
+                  </div>
                 </div>
-              </section>
 
-              {/* Support & Trust Badges - Clean Unified Section */}
-              <section className="product-info pt-1 mt-1 border-t border-[var(--color-border)] mb-0">
-                <TrustBadges compact={true} />
-              </section>
+                {/* Compact payment modes row */}
+                <div className="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-[#dfd9d5]/60 text-[11px] text-[#6b6461]">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="font-medium text-[#1f1b1b]">Payment Modes:</span>
+                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">UPI</span>
+                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">Google Pay</span>
+                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">PhonePe</span>
+                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">Cards</span>
+                    <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">NetBanking</span>
+                    {isCodAvailable && <span className="px-1.5 py-0.5 bg-[#faf8f6] border border-[#dfd9d5] rounded-[2px] text-[10px]">Cash on Delivery</span>}
+                  </div>
+                  <div className="flex items-center gap-1 text-[10px] text-emerald-800">
+                    <Shield size={12} className="text-emerald-700" />
+                    <span>Razorpay 256-Bit SSL</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 11. Detail accordions (Product Details, Fabric and Care, Delivery and Returns, Contact / Help) */}
+              <div className="pt-2">
+                <ProductAccordion category={product.category} product={product} />
+              </div>
 
               {/* Hidden AI SEO Core Knowledge Block */}
               <ProductSeoContent product={product} />
-
-              {/* Description */}
-              <section className="product-info product-description-section pt-1 border-t border-[var(--color-border)] mt-1 mb-0 pb-0">
-                <ProductDescription description={product.description} product={product} />
-              </section>
-
-              {/* What You Receive */}
-              <section className="product-info mt-1 mb-1">
-                <ProductDetailsSection product={product} />
-              </section>
-
-              {/* Collapsible Accordion */}
-              <section className="product-info product-accordion-section mt-0 mb-0 pt-0 pb-0">
-                <ProductAccordion category={product.category} product={product} />
-              </section>
             </div>
           </div>
         </div>
@@ -1715,26 +1780,23 @@ export default function ProductPage() {
           <ProductReviews product={product} />
         </div>
 
-        {/* Similar Products Carousel */}
+        {/* Similar Products Grid (4 desktop, 2 mobile) */}
         {similarProducts.length > 0 && (
           <section className="mt-4 md:mt-12 px-0 pb-4 md:pb-6">
             <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
-              <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide leading-tight md:leading-normal">
+              <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[#1f1b1b] font-normal tracking-wide leading-tight md:leading-normal">
                 Similar Products
               </h2>
               <Link
                 to={`/shop/?category=${encodeURIComponent(product.category)}`}
-                className="text-[10px] md:text-[11px] uppercase font-medium text-[var(--color-dark)] underline decoration-[var(--color-border)] underline-offset-4 hover:decoration-[var(--color-dark)] tracking-[0.1em] transition-colors"
+                className="text-[10px] md:text-[11px] uppercase font-medium text-[#1f1b1b] underline decoration-[#dfd9d5] underline-offset-4 hover:decoration-[#1f1b1b] tracking-[0.1em] transition-colors"
               >
                 View Collection
               </Link>
             </div>
-            <div className="flex md:grid overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory gap-3 sm:gap-6 md:gap-8 w-full -mx-4 px-4 sm:mx-0 sm:px-0 pb-3 md:pb-0 md:grid-cols-3 lg:grid-cols-4 touch-pan-x touch-pan-y min-h-[290px] md:min-h-[350px]">
-              {similarProducts.map((p, index) => (
-                <div
-                  key={p.id}
-                  className="shrink-0 w-[44vw] min-w-[145px] max-w-[210px] md:w-full md:max-w-none snap-start"
-                >
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6 md:gap-8 w-full">
+              {similarProducts.slice(0, 4).map((p, index) => (
+                <div key={p.id} className="w-full">
                   <ProductCard product={p} idx={index} priority={false} />
                 </div>
               ))}
@@ -1742,20 +1804,17 @@ export default function ProductPage() {
           </section>
         )}
 
-        {/* Recently Viewed Carousel (Shown ONLY when genuinely viewed items exist) */}
+        {/* Recently Viewed Grid (Shown ONLY when genuinely viewed items exist) */}
         {recentlyViewed.length > 0 && (
-          <section className="mt-4 md:mt-8 pt-6 md:pt-8 border-t border-[var(--color-border)] px-0 pb-4 md:pb-6">
+          <section className="mt-4 md:mt-8 pt-6 md:pt-8 border-t border-[#dfd9d5] px-0 pb-4 md:pb-6">
             <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
-              <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide leading-tight md:leading-normal">
+              <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[#1f1b1b] font-normal tracking-wide leading-tight md:leading-normal">
                 Recently Viewed
               </h2>
             </div>
-            <div className="flex md:grid overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory gap-3 sm:gap-6 md:gap-8 w-full -mx-4 px-4 sm:mx-0 sm:px-0 pb-3 md:pb-0 md:grid-cols-3 lg:grid-cols-4 touch-pan-x touch-pan-y min-h-[290px] md:min-h-[350px]">
-              {recentlyViewed.map((p, index) => (
-                <div
-                  key={p.id}
-                  className="shrink-0 w-[44vw] min-w-[145px] max-w-[210px] md:w-full md:max-w-none snap-start"
-                >
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6 md:gap-8 w-full">
+              {recentlyViewed.slice(0, 4).map((p, index) => (
+                <div key={p.id} className="w-full">
                   <ProductCard product={p} idx={index} priority={false} />
                 </div>
               ))}
@@ -1763,20 +1822,17 @@ export default function ProductPage() {
           </section>
         )}
 
-        {/* Customers Also Bought Carousel (Shown ONLY if genuine order/recommendation data exists) */}
+        {/* Customers Also Bought Grid (Shown ONLY if genuine order/recommendation data exists) */}
         {customersAlsoBought.length > 0 && (
-          <section className="mt-4 md:mt-8 pt-6 md:pt-8 border-t border-[var(--color-border)] px-0 pb-4 md:pb-6">
+          <section className="mt-4 md:mt-8 pt-6 md:pt-8 border-t border-[#dfd9d5] px-0 pb-4 md:pb-6">
             <div className="flex justify-between items-center mb-4 md:mb-6 px-1 sm:px-0">
-              <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[var(--color-dark)] font-normal tracking-wide leading-tight md:leading-normal">
+              <h2 className="text-base sm:text-lg md:text-2xl font-serif text-[#1f1b1b] font-normal tracking-wide leading-tight md:leading-normal">
                 Customers Also Bought
               </h2>
             </div>
-            <div className="flex md:grid overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory gap-3 sm:gap-6 md:gap-8 w-full -mx-4 px-4 sm:mx-0 sm:px-0 pb-3 md:pb-0 md:grid-cols-3 lg:grid-cols-4 touch-pan-x touch-pan-y min-h-[290px] md:min-h-[350px]">
-              {customersAlsoBought.map((p, index) => (
-                <div
-                  key={p.id}
-                  className="shrink-0 w-[44vw] min-w-[145px] max-w-[210px] md:w-full md:max-w-none snap-start"
-                >
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6 md:gap-8 w-full">
+              {customersAlsoBought.slice(0, 4).map((p, index) => (
+                <div key={p.id} className="w-full">
                   <ProductCard product={p} idx={index} priority={false} />
                 </div>
               ))}
@@ -2055,26 +2111,21 @@ export default function ProductPage() {
       {showStickyAtc && (
         <div
           id="sticky-atc"
-          className="fixed bottom-[0px] left-0 right-0 bg-white border-t border-[var(--color-border)] z-[1000] flex items-center justify-between px-4 pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)] transition-transform duration-200"
+          className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#dfd9d5] z-[1000] flex items-center justify-between px-4 pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-4px_12px_rgba(0,0,0,0.06)] transition-transform duration-200"
           style={{ height: "calc(64px + env(safe-area-inset-bottom))" }}
         >
-          <div className="flex flex-col justify-center min-w-0 mr-4 pt-[env(safe-area-inset-bottom)]">
-            <h4 className="text-[13px] font-medium text-[var(--color-dark)] truncate max-w-[160px] xs:max-w-[200px]">
+          <div className="flex flex-col justify-center min-w-0 mr-3 pt-[env(safe-area-inset-bottom)]">
+            <h4 className="text-[12px] font-medium text-[#1f1b1b] truncate max-w-[150px] xs:max-w-[190px]">
               {product?.name}
             </h4>
             <div className="flex items-center gap-1.5 flex-wrap min-w-0">
-              <span className="text-[15px] font-bold text-[var(--color-dark)] leading-none shrink-0">
+              <span className="text-[15px] font-medium text-[#1f1b1b] leading-none shrink-0">
                 {formatPrice(product?.price || 0)}
               </span>
               {product?.originalPrice && product.originalPrice > product.price && (
-                <>
-                  <span className="text-[11px] text-[#59524A] line-through font-extrabold shrink-0 leading-none">
-                    {formatPrice(product.originalPrice)}
-                  </span>
-                  <span className="text-[9px] font-extrabold text-[#8C1D18] bg-[#FFF1F2] border border-[#FECDD3] rounded-[4px] px-1.5 py-0.5 tracking-[0.05em] uppercase shrink-0 leading-none">
-                    {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
-                  </span>
-                </>
+                <span className="bg-[#8a2633] text-white text-[10px] font-medium rounded-[3px] px-1.5 py-0.5 leading-none">
+                  {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                </span>
               )}
             </div>
           </div>
@@ -2082,9 +2133,9 @@ export default function ProductPage() {
           <button
             onClick={handleAddToCart}
             disabled={isOutOfStock}
-            className="mt-[env(safe-area-inset-bottom)] bg-[#C8A96B] hover:bg-[#B3965D] text-white px-6 h-[40px] rounded-sm text-[13px] uppercase tracking-[0.12em] font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap min-w-[140px]"
+            className="mt-[env(safe-area-inset-bottom)] bg-[#8a2633] hover:bg-[#6f1d29] text-white px-5 min-h-[48px] h-[48px] rounded-[2px] text-[12px] uppercase tracking-[0.08em] font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap min-w-[140px] cursor-pointer"
           >
-            {isOutOfStock ? "Sold Out" : "Add to Cart"}
+            {isOutOfStock ? "Sold Out" : isAdded ? "✓ Added" : "Add to Cart"}
           </button>
         </div>
       )}

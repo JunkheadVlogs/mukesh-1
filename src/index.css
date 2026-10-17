@@ -1473,4 +1473,55 @@ body.has-sticky-atc #whatsapp-float-container {
   letter-spacing: 0;
 }
 
+/* Product Page Purchase Action Buttons */
+.pdp-primary-buy-btn {
+  width: 100% !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  background-color: var(--pdp-accent) !important; /* #8a2633 */
+  color: #ffffff !important;
+  border: 1px solid var(--pdp-accent) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border-radius: var(--radius-sm) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer !important;
+}
+
+.pdp-primary-buy-btn:hover:not(:disabled) {
+  background-color: var(--pdp-accent-dark) !important; /* #6f1d29 */
+  border-color: var(--pdp-accent-dark) !important;
+}
+
+.pdp-secondary-atc-btn {
+  width: 100% !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  background-color: #ffffff !important;
+  color: var(--pdp-accent) !important; /* #8a2633 */
+  border: 1px solid var(--pdp-accent) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border-radius: var(--radius-sm) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer !important;
+}
+
+.pdp-secondary-atc-btn:hover:not(:disabled) {
+  background-color: var(--pdp-soft-surface) !important;
+  color: var(--pdp-accent-dark) !important;
+}
+
 
